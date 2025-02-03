@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Paiement Stripe - ML2C CONSEIL</title>
+  <!-- Bootstrap CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css"
+  >
+  <!-- Styles personnalisés si nécessaire -->
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/styles.css') }}"
+  >
+</head>
+<body>
+
+  {% include "header.html" %}
+
+  <div class="container my-4">
+    <h2>Paiement via Stripe</h2>
+    <p>Veuillez renseigner vos informations de paiement :</p>
+
+    <!-- Formulaire champs carte bancaire -->
+    <form action="#" method="POST">
+      <!-- Nom et prénom du possesseur de la carte -->
+      <div class="form-group">
+        <label for="card_holder_name">Nom du titulaire de la carte</label>
+        <input
+          type="text"
+          class="form-control"
+          id="card_holder_name"
+          name="card_holder_name"
+          placeholder="Ex: Dupont Jean"
+          required
+        >
+      </div>
+
+      <!-- Numéro de carte -->
+      <div class="form-group">
+        <label for="card_number">Numéro de carte</label>
+        <input
+          type="text"
+          class="form-control"
+          id="card_number"
+          name="card_number"
+          placeholder="XXXX XXXX XXXX XXXX"
+          required
+        >
+      </div>
+
+      <!-- Date d'expiration et CVV -->
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="card_expiry">Date d'expiration</label>
+          <input
+            type="text"
+            class="form-control"
+            id="card_expiry"
+            name="card_expiry"
+            placeholder="MM/AA"
+            required
+          >
+        </div>
+        <div class="form-group col-md-6">
+          <label for="card_cvv">CVV</label>
+          <input
+            type="text"
+            class="form-control"
+            id="card_cvv"
+            name="card_cvv"
+            placeholder="3 ou 4 chiffres"
+            required
+          >
+        </div>
+      </div>
+
+      <!-- Bouton Payer -->
+      <button type="submit" class="btn btn-primary">Payer</button>
+    </form>
+  </div>
+
+  {% include "footer.html" %}
+
+  <!-- Scripts Bootstrap + jQuery (optionnel) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"
+  ></script>
+  <!-- Script Stripe potentiel si vous faisiez une vraie intégration -->
+  <!-- <script src="https://js.stripe.com/v3"></script> -->
+</body>
+</html>

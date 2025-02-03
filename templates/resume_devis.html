@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Résumé Devis - ML2C CONSEIL</title>
+
+  <!-- Bootstrap CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css"
+  >
+</head>
+<body>
+
+  {% include "header.html" %}
+
+  <div class="container my-4">
+    <h2>Résumé de votre demande de rendez-vous</h2>
+    <p>Voici les informations que vous avez renseignées :</p>
+
+    <ul class="list-group mb-4">
+      <li class="list-group-item">
+        <strong>Secteur d'activité :</strong> {{ secteur }}
+      </li>
+      <li class="list-group-item">
+        <strong>Nom / Raison sociale :</strong> {{ nom }}
+      </li>
+      <li class="list-group-item">
+        <strong>Type de service :</strong> {{ type_service }}
+      </li>
+      <li class="list-group-item">
+        <strong>Date du rendez-vous :</strong> {{ date_rdv }}
+      </li>
+      <li class="list-group-item">
+        <strong>Heure du rendez-vous :</strong> {{ heure_rdv }}
+      </li>
+    </ul>
+
+    <h4>Paiement</h4>
+    <p>Choisissez votre mode de paiement :</p>
+
+    <!-- Bouton Paiement PayPal -->
+    <a
+      href="{{ url_for('paiement_paypal') }}"
+      class="btn btn-warning mr-2"
+    >
+      Payer avec PayPal
+    </a>
+
+    <!-- Bouton Paiement Stripe -->
+    <a
+      href="{{ url_for('paiement_stripe') }}"
+      class="btn btn-info"
+    >
+      Payer avec Stripe
+    </a>
+  </div>
+
+  {% include "footer.html" %}
+
+  <!-- Scripts JS Bootstrap (optionnel) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"
+  ></script>
+</body>
+</html>

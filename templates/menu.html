@@ -22,9 +22,7 @@
         <a class="nav-link" href="{{ url_for('formulaire_client') }}">Formulaire</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('plateforme_client') }}">
-          Plateforme Client
-        </a>
+        <a class="nav-link" href="{{ url_for('plateforme_client') }}">Plateforme Client</a>
       </li>
     </ul>
   </nav>
@@ -39,54 +37,119 @@
 
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img 
-          src="https://via.placeholder.com/1200x400?text=Slide+1" 
-          class="d-block w-100" 
-          alt="Slide 1"
-        >
+        <img src="https://via.placeholder.com/1200x400?text=Slide+1" class="d-block w-100" alt="Slide 1">
       </div>
       <div class="carousel-item">
-        <img 
-          src="https://via.placeholder.com/1200x400?text=Slide+2" 
-          class="d-block w-100" 
-          alt="Slide 2"
-        >
+        <img src="https://via.placeholder.com/1200x400?text=Slide+2" class="d-block w-100" alt="Slide 2">
       </div>
       <div class="carousel-item">
-        <img 
-          src="https://via.placeholder.com/1200x400?text=Slide+3" 
-          class="d-block w-100" 
-          alt="Slide 3"
-        >
+        <img src="https://via.placeholder.com/1200x400?text=Slide+3" class="d-block w-100" alt="Slide 3">
       </div>
     </div>
 
-    <a 
-      class="carousel-control-prev"
-      href="#carouselExampleIndicators"
-      role="button"
-      data-slide="prev"
-    >
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="sr-only">Précédent</span>
     </a>
-    <a
-      class="carousel-control-next"
-      href="#carouselExampleIndicators"
-      role="button"
-      data-slide="next"
-    >
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="sr-only">Suivant</span>
     </a>
+  </div>
+
+  <!-- SECTION FAQ (Foire Aux Questions) -->
+  <div class="container my-5">
+    <h2 class="mb-4">Foire Aux Questions (FAQ)</h2>
+    <div id="faq-accordion">
+
+      <!-- FAQ 1 -->
+      <div class="card">
+        <div class="card-header" id="faqHeading1">
+          <h5 class="mb-0">
+            <button class="btn btn-link" data-toggle="collapse" data-target="#faqCollapse1" aria-expanded="true" aria-controls="faqCollapse1">
+              1. Comment prendre rendez-vous avec Cabinet Comptable ?
+            </button>
+          </h5>
+        </div>
+        <div id="faqCollapse1" class="collapse show" aria-labelledby="faqHeading1" data-parent="#faq-accordion">
+          <div class="card-body">
+            Pour prendre rendez-vous, cliquez sur le lien "Devis" et remplissez le formulaire de demande. Vous recevrez une confirmation par e-mail.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 2 -->
+      <div class="card">
+        <div class="card-header" id="faqHeading2">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2">
+              2. Quels services propose Cabinet Comptable ?
+            </button>
+          </h5>
+        </div>
+        <div id="faqCollapse2" class="collapse" aria-labelledby="faqHeading2" data-parent="#faq-accordion">
+          <div class="card-body">
+            Nous offrons des services de conseil, comptabilité, fiscalité, social, et autres solutions adaptées à votre entreprise.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 3 -->
+      <div class="card">
+        <div class="card-header" id="faqHeading3">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3">
+              3. Comment accéder à la Plateforme Client ?
+            </button>
+          </h5>
+        </div>
+        <div id="faqCollapse3" class="collapse" aria-labelledby="faqHeading3" data-parent="#faq-accordion">
+          <div class="card-body">
+            Accédez à la Plateforme Client via le lien dédié dans le menu. Vous devez être connecté pour consulter certains contenus réservés.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 4 -->
+      <div class="card">
+        <div class="card-header" id="faqHeading4">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse4" aria-expanded="false" aria-controls="faqCollapse4">
+              4. Comment modifier ou annuler un rendez-vous ?
+            </button>
+          </h5>
+        </div>
+        <div id="faqCollapse4" class="collapse" aria-labelledby="faqHeading4" data-parent="#faq-accordion">
+          <div class="card-body">
+            Pour toute modification ou annulation, contactez-nous par téléphone ou via notre formulaire de contact en indiquant votre numéro de rendez-vous.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 5 -->
+      <div class="card">
+        <div class="card-header" id="faqHeading5">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse5" aria-expanded="false" aria-controls="faqCollapse5">
+              5. Comment obtenir un devis détaillé ?
+            </button>
+          </h5>
+        </div>
+        <div id="faqCollapse5" class="collapse" aria-labelledby="faqHeading5" data-parent="#faq-accordion">
+          <div class="card-body">
+            Remplissez le formulaire de devis disponible dans le menu pour recevoir un devis détaillé adapté à vos besoins.
+          </div>
+        </div>
+      </div>
+
+      <!-- Vous pouvez ajouter d'autres FAQ de la même manière -->
+    </div>
   </div>
 
   {% include "footer.html" %}
   
   <!-- Scripts JS Bootstrap -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script 
-    src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"
-  ></script>  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>  
 </body>
 </html>

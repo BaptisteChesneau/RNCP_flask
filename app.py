@@ -73,5 +73,56 @@ def formulaire_client():
 def confirmation():
     return "Formulaire soumis avec succès ! Merci."
 
+@app.route("/devis", methods=["GET"])
+def devis():
+    # Affiche le formulaire de prise de rendez-vous
+    return render_template("devis.html")
+
+@app.route("/resume-devis", methods=["POST"])
+def resume_devis():
+    # Récupère les champs du formulaire
+    secteur = request.form.get("secteur")
+    nom = request.form.get("nom")
+    type_service = request.form.get("type_service")
+    date_rdv = request.form.get("date_rdv")
+    heure_rdv = request.form.get("heure_rdv")
+
+    # Ici vous pouvez : 
+    # - Enregistrer en BDD
+    # - Envoyer un email 
+    # - Générer un PDF, etc.
+
+    # On affiche la page de résumé en passant les valeurs
+    return render_template("resume_devis.html",
+                           secteur=secteur,
+                           nom=nom,
+                           type_service=type_service,
+                           date_rdv=date_rdv,
+                           heure_rdv=heure_rdv)
+
+@app.route("/paiement-stripe", methods=["GET", "POST"])
+def paiement_stripe():
+    if request.method == "POST":
+        # Récupérer les champs
+        card_holder_name = request.form.get("card_holder_name")
+        card_number = request.form.get("card_number")
+        card_expiry = request.form.get("card_expiry")
+        card_cvv = request.form.get("card_cvv")
+        # ... Traiter / Vérifier / Appeler l'API Stripe ...
+        return "Paiement Stripe effectué (simulation)."
+    return render_template("paiement_stripe.html")
+
+@app.route("/paiement-paypal", methods=["GET", "POST"])
+def paiement_paypal():
+    if request.method == "POST":
+        # Récupérer les champs
+        card_holder_name = request.form.get("card_holder_name")
+        card_number = request.form.get("card_number")
+        card_expiry = request.form.get("card_expiry")
+        card_cvv = request.form.get("card_cvv")
+        # ... Traiter / Vérifier / Appeler l'API PayPal ...
+        return "Paiement PayPal effectué (simulation)."
+    return render_template("paiement_paypal.html")
+
 if __name__ == "__main__":
     app.run(debug=True)

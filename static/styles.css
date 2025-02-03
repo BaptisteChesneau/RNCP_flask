@@ -1,0 +1,126 @@
+/*============================================================
+  1) RESET & BASE
+============================================================*/
+* {
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    background-color: #f6f8fa; /* gris très clair pour l'ensemble du site */
+  }
+  
+  /*============================================================
+    2) HEADER GÉNÉRAL
+  ============================================================*/
+  /* Le <header> principal */
+  header {
+    background-color: #eaeaea;
+    border-bottom: 1px solid #ccc;
+    padding: 1rem 0;
+  }
+  
+  header img {
+    max-height: 60px; /* Contrôle la hauteur du logo */
+  }
+  
+  /* Titre (ML2C CONSEIL) */
+  header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  /* Bouton principal dans le header (Se connecter, etc.) */
+  header .btn {
+    min-width: 140px;
+    font-weight: 500;
+  }
+  
+  /*============================================================
+    3) FORMULAIRES DE CRÉATION/CONNEXION (Dans la zone collapse)
+  ============================================================*/
+  /* Zone "collapse" (slider) */
+  .collapse {
+    transition: height 0.4s ease; /* Animation plus fluide */
+    will-change: height;
+  }
+  
+  /* Fond, textes, etc. (selon vos besoins) */
+  #loginCollapse,
+  #createAccountCollapse {
+    background-color: #6c757d; /* bg-secondary par défaut de Bootstrap */
+    color: #fff;
+    padding: 1rem;
+  }
+  
+  /* Titres des sections de formulaires */
+  #loginCollapse h2,
+  #createAccountCollapse h2 {
+    margin-top: 0;
+    font-weight: 600;
+  }
+  
+  /* Labels & inputs */
+  form .form-group label {
+    font-weight: 500;
+  }
+  form .form-control {
+    border-radius: 4px;
+  }
+  
+  /* Boutons du formulaire */
+  form button[type="submit"] {
+    font-weight: 500;
+  }
+  
+  /*============================================================
+    4) NAVIGATION DANS MENU.HTML
+  ============================================================*/
+  nav {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 1rem;
+  }
+  
+  /* Liens de la navbar */
+  .nav-link {
+    color: #333;
+    font-weight: 500;
+  }
+  .nav-link:hover {
+    color: #007bff; /* Couleur au survol (bleu Bootstrap) */
+    text-decoration: none;
+  }
+  
+  /*============================================================
+    5) CARROUSEL DANS MENU.HTML
+  ============================================================*/
+  .carousel-item img {
+    object-fit: cover; /* Ajuste l'image pour remplir l'espace */
+    height: 400px;     /* Hauteur fixe pour un rendu régulier */
+    width: 100%;
+  }
+  
+  /*============================================================
+    6) FOOTER
+  ============================================================*/
+  footer {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+    margin-top: 2rem;
+  }
+  
+  /*============================================================
+    7) UTILS & DIVERS
+  ============================================================*/
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  

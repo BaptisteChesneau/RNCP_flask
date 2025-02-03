@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <title>Plateforme Client - ML2C CONSEIL</title>
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css"
+  >
   <!-- Vos styles si besoin -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
@@ -18,16 +21,56 @@
     <!-- Barre de navigation pour les catégories (pills/tabs) -->
     <ul class="nav nav-pills mb-3" id="categoryTab" role="tablist">
       <li class="nav-item">
-        <a class="nav-link active" id="juridique-tab" data-toggle="pill" href="#juridique" role="tab" aria-controls="juridique" aria-selected="true">Juridique</a>
+        <a
+          class="nav-link active"
+          id="juridique-tab"
+          data-toggle="pill"
+          href="#juridique"
+          role="tab"
+          aria-controls="juridique"
+          aria-selected="true"
+        >
+          Juridique
+        </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="social-tab" data-toggle="pill" href="#social" role="tab" aria-controls="social" aria-selected="false">Social</a>
+        <a
+          class="nav-link"
+          id="social-tab"
+          data-toggle="pill"
+          href="#social"
+          role="tab"
+          aria-controls="social"
+          aria-selected="false"
+        >
+          Social
+        </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="compta-tab" data-toggle="pill" href="#compta" role="tab" aria-controls="compta" aria-selected="false">Compta</a>
+        <a
+          class="nav-link"
+          id="compta-tab"
+          data-toggle="pill"
+          href="#compta"
+          role="tab"
+          aria-controls="compta"
+          aria-selected="false"
+        >
+          Compta
+        </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="conseils-tab" data-toggle="pill" href="#conseils" role="tab" aria-controls="conseils" aria-selected="false">Conseils</a>
+        <a
+          class="nav-link"
+          id="conseils-tab"
+          data-toggle="pill"
+          href="#conseils"
+          role="tab"
+          aria-controls="conseils"
+          aria-selected="false"
+        >
+          Conseils
+        </a>
       </li>
     </ul>
 
@@ -35,24 +78,44 @@
     <div class="tab-content" id="categoryTabContent">
 
       <!-- JURIDIQUE -->
-      <div class="tab-pane fade show active" id="juridique" role="tabpanel" aria-labelledby="juridique-tab">
+      <div
+        class="tab-pane fade show active"
+        id="juridique"
+        role="tabpanel"
+        aria-labelledby="juridique-tab"
+      >
         <h3>Juridique</h3>
         <p>Retrouvez ici des vidéos tutoriels et solutions liées à la partie juridique.</p>
         
-        <div id="carrouselJuridique" class="carousel slide" data-ride="carousel">
+        <div
+          id="carrouselJuridique"
+          class="carousel slide"
+          data-ride="carousel"
+        >
           <ol class="carousel-indicators">
-            <li data-target="#carrouselJuridique" data-slide-to="0" class="active"></li>
-            <li data-target="#carrouselJuridique" data-slide-to="1"></li>
-            <li data-target="#carrouselJuridique" data-slide-to="2"></li>
+            <li
+              data-target="#carrouselJuridique"
+              data-slide-to="0"
+              class="active"
+            ></li>
+            <li
+              data-target="#carrouselJuridique"
+              data-slide-to="1"
+            ></li>
+            <li
+              data-target="#carrouselJuridique"
+              data-slide-to="2"
+            ></li>
           </ol>
           <div class="carousel-inner">
             <div class="carousel-item active">
               <!-- Exemple d’intégration vidéo via iframe YouTube -->
               <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" 
-                        src="https://www.youtube.com/embed/VIDEO_ID_1" 
-                        allowfullscreen>
-                </iframe>
+                <iframe
+                  class="embed-responsive-item"
+                  src="https://www.youtube.com/embed/VIDEO_ID_1"
+                  allowfullscreen
+                ></iframe>
               </div>
               <div class="carousel-caption d-none d-md-block">
                 <h5>Présentation du Droit des Sociétés</h5>
@@ -61,10 +124,11 @@
             </div>
             <div class="carousel-item">
               <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" 
-                        src="https://www.youtube.com/embed/VIDEO_ID_2" 
-                        allowfullscreen>
-                </iframe>
+                <iframe
+                  class="embed-responsive-item"
+                  src="https://www.youtube.com/embed/VIDEO_ID_2"
+                  allowfullscreen
+                ></iframe>
               </div>
               <div class="carousel-caption d-none d-md-block">
                 <h5>Contrats et obligations</h5>
@@ -73,10 +137,11 @@
             </div>
             <div class="carousel-item">
               <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" 
-                        src="https://www.youtube.com/embed/VIDEO_ID_3" 
-                        allowfullscreen>
-                </iframe>
+                <iframe
+                  class="embed-responsive-item"
+                  src="https://www.youtube.com/embed/VIDEO_ID_3"
+                  allowfullscreen
+                ></iframe>
               </div>
               <div class="carousel-caption d-none d-md-block">
                 <h5>Litiges et contentieux</h5>
@@ -84,34 +149,68 @@
               </div>
             </div>
           </div>
-          <a class="carousel-control-prev" href="#carrouselJuridique" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <a
+            class="carousel-control-prev"
+            href="#carrouselJuridique"
+            role="button"
+            data-slide="prev"
+          >
+            <span
+              class="carousel-control-prev-icon"
+              aria-hidden="true"
+            ></span>
             <span class="sr-only">Précédent</span>
           </a>
-          <a class="carousel-control-next" href="#carrouselJuridique" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <a
+            class="carousel-control-next"
+            href="#carrouselJuridique"
+            role="button"
+            data-slide="next"
+          >
+            <span
+              class="carousel-control-next-icon"
+              aria-hidden="true"
+            ></span>
             <span class="sr-only">Suivant</span>
           </a>
         </div>
       </div>
 
       <!-- SOCIAL -->
-      <div class="tab-pane fade" id="social" role="tabpanel" aria-labelledby="social-tab">
+      <div
+        class="tab-pane fade"
+        id="social"
+        role="tabpanel"
+        aria-labelledby="social-tab"
+      >
         <h3>Social</h3>
         <p>Vidéos tutoriels et ressources pour la partie sociale (embauches, contrats de travail, etc.).</p>
         
-        <!-- Même structure de carrousel -->
-        <div id="carrouselSocial" class="carousel slide" data-ride="carousel">
+        <div
+          id="carrouselSocial"
+          class="carousel slide"
+          data-ride="carousel"
+        >
           <!-- Indicators, items, controls... -->
-          <!-- Remplacez VIDEO_ID_X par vos propres vidéos -->
           <ol class="carousel-indicators">
-            <li data-target="#carrouselSocial" data-slide-to="0" class="active"></li>
-            <li data-target="#carrouselSocial" data-slide-to="1"></li>
+            <li
+              data-target="#carrouselSocial"
+              data-slide-to="0"
+              class="active"
+            ></li>
+            <li
+              data-target="#carrouselSocial"
+              data-slide-to="1"
+            ></li>
           </ol>
           <div class="carousel-inner">
             <div class="carousel-item active">
               <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/VIDEO_ID_4" allowfullscreen></iframe>
+                <iframe
+                  class="embed-responsive-item"
+                  src="https://www.youtube.com/embed/VIDEO_ID_4"
+                  allowfullscreen
+                ></iframe>
               </div>
               <div class="carousel-caption d-none d-md-block">
                 <h5>Les étapes du recrutement</h5>
@@ -120,7 +219,11 @@
             </div>
             <div class="carousel-item">
               <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/VIDEO_ID_5" allowfullscreen></iframe>
+                <iframe
+                  class="embed-responsive-item"
+                  src="https://www.youtube.com/embed/VIDEO_ID_5"
+                  allowfullscreen
+                ></iframe>
               </div>
               <div class="carousel-caption d-none d-md-block">
                 <h5>Gestion des conflits salariés</h5>
@@ -128,32 +231,67 @@
               </div>
             </div>
           </div>
-          <a class="carousel-control-prev" href="#carrouselSocial" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <a
+            class="carousel-control-prev"
+            href="#carrouselSocial"
+            role="button"
+            data-slide="prev"
+          >
+            <span
+              class="carousel-control-prev-icon"
+              aria-hidden="true"
+            ></span>
             <span class="sr-only">Précédent</span>
           </a>
-          <a class="carousel-control-next" href="#carrouselSocial" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <a
+            class="carousel-control-next"
+            href="#carrouselSocial"
+            role="button"
+            data-slide="next"
+          >
+            <span
+              class="carousel-control-next-icon"
+              aria-hidden="true"
+            ></span>
             <span class="sr-only">Suivant</span>
           </a>
         </div>
       </div>
 
       <!-- COMPTA -->
-      <div class="tab-pane fade" id="compta" role="tabpanel" aria-labelledby="compta-tab">
+      <div
+        class="tab-pane fade"
+        id="compta"
+        role="tabpanel"
+        aria-labelledby="compta-tab"
+      >
         <h3>Compta</h3>
         <p>Vidéos de tutoriels / solutions liées à la comptabilité (bilans, facturation, TVA, etc.).</p>
         
-        <div id="carrouselCompta" class="carousel slide" data-ride="carousel">
-          <!-- Idem, vous pouvez mettre plusieurs slides -->
+        <div
+          id="carrouselCompta"
+          class="carousel slide"
+          data-ride="carousel"
+        >
           <ol class="carousel-indicators">
-            <li data-target="#carrouselCompta" data-slide-to="0" class="active"></li>
-            <li data-target="#carrouselCompta" data-slide-to="1"></li>
+            <li
+              data-target="#carrouselCompta"
+              data-slide-to="0"
+              class="active"
+            ></li>
+            <li
+              data-target="#carrouselCompta"
+              data-slide-to="1"
+            ></li>
           </ol>
           <div class="carousel-inner">
             <div class="carousel-item active">
               <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/VIDEO_ID_6" allowfullscreen></iframe>
+                <iframe
+                  class="embed-responsive-item"
+                  src="https://www.youtube.com/embed/VIDEO_ID_6"
+                  allowfullscreen
+                ></iframe>
               </div>
               <div class="carousel-caption d-none d-md-block">
                 <h5>Comprendre le bilan</h5>
@@ -162,7 +300,11 @@
             </div>
             <div class="carousel-item">
               <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/VIDEO_ID_7" allowfullscreen></iframe>
+                <iframe
+                  class="embed-responsive-item"
+                  src="https://www.youtube.com/embed/VIDEO_ID_7"
+                  allowfullscreen
+                ></iframe>
               </div>
               <div class="carousel-caption d-none d-md-block">
                 <h5>TVA et déclarations</h5>
@@ -170,32 +312,71 @@
               </div>
             </div>
           </div>
-          <a class="carousel-control-prev" href="#carrouselCompta" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <a
+            class="carousel-control-prev"
+            href="#carrouselCompta"
+            role="button"
+            data-slide="prev"
+          >
+            <span
+              class="carousel-control-prev-icon"
+              aria-hidden="true"
+            ></span>
             <span class="sr-only">Précédent</span>
           </a>
-          <a class="carousel-control-next" href="#carrouselCompta" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <a
+            class="carousel-control-next"
+            href="#carrouselCompta"
+            role="button"
+            data-slide="next"
+          >
+            <span
+              class="carousel-control-next-icon"
+              aria-hidden="true"
+            ></span>
             <span class="sr-only">Suivant</span>
           </a>
         </div>
       </div>
 
       <!-- CONSEILS -->
-      <div class="tab-pane fade" id="conseils" role="tabpanel" aria-labelledby="conseils-tab">
+      <div
+        class="tab-pane fade"
+        id="conseils"
+        role="tabpanel"
+        aria-labelledby="conseils-tab"
+      >
         <h3>Conseils</h3>
         <p>Guides pratiques, retours d’expérience et astuces en vidéo.</p>
         
-        <div id="carrouselConseils" class="carousel slide" data-ride="carousel">
+        <div
+          id="carrouselConseils"
+          class="carousel slide"
+          data-ride="carousel"
+        >
           <ol class="carousel-indicators">
-            <li data-target="#carrouselConseils" data-slide-to="0" class="active"></li>
-            <li data-target="#carrouselConseils" data-slide-to="1"></li>
-            <li data-target="#carrouselConseils" data-slide-to="2"></li>
+            <li
+              data-target="#carrouselConseils"
+              data-slide-to="0"
+              class="active"
+            ></li>
+            <li
+              data-target="#carrouselConseils"
+              data-slide-to="1"
+            ></li>
+            <li
+              data-target="#carrouselConseils"
+              data-slide-to="2"
+            ></li>
           </ol>
           <div class="carousel-inner">
             <div class="carousel-item active">
               <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/VIDEO_ID_8" allowfullscreen></iframe>
+                <iframe
+                  class="embed-responsive-item"
+                  src="https://www.youtube.com/embed/VIDEO_ID_8"
+                  allowfullscreen
+                ></iframe>
               </div>
               <div class="carousel-caption d-none d-md-block">
                 <h5>Optimiser la gestion du temps</h5>
@@ -204,7 +385,11 @@
             </div>
             <div class="carousel-item">
               <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/VIDEO_ID_9" allowfullscreen></iframe>
+                <iframe
+                  class="embed-responsive-item"
+                  src="https://www.youtube.com/embed/VIDEO_ID_9"
+                  allowfullscreen
+                ></iframe>
               </div>
               <div class="carousel-caption d-none d-md-block">
                 <h5>Fiscalité et gestion</h5>
@@ -213,7 +398,11 @@
             </div>
             <div class="carousel-item">
               <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/VIDEO_ID_10" allowfullscreen></iframe>
+                <iframe
+                  class="embed-responsive-item"
+                  src="https://www.youtube.com/embed/VIDEO_ID_10"
+                  allowfullscreen
+                ></iframe>
               </div>
               <div class="carousel-caption d-none d-md-block">
                 <h5>Stratégies de développement</h5>
@@ -221,23 +410,42 @@
               </div>
             </div>
           </div>
-          <a class="carousel-control-prev" href="#carrouselConseils" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <a
+            class="carousel-control-prev"
+            href="#carrouselConseils"
+            role="button"
+            data-slide="prev"
+          >
+            <span
+              class="carousel-control-prev-icon"
+              aria-hidden="true"
+            ></span>
             <span class="sr-only">Précédent</span>
           </a>
-          <a class="carousel-control-next" href="#carrouselConseils" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <a
+            class="carousel-control-next"
+            href="#carrouselConseils"
+            role="button"
+            data-slide="next"
+          >
+            <span
+              class="carousel-control-next-icon"
+              aria-hidden="true"
+            ></span>
             <span class="sr-only">Suivant</span>
           </a>
         </div>
       </div>
-    </div>
-  </div>
+
+    </div> <!-- /#categoryTabContent -->
+  </div> <!-- /.container -->
 
   {% include "footer.html" %}
 
   <!-- Scripts JS Bootstrap + jQuery (pour l’onglet pill et le carrousel) -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"
+  ></script>
 </body>
 </html>

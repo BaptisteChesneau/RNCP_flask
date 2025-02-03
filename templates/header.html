@@ -22,33 +22,50 @@
         class="btn btn-primary" 
         type="button" 
         data-toggle="collapse" 
-        data-target="#createAccountCollapse" 
+        data-target="#loginCollapse" 
         aria-expanded="false" 
-        aria-controls="createAccountCollapse"
+        aria-controls="loginCollapse"
       >
-        Créer un compte
+        Se connecter
       </button>
     </div>
   </header>
 
-  <!-- SECTION COLLAPSIBLE (Slider) POUR CRÉER UN COMPTE -->
-  <div class="collapse bg-secondary text-white p-4" id="createAccountCollapse">
+  <!-- SECTION COLLAPSIBLE (Slider) : CRÉER UN COMPTE + SE CONNECTER -->
+  <div class="collapse bg-secondary text-white p-4" id="loginCollapse">
     <div class="container">
-      <h2>Formulaire de création de compte</h2>
+      <!-- 1) FORMULAIRE "CRÉER UN COMPTE" -->
+      <h2>Créer un compte</h2>
       <form>
         <div class="form-group">
           <label for="username">Nom d'utilisateur :</label>
           <input type="text" class="form-control" id="username" placeholder="Entrez votre nom d'utilisateur">
         </div>
         <div class="form-group">
-          <label for="email">Adresse e-mail :</label>
-          <input type="email" class="form-control" id="email" placeholder="Entrez votre e-mail">
+          <label for="email-signup">Adresse e-mail :</label>
+          <input type="email" class="form-control" id="email-signup" placeholder="Entrez votre e-mail">
         </div>
         <div class="form-group">
-          <label for="password">Mot de passe :</label>
-          <input type="password" class="form-control" id="password" placeholder="Entrez votre mot de passe">
+          <label for="password-signup">Mot de passe :</label>
+          <input type="password" class="form-control" id="password-signup" placeholder="Entrez votre mot de passe">
         </div>
-        <button type="submit" class="btn btn-light mt-2">Créer le compte</button>
+        <button type="submit" class="btn btn-light mt-2">Créer un compte</button>
+      </form>
+
+      <hr class="my-4">
+
+      <!-- 2) FORMULAIRE "SE CONNECTER" -->
+      <h2>Se connecter</h2>
+      <form>
+        <div class="form-group">
+          <label for="email-login">Adresse e-mail :</label>
+          <input type="email" class="form-control" id="email-login" placeholder="Entrez votre adresse e-mail">
+        </div>
+        <div class="form-group">
+          <label for="password-login">Mot de passe :</label>
+          <input type="password" class="form-control" id="password-login" placeholder="Entrez votre mot de passe">
+        </div>
+        <button type="submit" class="btn btn-light mt-2">Se connecter</button>
       </form>
     </div>
   </div>

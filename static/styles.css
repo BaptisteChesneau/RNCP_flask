@@ -122,7 +122,7 @@ footer .container {
   align-items: center;            /* Alignement vertical centré */
 }
 
-/* Si tu as des sections .footer-left, .footer-middle, .footer-right */
+/* Sections footer */
 .footer-left,
 .footer-middle,
 .footer-right {
@@ -165,4 +165,68 @@ footer .container {
 .container {
   max-width: 1200px;
   margin: 0 auto;
+}
+
+/*============================================================
+  8) FORMULAIRE / DEVIS / PAIMENT (Pages manquantes)
+============================================================*/
+/* Style général pour les pages de formulaire et devis */
+.formulaire-container {
+  padding: 2rem 0;
+}
+
+.formulaire-container h2 {
+  margin-bottom: 1.5rem;
+}
+
+.formulaire-container .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.formulaire-container .form-control {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+/* Boutons de paiement personnalisés */
+.btn-pay {
+  font-size: 1.1rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+}
+
+/*============================================================
+  9) FAQ
+============================================================*/
+/* Styles spécifiques pour la FAQ dans le menu (ou autre page) */
+#faq-accordion .card {
+  margin-bottom: 1rem;
+}
+
+#faq-accordion .card-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+}
+
+#faq-accordion .btn-link {
+  font-weight: 500;
+  color: #007bff;
+}
+
+#faq-accordion .btn-link:hover {
+  text-decoration: underline;
+}
+
+/*============================================================
+  10) RESUME DEVIS
+============================================================*/
+/* Styles pour la page de résumé de devis */
+.resume-summary {
+  margin-top: 2rem;
+}
+
+.resume-summary .list-group-item {
+  font-size: 1rem;
+  padding: 0.75rem 1.25rem;
 }

@@ -10,5 +10,13 @@ def header():
 def menu():
     return render_template("menu.html")
 
+@app.route ("/footer")
+def footer():
+    return render_template ("footer.html")
+
+@app.route("/plateforme-client")
+def plateforme_client():
+    return render_template("plateforme_client.html")
+
 if __name__ == "__main__":
     app.run(debug=True)

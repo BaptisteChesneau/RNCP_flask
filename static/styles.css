@@ -123,7 +123,9 @@ footer .container {
 }
 
 /* Si tu as des sections .footer-left, .footer-middle, .footer-right */
-.footer-left, .footer-middle, .footer-right {
+.footer-left,
+.footer-middle,
+.footer-right {
   display: flex;
   align-items: center;
 }

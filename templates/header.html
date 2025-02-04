@@ -12,87 +12,19 @@
   <!-- Header principal -->
   <header class="bg-light py-3">
     <div class="container d-flex justify-content-between align-items-center">
-      <!-- Logo à gauche -->
-      <img src="https://via.placeholder.com/80" alt="Logo ML2C CONSEIL" class="img-fluid">
-      <!-- Titre au centre -->
-      <h1 class="m-0">ML2C CONSEIL</h1>
-      <!-- Bouton déclenchant le modal -->
-      <button class="btn btn-primary" data-toggle="modal" data-target="#accountModal">
-        Se connecter / Créer un compte
-      </button>
-    </div>
-  </header>
-
-  <!-- Modal pour la connexion / création de compte -->
-  <div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="accountModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="accountModalLabel">Accès Client</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <!-- Navigation par onglets -->
-          <ul class="nav nav-tabs" id="accountTab" role="tablist">
-            <li class="nav-item">
-              <a class="nav-link active" id="signup-tab" data-toggle="tab" href="#signup" role="tab" aria-controls="signup" aria-selected="true">
-                Créer un compte
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="false">
-                Se connecter
-              </a>
-            </li>
-          </ul>
-          <div class="tab-content mt-3" id="accountTabContent">
-            <!-- Formulaire de création de compte -->
-            <div class="tab-pane fade show active" id="signup" role="tabpanel" aria-labelledby="signup-tab">
-              <form>
-                <div class="form-group">
-                  <label for="signup-username">Nom d'utilisateur</label>
-                  <input type="text" class="form-control" id="signup-username" placeholder="Entrez votre nom d'utilisateur">
-                </div>
-                <div class="form-group">
-                  <label for="signup-email">Adresse e-mail</label>
-                  <input type="email" class="form-control" id="signup-email" placeholder="Entrez votre e-mail">
-                </div>
-                <div class="form-group">
-                  <label for="signup-password">Mot de passe</label>
-                  <input type="password" class="form-control" id="signup-password" placeholder="Entrez votre mot de passe">
-                </div>
-                <button type="submit" class="btn btn-primary">Créer le compte</button>
-              </form>
-              <div class="mt-3">
-                <p class="mb-1">Si vous avez déjà créé un compte,</p>
-                <a href="#login" data-toggle="tab" class="btn btn-secondary btn-sm">Cliquez ici</a>
-              </div>
-            </div>
-            <!-- Formulaire de connexion -->
-            <div class="tab-pane fade" id="login" role="tabpanel" aria-labelledby="login-tab">
-              <form>
-                <div class="form-group">
-                  <label for="login-email">Adresse e-mail</label>
-                  <input type="email" class="form-control" id="login-email" placeholder="Entrez votre e-mail">
-                </div>
-                <div class="form-group">
-                  <label for="login-password">Mot de passe</label>
-                  <input type="password" class="form-control" id="login-password" placeholder="Entrez votre mot de passe">
-                </div>
-                <button type="submit" class="btn btn-primary">Se connecter</button>
-              </form>
-              <div class="mt-3">
-                <p class="mb-1">Si vous n'avez pas encore créé de compte,</p>
-                <a href="#signup" data-toggle="tab" class="btn btn-secondary btn-sm">Cliquez ici</a>
-              </div>
-            </div>
-          </div>
-        </div>
+      <!-- Logo à gauche (cliquable pour revenir au menu) -->
+      <a href="{{ url_for('menu') }}">
+        <img src="https://via.placeholder.com/80" alt="Logo ML2C CONSEIL" class="img-fluid">
+      </a>
+      <!-- Titre centré -->
+      <h1 class="m-0 text-center flex-grow-1">ML2C CONSEIL</h1>
+      <!-- Boutons de navigation pour la connexion et l'inscription -->
+      <div>
+        <a href="{{ url_for('login') }}" class="btn btn-outline-primary mr-2">Se connecter</a>
+        <a href="{{ url_for('signup') }}" class="btn btn-primary">Créer un compte</a>
       </div>
     </div>
-  </div>
+  </header>
 
   <!-- Scripts JS Bootstrap et jQuery -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

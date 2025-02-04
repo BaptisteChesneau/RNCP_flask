@@ -230,3 +230,80 @@ footer .container {
   font-size: 1rem;
   padding: 0.75rem 1.25rem;
 }
+
+/*============================================================
+  11) MODAL DYNAMIQUE : CONNEXION / CRÉER UN COMPTE
+============================================================*/
+/* Styles pour le modal de connexion / création de compte */
+.modal-header {
+  background-color: #eaeaea;
+  border-bottom: 1px solid #ccc;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.nav-tabs .nav-link {
+  font-weight: 500;
+  color: #007bff;
+  border: 1px solid transparent;
+  margin-right: 0.5rem;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
+.modal-body form .form-group {
+  margin-bottom: 1rem;
+}
+
+.modal-body form .form-control {
+  border-radius: 4px;
+}
+
+.modal-body form button {
+  font-weight: 500;
+}
+
+/*============================================================
+  12) BLOG, NOTRE HISTOIRE & NOTRE ÉQUIPE
+============================================================*/
+/* Blog Page */
+.card-img-top {
+  object-fit: cover;
+}
+
+.card {
+  margin-bottom: 1.5rem;
+}
+
+/* Titres généraux pour les pages avec contenu étendu */
+.container h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Pour les pages "Notre Histoire" et "Notre Équipe", on renforce la lisibilité */
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/*============================================================
+  13) LIENS DE NAVIGATION SUPPLÉMENTAIRES
+============================================================*/
+/* Boutons de navigation spécifiques dans le menu */
+.navbar .nav-link {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}

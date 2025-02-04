@@ -124,5 +124,17 @@ def paiement_paypal():
         return "Paiement PayPal effectué (simulation)."
     return render_template("paiement_paypal.html")
 
+@app.route("/blog")
+def blog():
+    return render_template("blog.html")
+
+@app.route("/notre-histoire")
+def notre_histoire():
+    return render_template("notre_histoire.html")
+
+@app.route("/notre-equipe")
+def notre_equipe():
+    return render_template("notre_equipe.html")
+
 if __name__ == "__main__":
     app.run(debug=True)

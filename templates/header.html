@@ -2,78 +2,92 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>ML2C CONSEIL - Header</title>
-  <!-- Intégration de Bootstrap 4.5.2 (CDN) -->
+  <title>Header - ML2C CONSEIL</title>
+  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <!-- Votre CSS personnalisé si nécessaire -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-
-  <!-- HEADER -->
+  <!-- Header principal -->
   <header class="bg-light py-3">
     <div class="container d-flex justify-content-between align-items-center">
-      <!-- Logo (gauche) -->
+      <!-- Logo à gauche -->
       <img src="https://via.placeholder.com/80" alt="Logo ML2C CONSEIL" class="img-fluid">
-
-      <!-- Titre (milieu) -->
+      <!-- Titre au centre -->
       <h1 class="m-0">ML2C CONSEIL</h1>
-
-      <!-- Bouton (droite) -->
-      <button 
-        class="btn btn-primary" 
-        type="button" 
-        data-toggle="collapse" 
-        data-target="#loginCollapse" 
-        aria-expanded="false" 
-        aria-controls="loginCollapse"
-      >
-        Se connecter/Créer un compte
+      <!-- Bouton déclenchant le modal -->
+      <button class="btn btn-primary" data-toggle="modal" data-target="#accountModal">
+        Se connecter / Créer un compte
       </button>
     </div>
   </header>
 
-  <!-- SECTION COLLAPSIBLE (Slider) : CRÉER UN COMPTE + SE CONNECTER -->
-  <div class="collapse bg-secondary text-white p-4" id="loginCollapse">
-    <div class="container">
-      <!-- 1) FORMULAIRE "CRÉER UN COMPTE" -->
-      <h2>Créer un compte</h2>
-      <form>
-        <div class="form-group">
-          <label for="username">Nom d'utilisateur :</label>
-          <input type="text" class="form-control" id="username" placeholder="Entrez votre nom d'utilisateur">
+  <!-- Modal pour la connexion / création de compte -->
+  <div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="accountModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="accountModalLabel">Accès Client</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-        <div class="form-group">
-          <label for="email-signup">Adresse e-mail :</label>
-          <input type="email" class="form-control" id="email-signup" placeholder="Entrez votre e-mail">
+        <div class="modal-body">
+          <!-- Navigation par onglets -->
+          <ul class="nav nav-tabs" id="accountTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="signup-tab" data-toggle="tab" href="#signup" role="tab" aria-controls="signup" aria-selected="true">
+                Créer un compte
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="false">
+                Se connecter
+              </a>
+            </li>
+          </ul>
+          <div class="tab-content mt-3" id="accountTabContent">
+            <!-- Formulaire de création de compte -->
+            <div class="tab-pane fade show active" id="signup" role="tabpanel" aria-labelledby="signup-tab">
+              <form>
+                <div class="form-group">
+                  <label for="signup-username">Nom d'utilisateur</label>
+                  <input type="text" class="form-control" id="signup-username" placeholder="Entrez votre nom d'utilisateur">
+                </div>
+                <div class="form-group">
+                  <label for="signup-email">Adresse e-mail</label>
+                  <input type="email" class="form-control" id="signup-email" placeholder="Entrez votre e-mail">
+                </div>
+                <div class="form-group">
+                  <label for="signup-password">Mot de passe</label>
+                  <input type="password" class="form-control" id="signup-password" placeholder="Entrez votre mot de passe">
+                </div>
+                <button type="submit" class="btn btn-primary">Créer le compte</button>
+              </form>
+            </div>
+            <!-- Formulaire de connexion -->
+            <div class="tab-pane fade" id="login" role="tabpanel" aria-labelledby="login-tab">
+              <form>
+                <div class="form-group">
+                  <label for="login-email">Adresse e-mail</label>
+                  <input type="email" class="form-control" id="login-email" placeholder="Entrez votre e-mail">
+                </div>
+                <div class="form-group">
+                  <label for="login-password">Mot de passe</label>
+                  <input type="password" class="form-control" id="login-password" placeholder="Entrez votre mot de passe">
+                </div>
+                <button type="submit" class="btn btn-primary">Se connecter</button>
+              </form>
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="password-signup">Mot de passe :</label>
-          <input type="password" class="form-control" id="password-signup" placeholder="Entrez votre mot de passe">
-        </div>
-        <button type="submit" class="btn btn-light mt-2">Créer un compte</button>
-      </form>
-
-      <hr class="my-4">
-
-      <!-- 2) FORMULAIRE "SE CONNECTER" -->
-      <h2>Se connecter</h2>
-      <form>
-        <div class="form-group">
-          <label for="email-login">Adresse e-mail :</label>
-          <input type="email" class="form-control" id="email-login" placeholder="Entrez votre adresse e-mail">
-        </div>
-        <div class="form-group">
-          <label for="password-login">Mot de passe :</label>
-          <input type="password" class="form-control" id="password-login" placeholder="Entrez votre mot de passe">
-        </div>
-        <button type="submit" class="btn btn-light mt-2">Se connecter</button>
-      </form>
+      </div>
     </div>
   </div>
 
-  <!-- Scripts JS (Bootstrap 4, Popper.js, jQuery) -->
+  <!-- Scripts JS Bootstrap et jQuery -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -17,7 +17,7 @@ html, body {
 ============================================================*/
 /* Le <header> principal */
 header {
-  background-color: #eaeaea;
+  background-color: #E4007C; /* Pantone® Solid Coated 213C */
   border-bottom: 1px solid #ccc;
   padding: 1rem 0;
 }
@@ -109,7 +109,7 @@ nav {
   6) FOOTER
 ============================================================*/
 footer {
-  background-color: #333;
+  background-color: #E4007C; /* Pantone® Solid Coated 213C */
   color: #fff;
   padding: 1rem 0;
   margin-top: 2rem;
@@ -306,4 +306,31 @@ footer .container {
 .navbar .nav-link {
   padding: 0.5rem 1rem;
   font-size: 1rem;
+}
+
+/*============================================================
+  14) PERSONNALISATION DES BOUTONS (PANTONE)
+============================================================*/
+/* Bouton primaire : couleur par défaut Pantone® 431C */
+.btn-primary {
+  background-color: #4B586A !important; /* Pantone® Solid Coated 431C */
+  border-color: #4B586A !important;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: #00A99D !important; /* Pantone® Solid Coated 339C */
+  border-color: #00A99D !important;
+}
+
+/* Bouton outline primaire : bordure et texte en Pantone® 431C, fond devient Pantone® 339C au survol */
+.btn-outline-primary {
+  border-color: #4B586A;
+  color: #4B586A;
+}
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+  background-color: #00A99D;
+  border-color: #00A99D;
+  color: #fff;
 }

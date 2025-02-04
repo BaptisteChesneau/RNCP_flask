@@ -136,5 +136,13 @@ def notre_histoire():
 def notre_equipe():
     return render_template("notre_equipe.html")
 
+@app.route("/rgpd")
+def rgpd():
+    return render_template("rgpd.html")
+
+@app.route("/mentions-legales")
+def mentions_legales():
+    return render_template("mentions_legales.html")
+
 if __name__ == "__main__":
     app.run(debug=True)

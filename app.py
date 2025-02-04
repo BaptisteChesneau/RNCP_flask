@@ -144,5 +144,19 @@ def rgpd():
 def mentions_legales():
     return render_template("mentions_legales.html")
 
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        # Traitement de la connexion
+        pass
+    return render_template("login.html")
+
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    if request.method == "POST":
+        # Traitement de la création de compte
+        pass
+    return render_template("signup.html")
+
 if __name__ == "__main__":
     app.run(debug=True)

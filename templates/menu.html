@@ -14,26 +14,21 @@
   <nav class="bg-light p-2">
     <ul class="nav justify-content-center">
       <li class="nav-item">
-        <!-- Ex : rediriger vers la route "devis" -->
         <a class="nav-link" href="{{ url_for('devis') }}">Devis</a>
       </li>
       <li class="nav-item">
-        <!-- Ex : rediriger vers la route "formulaire_client" -->
         <a class="nav-link" href="{{ url_for('formulaire_client') }}">Formulaire</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ url_for('plateforme_client') }}">Plateforme Client</a>
       </li>
       <li class="nav-item">
-        <!-- Bouton Blog ajouté -->
         <a class="nav-link" href="{{ url_for('blog') }}">Blog</a>
       </li>
       <li class="nav-item">
-        <!-- Bouton Notre histoire -->
         <a class="nav-link" href="{{ url_for('notre_histoire') }}">Notre histoire</a>
       </li>
       <li class="nav-item">
-        <!-- Bouton Notre équipe -->
         <a class="nav-link" href="{{ url_for('notre_equipe') }}">Notre équipe</a>
       </li>
     </ul>
@@ -49,13 +44,13 @@
 
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img src="https://via.placeholder.com/1200x400?text=Slide+1" class="d-block w-100" alt="Slide 1">
+        <img src="{{ url_for('static', filename='images/slide1.jpg') }}" class="d-block w-100" alt="Slide 1">
       </div>
       <div class="carousel-item">
-        <img src="https://via.placeholder.com/1200x400?text=Slide+2" class="d-block w-100" alt="Slide 2">
+        <img src="{{ url_for('static', filename='images/slide2.jpg') }}" class="d-block w-100" alt="Slide 2">
       </div>
       <div class="carousel-item">
-        <img src="https://via.placeholder.com/1200x400?text=Slide+3" class="d-block w-100" alt="Slide 3">
+        <img src="{{ url_for('static', filename='images/slide3.jpg') }}" class="d-block w-100" alt="Slide 3">
       </div>
     </div>
 
@@ -153,7 +148,6 @@
           </div>
         </div>
       </div>
-
       <!-- Vous pouvez ajouter d'autres FAQ de la même manière -->
     </div>
   </div>

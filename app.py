@@ -148,7 +148,12 @@ def mentions_legales():
 def login():
     if request.method == "POST":
         # Traitement de la connexion
-        pass
+        # Par exemple, vérifiez les identifiants (ceci est un exemple fictif)
+        email = request.form.get("email")
+        password = request.form.get("password")
+        # Si l'authentification est réussie, redirigez vers la page de compte client
+        # (Ici, nous supposons que la vérification est réussie)
+        return redirect(url_for("compte_client"))
     return render_template("login.html")
 
 @app.route("/signup", methods=["GET", "POST"])
@@ -158,9 +163,9 @@ def signup():
         pass
     return render_template("signup.html")
 
-@app.route("/espace-client")
-def espace_client():
-    return render_template("espace_client.html")
+@app.route("/compte-client")
+def compte_client():
+    return render_template("compte_client.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

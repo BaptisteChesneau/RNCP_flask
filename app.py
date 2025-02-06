@@ -158,5 +158,9 @@ def signup():
         pass
     return render_template("signup.html")
 
+@app.route("/espace-client")
+def espace_client():
+    return render_template("espace_client.html")
+
 if __name__ == "__main__":
     app.run(debug=True)

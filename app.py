@@ -167,5 +167,11 @@ def signup():
 def compte_client():
     return render_template("compte_client.html")
 
+@app.route("/newsletter", methods=["POST"])
+def newsletter():
+    email = request.form.get("email")
+    # Ici, ajoutez la logique pour enregistrer l'adresse e-mail, envoyer un e-mail de confirmation, etc.
+    return "Merci de vous être inscrit(e) à notre newsletter !"
+
 if __name__ == "__main__":
     app.run(debug=True)

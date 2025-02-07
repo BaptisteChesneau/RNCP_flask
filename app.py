@@ -170,8 +170,16 @@ def compte_client():
 @app.route("/newsletter", methods=["POST"])
 def newsletter():
     email = request.form.get("email")
-    # Ici, ajoutez la logique pour enregistrer l'adresse e-mail, envoyer un e-mail de confirmation, etc.
+    # Ajoutez ici la logique de traitement, par exemple enregistrer l'email dans un fichier ou envoyer un email de confirmation
     return "Merci de vous être inscrit(e) à notre newsletter !"
+
+@app.route("/atelier")
+def atelier():
+    return render_template("atelier.html")
+
+@app.route("/nos-outils")
+def nos_outils():
+    return render_template("nos_outils.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

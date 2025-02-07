@@ -172,6 +172,21 @@
         </div>
       </div>
     </div> <!-- Fin de la row -->
+
+    <!-- SECTION NEWSLETTER -->
+    <div class="container my-5">
+      <h3 class="text-center mb-3">Newsletter ML2C CONSEIL</h3>
+      <p class="text-center">
+        Abonnez-vous à notre newsletter pour recevoir des articles exclusifs, des conseils pratiques et des actualités complètes sur la comptabilité, le juridique et le social. Ne manquez aucune information susceptible de transformer votre entreprise !
+      </p>
+      <form action="{{ url_for('newsletter') }}" method="POST" class="form-inline justify-content-center">
+        <div class="form-group mb-2">
+          <label for="newsletterEmail" class="sr-only">Adresse e-mail</label>
+          <input type="email" class="form-control" id="newsletterEmail" name="email" placeholder="Votre adresse e-mail" required>
+        </div>
+        <button type="submit" class="btn btn-primary mb-2 ml-2">S'abonner</button>
+      </form>
+    </div>
   </div>
 
   {% include "footer.html" %}

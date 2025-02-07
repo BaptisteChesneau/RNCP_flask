@@ -31,6 +31,12 @@
       <li class="nav-item">
         <a class="nav-link" href="{{ url_for('notre_equipe') }}">Notre équipe</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('atelier') }}">Atelier</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('nos_outils') }}">Nos Outils</a>
+      </li>            
     </ul>
   </nav>
 
@@ -151,21 +157,6 @@
       <!-- Vous pouvez ajouter d'autres FAQ de la même manière -->
     </div>
   </div>
-
-<!-- SECTION NEWSLETTER -->
-<div class="container my-5">
-  <h3 class="text-center mb-3">Newsletter ML2C CONSEIL</h3>
-  <p class="text-center">
-    Abonnez-vous à notre newsletter pour recevoir un contenu complet et détaillé sur les dernières actualités, conseils pratiques et analyses approfondies dans les domaines de la comptabilité, du juridique et du social. Chaque mois, nous vous transmettons un récapitulatif des nouveautés, des mises à jour législatives et des études de cas pour vous aider à optimiser la gestion de votre entreprise. Vous bénéficierez également d'offres exclusives et d'un accès privilégié à des ressources premium, conçues pour vous fournir des informations de pointe et des astuces pratiques. Ne manquez pas cette opportunité de rester informé(e) et de faire évoluer votre activité grâce à des insights experts directement dans votre boîte mail.
-  </p>
-  <form action="{{ url_for('newsletter') }}" method="POST" class="form-inline justify-content-center">
-    <div class="form-group mb-2">
-      <label for="newsletterEmail" class="sr-only">Adresse e-mail</label>
-      <input type="email" class="form-control" id="newsletterEmail" name="email" placeholder="Votre adresse e-mail" required>
-    </div>
-    <button type="submit" class="btn btn-primary mb-2 ml-2">S'abonner</button>
-  </form>
-</div>
 
   {% include "footer.html" %}
   

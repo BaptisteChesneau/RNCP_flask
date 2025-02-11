@@ -2,112 +2,202 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Prendre Rendez-Vous - ML2C CONSEIL</title>
-
+  <title>Blog - ML2C CONSEIL</title>
   <!-- Bootstrap CSS -->
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css"
-  >
-  <!-- Votre CSS perso si besoin -->
-  <link
-    rel="stylesheet"
-    href="{{ url_for('static', filename='css/styles.css') }}"
-  >
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <!-- Votre CSS personnalisé -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
 
   {% include "header.html" %}
 
   <div class="container my-4">
-    <h2>Demande de Devis / Rendez-Vous</h2>
-    <p>Veuillez remplir les informations ci-dessous afin de prendre rendez-vous.</p>
+    <h2 class="mb-4">Blog - Actualités et Nouveautés</h2>
+    <p class="mb-4">
+      Découvrez les dernières actualités dans les domaines de la comptabilité, du juridique, du social et des nouveaux textes de loi.
+    </p>
 
-    <!-- Formulaire : envoi en POST vers /resume-devis -->
-    <form action="{{ url_for('resume_devis') }}" method="POST">
-      <!-- Secteur d'activité -->
-      <div class="form-group">
-        <label for="secteur">Secteur d'activité</label>
-        <input
-          type="text"
-          class="form-control"
-          id="secteur"
-          name="secteur"
-          placeholder="Ex: Commerce, Informatique, Artisanat..."
-          required
-        >
-      </div>
-
-      <!-- Nom -->
-      <div class="form-group">
-        <label for="nom">Nom / Raison sociale</label>
-        <input
-          type="text"
-          class="form-control"
-          id="nom"
-          name="nom"
-          placeholder="Ex: Dupont SARL"
-          required
-        >
-      </div>
-
-      <!-- Type de service (menu déroulant) -->
-      <div class="form-group">
-        <label for="type_service">Type de service</label>
-        <select
-          class="form-control"
-          id="type_service"
-          name="type_service"
-          required
-        >
-          <option value="">-- Sélectionnez un service --</option>
-          <option value="Conseil Juridique">Conseil Juridique</option>
-          <option value="Conseil Fiscal">Conseil Fiscal</option>
-          <option value="Création d'entreprise">Création d'entreprise</option>
-          <option value="Audit Complet">Audit Complet</option>
-          <option value="Autre">Autre (à préciser)</option>
-        </select>
-      </div>
-
-      <!-- Date et heure du rendez-vous -->
-      <div class="form-row">
-        <!-- Date -->
-        <div class="form-group col-md-6">
-          <label for="date_rdv">Date du rendez-vous</label>
-          <input
-            type="date"
-            class="form-control"
-            id="date_rdv"
-            name="date_rdv"
-            required
-          >
-        </div>
-        <!-- Heure -->
-        <div class="form-group col-md-6">
-          <label for="heure_rdv">Heure du rendez-vous</label>
-          <input
-            type="time"
-            class="form-control"
-            id="heure_rdv"
-            name="heure_rdv"
-            required
-          >
+    <div class="row">
+      <!-- Article 1 : Comptabilité -->
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <img src="https://via.placeholder.com/350x200?text=Comptabilit%C3%A9+1" class="card-img-top" alt="Actualités Comptabilité">
+          <div class="card-body">
+            <h5 class="card-title">Nouveautés en comptabilité 1</h5>
+            <p class="card-text">
+              Découvrez les dernières évolutions, normes et outils innovants dans le domaine de la comptabilité.
+            </p>
+            <a href="#" class="btn btn-primary">Lire plus</a>
+          </div>
+          <div class="card-footer text-muted">
+            Publié le 12/04/2025
+          </div>
         </div>
       </div>
 
-      <!-- Bouton Valider -->
-      <button type="submit" class="btn btn-primary">
-        Valider
-      </button>
-    </form>
+      <!-- Article 2 : Juridique -->
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <img src="https://via.placeholder.com/350x200?text=Juridique+1" class="card-img-top" alt="Actualités Juridiques">
+          <div class="card-body">
+            <h5 class="card-title">Actualités juridiques 1</h5>
+            <p class="card-text">
+              Restez informé des dernières mises à jour législatives et des actualités marquantes dans le secteur juridique.
+            </p>
+            <a href="#" class="btn btn-primary">Lire plus</a>
+          </div>
+          <div class="card-footer text-muted">
+            Publié le 10/04/2025
+          </div>
+        </div>
+      </div>
+
+      <!-- Article 3 : Social -->
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <img src="https://via.placeholder.com/350x200?text=Social+1" class="card-img-top" alt="Actualités Sociales">
+          <div class="card-body">
+            <h5 class="card-title">Actualités sociales 1</h5>
+            <p class="card-text">
+              Analyse des derniers changements et tendances dans le domaine social.
+            </p>
+            <a href="#" class="btn btn-primary">Lire plus</a>
+          </div>
+          <div class="card-footer text-muted">
+            Publié le 08/04/2025
+          </div>
+        </div>
+      </div>
+
+      <!-- Article 4 : Comptabilité -->
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <img src="https://via.placeholder.com/350x200?text=Comptabilit%C3%A9+2" class="card-img-top" alt="Actualités Comptabilité">
+          <div class="card-body">
+            <h5 class="card-title">Nouveautés en comptabilité 2</h5>
+            <p class="card-text">
+              Découvrez les récentes évolutions dans les pratiques comptables et les nouvelles normes.
+            </p>
+            <a href="#" class="btn btn-primary">Lire plus</a>
+          </div>
+          <div class="card-footer text-muted">
+            Publié le 11/04/2025
+          </div>
+        </div>
+      </div>
+
+      <!-- Article 5 : Juridique -->
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <img src="https://via.placeholder.com/350x200?text=Juridique+2" class="card-img-top" alt="Actualités Juridiques">
+          <div class="card-body">
+            <h5 class="card-title">Actualités juridiques 2</h5>
+            <p class="card-text">
+              Les mises à jour législatives importantes qui impactent le secteur juridique.
+            </p>
+            <a href="#" class="btn btn-primary">Lire plus</a>
+          </div>
+          <div class="card-footer text-muted">
+            Publié le 09/04/2025
+          </div>
+        </div>
+      </div>
+
+      <!-- Article 6 : Social -->
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <img src="https://via.placeholder.com/350x200?text=Social+2" class="card-img-top" alt="Actualités Sociales">
+          <div class="card-body">
+            <h5 class="card-title">Actualités sociales 2</h5>
+            <p class="card-text">
+              Les dernières tendances et analyses dans le domaine social.
+            </p>
+            <a href="#" class="btn btn-primary">Lire plus</a>
+          </div>
+          <div class="card-footer text-muted">
+            Publié le 07/04/2025
+          </div>
+        </div>
+      </div>
+
+      <!-- Article 7 : Nouveaux textes de loi -->
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <img src="https://via.placeholder.com/350x200?text=Lois+1" class="card-img-top" alt="Nouveaux textes de loi">
+          <div class="card-body">
+            <h5 class="card-title">Nouveaux textes de loi 1</h5>
+            <p class="card-text">
+              Analyse des récentes législations impactant votre secteur d'activité.
+            </p>
+            <a href="#" class="btn btn-primary">Lire plus</a>
+          </div>
+          <div class="card-footer text-muted">
+            Publié le 06/04/2025
+          </div>
+        </div>
+      </div>
+
+      <!-- Article 8 : Nouveaux textes de loi -->
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <img src="https://via.placeholder.com/350x200?text=Lois+2" class="card-img-top" alt="Nouveaux textes de loi">
+          <div class="card-body">
+            <h5 class="card-title">Nouveaux textes de loi 2</h5>
+            <p class="card-text">
+              Les dernières mises à jour sur les textes législatifs récents.
+            </p>
+            <a href="#" class="btn btn-primary">Lire plus</a>
+          </div>
+          <div class="card-footer text-muted">
+            Publié le 05/04/2025
+          </div>
+        </div>
+      </div>
+
+      <!-- Article 9 : Comptabilité -->
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <img src="https://via.placeholder.com/350x200?text=Comptabilit%C3%A9+3" class="card-img-top" alt="Actualités Comptabilité">
+          <div class="card-body">
+            <h5 class="card-title">Nouveautés en comptabilité 3</h5>
+            <p class="card-text">
+              Découvrez les innovations et réformes majeures dans le domaine comptable.
+            </p>
+            <a href="#" class="btn btn-primary">Lire plus</a>
+          </div>
+          <div class="card-footer text-muted">
+            Publié le 04/04/2025
+          </div>
+        </div>
+      </div>
+    </div> <!-- Fin de la row -->
+
+    <!-- SECTION NEWSLETTER -->
+    <div class="container my-5">
+      <h3 class="text-center mb-3">Newsletter ML2C CONSEIL</h3>
+      <p class="text-center">
+        Abonnez-vous à notre newsletter pour recevoir des articles exclusifs, des conseils pratiques et des actualités complètes sur la comptabilité, le juridique et le social. Ne manquez aucune information susceptible de transformer votre entreprise !
+      </p>
+      <form action="{{ url_for('newsletter') }}" method="POST" class="form-inline justify-content-center">
+        <div class="form-group mb-2">
+          <label for="newsletterEmail" class="sr-only">Adresse e-mail</label>
+          <input type="email" class="form-control" id="newsletterEmail" name="email" placeholder="Votre adresse e-mail" required>
+        </div>
+        <button type="submit" class="btn btn-primary mb-2 ml-2">S'abonner</button>
+      </form>
+    </div>
+
+    <!-- Bouton Retour au menu -->
+    <div class="text-center mt-4">
+      <a href="{{ url_for('menu') }}" class="btn btn-secondary">Retour au menu</a>
+    </div>
   </div>
 
   {% include "footer.html" %}
 
-  <!-- Scripts Bootstrap & jQuery (pour l’UI, si besoin) -->
+  <!-- Scripts JS Bootstrap -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"
-  ></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

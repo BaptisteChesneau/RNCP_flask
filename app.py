@@ -181,5 +181,9 @@ def atelier():
 def nos_outils():
     return render_template("nos_outils.html")
 
+@app.route("/aide")
+def aide():
+    return render_template("aide.html")
+
 if __name__ == "__main__":
     app.run(debug=True)

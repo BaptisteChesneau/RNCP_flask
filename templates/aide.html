@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Aide - ML2C CONSEIL</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <!-- Votre CSS personnalisé -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  {% include "header.html" %}
+
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Aide Professionnelle</h2>
+    <p>
+      Bienvenue sur la page d'aide de ML2C CONSEIL. Cette page a été conçue pour vous fournir des informations détaillées afin de vous accompagner dans l'utilisation de notre plateforme.
+      Vous trouverez ici des guides pratiques, des tutoriels et des conseils pour tirer le meilleur parti de nos services.
+    </p>
+    <h4>Navigation et Utilisation du Site</h4>
+    <p>
+      Pour naviguer efficacement sur notre site, utilisez le menu principal situé en haut de chaque page. 
+      Vous y trouverez toutes les sections du site, comme le Blog, Nos Outils, l'Atelier, etc.
+      Chaque section contient des informations détaillées et des ressources pour vous aider dans vos démarches.
+    </p>
+    <h4>Support Technique</h4>
+    <p>
+      Si vous rencontrez des difficultés ou si vous avez des questions, n'hésitez pas à contacter notre support technique.
+      Vous pouvez nous joindre par email à <a href="mailto:support@ml2cconseil.com">support@ml2cconseil.com</a> ou utiliser le formulaire de contact disponible sur notre site.
+    </p>
+    <h4>Ressources Complémentaires</h4>
+    <p>
+      Nous mettons également à votre disposition une FAQ pour répondre aux questions les plus fréquentes.
+      Pour y accéder, cliquez sur le bouton ci-dessous.
+    </p>
+    <div class="text-center mt-4">
+      <a href="{{ url_for('menu') }}" class="btn btn-secondary ml-2">Retour au menu</a>
+    </div>
+  </div>
+
+  {% include "footer.html" %}
+  
+  <!-- Scripts JS Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <h2 class="text-center">Votre/Vos Fiche(s) Client</h2>
+
+  {% if clients %}
+    {% for client in clients %}
+      <div class="card my-4">
+        <div class="card-header">
+          Fiche client n°{{ client.id }}
+        </div>
+        <div class="card-body">
+          <p><strong>Nom :</strong> {{ client.nom }}</p>
+          <p><strong>Prénom :</strong> {{ client.prenom }}</p>
+          <p><strong>Email :</strong> {{ client.email }}</p>
+          <p><strong>Activité :</strong> {{ client.activite }}</p>
+          <p><strong>Type d'entreprise :</strong> {{ client.type_entreprise }}</p>
+          <p><strong>Cabinet :</strong> {{ client.cabinet }}</p>
+          <p><strong>Civilité :</strong> {{ client.civilite }}</p>
+          <p><strong>Adresse siège :</strong> {{ client.adresse_siege }}</p>
+
+          <!-- Boutons Modifier / Supprimer -->
+          <div class="btn-group mt-3" role="group">
+            <a href="{{ url_for('modifier_client', client_id=client.id) }}" class="btn btn-warning">Modifier</a>
+            <form action="{{ url_for('supprimer_client', client_id=client.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette fiche client ?');">
+              <button type="submit" class="btn btn-danger">Supprimer</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>Aucune fiche client enregistrée pour votre compte.</p>
+  {% endif %}
+
+  <a href="{{ url_for('compte_client') }}" class="btn btn-secondary">Retour compte client</a>
+</div>
+{% endblock %}

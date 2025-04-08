@@ -269,8 +269,15 @@ def signup():
 
 @app.route("/compte-client")
 def compte_client():
+    utilisateur_id = session.get("utilisateur_id")
     devis_data = session.get('devis_data')
-    return render_template("compte_client.html", devis_data=devis_data)
+
+    clients = []
+    if utilisateur_id:
+        clients = Client.query.filter_by(utilisateur_id=utilisateur_id).all()
+
+    return render_template("compte_client.html", devis_data=devis_data, clients=clients)
+
 
 @app.route("/newsletter", methods=["POST"])
 def newsletter():
@@ -420,6 +427,47 @@ def update_photo():
 @app.route('/grille-tarifaire')
 def grille_tarifaire():
     return render_template('grille_tarifaire.html')
+
+@app.route("/ma-fiche-client")
+def ma_fiche_client():
+    utilisateur_id = session.get("utilisateur_id")
+    if not utilisateur_id:
+        flash("Veuillez vous connecter pour voir votre fiche client.", "warning")
+        return redirect(url_for("login"))
+
+    # Récupère tous les clients liés à ce user
+    clients = Client.query.filter_by(utilisateur_id=utilisateur_id).all()
+
+    return render_template("ma_fiche_client.html", clients=clients)
+
+@app.route("/modifier-client/<int:client_id>", methods=["GET", "POST"])
+def modifier_client(client_id):
+    client = Client.query.get_or_404(client_id)
+
+    if request.method == "POST":
+        client.activite = request.form.get("activite")
+        client.type_entreprise = request.form.get("type_entreprise")
+        client.cabinet = request.form.get("cabinet")
+        client.civilite = request.form.get("civilite")
+        client.nom = request.form.get("nom")
+        client.prenom = request.form.get("prenom")
+        client.email = request.form.get("email")
+        client.adresse_siege = request.form.get("adresse_siege")
+
+        db.session.commit()
+        flash("La fiche client a été mise à jour avec succès.", "success")
+        return redirect(url_for("ma_fiche_client"))
+
+    return render_template("modifier_client.html", client=client)
+
+@app.route("/supprimer-client/<int:client_id>", methods=["POST"])
+def supprimer_client(client_id):
+    client = Client.query.get_or_404(client_id)
+    db.session.delete(client)
+    db.session.commit()
+    flash("La fiche client a été supprimée.", "danger")
+    return redirect(url_for("ma_fiche_client"))
+
     
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

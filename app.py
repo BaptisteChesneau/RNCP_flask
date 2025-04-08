@@ -139,7 +139,7 @@ def formulaire_client():
             Adresse siège: {adresse_siege}
             """
         )
-        mail.send(msg)
+        # mail.send(msg)  # ❌ à désactiver temporairement
 
         return redirect(url_for("confirmation"))
 

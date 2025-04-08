@@ -92,6 +92,7 @@ def plateforme_client():
 @app.route("/formulaire", methods=["GET", "POST"])
 def formulaire_client():
     utilisateur_id = session.get("utilisateur_id")
+    print("DEBUG >>> utilisateur_id dans session :", utilisateur_id)  # 👈 à retirer plus tard
     if not utilisateur_id:
         flash("Vous devez être connecté pour remplir ce formulaire.", "warning")
         return redirect(url_for("login"))

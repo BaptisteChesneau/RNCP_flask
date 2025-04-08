@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Grille Tarifaire - ML2C CONSEIL</title>
+  <!-- Bootstrap CSS (CDN) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <!-- Votre CSS personnalisé -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  {% include "header.html" %}
+
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Grille Tarifaire</h2>
+    <p class="text-center mb-5">
+      Découvrez nos différentes offres tarifaires adaptées à vos besoins.
+    </p>
+    
+    <div class="row">
+      <!-- Offre 1 : Basic -->
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <div class="card-header text-center">
+            <h4>Offre Basic</h4>
+          </div>
+          <div class="card-body text-center">
+            <h2 class="card-title">€49/mois</h2>
+            <ul class="list-unstyled">
+              <li>Consultation mensuelle</li>
+              <li>Accès aux outils de base</li>
+              <li>Support par email</li>
+            </ul>
+            <a href="#" class="btn btn-primary">Choisir cette offre</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Offre 2 : Standard -->
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <div class="card-header text-center">
+            <h4>Offre Standard</h4>
+          </div>
+          <div class="card-body text-center">
+            <h2 class="card-title">€99/mois</h2>
+            <ul class="list-unstyled">
+              <li>Consultations bi-mensuelles</li>
+              <li>Accès complet aux outils</li>
+              <li>Support téléphonique</li>
+              <li>Webinaires exclusifs</li>
+            </ul>
+            <a href="#" class="btn btn-primary">Choisir cette offre</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Offre 3 : Premium -->
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <div class="card-header text-center">
+            <h4>Offre Premium</h4>
+          </div>
+          <div class="card-body text-center">
+            <h2 class="card-title">€199/mois</h2>
+            <ul class="list-unstyled">
+              <li>Consultations hebdomadaires</li>
+              <li>Accès prioritaire à tous les outils</li>
+              <li>Support dédié 24/7</li>
+              <li>Analyse personnalisée</li>
+            </ul>
+            <a href="#" class="btn btn-primary">Choisir cette offre</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Offre 4 : Deluxe -->
+      <div class="col-md-6">
+        <div class="card mb-4">
+          <div class="card-header text-center">
+            <h4>Offre Deluxe</h4>
+          </div>
+          <div class="card-body text-center">
+            <h2 class="card-title">€299/mois</h2>
+            <ul class="list-unstyled">
+              <li>Accès illimité aux outils</li>
+              <li>Consultations illimitées</li>
+              <li>Support prioritaire</li>
+              <li>Formation personnalisée</li>
+            </ul>
+            <a href="#" class="btn btn-primary">Choisir cette offre</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Offre 5 : Enterprise -->
+      <div class="col-md-6">
+        <div class="card mb-4">
+          <div class="card-header text-center">
+            <h4>Offre Enterprise</h4>
+          </div>
+          <div class="card-body text-center">
+            <h2 class="card-title">€499/mois</h2>
+            <ul class="list-unstyled">
+              <li>Solution personnalisée</li>
+              <li>Support dédié et formation</li>
+              <li>Consultations quotidiennes</li>
+              <li>Fonctionnalités premium complètes</li>
+            </ul>
+            <a href="#" class="btn btn-primary">Choisir cette offre</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h4>Paiement</h4>
+    <p>Choisissez votre mode de paiement :</p>
+
+    <!-- Bouton Paiement PayPal -->
+    <a
+      href="{{ url_for('paiement_paypal') }}"
+      class="btn btn-warning mr-2"
+    >
+      Payer avec PayPal
+    </a>
+
+    <!-- Bouton Paiement Stripe -->
+    <a
+      href="{{ url_for('paiement_stripe') }}"
+      class="btn btn-info"
+    >
+      Payer avec Stripe
+    </a>
+  </div>
+    
+    <!-- Bouton Retour au résumé de devis -->
+    <div class="text-center mt-4">
+      <a href="{{ url_for('resume_devis') }}" class="btn btn-secondary">Retour au résumé de devis</a>
+    </div>
+  </div>
+
+  {% include "footer.html" %}
+  
+  <!-- Bootstrap & jQuery JS Scripts -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

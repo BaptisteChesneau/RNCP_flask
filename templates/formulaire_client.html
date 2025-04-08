@@ -3,17 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>Formulaire Client - ML2C CONSEIL</title>
-
   <!-- Bootstrap CSS (CDN) -->
-  <link 
-    rel="stylesheet" 
-    href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css"
-  >
-  <!-- Votre fichier CSS si nécessaire -->
-  <link 
-    rel="stylesheet" 
-    href="{{ url_for('static', filename='css/styles.css') }}"
-  >
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <!-- Your custom CSS file if needed -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
 
@@ -22,7 +15,7 @@
   <div class="container my-4">
     <h2>Formulaire de création de fiche client</h2>
     
-    <!-- Début du formulaire : on pointe vers la route Flask /formulaire_client en POST -->
+    <!-- Form: POST to /formulaire_client -->
     <form action="{{ url_for('formulaire_client') }}" method="POST" class="mt-4">
       
       <!-- Nature de l'activité -->
@@ -56,7 +49,7 @@
         </select>
       </div>
 
-      <!-- Nom du cabinet d'où il vient -->
+      <!-- Nom du cabinet -->
       <div class="form-group">
         <label for="cabinet">Nom du cabinet</label>
         <input 
@@ -69,7 +62,7 @@
         >
       </div>
 
-      <!-- Civilité : Homme/Femme -->
+      <!-- Civilité -->
       <div class="form-group">
         <label>Civilité :</label>
         <div class="form-check">
@@ -151,25 +144,23 @@
         >
       </div>
 
-      <!-- Bouton de soumission -->
-      <button type="submit" class="btn btn-primary">
-        Envoyer
-      </button>
+      <!-- Submission buttons aligned: "Envoyer" and "Envoyer vers le compte" -->
+      <div class="d-flex justify-content-start mt-4">
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+        <a href="{{ url_for('compte_client') }}" class="btn btn-primary ml-2">Envoyer vers le compte</a>
+      </div>
     </form>
   </div>
 
-    <!-- Bouton Retour au menu -->
-    <div class="text-center mt-4">
-      <a href="{{ url_for('menu') }}" class="btn btn-secondary">Retour au menu</a>
-    </div>
+  <!-- Bouton Retour au menu -->
+  <div class="text-center mt-4">
+    <a href="{{ url_for('menu') }}" class="btn btn-secondary">Retour au menu</a>
   </div>
   
   {% include "footer.html" %}
 
   <!-- Scripts JS (Bootstrap + jQuery) -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script 
-    src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"
-  ></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

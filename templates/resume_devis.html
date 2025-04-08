@@ -3,12 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>Résumé Devis - ML2C CONSEIL</title>
-
   <!-- Bootstrap CSS -->
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css"
-  >
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <!-- Feuille de style personnalisée -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
 
@@ -34,27 +32,26 @@
       <li class="list-group-item">
         <strong>Heure du rendez-vous :</strong> {{ heure_rdv }}
       </li>
+      <li class="list-group-item">
+        <strong>Email :</strong> {{ adresse_email }}
+      </li>
     </ul>
 
     <h4>Paiement</h4>
-    <p>Choisissez votre mode de paiement :</p>
+    <p>Découvrez nos offres tarifaires :</p>
 
-    <!-- Bouton Paiement PayPal -->
-    <a
-      href="{{ url_for('paiement_paypal') }}"
-      class="btn btn-warning mr-2"
-    >
-      Payer avec PayPal
-    </a>
-
-    <!-- Bouton Paiement Stripe -->
-    <a
-      href="{{ url_for('paiement_stripe') }}"
-      class="btn btn-info"
-    >
-      Payer avec Stripe
-    </a>
-  </div>
+    <!-- Groupe de boutons avec couleur personnalisée -->
+    <div class="resume-buttons">
+      <a href="{{ url_for('grille_tarifaire') }}" class="btn btn-primary">
+        Nos Offres
+      </a>
+      <a href="{{ url_for('envoyer_mail') }}" class="btn btn-pink">
+        Envoyer par mail
+      </a>
+      <a href="{{ url_for('envoyer_compte') }}" class="btn btn-pink">
+        Envoyer au compte
+      </a>
+    </div>
 
     <!-- Bouton Retour au menu -->
     <div class="text-center mt-4">
@@ -64,10 +61,8 @@
 
   {% include "footer.html" %}
 
-  <!-- Scripts JS Bootstrap (optionnel) -->
+  <!-- Scripts Bootstrap & jQuery -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"
-  ></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

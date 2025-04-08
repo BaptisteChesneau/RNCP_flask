@@ -328,3 +328,91 @@ footer .container {
   border-color: #009639 !important;
   color: #fff !important;
 }
+
+/*============================================================
+  15) PROGRESS OVERLAY BLOCK
+============================================================*/
+#progressOverlay {
+  display: none;
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 20px;
+  z-index: 1050;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/*============================================================
+  16) MENU LATÉRAL DANS PARAMÈTRES
+============================================================*/
+#paramMenu .list-group-item {
+  background-color: #fff;       /* État par défaut : fond blanc */
+  color: #333;                  /* Texte sombre par défaut */
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#paramMenu .list-group-item:hover,
+#paramMenu .list-group-item.active {
+  background-color: #D81E5B;    /* Fond rose lors du survol ou actif */
+  color: #fff;                  /* Texte blanc */
+}
+
+/*============================================================
+  17) BOUTONS DANS RÉSUMÉ DEVIS
+============================================================*/
+.resume-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+.resume-buttons .btn {
+  margin: 0.5rem;
+}
+
+/* Style rose personnalisé pour les boutons */
+.btn-pink {
+  background-color: #D81E5B !important;  /* Toujours rose vif */
+  color: white !important;
+  border: none !important;
+}
+
+/* Même couleur au survol, pour éviter l’effet de flash */
+.btn-pink:hover,
+.btn-pink:focus,
+.btn-pink:active {
+  background-color: #D81E5B !important;
+  color: white !important;
+}
+
+/*============================================================
+  18) THÈME UTILISATEUR : CLAIR / SOMBRE
+============================================================*/
+body.light {
+  background-color: #ffffff;
+  color: #000;
+}
+
+body.dark {
+  background-color: #1e1e1e;
+  color: #fff;
+}
+
+body.dark input,
+body.dark select,
+body.dark textarea {
+  background-color: #2c2c2c;
+  color: #fff;
+  border-color: #444;
+}
+
+body.dark .form-control::placeholder {
+  color: #ccc;
+}

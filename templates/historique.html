@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Historique de Navigation - ML2C CONSEIL</title>
+  <!-- Bootstrap CSS (CDN) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <!-- Votre fichier CSS personnalisé -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  {% include "header.html" %}
+  
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Historique de Navigation</h2>
+    {% if history %}
+      <ul class="list-group">
+        {% for url in history %}
+          <li class="list-group-item">{{ url }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-center">Aucun historique enregistré.</p>
+    {% endif %}
+    <!-- Boutons Actualiser et Retour au menu -->
+    <div class="text-center mt-4">
+      <button type="button" class="btn btn-info mr-2" onclick="location.reload();">Actualiser</button>
+      <a href="{{ url_for('menu') }}" class="btn btn-secondary">Retour au menu</a>
+    </div>
+  </div>
+  
+  {% include "footer.html" %}
+  
+  <!-- Bootstrap & jQuery JS Scripts -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

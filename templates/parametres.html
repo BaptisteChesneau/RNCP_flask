@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Paramètres du Compte - ML2C CONSEIL</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  {% include "header.html" %}
+
+  <!-- Message flash global -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="container mt-3">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Paramètres du Compte</h2>
+    <div class="row">
+      <!-- Menu latéral -->
+      <div class="col-md-3">
+        <div class="list-group" id="paramMenu">
+          <a href="#profileSection" class="list-group-item list-group-item-action active" data-toggle="list">Profil</a>
+          <a href="#passwordSection" class="list-group-item list-group-item-action" data-toggle="list">Mot de passe</a>
+          <a href="#socialSection" class="list-group-item list-group-item-action" data-toggle="list">Réseaux sociaux</a>
+          <a href="#historySection" class="list-group-item list-group-item-action" data-toggle="list">Historique de navigation</a>
+          <a href="#preferencesSection" class="list-group-item list-group-item-action" data-toggle="list">Préférences</a>
+          <a href="#notificationsSection" class="list-group-item list-group-item-action" data-toggle="list">Notifications</a>
+          <a href="#billingSection" class="list-group-item list-group-item-action" data-toggle="list">Facturation</a>
+          <a href="#photoSection" class="list-group-item list-group-item-action" data-toggle="list">Photo de profil</a>
+        </div>
+      </div>
+
+      <!-- Contenu principal -->
+      <div class="col-md-9">
+        <div class="tab-content">
+
+          <!-- Profil -->
+          <div class="tab-pane fade show active" id="profileSection" role="tabpanel">
+            <h4>Mettre à jour vos informations personnelles</h4>
+            <form action="{{ url_for('update_profile') }}" method="POST">
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="prenom">Prénom</label>
+                  <input type="text" class="form-control" id="prenom" name="prenom" value="{{ user.prenom }}" required>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="nom">Nom</label>
+                  <input type="text" class="form-control" id="nom" name="nom" value="{{ user.nom }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="email">Adresse e-mail</label>
+                <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+              </div>
+              <button type="submit" class="btn btn-primary btn-progress">Mettre à jour</button>
+            </form>
+          </div>
+
+          <!-- Mot de passe -->
+          <div class="tab-pane fade" id="passwordSection" role="tabpanel">
+            <h4>Changer votre mot de passe</h4>
+            <form action="{{ url_for('update_password') }}" method="POST">
+              <div class="form-group">
+                <label for="current_password">Mot de passe actuel</label>
+                <input type="password" class="form-control" id="current_password" name="current_password" required>
+              </div>
+              <div class="form-group">
+                <label for="new_password">Nouveau mot de passe</label>
+                <input type="password" class="form-control" id="new_password" name="new_password" required>
+              </div>
+              <div class="form-group">
+                <label for="confirm_password">Confirmez le nouveau mot de passe</label>
+                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+              </div>
+              <button type="submit" class="btn btn-primary btn-progress">Changer le mot de passe</button>
+            </form>
+          </div>
+
+          <!-- Réseaux sociaux -->
+          <div class="tab-pane fade" id="socialSection" role="tabpanel">
+            <h4>Gérer vos réseaux sociaux</h4>
+            <form action="{{ url_for('update_social') }}" method="POST">
+              <div class="form-group">
+                <label for="facebook">Facebook</label>
+                <input type="url" class="form-control" id="facebook" name="facebook">
+              </div>
+              <div class="form-group">
+                <label for="linkedin">LinkedIn</label>
+                <input type="url" class="form-control" id="linkedin" name="linkedin">
+              </div>
+              <div class="form-group">
+                <label for="instagram">Instagram</label>
+                <input type="url" class="form-control" id="instagram" name="instagram">
+              </div>
+              <button type="submit" class="btn btn-primary btn-progress">Mettre à jour mes réseaux sociaux</button>
+            </form>
+          </div>
+
+          <!-- Historique -->
+          <div class="tab-pane fade" id="historySection" role="tabpanel">
+            <h4>Historique de navigation</h4>
+            {% if session.history %}
+              <ul class="list-group">
+                {% for url in session.history %}
+                  <li class="list-group-item">{{ url }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p>Aucun historique enregistré.</p>
+            {% endif %}
+          </div>
+
+          <!-- Préférences -->
+          <div class="tab-pane fade" id="preferencesSection" role="tabpanel">
+            <h4>Préférences utilisateur</h4>
+            <form action="{{ url_for('update_preferences') }}" method="POST">
+              <div class="form-group">
+                <label for="language">Langue préférée</label>
+                <select class="form-control" id="language" name="language">
+                  <option value="fr" {% if session.get('language') == 'fr' %}selected{% endif %}>Français</option>
+                  <option value="en" {% if session.get('language') == 'en' %}selected{% endif %}>Anglais</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="theme">Thème</label>
+                <select class="form-control" id="theme" name="theme">
+                  <option value="light" {% if session.get('theme') == 'light' %}selected{% endif %}>Clair</option>
+                  <option value="dark" {% if session.get('theme') == 'dark' %}selected{% endif %}>Sombre</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary btn-progress">Sauvegarder les préférences</button>
+            </form>
+          </div>
+
+          <!-- Notifications -->
+          <div class="tab-pane fade" id="notificationsSection" role="tabpanel">
+            <h4>Paramètres de notification</h4>
+            <form action="{{ url_for('update_notifications') }}" method="POST">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="notif_email" name="notif_email" checked>
+                <label class="form-check-label" for="notif_email">Recevoir les notifications par email</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="notif_sms" name="notif_sms">
+                <label class="form-check-label" for="notif_sms">Recevoir les notifications par SMS</label>
+              </div>
+              <button type="submit" class="btn btn-primary btn-progress mt-3">Mettre à jour</button>
+            </form>
+          </div>
+
+          <!-- Facturation -->
+          <div class="tab-pane fade" id="billingSection" role="tabpanel">
+            <h4>Coordonnées de facturation</h4>
+            <form action="{{ url_for('update_billing') }}" method="POST">
+              <div class="form-group">
+                <label for="billing_name">Nom de facturation</label>
+                <input type="text" class="form-control" id="billing_name" name="billing_name" required>
+              </div>
+              <div class="form-group">
+                <label for="billing_address">Adresse de facturation</label>
+                <input type="text" class="form-control" id="billing_address" name="billing_address" required>
+              </div>
+              <button type="submit" class="btn btn-primary btn-progress">Enregistrer</button>
+            </form>
+          </div>
+
+          <!-- Photo de profil -->
+          <div class="tab-pane fade" id="photoSection" role="tabpanel">
+            <h4>Photo de profil</h4>
+            <p>Ajoutez ou modifiez votre photo de profil.</p>
+
+            {% if session.get('photo_url') %}
+              <div class="mb-3">
+                <img src="{{ url_for('static', filename='uploads/' ~ session['photo_url']) }}" class="img-thumbnail" width="150" alt="Photo actuelle">
+              </div>
+            {% endif %}
+
+            <form action="{{ url_for('update_photo') }}" method="POST" enctype="multipart/form-data">
+              <div class="form-group">
+                <label for="photo">Choisissez une photo</label>
+                <input type="file" class="form-control-file" id="photo" name="photo" accept="image/*" required>
+                <small id="filename-display" class="form-text text-muted">Aucun fichier sélectionné</small>
+                <small class="form-text text-muted">Taille maximale : 2 Mo. Formats : JPG, PNG.</small>
+              </div>
+              <button type="submit" class="btn btn-primary btn-progress">Téléverser</button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="{{ url_for('menu') }}" class="btn btn-secondary">Retour au menu</a>
+    </div>
+  </div>
+
+  <div id="progressOverlay">
+    <div class="text-center mb-2">
+      <i id="progressIcon" class="fas fa-sync fa-spin fa-2x"></i>
+      <h4 id="progressPercentage">0%</h4>
+    </div>
+    <div class="progress">
+      <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0"></div>
+    </div>
+  </div>
+
+  {% include "footer.html" %}
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var username = "{{ session.get('prenom', 'Utilisateur') }}";
+      if (username) {
+        var welcome = document.getElementById("welcomeMessage");
+        if (welcome) welcome.innerHTML = "Bonjour " + username + " !";
+      }
+
+      const fileInput = document.getElementById("photo");
+      const filenameDisplay = document.getElementById("filename-display");
+      if (fileInput) {
+        fileInput.addEventListener("change", function () {
+          const file = this.files[0];
+          filenameDisplay.textContent = file ? "Fichier sélectionné : " + file.name : "Aucun fichier sélectionné";
+        });
+      }
+
+      function startProgress() {
+        document.getElementById("progressOverlay").style.display = "block";
+        let progress = 0;
+        const progressBar = document.getElementById("progressBar");
+        const progressPercentage = document.getElementById("progressPercentage");
+        const progressIcon = document.getElementById("progressIcon");
+
+        const interval = setInterval(() => {
+          progress += 5;
+          if (progress > 100) progress = 100;
+          progressBar.style.width = progress + "%";
+          progressPercentage.innerHTML = progress + "%";
+          progressBar.setAttribute("aria-valuenow", progress);
+
+          if (progress >= 100) {
+            clearInterval(interval);
+            progressIcon.classList.remove("fa-sync", "fa-spin");
+            progressIcon.classList.add("fa-check");
+            setTimeout(() => {
+              document.getElementById("progressOverlay").style.display = "none";
+            }, 1000);
+          }
+        }, 100);
+      }
+
+      document.querySelectorAll(".btn-progress").forEach(btn => {
+        btn.addEventListener("click", function (e) {
+          e.preventDefault();
+          startProgress();
+          this.closest("form").submit();
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

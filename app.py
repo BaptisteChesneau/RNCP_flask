@@ -1,7 +1,16 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for ,session, flash 
 from flask_mail import Mail, Message
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
+import os
+from werkzeug.utils import secure_filename
+from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
 
 app = Flask(__name__)
+app.secret_key = 'votre_clé_secrète'  # Clé secrète nécessaire pour la session
+
+# Limiter la taille des fichiers (ex. : 2 Mo max)
+app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024
 
 # ================== CONFIG FLASK-MAIL ===================
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # Exemple : Gmail
@@ -11,6 +20,12 @@ app.config['MAIL_USERNAME'] = 'votre_email@gmail.com'
 app.config['MAIL_PASSWORD'] = 'votre_mot_de_passe'
 # Pour un usage plus propre, vous pouvez aussi définir:
 # app.config['MAIL_DEFAULT_SENDER'] = 'votre_email@gmail.com'
+
+# Remplace par ton URL exacte Scalingo
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
 
 mail = Mail(app)
 
@@ -86,19 +101,29 @@ def resume_devis():
     type_service = request.form.get("type_service")
     date_rdv = request.form.get("date_rdv")
     heure_rdv = request.form.get("heure_rdv")
-
-    # Ici vous pouvez : 
-    # - Enregistrer en BDD
-    # - Envoyer un email 
-    # - Générer un PDF, etc.
-
-    # On affiche la page de résumé en passant les valeurs
+    form_email = request.form.get("user_email")
+    
+    # Vérifier que l'email renseigné dans le devis correspond à celui du compte client (stocké dans la session)
+    client_email = session.get("email")
+    if client_email and form_email != client_email:
+        flash("L'adresse e-mail renseignée ne correspond pas à celle de votre compte client.", "danger")
+        return redirect(url_for("devis"))
+    
+    # Vous pouvez enregistrer ces données ou continuer le traitement
     return render_template("resume_devis.html",
                            secteur=secteur,
                            nom=nom,
                            type_service=type_service,
                            date_rdv=date_rdv,
                            heure_rdv=heure_rdv)
+
+@app.route('/envoyer_mail')
+def envoyer_mail():
+    return "Fonction d'envoi par mail ici"
+
+@app.route('/envoyer_compte')
+def envoyer_compte():
+    return "Fonction d'envoi vers le compte ici"
 
 @app.route("/paiement-stripe", methods=["GET", "POST"])
 def paiement_stripe():
@@ -165,7 +190,8 @@ def signup():
 
 @app.route("/compte-client")
 def compte_client():
-    return render_template("compte_client.html")
+    devis_data = session.get('devis_data')
+    return render_template("compte_client.html", devis_data=devis_data)
 
 @app.route("/newsletter", methods=["POST"])
 def newsletter():
@@ -184,6 +210,137 @@ def nos_outils():
 @app.route("/aide")
 def aide():
     return render_template("aide.html")
+    
+@app.route("/parametres", methods=["GET", "POST"])
+def parametres():
+    # Par exemple, récupérer les informations de l'utilisateur depuis la session ou une BDD
+    user = {
+        "prenom": session.get("prenom", ""),
+        "nom": session.get("nom", ""),
+        "email": session.get("email", "")
+    }
+    return render_template("parametres.html", user=user)
 
+@app.route("/update-password", methods=["GET", "POST"])
+def update_password():
+    if request.method == "POST":
+        # Ici, vous récupérez et traitez le formulaire pour mettre à jour le mot de passe
+        current_password = request.form.get("current_password")
+        new_password = request.form.get("new_password")
+        confirm_password = request.form.get("confirm_password")
+        
+        # Exemple de logique (à adapter à votre système d'authentification)
+        if new_password != confirm_password:
+            flash("Les nouveaux mots de passe ne correspondent pas.", "danger")
+            return redirect(url_for("update_password"))
+        
+        # Logique pour vérifier le mot de passe actuel et mettre à jour le nouveau mot de passe...
+        # update_user_password(current_password, new_password)
+        flash("Votre mot de passe a été mis à jour.", "success")
+        return redirect(url_for("compte_client"))
+    
+    return render_template("update_password.html")
+
+
+@app.route("/update-profile", methods=["GET", "POST"])
+def update_profile():
+    if request.method == "POST":
+        # Récupérez les informations du formulaire
+        prenom = request.form.get("prenom")
+        nom = request.form.get("nom")
+        email = request.form.get("email")
+        # Mettez à jour les informations dans la base de données ou la session
+        # update_user_profile(prenom, nom, email)
+        # Par exemple, mettre à jour la session :
+        session['prenom'] = prenom
+        session['nom'] = nom
+        session['email'] = email
+        flash("Vos informations ont été mises à jour.", "success")
+        return redirect(url_for("compte_client"))
+    
+    # Pour GET, on suppose que les informations de l'utilisateur sont stockées dans la session
+    user = {
+        "prenom": session.get("prenom", ""),
+        "nom": session.get("nom", ""),
+        "email": session.get("email", "")
+    }
+    return render_template("update_profile.html", user=user)
+
+@app.route("/update-social", methods=["GET", "POST"])
+def update_social():
+    if request.method == "POST":
+        facebook = request.form.get("facebook")
+        linkedin = request.form.get("linkedin")
+        instagram = request.form.get("instagram")
+        # Vous pouvez enregistrer ces informations dans votre base de données
+        # Ici, on les stocke dans la session pour l'exemple :
+        session['social'] = {
+            "facebook": facebook,
+            "linkedin": linkedin,
+            "instagram": instagram
+        }
+        flash("Vos réseaux sociaux ont été mis à jour.", "success")
+        return redirect(url_for("parametres"))
+    return render_template("update_social.html")
+
+@app.route('/update_preferences', methods=['POST'])
+def update_preferences():
+    language = request.form.get('language')
+    theme = request.form.get('theme')
+
+    # Stocker les préférences dans la session
+    session['language'] = language
+    session['theme'] = theme
+
+    return redirect(url_for('preferences'))  # ou 'parametres' selon ton organisation
+
+@app.route('/update_notifications', methods=['POST'])
+def update_notifications():
+    notif_email = 'notif_email' in request.form
+    notif_sms = 'notif_sms' in request.form
+    print(f"Email: {notif_email}, SMS: {notif_sms}")
+    return redirect(url_for('parametres'))
+
+@app.route('/update_billing', methods=['POST'])
+def update_billing():
+    name = request.form.get('billing_name')
+    address = request.form.get('billing_address')
+    print(f"Facturation - Nom: {name}, Adresse: {address}")
+    return redirect(url_for('parametres'))
+
+@app.route("/historique")
+def historique():
+    # Récupérer l'historique de navigation depuis la session (ou une liste vide si inexistant)
+    history = session.get("history", [])
+    return render_template("historique.html", history=history)
+
+@app.before_request
+def track_history():
+    if 'history' not in session:
+        session['history'] = []
+    # Ajoutez le chemin de la requête à l'historique
+    session['history'].append(request.path)
+    # Limiter l'historique aux 20 dernières entrées
+    session['history'] = session['history'][-20:]
+
+@app.route("/update_photo", methods=["POST"])
+def update_photo():
+    photo = request.files.get("photo")
+    if photo:
+        filename = secure_filename(photo.filename)
+        upload_folder = os.path.join("static", "uploads")
+        os.makedirs(upload_folder, exist_ok=True)
+        filepath = os.path.join(upload_folder, filename)
+        photo.save(filepath)
+        session['photo_url'] = filename
+        flash("Votre photo de profil a bien été mise à jour.", "success")
+    else:
+        flash("Aucune photo sélectionnée.", "danger")
+    return redirect(url_for("parametres"))
+
+@app.route('/grille-tarifaire')
+def grille_tarifaire():
+    return render_template('grille_tarifaire.html')
+    
 if __name__ == "__main__":
     app.run(debug=True)

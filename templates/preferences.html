@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Préférences - ML2C CONSEIL</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body class="{{ session.get('theme', 'light') }}">
+  {% include "header.html" %}
+
+  <div class="container my-5">
+    <h2>Préférences utilisateur</h2>
+    <form action="{{ url_for('update_preferences') }}" method="POST">
+      <div class="form-group">
+        <label for="language">Langue préférée</label>
+        <select class="form-control" id="language" name="language">
+          <option value="fr" {% if session.get('language') == 'fr' %}selected{% endif %}>Français</option>
+          <option value="en" {% if session.get('language') == 'en' %}selected{% endif %}>Anglais</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="theme">Thème</label>
+        <select class="form-control" id="theme" name="theme">
+          <option value="light" {% if session.get('theme') == 'light' %}selected{% endif %}>Clair</option>
+          <option value="dark" {% if session.get('theme') == 'dark' %}selected{% endif %}>Sombre</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Sauvegarder</button>
+    </form>
+  </div>
+
+  {% include "footer.html" %}
+</body>
+</html>

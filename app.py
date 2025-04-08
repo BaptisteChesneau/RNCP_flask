@@ -1,10 +1,12 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for ,session, flash 
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
-import os
 from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
+load_dotenv()  # ✅ Charge les variables depuis .env
+
 
 app = Flask(__name__)
 app.secret_key = 'votre_clé_secrète'  # Clé secrète nécessaire pour la session
@@ -26,6 +28,21 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+
+# =================== MODÈLES ======================
+class Client(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    activite = db.Column(db.String(100))
+    type_entreprise = db.Column(db.String(100))
+    cabinet = db.Column(db.String(100))
+    civilite = db.Column(db.String(10))
+    nom = db.Column(db.String(100))
+    prenom = db.Column(db.String(100))
+    email = db.Column(db.String(120), unique=True)
+    adresse_siege = db.Column(db.String(200))
+
+    def __repr__(self):
+        return f"<Client {self.prenom} {self.nom}>"
 
 mail = Mail(app)
 
@@ -58,11 +75,25 @@ def formulaire_client():
         email = request.form.get("email")
         adresse_siege = request.form.get("adresse_siege")
 
-        # Envoi d'e-mail
+        # ✅ Enregistrement dans la base de données
+        nouveau_client = Client(
+            activite=activite,
+            type_entreprise=type_entreprise,
+            cabinet=cabinet,
+            civilite=civilite,
+            nom=nom,
+            prenom=prenom,
+            email=email,
+            adresse_siege=adresse_siege
+        )
+        db.session.add(nouveau_client)
+        db.session.commit()
+
+        # 📧 Envoi d'e-mail
         msg = Message(
             subject="Nouvelle fiche client",
-            sender=app.config["MAIL_USERNAME"],  # ou un autre expéditeur configuré
-            recipients=["destinataire@example.com"],  # Mettez ici l'email qui doit recevoir la fiche
+            sender=app.config["MAIL_USERNAME"],
+            recipients=["destinataire@example.com"],
             body=f"""
             Activité: {activite}
             Type d'entreprise: {type_entreprise}
@@ -76,13 +107,10 @@ def formulaire_client():
         )
         mail.send(msg)
 
-        # On pourrait aussi enregistrer en BDD, logger, etc.
-
-        # Après traitement, on redirige vers la page de confirmation
         return redirect(url_for("confirmation"))
 
-    # Si GET, on affiche simplement le formulaire
     return render_template("formulaire_client.html")
+
 
 @app.route("/confirmation")
 def confirmation():

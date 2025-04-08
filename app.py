@@ -4,6 +4,7 @@ from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
 from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 load_dotenv()  # ✅ Charge les variables depuis .env
 
@@ -32,6 +33,7 @@ db = SQLAlchemy(app)
 # =================== MODÈLES ======================
 class Client(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    utilisateur_id = db.Column(db.Integer, db.ForeignKey('utilisateur.id'), nullable=False)
     activite = db.Column(db.String(100))
     type_entreprise = db.Column(db.String(100))
     cabinet = db.Column(db.String(100))
@@ -41,8 +43,11 @@ class Client(db.Model):
     email = db.Column(db.String(120), unique=True)
     adresse_siege = db.Column(db.String(200))
 
+    utilisateur = db.relationship("Utilisateur", back_populates="client")
+
     def __repr__(self):
         return f"<Client {self.prenom} {self.nom}>"
+
 
 mail = Mail(app)
 

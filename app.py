@@ -89,6 +89,11 @@ def plateforme_client():
 
 @app.route("/formulaire", methods=["GET", "POST"])
 def formulaire_client():
+    utilisateur_id = session.get("utilisateur_id")
+    if not utilisateur_id:
+        flash("Vous devez être connecté pour remplir ce formulaire.", "warning")
+        return redirect(url_for("login"))
+
     if request.method == "POST":
         # Récupération des données du formulaire
         activite = request.form.get("activite")
@@ -100,8 +105,9 @@ def formulaire_client():
         email = request.form.get("email")
         adresse_siege = request.form.get("adresse_siege")
 
-        # ✅ Enregistrement dans la base de données
+        # ✅ Enregistrement dans la base de données avec lien à l'utilisateur
         nouveau_client = Client(
+            utilisateur_id=utilisateur_id,
             activite=activite,
             type_entreprise=type_entreprise,
             cabinet=cabinet,
@@ -135,6 +141,7 @@ def formulaire_client():
         return redirect(url_for("confirmation"))
 
     return render_template("formulaire_client.html")
+
 
 
 @app.route("/confirmation")
@@ -237,8 +244,24 @@ def login():
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-        # Traitement de la création de compte
-        pass
+        username = request.form.get("username")
+        email = request.form.get("email")
+        password = request.form.get("password")
+
+        # Créer l'utilisateur
+        user = Utilisateur(nom_utilisateur=username, email=email)
+        user.set_password(password)
+        db.session.add(user)
+        db.session.commit()
+
+        # Démarrer la session pour l'utilisateur
+        session["utilisateur_id"] = user.id
+        session["email"] = user.email
+        session["prenom"] = username  # Pour le message de bienvenue
+
+        # Rediriger vers le formulaire client
+        return redirect(url_for("formulaire_client"))
+
     return render_template("signup.html")
 
 @app.route("/compte-client")

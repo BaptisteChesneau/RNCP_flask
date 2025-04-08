@@ -235,14 +235,24 @@ def mentions_legales():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        # Traitement de la connexion
-        # Par exemple, vérifiez les identifiants (ceci est un exemple fictif)
         email = request.form.get("email")
         password = request.form.get("password")
-        # Si l'authentification est réussie, redirigez vers la page de compte client
-        # (Ici, nous supposons que la vérification est réussie)
-        return redirect(url_for("compte_client"))
+
+        utilisateur = Utilisateur.query.filter_by(email=email).first()
+
+        if utilisateur and utilisateur.check_password(password):
+            # ✅ Stocker les infos en session
+            session["utilisateur_id"] = utilisateur.id
+            session["email"] = utilisateur.email
+            session["prenom"] = utilisateur.nom_utilisateur  # Pour afficher le message "Bonjour X"
+            
+            flash("Connexion réussie !", "success")
+            return redirect(url_for("compte_client"))
+        else:
+            flash("Adresse e-mail ou mot de passe incorrect.", "danger")
+
     return render_template("login.html")
+
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():

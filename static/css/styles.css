@@ -149,7 +149,7 @@ footer.footer-custom {
 /* DROITE : Liens RGPD & autres alignés horizontalement */
 .footer-right-horizontal {
   display: flex;
-  gap: 2rem;
+  gap: 2rem; /* Espace horizontal entre les liens */
   justify-content: flex-end;
   align-items: center;
   flex-wrap: wrap;
@@ -163,7 +163,7 @@ footer.footer-custom {
 }
 
 .footer-right-horizontal .btn-link:hover {
-  color: #D81E5B;
+  color: #D81E5B; /* Rose Pantone au survol */
   text-decoration: underline;
 }
 
@@ -436,6 +436,9 @@ body.dark .form-control::placeholder {
 */
 
 
+/*============================================================
+  19) FORM-GROUP & ALERTS (UTILISATION GÉNÉRALE)
+============================================================*/
 .form-group {
   margin-bottom: 15px;
 }

@@ -424,6 +424,7 @@ body.dark .form-control::placeholder {
   color: #ccc;
 }
 
+/* 
 .container {
   max-width: 500px;
   margin: 50px auto;
@@ -432,6 +433,8 @@ body.dark .form-control::placeholder {
   background: #f9f9f9;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
+*/
+
 
 .form-group {
   margin-bottom: 15px;

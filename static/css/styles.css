@@ -108,38 +108,37 @@ nav {
 /*============================================================
   6) FOOTER
 ============================================================*/
-footer {
-  background-color: #455A64; /* Bleu gris plus foncé */
-  color: #333;
+footer.footer-custom {
+  background-color: #607D8B; /* Bleu gris (non transparent) */
+  color: #fff;
   padding: 1.5rem 0;
   margin-top: 2rem;
-  border-top: 3px solid #333; /* Fine séparation */
+  border-top: 3px solid #333;
   z-index: 10;
   position: relative;
 }
 
-/* Container du footer pour éviter qu'il hérite du container principal */
+/* Container principal du footer */
 .footer-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap; /* pour que ça passe bien sur mobile */
-  background: transparent;
+  flex-wrap: wrap;
 }
 
-/* Icônes sociales à gauche */
+/* GAUCHE : Réseaux sociaux */
 .footer-left {
   display: flex;
   align-items: center;
 }
 .footer-left img {
-  width: 48px; /* Plus visibles */
+  width: 48px;
   height: auto;
   margin-right: 1rem;
   border-radius: 6px;
 }
 
-/* Texte central */
+/* MILIEU : Coordonnées */
 .footer-middle {
   text-align: center;
   flex-direction: column;
@@ -147,22 +146,24 @@ footer {
   color: #fff;
 }
 
-/* Liens à droite */
-.footer-right {
+/* DROITE : Liens RGPD & autres alignés horizontalement */
+.footer-right-horizontal {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  gap: 2rem;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-.footer-right .btn-link {
-  color: #333;
+.footer-right-horizontal .btn-link {
+  color: #fff;
   font-weight: 500;
   text-decoration: none;
   padding: 0.25rem 0;
 }
 
-.footer-right .btn-link:hover {
-  color: #D81E5B; /* Rose sur survol */
+.footer-right-horizontal .btn-link:hover {
+  color: #D81E5B;
   text-decoration: underline;
 }
 

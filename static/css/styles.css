@@ -109,55 +109,61 @@ nav {
   6) FOOTER
 ============================================================*/
 footer {
-  background-color: #607D8B; /* Bleu gris */
+  background-color: #455A64; /* Bleu gris plus foncé */
   color: #333;
-  padding: 1rem 0;
+  padding: 1.5rem 0;
   margin-top: 2rem;
+  border-top: 3px solid #333; /* Fine séparation */
+  z-index: 10;
+  position: relative;
 }
 
-footer .container {
+/* Container du footer pour éviter qu'il hérite du container principal */
+.footer-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap; /* pour que ça passe bien sur mobile */
+  background: transparent;
 }
 
-.footer-left,
-.footer-middle,
-.footer-right {
+/* Icônes sociales à gauche */
+.footer-left {
   display: flex;
   align-items: center;
 }
-
-.footer-middle {
-  flex-direction: column;
-  text-align: center;
-}
-
-.footer-left a {
-  color: #fff;
-  font-size: 1.2rem;
-  margin-right: 0.75rem;
-  transition: color 0.3s ease;
-}
-.footer-left a:hover {
-  color: #ccc;
-  text-decoration: none;
-}
-
-/* Pour grossir les icônes des réseaux sociaux dans le footer */
 .footer-left img {
-  width: 32px; /* Augmenté de 24px à 32px */
+  width: 48px; /* Plus visibles */
   height: auto;
+  margin-right: 1rem;
+  border-radius: 6px;
+}
+
+/* Texte central */
+.footer-middle {
+  text-align: center;
+  flex-direction: column;
+  display: flex;
+  color: #fff;
+}
+
+/* Liens à droite */
+.footer-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .footer-right .btn-link {
-  color: #fff;
-  margin-left: 0.5rem;
-  transition: color 0.2s ease;
-}
-.footer-right .btn-link:hover {
-  color: #ccc;
+  color: #333;
+  font-weight: 500;
   text-decoration: none;
+  padding: 0.25rem 0;
+}
+
+.footer-right .btn-link:hover {
+  color: #D81E5B; /* Rose sur survol */
+  text-decoration: underline;
 }
 
 /*============================================================

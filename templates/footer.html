@@ -36,12 +36,14 @@
         <span>+33 (0)6 72 34 32 94</span>
       </div>
 
-      <!-- DROITE : Liens -->
-      <div class="footer-right d-flex justify-content-end align-items-center">
-        <a href="{{ url_for('rgpd') }}" class="btn btn-link mr-3">RGPD</a>
-        <a href="{{ url_for('mentions_legales') }}" class="btn btn-link mr-3">Mentions légales</a>
-        <a href="{{ url_for('aide') }}" class="btn btn-link">Aide</a>
-      </div>      
+    <!-- DROITE : Liens -->
+    <!-- On force la couleur blanche (et non bleue) avec style="color: white;" -->
+    <div class="footer-right-horizontal d-flex justify-content-end align-items-center">
+      <!-- Force white text via inline style -->
+      <a href="{{ url_for('rgpd') }}" class="btn btn-link" style="color: white;">RGPD</a>
+      <a href="{{ url_for('mentions_legales') }}" class="btn btn-link" style="color: white;">Mentions légales</a>
+      <a href="{{ url_for('aide') }}" class="btn btn-link" style="color: white;">Aide</a>
+    </div>
 
     </div>
   </footer>

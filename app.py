@@ -388,7 +388,9 @@ def update_preferences():
     session['language'] = language
     session['theme'] = theme
 
-    return redirect(url_for('preferences'))  # ou 'parametres' selon ton organisation
+    flash("Préférences mises à jour avec succès.", "success")  # Ajout du message flash
+
+    return redirect(url_for('account_settings'))  # ou 'parametres' ou la route exacte de ta page de paramètres
 
 @app.route('/update_notifications', methods=['POST'])
 def update_notifications():

@@ -43,6 +43,10 @@
           <a href="#notificationsSection" class="list-group-item list-group-item-action" data-toggle="list">Notifications</a>
           <a href="#billingSection" class="list-group-item list-group-item-action" data-toggle="list">Facturation</a>
           <a href="#photoSection" class="list-group-item list-group-item-action" data-toggle="list">Photo de profil</a>
+          <a href="#securitySection" class="list-group-item list-group-item-action" data-toggle="list">Sécurité</a>
+          <a href="#dataExportSection" class="list-group-item list-group-item-action" data-toggle="list">Mes données</a>
+          <a href="#supportSection" class="list-group-item list-group-item-action" data-toggle="list">Assistance</a>
+
         </div>
       </div>
 
@@ -177,6 +181,42 @@
                 <input type="text" class="form-control" id="billing_address" name="billing_address" required>
               </div>
               <button type="submit" class="btn btn-primary btn-progress">Enregistrer</button>
+            </form>
+          </div>
+                    <!-- Sécurité -->
+          <div class="tab-pane fade" id="securitySection" role="tabpanel">
+            <h4>Sécurité du compte</h4>
+            <form action="{{ url_for('update_security') }}" method="POST">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="2fa" name="2fa" {% if user.uses_2fa %}checked{% endif %}>
+                <label class="form-check-label" for="2fa">Activer l’authentification à deux facteurs</label>
+              </div>
+              <button type="submit" class="btn btn-primary btn-progress mt-3">Mettre à jour la sécurité</button>
+            </form>
+          </div>
+
+          <!-- Mes données -->
+          <div class="tab-pane fade" id="dataExportSection" role="tabpanel">
+            <h4>Téléchargement de vos données</h4>
+            <p>Vous pouvez télécharger une copie de vos informations personnelles.</p>
+            <form action="{{ url_for('export_data') }}" method="POST">
+              <button type="submit" class="btn btn-outline-primary">Télécharger mes données</button>
+            </form>
+          </div>
+
+          <!-- Assistance -->
+          <div class="tab-pane fade" id="supportSection" role="tabpanel">
+            <h4>Centre d’assistance</h4>
+            <form action="{{ url_for('contact_support') }}" method="POST">
+              <div class="form-group">
+                <label for="support_subject">Objet de votre demande</label>
+                <input type="text" class="form-control" id="support_subject" name="subject" required>
+              </div>
+              <div class="form-group">
+                <label for="support_message">Message</label>
+                <textarea class="form-control" id="support_message" name="message" rows="4" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary btn-progress">Envoyer la demande</button>
             </form>
           </div>
 

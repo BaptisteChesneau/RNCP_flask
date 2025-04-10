@@ -480,7 +480,44 @@ def supprimer_client(client_id):
     flash("La fiche client a été supprimée.", "danger")
     return redirect(url_for("ma_fiche_client"))
 
-    
+@app.route('/update_security', methods=['POST'])
+def update_security():
+    uses_2fa = request.form.get('2fa') == 'on'
+    session['uses_2fa'] = uses_2fa  # Enregistre dans la session
+
+    flash("Paramètres de sécurité mis à jour.", "success")
+    return redirect(url_for('account_settings'))
+
+from flask import jsonify
+
+@app.route('/export_data', methods=['POST'])
+def export_data():
+    data = {
+        "prenom": session.get('prenom', 'N/A'),
+        "nom": session.get('nom', 'N/A'),
+        "email": session.get('email', 'N/A'),
+        "uses_2fa": session.get('uses_2fa', False)
+    }
+
+    response = jsonify(data)
+    response.headers["Content-Disposition"] = "attachment; filename=mes_donnees.json"
+    return response
+
+@app.route('/contact_support', methods=['POST'])
+def contact_support():
+    subject = request.form.get('subject')
+    message = request.form.get('message')
+    email = session.get('email', 'non connecté')
+
+    print("\n====== MESSAGE SUPPORT ======")
+    print(f"Email : {email}")
+    print(f"Objet : {subject}")
+    print(f"Message : {message}")
+    print("==============================\n")
+
+    flash("Votre demande a bien été envoyée à notre équipe d'assistance.", "success")
+    return redirect(url_for('account_settings'))
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)

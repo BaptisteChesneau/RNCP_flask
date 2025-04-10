@@ -7,7 +7,9 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
-<body>
+
+<body><!-- 🔧 MODIFICATION ICI : ajout de la classe dynamique -->
+  <body class="{{ session.get('theme', 'light') }}">
 
   {% include "header.html" %}
 

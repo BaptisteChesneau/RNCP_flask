@@ -57,6 +57,14 @@ class Utilisateur(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     mot_de_passe_hash = db.Column(db.String(200), nullable=False)
 
+    # Relations avec les autres tables :
+    devis = db.relationship("Devis", back_populates="utilisateur")
+    paiements = db.relationship("Paiement", back_populates="utilisateur")
+    support_tickets = db.relationship("SupportTicket", back_populates="utilisateur")
+    preferences = db.relationship("Preferences", back_populates="utilisateur", uselist=False)
+    historiques = db.relationship("Historique", back_populates="utilisateur")
+    articles = db.relationship("BlogPost", back_populates="auteur")
+
     # Relation : un utilisateur peut avoir plusieurs clients
     clients = db.relationship("Client", back_populates="utilisateur", lazy=True)
 
@@ -69,6 +77,106 @@ class Utilisateur(db.Model):
     def check_password(self, password):
         return check_password_hash(self.mot_de_passe_hash, password)
 
+# =================== MODÈLE DEVIS (optionnel) ======================
+class Devis(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    utilisateur_id = db.Column(db.Integer, db.ForeignKey('utilisateur.id'), nullable=False)
+    secteur = db.Column(db.String(100))
+    nom = db.Column(db.String(100))
+    type_service = db.Column(db.String(100))
+    date_rdv = db.Column(db.String(50))
+    heure_rdv = db.Column(db.String(50))
+    email = db.Column(db.String(120))
+
+    # Relation : un Devis appartient à un Utilisateur
+    utilisateur = db.relationship("Utilisateur", back_populates="devis")
+
+    def __repr__(self):
+        return f"<Devis {self.nom} - {self.type_service}>"
+
+# =================== MODÈLE PAIEMENT (optionnel) ======================
+class Paiement(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    utilisateur_id = db.Column(db.Integer, db.ForeignKey('utilisateur.id'), nullable=False)
+    montant = db.Column(db.Float)  # Par ex. 49.99
+    date_transaction = db.Column(db.DateTime)  # Nécessite éventuellement "from datetime import datetime"
+    statut = db.Column(db.String(50))  # "validé", "en attente", "refusé", ...
+    mode_paiement = db.Column(db.String(50))  # "Stripe", "PayPal", ...
+
+    # Relation : un Paiement appartient à un Utilisateur
+    utilisateur = db.relationship("Utilisateur", back_populates="paiements")
+
+    def __repr__(self):
+        return f"<Paiement #{self.id} - {self.statut}>"
+
+# =================== MODÈLE NEWSLETTER (optionnel) ======================
+class Newsletter(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    date_inscription = db.Column(db.DateTime)  # Optionnel, si vous voulez enregistrer la date
+
+    def __repr__(self):
+        return f"<Newsletter {self.email}>"
+
+# =================== MODÈLE SUPPORT TICKET (optionnel) ======================
+class SupportTicket(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    utilisateur_id = db.Column(db.Integer, db.ForeignKey('utilisateur.id'), nullable=True)
+    sujet = db.Column(db.String(200))
+    message = db.Column(db.Text)
+    date_creation = db.Column(db.DateTime)
+    statut = db.Column(db.String(50))  # "nouveau", "en cours", "résolu", ...
+
+    # Relation : un ticket peut appartenir à un utilisateur (ou pas, si anonyme)
+    utilisateur = db.relationship("Utilisateur", back_populates="support_tickets")
+
+    def __repr__(self):
+        return f"<SupportTicket #{self.id} - {self.sujet[:15]}...>"
+
+# =================== MODÈLE PREFERENCES (optionnel) ======================
+class Preferences(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    utilisateur_id = db.Column(db.Integer, db.ForeignKey('utilisateur.id'), nullable=False)
+
+    # Exemple de colonnes
+    langue = db.Column(db.String(10))  # "FR", "EN", ...
+    theme = db.Column(db.String(10))   # "light", "dark"...
+    notif_email = db.Column(db.Boolean, default=True)
+    notif_sms = db.Column(db.Boolean, default=False)
+
+    # Relation : 1:1 avec Utilisateur (ou 1:N selon votre logique)
+    utilisateur = db.relationship("Utilisateur", back_populates="preferences")
+
+    def __repr__(self):
+        return f"<Preferences #{self.id} - {self.utilisateur_id}>"
+
+# =================== MODÈLE HISTORIQUE (optionnel) ======================
+class Historique(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    utilisateur_id = db.Column(db.Integer, db.ForeignKey('utilisateur.id'), nullable=False)
+    path = db.Column(db.String(200))       # URL/Route visitée
+    date_visite = db.Column(db.DateTime)   # Date/Heure de la visite
+
+    # Relation : un historique appartient à un utilisateur
+    utilisateur = db.relationship("Utilisateur", back_populates="historiques")
+
+    def __repr__(self):
+        return f"<Historique {self.path} - {self.date_visite}>"
+
+# =================== MODÈLE BLOGPOST (optionnel) ======================
+class BlogPost(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    titre = db.Column(db.String(200), nullable=False)
+    contenu = db.Column(db.Text, nullable=False)
+    date_publication = db.Column(db.DateTime)
+    auteur_id = db.Column(db.Integer, db.ForeignKey('utilisateur.id'), nullable=False)
+
+    # Relation : un article de blog est écrit par un utilisateur
+    auteur = db.relationship("Utilisateur", back_populates="articles")
+
+    def __repr__(self):
+        return f"<BlogPost {self.titre[:15]}...>"
 
 
 mail = Mail(app)

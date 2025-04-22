@@ -48,9 +48,17 @@
       <a href="{{ url_for('envoyer_mail') }}" class="btn btn-pink">
         Envoyer par mail
       </a>
-      <a href="{{ url_for('envoyer_compte') }}" class="btn btn-pink">
-        Envoyer au compte
-      </a>
+
+      <!-- ✅ Formulaire pour "Envoyer au compte" -->
+      <form action="{{ url_for('resume_devis') }}" method="post" style="display: inline;">
+        <input type="hidden" name="secteur" value="{{ secteur }}">
+        <input type="hidden" name="nom" value="{{ nom }}">
+        <input type="hidden" name="type_service" value="{{ type_service }}">
+        <input type="hidden" name="date_rdv" value="{{ date_rdv }}">
+        <input type="hidden" name="heure_rdv" value="{{ heure_rdv }}">
+        <input type="hidden" name="user_email" value="{{ session.get('email') }}">
+        <button type="submit" class="btn btn-pink">Envoyer au compte</button>
+      </form>
     </div>
 
     <!-- Bouton Retour au menu -->

@@ -268,7 +268,7 @@ def devis():
     # Affiche le formulaire de prise de rendez-vous
     return render_template("devis.html")
 
-MAX_DEVIS_PAR_UTILISATEUR = 3  # Nombre maximal de devis autorisés par utilisateur
+MAX_DEVIS_PAR_UTILISATEUR = 1  # Nombre maximal de devis autorisés par utilisateur
 
 @app.route("/resume-devis", methods=["POST"])
 def resume_devis():

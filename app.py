@@ -259,13 +259,22 @@ def formulaire_client():
 def confirmation():
     return "Formulaire soumis avec succès ! Merci."
 
-@app.route("/devis", methods=["GET"])
+@app.route("/devis", methods=["GET"]) 
 def devis():
+    if "utilisateur_id" not in session:
+        flash("Veuillez vous connecter pour accéder au formulaire de devis.", "warning")
+        return redirect(url_for("login"))
+    
     # Affiche le formulaire de prise de rendez-vous
     return render_template("devis.html")
 
 @app.route("/resume-devis", methods=["POST"])
 def resume_devis():
+    # Vérifie que l'utilisateur est connecté
+    if "utilisateur_id" not in session:
+        flash("Veuillez vous connecter pour consulter le résumé du devis.", "warning")
+        return redirect(url_for("login"))
+
     # Récupère les champs du formulaire
     secteur = request.form.get("secteur")
     nom = request.form.get("nom")

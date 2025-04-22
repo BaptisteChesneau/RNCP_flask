@@ -268,12 +268,22 @@ def devis():
     # Affiche le formulaire de prise de rendez-vous
     return render_template("devis.html")
 
+MAX_DEVIS_PAR_UTILISATEUR = 3  # Nombre maximal de devis autorisés par utilisateur
+
 @app.route("/resume-devis", methods=["POST"])
 def resume_devis():
     # Vérifie que l'utilisateur est connecté
     if "utilisateur_id" not in session:
         flash("Veuillez vous connecter pour consulter le résumé du devis.", "warning")
         return redirect(url_for("login"))
+
+    utilisateur_id = session["utilisateur_id"]
+
+    # Vérifie si l'utilisateur a déjà atteint la limite de devis
+    nb_devis = Devis.query.filter_by(utilisateur_id=utilisateur_id).count()
+    if nb_devis >= MAX_DEVIS_PAR_UTILISATEUR:
+        flash("Vous avez atteint le nombre maximal de devis autorisés.", "danger")
+        return redirect(url_for("compte_client"))
 
     # Récupère les champs du formulaire
     secteur = request.form.get("secteur")
@@ -283,13 +293,27 @@ def resume_devis():
     heure_rdv = request.form.get("heure_rdv")
     form_email = request.form.get("user_email")
     
-    # Vérifier que l'email renseigné dans le devis correspond à celui du compte client (stocké dans la session)
+    # Vérifie que l'email renseigné correspond à celui du compte client
     client_email = session.get("email")
     if client_email and form_email != client_email:
         flash("L'adresse e-mail renseignée ne correspond pas à celle de votre compte client.", "danger")
         return redirect(url_for("devis"))
-    
-    # Vous pouvez enregistrer ces données ou continuer le traitement
+
+    # Enregistre le devis dans la base de données
+    nouveau_devis = Devis(
+        utilisateur_id=utilisateur_id,
+        secteur=secteur,
+        nom=nom,
+        type_service=type_service,
+        date_rdv=date_rdv,
+        heure_rdv=heure_rdv,
+        email=form_email
+    )
+    db.session.add(nouveau_devis)
+    db.session.commit()
+
+    flash("Votre devis a bien été enregistré.", "success")
+
     return render_template("resume_devis.html",
                            secteur=secteur,
                            nom=nom,
@@ -397,14 +421,19 @@ def signup():
 @app.route("/compte-client")
 def compte_client():
     utilisateur_id = session.get("utilisateur_id")
-    devis_data = session.get('devis_data')
+    devis_data = session.get("devis_data")  # données stockées temporairement
 
     clients = []
+    devis_list = []
+
     if utilisateur_id:
         clients = Client.query.filter_by(utilisateur_id=utilisateur_id).all()
+        devis_list = Devis.query.filter_by(utilisateur_id=utilisateur_id).all()
 
-    return render_template("compte_client.html", devis_data=devis_data, clients=clients)
-
+    return render_template("compte_client.html", 
+                           clients=clients, 
+                           devis_data=devis_data, 
+                           devis_list=devis_list)
 
 @app.route("/newsletter", methods=["POST"])
 def newsletter():

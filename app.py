@@ -277,12 +277,11 @@ def resume_devis():
         flash("Veuillez vous connecter pour consulter le résumé du devis.", "warning")
         return redirect(url_for("login"))
 
-    utilisateur_id = session["utilisateur_id"]
-
-    # Vérifie si l'utilisateur a déjà atteint la limite de devis
-    nb_devis = Devis.query.filter_by(utilisateur_id=utilisateur_id).count()
-    if nb_devis >= MAX_DEVIS_PAR_UTILISATEUR:
-        flash("Vous avez atteint le nombre maximal de devis autorisés.", "danger")
+    # Limiter le nombre de devis par utilisateur (ex: max 3)
+    utilisateur_id = session.get("utilisateur_id")
+    nombre_devis = Devis.query.filter_by(utilisateur_id=utilisateur_id).count()
+    if nombre_devis >= 3:
+        flash("Vous avez déjà soumis le nombre maximum de devis autorisé (3).", "danger")
         return redirect(url_for("compte_client"))
 
     # Récupère les champs du formulaire
@@ -292,14 +291,14 @@ def resume_devis():
     date_rdv = request.form.get("date_rdv")
     heure_rdv = request.form.get("heure_rdv")
     form_email = request.form.get("user_email")
-    
-    # Vérifie que l'email renseigné correspond à celui du compte client
+
+    # Vérifier que l'e-mail correspond
     client_email = session.get("email")
     if client_email and form_email != client_email:
         flash("L'adresse e-mail renseignée ne correspond pas à celle de votre compte client.", "danger")
         return redirect(url_for("devis"))
 
-    # Enregistre le devis dans la base de données
+    # Enregistrement dans la base de données
     nouveau_devis = Devis(
         utilisateur_id=utilisateur_id,
         secteur=secteur,
@@ -312,8 +311,7 @@ def resume_devis():
     db.session.add(nouveau_devis)
     db.session.commit()
 
-    flash("Votre devis a bien été enregistré.", "success")
-
+    # Envoi des données à la page résumé
     return render_template("resume_devis.html",
                            secteur=secteur,
                            nom=nom,

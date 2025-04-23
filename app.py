@@ -500,6 +500,27 @@ def update_password():
     
     return render_template("update_password.html")
 
+@app.route("/parametres/gerer-devis", methods=["GET", "POST"])
+def gerer_devis():
+    utilisateur_id = session.get("utilisateur_id")
+    if not utilisateur_id:
+        flash("Veuillez vous connecter pour accéder à vos devis.", "warning")
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        devis_ids = request.form.getlist("devis_ids")
+        if devis_ids:
+            for devis_id in devis_ids:
+                devis = Devis.query.get(int(devis_id))
+                if devis and devis.utilisateur_id == utilisateur_id:
+                    db.session.delete(devis)
+            db.session.commit()
+            flash("Les devis sélectionnés ont été supprimés avec succès.", "success")
+            return redirect(url_for("gerer_devis"))
+
+    # Récupère tous les devis liés à l'utilisateur
+    devis_list = Devis.query.filter_by(utilisateur_id=utilisateur_id).all()
+    return render_template("gerer_devis.html", devis_list=devis_list)
 
 @app.route("/update-profile", methods=["GET", "POST"])
 def update_profile():

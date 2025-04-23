@@ -219,6 +219,26 @@
               <button type="submit" class="btn btn-primary btn-progress">Envoyer la demande</button>
             </form>
           </div>
+          
+          <!-- Section pour gérer les devis -->
+          <div class="mt-4">
+            <h4>Gérer mes devis</h4>
+            {% if devis_list %}
+              <form method="POST" action="{{ url_for('supprimer_devis') }}">
+                {% for devis in devis_list %}
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="devis_ids" value="{{ devis.id }}" id="devis{{ devis.id }}">
+                    <label class="form-check-label" for="devis{{ devis.id }}">
+                      {{ devis.nom }} - {{ devis.type_service }} - {{ devis.date_rdv }}
+                    </label>
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-danger mt-2">Supprimer les devis sélectionnés</button>
+          </form>
+        {% else %}
+          <p>Aucun devis enregistré.</p>
+        {% endif %}
+      </div>
 
           <!-- Photo de profil -->
           <div class="tab-pane fade" id="photoSection" role="tabpanel">

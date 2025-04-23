@@ -461,6 +461,25 @@ def parametres():
     }
     return render_template("parametres.html", user=user)
 
+@app.route("/supprimer-devis", methods=["POST"])
+def supprimer_devis():
+    if "utilisateur_id" not in session:
+        flash("Veuillez vous connecter pour supprimer un devis.", "warning")
+        return redirect(url_for("login"))
+
+    ids_a_supprimer = request.form.getlist("devis_ids")
+    if ids_a_supprimer:
+        for id in ids_a_supprimer:
+            devis = Devis.query.filter_by(id=id, utilisateur_id=session["utilisateur_id"]).first()
+            if devis:
+                db.session.delete(devis)
+        db.session.commit()
+        flash("Les devis sélectionnés ont été supprimés avec succès.", "success")
+    else:
+        flash("Aucun devis sélectionné.", "info")
+
+    return redirect(url_for("parametres"))
+
 @app.route("/update-password", methods=["GET", "POST"])
 def update_password():
     if request.method == "POST":

@@ -463,20 +463,22 @@ def parametres():
 
 @app.route("/supprimer-devis", methods=["POST"])
 def supprimer_devis():
-    if "utilisateur_id" not in session:
-        flash("Veuillez vous connecter pour supprimer un devis.", "warning")
+    utilisateur_id = session.get("utilisateur_id")
+    if not utilisateur_id:
+        flash("Vous devez être connecté pour gérer vos devis.", "warning")
         return redirect(url_for("login"))
 
-    ids_a_supprimer = request.form.getlist("devis_ids")
-    if ids_a_supprimer:
-        for id in ids_a_supprimer:
-            devis = Devis.query.filter_by(id=id, utilisateur_id=session["utilisateur_id"]).first()
-            if devis:
-                db.session.delete(devis)
-        db.session.commit()
-        flash("Les devis sélectionnés ont été supprimés avec succès.", "success")
+    devis_id = request.form.get("devis_ids")
+    if devis_id:
+        devis = Devis.query.filter_by(id=devis_id, utilisateur_id=utilisateur_id).first()
+        if devis:
+            db.session.delete(devis)
+            db.session.commit()
+            flash("Le devis a été supprimé avec succès.", "success")
+        else:
+            flash("Ce devis n'existe pas ou ne vous appartient pas.", "danger")
     else:
-        flash("Aucun devis sélectionné.", "info")
+        flash("Aucun devis sélectionné.", "warning")
 
     return redirect(url_for("parametres"))
 

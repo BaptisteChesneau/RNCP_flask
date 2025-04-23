@@ -46,6 +46,7 @@
           <a href="#securitySection" class="list-group-item list-group-item-action" data-toggle="list">Sécurité</a>
           <a href="#dataExportSection" class="list-group-item list-group-item-action" data-toggle="list">Mes données</a>
           <a href="#supportSection" class="list-group-item list-group-item-action" data-toggle="list">Assistance</a>
+          <a href="{{ url_for('gerer_devis') }}" class="list-group-item list-group-item-action">Gérer mes devis</a>
 
         </div>
       </div>
@@ -220,8 +221,8 @@
             </form>
           </div>
           
-          <!-- Section pour gérer les devis -->
-          <div class="mt-4">
+          <!-- Gérer mes devis -->
+          <div class="tab-pane fade" id="gererDevisSection" role="tabpanel">
             <h4>Gérer mes devis</h4>
             {% if devis_list %}
               <form method="POST" action="{{ url_for('supprimer_devis') }}">
@@ -231,14 +232,14 @@
                     <label class="form-check-label" for="devis{{ devis.id }}">
                       {{ devis.nom }} - {{ devis.type_service }} - {{ devis.date_rdv }}
                     </label>
-                </div>
-            {% endfor %}
-            <button type="submit" class="btn btn-danger mt-2">Supprimer les devis sélectionnés</button>
-          </form>
-        {% else %}
-          <p>Aucun devis enregistré.</p>
-        {% endif %}
-      </div>
+                  </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-danger mt-2">Supprimer les devis sélectionnés</button>
+              </form>
+            {% else %}
+              <p>Aucun devis enregistré.</p>
+            {% endif %}
+          </div>
 
           <!-- Photo de profil -->
           <div class="tab-pane fade" id="photoSection" role="tabpanel">

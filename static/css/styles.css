@@ -499,3 +499,22 @@ input[type="password"] {
   background-color: #f8d7da;
   color: #721c24;
 }
+
+/*============================================================
+  FICHE RÉSUMÉ DEVIS PERSONNALISÉE
+============================================================*/
+.fiche-resume-card {
+  background-color: #00A89D; /* Vert turquoise */
+  color: white;
+  border-radius: 5px;
+  border: none;
+}
+
+.fiche-resume-header {
+  background-color: #D81E5B !important;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+

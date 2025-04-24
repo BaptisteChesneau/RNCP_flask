@@ -58,25 +58,25 @@
           <p class="mt-3">Aucun devis n'a été soumis.</p>
         {% endif %}
 
-      <!-- Résumé en BDD -->
-      <div class="card mt-4">
-        <div class="card-header bg-primary text-white">Fiche résumé devis</div>
-        <div class="card-body">
-          {% if devis_list %}
-            {% for devis in devis_list %}
-              <p><strong>Nom :</strong> {{ devis.nom }}</p>
-              <p><strong>Secteur :</strong> {{ devis.secteur }}</p>
-              <p><strong>Type de service :</strong> {{ devis.type_service }}</p>
-              <p><strong>Date :</strong> {{ devis.date_rdv }}</p>
-              <p><strong>Heure :</strong> {{ devis.heure_rdv }}</p>
-              <hr>
-            {% endfor %}
-          {% else %}
-            <p>Aucun devis enregistré pour le moment.</p>
-          {% endif %}
-        </div>
+    <!-- Résumé en BDD -->
+    <div class="card mt-4 fiche-resume-card"> <!-- ✅ Ajout de la classe personnalisée -->
+      <div class="card-header fiche-resume-header text-white">Fiche résumé devis</div>
+      <div class="card-body">
+        {% if devis_list %}
+          {% for devis in devis_list %}
+            <p><strong>Nom :</strong> {{ devis.nom }}</p>
+            <p><strong>Secteur :</strong> {{ devis.secteur }}</p>
+            <p><strong>Type de service :</strong> {{ devis.type_service }}</p>
+            <p><strong>Date :</strong> {{ devis.date_rdv }}</p>
+            <p><strong>Heure :</strong> {{ devis.heure_rdv }}</p>
+            <hr>
+          {% endfor %}
+        {% else %}
+          <p>Aucun devis enregistré pour le moment.</p>
+        {% endif %}
       </div>
     </div>
+
 
     <!-- Formulaire Rempli Tab -->
     <div class="tab-pane fade" id="formulaire" role="tabpanel" aria-labelledby="formulaire-tab">

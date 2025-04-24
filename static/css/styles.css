@@ -500,21 +500,19 @@ input[type="password"] {
   color: #721c24;
 }
 
-/*============================================================
-  FICHE RÉSUMÉ DEVIS PERSONNALISÉE
-============================================================*/
+/* ============================================================
+   20) FICHE RÉSUMÉ DEVIS (fond vert + bandeau rose ML2C)
+============================================================ */
 .fiche-resume-card {
-  background-color: #00A89D; /* Vert turquoise */
-  color: white;
-  border-radius: 5px;
+  background-color: #00A89D !important; /* ✅ Vert turquoise */
+  border-radius: 8px;
   border: none;
+  color: white;
 }
 
 .fiche-resume-header {
-  background-color: #D81E5B !important;
-  color: white;
+  background-color: #D81E5B !important; /* ✅ Rose ML2C */
+  color: white !important;
   font-weight: bold;
   font-size: 1.2rem;
 }
-
-

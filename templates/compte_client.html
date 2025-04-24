@@ -59,9 +59,9 @@
         {% endif %}
 
     <!-- Résumé en BDD -->
-    <div class="card mt-4 fiche-resume-card"> <!-- ✅ Ajout de la classe personnalisée -->
-      <div class="card-header fiche-resume-header text-white">Fiche résumé devis</div>
-      <div class="card-body">
+    <div class="card mt-4 fiche-resume-card"> <!-- ✅ Carte avec fond vert -->
+      <div class="card-header fiche-resume-header text-white">Fiche résumé devis</div> <!-- ✅ Bandeau rose -->
+      <div class="card-body text-white"> <!-- ✅ Texte blanc -->
         {% if devis_list %}
           {% for devis in devis_list %}
             <p><strong>Nom :</strong> {{ devis.nom }}</p>
@@ -77,7 +77,7 @@
       </div>
     </div>
 
-
+    
     <!-- Formulaire Rempli Tab -->
     <div class="tab-pane fade" id="formulaire" role="tabpanel" aria-labelledby="formulaire-tab">
       {% if clients %}

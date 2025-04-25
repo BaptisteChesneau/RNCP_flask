@@ -329,35 +329,35 @@ def envoyer_compte():
     devis_data = session.get("devis_data")
 
     if not utilisateur_id or not devis_data:
-        flash("Erreur : informations de devis manquantes ou utilisateur non connecté.", "danger")
-        return redirect(url_for("compte_client"))
+        flash("Erreur : utilisateur non connecté ou données du devis manquantes.", "danger")
+        return redirect(url_for("login"))
 
-    # 🔍 Vérifier si ce devis existe déjà dans la base
+    # Vérifie si un devis identique a déjà été créé pour cet utilisateur
     devis_existant = Devis.query.filter_by(
         utilisateur_id=utilisateur_id,
-        secteur=devis_data['secteur'],
-        nom=devis_data['nom'],
-        type_service=devis_data['type_service'],
-        date_rdv=devis_data['date_rdv'],
-        heure_rdv=devis_data['heure_rdv'],
-        email=devis_data['email']
+        nom=devis_data.get("nom"),
+        type_service=devis_data.get("type_service"),
+        date_rdv=devis_data.get("date_rdv"),
+        heure_rdv=devis_data.get("heure_rdv"),
+        email=devis_data.get("email")
     ).first()
 
     if devis_existant:
-        flash("Ce devis a déjà été enregistré dans votre compte.", "info")
+        flash("Ce devis a déjà été enregistré.", "info")
     else:
+        # Créer et enregistrer un nouveau devis
         nouveau_devis = Devis(
             utilisateur_id=utilisateur_id,
-            secteur=devis_data['secteur'],
-            nom=devis_data['nom'],
-            type_service=devis_data['type_service'],
-            date_rdv=devis_data['date_rdv'],
-            heure_rdv=devis_data['heure_rdv'],
-            email=devis_data['email']
+            secteur=devis_data.get("secteur"),
+            nom=devis_data.get("nom"),
+            type_service=devis_data.get("type_service"),
+            date_rdv=devis_data.get("date_rdv"),
+            heure_rdv=devis_data.get("heure_rdv"),
+            email=devis_data.get("email")
         )
         db.session.add(nouveau_devis)
         db.session.commit()
-        flash("Le devis a bien été ajouté à votre compte.", "success")
+        flash("Le devis a été enregistré avec succès dans votre compte.", "success")
 
     return redirect(url_for("compte_client"))
 

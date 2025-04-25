@@ -325,7 +325,41 @@ def envoyer_mail():
 
 @app.route('/envoyer_compte')
 def envoyer_compte():
-    return "Fonction d'envoi vers le compte ici"
+    utilisateur_id = session.get("utilisateur_id")
+    devis_data = session.get("devis_data")
+
+    if not utilisateur_id or not devis_data:
+        flash("Erreur : informations de devis manquantes ou utilisateur non connecté.", "danger")
+        return redirect(url_for("compte_client"))
+
+    # 🔍 Vérifier si ce devis existe déjà dans la base
+    devis_existant = Devis.query.filter_by(
+        utilisateur_id=utilisateur_id,
+        secteur=devis_data['secteur'],
+        nom=devis_data['nom'],
+        type_service=devis_data['type_service'],
+        date_rdv=devis_data['date_rdv'],
+        heure_rdv=devis_data['heure_rdv'],
+        email=devis_data['email']
+    ).first()
+
+    if devis_existant:
+        flash("Ce devis a déjà été enregistré dans votre compte.", "info")
+    else:
+        nouveau_devis = Devis(
+            utilisateur_id=utilisateur_id,
+            secteur=devis_data['secteur'],
+            nom=devis_data['nom'],
+            type_service=devis_data['type_service'],
+            date_rdv=devis_data['date_rdv'],
+            heure_rdv=devis_data['heure_rdv'],
+            email=devis_data['email']
+        )
+        db.session.add(nouveau_devis)
+        db.session.commit()
+        flash("Le devis a bien été ajouté à votre compte.", "success")
+
+    return redirect(url_for("compte_client"))
 
 @app.route("/paiement-stripe", methods=["GET", "POST"])
 def paiement_stripe():

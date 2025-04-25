@@ -37,8 +37,9 @@
 <!-- Tab panes for Devis Rempli and Formulaire Rempli -->
 <div class="tab-content" id="accountTabContent">
 
-  <!-- Devis Rempli Tab -->
+  <!-- Onglet Devis Rempli -->
   <div class="tab-pane fade show active" id="devis" role="tabpanel" aria-labelledby="devis-tab">
+
     {% if session.devis_data %}
       <div class="card mt-3">
         <div class="card-header">
@@ -58,6 +59,7 @@
     {% endif %}
 
     {% if devis_list %}
+      <!-- Résumé en BDD (affiché seulement s’il y a au moins un devis enregistré) -->
       <div class="card mt-4 fiche-resume-card">
         <div class="card-header fiche-resume-header text-white">Fiche résumé devis</div>
         <div class="card-body text-white">
@@ -78,26 +80,7 @@
     {% endif %}
   </div>
 
-    <!-- Résumé en BDD -->
-    <div class="card mt-4 fiche-resume-card"> <!-- ✅ Carte avec fond vert -->
-      <div class="card-header fiche-resume-header text-white">Fiche résumé devis</div> <!-- ✅ Bandeau rose -->
-      <div class="card-body text-white"> <!-- ✅ Texte blanc -->
-        {% if devis_list %}
-          {% for devis in devis_list %}
-            <p><strong>Nom :</strong> {{ devis.nom }}</p>
-            <p><strong>Secteur :</strong> {{ devis.secteur }}</p>
-            <p><strong>Type de service :</strong> {{ devis.type_service }}</p>
-            <p><strong>Date :</strong> {{ devis.date_rdv }}</p>
-            <p><strong>Heure :</strong> {{ devis.heure_rdv }}</p>
-            <hr>
-          {% endfor %}
-        {% else %}
-          <p>Aucun devis enregistré pour le moment.</p>
-        {% endif %}
-      </div>
-    </div>
-
-  <!-- Formulaire Rempli Tab -->
+  <!-- Onglet Formulaire Rempli -->
   <div class="tab-pane fade" id="formulaire" role="tabpanel" aria-labelledby="formulaire-tab">
     {% if clients %}
       {% for client in clients %}
@@ -123,7 +106,9 @@
       <p class="mt-3">Aucune fiche client n'a été soumise.</p>
     {% endif %}
   </div>
+
 </div>
+
 
     <!-- Bouton pour accéder aux paramètres du compte -->
     <div class="text-center mt-4">

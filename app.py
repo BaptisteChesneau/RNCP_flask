@@ -8,6 +8,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 load_dotenv()  # ✅ Charge les variables depuis .env
 from flask_migrate import Migrate
+from flask_pymongo import PyMongo
+from bson.objectid import ObjectId
 
 
 app = Flask(__name__)
@@ -28,6 +30,10 @@ app.config['MAIL_PASSWORD'] = 'votre_mot_de_passe'
 # Remplace par ton URL exacte Scalingo
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# 🔵 Configuration MongoDB pour Flask-PyMongo
+app.config["MONGO_URI"] = os.getenv("MONGO_URL") or os.getenv("SCALINGO_MONGO_URL")
+mongo = PyMongo(app)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -737,6 +743,31 @@ def contact_support():
 
     flash("Votre demande a bien été envoyée à notre équipe d'assistance.", "success")
     return redirect(url_for('account_settings'))
+
+@app.route("/chatbot", methods=["GET", "POST"])
+def chatbot():
+    latest_question = None
+    latest_reponse = None
+
+    if request.method == "POST":
+        question = request.form.get("question")
+        reponse = request.form.get("reponse")
+
+        if question and reponse:
+            # Enregistrer la question/réponse dans MongoDB
+            mongo.db.chatbot.insert_one({
+                "question": question,
+                "reponse": reponse
+            })
+            flash("Message ajouté avec succès !", "success")
+            latest_question = question
+            latest_reponse = reponse
+            return redirect(url_for("chatbot"))
+
+    # Récupérer tous les messages
+    messages = list(mongo.db.chatbot.find())
+
+    return render_template("chatbot.html", messages=messages, latest_question=latest_question, latest_reponse=latest_reponse)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

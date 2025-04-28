@@ -516,3 +516,181 @@ input[type="password"] {
   font-weight: bold;
   font-size: 1.2rem;
 }
+
+/*============================================================
+  21) CHATBOT (personnage animé avec bulles)
+============================================================*/
+
+/* Conteneur principal du chatbot */
+.chatbot-container {
+  position: relative;
+  text-align: center;
+  margin-top: 30px;
+}
+
+/* Avatar */
+.chatbot-avatar {
+  width: 180px;
+  height: auto;
+  border-radius: 50%;
+  position: relative;
+}
+
+/* Auréole lumineuse */
+.chatbot-halo {
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, rgba(216,30,91,0.2) 60%, transparent 70%);
+  border-radius: 50%;
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
+  animation: pulseHalo 2s infinite;
+}
+
+/* Animation d'auréole */
+@keyframes pulseHalo {
+  0% { transform: translateX(-50%) scale(1); opacity: 0.7; }
+  50% { transform: translateX(-50%) scale(1.2); opacity: 1; }
+  100% { transform: translateX(-50%) scale(1); opacity: 0.7; }
+}
+
+/* Bulle de question (au-dessus) */
+.chatbot-question-bubble {
+  background-color: #ffffff;
+  border-radius: 15px;
+  padding: 10px 20px;
+  display: inline-block;
+  margin-bottom: 10px;
+  position: relative;
+  color: #333;
+  font-weight: bold;
+}
+
+.chatbot-question-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  margin-left: -10px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: #ffffff transparent transparent transparent;
+}
+
+/* Bulle de réponse (à côté) */
+.chatbot-answer-bubble {
+  background-color: #d41b5e; /* Rose ML2C */
+  color: white;
+  border-radius: 15px;
+  padding: 10px 20px;
+  display: inline-block;
+  margin-top: 10px;
+  position: relative;
+  font-weight: bold;
+}
+
+.chatbot-answer-bubble::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -20px;
+  margin-top: -10px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent #d41b5e transparent transparent;
+}
+
+/* Apparition progressive des bulles */
+.chatbot-question-bubble,
+.chatbot-answer-bubble {
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: fadeInBubble 1s forwards;
+}
+
+/* Délai pour la réponse */
+.chatbot-answer-bubble {
+  animation-delay: 1s;
+}
+
+/* Animation clé */
+@keyframes fadeInBubble {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animation spéciale des yeux au moment de parler */
+@keyframes blinkNow {
+  0% { transform: scaleY(1); }
+  45% { transform: scaleY(0.1); }
+  55% { transform: scaleY(0.1); }
+  100% { transform: scaleY(1); }
+}
+
+/* Appliquer l'animation de clignement ciblé */
+.chatbot-eyes.active-blink .chatbot-eye {
+  animation: blinkNow 0.6s forwards;
+}
+
+/* Animation de la bouche */
+.chatbot-mouth {
+  width: 20px;
+  height: 10px;
+  background: #000;
+  border-radius: 10px / 5px;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: talkMouth 1s infinite alternate;
+}
+
+/* Animation de mouvement de bouche */
+@keyframes talkMouth {
+  0% { transform: translateX(-50%) scaleY(1); }
+  50% { transform: translateX(-50%) scaleY(1.8); }
+  100% { transform: translateX(-50%) scaleY(1); }
+}
+
+/* Yeux (fixes pour l'instant, on peut ajouter une animation si besoin) */
+.chatbot-eyes {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  width: 50px;
+  display: flex;
+  justify-content: space-between;
+  transform: translateX(-50%);
+}
+
+.chatbot-eye {
+  width: 10px;
+  height: 10px;
+  background: #000;
+  border-radius: 50%;
+}
+
+/* Bouche normale (repos) */
+.chatbot-mouth.rest {
+  animation: none; /* Pas d'animation quand il ne parle pas */
+}
+
+/* Animation clignement des yeux */
+@keyframes blinkEyes {
+  0%, 90%, 100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.1);
+  }
+}
+
+/* Classe pour activer l'animation des yeux */
+.chatbot-eyes.blinking .chatbot-eye {
+  animation: blinkEyes 2.5s infinite;
+}

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Ajouter une question - Chatbot ML2C CONSEIL</title>
+
+  <!-- Bootstrap pour un peu de style -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+</head>
+<body>
+
+  {% include "header.html" %}
+
+  <div class="container my-5">
+
+    <!-- Affichage du chatbot animé -->
+    <div class="chatbot-container mb-5">
+      <div class="chatbot-halo"></div> <!-- Auréole -->
+      <img src="{{ url_for('static', filename='img/avatar.PNG') }}" alt="Chatbot Avatar" class="chatbot-avatar">
+      
+      <div class="chatbot-eyes">
+        <div class="chatbot-eye"></div>
+        <div class="chatbot-eye"></div>
+      </div>
+      
+      <div class="chatbot-mouth"></div>
+
+      {% if latest_question %}
+        <div class="chatbot-question-bubble">{{ latest_question }}</div>
+      {% endif %}
+      
+      {% if latest_reponse %}
+        <div class="chatbot-answer-bubble">{{ latest_reponse }}</div>
+      {% endif %}
+    </div>
+
+    <h1 class="text-center mb-4">Ajouter une question / réponse au chatbot</h1>
+
+    <!-- Formulaire d'ajout -->
+    <form action="{{ url_for('chatbot') }}" method="POST" class="mb-5">
+      <div class="form-group">
+        <label for="question">Question :</label>
+        <input type="text" class="form-control" id="question" name="question" required>
+      </div>
+
+      <div class="form-group">
+        <label for="reponse">Réponse :</label>
+        <input type="text" class="form-control" id="reponse" name="reponse" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Envoyer</button>
+    </form>
+
+    <!-- Liste des messages enregistrés -->
+    <h2 class="text-center mb-4">Liste des messages enregistrés</h2>
+    <ul class="list-group">
+      {% for message in messages %}
+        <li class="list-group-item">
+          <strong>Q :</strong> {{ message.question }}<br>
+          <strong>R :</strong> {{ message.reponse }}
+        </li>
+      {% else %}
+        <li class="list-group-item">Aucun message pour l'instant.</li>
+      {% endfor %}
+    </ul>
+
+    <div class="text-center mt-4">
+      <a href="{{ url_for('menu') }}" class="btn btn-secondary">Retour au menu</a>
+    </div>
+
+  </div>
+
+  {% include "footer.html" %}
+
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Animation du chatbot -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const mouth = document.querySelector(".chatbot-mouth");
+      const eyes = document.querySelector(".chatbot-eyes");
+      const avatar = document.querySelector(".chatbot-avatar");
+      const halo = document.querySelector(".chatbot-halo");
+
+      function parler(message, element) {
+        let i = 0;
+        const originalText = message;
+        element.innerHTML = "";
+
+        // Commencer les animations
+        mouth.classList.remove("rest");
+        eyes.classList.add("blinking");
+        avatar.classList.add("talking");
+        halo.classList.add("halo-glow");
+
+        const speed = Math.max(20, 200 / originalText.length);
+        const interval = setInterval(() => {
+          if (i < originalText.length) {
+            element.innerHTML += originalText.charAt(i);
+            i++;
+          } else {
+            clearInterval(interval);
+            // Fin animations
+            mouth.classList.add("rest");
+            eyes.classList.remove("blinking");
+            avatar.classList.remove("talking");
+            halo.classList.remove("halo-glow");
+          }
+        }, speed);
+      }
+
+      const questionBubble = document.querySelector(".chatbot-question-bubble");
+      if (questionBubble) {
+        questionBubble.classList.add("pop-in");
+        parler(questionBubble.textContent, questionBubble);
+      }
+
+      const answerBubble = document.querySelector(".chatbot-answer-bubble");
+      if (answerBubble) {
+        setTimeout(() => {
+          answerBubble.classList.add("pop-in");
+          parler(answerBubble.textContent, answerBubble);
+        }, 1000); // Petite pause après la question
+      }
+    });
+  </script>
+
+</body>
+</html>

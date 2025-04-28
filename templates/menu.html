@@ -155,23 +155,31 @@
         </div>
       </div>
 
-  <!-- FAQ 6 -->
-  <div class="card">
-    <div class="card-header" id="faqHeading6">
-      <h5 class="mb-0">
-        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#faqCollapse6" aria-expanded="false" aria-controls="faqCollapse6">
-          6. Où puis-je trouver la page d'aide ?
-        </button>
-      </h5>
-    </div>
-    <div id="faqCollapse6" class="collapse" aria-labelledby="faqHeading6" data-parent="#faq-accordion">
-      <div class="card-body">
-        La page d'aide est accessible depuis le menu principal et le pied de page. Cliquez sur le lien "Aide" pour obtenir toutes les informations nécessaires.
+      <!-- FAQ 6 -->
+      <div class="card">
+        <div class="card-header" id="faqHeading6">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#faqCollapse6" aria-expanded="false" aria-controls="faqCollapse6">
+              6. Où puis-je trouver la page d'aide ?
+            </button>
+          </h5>
+        </div>
+        <div id="faqCollapse6" class="collapse" aria-labelledby="faqHeading6" data-parent="#faq-accordion">
+          <div class="card-body">
+            La page d'aide est accessible depuis le menu principal et le pied de page. Cliquez sur le lien "Aide" pour obtenir toutes les informations nécessaires.
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
 
+    </div> <!-- fermeture #faq-accordion -->
+  </div> <!-- fermeture .container -->
+
+  <!-- BOUTON CHATBOT -->
+  <div class="container">
+    <div class="d-flex justify-content-end mt-4">
+      <a href="{{ url_for('chatbot') }}" class="btn btn-primary btn-lg">
+        🤖 Accéder au Chatbot
+      </a>
     </div>
   </div>
 

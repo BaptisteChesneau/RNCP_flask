@@ -832,10 +832,13 @@ def supprimer_message(message_id):
 @app.route("/login-admin", methods=["GET", "POST"])
 def login_admin():
     if request.method == "POST":
-        username = request.form.get("username", "").strip()
-        password = request.form.get("password", "").strip()
+        username = request.form.get("username")
+        password = request.form.get("password")
 
-        if username == "admin" and password == "monmotdepasse":
+        # Chercher l'utilisateur admin dans MongoDB
+        admin = mongo.db.admin_users.find_one({"username": username})
+
+        if admin and check_password_hash(admin["password"], password):
             session["admin_logged_in"] = True
             flash("Connexion réussie ✅", "success")
             return redirect(url_for("admin_chatbot"))

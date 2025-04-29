@@ -863,6 +863,29 @@ def admin_dashboard():
         last_question=last_question
     )
 
+@app.route("/ajouter-message", methods=["GET", "POST"])
+def ajouter_message():
+    if not session.get("admin_logged_in"):
+        flash("Accès interdit.", "danger")
+        return redirect(url_for("login_admin"))
+
+    if request.method == "POST":
+        question = request.form.get("question")
+        reponse = request.form.get("reponse")
+
+        if question and reponse:
+            mongo.db.chatbot.insert_one({
+                "question": question,
+                "reponse": reponse
+            })
+            flash("Message ajouté avec succès ✅", "success")
+            return redirect(url_for("admin_chatbot"))
+        else:
+            flash("Tous les champs sont obligatoires ❌", "danger")
+
+    return render_template("ajouter_message.html")
+
+
 @app.route("/vider-historique", methods=["POST"])
 def vider_historique():
     mongo.db.chatbot.delete_many({})

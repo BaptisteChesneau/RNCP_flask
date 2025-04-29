@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Ajouter une Question - Admin Chatbot</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+</head>
+<body>
+
+{% include "header.html" %}
+
+<div class="container my-5">
+
+  <h1 class="text-center mb-4">Ajouter une nouvelle Question / Réponse</h1>
+
+  <!-- 🔥 Message Flash -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show d-flex align-items-center" role="alert">
+          {% if category == 'success' %}
+            <span class="mr-2" style="font-size: 1.5rem;">✅</span>
+          {% elif category == 'danger' %}
+            <span class="mr-2" style="font-size: 1.5rem;">❌</span>
+          {% endif %}
+          <div>{{ message }}</div>
+          <button type="button" class="close ml-auto" data-dismiss="alert" aria-label="Fermer">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <form action="{{ url_for('ajouter_message') }}" method="POST" style="max-width: 600px; margin: 0 auto;">
+    <div class="form-group">
+      <label for="question">Question :</label>
+      <input type="text" class="form-control" id="question" name="question" required>
+    </div>
+
+    <div class="form-group">
+      <label for="reponse">Réponse :</label>
+      <input type="text" class="form-control" id="reponse" name="reponse" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block">Ajouter</button>
+  </form>
+
+  <div class="text-center mt-4">
+    <a href="{{ url_for('admin_chatbot') }}" class="btn btn-secondary">Retour à l'admin</a>
+  </div>
+
+</div>
+
+{% include "footer.html" %}
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

@@ -14,6 +14,11 @@
 
     <h1 class="text-center mb-4">Gestion des Questions / Réponses</h1>
 
+    <!-- 🔥 Bouton Ajouter -->
+    <div class="text-center mb-4">
+      <a href="{{ url_for('ajouter_message') }}" class="btn btn-success">➕ Ajouter une Question / Réponse</a>
+    </div>
+
     <!-- 🔥 Message Flash avec icône -->
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}

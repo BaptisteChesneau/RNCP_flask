@@ -792,35 +792,48 @@ def admin_chatbot():
     messages = list(mongo.db.chatbot.find())
     return render_template("admin_chatbot.html", messages=messages)
 
+# ✅ MODIFIER UNE RÉPONSE
+@app.route("/modifier-reponse/<message_id>", methods=["POST"])
+def modifier_reponse(message_id):
+    if not session.get("admin_logged_in"):
+        flash("Accès interdit.", "danger")
+        return redirect(url_for("login_admin"))
+
+    nouvelle_reponse = request.form.get("reponse")
+    if nouvelle_reponse:
+        mongo.db.chatbot.update_one(
+            {"_id": ObjectId(message_id)},
+            {"$set": {"reponse": nouvelle_reponse}}
+        )
+        flash("Réponse modifiée avec succès !", "success")
+    else:
+        flash("Erreur : réponse vide.", "danger")
+    
+    return redirect(url_for("admin_chatbot"))
+    
+
 @app.route("/logout-admin")
 def logout_admin():
     session.pop("admin_logged_in", None)
     flash("Déconnecté avec succès ✅", "success")
     return redirect(url_for("login_admin"))
 
-# 🔥 Modifier une réponse
-@app.route("/modifier-reponse/<message_id>", methods=["POST"])
-def modifier_reponse(message_id):
-    nouvelle_reponse = request.form.get("reponse")
-    if nouvelle_reponse:
-        mongo.db.chatbot.update_one({"_id": ObjectId(message_id)}, {"$set": {"reponse": nouvelle_reponse}})
-        flash("Réponse modifiée avec succès.", "success")
-    else:
-        flash("Erreur : aucune réponse fournie.", "danger")
-    return redirect(url_for('admin_chatbot'))
-
-# 🔥 Supprimer un message
+# ✅ SUPPRIMER UN MESSAGE
 @app.route("/supprimer-message/<message_id>", methods=["POST"])
 def supprimer_message(message_id):
+    if not session.get("admin_logged_in"):
+        flash("Accès interdit.", "danger")
+        return redirect(url_for("login_admin"))
+
     mongo.db.chatbot.delete_one({"_id": ObjectId(message_id)})
-    flash("Message supprimé avec succès.", "danger")
-    return redirect(url_for('admin_chatbot'))
+    flash("Message supprimé avec succès !", "success")
+    return redirect(url_for("admin_chatbot"))
 
 @app.route("/login-admin", methods=["GET", "POST"])
 def login_admin():
     if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password")
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "").strip()
 
         if username == "admin" and password == "monmotdepasse":
             session["admin_logged_in"] = True
@@ -831,6 +844,21 @@ def login_admin():
 
     return render_template("login_admin.html")
 
+@app.route("/admin-dashboard")
+def admin_dashboard():
+    if not session.get("admin_logged_in"):
+        flash("Accès interdit. Connecte-toi !", "danger")
+        return redirect(url_for("login_admin"))
+
+    total_questions = mongo.db.chatbot.count_documents({})
+    last_message = mongo.db.chatbot.find_one(sort=[("_id", -1)])  # Le plus récent
+    last_question = last_message["question"] if last_message else None
+
+    return render_template(
+        "admin_dashboard.html",
+        total_questions=total_questions,
+        last_question=last_question
+    )
 
 @app.route("/vider-historique", methods=["POST"])
 def vider_historique():

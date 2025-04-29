@@ -751,27 +751,28 @@ def chatbot():
 
     if request.method == "POST":
         question = request.form.get("question")
-        reponse = request.form.get("reponse")
 
-        if question and reponse:
+        if question:
             # ✅ Protection minimale contre XSS : escape le contenu
             from markupsafe import escape
             question = escape(question)
-            reponse = escape(reponse)
 
-            # ✅ Enregistrer la question/réponse dans MongoDB
+            # ✅ Générer une réponse automatique
+            reponse = "Merci pour votre question. Nous reviendrons vers vous prochainement."
+
+            # ✅ Enregistrer la question et réponse générée dans MongoDB
             mongo.db.chatbot.insert_one({
                 "question": question,
                 "reponse": reponse
             })
-            flash("Message ajouté avec succès !", "success")
+            flash("Votre question a été envoyée avec succès !", "success")
             latest_question = question
             latest_reponse = reponse
             return redirect(url_for("chatbot"))
 
-    # ✅ Ici : Charger une seule fois
+    # ✅ Charger une seule fois
     messages = list(mongo.db.chatbot.find())
-    history = messages  # ➡️ Pas besoin de refaire un find()
+    history = messages  # ➡️ Réutiliser
 
     return render_template(
         "chatbot.html",

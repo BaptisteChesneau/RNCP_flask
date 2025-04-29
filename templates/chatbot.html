@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Ajouter une question - Chatbot ML2C CONSEIL</title>
@@ -63,19 +63,16 @@
       {% endfor %}
     </div>
 
-    <h1 class="text-center mb-4">Ajouter une question / réponse au chatbot</h1>
+    <h1 class="text-center mb-4">Poser une nouvelle question</h1>
 
     <!-- Formulaire d'ajout -->
     <form action="{{ url_for('chatbot') }}" method="POST" class="mb-5">
       <div class="form-group">
-        <label for="question">Question :</label>
-        <input type="text" class="form-control" id="question" name="question" required>
+        <label for="question">Votre question :</label>
+        <input type="text" class="form-control" id="question" name="question" placeholder="Ex: Comment fonctionne la plateforme ?" required>
       </div>
 
-      <div class="form-group">
-        <label for="reponse">Réponse :</label>
-        <input type="text" class="form-control" id="reponse" name="reponse" required>
-      </div>
+      <!-- ✅ Suppression du champ réponse visible -->
 
       <button type="submit" class="btn btn-primary btn-block">Envoyer</button>
     </form>
@@ -110,7 +107,6 @@
     document.addEventListener("DOMContentLoaded", function() {
       const loader = document.getElementById('chatbot-loader');
 
-      // 🔥 Ajout comportement bouton Historique avec fade
       const showHistoryBtn = document.getElementById('show-history-btn');
       const historyContainer = document.getElementById('history-container');
 
@@ -119,12 +115,12 @@
           historyContainer.style.display = 'block';
           setTimeout(() => {
             historyContainer.classList.add('show');
-          }, 10); // petite latence pour trigger le fadeIn
+          }, 10);
         } else {
           historyContainer.classList.remove('show');
           setTimeout(() => {
             historyContainer.style.display = 'none';
-          }, 500); // attendre la fin de l'animation pour cacher
+          }, 500);
         }
       });
     });

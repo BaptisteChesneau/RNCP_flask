@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Administration - Chatbot ML2C CONSEIL</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+</head>
+<body>
+
+  {% include "header.html" %}
+
+  <div class="container my-5">
+
+    <h1 class="text-center mb-4">Gestion des Questions / Réponses</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show d-flex align-items-center" role="alert">
+            {% if category == 'success' %}
+              <span class="mr-2" style="font-size: 1.5rem;">✅</span>
+            {% elif category == 'danger' %}
+              <span class="mr-2" style="font-size: 1.5rem;">❌</span>
+            {% endif %}
+            <div>{{ message }}</div>
+            <button type="button" class="close ml-auto" data-dismiss="alert" aria-label="Fermer">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <table class="table table-bordered table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th>Question</th>
+          <th>Réponse</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for message in messages %}
+          <tr>
+            <td>{{ message.question }}</td>
+            <td>
+              <form action="{{ url_for('modifier_reponse', message_id=message._id) }}" method="POST" class="form-inline">
+                <input type="text" name="reponse" value="{{ message.reponse }}" class="form-control mr-2" style="width: 70%;" required>
+                <button type="submit" class="btn btn-success btn-sm">Modifier</button>
+              </form>
+            </td>
+            <td>
+              <form action="{{ url_for('supprimer_message', message_id=message._id) }}" method="POST" onsubmit="return confirm('Confirmer la suppression ?');">
+                <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+              </form>
+            </td>
+          </tr>
+        {% else %}
+          <tr><td colspan="3" class="text-center">Aucun message enregistré pour l'instant.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="text-center mt-4">
+      <a href="{{ url_for('menu') }}" class="btn btn-secondary">Retour au menu</a>
+    </div>
+
+  </div>
+
+  {% include "footer.html" %}
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

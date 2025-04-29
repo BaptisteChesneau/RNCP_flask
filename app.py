@@ -782,6 +782,55 @@ def chatbot():
         latest_reponse=latest_reponse
     )
 
+# ➡️ NOUVELLE route admin protégée (à ajouter)
+@app.route("/admin-chatbot")
+def admin_chatbot():
+    if not session.get("admin_logged_in"):
+        flash("Accès interdit. Connecte-toi !", "danger")
+        return redirect(url_for("login_admin"))
+
+    messages = list(mongo.db.chatbot.find())
+    return render_template("admin_chatbot.html", messages=messages)
+
+@app.route("/logout-admin")
+def logout_admin():
+    session.pop("admin_logged_in", None)
+    flash("Déconnecté avec succès ✅", "success")
+    return redirect(url_for("login_admin"))
+
+# 🔥 Modifier une réponse
+@app.route("/modifier-reponse/<message_id>", methods=["POST"])
+def modifier_reponse(message_id):
+    nouvelle_reponse = request.form.get("reponse")
+    if nouvelle_reponse:
+        mongo.db.chatbot.update_one({"_id": ObjectId(message_id)}, {"$set": {"reponse": nouvelle_reponse}})
+        flash("Réponse modifiée avec succès.", "success")
+    else:
+        flash("Erreur : aucune réponse fournie.", "danger")
+    return redirect(url_for('admin_chatbot'))
+
+# 🔥 Supprimer un message
+@app.route("/supprimer-message/<message_id>", methods=["POST"])
+def supprimer_message(message_id):
+    mongo.db.chatbot.delete_one({"_id": ObjectId(message_id)})
+    flash("Message supprimé avec succès.", "danger")
+    return redirect(url_for('admin_chatbot'))
+
+@app.route("/login-admin", methods=["GET", "POST"])
+def login_admin():
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        if username == "admin" and password == "monmotdepasse":
+            session["admin_logged_in"] = True
+            flash("Connexion réussie ✅", "success")
+            return redirect(url_for("admin_chatbot"))
+        else:
+            flash("Identifiants invalides ❌", "danger")
+
+    return render_template("login_admin.html")
+
 
 @app.route("/vider-historique", methods=["POST"])
 def vider_historique():

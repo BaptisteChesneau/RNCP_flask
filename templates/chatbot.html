@@ -14,6 +14,41 @@
 
   <div class="container my-5">
 
+    <!-- 🔥 Bouton Afficher l'Historique -->
+    <div class="text-center mb-4">
+      <button id="show-history-btn" class="btn btn-info">Afficher l'historique de conversation</button>
+    </div>
+
+    <!-- 🔥 Bloc Historique caché au départ -->
+    <div id="history-container" class="mb-5 fade" style="display: none;">
+      <h3 class="text-center mb-3">Historique des Conversations</h3>
+      <ul class="list-group">
+        {% for hist in history %}
+          <li class="list-group-item pop-in-message">
+            <strong>Q :</strong> {{ hist.question }}<br>
+            <strong>R :</strong> {{ hist.reponse }}
+          </li>
+        {% else %}
+          <li class="list-group-item">Aucun historique trouvé.</li>
+        {% endfor %}
+      </ul>
+
+      <!-- 🔥 Bouton Vider l'Historique -->
+      <div class="text-center mt-4">
+        <form action="{{ url_for('vider_historique') }}" method="POST" onsubmit="return confirm('Es-tu sûr de vouloir tout supprimer ?');">
+          <button type="submit" class="btn btn-danger">Vider l'historique</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- 🔥 Loader réflexion caché au départ -->
+    <div id="chatbot-loader" style="display: none; text-align: center; margin: 20px;">
+      <div class="spinner-border text-light" role="status">
+        <span class="sr-only">Chargement...</span>
+      </div>
+      <div style="color:white; margin-top: 10px;">Le bot réfléchit...</div>
+    </div>
+
     <!-- Affichage du chatbot animé -->
     <div class="chatbot-container mb-5">
       <div class="chatbot-halo"></div> <!-- Auréole -->
@@ -84,6 +119,7 @@
       const eyes = document.querySelector(".chatbot-eyes");
       const avatar = document.querySelector(".chatbot-avatar");
       const halo = document.querySelector(".chatbot-halo");
+      const loader = document.getElementById('chatbot-loader');
 
       function parler(message, element) {
         let i = 0;
@@ -113,18 +149,42 @@
       }
 
       const questionBubble = document.querySelector(".chatbot-question-bubble");
+      const answerBubble = document.querySelector(".chatbot-answer-bubble");
+
       if (questionBubble) {
         questionBubble.classList.add("pop-in");
         parler(questionBubble.textContent, questionBubble);
       }
 
-      const answerBubble = document.querySelector(".chatbot-answer-bubble");
       if (answerBubble) {
         setTimeout(() => {
+          loader.style.display = "block"; // 🔥 Affiche le loader
           answerBubble.classList.add("pop-in");
           parler(answerBubble.textContent, answerBubble);
-        }, 1000); // Petite pause après la question
+
+          setTimeout(() => {
+            loader.style.display = "none"; // 🔥 Cache le loader après animation
+          }, 2000); // 2s suffisant pour parler
+        }, 1000); // Pause entre la question et la réponse
       }
+
+      // 🔥 Ajout comportement bouton Historique avec fade
+      const showHistoryBtn = document.getElementById('show-history-btn');
+      const historyContainer = document.getElementById('history-container');
+
+      showHistoryBtn.addEventListener('click', function() {
+        if (historyContainer.style.display === 'none') {
+          historyContainer.style.display = 'block';
+          setTimeout(() => {
+            historyContainer.classList.add('show');
+          }, 10); // petite latence pour trigger le fadeIn
+        } else {
+          historyContainer.classList.remove('show');
+          setTimeout(() => {
+            historyContainer.style.display = 'none';
+          }, 500); // attendre la fin de l'animation pour cacher
+        }
+      });
     });
   </script>
 

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>{% if session.get('langue') == 'en' %}Chatbot History - ML2C CONSEIL{% else %}Historique des Conversations - Chatbot ML2C CONSEIL{% endif %}</title>
+
+  <!-- Bootstrap pour le style -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+</head>
+<body>
+
+  {% include "header.html" %}
+
+  <div class="container my-5">
+    <h1 class="text-center mb-5">
+      {% if session.get('langue') == 'en' %}
+        Full Chatbot History
+      {% else %}
+        Historique Complet du Chatbot
+      {% endif %}
+    </h1>
+
+    <!-- Sélecteur de langue -->
+    <div class="text-center mb-4">
+      <form method="POST" action="{{ url_for('changer_langue') }}">
+        <select name="langue" onchange="this.form.submit()" class="form-control" style="max-width: 200px; margin: 0 auto;">
+          <option value="fr" {% if session.get('langue') == 'fr' %}selected{% endif %}>Français</option>
+          <option value="en" {% if session.get('langue') == 'en' %}selected{% endif %}>English</option>
+        </select>
+      </form>
+    </div>
+
+    <!-- Bloc Historique -->
+    <div class="mb-5">
+      <ul class="list-group">
+        {% for message in messages %}
+          <li class="list-group-item pop-in-message">
+            <strong>
+              {% if session.get('langue') == 'en' %}Q:{% else %}Q :{% endif %}
+            </strong> {{ message.question }}<br>
+            <strong>
+              {% if session.get('langue') == 'en' %}A:{% else %}R :{% endif %}
+            </strong> {{ message.reponse }}
+          </li>
+        {% else %}
+          <li class="list-group-item">
+            {% if session.get('langue') == 'en' %}
+              No message recorded yet.
+            {% else %}
+              Aucun message enregistré pour l'instant.
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Bouton retour -->
+    <div class="text-center">
+      <a href="{{ url_for('chatbot') }}" class="btn btn-secondary">
+        {% if session.get('langue') == 'en' %}Back to Chatbot{% else %}Retour au Chatbot{% endif %}
+      </a>
+    </div>
+
+  </div>
+
+  {% include "footer.html" %}
+
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

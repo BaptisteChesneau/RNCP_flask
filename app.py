@@ -754,7 +754,12 @@ def chatbot():
         reponse = request.form.get("reponse")
 
         if question and reponse:
-            # Enregistrer la question/réponse dans MongoDB
+            # ✅ Protection minimale contre XSS : escape le contenu
+            from markupsafe import escape
+            question = escape(question)
+            reponse = escape(reponse)
+
+            # ✅ Enregistrer la question/réponse dans MongoDB
             mongo.db.chatbot.insert_one({
                 "question": question,
                 "reponse": reponse
@@ -764,10 +769,38 @@ def chatbot():
             latest_reponse = reponse
             return redirect(url_for("chatbot"))
 
-    # Récupérer tous les messages
+    # ✅ Récupérer tous les messages existants (pour affichage standard)
     messages = list(mongo.db.chatbot.find())
 
-    return render_template("chatbot.html", messages=messages, latest_question=latest_question, latest_reponse=latest_reponse)
+    # ✅ Récupérer également l'historique complet (pour bouton historique)
+    history = list(mongo.db.chatbot.find())
+
+    return render_template(
+        "chatbot.html",
+        messages=messages,
+        history=history,
+        latest_question=latest_question,
+        latest_reponse=latest_reponse
+    )
+
+
+@app.route("/vider-historique", methods=["POST"])
+def vider_historique():
+    mongo.db.chatbot.delete_many({})
+    flash("L'historique a été vidé avec succès.", "success")
+    return redirect(url_for("chatbot"))
+
+@app.route("/historique-chatbot")
+def historique_chatbot():
+    messages = mongo.db.chatbot.find().sort("_id", -1)
+    return render_template("historique_chatbot.html", messages=messages)
+
+from flask import request, session
+
+@app.route("/changer-langue", methods=["POST"])
+def changer_langue():
+    session['langue'] = request.form.get('langue', 'fr')
+    return redirect(request.referrer or url_for('historique_chatbot'))
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

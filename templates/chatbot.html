@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <title>Ajouter une question - Chatbot ML2C CONSEIL</title>
@@ -11,6 +11,29 @@
 <body>
 
   {% include "header.html" %}
+
+  <!-- 🔥 Message Flash avec icône -->
+  <div class="container mt-3">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show d-flex align-items-center" role="alert">
+            {% if category == 'success' %}
+              <span class="mr-2" style="font-size: 1.5rem;">✅</span>
+            {% elif category == 'danger' %}
+              <span class="mr-2" style="font-size: 1.5rem;">❌</span>
+            {% elif category == 'warning' %}
+              <span class="mr-2" style="font-size: 1.5rem;">⚠️</span>
+            {% endif %}
+            <div>{{ message }}</div>
+            <button type="button" class="close ml-auto" data-dismiss="alert" aria-label="Fermer">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
 
   <div class="container my-5">
 
@@ -72,23 +95,10 @@
         <input type="text" class="form-control" id="question" name="question" placeholder="Ex: Comment fonctionne la plateforme ?" required>
       </div>
 
-      <!-- ✅ Suppression du champ réponse visible -->
-
       <button type="submit" class="btn btn-primary btn-block">Envoyer</button>
     </form>
 
-    <!-- Liste des messages enregistrés -->
-    <h2 class="text-center mb-4">Liste des messages enregistrés</h2>
-    <ul class="list-group">
-      {% for message in messages %}
-        <li class="list-group-item">
-          <strong>Q :</strong> {{ message.question }}<br>
-          <strong>R :</strong> {{ message.reponse }}
-        </li>
-      {% else %}
-        <li class="list-group-item">Aucun message pour l'instant.</li>
-      {% endfor %}
-    </ul>
+    <!-- 🔥 (Suppression de la liste des messages enregistrés en bas) -->
 
     <div class="text-center mt-4">
       <a href="{{ url_for('menu') }}" class="btn btn-secondary">Retour au menu</a>
@@ -106,7 +116,6 @@
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       const loader = document.getElementById('chatbot-loader');
-
       const showHistoryBtn = document.getElementById('show-history-btn');
       const historyContainer = document.getElementById('history-container');
 

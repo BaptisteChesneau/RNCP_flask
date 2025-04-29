@@ -753,14 +753,15 @@ def chatbot():
         question = request.form.get("question")
 
         if question:
-            # ✅ Protection minimale contre XSS : escape le contenu
             from markupsafe import escape
             question = escape(question)
 
-            # ✅ Générer une réponse automatique
-            reponse = "Merci pour votre question. Nous reviendrons vers vous prochainement."
+            # ✅ Réponse automatique personnalisable
+            # Exemple : si tu veux ajouter le prénom de l'utilisateur ou une réponse différente
+            user_name = session.get("prenom", "Cher utilisateur")  # Si tu stockes 'prenom' en session
+            reponse = f"Merci {user_name}, nous avons bien reçu votre question et nous reviendrons vers vous rapidement."
 
-            # ✅ Enregistrer la question et réponse générée dans MongoDB
+            # ✅ Enregistrement dans MongoDB
             mongo.db.chatbot.insert_one({
                 "question": question,
                 "reponse": reponse
@@ -770,9 +771,8 @@ def chatbot():
             latest_reponse = reponse
             return redirect(url_for("chatbot"))
 
-    # ✅ Charger une seule fois
     messages = list(mongo.db.chatbot.find())
-    history = messages  # ➡️ Réutiliser
+    history = messages  # réutilise
 
     return render_template(
         "chatbot.html",

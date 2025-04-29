@@ -49,25 +49,18 @@
       <div style="color:white; margin-top: 10px;">Le bot réfléchit...</div>
     </div>
 
-    <!-- Affichage du chatbot animé -->
-    <div class="chatbot-container mb-5">
-      <div class="chatbot-halo"></div> <!-- Auréole -->
-      <img src="{{ url_for('static', filename='img/avatar.PNG') }}" alt="Chatbot Avatar" class="chatbot-avatar">
-      
-      <div class="chatbot-eyes">
-        <div class="chatbot-eye"></div>
-        <div class="chatbot-eye"></div>
-      </div>
-      
-      <div class="chatbot-mouth"></div>
-
-      {% if latest_question %}
-        <div class="chatbot-question-bubble">{{ latest_question }}</div>
-      {% endif %}
-      
-      {% if latest_reponse %}
-        <div class="chatbot-answer-bubble">{{ latest_reponse }}</div>
-      {% endif %}
+    <!-- 🔥 Chatbot style messagerie animé (dynamique MongoDB) -->
+    <div class="chat-container mb-5">
+      {% for message in messages %}
+        <div class="message-row user">
+          <div class="avatar user"></div>
+          <div class="bubble">{{ message.question }}</div>
+        </div>
+        <div class="message-row bot">
+          <div class="bubble">{{ message.reponse }}</div>
+          <div class="avatar bot"></div>
+        </div>
+      {% endfor %}
     </div>
 
     <h1 class="text-center mb-4">Ajouter une question / réponse au chatbot</h1>
@@ -115,58 +108,7 @@
   <!-- Animation du chatbot -->
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      const mouth = document.querySelector(".chatbot-mouth");
-      const eyes = document.querySelector(".chatbot-eyes");
-      const avatar = document.querySelector(".chatbot-avatar");
-      const halo = document.querySelector(".chatbot-halo");
       const loader = document.getElementById('chatbot-loader');
-
-      function parler(message, element) {
-        let i = 0;
-        const originalText = message;
-        element.innerHTML = "";
-
-        // Commencer les animations
-        mouth.classList.remove("rest");
-        eyes.classList.add("blinking");
-        avatar.classList.add("talking");
-        halo.classList.add("halo-glow");
-
-        const speed = Math.max(20, 200 / originalText.length);
-        const interval = setInterval(() => {
-          if (i < originalText.length) {
-            element.innerHTML += originalText.charAt(i);
-            i++;
-          } else {
-            clearInterval(interval);
-            // Fin animations
-            mouth.classList.add("rest");
-            eyes.classList.remove("blinking");
-            avatar.classList.remove("talking");
-            halo.classList.remove("halo-glow");
-          }
-        }, speed);
-      }
-
-      const questionBubble = document.querySelector(".chatbot-question-bubble");
-      const answerBubble = document.querySelector(".chatbot-answer-bubble");
-
-      if (questionBubble) {
-        questionBubble.classList.add("pop-in");
-        parler(questionBubble.textContent, questionBubble);
-      }
-
-      if (answerBubble) {
-        setTimeout(() => {
-          loader.style.display = "block"; // 🔥 Affiche le loader
-          answerBubble.classList.add("pop-in");
-          parler(answerBubble.textContent, answerBubble);
-
-          setTimeout(() => {
-            loader.style.display = "none"; // 🔥 Cache le loader après animation
-          }, 2000); // 2s suffisant pour parler
-        }, 1000); // Pause entre la question et la réponse
-      }
 
       // 🔥 Ajout comportement bouton Historique avec fade
       const showHistoryBtn = document.getElementById('show-history-btn');

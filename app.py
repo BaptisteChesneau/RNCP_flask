@@ -769,11 +769,9 @@ def chatbot():
             latest_reponse = reponse
             return redirect(url_for("chatbot"))
 
-    # ✅ Récupérer tous les messages existants (pour affichage standard)
+    # ✅ Ici : Charger une seule fois
     messages = list(mongo.db.chatbot.find())
-
-    # ✅ Récupérer également l'historique complet (pour bouton historique)
-    history = list(mongo.db.chatbot.find())
+    history = messages  # ➡️ Pas besoin de refaire un find()
 
     return render_template(
         "chatbot.html",

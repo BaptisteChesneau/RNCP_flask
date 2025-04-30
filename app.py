@@ -15,7 +15,7 @@ from bson.objectid import ObjectId
 app = Flask(__name__)
 app.secret_key = 'votre_clé_secrète'  # Clé secrète nécessaire pour la session
 
-# Limiter la taille des fichiers (ex. : 2 Mo max)
+# Limit file size (e.g. 2 MB max)
 app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024
 
 # ================== CONFIG FLASK-MAIL ===================
@@ -24,14 +24,14 @@ app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = 'votre_email@gmail.com'
 app.config['MAIL_PASSWORD'] = 'votre_mot_de_passe'
-# Pour un usage plus propre, vous pouvez aussi définir:
+# For a cleaner use, you can also define:
 # app.config['MAIL_DEFAULT_SENDER'] = 'votre_email@gmail.com'
 
-# Remplace par ton URL exacte Scalingo
+# Replace with your exact URL Scalingo
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# 🔵 Configuration MongoDB pour Flask-PyMongo
+# 🔵 MongoDB configuration for Flask-PyMongo
 app.config["MONGO_URI"] = os.getenv("MONGO_URL") or os.getenv("SCALINGO_MONGO_URL")
 mongo = PyMongo(app)
 
@@ -63,7 +63,7 @@ class Utilisateur(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     mot_de_passe_hash = db.Column(db.String(200), nullable=False)
 
-    # Relations avec les autres tables :
+    # Relationships with other tables :
     devis = db.relationship("Devis", back_populates="utilisateur")
     paiements = db.relationship("Paiement", back_populates="utilisateur")
     support_tickets = db.relationship("SupportTicket", back_populates="utilisateur")
@@ -71,7 +71,7 @@ class Utilisateur(db.Model):
     historiques = db.relationship("Historique", back_populates="utilisateur")
     articles = db.relationship("BlogPost", back_populates="auteur")
 
-    # Relation : un utilisateur peut avoir plusieurs clients
+    # Relationship: a user can have several customers
     clients = db.relationship("Client", back_populates="utilisateur", lazy=True)
 
     def __repr__(self):
@@ -94,7 +94,7 @@ class Devis(db.Model):
     heure_rdv = db.Column(db.String(50))
     email = db.Column(db.String(120))
 
-    # Relation : un Devis appartient à un Utilisateur
+    # Relation: a Quotation belongs to a User
     utilisateur = db.relationship("Utilisateur", back_populates="devis")
 
     def __repr__(self):
@@ -109,7 +109,7 @@ class Paiement(db.Model):
     statut = db.Column(db.String(50))  # "validé", "en attente", "refusé", ...
     mode_paiement = db.Column(db.String(50))  # "Stripe", "PayPal", ...
 
-    # Relation : un Paiement appartient à un Utilisateur
+    # Relation: a Payment belongs to a User
     utilisateur = db.relationship("Utilisateur", back_populates="paiements")
 
     def __repr__(self):
@@ -133,7 +133,7 @@ class SupportTicket(db.Model):
     date_creation = db.Column(db.DateTime)
     statut = db.Column(db.String(50))  # "nouveau", "en cours", "résolu", ...
 
-    # Relation : un ticket peut appartenir à un utilisateur (ou pas, si anonyme)
+    # Relationship: a ticket can belong to a user (or not, if anonymous)
     utilisateur = db.relationship("Utilisateur", back_populates="support_tickets")
 
     def __repr__(self):
@@ -144,13 +144,13 @@ class Preferences(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     utilisateur_id = db.Column(db.Integer, db.ForeignKey('utilisateur.id'), nullable=False)
 
-    # Exemple de colonnes
+    # Example of columns
     langue = db.Column(db.String(10))  # "FR", "EN", ...
     theme = db.Column(db.String(10))   # "light", "dark"...
     notif_email = db.Column(db.Boolean, default=True)
     notif_sms = db.Column(db.Boolean, default=False)
 
-    # Relation : 1:1 avec Utilisateur (ou 1:N selon votre logique)
+    # Relationship: 1:1 with User (or 1:N according to your logic)
     utilisateur = db.relationship("Utilisateur", back_populates="preferences")
 
     def __repr__(self):
@@ -163,7 +163,7 @@ class Historique(db.Model):
     path = db.Column(db.String(200))       # URL/Route visitée
     date_visite = db.Column(db.DateTime)   # Date/Heure de la visite
 
-    # Relation : un historique appartient à un utilisateur
+    # Relation: a history belongs to a user
     utilisateur = db.relationship("Utilisateur", back_populates="historiques")
 
     def __repr__(self):
@@ -178,7 +178,7 @@ class BlogPost(db.Model):
     date_publication = db.Column(db.DateTime)
     auteur_id = db.Column(db.Integer, db.ForeignKey('utilisateur.id'), nullable=False)
 
-    # Relation : un article de blog est écrit par un utilisateur
+    # Relation: a blog post is written by a user
     auteur = db.relationship("Utilisateur", back_populates="articles")
 
     def __repr__(self):
@@ -206,13 +206,13 @@ def plateforme_client():
 @app.route("/formulaire", methods=["GET", "POST"])
 def formulaire_client():
     utilisateur_id = session.get("utilisateur_id")
-    print("DEBUG >>> utilisateur_id dans session :", utilisateur_id)  # 👈 à retirer plus tard
+    print("DEBUG >>> utilisateur_id dans session :", utilisateur_id)  # 👈 to be removed later
     if not utilisateur_id:
         flash("Vous devez être connecté pour remplir ce formulaire.", "warning")
         return redirect(url_for("login"))
 
     if request.method == "POST":
-        # Récupération des données du formulaire
+        # Recovery of form data
         activite = request.form.get("activite")
         type_entreprise = request.form.get("type_entreprise")
         cabinet = request.form.get("cabinet")
@@ -222,7 +222,7 @@ def formulaire_client():
         email = request.form.get("email")
         adresse_siege = request.form.get("adresse_siege")
 
-        # ✅ Enregistrement dans la base de données avec lien à l'utilisateur
+        # ✅ Database registration with link to user
         nouveau_client = Client(
             utilisateur_id=utilisateur_id,
             activite=activite,
@@ -237,7 +237,7 @@ def formulaire_client():
         db.session.add(nouveau_client)
         db.session.commit()
 
-        # 📧 Envoi d'e-mail
+        # 📧 Send e-mail
         msg = Message(
             subject="Nouvelle fiche client",
             sender=app.config["MAIL_USERNAME"],
@@ -253,7 +253,7 @@ def formulaire_client():
             Adresse siège: {adresse_siege}
             """
         )
-        # mail.send(msg)  # ❌ à désactiver temporairement
+        # mail.send(msg) # ❌ to be temporarily disabled
 
         return redirect(url_for("confirmation"))
 
@@ -271,10 +271,10 @@ def devis():
         flash("Veuillez vous connecter pour accéder au formulaire de devis.", "warning")
         return redirect(url_for("login"))
     
-    # Affiche le formulaire de prise de rendez-vous
+    # Displays the appointment form
     return render_template("devis.html")
 
-MAX_DEVIS_PAR_UTILISATEUR = 1  # Nombre maximal de devis autorisés par utilisateur
+MAX_DEVIS_PAR_UTILISATEUR = 1  # Maximum number of quotes per user
 
 @app.route("/resume-devis", methods=["POST"])
 def resume_devis():
@@ -571,16 +571,16 @@ def update_profile():
         prenom = request.form.get("prenom")
         nom = request.form.get("nom")
         email = request.form.get("email")
-        # Mettez à jour les informations dans la base de données ou la session
-        # update_user_profile(prenom, nom, email)
-        # Par exemple, mettre à jour la session :
+        # Update information in database or session
+        # update_user_profile(firstname, lastname, email)
+        # For example, update session :
         session['prenom'] = prenom
         session['nom'] = nom
         session['email'] = email
         flash("Vos informations ont été mises à jour.", "success")
         return redirect(url_for("compte_client"))
     
-    # Pour GET, on suppose que les informations de l'utilisateur sont stockées dans la session
+    # For GET, we assume that the user's information is stored in the session
     user = {
         "prenom": session.get("prenom", ""),
         "nom": session.get("nom", ""),
@@ -594,8 +594,8 @@ def update_social():
         facebook = request.form.get("facebook")
         linkedin = request.form.get("linkedin")
         instagram = request.form.get("instagram")
-        # Vous pouvez enregistrer ces informations dans votre base de données
-        # Ici, on les stocke dans la session pour l'exemple :
+        # You can save this information in your database
+        # Here, we store them in the session for the example :
         session['social'] = {
             "facebook": facebook,
             "linkedin": linkedin,
@@ -610,13 +610,13 @@ def update_preferences():
     language = request.form.get('language')
     theme = request.form.get('theme')
 
-    # Stocker les préférences dans la session
+    # Store preferences in session
     session['language'] = language
     session['theme'] = theme
 
-    flash("Préférences mises à jour avec succès.", "success")  # Ajout du message flash
+    flash("Préférences mises à jour avec succès.", "success")  # Add flash message
 
-    return redirect(url_for('account_settings'))  # ou 'parametres' ou la route exacte de ta page de paramètres
+    return redirect(url_for('account_settings'))  # or 'parametres' or the exact route to your parameters page
 
 @app.route('/update_notifications', methods=['POST'])
 def update_notifications():
@@ -634,7 +634,7 @@ def update_billing():
 
 @app.route("/historique")
 def historique():
-    # Récupérer l'historique de navigation depuis la session (ou une liste vide si inexistant)
+    # Recover browsing history from session (or an empty list if none exists)
     history = session.get("history", [])
     return render_template("historique.html", history=history)
 
@@ -642,9 +642,9 @@ def historique():
 def track_history():
     if 'history' not in session:
         session['history'] = []
-    # Ajoutez le chemin de la requête à l'historique
+    # Add query path to history
     session['history'].append(request.path)
-    # Limiter l'historique aux 20 dernières entrées
+    # Limit history to last 20 entries
     session['history'] = session['history'][-20:]
 
 @app.route("/update_photo", methods=["POST"])
@@ -673,7 +673,7 @@ def ma_fiche_client():
         flash("Veuillez vous connecter pour voir votre fiche client.", "warning")
         return redirect(url_for("login"))
 
-    # Récupère tous les clients liés à ce user
+    # Retrieves all clients linked to this user
     clients = Client.query.filter_by(utilisateur_id=utilisateur_id).all()
 
     return render_template("ma_fiche_client.html", clients=clients)

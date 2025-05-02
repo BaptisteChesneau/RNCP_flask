@@ -31,7 +31,7 @@
 
 <div class="container my-5">
 
-  <!-- 🔘 Boutons Historique + Questions Répondues sur une même ligne -->
+  <!-- 🔘 Boutons Historique + Questions Répondues -->
   <div class="text-center mb-4 d-flex justify-content-center flex-wrap gap-3">
     <button id="show-history-btn" class="btn btn-info mr-2">Afficher l'historique de conversation</button>
     <button id="show-answered-btn" class="btn btn-info ml-2 position-relative">
@@ -85,7 +85,7 @@
     <div style="color:white; margin-top: 10px;">Le bot réfléchit...</div>
   </div>
 
-  <!-- ✅ Formulaire uniquement -->
+  <!-- ✅ Formulaire -->
   <h1 class="text-center mb-4">Poser une nouvelle question</h1>
   <form action="{{ url_for('chatbot') }}" method="POST" class="mb-5">
     <div class="form-group">
@@ -103,7 +103,7 @@
 
 {% include "footer.html" %}
 
-<!-- 🔈 Notification Audio -->
+<!-- 🔈 Notification Audio intégrée -->
 <audio id="notif-sound" src="{{ url_for('static', filename='sounds/notification.mp3') }}" preload="auto"></audio>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -140,7 +140,7 @@
       }
     });
 
-    // 🔔 Détection automatique d'une nouvelle réponse dans les bulles
+    // 🔔 Nouvelle réponse détectée
     const bubbles = document.querySelectorAll(".bubble.nouvelle-reponse");
     const newCount = bubbles.length;
 

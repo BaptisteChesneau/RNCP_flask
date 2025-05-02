@@ -907,3 +907,19 @@ input[type="password"] {
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
+
+/*============================================================
+  27) NOTIFICATION DE NOUVELLE RÉPONSE (animation + couleur)
+============================================================*/
+
+.nouvelle-reponse {
+  animation: highlightNew 1s ease-in-out;
+  background-color: #e6ffed !important;
+  border-left: 6px solid #28a745;
+}
+
+@keyframes highlightNew {
+  0%   { background-color: #fff8f8; }
+  50%  { background-color: #e6ffed; }
+  100% { background-color: inherit; }
+}

@@ -31,13 +31,11 @@
 
   <div class="container my-5">
 
-    <!-- 🔘 Boutons -->
-    <div class="text-center mb-3">
-      <button id="show-history-btn" class="btn btn-info">Afficher l'historique de conversation</button>
-    </div>
-    <div class="text-center mb-4">
-      <button id="show-answered-btn" class="btn btn-info">Afficher les questions déjà répondues</button>
-    </div>
+  <!-- 🔘 Boutons Historique + Questions Répondues sur une même ligne -->
+  <div class="text-center mb-4 d-flex justify-content-center flex-wrap gap-3">
+    <button id="show-history-btn" class="btn btn-info mr-2">Afficher l'historique de conversation</button>
+    <button id="show-answered-btn" class="btn btn-info ml-2">Afficher les questions déjà répondues</button>
+  </div>
 
     <!-- 🔄 Historique -->
     <div id="history-container" class="mb-5 fade" style="display: none;">

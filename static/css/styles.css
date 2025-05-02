@@ -896,3 +896,14 @@ input[type="password"] {
   margin-right: 15px;
   color: #333;
 }
+
+/*============================================================
+  26) ALIGNEMENT DES BOUTONS EN LIGNE
+============================================================*/
+.button-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}

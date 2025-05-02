@@ -909,17 +909,27 @@ input[type="password"] {
 }
 
 /*============================================================
-  27) NOTIFICATION DE NOUVELLE RÉPONSE (animation + couleur)
+  27) NOTIFICATION DE NOUVELLE RÉPONSE (animation discrète en rose)
 ============================================================*/
 
 .nouvelle-reponse {
-  animation: highlightNew 1s ease-in-out;
-  background-color: #e6ffed !important;
-  border-left: 6px solid #28a745;
+  animation: highlightNew 0.8s ease-in-out;
+  background-color: #fcd5e1 !important;  /* ✅ Rose ML2C conservé */
+  border-left: 6px solid #D81E5B;        /* ✅ Rose soutenu ML2C */
+  box-shadow: 0 0 8px rgba(216, 30, 91, 0.3); /* ✅ Halo léger */
 }
 
 @keyframes highlightNew {
-  0%   { background-color: #fff8f8; }
-  50%  { background-color: #e6ffed; }
-  100% { background-color: inherit; }
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 2px rgba(216, 30, 91, 0.2);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0 10px rgba(216, 30, 91, 0.5);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 2px rgba(216, 30, 91, 0.2);
+  }
 }

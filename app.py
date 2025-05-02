@@ -104,10 +104,10 @@ class Devis(db.Model):
 class Paiement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     utilisateur_id = db.Column(db.Integer, db.ForeignKey('utilisateur.id'), nullable=False)
-    montant = db.Column(db.Float)  # Par ex. 49.99
-    date_transaction = db.Column(db.DateTime)  # Nécessite éventuellement "from datetime import datetime"
-    statut = db.Column(db.String(50))  # "validé", "en attente", "refusé", ...
-    mode_paiement = db.Column(db.String(50))  # "Stripe", "PayPal", ...
+    montant = db.Column(db.Float)  # e.g. 49.99
+    date_transaction = db.Column(db.DateTime)  # May require “from datetime import datetime”.
+    statut = db.Column(db.String(50))  # “validated”, “pending”, “refused”, ...
+    mode_paiement = db.Column(db.String(50))  # “Stripe”, “PayPal”, ...
 
     # Relation: a Payment belongs to a User
     utilisateur = db.relationship("Utilisateur", back_populates="paiements")
@@ -119,7 +119,7 @@ class Paiement(db.Model):
 class Newsletter(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    date_inscription = db.Column(db.DateTime)  # Optionnel, si vous voulez enregistrer la date
+    date_inscription = db.Column(db.DateTime)  # Optional, if you want to save the date
 
     def __repr__(self):
         return f"<Newsletter {self.email}>"
@@ -835,7 +835,7 @@ def login_admin():
         username = request.form.get("username")
         password = request.form.get("password")
 
-        # Chercher l'utilisateur admin dans MongoDB
+        # Search for the admin user in MongoDB
         admin = mongo.db.admin_users.find_one({"username": username})
 
         if admin and check_password_hash(admin["password"], password):

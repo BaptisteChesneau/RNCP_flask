@@ -3,8 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Ajouter une question - Chatbot ML2C CONSEIL</title>
-
-  <!-- Bootstrap pour un peu de style -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
 </head>
@@ -18,13 +16,9 @@
       {% if messages %}
         {% for category, message in messages %}
           <div class="alert alert-{{ category }} alert-dismissible fade show d-flex align-items-center" role="alert">
-            {% if category == 'success' %}
-              <span class="mr-2" style="font-size: 1.5rem;">✅</span>
-            {% elif category == 'danger' %}
-              <span class="mr-2" style="font-size: 1.5rem;">❌</span>
-            {% elif category == 'warning' %}
-              <span class="mr-2" style="font-size: 1.5rem;">⚠️</span>
-            {% endif %}
+            {% if category == 'success' %}<span class="mr-2" style="font-size: 1.5rem;">✅</span>{% endif %}
+            {% if category == 'danger' %}<span class="mr-2" style="font-size: 1.5rem;">❌</span>{% endif %}
+            {% if category == 'warning' %}<span class="mr-2" style="font-size: 1.5rem;">⚠️</span>{% endif %}
             <div>{{ message }}</div>
             <button type="button" class="close ml-auto" data-dismiss="alert" aria-label="Fermer">
               <span aria-hidden="true">&times;</span>
@@ -37,12 +31,17 @@
 
   <div class="container my-5">
 
-    <!-- 🔥 Bouton Afficher l'Historique -->
-    <div class="text-center mb-4">
+    <!-- 🔘 Bouton Historique -->
+    <div class="text-center mb-3">
       <button id="show-history-btn" class="btn btn-info">Afficher l'historique de conversation</button>
     </div>
 
-    <!-- 🔥 Bloc Historique -->
+    <!-- 🔘 Bouton Questions déjà répondues -->
+    <div class="text-center mb-4">
+      <button id="show-answered-btn" class="btn btn-info">Afficher les questions déjà répondues</button>
+    </div>
+
+    <!-- 🔄 Historique -->
     <div id="history-container" class="mb-5 fade" style="display: none;">
       <h3 class="text-center mb-3">Historique des Conversations</h3>
       <ul class="list-group">
@@ -55,8 +54,6 @@
           <li class="list-group-item">Aucun historique trouvé.</li>
         {% endfor %}
       </ul>
-
-      <!-- 🔥 Bouton Vider l'Historique -->
       <div class="text-center mt-4">
         <form action="{{ url_for('vider_historique') }}" method="POST" onsubmit="return confirm('Es-tu sûr de vouloir tout supprimer ?');">
           <button type="submit" class="btn btn-danger">Vider l'historique</button>
@@ -64,7 +61,24 @@
       </div>
     </div>
 
-    <!-- 🔥 Loader réflexion -->
+    <!-- 🔘 Questions déjà répondues -->
+    <div id="answered-container" class="mb-5 fade" style="display: none;">
+      <h3 class="text-center mb-3">Questions déjà répondues</h3>
+      <div class="chat-container mb-5">
+        {% for message in messages %}
+          <div class="message-row user">
+            <div class="avatar user"></div>
+            <div class="bubble">{{ message.question }}</div>
+          </div>
+          <div class="message-row bot">
+            <div class="bubble">{{ message.reponse }}</div>
+            <div class="avatar bot"></div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- 💬 Loader -->
     <div id="chatbot-loader" style="display: none; text-align: center; margin: 20px;">
       <div class="spinner-border text-light" role="status">
         <span class="sr-only">Chargement...</span>
@@ -72,7 +86,7 @@
       <div style="color:white; margin-top: 10px;">Le bot réfléchit...</div>
     </div>
 
-    <!-- 🔥 Chatbot style messagerie animée -->
+    <!-- 🧠 Chat en direct -->
     <div class="chat-container mb-5">
       {% for message in messages %}
         <div class="message-row user">
@@ -82,8 +96,7 @@
         <div class="message-row bot">
           <div class="bubble">
             {% if message.reponse == "En attente de réponse..." %}
-              {{ message.reponse }}
-              <span class="dot-typing"></span>
+              {{ message.reponse }} <span class="dot-typing"></span>
             {% else %}
               {{ message.reponse }}
             {% endif %}
@@ -95,13 +108,11 @@
 
     <h1 class="text-center mb-4">Poser une nouvelle question</h1>
 
-    <!-- Formulaire d'ajout de question uniquement -->
     <form action="{{ url_for('chatbot') }}" method="POST" class="mb-5">
       <div class="form-group">
         <label for="question">Votre question :</label>
         <input type="text" class="form-control" id="question" name="question" placeholder="Ex: Comment fonctionne la plateforme ?" required>
       </div>
-
       <button type="submit" class="btn btn-primary btn-block">Envoyer</button>
     </form>
 
@@ -113,28 +124,33 @@
 
   {% include "footer.html" %}
 
-  <!-- Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- 🔥 Animation chatbot -->
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       const loader = document.getElementById('chatbot-loader');
       const showHistoryBtn = document.getElementById('show-history-btn');
       const historyContainer = document.getElementById('history-container');
+      const showAnsweredBtn = document.getElementById('show-answered-btn');
+      const answeredContainer = document.getElementById('answered-container');
 
       showHistoryBtn.addEventListener('click', function() {
         if (historyContainer.style.display === 'none') {
           historyContainer.style.display = 'block';
-          setTimeout(() => {
-            historyContainer.classList.add('show');
-          }, 10);
+          setTimeout(() => historyContainer.classList.add('show'), 10);
         } else {
           historyContainer.classList.remove('show');
-          setTimeout(() => {
-            historyContainer.style.display = 'none';
-          }, 500);
+          setTimeout(() => historyContainer.style.display = 'none', 500);
+        }
+      });
+
+      showAnsweredBtn.addEventListener('click', function() {
+        if (answeredContainer.style.display === 'none') {
+          answeredContainer.style.display = 'block';
+          setTimeout(() => answeredContainer.classList.add('show'), 10);
+        } else {
+          answeredContainer.classList.remove('show');
+          setTimeout(() => answeredContainer.style.display = 'none', 500);
         }
       });
     });

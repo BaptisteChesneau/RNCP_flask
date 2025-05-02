@@ -812,6 +812,7 @@ input[type="password"] {
   color: #333; /* Texte foncé pour bonne lisibilité */
 }
 
+/* ✅ Animation utilisée dans messages bot/user */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -820,6 +821,7 @@ input[type="password"] {
 /*============================================================
   25) BOUTON "Afficher les questions déjà répondues"
 ============================================================*/
+
 #answered-btn {
   background-color: #0097A7; /* bleu turquoise */
   color: #fff;

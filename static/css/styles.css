@@ -933,3 +933,19 @@ input[type="password"] {
     box-shadow: 0 0 2px rgba(216, 30, 91, 0.2);
   }
 }
+
+
+/*============================================================
+  28) BADGE DE NOTIFICATION SUR LE BOUTON "RÉPONSES"
+============================================================*/
+
+#answered-badge {
+  background-color: #d41b5e;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  margin-left: 8px;
+  display: none;
+}

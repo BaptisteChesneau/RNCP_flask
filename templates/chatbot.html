@@ -31,6 +31,25 @@
 
 <div class="container my-5">
 
+  <!-- 🧑‍🎨 Personnalisation du bot -->
+  <div class="mb-5">
+    <h3 class="text-center mb-3">Personnaliser le chatbot</h3>
+    <div class="form-row align-items-end">
+      <div class="col-md-6 mb-3">
+        <label for="custom-bot-name">Nom du bot :</label>
+        <input type="text" id="custom-bot-name" class="form-control" placeholder="Ex: ML2C Bot">
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="custom-bot-avatar">Image URL de l’avatar :</label>
+        <input type="text" id="custom-bot-avatar" class="form-control" placeholder="Lien vers une image">
+      </div>
+    </div>
+    <div class="text-center">
+      <button id="save-bot-settings" class="btn btn-outline-primary mr-2">Sauvegarder</button>
+      <button id="reset-bot-settings" class="btn btn-outline-secondary">Réinitialiser</button>
+    </div>
+  </div>
+
   <!-- 🔘 Boutons Historique + Questions Répondues -->
   <div class="text-center mb-4 d-flex justify-content-center flex-wrap gap-3">
     <button id="show-history-btn" class="btn btn-info mr-2">Afficher l'historique de conversation</button>
@@ -47,7 +66,7 @@
       {% for hist in history %}
         <li class="list-group-item pop-in-message">
           <strong>Q :</strong> {{ hist.question }}<br>
-          <strong>R :</strong> {{ hist.reponse }}
+          <strong><span class="bot-name-display">Bot</span> :</strong> {{ hist.reponse }}
         </li>
       {% else %}
         <li class="list-group-item">Aucun historique trouvé.</li>
@@ -70,7 +89,9 @@
           <div class="bubble">{{ message.question }}</div>
         </div>
         <div class="message-row bot">
-          <div class="bubble {% if message.reponse != 'En attente de réponse...' %}nouvelle-reponse{% endif %}">{{ message.reponse }}</div>
+          <div class="bubble {% if message.reponse != 'En attente de réponse...' %}nouvelle-reponse{% endif %}">
+            <strong><span class="bot-name-display">Bot</span> :</strong> {{ message.reponse }}
+          </div>
           <div class="avatar bot"></div>
         </div>
       {% endfor %}
@@ -113,9 +134,7 @@
 
 {% include "footer.html" %}
 
-<!-- 🔈 Notification Audio -->
 <audio id="notif-sound" src="{{ url_for('static', filename='sounds/notification.mp3') }}" preload="auto"></audio>
-
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -170,6 +189,40 @@
       typingIndicator.classList.add("show");
       attenteMessage.style.display = "none";
     });
+
+    // 🎨 Personnalisation du chatbot
+    const botNameField = document.getElementById("custom-bot-name");
+    const botAvatarField = document.getElementById("custom-bot-avatar");
+    const saveBtn = document.getElementById("save-bot-settings");
+    const resetBtn = document.getElementById("reset-bot-settings");
+
+    const botNameSpans = document.querySelectorAll(".bot-name-display");
+    const botAvatars = document.querySelectorAll(".avatar.bot");
+
+    function applyBotSettings() {
+      const name = localStorage.getItem("botName") || "Bot";
+      const avatarUrl = localStorage.getItem("botAvatar") || "https://raw.githubusercontent.com/AUTOMATIC1111/stable-diffusion-webui/master/extensions-builtin/Lora/resources/avatar-bot.png";
+      botNameSpans.forEach(el => el.textContent = name);
+      botAvatars.forEach(el => el.style.backgroundImage = `url('${avatarUrl}')`);
+      if (botNameField) botNameField.value = name;
+      if (botAvatarField) botAvatarField.value = avatarUrl;
+    }
+
+    if (saveBtn && resetBtn && botNameField && botAvatarField) {
+      saveBtn.addEventListener("click", () => {
+        localStorage.setItem("botName", botNameField.value.trim());
+        localStorage.setItem("botAvatar", botAvatarField.value.trim());
+        applyBotSettings();
+      });
+
+      resetBtn.addEventListener("click", () => {
+        localStorage.removeItem("botName");
+        localStorage.removeItem("botAvatar");
+        applyBotSettings();
+      });
+    }
+
+    applyBotSettings();
   });
 </script>
 

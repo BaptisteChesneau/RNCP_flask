@@ -91,7 +91,7 @@
   </div>
 
   <!-- 🔄 Message si réponse en attente -->
-  <div id="attente-message" class="alert alert-warning text-center mt-3" style="display:none;">
+  <div id="attente-message" class="attente-message" style="display:none;">
     ⏳ Le bot met un peu plus de temps à répondre...
   </div>
 
@@ -113,7 +113,7 @@
 
 {% include "footer.html" %}
 
-<!-- 🔈 Notification Audio intégrée -->
+<!-- 🔈 Notification Audio -->
 <audio id="notif-sound" src="{{ url_for('static', filename='sounds/notification.mp3') }}" preload="auto"></audio>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -162,7 +162,7 @@
 
       setTimeout(() => {
         typingIndicator.classList.remove("show");
-        if (attenteDetectee) attenteMessage.style.display = "block";
+        attenteMessage.style.display = attenteDetectee ? "block" : "none";
       }, 1500);
     }
 

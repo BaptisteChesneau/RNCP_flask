@@ -980,7 +980,9 @@ input[type="password"] {
   40% { transform: scale(1); }
 }
 
-/* ========== 30) MESSAGE D'ATTENTE SI RÉPONSE LONGUE ========== */
+/*============================================================
+  30) MESSAGE D'ATTENTE SI RÉPONSE LONGUE
+============================================================*/
 .attente-message {
   text-align: center;
   font-style: italic;
@@ -997,4 +999,56 @@ input[type="password"] {
 @keyframes fadeInSlow {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+
+/*============================================================
+  31) PERSONNALISATION DU BOT
+============================================================*/
+/* 🧩 Galerie d’avatars */
+#customization-panel {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  padding: 20px;
+  border-radius: 8px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.select-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.select-avatar:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+  cursor: pointer;
+}
+
+.select-avatar.border.border-primary {
+  border: 3px solid #007bff;
+}
+
+/* 🎭 Champ de nom personnalisé */
+#custom-bot-name {
+  max-width: 300px;
+  margin-top: 15px;
+  text-align: center;
+}
+
+/* 🎛️ Boutons de personnalisation */
+#save-bot-settings,
+#reset-bot-settings {
+  min-width: 120px;
+  margin: 10px 5px;
+}
+
+/* ✨ Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }

@@ -53,8 +53,8 @@
   <!-- 🔘 Boutons Historique + Questions Répondues -->
   <div class="text-center mb-4 d-flex justify-content-center flex-wrap gap-3">
     <button id="show-history-btn" class="btn btn-info mr-2">Afficher l'historique de conversation</button>
-    <button id="show-answered-btn" class="btn btn-info ml-2 position-relative">
-      Afficher les questions déjà répondues
+    <button id="show-answered-btn" class="btn btn-info ml-2 position-relative">Afficher les questions déjà répondues
+    <button id="toggle-customization" class="btn btn-outline-info">Afficher la personnalisation du bot</button>
       <span id="notif-badge" class="badge badge-danger position-absolute" style="top: -10px; right: -10px; display: none;">0</span>
     </button>
   </div>
@@ -116,6 +116,24 @@
     ⏳ Le bot met un peu plus de temps à répondre...
   </div>
 
+  <!-- 🎭 Galerie de personnalisation -->
+  <div id="customization-panel" class="mb-5" style="display: none;">
+    <h3 class="text-center mb-3">Choisissez un avatar</h3>
+    <div class="d-flex justify-content-center flex-wrap mb-3">
+      <img src="/static/avatars/bot1.png" class="select-avatar mx-2 mb-2" data-avatar="/static/avatars/bot1.png" style="width: 80px; cursor: pointer;">
+      <img src="/static/avatars/bot2.png" class="select-avatar mx-2 mb-2" data-avatar="/static/avatars/bot2.png" style="width: 80px; cursor: pointer;">
+      <img src="/static/avatars/bot3.png" class="select-avatar mx-2 mb-2" data-avatar="/static/avatars/bot3.png" style="width: 80px; cursor: pointer;">
+    </div>
+    <div class="form-group text-center">
+      <label for="custom-bot-name">Nom du bot :</label>
+      <input type="text" id="custom-bot-name" class="form-control w-50 mx-auto" placeholder="Ex: ML2C Bot">
+    </div>
+    <div class="text-center">
+      <button id="save-bot-settings" class="btn btn-outline-primary">Valider</button>
+      <button id="reset-bot-settings" class="btn btn-outline-secondary ml-2">Réinitialiser</button>
+    </div>
+  </div>
+  
   <!-- ✅ Formulaire -->
   <h1 class="text-center mb-4">Poser une nouvelle question</h1>
   <form action="{{ url_for('chatbot') }}" method="POST" class="mb-5">
@@ -189,6 +207,31 @@
       typingIndicator.classList.add("show");
       attenteMessage.style.display = "none";
     });
+
+    // 🖼️ Gestion de la galerie d'avatars
+    const toggleCustomizationBtn = document.getElementById("toggle-customization");
+    const customizationPanel = document.getElementById("customization-panel");
+    const avatarImages = document.querySelectorAll(".select-avatar");
+
+    let selectedAvatar = null;
+
+  if (toggleCustomizationBtn && customizationPanel) {
+    toggleCustomizationBtn.addEventListener("click", () => {
+      customizationPanel.style.display = customizationPanel.style.display === "none" ? "block" : "none";
+    });
+  }
+
+
+  avatarImages.forEach(img => {
+    img.addEventListener("click", () => {
+      // Désélectionner les autres
+      avatarImages.forEach(i => i.classList.remove("border", "border-primary"));
+      // Sélectionner le nouveau
+      img.classList.add("border", "border-primary");
+      selectedAvatar = img.getAttribute("data-avatar");
+      if (botAvatarField) botAvatarField.value = selectedAvatar;
+    });
+  });
 
     // 🎨 Personnalisation du chatbot
     const botNameField = document.getElementById("custom-bot-name");

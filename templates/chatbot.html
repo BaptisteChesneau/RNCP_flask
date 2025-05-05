@@ -85,6 +85,16 @@
     <div style="color:white; margin-top: 10px;">Le bot réfléchit...</div>
   </div>
 
+  <!-- ✅ Indicateur "Le bot répond..." -->
+  <div id="typing-indicator" class="typing-indicator">
+    Le bot répond<span class="dot one">.</span><span class="dot two">.</span><span class="dot three">.</span>
+  </div>
+
+  <!-- 🔄 Message si réponse en attente -->
+  <div id="attente-message" class="alert alert-warning text-center mt-3" style="display:none;">
+    ⏳ Le bot met un peu plus de temps à répondre...
+  </div>
+
   <!-- ✅ Formulaire -->
   <h1 class="text-center mb-4">Poser une nouvelle question</h1>
   <form action="{{ url_for('chatbot') }}" method="POST" class="mb-5">
@@ -117,38 +127,49 @@
     const answeredContainer = document.getElementById("answered-container");
     const notifSound = document.getElementById("notif-sound");
     const notifBadge = document.getElementById("notif-badge");
+    const typingIndicator = document.getElementById("typing-indicator");
+    const attenteMessage = document.getElementById("attente-message");
+    const form = document.querySelector("form");
 
     showHistoryBtn.addEventListener("click", function () {
-      if (historyContainer.style.display === "none") {
-        historyContainer.style.display = "block";
-        setTimeout(() => historyContainer.classList.add("show"), 10);
-      } else {
-        historyContainer.classList.remove("show");
-        setTimeout(() => historyContainer.style.display = "none", 500);
-      }
+      historyContainer.style.display = historyContainer.style.display === "none" ? "block" : "none";
+      historyContainer.classList.toggle("show");
     });
 
     showAnsweredBtn.addEventListener("click", function () {
-      if (answeredContainer.style.display === "none") {
-        answeredContainer.style.display = "block";
-        setTimeout(() => answeredContainer.classList.add("show"), 10);
-        notifBadge.style.display = "none";
-        notifBadge.textContent = "0";
-      } else {
-        answeredContainer.classList.remove("show");
-        setTimeout(() => answeredContainer.style.display = "none", 500);
+      answeredContainer.style.display = answeredContainer.style.display === "none" ? "block" : "none";
+      answeredContainer.classList.toggle("show");
+      notifBadge.style.display = "none";
+      notifBadge.textContent = "0";
+    });
+
+    const bubbles = document.querySelectorAll(".bubble.nouvelle-reponse");
+    const newCount = bubbles.length;
+    let attenteDetectee = false;
+
+    bubbles.forEach(bubble => {
+      if (bubble.textContent.trim() === "En attente de réponse...") {
+        attenteDetectee = true;
       }
     });
 
-    // 🔔 Nouvelle réponse détectée
-    const bubbles = document.querySelectorAll(".bubble.nouvelle-reponse");
-    const newCount = bubbles.length;
-
     if (newCount > 0) {
-      notifSound.play().catch(() => {});
-      notifBadge.style.display = "inline-block";
-      notifBadge.textContent = newCount;
+      if (!attenteDetectee) {
+        notifSound.play().catch(() => {});
+        notifBadge.style.display = "inline-block";
+        notifBadge.textContent = newCount;
+      }
+
+      setTimeout(() => {
+        typingIndicator.classList.remove("show");
+        if (attenteDetectee) attenteMessage.style.display = "block";
+      }, 1500);
     }
+
+    form.addEventListener("submit", function () {
+      typingIndicator.classList.add("show");
+      attenteMessage.style.display = "none";
+    });
   });
 </script>
 

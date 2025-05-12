@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Notre politique de securite - ML2C CONSEIL</title>
+  <title>Notre politique de sécurité - ML2C CONSEIL</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
 </head>
 <body style="background-color: #f8fff1;">
@@ -16,19 +16,12 @@
     <div class="row justify-content-center">
       <div class="col-md-10">
         <pre class="p-4 rounded" style="background:#1e1e1e; color:#d4d4d4;">
-<span style="color: #569cd6;">from</span> flask <span style="color: #569cd6;">import</span> request
-
-<span style="color: #569cd6;">def</span> <span style="color: #dcdcaa;">validate_signup</span>():
+<span style="color: #569cd6;">def</span> <span style="color: #dcdcaa;">validate_signup</span>(email, password, pseudo):
     errors = {}
 
-    <span style="color: #6a9955;"># Retrieve form fields (POST)</span>
-    username = request.form.get("username", "").strip()
-    email = request.form.get("email", "").strip()
-    password = request.form.get("password", "")
-
-    <span style="color: #6a9955;"># Validate username (pseudo)</span>
-    <span style="color: #c586c0;">if</span> len(username) &lt; 3:
-        errors["username"] = "Username must be at least 3 characters long."
+    <span style="color: #6a9955;"># Validate pseudo (username)</span>
+    <span style="color: #c586c0;">if</span> len(pseudo) &lt; 3:
+        errors["pseudo"] = "Username must be at least 3 characters long."
 
     <span style="color: #6a9955;"># Validate email format</span>
     <span style="color: #c586c0;">if</span> "@" not in email or "." not in email:
@@ -40,7 +33,7 @@
 
     <span style="color: #c586c0;">return</span> errors
         </pre>
-        <p class="text-muted mt-3 text-center">✔️ Secure example: validating username, email & password</p>
+        <p class="text-muted mt-3 text-center">✔️ Example of secure validation using arguments & dictionaries</p>
       </div>
     </div>
 

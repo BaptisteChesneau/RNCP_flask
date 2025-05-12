@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Notre Politique de Sécurité - ML2C CONSEIL</title>
@@ -19,11 +19,11 @@
 <span style="color: #569cd6;">def</span> <span style="color: #dcdcaa;">validate_user_input</span>(email, password):
     errors = {}
 
-    <span style="color: #6a9955;"># Vérifie que l'email est valide</span>
+    <span style="color: #6a9955;"># Checks that the email is valid</span>
     <span style="color: #c586c0;">if</span> not email or <span style="color: #dcdcaa;">"@"</span> not in email:
         errors["email"] = "Adresse email invalide"
 
-    <span style="color: #6a9955;"># Mot de passe de minimum 8 caractères</span>
+    <span style="color: #6a9955;"># Password of at least 8 characters</span>
     <span style="color: #c586c0;">if</span> len(password) &lt; 8:
         errors["password"] = "Le mot de passe est trop court"
 

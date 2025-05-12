@@ -10,7 +10,7 @@ load_dotenv()  # ✅ Charge les variables depuis .env
 from flask_migrate import Migrate
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
-
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'votre_clé_secrète'  # Clé secrète nécessaire pour la session
@@ -903,6 +903,14 @@ from flask import request, session
 def changer_langue():
     session['langue'] = request.form.get('langue', 'fr')
     return redirect(request.referrer or url_for('historique_chatbot'))
+
+@app.route("/securite")
+def securite():
+    return render_template("securite.html")
+
+@app.context_processor
+def inject_current_year():
+    return {'current_year': datetime.now().year}
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

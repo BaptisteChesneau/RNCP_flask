@@ -1086,3 +1086,30 @@ input[type="password"] {
   background-color: #009639 !important;
   color: white !important;
 }
+
+/*============================================================
+  34) ADMIN USER TABLE - COLORS ML2C
+============================================================*/
+
+body {
+  background-color: #f0fbe4;
+}
+
+.btn-ml2c-edit {
+  background-color: #ffecb3;
+  color: #5c4b00;
+}
+
+.btn-ml2c-copy {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.btn-ml2c-delete {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.table thead {
+  background-color: #d4edda;
+}

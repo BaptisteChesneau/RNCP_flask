@@ -5,78 +5,62 @@
   <title>Test de la base de donnée - Admin View</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
-  <style>
-    body {
-      background-color: #f0fbe4;
-    }
-    .btn-ml2c-edit {
-      background-color: #ffecb3;
-      color: #5c4b00;
-    }
-    .btn-ml2c-copy {
-      background-color: #cce5ff;
-      color: #004085;
-    }
-    .btn-ml2c-delete {
-      background-color: #f8d7da;
-      color: #721c24;
-    }
-    .table thead {
-      background-color: #d4edda;
-    }
-  </style>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+
 </head>
 <body>
 
   <div class="container py-5">
     <h1 class="text-center text-success mb-4">👥 User Database (Admin Only)</h1>
 
-    <table class="table table-bordered table-hover bg-white">
-      <thead class="text-center">
-        <tr>
-          <th>#</th>
-          <th><i class="fas fa-edit" title="Edit"></i></th>
-          <th><i class="fas fa-copy" title="Copy"></i></th>
-          <th><i class="fas fa-trash-alt" title="Delete"></i></th>
-          <th>ID</th>
-          <th>Username</th>
-          <th>Email</th>
-          <th>Password Hash</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for user in utilisateurs %}
-        <tr>
-          <td class="text-center">{{ loop.index }}</td>
-          <td class="text-center">
-            <a href="#" class="btn btn-sm btn-ml2c-edit" title="Edit">
-              <i class="fas fa-edit"></i>
-            </a>
-          </td>
-          <td class="text-center">
-            <a href="#" class="btn btn-sm btn-ml2c-copy" title="Copy">
-              <i class="fas fa-copy"></i>
-            </a>
-          </td>
-          <td class="text-center">
-            <form method="POST" action="#" onsubmit="return confirm('Are you sure you want to delete this user?');">
-              <button type="submit" class="btn btn-sm btn-ml2c-delete" title="Delete">
-                <i class="fas fa-trash-alt"></i>
-              </button>
-            </form>
-          </td>
-          <td class="text-center">{{ user.id }}</td>
-          <td>{{ user.nom_utilisateur }}</td>
-          <td>{{ user.email }}</td>
-          <td style="word-break: break-word;">{{ user.mot_de_passe_hash }}</td>
-        </tr>
-        {% else %}
-        <tr>
-          <td colspan="8" class="text-center text-muted">No users found in the database.</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table id="userTable" class="table table-bordered table-hover bg-white">
+        <thead class="text-center">
+          <tr>
+            <th>#</th>
+            <th><i class="fas fa-edit" title="Edit"></i></th>
+            <th><i class="fas fa-copy" title="Copy"></i></th>
+            <th><i class="fas fa-trash-alt" title="Delete"></i></th>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Password Hash</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in utilisateurs %}
+          <tr>
+            <td class="text-center">{{ loop.index }}</td>
+            <td class="text-center">
+              <a href="#" class="btn btn-sm btn-ml2c-edit" title="Edit">
+                <i class="fas fa-edit"></i>
+              </a>
+            </td>
+            <td class="text-center">
+              <a href="#" class="btn btn-sm btn-ml2c-copy" title="Copy">
+                <i class="fas fa-copy"></i>
+              </a>
+            </td>
+            <td class="text-center">
+              <form method="POST" action="#" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                <button type="submit" class="btn btn-sm btn-ml2c-delete" title="Delete">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </form>
+            </td>
+            <td class="text-center">{{ user.id }}</td>
+            <td>{{ user.nom_utilisateur }}</td>
+            <td>{{ user.email }}</td>
+            <td style="word-break: break-word;">{{ user.mot_de_passe_hash }}</td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="8" class="text-center text-muted">No users found in the database.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
 
     <div class="text-center mt-4">
       <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-success">
@@ -84,6 +68,27 @@
       </a>
     </div>
   </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('#userTable').DataTable({
+        language: {
+          search: "🔍 Search:",
+          lengthMenu: "Show _MENU_ entries",
+          info: "Showing _START_ to _END_ of _TOTAL_ users",
+          paginate: {
+            previous: "Previous",
+            next: "Next"
+          },
+          zeroRecords: "No matching records found"
+        },
+        pageLength: 25
+      });
+    });
+  </script>
 
 </body>
 </html>

@@ -885,6 +885,14 @@ def ajouter_message():
 
     return render_template("ajouter_message.html")
 
+@app.route("/base-test")
+def base_test():
+    if not session.get("admin_logged_in"):
+        flash("Access denied. Admin login required.", "danger")
+        return redirect(url_for("login_admin"))
+
+    utilisateurs = Utilisateur.query.all()
+    return render_template("base_test.html", utilisateurs=utilisateurs)
 
 @app.route("/vider-historique", methods=["POST"])
 def vider_historique():

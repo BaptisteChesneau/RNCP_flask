@@ -2,15 +2,56 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Test de la base de donnée - Admin View</title>
+  <title>Test des tables de données - Admin View</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
-
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
 
   <div class="container py-5">
+
+    <!-- PhpMyAdmin-style toolbar -->
+    <div class="phpmyadmin-toolbar p-2 mb-3 border">
+      <div class="d-flex flex-wrap align-items-center justify-content-between">
+
+        <div class="text-muted small mb-2">
+          <strong>Profiling</strong>
+          <a href="#" class="ml-2">[ Edit inline ]</a>
+          <a href="#" class="ml-2">[ Edit ]</a>
+          <a href="#" class="ml-2">[ Explain SQL ]</a>
+          <a href="#" class="ml-2">[ View source PHP ]</a>
+          <a href="#" class="ml-2">[ Refresh ]</a>
+        </div>
+
+        <div class="form-row align-items-center">
+          <div class="form-group mb-2 mr-2">
+            <label class="mr-1">Show:</label>
+            <select class="form-control form-control-sm" style="width: 70px;">
+              <option>25</option>
+              <option>50</option>
+              <option>100</option>
+            </select>
+          </div>
+
+          <div class="form-group mb-2 mr-2">
+            <label class="mr-1">Filter:</label>
+            <input type="text" class="form-control form-control-sm" placeholder="Search table" style="width: 160px;">
+          </div>
+
+          <div class="form-group mb-2">
+            <label class="mr-1">Sort by:</label>
+            <select class="form-control form-control-sm" style="width: 120px;">
+              <option>None</option>
+              <option>ID</option>
+              <option>Username</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <h1 class="text-center text-success mb-4">👥 User Database (Admin Only)</h1>
 
     <div class="table-responsive">
@@ -18,9 +59,9 @@
         <thead class="text-center">
           <tr>
             <th>#</th>
-            <th><i class="fas fa-edit" title="Edit"></i></th>
-            <th><i class="fas fa-copy" title="Copy"></i></th>
-            <th><i class="fas fa-trash-alt" title="Delete"></i></th>
+            <th><i class="fas fa-edit text-dark" title="Edit"></i></th>
+            <th><i class="fas fa-copy text-dark" title="Copy"></i></th>
+            <th><i class="fas fa-trash-alt text-dark" title="Delete"></i></th>
             <th>ID</th>
             <th>Username</th>
             <th>Email</th>
@@ -32,20 +73,14 @@
           <tr>
             <td class="text-center">{{ loop.index }}</td>
             <td class="text-center">
-              <a href="#" class="btn btn-sm btn-ml2c-edit" title="Edit">
-                <i class="fas fa-edit"></i>
-              </a>
+              <a href="#" class="btn btn-sm btn-ml2c-edit" title="Edit"><i class="fas fa-edit"></i></a>
             </td>
             <td class="text-center">
-              <a href="#" class="btn btn-sm btn-ml2c-copy" title="Copy">
-                <i class="fas fa-copy"></i>
-              </a>
+              <a href="#" class="btn btn-sm btn-ml2c-copy" title="Copy"><i class="fas fa-copy"></i></a>
             </td>
             <td class="text-center">
               <form method="POST" action="#" onsubmit="return confirm('Are you sure you want to delete this user?');">
-                <button type="submit" class="btn btn-sm btn-ml2c-delete" title="Delete">
-                  <i class="fas fa-trash-alt"></i>
-                </button>
+                <button type="submit" class="btn btn-sm btn-ml2c-delete" title="Delete"><i class="fas fa-trash-alt"></i></button>
               </form>
             </td>
             <td class="text-center">{{ user.id }}</td>

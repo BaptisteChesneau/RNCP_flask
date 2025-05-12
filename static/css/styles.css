@@ -1113,3 +1113,20 @@ body {
 .table thead {
   background-color: #d4edda;
 }
+
+/*============================================================
+  35) ADMIN TOOLBAR - PhpMyAdmin Style
+============================================================*/
+.phpmyadmin-toolbar {
+  font-size: 0.9rem;
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+}
+.phpmyadmin-toolbar a {
+  color: #007bff;
+  text-decoration: none;
+}
+.phpmyadmin-toolbar a:hover {
+  text-decoration: underline;
+}

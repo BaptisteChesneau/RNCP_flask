@@ -12,7 +12,6 @@ from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from datetime import datetime
 import pytest
-from app import app
 from bs4 import BeautifulSoup
 
 
@@ -929,8 +928,8 @@ def client():
         yield client
 
 def test_admin_user_table_requires_login(client):
-    response = client.get('/admin-user-table')  # route réelle à adapter
-    assert response.status_code == 302  # redirection vers login
+    response = client.get('/admin-user-table')  # real route to be adapted
+    assert response.status_code == 302  # redirect to login
 
 def test_admin_user_table_as_admin(client):
     with client.session_transaction() as sess:
@@ -942,7 +941,7 @@ def test_user_list_displays_users(client):
     with client.session_transaction() as sess:
         sess['admin_logged_in'] = True
 
-    # Ajouter un utilisateur factice si nécessaire via la DB
+    # Add a dummy user if necessary via DB
     response = client.get('/admin-user-table')
     assert b'test1' in response.data
     assert b'baptiste012chesneau@gmail.com' in response.data

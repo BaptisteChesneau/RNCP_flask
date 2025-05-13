@@ -11,6 +11,10 @@ from flask_migrate import Migrate
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from datetime import datetime
+import pytest
+from app import app
+from bs4 import BeautifulSoup
+
 
 app = Flask(__name__)
 app.secret_key = 'votre_clé_secrète'  # Clé secrète nécessaire pour la session
@@ -258,8 +262,6 @@ def formulaire_client():
         return redirect(url_for("confirmation"))
 
     return render_template("formulaire_client.html")
-
-
 
 @app.route("/confirmation")
 def confirmation():
@@ -919,6 +921,31 @@ def securite():
 @app.context_processor
 def inject_current_year():
     return {'current_year': datetime.now().year}
+
+@pytest.fixture
+def client():
+    app.config['TESTING'] = True
+    with app.test_client() as client:
+        yield client
+
+def test_admin_user_table_requires_login(client):
+    response = client.get('/admin-user-table')  # route réelle à adapter
+    assert response.status_code == 302  # redirection vers login
+
+def test_admin_user_table_as_admin(client):
+    with client.session_transaction() as sess:
+        sess['admin_logged_in'] = True
+    response = client.get('/admin-user-table')
+    assert b'User Database (Admin Only)' in response.data
+
+def test_user_list_displays_users(client):
+    with client.session_transaction() as sess:
+        sess['admin_logged_in'] = True
+
+    # Ajouter un utilisateur factice si nécessaire via la DB
+    response = client.get('/admin-user-table')
+    assert b'test1' in response.data
+    assert b'baptiste012chesneau@gmail.com' in response.data
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

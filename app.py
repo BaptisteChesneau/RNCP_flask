@@ -1,28 +1,30 @@
-# Standard library
 import os
-from datetime import datetime
-from typing import Any
 
-# Third-party
-import pytest
-from bs4 import BeautifulSoup
-from bson.objectid import ObjectId
 from dotenv import load_dotenv
-from flask import (Flask, flash, jsonify, redirect, render_template, request,
-                   session, url_for)
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
+from flask import (Flask, flash, redirect, render_template, request, session,
+                   url_for)
 from flask_mail import Mail, Message
-from flask_migrate import Migrate
-from flask_pymongo import PyMongo
 from flask_sqlalchemy import SQLAlchemy
-from flask_wtf.csrf import CSRFProtect
 from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
-from markupsafe import escape
 from PIL import Image, UnidentifiedImageError
 from sqlalchemy.orm import relationship
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
+
+load_dotenv()  # ✅ Charge les variables depuis .env
+from datetime import datetime
+from typing import Any
+
+import pytest
+from bs4 import BeautifulSoup
+from bson.objectid import ObjectId
+from flask import jsonify
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+from flask_migrate import Migrate
+from flask_pymongo import PyMongo
+from flask_wtf.csrf import CSRFProtect
+from markupsafe import escape
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY")

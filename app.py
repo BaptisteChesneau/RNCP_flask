@@ -1,19 +1,16 @@
+import imghdr
 import os
 
 from dotenv import load_dotenv
-from flask import (Flask, flash, redirect, render_template, request, session,
-                   url_for)
+from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
 from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
-from PIL import Image, UnidentifiedImageError
-from sqlalchemy.orm import relationship
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 
 load_dotenv()  # ✅ Charge les variables depuis .env
 from datetime import datetime
-from typing import Any
 
 import pytest
 from bs4 import BeautifulSoup
@@ -38,9 +35,7 @@ ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
 UPLOAD_FOLDER = os.path.join("static", "uploads")
 
 # Initialisation de Flask-Limiter
-limiter = Limiter(
-    get_remote_address, app=app, default_limits=["200 per day", "50 per hour"]
-)
+limiter = Limiter(get_remote_address, app=app, default_limits=["200 per day", "50 per hour"])
 
 csrf = CSRFProtect(app)  # ✅ Sécurité anti-CSRF activée ici
 
@@ -61,7 +56,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["MONGO_URI"] = os.getenv("MONGO_URL") or os.getenv("SCALINGO_MONGO_URL")
 mongo = PyMongo(app)
 
-db: SQLAlchemy = SQLAlchemy(app)
+db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 # Sécurité des cookies de session
@@ -75,9 +70,7 @@ app.config["SESSION_COOKIE_SAMESITE"] = "Lax"  # limite les envois cross-site
 # =================== MODÈLES ======================
 class Client(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    utilisateur_id = db.Column(
-        db.Integer, db.ForeignKey("utilisateur.id"), nullable=False
-    )
+    utilisateur_id = db.Column(db.Integer, db.ForeignKey("utilisateur.id"), nullable=False)
     activite = db.Column(db.String(100))
     type_entreprise = db.Column(db.String(100))
     cabinet = db.Column(db.String(100))
@@ -103,9 +96,7 @@ class Utilisateur(db.Model):
     devis = db.relationship("Devis", back_populates="utilisateur")
     paiements = db.relationship("Paiement", back_populates="utilisateur")
     support_tickets = db.relationship("SupportTicket", back_populates="utilisateur")
-    preferences = db.relationship(
-        "Preferences", back_populates="utilisateur", uselist=False
-    )
+    preferences = db.relationship("Preferences", back_populates="utilisateur", uselist=False)
     historiques = db.relationship("Historique", back_populates="utilisateur")
     articles = db.relationship("BlogPost", back_populates="auteur")
 
@@ -119,15 +110,13 @@ class Utilisateur(db.Model):
         self.mot_de_passe_hash = generate_password_hash(password)
 
     def check_password(self, password: str) -> bool:
-        return bool(check_password_hash(self.mot_de_passe_hash, password))
+        return check_password_hash(self.mot_de_passe_hash, password)
 
 
 # =================== MODÈLE DEVIS (optionnel) ======================
 class Devis(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    utilisateur_id = db.Column(
-        db.Integer, db.ForeignKey("utilisateur.id"), nullable=False
-    )
+    utilisateur_id = db.Column(db.Integer, db.ForeignKey("utilisateur.id"), nullable=False)
     secteur = db.Column(db.String(100))
     nom = db.Column(db.String(100))
     type_service = db.Column(db.String(100))
@@ -145,13 +134,9 @@ class Devis(db.Model):
 # =================== MODÈLE PAIEMENT (optionnel) ======================
 class Paiement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    utilisateur_id = db.Column(
-        db.Integer, db.ForeignKey("utilisateur.id"), nullable=False
-    )
+    utilisateur_id = db.Column(db.Integer, db.ForeignKey("utilisateur.id"), nullable=False)
     montant = db.Column(db.Float)  # e.g. 49.99
-    date_transaction = db.Column(
-        db.DateTime
-    )  # May require “from datetime import datetime”.
+    date_transaction = db.Column(db.DateTime)  # May require “from datetime import datetime”.
     statut = db.Column(db.String(50))  # “validated”, “pending”, “refused”, ...
     mode_paiement = db.Column(db.String(50))  # “Stripe”, “PayPal”, ...
 
@@ -175,9 +160,7 @@ class Newsletter(db.Model):
 # =================== MODÈLE SUPPORT TICKET (optionnel) ======================
 class SupportTicket(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    utilisateur_id = db.Column(
-        db.Integer, db.ForeignKey("utilisateur.id"), nullable=True
-    )
+    utilisateur_id = db.Column(db.Integer, db.ForeignKey("utilisateur.id"), nullable=True)
     sujet = db.Column(db.String(200))
     message = db.Column(db.Text)
     date_creation = db.Column(db.DateTime)
@@ -193,9 +176,7 @@ class SupportTicket(db.Model):
 # =================== MODÈLE PREFERENCES (optionnel) ======================
 class Preferences(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    utilisateur_id = db.Column(
-        db.Integer, db.ForeignKey("utilisateur.id"), nullable=False
-    )
+    utilisateur_id = db.Column(db.Integer, db.ForeignKey("utilisateur.id"), nullable=False)
 
     # Example of columns
     langue = db.Column(db.String(10))  # "FR", "EN", ...
@@ -213,9 +194,7 @@ class Preferences(db.Model):
 # =================== MODÈLE HISTORIQUE (optionnel) ======================
 class Historique(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    utilisateur_id = db.Column(
-        db.Integer, db.ForeignKey("utilisateur.id"), nullable=False
-    )
+    utilisateur_id = db.Column(db.Integer, db.ForeignKey("utilisateur.id"), nullable=False)
     path = db.Column(db.String(200))  # URL/Route visitée
     date_visite = db.Column(db.DateTime)  # Date/Heure de la visite
 
@@ -265,11 +244,9 @@ def plateforme_client():
 
 
 @app.route("/formulaire", methods=["GET", "POST"])
-def formulaire_client() -> Any:
+def formulaire_client() -> str:
     utilisateur_id = session.get("utilisateur_id")
-    print(
-        "DEBUG >>> utilisateur_id dans session :", utilisateur_id
-    )  # 👈 à supprimer en prod
+    print("DEBUG >>> utilisateur_id dans session :", utilisateur_id)  # 👈 à supprimer en prod
     if not utilisateur_id:
         flash("Vous devez être connecté pour remplir ce formulaire.", "warning")
         return redirect(url_for("login"))
@@ -348,9 +325,7 @@ def resume_devis():
     utilisateur_id = session.get("utilisateur_id")
     nombre_devis = Devis.query.filter_by(utilisateur_id=utilisateur_id).count()
     if nombre_devis >= 3:
-        flash(
-            "Vous avez déjà soumis le nombre maximum de devis autorisé (3).", "danger"
-        )
+        flash("Vous avez déjà soumis le nombre maximum de devis autorisé (3).", "danger")
         return redirect(url_for("compte_client"))
 
     secteur = escape(request.form.get("secteur"))
@@ -493,9 +468,7 @@ def mentions_legales():
 def login():
     if request.method == "POST":
         email = escape(request.form.get("email"))
-        password = request.form.get(
-            "password"
-        )  # Le mot de passe brut ne doit pas être modifié
+        password = request.form.get("password")  # Le mot de passe brut ne doit pas être modifié
 
         utilisateur = Utilisateur.query.filter_by(email=email).first()
 
@@ -629,9 +602,7 @@ def supprimer_devis():
         return redirect(url_for("parametres"))
 
     # Recherche sécurisée
-    devis = Devis.query.filter_by(
-        id=int(devis_id), utilisateur_id=utilisateur_id
-    ).first()
+    devis = Devis.query.filter_by(id=int(devis_id), utilisateur_id=utilisateur_id).first()
     if devis:
         try:
             db.session.delete(devis)
@@ -876,25 +847,15 @@ def update_photo():
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
     filepath = os.path.join(UPLOAD_FOLDER, filename)
 
-    # Sauvegarde temporaire du fichier
+    # Sauvegarde temporaire pour vérification du type
     photo.save(filepath)
 
-    # ✅ Vérification du contenu réel de l'image avec Pillow
-    try:
-        with Image.open(filepath) as img:
-            img.verify()  # Vérifie que le fichier est bien une image
-            img_format = img.format.lower()  # e.g. 'jpeg', 'png'
-    except (UnidentifiedImageError, Exception):
+    # Vérification du contenu réel de l'image
+    if imghdr.what(filepath) not in ALLOWED_EXTENSIONS:
         os.remove(filepath)
         flash("Le fichier n'est pas une image valide.", "danger")
         return redirect(url_for("parametres"))
 
-    if img_format not in ALLOWED_EXTENSIONS:
-        os.remove(filepath)
-        flash("Le type de fichier image n'est pas autorisé.", "danger")
-        return redirect(url_for("parametres"))
-
-    # ✅ Enregistre le nom dans la session
     session["photo_url"] = filename
     flash("Votre photo de profil a bien été mise à jour.", "success")
     return redirect(url_for("parametres"))
@@ -1087,6 +1048,8 @@ def modifier_reponse(message_id):
         flash("Erreur : la réponse ne peut pas être vide.", "danger")
         return redirect(url_for("admin_chatbot"))
 
+    from markupsafe import escape
+
     nouvelle_reponse = escape(nouvelle_reponse)
 
     try:
@@ -1169,6 +1132,9 @@ def admin_dashboard():
         total_questions=total_questions,
         last_question=last_question,
     )
+
+
+from markupsafe import escape
 
 
 @app.route("/ajouter-message", methods=["GET", "POST"])
@@ -1270,11 +1236,8 @@ def inject_current_year():
 @pytest.fixture
 def client():
     app.config["TESTING"] = True
-    app.config["SECRET_KEY"] = "test_secret_key"  # 🔐 Clé secrète indispensable
-
-    with app.app_context():  # 🌐 Active le contexte Flask
-        with app.test_client() as client:
-            yield client
+    with app.test_client() as client:
+        yield client
 
 
 def test_admin_dashboard_requires_login(client):
@@ -1304,9 +1267,7 @@ def test_user_list_displays_users(client):
 
     # Adds a test user if none exists
     if not Utilisateur.query.filter_by(email="baptiste012chesneau@gmail.com").first():
-        user = Utilisateur(
-            nom_utilisateur="test1", email="baptiste012chesneau@gmail.com"
-        )
+        user = Utilisateur(nom_utilisateur="test1", email="baptiste012chesneau@gmail.com")
         user.set_password("123456")
         db.session.add(user)
         db.session.commit()

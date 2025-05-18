@@ -12,7 +12,6 @@ from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from datetime import datetime
 import pytest
-from app import app
 from bs4 import BeautifulSoup
 
 

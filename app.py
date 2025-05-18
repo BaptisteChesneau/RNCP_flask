@@ -17,7 +17,11 @@ from bs4 import BeautifulSoup
 
 
 app = Flask(__name__)
-app.secret_key = 'votre_clé_secrète'  # Clé secrète nécessaire pour la session
+app.secret_key = os.environ.get('APP_SECRET_KEY')
+
+# Bonne pratique : message si la clé est absente (optionnel mais utile en dev)
+if not app.secret_key:
+    raise RuntimeError("APP_SECRET_KEY is not set in the environment.")
 
 # Limit file size (e.g. 2 MB max)
 app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024

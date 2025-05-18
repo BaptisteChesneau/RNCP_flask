@@ -1,11 +1,12 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for ,session, flash 
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
 from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
+
 load_dotenv()  # ✅ Charge les variables depuis .env
 from flask_migrate import Migrate
 from flask_pymongo import PyMongo
@@ -16,27 +17,27 @@ from bs4 import BeautifulSoup
 
 
 app = Flask(__name__)
-app.secret_key = os.environ.get('APP_SECRET_KEY')
+app.secret_key = os.environ.get("APP_SECRET_KEY")
 
 # Bonne pratique : message si la clé est absente (optionnel mais utile en dev)
 if not app.secret_key:
     raise RuntimeError("APP_SECRET_KEY is not set in the environment.")
 
 # Limit file size (e.g. 2 MB max)
-app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024
+app.config["MAX_CONTENT_LENGTH"] = 2 * 1024 * 1024
 
 # ================== CONFIG FLASK-MAIL ===================
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # Exemple : Gmail
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'votre_email@gmail.com'
-app.config['MAIL_PASSWORD'] = 'votre_mot_de_passe'
+app.config["MAIL_SERVER"] = "smtp.gmail.com"  # Exemple : Gmail
+app.config["MAIL_PORT"] = 587
+app.config["MAIL_USE_TLS"] = True
+app.config["MAIL_USERNAME"] = "votre_email@gmail.com"
+app.config["MAIL_PASSWORD"] = "votre_mot_de_passe"
 # For a cleaner use, you can also define:
 # app.config['MAIL_DEFAULT_SENDER'] = 'votre_email@gmail.com'
 
 # Replace with your exact URL Scalingo
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # 🔵 MongoDB configuration for Flask-PyMongo
 app.config["MONGO_URI"] = os.getenv("MONGO_URL") or os.getenv("SCALINGO_MONGO_URL")
@@ -45,10 +46,13 @@ mongo = PyMongo(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+
 # =================== MODÈLES ======================
 class Client(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    utilisateur_id = db.Column(db.Integer, db.ForeignKey('utilisateur.id'), nullable=False)
+    utilisateur_id = db.Column(
+        db.Integer, db.ForeignKey("utilisateur.id"), nullable=False
+    )
     activite = db.Column(db.String(100))
     type_entreprise = db.Column(db.String(100))
     cabinet = db.Column(db.String(100))
@@ -63,7 +67,7 @@ class Client(db.Model):
     def __repr__(self):
         return f"<Client {self.prenom} {self.nom}>"
 
-    
+
 class Utilisateur(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nom_utilisateur = db.Column(db.String(100), unique=True, nullable=False)
@@ -74,7 +78,9 @@ class Utilisateur(db.Model):
     devis = db.relationship("Devis", back_populates="utilisateur")
     paiements = db.relationship("Paiement", back_populates="utilisateur")
     support_tickets = db.relationship("SupportTicket", back_populates="utilisateur")
-    preferences = db.relationship("Preferences", back_populates="utilisateur", uselist=False)
+    preferences = db.relationship(
+        "Preferences", back_populates="utilisateur", uselist=False
+    )
     historiques = db.relationship("Historique", back_populates="utilisateur")
     articles = db.relationship("BlogPost", back_populates="auteur")
 
@@ -90,10 +96,13 @@ class Utilisateur(db.Model):
     def check_password(self, password):
         return check_password_hash(self.mot_de_passe_hash, password)
 
+
 # =================== MODÈLE DEVIS (optionnel) ======================
 class Devis(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    utilisateur_id = db.Column(db.Integer, db.ForeignKey('utilisateur.id'), nullable=False)
+    utilisateur_id = db.Column(
+        db.Integer, db.ForeignKey("utilisateur.id"), nullable=False
+    )
     secteur = db.Column(db.String(100))
     nom = db.Column(db.String(100))
     type_service = db.Column(db.String(100))
@@ -107,12 +116,17 @@ class Devis(db.Model):
     def __repr__(self):
         return f"<Devis {self.nom} - {self.type_service}>"
 
+
 # =================== MODÈLE PAIEMENT (optionnel) ======================
 class Paiement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    utilisateur_id = db.Column(db.Integer, db.ForeignKey('utilisateur.id'), nullable=False)
+    utilisateur_id = db.Column(
+        db.Integer, db.ForeignKey("utilisateur.id"), nullable=False
+    )
     montant = db.Column(db.Float)  # e.g. 49.99
-    date_transaction = db.Column(db.DateTime)  # May require “from datetime import datetime”.
+    date_transaction = db.Column(
+        db.DateTime
+    )  # May require “from datetime import datetime”.
     statut = db.Column(db.String(50))  # “validated”, “pending”, “refused”, ...
     mode_paiement = db.Column(db.String(50))  # “Stripe”, “PayPal”, ...
 
@@ -121,6 +135,7 @@ class Paiement(db.Model):
 
     def __repr__(self):
         return f"<Paiement #{self.id} - {self.statut}>"
+
 
 # =================== MODÈLE NEWSLETTER (optionnel) ======================
 class Newsletter(db.Model):
@@ -131,10 +146,13 @@ class Newsletter(db.Model):
     def __repr__(self):
         return f"<Newsletter {self.email}>"
 
+
 # =================== MODÈLE SUPPORT TICKET (optionnel) ======================
 class SupportTicket(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    utilisateur_id = db.Column(db.Integer, db.ForeignKey('utilisateur.id'), nullable=True)
+    utilisateur_id = db.Column(
+        db.Integer, db.ForeignKey("utilisateur.id"), nullable=True
+    )
     sujet = db.Column(db.String(200))
     message = db.Column(db.Text)
     date_creation = db.Column(db.DateTime)
@@ -146,14 +164,17 @@ class SupportTicket(db.Model):
     def __repr__(self):
         return f"<SupportTicket #{self.id} - {self.sujet[:15]}...>"
 
+
 # =================== MODÈLE PREFERENCES (optionnel) ======================
 class Preferences(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    utilisateur_id = db.Column(db.Integer, db.ForeignKey('utilisateur.id'), nullable=False)
+    utilisateur_id = db.Column(
+        db.Integer, db.ForeignKey("utilisateur.id"), nullable=False
+    )
 
     # Example of columns
     langue = db.Column(db.String(10))  # "FR", "EN", ...
-    theme = db.Column(db.String(10))   # "light", "dark"...
+    theme = db.Column(db.String(10))  # "light", "dark"...
     notif_email = db.Column(db.Boolean, default=True)
     notif_sms = db.Column(db.Boolean, default=False)
 
@@ -163,18 +184,22 @@ class Preferences(db.Model):
     def __repr__(self):
         return f"<Preferences #{self.id} - {self.utilisateur_id}>"
 
+
 # =================== MODÈLE HISTORIQUE (optionnel) ======================
 class Historique(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    utilisateur_id = db.Column(db.Integer, db.ForeignKey('utilisateur.id'), nullable=False)
-    path = db.Column(db.String(200))       # URL/Route visitée
-    date_visite = db.Column(db.DateTime)   # Date/Heure de la visite
+    utilisateur_id = db.Column(
+        db.Integer, db.ForeignKey("utilisateur.id"), nullable=False
+    )
+    path = db.Column(db.String(200))  # URL/Route visitée
+    date_visite = db.Column(db.DateTime)  # Date/Heure de la visite
 
     # Relation: a history belongs to a user
     utilisateur = db.relationship("Utilisateur", back_populates="historiques")
 
     def __repr__(self):
         return f"<Historique {self.path} - {self.date_visite}>"
+
 
 # =================== MODÈLE BLOGPOST (optionnel) ======================
 class BlogPost(db.Model):
@@ -183,7 +208,7 @@ class BlogPost(db.Model):
     titre = db.Column(db.String(200), nullable=False)
     contenu = db.Column(db.Text, nullable=False)
     date_publication = db.Column(db.DateTime)
-    auteur_id = db.Column(db.Integer, db.ForeignKey('utilisateur.id'), nullable=False)
+    auteur_id = db.Column(db.Integer, db.ForeignKey("utilisateur.id"), nullable=False)
 
     # Relation: a blog post is written by a user
     auteur = db.relationship("Utilisateur", back_populates="articles")
@@ -194,26 +219,33 @@ class BlogPost(db.Model):
 
 mail = Mail(app)
 
+
 @app.route("/header")
 def header():
     return render_template("header.html")
+
 
 @app.route("/menu")
 def menu():
     return render_template("menu.html")
 
+
 @app.route("/footer")
 def footer():
     return render_template("footer.html")
+
 
 @app.route("/plateforme-client")
 def plateforme_client():
     return render_template("plateforme_client.html")
 
+
 @app.route("/formulaire", methods=["GET", "POST"])
 def formulaire_client():
     utilisateur_id = session.get("utilisateur_id")
-    print("DEBUG >>> utilisateur_id dans session :", utilisateur_id)  # 👈 to be removed later
+    print(
+        "DEBUG >>> utilisateur_id dans session :", utilisateur_id
+    )  # 👈 to be removed later
     if not utilisateur_id:
         flash("Vous devez être connecté pour remplir ce formulaire.", "warning")
         return redirect(url_for("login"))
@@ -239,7 +271,7 @@ def formulaire_client():
             nom=nom,
             prenom=prenom,
             email=email,
-            adresse_siege=adresse_siege
+            adresse_siege=adresse_siege,
         )
         db.session.add(nouveau_client)
         db.session.commit()
@@ -258,7 +290,7 @@ def formulaire_client():
             Prénom: {prenom}
             Email: {email}
             Adresse siège: {adresse_siege}
-            """
+            """,
         )
         # mail.send(msg) # ❌ to be temporarily disabled
 
@@ -266,20 +298,24 @@ def formulaire_client():
 
     return render_template("formulaire_client.html")
 
+
 @app.route("/confirmation")
 def confirmation():
     return "Formulaire soumis avec succès ! Merci."
 
-@app.route("/devis", methods=["GET"]) 
+
+@app.route("/devis", methods=["GET"])
 def devis():
     if "utilisateur_id" not in session:
         flash("Veuillez vous connecter pour accéder au formulaire de devis.", "warning")
         return redirect(url_for("login"))
-    
+
     # Displays the appointment form
     return render_template("devis.html")
 
+
 MAX_DEVIS_PAR_UTILISATEUR = 1  # Maximum number of quotes per user
+
 
 @app.route("/resume-devis", methods=["POST"])
 def resume_devis():
@@ -292,7 +328,9 @@ def resume_devis():
     utilisateur_id = session.get("utilisateur_id")
     nombre_devis = Devis.query.filter_by(utilisateur_id=utilisateur_id).count()
     if nombre_devis >= 3:
-        flash("Vous avez déjà soumis le nombre maximum de devis autorisé (3).", "danger")
+        flash(
+            "Vous avez déjà soumis le nombre maximum de devis autorisé (3).", "danger"
+        )
         return redirect(url_for("compte_client"))
 
     # Récupère les champs du formulaire
@@ -306,7 +344,10 @@ def resume_devis():
     # Vérifier que l'e-mail correspond
     client_email = session.get("email")
     if client_email and form_email != client_email:
-        flash("L'adresse e-mail renseignée ne correspond pas à celle de votre compte client.", "danger")
+        flash(
+            "L'adresse e-mail renseignée ne correspond pas à celle de votre compte client.",
+            "danger",
+        )
         return redirect(url_for("devis"))
 
     # Enregistrement dans la base de données
@@ -317,30 +358,37 @@ def resume_devis():
         type_service=type_service,
         date_rdv=date_rdv,
         heure_rdv=heure_rdv,
-        email=form_email
+        email=form_email,
     )
     db.session.add(nouveau_devis)
     db.session.commit()
 
     # Envoi des données à la page résumé
-    return render_template("resume_devis.html",
-                           secteur=secteur,
-                           nom=nom,
-                           type_service=type_service,
-                           date_rdv=date_rdv,
-                           heure_rdv=heure_rdv)
+    return render_template(
+        "resume_devis.html",
+        secteur=secteur,
+        nom=nom,
+        type_service=type_service,
+        date_rdv=date_rdv,
+        heure_rdv=heure_rdv,
+    )
 
-@app.route('/envoyer_mail')
+
+@app.route("/envoyer_mail")
 def envoyer_mail():
     return "Fonction d'envoi par mail ici"
 
-@app.route('/envoyer_compte')
+
+@app.route("/envoyer_compte")
 def envoyer_compte():
     utilisateur_id = session.get("utilisateur_id")
     devis_data = session.get("devis_data")
 
     if not utilisateur_id or not devis_data:
-        flash("Erreur : utilisateur non connecté ou données du devis manquantes.", "danger")
+        flash(
+            "Erreur : utilisateur non connecté ou données du devis manquantes.",
+            "danger",
+        )
         return redirect(url_for("login"))
 
     # Vérifie si un devis identique a déjà été créé pour cet utilisateur
@@ -350,7 +398,7 @@ def envoyer_compte():
         type_service=devis_data.get("type_service"),
         date_rdv=devis_data.get("date_rdv"),
         heure_rdv=devis_data.get("heure_rdv"),
-        email=devis_data.get("email")
+        email=devis_data.get("email"),
     ).first()
 
     if devis_existant:
@@ -364,13 +412,14 @@ def envoyer_compte():
             type_service=devis_data.get("type_service"),
             date_rdv=devis_data.get("date_rdv"),
             heure_rdv=devis_data.get("heure_rdv"),
-            email=devis_data.get("email")
+            email=devis_data.get("email"),
         )
         db.session.add(nouveau_devis)
         db.session.commit()
         flash("Le devis a été enregistré avec succès dans votre compte.", "success")
 
     return redirect(url_for("compte_client"))
+
 
 @app.route("/paiement-stripe", methods=["GET", "POST"])
 def paiement_stripe():
@@ -384,6 +433,7 @@ def paiement_stripe():
         return "Paiement Stripe effectué (simulation)."
     return render_template("paiement_stripe.html")
 
+
 @app.route("/paiement-paypal", methods=["GET", "POST"])
 def paiement_paypal():
     if request.method == "POST":
@@ -396,25 +446,31 @@ def paiement_paypal():
         return "Paiement PayPal effectué (simulation)."
     return render_template("paiement_paypal.html")
 
+
 @app.route("/blog")
 def blog():
     return render_template("blog.html")
+
 
 @app.route("/notre-histoire")
 def notre_histoire():
     return render_template("notre_histoire.html")
 
+
 @app.route("/notre-equipe")
 def notre_equipe():
     return render_template("notre_equipe.html")
+
 
 @app.route("/rgpd")
 def rgpd():
     return render_template("rgpd.html")
 
+
 @app.route("/mentions-legales")
 def mentions_legales():
     return render_template("mentions_legales.html")
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -428,8 +484,10 @@ def login():
             # ✅ Stocker les infos en session
             session["utilisateur_id"] = utilisateur.id
             session["email"] = utilisateur.email
-            session["prenom"] = utilisateur.nom_utilisateur  # Pour afficher le message "Bonjour X"
-            
+            session["prenom"] = (
+                utilisateur.nom_utilisateur
+            )  # Pour afficher le message "Bonjour X"
+
             flash("Connexion réussie !", "success")
             return redirect(url_for("compte_client"))
         else:
@@ -461,6 +519,7 @@ def signup():
 
     return render_template("signup.html")
 
+
 @app.route("/compte-client")
 def compte_client():
     utilisateur_id = session.get("utilisateur_id")
@@ -473,10 +532,13 @@ def compte_client():
         clients = Client.query.filter_by(utilisateur_id=utilisateur_id).all()
         devis_list = Devis.query.filter_by(utilisateur_id=utilisateur_id).all()
 
-    return render_template("compte_client.html", 
-                           clients=clients, 
-                           devis_data=devis_data, 
-                           devis_list=devis_list)
+    return render_template(
+        "compte_client.html",
+        clients=clients,
+        devis_data=devis_data,
+        devis_list=devis_list,
+    )
+
 
 @app.route("/newsletter", methods=["POST"])
 def newsletter():
@@ -484,27 +546,32 @@ def newsletter():
     # Ajoutez ici la logique de traitement, par exemple enregistrer l'email dans un fichier ou envoyer un email de confirmation
     return "Merci de vous être inscrit(e) à notre newsletter !"
 
+
 @app.route("/atelier")
 def atelier():
     return render_template("atelier.html")
+
 
 @app.route("/nos-outils")
 def nos_outils():
     return render_template("nos_outils.html")
 
+
 @app.route("/aide")
 def aide():
     return render_template("aide.html")
-    
+
+
 @app.route("/parametres", methods=["GET", "POST"])
 def parametres():
     # Par exemple, récupérer les informations de l'utilisateur depuis la session ou une BDD
     user = {
         "prenom": session.get("prenom", ""),
         "nom": session.get("nom", ""),
-        "email": session.get("email", "")
+        "email": session.get("email", ""),
     }
     return render_template("parametres.html", user=user)
+
 
 @app.route("/supprimer-devis", methods=["POST"])
 def supprimer_devis():
@@ -515,7 +582,9 @@ def supprimer_devis():
 
     devis_id = request.form.get("devis_ids")
     if devis_id:
-        devis = Devis.query.filter_by(id=devis_id, utilisateur_id=utilisateur_id).first()
+        devis = Devis.query.filter_by(
+            id=devis_id, utilisateur_id=utilisateur_id
+        ).first()
         if devis:
             db.session.delete(devis)
             db.session.commit()
@@ -527,6 +596,7 @@ def supprimer_devis():
 
     return redirect(url_for("parametres"))
 
+
 @app.route("/update-password", methods=["GET", "POST"])
 def update_password():
     if request.method == "POST":
@@ -534,18 +604,19 @@ def update_password():
         current_password = request.form.get("current_password")
         new_password = request.form.get("new_password")
         confirm_password = request.form.get("confirm_password")
-        
+
         # Exemple de logique (à adapter à votre système d'authentification)
         if new_password != confirm_password:
             flash("Les nouveaux mots de passe ne correspondent pas.", "danger")
             return redirect(url_for("update_password"))
-        
+
         # Logique pour vérifier le mot de passe actuel et mettre à jour le nouveau mot de passe...
         # update_user_password(current_password, new_password)
         flash("Votre mot de passe a été mis à jour.", "success")
         return redirect(url_for("compte_client"))
-    
+
     return render_template("update_password.html")
+
 
 @app.route("/parametres/gerer-devis", methods=["GET", "POST"])
 def gerer_devis():
@@ -569,6 +640,7 @@ def gerer_devis():
     devis_list = Devis.query.filter_by(utilisateur_id=utilisateur_id).all()
     return render_template("gerer_devis.html", devis_list=devis_list)
 
+
 @app.route("/update-profile", methods=["GET", "POST"])
 def update_profile():
     if request.method == "POST":
@@ -579,19 +651,20 @@ def update_profile():
         # Update information in database or session
         # update_user_profile(firstname, lastname, email)
         # For example, update session :
-        session['prenom'] = prenom
-        session['nom'] = nom
-        session['email'] = email
+        session["prenom"] = prenom
+        session["nom"] = nom
+        session["email"] = email
         flash("Vos informations ont été mises à jour.", "success")
         return redirect(url_for("compte_client"))
-    
+
     # For GET, we assume that the user's information is stored in the session
     user = {
         "prenom": session.get("prenom", ""),
         "nom": session.get("nom", ""),
-        "email": session.get("email", "")
+        "email": session.get("email", ""),
     }
     return render_template("update_profile.html", user=user)
+
 
 @app.route("/update-social", methods=["GET", "POST"])
 def update_social():
@@ -601,41 +674,47 @@ def update_social():
         instagram = request.form.get("instagram")
         # You can save this information in your database
         # Here, we store them in the session for the example :
-        session['social'] = {
+        session["social"] = {
             "facebook": facebook,
             "linkedin": linkedin,
-            "instagram": instagram
+            "instagram": instagram,
         }
         flash("Vos réseaux sociaux ont été mis à jour.", "success")
         return redirect(url_for("parametres"))
     return render_template("update_social.html")
 
-@app.route('/update_preferences', methods=['POST'])
+
+@app.route("/update_preferences", methods=["POST"])
 def update_preferences():
-    language = request.form.get('language')
-    theme = request.form.get('theme')
+    language = request.form.get("language")
+    theme = request.form.get("theme")
 
     # Store preferences in session
-    session['language'] = language
-    session['theme'] = theme
+    session["language"] = language
+    session["theme"] = theme
 
     flash("Préférences mises à jour avec succès.", "success")  # Add flash message
 
-    return redirect(url_for('account_settings'))  # or 'parametres' or the exact route to your parameters page
+    return redirect(
+        url_for("account_settings")
+    )  # or 'parametres' or the exact route to your parameters page
 
-@app.route('/update_notifications', methods=['POST'])
+
+@app.route("/update_notifications", methods=["POST"])
 def update_notifications():
-    notif_email = 'notif_email' in request.form
-    notif_sms = 'notif_sms' in request.form
+    notif_email = "notif_email" in request.form
+    notif_sms = "notif_sms" in request.form
     print(f"Email: {notif_email}, SMS: {notif_sms}")
-    return redirect(url_for('parametres'))
+    return redirect(url_for("parametres"))
 
-@app.route('/update_billing', methods=['POST'])
+
+@app.route("/update_billing", methods=["POST"])
 def update_billing():
-    name = request.form.get('billing_name')
-    address = request.form.get('billing_address')
+    name = request.form.get("billing_name")
+    address = request.form.get("billing_address")
     print(f"Facturation - Nom: {name}, Adresse: {address}")
-    return redirect(url_for('parametres'))
+    return redirect(url_for("parametres"))
+
 
 @app.route("/historique")
 def historique():
@@ -643,14 +722,16 @@ def historique():
     history = session.get("history", [])
     return render_template("historique.html", history=history)
 
+
 @app.before_request
 def track_history():
-    if 'history' not in session:
-        session['history'] = []
+    if "history" not in session:
+        session["history"] = []
     # Add query path to history
-    session['history'].append(request.path)
+    session["history"].append(request.path)
     # Limit history to last 20 entries
-    session['history'] = session['history'][-20:]
+    session["history"] = session["history"][-20:]
+
 
 @app.route("/update_photo", methods=["POST"])
 def update_photo():
@@ -661,15 +742,17 @@ def update_photo():
         os.makedirs(upload_folder, exist_ok=True)
         filepath = os.path.join(upload_folder, filename)
         photo.save(filepath)
-        session['photo_url'] = filename
+        session["photo_url"] = filename
         flash("Votre photo de profil a bien été mise à jour.", "success")
     else:
         flash("Aucune photo sélectionnée.", "danger")
     return redirect(url_for("parametres"))
 
-@app.route('/grille-tarifaire')
+
+@app.route("/grille-tarifaire")
 def grille_tarifaire():
-    return render_template('grille_tarifaire.html')
+    return render_template("grille_tarifaire.html")
+
 
 @app.route("/ma-fiche-client")
 def ma_fiche_client():
@@ -682,6 +765,7 @@ def ma_fiche_client():
     clients = Client.query.filter_by(utilisateur_id=utilisateur_id).all()
 
     return render_template("ma_fiche_client.html", clients=clients)
+
 
 @app.route("/modifier-client/<int:client_id>", methods=["GET", "POST"])
 def modifier_client(client_id):
@@ -703,6 +787,7 @@ def modifier_client(client_id):
 
     return render_template("modifier_client.html", client=client)
 
+
 @app.route("/supprimer-client/<int:client_id>", methods=["POST"])
 def supprimer_client(client_id):
     client = Client.query.get_or_404(client_id)
@@ -711,34 +796,38 @@ def supprimer_client(client_id):
     flash("La fiche client a été supprimée.", "danger")
     return redirect(url_for("ma_fiche_client"))
 
-@app.route('/update_security', methods=['POST'])
+
+@app.route("/update_security", methods=["POST"])
 def update_security():
-    uses_2fa = request.form.get('2fa') == 'on'
-    session['uses_2fa'] = uses_2fa  # Enregistre dans la session
+    uses_2fa = request.form.get("2fa") == "on"
+    session["uses_2fa"] = uses_2fa  # Enregistre dans la session
 
     flash("Paramètres de sécurité mis à jour.", "success")
-    return redirect(url_for('account_settings'))
+    return redirect(url_for("account_settings"))
+
 
 from flask import jsonify
 
-@app.route('/export_data', methods=['POST'])
+
+@app.route("/export_data", methods=["POST"])
 def export_data():
     data = {
-        "prenom": session.get('prenom', 'N/A'),
-        "nom": session.get('nom', 'N/A'),
-        "email": session.get('email', 'N/A'),
-        "uses_2fa": session.get('uses_2fa', False)
+        "prenom": session.get("prenom", "N/A"),
+        "nom": session.get("nom", "N/A"),
+        "email": session.get("email", "N/A"),
+        "uses_2fa": session.get("uses_2fa", False),
     }
 
     response = jsonify(data)
     response.headers["Content-Disposition"] = "attachment; filename=mes_donnees.json"
     return response
 
-@app.route('/contact_support', methods=['POST'])
+
+@app.route("/contact_support", methods=["POST"])
 def contact_support():
-    subject = request.form.get('subject')
-    message = request.form.get('message')
-    email = session.get('email', 'non connecté')
+    subject = request.form.get("subject")
+    message = request.form.get("message")
+    email = session.get("email", "non connecté")
 
     print("\n====== MESSAGE SUPPORT ======")
     print(f"Email : {email}")
@@ -747,7 +836,8 @@ def contact_support():
     print("==============================\n")
 
     flash("Votre demande a bien été envoyée à notre équipe d'assistance.", "success")
-    return redirect(url_for('account_settings'))
+    return redirect(url_for("account_settings"))
+
 
 @app.route("/chatbot", methods=["GET", "POST"])
 def chatbot():
@@ -759,18 +849,18 @@ def chatbot():
 
         if question:
             from markupsafe import escape
+
             question = escape(question)
 
             # ✅ Réponse automatique personnalisable
             # Exemple : si tu veux ajouter le prénom de l'utilisateur ou une réponse différente
-            user_name = session.get("prenom", "Cher utilisateur")  # Si tu stockes 'prenom' en session
+            user_name = session.get(
+                "prenom", "Cher utilisateur"
+            )  # Si tu stockes 'prenom' en session
             reponse = f"Merci {user_name}, nous avons bien reçu votre question et nous reviendrons vers vous rapidement."
 
             # ✅ Enregistrement dans MongoDB
-            mongo.db.chatbot.insert_one({
-                "question": question,
-                "reponse": reponse
-            })
+            mongo.db.chatbot.insert_one({"question": question, "reponse": reponse})
             flash("Votre question a été envoyée avec succès !", "success")
             latest_question = question
             latest_reponse = reponse
@@ -784,8 +874,9 @@ def chatbot():
         messages=messages,
         history=history,
         latest_question=latest_question,
-        latest_reponse=latest_reponse
+        latest_reponse=latest_reponse,
     )
+
 
 # ➡️ NOUVELLE route admin protégée (à ajouter)
 @app.route("/admin-chatbot")
@@ -797,6 +888,7 @@ def admin_chatbot():
     messages = list(mongo.db.chatbot.find())
     return render_template("admin_chatbot.html", messages=messages)
 
+
 # ✅ MODIFIER UNE RÉPONSE
 @app.route("/modifier-reponse/<message_id>", methods=["POST"])
 def modifier_reponse(message_id):
@@ -807,21 +899,21 @@ def modifier_reponse(message_id):
     nouvelle_reponse = request.form.get("reponse")
     if nouvelle_reponse:
         mongo.db.chatbot.update_one(
-            {"_id": ObjectId(message_id)},
-            {"$set": {"reponse": nouvelle_reponse}}
+            {"_id": ObjectId(message_id)}, {"$set": {"reponse": nouvelle_reponse}}
         )
         flash("Réponse modifiée avec succès !", "success")
     else:
         flash("Erreur : réponse vide.", "danger")
-    
+
     return redirect(url_for("admin_chatbot"))
-    
+
 
 @app.route("/logout-admin")
 def logout_admin():
     session.pop("admin_logged_in", None)
     flash("Déconnecté avec succès ✅", "success")
     return redirect(url_for("login_admin"))
+
 
 # ✅ SUPPRIMER UN MESSAGE
 @app.route("/supprimer-message/<message_id>", methods=["POST"])
@@ -833,6 +925,7 @@ def supprimer_message(message_id):
     mongo.db.chatbot.delete_one({"_id": ObjectId(message_id)})
     flash("Message supprimé avec succès !", "success")
     return redirect(url_for("admin_chatbot"))
+
 
 @app.route("/login-admin", methods=["GET", "POST"])
 def login_admin():
@@ -852,6 +945,7 @@ def login_admin():
 
     return render_template("login_admin.html")
 
+
 @app.route("/admin-dashboard")
 def admin_dashboard():
     if not session.get("admin_logged_in"):
@@ -865,8 +959,9 @@ def admin_dashboard():
     return render_template(
         "admin_dashboard.html",
         total_questions=total_questions,
-        last_question=last_question
+        last_question=last_question,
     )
+
 
 @app.route("/ajouter-message", methods=["GET", "POST"])
 def ajouter_message():
@@ -879,16 +974,14 @@ def ajouter_message():
         reponse = request.form.get("reponse")
 
         if question and reponse:
-            mongo.db.chatbot.insert_one({
-                "question": question,
-                "reponse": reponse
-            })
+            mongo.db.chatbot.insert_one({"question": question, "reponse": reponse})
             flash("Message ajouté avec succès ✅", "success")
             return redirect(url_for("admin_chatbot"))
         else:
             flash("Tous les champs sont obligatoires ❌", "danger")
 
     return render_template("ajouter_message.html")
+
 
 @app.route("/base-test")
 def base_test():
@@ -899,56 +992,64 @@ def base_test():
     utilisateurs = Utilisateur.query.all()
     return render_template("base_test.html", utilisateurs=utilisateurs)
 
+
 @app.route("/vider-historique", methods=["POST"])
 def vider_historique():
     mongo.db.chatbot.delete_many({})
     flash("L'historique a été vidé avec succès.", "success")
     return redirect(url_for("chatbot"))
 
+
 @app.route("/historique-chatbot")
 def historique_chatbot():
     messages = mongo.db.chatbot.find().sort("_id", -1)
     return render_template("historique_chatbot.html", messages=messages)
 
-from flask import request, session
 
 @app.route("/changer-langue", methods=["POST"])
 def changer_langue():
-    session['langue'] = request.form.get('langue', 'fr')
-    return redirect(request.referrer or url_for('historique_chatbot'))
+    session["langue"] = request.form.get("langue", "fr")
+    return redirect(request.referrer or url_for("historique_chatbot"))
+
 
 @app.route("/securite")
 def securite():
     return render_template("securite.html")
 
+
 @app.context_processor
 def inject_current_year():
-    return {'current_year': datetime.now().year}
+    return {"current_year": datetime.now().year}
+
 
 @pytest.fixture
 def client():
-    app.config['TESTING'] = True
+    app.config["TESTING"] = True
     with app.test_client() as client:
         yield client
 
+
 def test_admin_user_table_requires_login(client):
-    response = client.get('/admin-user-table')  # route réelle à adapter
+    response = client.get("/admin-user-table")  # route réelle à adapter
     assert response.status_code == 302  # redirection vers login
+
 
 def test_admin_user_table_as_admin(client):
     with client.session_transaction() as sess:
-        sess['admin_logged_in'] = True
-    response = client.get('/admin-user-table')
-    assert b'User Database (Admin Only)' in response.data
+        sess["admin_logged_in"] = True
+    response = client.get("/admin-user-table")
+    assert b"User Database (Admin Only)" in response.data
+
 
 def test_user_list_displays_users(client):
     with client.session_transaction() as sess:
-        sess['admin_logged_in'] = True
+        sess["admin_logged_in"] = True
 
     # Ajouter un utilisateur factice si nécessaire via la DB
-    response = client.get('/admin-user-table')
-    assert b'test1' in response.data
-    assert b'baptiste012chesneau@gmail.com' in response.data
+    response = client.get("/admin-user-table")
+    assert b"test1" in response.data
+    assert b"baptiste012chesneau@gmail.com" in response.data
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

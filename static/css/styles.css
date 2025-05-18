@@ -322,8 +322,8 @@ footer.footer-custom {
   border-color: #009639 !important;
 }
 
-/* Bouton outline primaire : 
-   - Par défaut, bordure et texte en Pantone Rose 
+/* Bouton outline primaire :
+   - Par défaut, bordure et texte en Pantone Rose
    - Au survol, deviennent Pantone Vert avec texte blanc */
 .btn-outline-primary {
   border-color: #D81E5B !important;
@@ -449,7 +449,7 @@ body.dark .alert {
   color: #eee;
 }
 
-/* 
+/*
 .container {
   max-width: 500px;
   margin: 50px auto;

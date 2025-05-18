@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Environnement virtuel
+venv/
+env/
+
+# VS Code
+.vscode/
+
+# Fichiers sensibles
+.env
+*.sqlite3
+*.db
+
+# Pre-commit et dev
+.pre-commit-config.yaml
+requirements-dev.txt
+.coverage
+
+# Flask / logs
+instance/
+*.log
+
+# Migrations (optionnel)
+migrations/
+
+# Autres outils
+.DS_Store
+*.swp

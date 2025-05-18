@@ -10,7 +10,7 @@
 </head>
 <body>
   {% include "header.html" %}
-  
+
   <div class="container my-5">
     <h2 class="text-center mb-4">Créer un compte</h2>
     <form action="{{ url_for('signup') }}" method="POST">
@@ -33,9 +33,9 @@
       <a href="{{ url_for('login') }}" class="btn btn-secondary btn-sm">Cliquez ici</a>
     </div>
   </div>
-  
+
   {% include "footer.html" %}
-  
+
   <!-- Scripts JS Bootstrap -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>

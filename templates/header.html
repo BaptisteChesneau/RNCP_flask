@@ -16,15 +16,15 @@
       <a href="{{ url_for('menu') }}">
         <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo ML2C CONSEIL" class="img-fluid">
       </a>
-      
+
       <!-- Centered title -->
       <h1 class="m-0 text-center flex-grow-1">ML2C CONSEIL</h1>
-      
+
       <!-- Right-side: either avatar if logged in, or login/signup buttons -->
       <div class="d-flex align-items-center">
         {% if session.get('user_id') %}
           <!-- Avatar displayed only when logged in -->
-          <img src="{{ url_for('static', filename='images/avatar.jpg') }}" 
+          <img src="{{ url_for('static', filename='images/avatar.jpg') }}"
                alt="Profil utilisateur"
                class="rounded-circle ml-3"
                style="width: 45px; height: 45px; object-fit: cover;">

@@ -23,12 +23,14 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
 app = Flask(__name__)
-csrf = CSRFProtect(app) 
+csrf = CSRFProtect(app)
 app.secret_key = os.environ.get("APP_SECRET_KEY")
 
 # 🔒 Configuration sécurisée des cookies de session
 app.config["SESSION_COOKIE_HTTPONLY"] = True
-app.config["SESSION_COOKIE_SECURE"] = True  # ❗ Active si tu utilises HTTPS (en production)
+app.config["SESSION_COOKIE_SECURE"] = (
+    True  # ❗ Active si tu utilises HTTPS (en production)
+)
 app.config["REMEMBER_COOKIE_HTTPONLY"] = True
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=30)
 
@@ -36,7 +38,7 @@ app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=30)
 limiter = Limiter(
     get_remote_address,
     app=app,
-    default_limits=["200 per day", "50 per hour"]  # limites globales par IP
+    default_limits=["200 per day", "50 per hour"],  # limites globales par IP
 )
 
 # Bonne pratique : message si la clé est absente (optionnel mais utile en dev)
@@ -967,7 +969,6 @@ def login_admin():
         return redirect(url_for("admin_chatbot"))
 
     return render_template("login_admin.html")
-
 
 
 @app.route("/admin-dashboard")

@@ -15,9 +15,29 @@ from datetime import datetime
 import pytest
 from bs4 import BeautifulSoup
 
+from flask_wtf.csrf import CSRFProtect
+from datetime import timedelta
+from wtforms import EmailField, StringField, PasswordField
+from wtforms.validators import DataRequired, Length, Email
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 app = Flask(__name__)
+csrf = CSRFProtect(app) 
 app.secret_key = os.environ.get("APP_SECRET_KEY")
+
+# 🔒 Configuration sécurisée des cookies de session
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SECURE"] = True  # ❗ Active si tu utilises HTTPS (en production)
+app.config["REMEMBER_COOKIE_HTTPONLY"] = True
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=30)
+
+# 🔐 Configuration Limiter
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["200 per day", "50 per hour"]  # limites globales par IP
+)
 
 # Bonne pratique : message si la clé est absente (optionnel mais utile en dev)
 if not app.secret_key:
@@ -926,24 +946,28 @@ def supprimer_message(message_id):
     flash("Message supprimé avec succès !", "success")
     return redirect(url_for("admin_chatbot"))
 
-
+@limiter.limit("5 per minute")  # max 5 tentatives par minute
 @app.route("/login-admin", methods=["GET", "POST"])
 def login_admin():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
 
-        # Search for the admin user in MongoDB
+        # Recherche de l'utilisateur admin en base MongoDB
         admin = mongo.db.admin_users.find_one({"username": username})
 
-        if admin and check_password_hash(admin["password"], password):
-            session["admin_logged_in"] = True
-            flash("Connexion réussie ✅", "success")
-            return redirect(url_for("admin_chatbot"))
-        else:
+        # ✅ Sécurité renforcée : message unique si utilisateur inconnu ou mot de passe invalide
+        if not admin or not check_password_hash(admin["password"], password):
             flash("Identifiants invalides ❌", "danger")
+            return redirect(url_for("login_admin"))
+
+        # Si tout est bon :
+        session["admin_logged_in"] = True
+        flash("Connexion réussie ✅", "success")
+        return redirect(url_for("admin_chatbot"))
 
     return render_template("login_admin.html")
+
 
 
 @app.route("/admin-dashboard")

@@ -21,6 +21,8 @@ from wtforms import EmailField, StringField, PasswordField
 from wtforms.validators import DataRequired, Length, Email
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from cryptography.fernet import Fernet
+fernet = Fernet(os.environ.get("FERNET_KEY").encode())
 
 app = Flask(__name__)
 csrf = CSRFProtect(app)
@@ -81,7 +83,7 @@ class Client(db.Model):
     civilite = db.Column(db.String(10))
     nom = db.Column(db.String(100))
     prenom = db.Column(db.String(100))
-    email = db.Column(db.String(120), unique=True)
+    email_chiffre = db.Column(db.String(500), unique=True)  # ✅ Remplace "email"
     adresse_siege = db.Column(db.String(200))
 
     utilisateur = db.relationship("Utilisateur", back_populates="clients")
@@ -89,6 +91,17 @@ class Client(db.Model):
     def __repr__(self):
         return f"<Client {self.prenom} {self.nom}>"
 
+    # 🔐 Propriété email pour accès transparent (déchiffrement)
+    @property
+    def email(self):
+        try:
+            return fernet.decrypt(self.email_chiffre.encode()).decode()
+        except Exception:
+            return "[erreur de déchiffrement]"
+
+    @email.setter
+    def email(self, value):
+        self.email_chiffre = fernet.encrypt(value.encode()).decode()
 
 class Utilisateur(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -1047,7 +1060,7 @@ def inject_current_year():
     return {"current_year": datetime.now().year}
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def client():
     app.config["TESTING"] = True
     with app.test_client() as client:
@@ -1075,6 +1088,13 @@ def test_user_list_displays_users(client):
     assert b"test1" in response.data
     assert b"baptiste012chesneau@gmail.com" in response.data
 
+@app.after_request
+def add_security_headers(response):
+    response.headers["X-Frame-Options"] = "DENY"               # ❌ empêche le site d'être intégré dans une iframe
+    response.headers["X-Content-Type-Options"] = "nosniff"     # 🔐 empêche l'interprétation erronée du contenu MIME
+    response.headers["Referrer-Policy"] = "no-referrer-when-downgrade"  # 🔎 empêche l'exposition d'URL complètes
+    response.headers["Permissions-Policy"] = "geolocation=(), microphone=()"  # 🛡️ limite les API HTML5
+    return response
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

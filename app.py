@@ -7,7 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 
-load_dotenv()  # ✅ Charge les variables depuis .env
+load_dotenv()  # ✅ Loads variables from .env
 from flask_migrate import Migrate
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
@@ -26,25 +26,25 @@ fernet = Fernet(os.environ.get("FERNET_KEY").encode())
 from flask import jsonify
 
 app = Flask(__name__)
-csrf = CSRFProtect(app)
+csrf = CSRFProtect(app)  # ❌ Desactivate for moment
 app.secret_key = os.environ.get("APP_SECRET_KEY")
 
-# 🔒 Configuration sécurisée des cookies de session
+# 🔒 Secure configuration of session cookies
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SECURE"] = (
-    True  # ❗ Active si tu utilises HTTPS (en production)
+    True  # ❗ Enable this if you're using HTTPS (in production)
 )
 app.config["REMEMBER_COOKIE_HTTPONLY"] = True
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=30)
 
-# 🔐 Configuration Limiter
+# 🔐 Limiter configuration
 limiter = Limiter(
     get_remote_address,
     app=app,
-    default_limits=["200 per day", "50 per hour"],  # limites globales par IP
+    default_limits=["200 per day", "50 per hour"],  # global rate limits per IP
 )
 
-# Bonne pratique : message si la clé est absente (optionnel mais utile en dev)
+# Good practice: show a message if the key is missing (optional but useful in dev)
 if not app.secret_key:
     raise RuntimeError("APP_SECRET_KEY is not set in the environment.")
 
@@ -84,7 +84,7 @@ class Client(db.Model):
     civilite = db.Column(db.String(10))
     nom = db.Column(db.String(100))
     prenom = db.Column(db.String(100))
-    email_chiffre = db.Column(db.String(500), unique=True)  # ✅ Remplace "email"
+    email_chiffre = db.Column(db.String(500), unique=True)  # ✅ Replaces "email"
     adresse_siege = db.Column(db.String(200))
 
     utilisateur = db.relationship("Utilisateur", back_populates="clients")
@@ -92,7 +92,7 @@ class Client(db.Model):
     def __repr__(self):
         return f"<Client {self.prenom} {self.nom}>"
 
-    # 🔐 Propriété email pour accès transparent (déchiffrement)
+# 🔐 Email property for transparent access (decryption)
     @property
     def email(self):
         try:
@@ -192,7 +192,7 @@ class SupportTicket(db.Model):
     sujet = db.Column(db.String(200))
     message = db.Column(db.Text)
     date_creation = db.Column(db.DateTime)
-    statut = db.Column(db.String(50))  # "nouveau", "en cours", "résolu", ...
+    statut = db.Column(db.String(50))  # "new", "in progress", "resolved", ...
 
     # Relationship: a ticket can belong to a user (or not, if anonymous)
     utilisateur = db.relationship("Utilisateur", back_populates="support_tickets")
@@ -227,8 +227,8 @@ class Historique(db.Model):
     utilisateur_id = db.Column(
         db.Integer, db.ForeignKey("utilisateur.id"), nullable=False
     )
-    path = db.Column(db.String(200))  # URL/Route visitée
-    date_visite = db.Column(db.DateTime)  # Date/Heure de la visite
+    path = db.Column(db.String(200))  # URL/Visited path
+    date_visite = db.Column(db.DateTime)  # Date/Time of the visit
 
     # Relation: a history belongs to a user
     utilisateur = db.relationship("Utilisateur", back_populates="historiques")
@@ -355,12 +355,12 @@ MAX_DEVIS_PAR_UTILISATEUR = 1  # Maximum number of quotes per user
 
 @app.route("/resume-devis", methods=["POST"])
 def resume_devis():
-    # Vérifie que l'utilisateur est connecté
+    # Check that the user is logged in
     if "utilisateur_id" not in session:
         flash("Veuillez vous connecter pour consulter le résumé du devis.", "warning")
         return redirect(url_for("login"))
 
-    # Limiter le nombre de devis par utilisateur (ex: max 3)
+    # Limit the number of quotes per user (e.g., max 3)
     utilisateur_id = session.get("utilisateur_id")
     nombre_devis = Devis.query.filter_by(utilisateur_id=utilisateur_id).count()
     if nombre_devis >= 3:
@@ -369,7 +369,7 @@ def resume_devis():
         )
         return redirect(url_for("compte_client"))
 
-    # Récupère les champs du formulaire
+    # Retrieve form fields
     secteur = request.form.get("secteur")
     nom = request.form.get("nom")
     type_service = request.form.get("type_service")
@@ -377,7 +377,7 @@ def resume_devis():
     heure_rdv = request.form.get("heure_rdv")
     form_email = request.form.get("user_email")
 
-    # Vérifier que l'e-mail correspond
+    # Verify that the email matches
     client_email = session.get("email")
     if client_email and form_email != client_email:
         flash(
@@ -386,7 +386,7 @@ def resume_devis():
         )
         return redirect(url_for("devis"))
 
-    # Enregistrement dans la base de données
+    # Save to the database
     nouveau_devis = Devis(
         utilisateur_id=utilisateur_id,
         secteur=secteur,
@@ -399,7 +399,7 @@ def resume_devis():
     db.session.add(nouveau_devis)
     db.session.commit()
 
-    # Envoi des données à la page résumé
+    # Send data to the summary page
     return render_template(
         "resume_devis.html",
         secteur=secteur,
@@ -427,7 +427,7 @@ def envoyer_compte():
         )
         return redirect(url_for("login"))
 
-    # Vérifie si un devis identique a déjà été créé pour cet utilisateur
+    # Check if an identical quote has already been created for this user
     devis_existant = Devis.query.filter_by(
         utilisateur_id=utilisateur_id,
         nom=devis_data.get("nom"),
@@ -440,7 +440,7 @@ def envoyer_compte():
     if devis_existant:
         flash("Ce devis a déjà été enregistré.", "info")
     else:
-        # Créer et enregistrer un nouveau devis
+        # Create and save a new quote
         nouveau_devis = Devis(
             utilisateur_id=utilisateur_id,
             secteur=devis_data.get("secteur"),
@@ -460,12 +460,12 @@ def envoyer_compte():
 @app.route("/paiement-stripe", methods=["GET", "POST"])
 def paiement_stripe():
     if request.method == "POST":
-        # Récupérer les champs
+        # Retrieve fields
         card_holder_name = request.form.get("card_holder_name")
         card_number = request.form.get("card_number")
         card_expiry = request.form.get("card_expiry")
         card_cvv = request.form.get("card_cvv")
-        # ... Traiter / Vérifier / Appeler l'API Stripe ...
+        # ... Process / Validate / Call the Stripe API ...
         return "Paiement Stripe effectué (simulation)."
     return render_template("paiement_stripe.html")
 
@@ -507,7 +507,7 @@ def rgpd():
 def mentions_legales():
     return render_template("mentions_legales.html")
 
-
+@csrf.exempt
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -522,7 +522,7 @@ def login():
             session["email"] = utilisateur.email
             session["prenom"] = (
                 utilisateur.nom_utilisateur
-            )  # Pour afficher le message "Bonjour X"
+            )  # To display the message "Hello X"
 
             flash("Connexion réussie !", "success")
             return redirect(url_for("compte_client"))

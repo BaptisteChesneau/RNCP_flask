@@ -510,24 +510,21 @@ def login():
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
+        print(f"Tentative de connexion avec : {email}")
 
         utilisateur = Utilisateur.query.filter_by(email=email).first()
+        print(f"Utilisateur trouvé : {utilisateur}")
 
         if utilisateur and utilisateur.check_password(password):
-            # ✅ Stocker les infos en session
             session["utilisateur_id"] = utilisateur.id
             session["email"] = utilisateur.email
-            session["prenom"] = (
-                utilisateur.nom_utilisateur
-            )  # To display the message "Hello X"
-
+            session["prenom"] = utilisateur.nom_utilisateur
             flash("Connexion réussie !", "success")
             return redirect(url_for("compte_client"))
         else:
             flash("Adresse e-mail ou mot de passe incorrect.", "danger")
 
     return render_template("login.html")
-
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():

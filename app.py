@@ -23,6 +23,7 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from cryptography.fernet import Fernet
 fernet = Fernet(os.environ.get("FERNET_KEY").encode())
+from flask import jsonify
 
 app = Flask(__name__)
 csrf = CSRFProtect(app)
@@ -841,7 +842,7 @@ def update_security():
     return redirect(url_for("account_settings"))
 
 
-from flask import jsonify
+
 
 
 @app.route("/export_data", methods=["POST"])

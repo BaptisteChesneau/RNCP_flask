@@ -15,7 +15,6 @@ from datetime import datetime
 import pytest
 from bs4 import BeautifulSoup
 
-from flask_wtf.csrf import CSRFProtect
 from datetime import timedelta
 from wtforms import EmailField, StringField, PasswordField
 from wtforms.validators import DataRequired, Length, Email
@@ -26,7 +25,6 @@ fernet = Fernet(os.environ.get("FERNET_KEY").encode())
 from flask import jsonify
 
 app = Flask(__name__)
-csrf = CSRFProtect(app)  # ❌ Desactivate for moment
 app.secret_key = os.environ.get("APP_SECRET_KEY")
 
 # 🔒 Secure configuration of session cookies
@@ -507,7 +505,6 @@ def rgpd():
 def mentions_legales():
     return render_template("mentions_legales.html")
 
-@csrf.exempt
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":

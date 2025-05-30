@@ -508,22 +508,37 @@ def mentions_legales():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
+        # Retrieve form data
         email = request.form.get("email")
         password = request.form.get("password")
-        print(f"Tentative de connexion avec : {email}")
+        print(f"Login attempt with: {email}")
 
+        # Query user by email
         utilisateur = Utilisateur.query.filter_by(email=email).first()
-        print(f"Utilisateur trouvé : {utilisateur}")
+        print(f"User found: {utilisateur}")
 
+        # If user exists and password is correct
         if utilisateur and utilisateur.check_password(password):
-            session["utilisateur_id"] = utilisateur.id
-            session["email"] = utilisateur.email
-            session["prenom"] = utilisateur.nom_utilisateur
-            flash("Connexion réussie !", "success")
-            return redirect(url_for("compte_client"))
-        else:
-            flash("Adresse e-mail ou mot de passe incorrect.", "danger")
+            try:
+                # Store user info in session
+                session["utilisateur_id"] = utilisateur.id
+                session["email"] = utilisateur.email
+                session["prenom"] = utilisateur.nom_utilisateur  # Make sure this field exists in the model
 
+                print("Login successful. Redirecting to /compte-client")
+                flash("Login successful!", "success")
+                return redirect(url_for("compte_client"))
+
+            except Exception as e:
+                print("Error while storing session data:", e)
+                flash("Internal error during login.", "danger")
+                return redirect(url_for("login"))
+        else:
+            # Incorrect credentials
+            print("Invalid email or password")
+            flash("Invalid email or password.", "danger")
+
+    # Render the login page
     return render_template("login.html")
 
 @app.route("/signup", methods=["GET", "POST"])

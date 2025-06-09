@@ -1042,7 +1042,6 @@ def base_test():
 
 @app.route('/edit/<int:user_id>')
 def edit_user(user_id):
-    # Récupère les données du user à partir de l'ID
     user = Utilisateur.query.get_or_404(user_id)
     return render_template('edit_user.html', user=user)
 

@@ -1046,6 +1046,20 @@ def edit_user(user_id):
     user = Utilisateur.query.get_or_404(user_id)
     return render_template('edit_user.html', user=user)
 
+@app.route('/update/<int:user_id>', methods=['POST'])
+def update_user(user_id):
+    user = Utilisateur.query.get_or_404(user_id)
+    user.nom_utilisateur = request.form['username']
+    user.email = request.form['email']
+    
+    new_password = request.form.get('password')
+    if new_password:
+        user.mot_de_passe_hash = generate_password_hash(new_password)
+    
+    db.session.commit()
+    flash('User updated successfully!', 'success')
+    return redirect(url_for('admin_dashboard'))
+
 @app.route('/delete-user/<int:user_id>', methods=['POST'])
 def supprimer_user(user_id):
     user = Utilisateur.query.get_or_404(user_id)

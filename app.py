@@ -1040,6 +1040,19 @@ def base_test():
     utilisateurs = Utilisateur.query.all()
     return render_template("base_test.html", utilisateurs=utilisateurs)
 
+@app.route('/edit/<int:user_id>')
+def edit_user(user_id):
+    # Récupère les données du user à partir de l'ID
+    user = Utilisateur.query.get_or_404(user_id)
+    return render_template('edit_user.html', user=user)
+
+@app.route('/delete-user/<int:user_id>', methods=['POST'])
+def supprimer_user(user_id):
+    user = Utilisateur.query.get_or_404(user_id)
+    db.session.delete(user)
+    db.session.commit()
+    flash("User deleted successfully!", "success")
+    return redirect(url_for('admin_dashboard'))
 
 @app.route("/vider-historique", methods=["POST"])
 def vider_historique():

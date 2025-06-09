@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Test des tables de données - Admin View</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
@@ -110,10 +110,15 @@
       </a>
     </div>
 
-    <!-- ✅ Toast Notification -->
-    <div id="toast" class="toast position-fixed bottom-0 right-0 m-3 bg-success text-white" style="display:none; z-index: 9999;">
-      <div class="toast-body">
-        ✅ User data successfully copied!
+    <!-- ✅ Toast PRO Bootstrap 5 -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+      <div id="liveToast" class="toast text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+            ✅ User data successfully copied!
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
       </div>
     </div>
 
@@ -139,12 +144,13 @@
       });
     });
 
-    function showToast() {
-      const toast = document.getElementById("toast");
-      toast.style.display = "block";
-      setTimeout(() => {
-        toast.style.display = "none";
-      }, 3000);
+    function showToast(message = "✅ User data successfully copied!") {
+      const toastEl = document.getElementById('liveToast');
+      const toastBody = toastEl.querySelector('.toast-body');
+      toastBody.textContent = message;
+
+      const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
+      toast.show();
     }
 
     function copyRow(button) {
@@ -162,5 +168,6 @@
       });
     }
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

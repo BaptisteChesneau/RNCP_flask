@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Inline</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container py-5">
+  <h1 class="text-warning mb-4">
+    ✏️ Inline Edit Example
+  </h1>
+
+  <form method="POST" action="{{ url_for('save_inline_edits') }}">
+    <table class="table table-bordered inline-edit-table">
+      <thead class="table-light">
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Active</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Exemple de ligne modifiable -->
+        <tr>
+          <td>1</td>
+          <td><input type="text" name="username_1" value="alice" class="form-control form-control-inline"></td>
+          <td><input type="email" name="email_1" value="alice@example.com" class="form-control form-control-inline"></td>
+          <td>
+            <select name="active_1" class="form-control form-control-inline">
+              <option value="1" selected>Yes</option>
+              <option value="0">No</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><input type="text" name="username_2" value="bob" class="form-control form-control-inline"></td>
+          <td><input type="email" name="email_2" value="bob@example.com" class="form-control form-control-inline"></td>
+          <td>
+            <select name="active_2" class="form-control form-control-inline">
+              <option value="1">Yes</option>
+              <option value="0" selected>No</option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="text-end">
+      <button type="submit" class="btn btn-success">
+        <i class="fas fa-save"></i> Save Changes
+      </button>
+      <a href="{{ url_for('admin_view') }}" class="btn btn-outline-secondary ms-2">
+        Cancel
+      </a>
+    </div>
+  </form>
+</div>
+
+</body>
+</html>

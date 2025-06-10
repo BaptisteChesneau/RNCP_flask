@@ -1067,6 +1067,56 @@ def supprimer_user(user_id):
     flash("User deleted successfully!", "success")
     return redirect(url_for('admin_dashboard'))
 
+@app.route('/edit-inline')
+def edit_inline():
+    return render_template('edit_inline.html')  # à créer
+
+@app.route('/save-inline-edits', methods=['POST'])
+def save_inline_edits():
+    # Ici tu peux récupérer les données POST pour les traiter :
+    # username_1, email_1, active_1, etc.
+    print("✅ Inline edits received:", dict(request.form))
+    flash("Changes saved (simulation)", "success")
+    return redirect(url_for('admin_view'))
+
+@app.route('/edit')
+def edit_page():
+    return render_template('edit.html')  # à créer
+
+@app.route('/explain-sql', methods=['GET', 'POST'])
+def explain_sql():
+    query = ''
+    explanation = ''
+    if request.method == 'POST':
+        query = request.form.get('query', '')
+        explanation = generate_sql_explanation(query)
+    return render_template('explain_sql.html', query=query, explanation=explanation)
+
+def generate_sql_explanation(query):
+    q = query.upper()
+
+    if "SELECT" in q:
+        return "This is a SELECT query that retrieves data from a table. It may include WHERE, ORDER BY, JOIN clauses, etc."
+    elif "INSERT" in q:
+        return "This is an INSERT query used to add new data into a table."
+    elif "UPDATE" in q:
+        return "This is an UPDATE query used to modify existing data."
+    elif "DELETE" in q:
+        return "This is a DELETE query used to remove data from a table."
+    elif "CREATE TABLE" in q:
+        return "This creates a new table in the database."
+    else:
+        return "SQL query received, but the explanation is generic or unrecognized. Try SELECT, INSERT, etc."
+
+@app.route('/view-php')
+def view_php():
+    return render_template('view_php.html')  # à créer
+
+@app.route('/refresh')
+def refresh_page():
+    # Redirige vers la même page ou recharge les données
+    return redirect(url_for('admin_view'))  # Remplace 'admin_view' par le nom réel de ta vue admin
+
 @app.route("/vider-historique", methods=["POST"])
 def vider_historique():
     mongo.db.chatbot.delete_many({})

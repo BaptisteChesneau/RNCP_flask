@@ -1158,3 +1158,74 @@ body {
   font-weight: 500;
   font-size: 0.85rem;
 }
+
+/*============================================================
+  36) REFRESH SPINNER - Loading animation style
+============================================================*/
+   .spinner-border {
+    width: 3rem;
+    height: 3rem;
+  }
+  
+/*============================================================
+  37) VIEW PHP - Code block display
+============================================================*/
+pre.code-block {
+  background-color: #212529;
+  color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-family: monospace;
+  overflow-x: auto;
+  border: 1px solid #343a40;
+}
+
+/*============================================================
+  38) INLINE EDITING TABLE - Styling for edit form
+============================================================*/
+   table.inline-edit-table {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+  }
+  
+  table.inline-edit-table th,
+  table.inline-edit-table td {
+    vertical-align: middle;
+    text-align: center;
+  }
+  
+  .form-control-inline {
+    width: 100%;
+    padding: 0.25rem;
+    font-size: 0.875rem;
+  }
+
+/*============================================================
+  39) SQL EXPLAIN PAGE - Styling for SQL preview and result
+============================================================*/
+pre.sql-code {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  font-family: 'Courier New', monospace;
+  color: #495057;
+  white-space: pre-wrap;
+}
+
+/*============================================================
+  40) GENERIC PAGES - Section padding and buttons
+============================================================*/
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.page-section {
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}

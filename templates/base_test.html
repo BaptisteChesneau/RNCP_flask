@@ -41,8 +41,8 @@
 
           <div class="form-group mb-2 mr-2">
             <label class="mr-1">Filter:</label>
-            <input type="text" class="form-control form-control-sm" placeholder="Search table" style="width: 160px;">
-          </div>
+            <input id="customSearch" type="text" class="form-control form-control-sm" placeholder="Search table" style="width: 160px;">
+          </div>          
 
           <div class="form-group mb-2">
             <label class="mr-1">Sort by:</label>
@@ -128,46 +128,62 @@
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
   <script>
-    $(document).ready(function () {
-      $('#userTable').DataTable({
-        language: {
-          search: "🔍 Search:",
-          lengthMenu: "Show _MENU_ entries",
-          info: "Showing _START_ to _END_ of _TOTAL_ users",
-          paginate: {
-            previous: "Previous",
-            next: "Next"
-          },
-          zeroRecords: "No matching records found"
-        },
-        pageLength: 25
-      });
-    });
+    
+$(document).ready(function () {
+  var table = $('#userTable').DataTable({
+    // 👈 removes the built-in “Search” field
+    dom: 'lrtip',
+    language: {
+      search: "🔍 Search:",
+      lengthMenu: "Show _MENU_ entries",
+      info: "Showing _START_ to _END_ of _TOTAL_ users",
+      paginate: {
+        previous: "Previous",
+        next: "Next"
+      },
+      zeroRecords: "No matching records found"
+    },
+    pageLength: 25
+  });
 
-    function showToast(message = "✅ User data successfully copied!") {
-      const toastEl = document.getElementById('liveToast');
-      const toastBody = toastEl.querySelector('.toast-body');
-      toastBody.textContent = message;
+  // 🔍 Connecting the #customSearch field with the DataTable
+  $('#customSearch').on('keyup', function () {
+    table.search(this.value).draw();
+  });
 
-      const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
-      toast.show();
+  // 🔃 Dynamic sorting with the “Sort by” menu
+  $('select:contains("Sort by")').on('change', function () {
+    const selected = $(this).val();
+    if (selected === "ID") {
+      table.order([4, 'asc']).draw(); // 5e colonne = ID
+    } else if (selected === "Username") {
+      table.order([5, 'asc']).draw(); // 6e colonne = Username
+    } else {
+      table.order([]).draw(); // Aucun tri si "None"
     }
+  });
+});
 
-    function copyRow(button) {
-      const row = button.closest('tr');
-      const cells = row.querySelectorAll('td');
-      let userData = [];
-      for (let i = 4; i < cells.length; i++) {
-        userData.push(cells[i].innerText.trim());
-      }
-      const textToCopy = userData.join('\t');
-      navigator.clipboard.writeText(textToCopy).then(() => {
-        showToast();
-      }).catch(() => {
-        alert("❌ Error copying data.");
-      });
-    }
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+function showToast(message = "✅ User data successfully copied!") {
+  const toastEl = document.getElementById('liveToast');
+  const toastBody = toastEl.querySelector('.toast-body');
+  toastBody.textContent = message;
+
+  const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
+  toast.show();
+}
+
+function copyRow(button) {
+  const row = button.closest('tr');
+  const cells = row.querySelectorAll('td');
+  let userData = [];
+  for (let i = 4; i < cells.length; i++) {
+    userData.push(cells[i].innerText.trim());
+  }
+  const textToCopy = userData.join('\t');
+  navigator.clipboard.writeText(textToCopy).then(() => {
+    showToast();
+  }).catch(() => {
+    alert("❌ Error copying data.");
+  });
+}

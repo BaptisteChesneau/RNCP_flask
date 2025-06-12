@@ -46,12 +46,21 @@
 
           <div class="form-group mb-2">
             <label class="mr-1">Sort by:</label>
-            <select class="form-control form-control-sm" style="width: 120px;">
+            <select id="sortBy" class="form-control form-control-sm" style="width: 120px;">
               <option>None</option>
               <option>ID</option>
               <option>Username</option>
             </select>
+
           </div>
+          <div class="form-group mb-2 ml-2">
+            <button id="resetFilterBtn" class="btn btn-sm btn-outline-secondary">Réinitialiser</button>
+          </div>
+
+    <!-- ✅ Bouton Filtrer ici -->
+    <div class="form-group mb-2 ml-2">
+      <button id="applyFilterBtn" class="btn btn-sm btn-outline-primary">Filtrer</button>
+    </div>
         </div>
       </div>
     </div>
@@ -129,7 +138,7 @@
   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
   <script>
     
-$(document).ready(function () {
+    $(document).ready(function () {
   var table = $('#userTable').DataTable({
     // 👈 removes the built-in “Search” field
     dom: 'lrtip',
@@ -146,20 +155,48 @@ $(document).ready(function () {
     pageLength: 25
   });
 
-  // 🔍 Connecting the #customSearch field with the DataTable
+  // ✅ Apply filter and sort by clicking on the a “Filter” button
+  $('#applyFilterBtn').on('click', function () {
+    const searchTerm = $('#customSearch').val().trim();
+    const sortBy = $('#sortBy').val();
+
+    // Apply search
+    table.search(searchTerm);
+
+    // Apply sorting
+    if (sortBy === "ID") {
+      table.order([4, 'asc']);
+    } else if (sortBy === "Username") {
+      table.order([5, 'asc']);
+    } else {
+      table.order([]);
+    }
+
+    table.draw();
+  });
+
+  // ✅ Reset filters and sorting
+  $('#resetFilterBtn').on('click', function () {
+    $('#customSearch').val('');
+    $('#sortBy').val('None');
+    table.search('');
+    table.order([]).draw();
+  });
+
+  // ✅ Real-time update when typing in the “Filter” field
   $('#customSearch').on('keyup', function () {
     table.search(this.value).draw();
   });
 
-  // 🔃 Dynamic sorting with the “Sort by” menu
-  $('select:contains("Sort by")').on('change', function () {
+  // ✅ Dynamic sorting by changing the “Sort by” option
+  $('#sortBy').on('change', function () {
     const selected = $(this).val();
     if (selected === "ID") {
-      table.order([4, 'asc']).draw(); // 5e colonne = ID
+      table.order([4, 'asc']).draw();
     } else if (selected === "Username") {
-      table.order([5, 'asc']).draw(); // 6e colonne = Username
+      table.order([5, 'asc']).draw();
     } else {
-      table.order([]).draw(); // Aucun tri si "None"
+      table.order([]).draw();
     }
   });
 });

@@ -797,6 +797,21 @@ def update_photo():
 def paiement():
     return render_template('paiement.html')
 
+@app.route('/supprimer-carte', methods=['POST'])
+def supprimer_carte():
+    session.pop('carte_bancaire', None)
+    flash("Votre carte a été supprimée avec succès.", "success")
+    return redirect(url_for('parametres'))
+
+@app.route('/ajouter-carte-test')
+def ajouter_carte_test():
+    session['carte_bancaire'] = {
+        'nom': 'Jean Dupont',
+        'numero': '4242424242424242',
+        'expiration': '12/26'
+    }
+    return redirect(url_for('compte'))
+
 @app.route("/grille-tarifaire")
 def grille_tarifaire():
     return render_template("grille_tarifaire.html")

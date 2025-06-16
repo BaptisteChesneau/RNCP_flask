@@ -115,25 +115,36 @@
       <div class="tab-pane fade" id="carte" role="tabpanel" aria-labelledby="carte-tab">
         <div class="text-center mt-4">
           <h4>Carte Bancaire Enregistrée</h4>
-          <div class="credit-card-display mx-auto my-4 p-4 rounded text-white">
-            <div class="d-flex justify-content-between mb-3">
-              <div class="card-number">•••• •••• •••• {{ card_last4 or '••••' }}</div>
-              <div class="card-brand">{{ card_brand or 'VISA' }}</div>
-            </div>
-            <div class="d-flex justify-content-between">
-              <div>
-                <small class="text-uppercase">Titulaire</small><br>
-                <strong>{{ session.get('prenom') }} {{ session.get('nom') }}</strong>
+
+          {% if session.get('carte_bancaire') %}
+            <div class="credit-card-display mx-auto my-4 p-4 rounded text-white">
+              <div class="d-flex justify-content-between mb-3">
+              <div class="card-number">•••• •••• •••• {{ session.carte_bancaire.numero[-4:] }}</div>
+            <div class="card-brand">{{ session.carte_bancaire.marque or 'VISA' }}</div>
+          </div>
+          <div class="d-flex justify-content-between">
+            <div>
+              <small class="text-uppercase">Titulaire</small><br>
+              <strong>{{ session.carte_bancaire.nom }}</strong>
             </div>
             <div>
               <small class="text-uppercase">Expiration</small><br>
-              <strong>••/••</strong>
+              <strong>{{ session.carte_bancaire.expiration }}</strong>
             </div>
           </div>
         </div>
-        <p class="text-muted">Les détails complets sont visibles dans l’onglet Facturation des paramètres.</p>
-      </div>
-    </div>
+
+      <!-- 🗑️ Bouton Supprimer la carte -->
+      <form method="POST" action="{{ url_for('supprimer_carte') }}" onsubmit="return confirm('Souhaitez-vous vraiment supprimer cette carte ?')">
+        <button type="submit" class="btn btn-outline-danger">🗑️ Supprimer la carte</button>
+      </form>
+    {% else %}
+      <p class="mt-4 text-muted">Aucune carte enregistrée.</p>
+    {% endif %}
+
+    <p class="text-muted mt-3">Les détails complets sont visibles dans l’onglet Facturation des paramètres.</p>
+  </div>
+</div>
 
     <!-- Bouton pour accéder aux paramètres du compte -->
     <div class="text-center mt-4">

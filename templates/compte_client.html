@@ -32,6 +32,11 @@
           Formulaire Rempli
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" id="carte-tab" data-toggle="tab" href="#carte" role="tab" aria-controls="carte" aria-selected="false">
+          Carte bancaire
+        </a>
+      </li>          
     </ul>
 
     <!-- Tab panes for Devis Rempli and Formulaire Rempli -->
@@ -103,6 +108,30 @@
         {% else %}
           <p class="mt-3">Aucune fiche client n'a été soumise.</p>
         {% endif %}
+      </div>
+    </div>
+
+      <!-- Carte Bancaire Tab -->
+      <div class="tab-pane fade" id="carte" role="tabpanel" aria-labelledby="carte-tab">
+        <div class="text-center mt-4">
+          <h4>Carte Bancaire Enregistrée</h4>
+          <div class="credit-card-display mx-auto my-4 p-4 rounded text-white">
+            <div class="d-flex justify-content-between mb-3">
+              <div class="card-number">•••• •••• •••• {{ card_last4 or '••••' }}</div>
+              <div class="card-brand">{{ card_brand or 'VISA' }}</div>
+            </div>
+            <div class="d-flex justify-content-between">
+              <div>
+                <small class="text-uppercase">Titulaire</small><br>
+                <strong>{{ session.get('prenom') }} {{ session.get('nom') }}</strong>
+            </div>
+            <div>
+              <small class="text-uppercase">Expiration</small><br>
+              <strong>••/••</strong>
+            </div>
+          </div>
+        </div>
+        <p class="text-muted">Les détails complets sont visibles dans l’onglet Facturation des paramètres.</p>
       </div>
     </div>
 

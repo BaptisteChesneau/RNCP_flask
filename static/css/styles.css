@@ -1229,3 +1229,39 @@ pre.sql-code {
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
+
+/*============================================================
+   41) Carte bancaire (onglet compte client)
+============================================================*/
+
+.credit-card-display {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  max-width: 400px;
+  margin: auto;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 1px;
+  border-radius: 1rem;
+}
+
+.credit-card-display .card-number {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.credit-card-display .card-brand {
+  font-size: 1rem;
+  text-align: right;
+}
+
+.credit-card-display small {
+  font-size: 0.7rem;
+  opacity: 0.8;
+}
+
+.credit-card-display strong {
+  font-size: 0.9rem;
+}

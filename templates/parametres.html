@@ -8,7 +8,6 @@
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 
-<body><!-- 🔧 MODIFICATION ICI : ajout de la classe dynamique -->
   <body class="{{ session.get('theme', 'light') }}">
 
   {% include "header.html" %}
@@ -183,6 +182,13 @@
               </div>
               <button type="submit" class="btn btn-primary btn-progress">Enregistrer</button>
             </form>
+          <!-- 🔗 Lien vers onglet "Facturation" de la page paiement -->
+          <div class="mt-3">
+            <a href="{{ url_for('paiement') }}#facturation" class="btn btn-outline-info">
+              Gérer mes paiements Stripe
+            </a>
+          </div>
+        </div>
           </div>
                     <!-- Sécurité -->
           <div class="tab-pane fade" id="securitySection" role="tabpanel">

@@ -793,6 +793,9 @@ def update_photo():
         flash("Aucune photo sélectionnée.", "danger")
     return redirect(url_for("parametres"))
 
+@app.route('/paiement')
+def paiement():
+    return render_template('paiement.html')
 
 @app.route("/grille-tarifaire")
 def grille_tarifaire():

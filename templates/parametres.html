@@ -182,18 +182,19 @@
               </div>
               <button type="submit" class="btn btn-primary btn-progress">Enregistrer</button>
             </form>
+
             <div class="mt-3 d-flex flex-wrap align-items-center">
               <a href="{{ url_for('paiement') }}#facturation" class="btn btn-outline-info mr-2 mb-2">
                 Gérer mes paiements Stripe
               </a>
-            
+
               <form method="POST" action="{{ url_for('supprimer_carte') }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cette carte ?')">
                 <button type="submit" class="btn btn-outline-danger mb-2">Supprimer la carte</button>
               </form>
-            </div>            
-        </div>
-          </div>
-                    <!-- Sécurité -->
+            </div>
+          </div> <!-- ✅ billingSection closed correctly -->
+
+          <!-- Sécurité -->
           <div class="tab-pane fade" id="securitySection" role="tabpanel">
             <h4>Sécurité du compte</h4>
             <form action="{{ url_for('update_security') }}" method="POST">

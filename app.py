@@ -219,21 +219,42 @@ class Preferences(db.Model):
         return f"<Preferences #{self.id} - {self.utilisateur_id}>"
 
 
-# =================== MODÈLE HISTORIQUE (optionnel) ======================
-class Historique(db.Model):
+class ParametresCompte(db.Model):
+    __tablename__ = 'parametres_compte'
+
     id = db.Column(db.Integer, primary_key=True)
     utilisateur_id = db.Column(
-        db.Integer, db.ForeignKey("utilisateur.id"), nullable=False
+        db.Integer, db.ForeignKey("utilisateur.id"), nullable=False, unique=True
     )
-    path = db.Column(db.String(200))  # URL/Visited path
-    date_visite = db.Column(db.DateTime)  # Date/Time of the visit
 
-    # Relation: a history belongs to a user
-    utilisateur = db.relationship("Utilisateur", back_populates="historiques")
+    # Préférences
+    langue = db.Column(db.String(10), default="fr")
+    theme = db.Column(db.String(10), default="light")
+    notif_email = db.Column(db.Boolean, default=True)
+    notif_sms = db.Column(db.Boolean, default=False)
+
+    # Sécurité
+    uses_2fa = db.Column(db.Boolean, default=False)
+
+    # Réseaux sociaux
+    facebook = db.Column(db.String(255))
+    linkedin = db.Column(db.String(255))
+    instagram = db.Column(db.String(255))
+
+    # Photo
+    photo_url = db.Column(db.String(255))
+
+    # Facturation ✅
+    nom_facturation = db.Column(db.String(255))
+    adresse_facturation = db.Column(db.String(255))
+
+    # Date de mise à jour
+    date_mise_a_jour = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    utilisateur = db.relationship("Utilisateur", backref=db.backref("parametres", uselist=False))
 
     def __repr__(self):
-        return f"<Historique {self.path} - {self.date_visite}>"
-
+        return f"<ParametresCompte utilisateur_id={self.utilisateur_id} langue={self.langue} theme={self.theme}>"
 
 # =================== MODÈLE BLOGPOST (optionnel) ======================
 class BlogPost(db.Model):

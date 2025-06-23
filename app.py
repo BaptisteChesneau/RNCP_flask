@@ -258,6 +258,9 @@ mail = Mail(app)
 def header():
     return render_template("header.html")
 
+@app.route('/')
+def home():
+    return redirect(url_for('menu'))  # if `menu` is a Flask route
 
 @app.route("/menu")
 def menu():

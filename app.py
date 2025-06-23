@@ -259,8 +259,8 @@ def header():
     return render_template("header.html")
 
 @app.route('/')
-def home():
-    return redirect(url_for('menu'))  # if `menu` is a Flask route
+def index():
+    return render_template('menu.html')
 
 @app.route("/menu")
 def menu():

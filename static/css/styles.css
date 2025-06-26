@@ -1265,3 +1265,59 @@ pre.sql-code {
 .credit-card-display strong {
   font-size: 0.9rem;
 }
+
+/*============================================================
+   42 - Page Erreur 404 
+============================================================*/
+.error-404-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  text-align: center;
+}
+
+.error-404-content {
+  max-width: 600px;
+  padding: 20px;
+}
+
+.error-404-code {
+  font-size: 100px;
+  font-weight: 700;
+  color: #dc3545;
+}
+
+.error-404-message {
+  font-size: 24px;
+}
+
+
+/*============================================================
+   43 - Page Erreur 500 
+============================================================*/
+.error-500-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff3f3;
+  text-align: center;
+}
+
+.error-500-content {
+  max-width: 600px;
+  padding: 20px;
+}
+
+.error-500-code {
+  font-size: 100px;
+  font-weight: 700;
+  color: #dc3545;
+}
+
+.error-500-message {
+  font-size: 22px;
+  color: #333;
+}

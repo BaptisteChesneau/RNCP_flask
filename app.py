@@ -21,6 +21,7 @@ from wtforms.validators import DataRequired, Length, Email
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from cryptography.fernet import Fernet
+
 fernet = Fernet(os.environ.get("FERNET_KEY").encode())
 from flask import jsonify
 
@@ -90,7 +91,7 @@ class Client(db.Model):
     def __repr__(self):
         return f"<Client {self.prenom} {self.nom}>"
 
-# 🔐 Email property for transparent access (decryption)
+    # 🔐 Email property for transparent access (decryption)
     @property
     def email(self):
         try:
@@ -101,6 +102,7 @@ class Client(db.Model):
     @email.setter
     def email(self, value):
         self.email_chiffre = fernet.encrypt(value.encode()).decode()
+
 
 class Utilisateur(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -220,7 +222,7 @@ class Preferences(db.Model):
 
 
 class ParametresCompte(db.Model):
-    __tablename__ = 'parametres_compte'
+    __tablename__ = "parametres_compte"
 
     id = db.Column(db.Integer, primary_key=True)
     utilisateur_id = db.Column(
@@ -249,12 +251,17 @@ class ParametresCompte(db.Model):
     adresse_facturation = db.Column(db.String(255))
 
     # Date de mise à jour
-    date_mise_a_jour = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    date_mise_a_jour = db.Column(
+        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
+    )
 
-    utilisateur = db.relationship("Utilisateur", backref=db.backref("parametres", uselist=False))
+    utilisateur = db.relationship(
+        "Utilisateur", backref=db.backref("parametres", uselist=False)
+    )
 
     def __repr__(self):
         return f"<ParametresCompte utilisateur_id={self.utilisateur_id} langue={self.langue} theme={self.theme}>"
+
 
 # =================== MODÈLE BLOGPOST (optionnel) ======================
 class BlogPost(db.Model):
@@ -279,9 +286,11 @@ mail = Mail(app)
 def header():
     return render_template("header.html")
 
-@app.route('/')
+
+@app.route("/")
 def index():
-    return render_template('menu.html')
+    return render_template("menu.html")
+
 
 @app.route("/menu")
 def menu():
@@ -529,6 +538,7 @@ def rgpd():
 def mentions_legales():
     return render_template("mentions_legales.html")
 
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -547,7 +557,9 @@ def login():
                 # Store user info in session
                 session["utilisateur_id"] = utilisateur.id
                 session["email"] = utilisateur.email
-                session["prenom"] = utilisateur.nom_utilisateur  # Make sure this field exists in the model
+                session["prenom"] = (
+                    utilisateur.nom_utilisateur
+                )  # Make sure this field exists in the model
 
                 print("Login successful. Redirecting to /compte-client")
                 flash("Login successful!", "success")
@@ -564,6 +576,7 @@ def login():
 
     # Render the login page
     return render_template("login.html")
+
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -817,24 +830,28 @@ def update_photo():
         flash("Aucune photo sélectionnée.", "danger")
     return redirect(url_for("parametres"))
 
-@app.route('/paiement')
+
+@app.route("/paiement")
 def paiement():
-    return render_template('paiement.html')
+    return render_template("paiement.html")
 
-@app.route('/supprimer-carte', methods=['POST'])
+
+@app.route("/supprimer-carte", methods=["POST"])
 def supprimer_carte():
-    session.pop('carte_bancaire', None)
+    session.pop("carte_bancaire", None)
     flash("Votre carte a été supprimée avec succès.", "success")
-    return redirect(url_for('parametres'))
+    return redirect(url_for("parametres"))
 
-@app.route('/ajouter-carte-test')
+
+@app.route("/ajouter-carte-test")
 def ajouter_carte_test():
-    session['carte_bancaire'] = {
-        'nom': 'Jean Dupont',
-        'numero': '4242424242424242',
-        'expiration': '12/26'
+    session["carte_bancaire"] = {
+        "nom": "Jean Dupont",
+        "numero": "4242424242424242",
+        "expiration": "12/26",
     }
-    return redirect(url_for('compte'))
+    return redirect(url_for("compte"))
+
 
 @app.route("/grille-tarifaire")
 def grille_tarifaire():
@@ -891,9 +908,6 @@ def update_security():
 
     flash("Paramètres de sécurité mis à jour.", "success")
     return redirect(url_for("account_settings"))
-
-
-
 
 
 @app.route("/export_data", methods=["POST"])
@@ -1013,6 +1027,7 @@ def supprimer_message(message_id):
     flash("Message supprimé avec succès !", "success")
     return redirect(url_for("admin_chatbot"))
 
+
 @limiter.limit("5 per minute")  # max 5 tentatives par minute
 @app.route("/login-admin", methods=["GET", "POST"])
 def login_admin():
@@ -1082,57 +1097,65 @@ def base_test():
     utilisateurs = Utilisateur.query.all()
     return render_template("base_test.html", utilisateurs=utilisateurs)
 
-@app.route('/edit/<int:user_id>')
+
+@app.route("/edit/<int:user_id>")
 def edit_user(user_id):
     user = Utilisateur.query.get_or_404(user_id)
-    return render_template('edit_user.html', user=user)
+    return render_template("edit_user.html", user=user)
 
-@app.route('/update/<int:user_id>', methods=['POST'])
+
+@app.route("/update/<int:user_id>", methods=["POST"])
 def update_user(user_id):
     user = Utilisateur.query.get_or_404(user_id)
-    user.nom_utilisateur = request.form['username']
-    user.email = request.form['email']
-    
-    new_password = request.form.get('password')
+    user.nom_utilisateur = request.form["username"]
+    user.email = request.form["email"]
+
+    new_password = request.form.get("password")
     if new_password:
         user.mot_de_passe_hash = generate_password_hash(new_password)
-    
-    db.session.commit()
-    flash('User updated successfully!', 'success')
-    return redirect(url_for('admin_dashboard'))
 
-@app.route('/delete-user/<int:user_id>', methods=['POST'])
+    db.session.commit()
+    flash("User updated successfully!", "success")
+    return redirect(url_for("admin_dashboard"))
+
+
+@app.route("/delete-user/<int:user_id>", methods=["POST"])
 def supprimer_user(user_id):
     user = Utilisateur.query.get_or_404(user_id)
     db.session.delete(user)
     db.session.commit()
     flash("User deleted successfully!", "success")
-    return redirect(url_for('admin_dashboard'))
+    return redirect(url_for("admin_dashboard"))
 
-@app.route('/edit-inline')
+
+@app.route("/edit-inline")
 def edit_inline():
-    return render_template('edit_inline.html')  # à créer
+    return render_template("edit_inline.html")  # à créer
 
-@app.route('/save-inline-edits', methods=['POST'])
+
+@app.route("/save-inline-edits", methods=["POST"])
 def save_inline_edits():
     # Ici tu peux récupérer les données POST pour les traiter :
     # username_1, email_1, active_1, etc.
     print("✅ Inline edits received:", dict(request.form))
     flash("Changes saved (simulation)", "success")
-    return redirect(url_for('admin_view'))
+    return redirect(url_for("admin_view"))
 
-@app.route('/edit')
+
+@app.route("/edit")
 def edit_page():
-    return render_template('edit.html')  # à créer
+    return render_template("edit.html")  # à créer
 
-@app.route('/explain-sql', methods=['GET', 'POST'])
+
+@app.route("/explain-sql", methods=["GET", "POST"])
 def explain_sql():
-    query = ''
-    explanation = ''
-    if request.method == 'POST':
-        query = request.form.get('query', '')
+    query = ""
+    explanation = ""
+    if request.method == "POST":
+        query = request.form.get("query", "")
         explanation = generate_sql_explanation(query)
-    return render_template('explain_sql.html', query=query, explanation=explanation)
+    return render_template("explain_sql.html", query=query, explanation=explanation)
+
 
 def generate_sql_explanation(query):
     q = query.upper()
@@ -1150,14 +1173,19 @@ def generate_sql_explanation(query):
     else:
         return "SQL query received, but the explanation is generic or unrecognized. Try SELECT, INSERT, etc."
 
-@app.route('/view-php')
-def view_php():
-    return render_template('view_php.html')  # à créer
 
-@app.route('/refresh')
+@app.route("/view-php")
+def view_php():
+    return render_template("view_php.html")  # à créer
+
+
+@app.route("/refresh")
 def refresh_page():
     # Redirige vers la même page ou recharge les données
-    return redirect(url_for('admin_view'))  # Remplace 'admin_view' par le nom réel de ta vue admin
+    return redirect(
+        url_for("admin_view")
+    )  # Remplace 'admin_view' par le nom réel de ta vue admin
+
 
 @app.route("/vider-historique", methods=["POST"])
 def vider_historique():
@@ -1216,25 +1244,28 @@ def test_user_list_displays_users(client):
     assert b"test1" in response.data
     assert b"baptiste012chesneau@gmail.com" in response.data
 
+
 @app.after_request
 def add_security_headers(response):
-    response.headers["X-Frame-Options"] = "DENY"               # ❌ empêche le site d'être intégré dans une iframe
-    response.headers["X-Content-Type-Options"] = "nosniff"     # 🔐 empêche l'interprétation erronée du contenu MIME
-    response.headers["Referrer-Policy"] = "no-referrer-when-downgrade"  # 🔎 empêche l'exposition d'URL complètes
-    response.headers["Permissions-Policy"] = "geolocation=(), microphone=()"  # 🛡️ limite les API HTML5
+    response.headers["X-Frame-Options"] = (
+        "DENY"  # ❌ empêche le site d'être intégré dans une iframe
+    )
+    response.headers["X-Content-Type-Options"] = (
+        "nosniff"  # 🔐 empêche l'interprétation erronée du contenu MIME
+    )
+    response.headers["Referrer-Policy"] = (
+        "no-referrer-when-downgrade"  # 🔎 empêche l'exposition d'URL complètes
+    )
+    response.headers["Permissions-Policy"] = (
+        "geolocation=(), microphone=()"  # 🛡️ limite les API HTML5
+    )
     return response
+
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html'), 404
+    return render_template("404.html"), 404
 
-@app.errorhandler(500)
-def internal_server_error(e):
-    return render_template('500.html'), 500
-
-@app.route("/crash")
-def crash():
-    raise Exception("Erreur de test 500")
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

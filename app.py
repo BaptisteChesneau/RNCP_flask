@@ -103,6 +103,11 @@ class Client(db.Model):
     def email(self, value):
         self.email_chiffre = fernet.encrypt(value.encode()).decode()
 
+class Historique(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    action = db.Column(db.String(255), nullable=False)
+    utilisateur_id = db.Column(db.Integer, db.ForeignKey("utilisateur.id"))
+    utilisateur = db.relationship("Utilisateur", back_populates="historiques")
 
 class Utilisateur(db.Model):
     id = db.Column(db.Integer, primary_key=True)

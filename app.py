@@ -616,6 +616,7 @@ def compte_client():
     devis_list = []
 
     if utilisateur_id:
+        print("UTILISATEUR ID:", utilisateur_id)
         clients = Client.query.filter_by(utilisateur_id=utilisateur_id).all()
         devis_list = Devis.query.filter_by(utilisateur_id=utilisateur_id).all()
 

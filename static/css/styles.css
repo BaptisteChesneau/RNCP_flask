@@ -1321,3 +1321,26 @@ pre.sql-code {
   font-size: 22px;
   color: #333;
 }
+
+/*============================================================
+   44 - Politique de sécurité 
+============================================================*/
+
+.section44 {
+  background-color: #f8fff1;
+  border-top: 4px solid #28a745;
+  border-bottom: 4px solid #28a745;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+/* Style du bloc de code Python */
+.code-block-dark {
+  background: #1e1e1e;
+  color: #d4d4d4;
+  font-family: 'Courier New', monospace;
+}
+
+.code-keyword { color: #569cd6; }
+.code-function { color: #dcdcaa; }
+.code-comment { color: #6a9955; }

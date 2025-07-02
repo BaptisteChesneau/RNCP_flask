@@ -724,7 +724,7 @@ def gerer_devis():
             flash("Les devis sélectionnés ont été supprimés avec succès.", "success")
             return redirect(url_for("gerer_devis"))
 
-    # Récupère tous les devis liés à l'utilisateur
+    # Retrieves all quotes related to the user
     devis_list = Devis.query.filter_by(utilisateur_id=utilisateur_id).all()
     return render_template("gerer_devis.html", devis_list=devis_list)
 
@@ -732,7 +732,7 @@ def gerer_devis():
 @app.route("/update-profile", methods=["GET", "POST"])
 def update_profile():
     if request.method == "POST":
-        # Récupérez les informations du formulaire
+        # Retrieve information from the form
         prenom = request.form.get("prenom")
         nom = request.form.get("nom")
         email = request.form.get("email")

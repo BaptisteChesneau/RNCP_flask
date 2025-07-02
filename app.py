@@ -1230,8 +1230,8 @@ def client():
 
 
 def test_admin_user_table_requires_login(client):
-    response = client.get("/admin-user-table")  # route réelle à adapter
-    assert response.status_code == 302  # redirection vers login
+    response = client.get("/admin-user-table")  # actual route to be adjusted
+    assert response.status_code == 302  # redirect to login
 
 
 def test_admin_user_table_as_admin(client):
@@ -1245,7 +1245,7 @@ def test_user_list_displays_users(client):
     with client.session_transaction() as sess:
         sess["admin_logged_in"] = True
 
-    # Ajouter un utilisateur factice si nécessaire via la DB
+    # Add a dummy user if necessary via the DB
     response = client.get("/admin-user-table")
     assert b"test1" in response.data
     assert b"baptiste012chesneau@gmail.com" in response.data
@@ -1254,16 +1254,16 @@ def test_user_list_displays_users(client):
 @app.after_request
 def add_security_headers(response):
     response.headers["X-Frame-Options"] = (
-        "DENY"  # ❌ empêche le site d'être intégré dans une iframe
+        "DENY"  # ❌ prevents the site from being embedded in an iframe
     )
     response.headers["X-Content-Type-Options"] = (
-        "nosniff"  # 🔐 empêche l'interprétation erronée du contenu MIME
+        "nosniff"  # 🔐 prevents misinterpretation of MIME content
     )
     response.headers["Referrer-Policy"] = (
-        "no-referrer-when-downgrade"  # 🔎 empêche l'exposition d'URL complètes
+        "no-referrer-when-downgrade"  # 🔎 prevents the exposure of full URLs
     )
     response.headers["Permissions-Policy"] = (
-        "geolocation=(), microphone=()"  # 🛡️ limite les API HTML5
+        "geolocation=(), microphone=()"  # 🛡️ limits HTML5 APIs
     )
     return response
 

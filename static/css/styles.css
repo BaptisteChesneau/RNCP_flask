@@ -1404,3 +1404,51 @@ pre.sql-code {
   background-color: #28a745 !important;
   color: #fff;
 }
+
+/*============================================================
+   46 Double Authentification (2FA)
+============================================================*/
+
+   .section-2fa {
+    background-color: #f9f9f9;
+    padding: 40px;
+    max-width: 400px;
+    margin: 40px auto;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .section-2fa h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+  
+  .section-2fa p {
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+  
+  .section-2fa input[type="text"] {
+    padding: 10px;
+    width: 80%;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .section-2fa button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .section-2fa .alert {
+    color: red;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  

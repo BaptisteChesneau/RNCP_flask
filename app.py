@@ -1,3 +1,7 @@
+import pyotp
+import qrcode
+import io
+import base64
 import os
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_mail import Mail, Message
@@ -74,24 +78,26 @@ migrate = Migrate(app, db)
 # =================== MODÈLES ======================
 class Client(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    utilisateur_id = db.Column(
-        db.Integer, db.ForeignKey("utilisateur.id"), nullable=False
-    )
     activite = db.Column(db.String(100))
     type_entreprise = db.Column(db.String(100))
     cabinet = db.Column(db.String(100))
     civilite = db.Column(db.String(10))
     nom = db.Column(db.String(100))
     prenom = db.Column(db.String(100))
-    email_chiffre = db.Column(db.String(500), unique=True)  # ✅ Replaces "email"
+    email_chiffre = db.Column(db.String(500), unique=True)  # ✅ Remplace "email"
     adresse_siege = db.Column(db.String(200))
 
-    utilisateur = db.relationship("Utilisateur", back_populates="clients")
+    # 🔁 Relation many-to-many via la table intermédiaire
+    utilisateurs_lies = db.relationship(
+        'UtilisateurClient',
+        back_populates='client',
+        cascade='all, delete-orphan'
+    )
 
     def __repr__(self):
         return f"<Client {self.prenom} {self.nom}>"
 
-    # 🔐 Email property for transparent access (decryption)
+
     @property
     def email(self):
         try:
@@ -115,18 +121,19 @@ class Utilisateur(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     mot_de_passe_hash = db.Column(db.String(200), nullable=False)
 
-    # Relationships with other tables :
     devis = db.relationship("Devis", back_populates="utilisateur")
     paiements = db.relationship("Paiement", back_populates="utilisateur")
     support_tickets = db.relationship("SupportTicket", back_populates="utilisateur")
-    preferences = db.relationship(
-        "Preferences", back_populates="utilisateur", uselist=False
-    )
+    preferences = db.relationship("Preferences", back_populates="utilisateur", uselist=False)
     historiques = db.relationship("Historique", back_populates="utilisateur")
     articles = db.relationship("BlogPost", back_populates="auteur")
 
-    # Relationship: a user can have several customers
-    clients = db.relationship("Client", back_populates="utilisateur", lazy=True)
+    # ✅ New relationship with the association table
+    clients_lies = db.relationship(
+        'UtilisateurClient',
+        back_populates='utilisateur',
+        cascade='all, delete-orphan'
+    )
 
     def __repr__(self):
         return f"<Utilisateur {self.nom_utilisateur}>"
@@ -242,6 +249,8 @@ class ParametresCompte(db.Model):
 
     # Sécurité
     uses_2fa = db.Column(db.Boolean, default=False)
+    secret_2fa = db.Column(db.String(64), nullable=True)
+
 
     # Réseaux sociaux
     facebook = db.Column(db.String(255))
@@ -268,6 +277,33 @@ class ParametresCompte(db.Model):
         return f"<ParametresCompte utilisateur_id={self.utilisateur_id} langue={self.langue} theme={self.theme}>"
 
 
+class UtilisateurClient(db.Model):
+    __tablename__ = 'utilisateur_client'
+
+    utilisateur_id = db.Column(
+        db.Integer, 
+        db.ForeignKey('utilisateur.id', ondelete='CASCADE'), 
+        primary_key=True
+    )
+    client_id = db.Column(
+        db.Integer, 
+        db.ForeignKey('client.id', ondelete='CASCADE'), 
+        primary_key=True
+    )
+    date_liaison = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # Relations
+    utilisateur = db.relationship(
+        'Utilisateur', 
+        back_populates='clients_lies',
+        passive_deletes=True
+    )
+    client = db.relationship(
+        'Client', 
+        back_populates='utilisateurs_lies',
+        passive_deletes=True
+    )
+
 # =================== MODÈLE BLOGPOST (optionnel) ======================
 class BlogPost(db.Model):
 
@@ -282,7 +318,7 @@ class BlogPost(db.Model):
 
     def __repr__(self):
         return f"<BlogPost {self.titre[:15]}...>"
-
+    
 
 mail = Mail(app)
 
@@ -559,12 +595,17 @@ def login():
         # If user exists and password is correct
         if utilisateur and utilisateur.check_password(password):
             try:
-                # Store user info in session
+                # ➕ Vérifie si 2FA est activée
+                param = utilisateur.parametres
+                if param and param.uses_2fa:
+                    session["pending_2fa_user"] = utilisateur.id
+                    flash("Double authentification requise 🔐", "info")
+                    return redirect(url_for("verifier_2fa"))
+                
+                # Sinon, connexion normale
                 session["utilisateur_id"] = utilisateur.id
                 session["email"] = utilisateur.email
-                session["prenom"] = (
-                    utilisateur.nom_utilisateur
-                )  # Make sure this field exists in the model
+                session["prenom"] = utilisateur.nom_utilisateur
 
                 print("Login successful. Redirecting to /compte-client")
                 flash("Login successful!", "success")
@@ -1250,6 +1291,119 @@ def test_user_list_displays_users(client):
     assert b"test1" in response.data
     assert b"baptiste012chesneau@gmail.com" in response.data
 
+def test_user_model():
+    user = Utilisateur(nom_utilisateur="test_user", email="test@ml2c.com")
+    user.set_password("test123")
+    db.session.add(user)
+    db.session.commit()
+
+    retrieved = Utilisateur.query.filter_by(nom_utilisateur="test_user").first()
+    assert retrieved is not None, "Utilisateur non trouvé"
+    assert retrieved.nom_utilisateur == "test_user"
+    return "✅ test_user_model passé"
+
+def test_client_model():
+    user = Utilisateur.query.filter_by(nom_utilisateur="test_user").first()
+    assert user is not None, "Utilisateur de test introuvable"
+
+    client = Client(
+        utilisateur_id=user.id,
+        nom="Durand",
+        prenom="Claire",
+        type_entreprise="SARL"
+    )
+    client.email = "claire@example.com"
+    db.session.add(client)
+    db.session.commit()
+
+    retrieved = Client.query.filter_by(nom="Durand").first()
+    assert retrieved is not None, "Client non trouvé"
+    assert retrieved.email == "claire@example.com"
+    return "✅ test_client_model passé"
+
+def test_utilisateur_client_relation():
+    user = Utilisateur.query.filter_by(nom_utilisateur="test_user").first()
+    client = Client.query.filter_by(nom="Durand").first()
+    assert user and client, "Utilisateur ou Client manquant"
+
+    liaison = UtilisateurClient(utilisateur_id=user.id, client_id=client.id)
+    db.session.add(liaison)
+    db.session.commit()
+
+    found = UtilisateurClient.query.filter_by(utilisateur_id=user.id, client_id=client.id).first()
+    assert found is not None, "Liaison non créée"
+    return "✅ test_utilisateur_client_relation passé"
+
+def test_support_model():
+    user = Utilisateur.query.filter_by(nom_utilisateur="test_user").first()
+    assert user is not None, "Utilisateur manquant"
+
+    ticket = SupportTicket(utilisateur_id=user.id, sujet="Test Sujet", message="Test message")
+    db.session.add(ticket)
+    db.session.commit()
+
+    retrieved = SupportTicket.query.filter_by(utilisateur_id=user.id).first()
+    assert retrieved and retrieved.sujet == "Test Sujet"
+    return "✅ test_support_model passé"
+
+def test_devis_model():
+    user = Utilisateur.query.filter_by(nom_utilisateur="test_user").first()
+    assert user is not None, "Utilisateur manquant"
+
+    devis = Devis(
+        utilisateur_id=user.id,
+        nom="Devis Test",
+        type_service="Conseil",
+        date_rdv=datetime.utcnow()
+    )
+    db.session.add(devis)
+    db.session.commit()
+
+    retrieved = Devis.query.filter_by(nom="Devis Test").first()
+    assert retrieved is not None
+    assert retrieved.type_service == "Conseil"
+    return "✅ test_devis_model passé"
+
+def test_sql_injection(client):
+    # Attempted SQL injection in the username field
+    malicious_input = "' OR 1=1; --"
+    response = client.post("/login", data={
+        "nom_utilisateur": malicious_input,
+        "mot_de_passe": "fakepassword"
+    }, follow_redirects=True)
+
+    # Check that the application does not grant access and does not crash.
+    assert response.status_code == 200
+    assert b"Identifiants invalides" in response.data or b"connexion" in response.data.lower()
+
+def test_weak_password_rejection(client):
+    # Registration with a weak password
+    response = client.post("/inscription", data={
+        "nom_utilisateur": "test_weak_pw",
+        "email": "weak@test.com",
+        "mot_de_passe": "123",  # too weak
+        "confirmation": "123"
+    }, follow_redirects=True)
+
+    # The application must refuse registration.
+    assert response.status_code == 200
+    assert b"mot de passe trop faible" in response.data.lower()
+
+def test_error_handling(client):
+    response = client.get("/page-inexistante", follow_redirects=True)
+    assert response.status_code == 404
+    assert "Page non trouvée".encode("utf-8") in response.data or b"404" in response.data
+
+    response_500 = client.get("/forcetest500", follow_redirects=True)
+    assert response_500.status_code == 500
+    assert "Une erreur s'est produite".encode("utf-8") in response_500.data
+    assert b"Traceback" not in response_500.data
+
+def validate_id(id_value, id_name="ID"):
+    if not isinstance(id_value, int) or id_value <= 0:
+        return f"{id_name} doit être un entier positif."
+    return None
+
 
 @app.after_request
 def add_security_headers(response):
@@ -1272,6 +1426,29 @@ def add_security_headers(response):
 def page_not_found(e):
     return render_template("404.html"), 404
 
+@app.route("/setup-2fa", methods=["GET"])
+def setup_2fa():
+    utilisateur_id = session.get("utilisateur_id")
+    if not utilisateur_id:
+        return redirect(url_for("login"))
+
+    utilisateur = Utilisateur.query.get(utilisateur_id)
+    param = utilisateur.parametres
+
+    if not param.secret_2fa:
+        param.secret_2fa = pyotp.random_base32()
+        db.session.commit()
+
+    totp_uri = pyotp.TOTP(param.secret_2fa).provisioning_uri(
+        name=utilisateur.email,
+        issuer_name="TonAppFlask"
+    )
+    qr = qrcode.make(totp_uri)
+    buffer = io.BytesIO()
+    qr.save(buffer, format="PNG")
+    qr_code_base64 = base64.b64encode(buffer.getvalue()).decode()
+
+    return render_template("setup_2fa.html", qr_code=qr_code_base64)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

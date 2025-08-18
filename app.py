@@ -90,6 +90,11 @@ class Client(db.Model):
 
     utilisateur = db.relationship("Utilisateur", back_populates="clients")
 
+    # ✅ Relation via table de liaison
+    utilisateurs_lies = db.relationship(
+        "UtilisateurClient", back_populates="client", cascade="all, delete-orphan"
+    )
+
     def __repr__(self):
         return f"<Client {self.prenom} {self.nom}>"
 
@@ -103,6 +108,7 @@ class Client(db.Model):
     @email.setter
     def email(self, value):
         self.email_chiffre = fernet.encrypt(value.encode()).decode()
+
 
 
 class Historique(db.Model):
@@ -125,9 +131,13 @@ class Utilisateur(db.Model):
     preferences = db.relationship("Preferences", back_populates="utilisateur", uselist=False)
     historiques = db.relationship("Historique", back_populates="utilisateur")
     articles = db.relationship("BlogPost", back_populates="auteur")
+    parametres = db.relationship("ParametresCompte", back_populates="utilisateur", uselist=False)
 
-    # Avant création de la table UtilisateurClient : relation directe
+    # ✅ Relations directes et via table de liaison
     clients = db.relationship("Client", back_populates="utilisateur", lazy=True)
+    clients_lies = db.relationship(
+        "UtilisateurClient", back_populates="utilisateur", cascade="all, delete-orphan"
+    )
 
     def __repr__(self):
         return f"<Utilisateur {self.nom_utilisateur}>"

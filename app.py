@@ -76,19 +76,19 @@ migrate = Migrate(app, db)
 # =================== MODÈLES ======================
 class Client(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    utilisateur_id = db.Column(
+        db.Integer, db.ForeignKey("utilisateur.id"), nullable=False
+    )
     activite = db.Column(db.String(100))
     type_entreprise = db.Column(db.String(100))
     cabinet = db.Column(db.String(100))
     civilite = db.Column(db.String(10))
     nom = db.Column(db.String(100))
     prenom = db.Column(db.String(100))
-    email_chiffre = db.Column(db.String(500), unique=True)  # ✅ Remplace "email"
+    email_chiffre = db.Column(db.String(500), unique=True)
     adresse_siege = db.Column(db.String(200))
 
-    # 🔁 Relation many-to-many via la table intermédiaire
-    utilisateurs_lies = db.relationship(
-        "UtilisateurClient", back_populates="client", cascade="all, delete-orphan"
-    )
+    utilisateur = db.relationship("Utilisateur", back_populates="clients")
 
     def __repr__(self):
         return f"<Client {self.prenom} {self.nom}>"
@@ -104,7 +104,6 @@ class Client(db.Model):
     def email(self, value):
         self.email_chiffre = fernet.encrypt(value.encode()).decode()
 
-
 class Historique(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     action = db.Column(db.String(255), nullable=False)
@@ -118,19 +117,16 @@ class Utilisateur(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     mot_de_passe_hash = db.Column(db.String(200), nullable=False)
 
+    # Relationships with other tables
     devis = db.relationship("Devis", back_populates="utilisateur")
     paiements = db.relationship("Paiement", back_populates="utilisateur")
     support_tickets = db.relationship("SupportTicket", back_populates="utilisateur")
-    preferences = db.relationship(
-        "Preferences", back_populates="utilisateur", uselist=False
-    )
+    preferences = db.relationship("Preferences", back_populates="utilisateur", uselist=False)
     historiques = db.relationship("Historique", back_populates="utilisateur")
     articles = db.relationship("BlogPost", back_populates="auteur")
 
-    # ✅ New relationship with the association table
-    clients_lies = db.relationship(
-        "UtilisateurClient", back_populates="utilisateur", cascade="all, delete-orphan"
-    )
+    # Before creating the UserClient table: direct relationship
+    clients = db.relationship("Client", back_populates="utilisateur", lazy=True)
 
     def __repr__(self):
         return f"<Utilisateur {self.nom_utilisateur}>"

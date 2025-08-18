@@ -238,13 +238,13 @@ class ParametresCompte(db.Model):
         db.Integer, db.ForeignKey("utilisateur.id"), nullable=False, unique=True
     )
 
-    # Préférences
+    # Preferences
     langue = db.Column(db.String(10), default="fr")
     theme = db.Column(db.String(10), default="light")
     notif_email = db.Column(db.Boolean, default=True)
     notif_sms = db.Column(db.Boolean, default=False)
 
-    # Réseaux sociaux
+    # Social media
     facebook = db.Column(db.String(255))
     linkedin = db.Column(db.String(255))
     instagram = db.Column(db.String(255))
@@ -256,7 +256,7 @@ class ParametresCompte(db.Model):
     nom_facturation = db.Column(db.String(255))
     adresse_facturation = db.Column(db.String(255))
 
-    # Date de mise à jour
+    # Date of update
     date_mise_a_jour = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
     )
@@ -532,12 +532,12 @@ def paiement_stripe():
 @app.route("/paiement-paypal", methods=["GET", "POST"])
 def paiement_paypal():
     if request.method == "POST":
-        # Récupérer les champs
+        # Retrieve fields
         card_holder_name = request.form.get("card_holder_name")
         card_number = request.form.get("card_number")
         card_expiry = request.form.get("card_expiry")
         card_cvv = request.form.get("card_cvv")
-        # ... Traiter / Vérifier / Appeler l'API PayPal ...
+        # ... Process / Verify / Call the PayPal API ...
         return "Paiement PayPal effectué (simulation)."
     return render_template("paiement_paypal.html")
 
@@ -582,14 +582,14 @@ def login():
         # If user exists and password is correct
         if utilisateur and utilisateur.check_password(password):
             try:
-                # ➕ Vérifie si 2FA est activée
+                # ➕ Check if 2FA is enabled
                 param = utilisateur.parametres
                 if param and param.uses_2fa:
                     session["pending_2fa_user"] = utilisateur.id
                     flash("Double authentification requise 🔐", "info")
                     return redirect(url_for("verifier_2fa"))
 
-                # Sinon, connexion normale
+                # Otherwise, normal connection
                 session["utilisateur_id"] = utilisateur.id
                 session["email"] = utilisateur.email
                 session["prenom"] = utilisateur.nom_utilisateur
@@ -618,18 +618,18 @@ def signup():
         email = request.form.get("email")
         password = request.form.get("password")
 
-        # Créer l'utilisateur
+        # Create user
         user = Utilisateur(nom_utilisateur=username, email=email)
         user.set_password(password)
         db.session.add(user)
         db.session.commit()
 
-        # Démarrer la session pour l'utilisateur
+        # Start the session for the user
         session["utilisateur_id"] = user.id
         session["email"] = user.email
-        session["prenom"] = username  # Pour le message de bienvenue
+        session["prenom"] = username  # For the welcome message
 
-        # Rediriger vers le formulaire client
+        # Redirect to the customer form
         return redirect(url_for("formulaire_client"))
 
     return render_template("signup.html")
@@ -638,7 +638,7 @@ def signup():
 @app.route("/compte-client")
 def compte_client():
     utilisateur_id = session.get("utilisateur_id")
-    devis_data = session.get("devis_data")  # données stockées temporairement
+    devis_data = session.get("devis_data")  # temporarily stored data
 
     clients = []
     devis_list = []
@@ -659,7 +659,7 @@ def compte_client():
 @app.route("/newsletter", methods=["POST"])
 def newsletter():
     email = request.form.get("email")
-    # Ajoutez ici la logique de traitement, par exemple enregistrer l'email dans un fichier ou envoyer un email de confirmation
+    # Add the processing logic here, for example, save the email to a file or send a confirmation email.
     return "Merci de vous être inscrit(e) à notre newsletter !"
 
 
@@ -680,7 +680,7 @@ def aide():
 
 @app.route("/parametres", methods=["GET", "POST"])
 def parametres():
-    # Par exemple, récupérer les informations de l'utilisateur depuis la session ou une BDD
+    # For example, retrieve user information from the session or a database.
     user = {
         "prenom": session.get("prenom", ""),
         "nom": session.get("nom", ""),
@@ -716,17 +716,17 @@ def supprimer_devis():
 @app.route("/update-password", methods=["GET", "POST"])
 def update_password():
     if request.method == "POST":
-        # Ici, vous récupérez et traitez le formulaire pour mettre à jour le mot de passe
+        # Here, you retrieve and process the form to update the password.
         current_password = request.form.get("current_password")
         new_password = request.form.get("new_password")
         confirm_password = request.form.get("confirm_password")
 
-        # Exemple de logique (à adapter à votre système d'authentification)
+        # Example of logic (to be adapted to your authentication system)
         if new_password != confirm_password:
             flash("Les nouveaux mots de passe ne correspondent pas.", "danger")
             return redirect(url_for("update_password"))
 
-        # Logique pour vérifier le mot de passe actuel et mettre à jour le nouveau mot de passe...
+        # Logic to verify the current password and update the new password...
         # update_user_password(current_password, new_password)
         flash("Votre mot de passe a été mis à jour.", "success")
         return redirect(url_for("compte_client"))
@@ -987,14 +987,14 @@ def chatbot():
 
             question = escape(question)
 
-            # ✅ Réponse automatique personnalisable
-            # Exemple : si tu veux ajouter le prénom de l'utilisateur ou une réponse différente
+            # ✅ Customizable automatic response
+            # Example: if you want to add the user's first name or a different response
             user_name = session.get(
                 "prenom", "Cher utilisateur"
-            )  # Si tu stockes 'prenom' en session
+            )  # If you store ‘first name’ in session
             reponse = f"Merci {user_name}, nous avons bien reçu votre question et nous reviendrons vers vous rapidement."
 
-            # ✅ Enregistrement dans MongoDB
+            # ✅ Recording in MongoDB
             mongo.db.chatbot.insert_one({"question": question, "reponse": reponse})
             flash("Votre question a été envoyée avec succès !", "success")
             latest_question = question
@@ -1002,7 +1002,7 @@ def chatbot():
             return redirect(url_for("chatbot"))
 
     messages = list(mongo.db.chatbot.find())
-    history = messages  # réutilise
+    history = messages  # reuse
 
     return render_template(
         "chatbot.html",
@@ -1013,7 +1013,7 @@ def chatbot():
     )
 
 
-# ➡️ NOUVELLE route admin protégée (à ajouter)
+# ➡️ NEW protected admin route (to be added)
 @app.route("/admin-chatbot")
 def admin_chatbot():
     if not session.get("admin_logged_in"):
@@ -1024,7 +1024,7 @@ def admin_chatbot():
     return render_template("admin_chatbot.html", messages=messages)
 
 
-# ✅ MODIFIER UNE RÉPONSE
+# ✅ EDIT AN ANSWER
 @app.route("/modifier-reponse/<message_id>", methods=["POST"])
 def modifier_reponse(message_id):
     if not session.get("admin_logged_in"):
@@ -1050,7 +1050,7 @@ def logout_admin():
     return redirect(url_for("login_admin"))
 
 
-# ✅ SUPPRIMER UN MESSAGE
+# ✅ DELETE A MESSAGE
 @app.route("/supprimer-message/<message_id>", methods=["POST"])
 def supprimer_message(message_id):
     if not session.get("admin_logged_in"):
@@ -1062,22 +1062,22 @@ def supprimer_message(message_id):
     return redirect(url_for("admin_chatbot"))
 
 
-@limiter.limit("5 per minute")  # max 5 tentatives par minute
+@limiter.limit("5 per minute")  # max 5 attempts per minute
 @app.route("/login-admin", methods=["GET", "POST"])
 def login_admin():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
 
-        # Recherche de l'utilisateur admin en base MongoDB
+        # Search for the admin user in the MongoDB database
         admin = mongo.db.admin_users.find_one({"username": username})
 
-        # ✅ Sécurité renforcée : message unique si utilisateur inconnu ou mot de passe invalide
+        # ✅ Enhanced security: unique message if user unknown or password invalid
         if not admin or not check_password_hash(admin["password"], password):
             flash("Identifiants invalides ❌", "danger")
             return redirect(url_for("login_admin"))
 
-        # Si tout est bon :
+        # If everything is OK:
         session["admin_logged_in"] = True
         flash("Connexion réussie ✅", "success")
         return redirect(url_for("admin_chatbot"))
@@ -1092,7 +1092,7 @@ def admin_dashboard():
         return redirect(url_for("login_admin"))
 
     total_questions = mongo.db.chatbot.count_documents({})
-    last_message = mongo.db.chatbot.find_one(sort=[("_id", -1)])  # Le plus récent
+    last_message = mongo.db.chatbot.find_one(sort=[("_id", -1)])  # The most recent
     last_question = last_message["question"] if last_message else None
 
     return render_template(
@@ -1164,12 +1164,12 @@ def supprimer_user(user_id):
 
 @app.route("/edit-inline")
 def edit_inline():
-    return render_template("edit_inline.html")  # à créer
+    return render_template("edit_inline.html")  # to be created
 
 
 @app.route("/save-inline-edits", methods=["POST"])
 def save_inline_edits():
-    # Ici tu peux récupérer les données POST pour les traiter :
+    # Here you can retrieve the POST data for processing:
     # username_1, email_1, active_1, etc.
     print("✅ Inline edits received:", dict(request.form))
     flash("Changes saved (simulation)", "success")
@@ -1178,7 +1178,7 @@ def save_inline_edits():
 
 @app.route("/edit")
 def edit_page():
-    return render_template("edit.html")  # à créer
+    return render_template("edit.html")  # to be created
 
 
 @app.route("/explain-sql", methods=["GET", "POST"])
@@ -1210,15 +1210,15 @@ def generate_sql_explanation(query):
 
 @app.route("/view-php")
 def view_php():
-    return render_template("view_php.html")  # à créer
+    return render_template("view_php.html")  # to be created
 
 
 @app.route("/refresh")
 def refresh_page():
-    # Redirige vers la même page ou recharge les données
+    # Redirects to the same page or reloads the data
     return redirect(
         url_for("admin_view")
-    )  # Remplace 'admin_view' par le nom réel de ta vue admin
+    )  # Replace ‘admin_view’ with the actual name of your admin view
 
 
 @app.route("/vider-historique", methods=["POST"])

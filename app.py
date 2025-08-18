@@ -567,45 +567,39 @@ def mentions_legales():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        # Retrieve form data
+        # Récupération des données du formulaire
         email = request.form.get("email")
         password = request.form.get("password")
-        print(f"Login attempt with: {email}")
+        print(f"Tentative de connexion avec : {email}")
 
-        # Query user by email
+        # Rechercher l'utilisateur par email
         utilisateur = Utilisateur.query.filter_by(email=email).first()
-        print(f"User found: {utilisateur}")
+        print(f"Utilisateur trouvé : {utilisateur}")
 
-        # If user exists and password is correct
+        # Vérification du mot de passe
         if utilisateur and utilisateur.check_password(password):
             try:
-                # ➕ Check if 2FA is enabled
-                param = utilisateur.parametres
-                if param and param.uses_2fa:
-                    session["pending_2fa_user"] = utilisateur.id
-                    flash("Double authentification requise 🔐", "info")
-                    return redirect(url_for("verifier_2fa"))
-
-                # Otherwise, normal connection
+                # Connexion normale
                 session["utilisateur_id"] = utilisateur.id
                 session["email"] = utilisateur.email
                 session["prenom"] = utilisateur.nom_utilisateur
 
-                print("Login successful. Redirecting to /compte-client")
-                flash("Login successful!", "success")
+                print("Connexion réussie. Redirection vers /compte-client")
+                flash("Connexion réussie !", "success")
                 return redirect(url_for("compte_client"))
 
             except Exception as e:
-                print("Error while storing session data:", e)
-                flash("Internal error during login.", "danger")
+                print("Erreur lors de l'enregistrement des données de session :", e)
+                flash("Erreur interne lors de la connexion.", "danger")
                 return redirect(url_for("login"))
         else:
-            # Incorrect credentials
-            print("Invalid email or password")
-            flash("Invalid email or password.", "danger")
+            # Identifiants incorrects
+            print("Email ou mot de passe invalide")
+            flash("Email ou mot de passe invalide.", "danger")
 
-    # Render the login page
+    # Affichage de la page de connexion
     return render_template("login.html")
+
 
 
 @app.route("/signup", methods=["GET", "POST"])
@@ -934,11 +928,10 @@ def supprimer_client(client_id):
 
 @app.route("/update_security", methods=["POST"])
 def update_security():
-    uses_2fa = request.form.get("2fa") == "on"
-    session["uses_2fa"] = uses_2fa  # Enregistre dans la session
-
+    # Cette route ne gère plus la 2FA, elle peut être conservée si elle gère d'autres paramètres de sécurité
     flash("Paramètres de sécurité mis à jour.", "success")
     return redirect(url_for("account_settings"))
+
 
 
 @app.route("/export_data", methods=["POST"])
@@ -946,13 +939,14 @@ def export_data():
     data = {
         "prenom": session.get("prenom", "N/A"),
         "nom": session.get("nom", "N/A"),
-        "email": session.get("email", "N/A"),
-        "uses_2fa": session.get("uses_2fa", False),
+        "email": session.get("email", "N/A")
+        # "uses_2fa" supprimé
     }
 
     response = jsonify(data)
     response.headers["Content-Disposition"] = "attachment; filename=mes_donnees.json"
     return response
+
 
 
 @app.route("/contact_support", methods=["POST"])
@@ -1436,5 +1430,4 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
 
-if __name__ == "__main__":
-    app.run(debug=True)
+

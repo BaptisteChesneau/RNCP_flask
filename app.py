@@ -964,7 +964,7 @@ def contact_support():
     print("==============================\n")
 
     flash("Votre demande a bien été envoyée à notre équipe d'assistance.", "success")
-    return redirect(url_for("account_settings"))
+    return redirect(url_for("parametres"))
 
 
 @app.route("/chatbot", methods=["GET", "POST"])

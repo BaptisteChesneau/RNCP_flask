@@ -104,6 +104,7 @@ class Client(db.Model):
     def email(self, value):
         self.email_chiffre = fernet.encrypt(value.encode()).decode()
 
+
 class Historique(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     action = db.Column(db.String(255), nullable=False)
@@ -117,7 +118,7 @@ class Utilisateur(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     mot_de_passe_hash = db.Column(db.String(200), nullable=False)
 
-    # Relationships with other tables
+    # Relations avec d'autres tables
     devis = db.relationship("Devis", back_populates="utilisateur")
     paiements = db.relationship("Paiement", back_populates="utilisateur")
     support_tickets = db.relationship("SupportTicket", back_populates="utilisateur")
@@ -125,7 +126,7 @@ class Utilisateur(db.Model):
     historiques = db.relationship("Historique", back_populates="utilisateur")
     articles = db.relationship("BlogPost", back_populates="auteur")
 
-    # Before creating the UserClient table: direct relationship
+    # Avant création de la table UtilisateurClient : relation directe
     clients = db.relationship("Client", back_populates="utilisateur", lazy=True)
 
     def __repr__(self):
@@ -136,7 +137,7 @@ class Utilisateur(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.mot_de_passe_hash, password)
-
+    
 
 # =================== MODÈLE DEVIS (optionnel) ======================
 class Devis(db.Model):
@@ -1434,3 +1435,6 @@ def page_not_found(e):
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
+if __name__ == "__main__":
+    app.run(debug=True)

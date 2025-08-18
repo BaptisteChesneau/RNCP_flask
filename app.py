@@ -812,9 +812,7 @@ def update_preferences():
 
     flash("Préférences mises à jour avec succès.", "success")  # Add flash message
 
-    return redirect(
-        url_for("account_settings")
-    )  # or 'parametres' or the exact route to your parameters page
+    return redirect(url_for("parametres"))# or 'parametres' or the exact route to your parameters page
 
 
 @app.route("/update_notifications", methods=["POST"])

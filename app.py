@@ -926,14 +926,6 @@ def supprimer_client(client_id):
     return redirect(url_for("ma_fiche_client"))
 
 
-@app.route("/update_security", methods=["POST"])
-def update_security():
-    # Cette route ne gère plus la 2FA, elle peut être conservée si elle gère d'autres paramètres de sécurité
-    flash("Paramètres de sécurité mis à jour.", "success")
-    return redirect(url_for("account_settings"))
-
-
-
 @app.route("/export_data", methods=["POST"])
 def export_data():
     data = {

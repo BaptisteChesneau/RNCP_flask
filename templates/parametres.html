@@ -41,8 +41,7 @@
           <a href="#preferencesSection" class="list-group-item list-group-item-action" data-toggle="list">Préférences</a>
           <a href="#notificationsSection" class="list-group-item list-group-item-action" data-toggle="list">Notifications</a>
           <a href="#billingSection" class="list-group-item list-group-item-action" data-toggle="list">Facturation</a>
-          <a href="#photoSection" class="list-group-item list-group-item-action" data-toggle="list">Photo de profil</a>
-          <a href="#securitySection" class="list-group-item list-group-item-action" data-toggle="list">Sécurité</a>
+          <a href="#photoSection" class="list-group-item list-group-item-action" data-toggle="list">Photo de profil</a>>
           <a href="#dataExportSection" class="list-group-item list-group-item-action" data-toggle="list">Mes données</a>
           <a href="#supportSection" class="list-group-item list-group-item-action" data-toggle="list">Assistance</a>
           <a href="{{ url_for('gerer_devis') }}" class="list-group-item list-group-item-action">Gérer mes devis</a>
@@ -193,18 +192,6 @@
               </form>
             </div>
           </div> <!-- ✅ billingSection closed correctly -->
-
-          <!-- Sécurité -->
-          <div class="tab-pane fade" id="securitySection" role="tabpanel">
-            <h4>Sécurité du compte</h4>
-            <form action="{{ url_for('update_security') }}" method="POST">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="2fa" name="2fa" {% if user.uses_2fa %}checked{% endif %}>
-                <label class="form-check-label" for="2fa">Activer l’authentification à deux facteurs</label>
-              </div>
-              <button type="submit" class="btn btn-primary btn-progress mt-3">Mettre à jour la sécurité</button>
-            </form>
-          </div>
 
           <!-- Mes données -->
           <div class="tab-pane fade" id="dataExportSection" role="tabpanel">

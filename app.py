@@ -269,7 +269,7 @@ class ParametresCompte(db.Model):
     )
 
     utilisateur = db.relationship(
-        "Utilisateur", backref=db.backref("parametres", uselist=False)
+        "Utilisateur", backref=db.backref("parametres_compte", uselist=False)
     )
 
     def __repr__(self):

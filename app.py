@@ -38,7 +38,7 @@ app.config["SESSION_COOKIE_SECURE"] = (
 app.config["REMEMBER_COOKIE_HTTPONLY"] = True
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=30)
 
-# 🔐 Limiter configuration
+# 🔐 Limit configuration
 limiter = Limiter(
     get_remote_address,
     app=app,
@@ -59,7 +59,7 @@ app.config["MAIL_USE_TLS"] = True
 app.config["MAIL_USERNAME"] = "votre_email@gmail.com"
 app.config["MAIL_PASSWORD"] = "votre_mot_de_passe"
 # For a cleaner use, you can also define:
-# app.config['MAIL_DEFAULT_SENDER'] = 'votre_email@gmail.com'
+# app.config['MAIL_DEFAULT_SENDER'] = 'your_email@gmail.com'
 
 # Replace with your exact URL Scalingo
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")

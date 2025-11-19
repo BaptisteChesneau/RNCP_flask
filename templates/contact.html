@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Nous contacter - ML2C CONSEIL</title>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+
+  <!-- Styles ML2C -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+</head>
+<body>
+
+  {% include "header.html" %}
+
+  <!-- SECTION CONTACT -->
+  <div class="container my-5 contact-section fade-in">
+
+    <h2 class="contact-title text-center mb-4 slide-down">
+      Nous contacter
+    </h2>
+
+    <p class="contact-subtitle text-center mb-5 fade-in-delay">
+      Une question, un besoin, un projet ? Notre équipe ML2C CONSEIL vous répond rapidement.
+    </p>
+
+    <div class="row justify-content-center">
+
+      <!-- FORMULAIRE -->
+      <div class="col-md-8">
+        <div class="card contact-card shadow-sm scale-in">
+          <div class="card-body">
+
+            <form method="POST" id="contactForm">
+
+              <div class="form-group slide-left">
+                <label>Nom *</label>
+                <input type="text" class="form-control animated-field" id="nom" required>
+              </div>
+
+              <div class="form-group slide-left">
+                <label>Email *</label>
+                <input type="email" class="form-control animated-field" id="email" required>
+              </div>
+
+              <div class="form-group slide-left">
+                <label>Numéro de téléphone</label>
+                <input type="text" class="form-control animated-field" id="tel">
+              </div>
+
+              <div class="form-group slide-left">
+                <label>Votre message *</label>
+                <textarea class="form-control animated-field" rows="5" id="message" required></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-ml2c-submit btn-block pulse">
+                Envoyer le message
+              </button>
+
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COORDONNÉES -->
+    <div class="text-center mt-5 contact-infos fade-in-delay-2">
+      <h4 class="contact-infos-title mb-3">Nos coordonnées</h4>
+
+      <p class="contact-infos-text">
+        📍 6, Rue de la vigne, 28360 Dammarie <br>
+        📧 contact@ml2cconseil.com <br>
+        📞 +33 (0)6 72 34 32 94
+      </p>
+    </div>
+
+  </div>
+
+  <!-- JS Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- JS DIRECTEMENT DANS LE HTML -->
+  <script>
+    document.getElementById("contactForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      let nom = document.getElementById("nom").value.trim();
+      let email = document.getElementById("email").value.trim();
+      let message = document.getElementById("message").value.trim();
+
+      if (!nom || !email || !message) {
+        alert("Merci de remplir tous les champs obligatoires.");
+        return;
+      }
+
+      // Animation après envoi
+      const btn = document.querySelector(".btn-ml2c-submit");
+      btn.innerHTML = "Envoi...";
+      btn.style.opacity = "0.7";
+      btn.style.pointerEvents = "none";
+
+      setTimeout(() => {
+        alert("Merci ! Votre message a bien été envoyé à ML2C CONSEIL.");
+        document.getElementById("contactForm").reset();
+
+        // Reset bouton
+        btn.innerHTML = "Envoyer le message";
+        btn.style.opacity = "1";
+        btn.style.pointerEvents = "auto";
+      }, 800);
+    });
+  </script>
+
+</body>
+</html>

@@ -97,6 +97,38 @@ nav {
 }
 
 /*============================================================
+  STYLING ORIGINAL ML2C contact pour menu.html
+============================================================*/
+
+.contact-title {
+  color: rgb(216,30,91);
+  font-weight: bold;
+}
+
+.contact-card {
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+.btn-ml2c-submit {
+  background-color: rgb(216,30,91);
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.btn-ml2c-submit:hover {
+  background-color: rgb(0,150,57);
+}
+
+.contact-infos-title {
+  color: rgb(96,125,139);
+  font-weight: 600;
+}
+
+/*============================================================
   5) CARROUSEL DANS MENU.HTML
 ============================================================*/
 

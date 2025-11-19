@@ -14,25 +14,10 @@
   <nav class="bg-light p-2">
     <ul class="nav justify-content-center">
       <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('devis') }}">Devis</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('formulaire_client') }}">Formulaire</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('plateforme_client') }}">Plateforme Client</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('blog') }}">Blog</a>
-      </li>
-      <li class="nav-item">
         <a class="nav-link" href="{{ url_for('notre_histoire') }}">Notre histoire</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ url_for('notre_equipe') }}">Notre équipe</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('atelier') }}">Atelier</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ url_for('nos_outils') }}">Nos Outils</a>
@@ -70,109 +55,53 @@
     </a>
   </div>
 
-  <!-- SECTION FAQ (Foire Aux Questions) -->
+  <!-- SECTION NOTRE DIFFÉRENCE -->
   <div class="container my-5">
-    <h2 class="mb-4">Foire Aux Questions (FAQ)</h2>
-    <div id="faq-accordion">
+    <h2 class="mb-4">Pourquoi ML2C CONSEIL est différent&nbsp;?</h2>
 
-      <!-- FAQ 1 -->
-      <div class="card">
-        <div class="card-header" id="faqHeading1">
-          <h5 class="mb-0">
-            <button class="btn btn-link" data-toggle="collapse" data-target="#faqCollapse1" aria-expanded="true" aria-controls="faqCollapse1">
-              1. Comment prendre rendez-vous avec Cabinet Comptable ?
-            </button>
-          </h5>
-        </div>
-        <div id="faqCollapse1" class="collapse show" aria-labelledby="faqHeading1" data-parent="#faq-accordion">
-          <div class="card-body">
-            Pour prendre rendez-vous, cliquez sur le lien "Devis" et remplissez le formulaire de demande. Vous recevrez une confirmation par e-mail.
-          </div>
-        </div>
-      </div>
+    <p>
+      Chez <strong>ML2C CONSEIL</strong>, nous ne sommes pas un simple cabinet comptable
+      qui se contente de traiter des chiffres. Notre ambition est d’être un
+      <strong>partenaire de confiance</strong> pour les dirigeants, les indépendants et les
+      structures en développement, en leur apportant une vision claire, utile et
+      exploitable de leur activité.
+    </p>
 
-      <!-- FAQ 2 -->
-      <div class="card">
-        <div class="card-header" id="faqHeading2">
-          <h5 class="mb-0">
-            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2">
-              2. Quels services propose Cabinet Comptable ?
-            </button>
-          </h5>
-        </div>
-        <div id="faqCollapse2" class="collapse" aria-labelledby="faqHeading2" data-parent="#faq-accordion">
-          <div class="card-body">
-            Nous offrons des services de conseil, comptabilité, fiscalité, social, et autres solutions adaptées à votre entreprise.
-          </div>
-        </div>
-      </div>
+    <p>
+      Nous combinons <strong>expertise comptable, fiscale et sociale</strong> avec une
+      approche centrée sur l’humain&nbsp;: écoute, pédagogie et disponibilité. Chaque
+      dossier est suivi avec sérieux, et nous prenons le temps d’expliquer les
+      enjeux, les options possibles et leurs impacts concrets sur votre entreprise.
+    </p>
 
-      <!-- FAQ 3 -->
-      <div class="card">
-        <div class="card-header" id="faqHeading3">
-          <h5 class="mb-0">
-            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3">
-              3. Comment accéder à la Plateforme Client ?
-            </button>
-          </h5>
-        </div>
-        <div id="faqCollapse3" class="collapse" aria-labelledby="faqHeading3" data-parent="#faq-accordion">
-          <div class="card-body">
-            Accédez à la Plateforme Client via le lien dédié dans le menu. Vous devez être connecté pour consulter certains contenus réservés.
-          </div>
-        </div>
-      </div>
+    <p>
+      Ce qui nous distingue également, c’est notre volonté d’intégrer les
+      <strong>outils numériques et l’intelligence artificielle</strong> dans notre
+      accompagnement. Là où beaucoup de cabinets restent sur des méthodes
+      classiques, nous utilisons des solutions innovantes pour :
+    </p>
 
-      <!-- FAQ 4 -->
-      <div class="card">
-        <div class="card-header" id="faqHeading4">
-          <h5 class="mb-0">
-            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse4" aria-expanded="false" aria-controls="faqCollapse4">
-              4. Comment modifier ou annuler un rendez-vous ?
-            </button>
-          </h5>
-        </div>
-        <div id="faqCollapse4" class="collapse" aria-labelledby="faqHeading4" data-parent="#faq-accordion">
-          <div class="card-body">
-            Pour toute modification ou annulation, contactez-nous par téléphone ou via notre formulaire de contact en indiquant votre numéro de rendez-vous.
-          </div>
-        </div>
-      </div>
+    <ul>
+      <li>fiabiliser et accélérer le traitement de vos données,</li>
+      <li>anticiper les risques et opportunités grâce à des analyses plus fines,</li>
+      <li>vous proposer des tableaux de bord clairs et personnalisés,</li>
+      <li>faciliter les échanges via une <strong>plateforme client</strong> moderne.</li>
+    </ul>
 
-      <!-- FAQ 5 -->
-      <div class="card">
-        <div class="card-header" id="faqHeading5">
-          <h5 class="mb-0">
-            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse5" aria-expanded="false" aria-controls="faqCollapse5">
-              5. Comment obtenir un devis détaillé ?
-            </button>
-          </h5>
-        </div>
-        <div id="faqCollapse5" class="collapse" aria-labelledby="faqHeading5" data-parent="#faq-accordion">
-          <div class="card-body">
-            Remplissez le formulaire de devis disponible dans le menu pour recevoir un devis détaillé adapté à vos besoins.
-          </div>
-        </div>
-      </div>
+    <p>
+      L’IA ne remplace pas le conseil&nbsp;: elle le renforce. Elle nous permet de consacrer
+      plus de temps à ce qui compte vraiment&nbsp;: <strong>vous accompagner dans vos décisions</strong>,
+      sécuriser votre activité et vous aider à construire l’avenir de votre entreprise.
+    </p>
 
-      <!-- FAQ 6 -->
-      <div class="card">
-        <div class="card-header" id="faqHeading6">
-          <h5 class="mb-0">
-            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#faqCollapse6" aria-expanded="false" aria-controls="faqCollapse6">
-              6. Où puis-je trouver la page d'aide ?
-            </button>
-          </h5>
-        </div>
-        <div id="faqCollapse6" class="collapse" aria-labelledby="faqHeading6" data-parent="#faq-accordion">
-          <div class="card-body">
-            La page d'aide est accessible depuis le menu principal et le pied de page. Cliquez sur le lien "Aide" pour obtenir toutes les informations nécessaires.
-          </div>
-        </div>
-      </div>
-
-    </div> <!-- fermeture #faq-accordion -->
-  </div> <!-- fermeture .container -->
+    <p class="mb-0">
+      Avec <strong>ML2C CONSEIL</strong>, vous bénéficiez à la fois de
+      <strong>la rigueur d’un cabinet comptable</strong>, de
+      <strong>la proximité d’un partenaire</strong> et de
+      <strong>la puissance des outils d’intelligence artificielle</strong>, au service
+      d’un seul objectif&nbsp;: la réussite durable de votre projet.
+    </p>
+  </div>
 
   <!-- BOUTON CHATBOT -->
   <div class="container">

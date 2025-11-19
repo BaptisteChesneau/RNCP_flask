@@ -97,14 +97,22 @@ nav {
 }
 
 /*============================================================
-  5) CARROUSEL
+  5) CARROUSEL DANS MENU.HTML
 ============================================================*/
-.carousel-item img {
-  object-fit: cover;
-  height: 400px;
-  width: 100%;
+
+/* On limite la hauteur du carrousel */
+.carousel-item {
+  max-height: 450px;       /* hauteur max du bloc */
+  overflow: hidden;        /* on coupe ce qui dépasse */
 }
 
+/* Images du carrousel : pas de déformation */
+.carousel-item img {
+  width: 100%;             /* prendre la largeur du conteneur */
+  height: auto;            /* garder les proportions */
+  display: block;
+  object-fit: cover;       /* recadre sans étirer */
+}
 
 /*============================================================
   6) FOOTER

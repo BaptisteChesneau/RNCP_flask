@@ -239,7 +239,7 @@ footer.footer-custom {
 
 /* En-tête de chaque question */
 #faq-accordion .card-header {
-  background-color: rgb(96,125,139);   /* Bleu gris ML2C (#607D8B) */
+  background-color: rgb(92,102,107);   /* Bleu gris ML2C (#607D8B) */
   border-bottom: 1px solid rgba(0,0,0,0.1);
   padding: 0.75rem 1rem;
 }

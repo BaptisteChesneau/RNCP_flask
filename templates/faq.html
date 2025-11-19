@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>FAQ - ML2C CONSEIL</title>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  
+  <!-- Styles du site -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+
+  {% include "header.html" %}
+
+  <!-- ========================================= -->
+  <!--                PAGE FAQ                   -->
+  <!-- ========================================= -->
+
+  <div class="container my-5 faq-page">
+
+    <!-- TITRE -->
+    <div class="text-center mb-4">
+      <h2 class="section-title mb-3">Foire Aux Questions</h2>
+      <p class="text-muted">
+        Retrouvez ici les réponses aux questions fréquentes sur
+        <strong>ML2C CONSEIL</strong>, notre plateforme client et notre approche moderne basée sur l’IA.
+      </p>
+    </div>
+
+    <!-- BARRE DE RECHERCHE -->
+    <div class="row mb-4">
+      <div class="col-md-8 mx-auto">
+        <div class="input-group">
+          <input id="faq-search" type="text" class="form-control"
+                 placeholder="Rechercher une question (ex : devis, IA, plateforme, rendez-vous...)">
+          <div class="input-group-append">
+            <button class="btn btn-ml2c-green" type="button" id="faq-clear">Effacer</button>
+          </div>
+        </div>
+        <small id="faq-result-count" class="form-text text-muted mt-1">
+          9 questions au total
+        </small>
+      </div>
+    </div>
+
+    <!-- FILTRES -->
+    <div class="row mb-4">
+      <div class="col text-center">
+        <div class="btn-group btn-group-sm" role="group">
+          <button class="btn btn-outline-ml2c-green active" data-faq-filter="all">Toutes</button>
+          <button class="btn btn-outline-ml2c-green" data-faq-filter="general">Cabinet</button>
+          <button class="btn btn-outline-ml2c-green" data-faq-filter="plateforme">Plateforme</button>
+          <button class="btn btn-outline-ml2c-green" data-faq-filter="devis">Devis</button>
+          <button class="btn btn-outline-ml2c-green" data-faq-filter="ia">IA</button>
+          <button class="btn btn-outline-ml2c-green" data-faq-filter="securite">Sécurité</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- OUVRIR / FERMER -->
+    <div class="row mb-3">
+      <div class="col text-center">
+        <button class="btn btn-outline-ml2c-green mr-2" id="faq-expand-all">Tout ouvrir</button>
+        <button class="btn btn-outline-ml2c-green" id="faq-collapse-all">Tout fermer</button>
+      </div>
+    </div>
+
+    <!-- ACCORDÉON FAQ -->
+    <div id="faq-accordion">
+
+      <!-- FAQ 1 -->
+      <div class="card faq-item" data-category="devis" data-keywords="rendez-vous contact demande devis">
+        <div class="card-header" id="faqHeading1">
+          <h5 class="mb-0">
+            <button class="btn btn-link" data-toggle="collapse" data-target="#faqCollapse1">
+              1. Comment prendre rendez-vous avec ML2C CONSEIL ?
+            </button>
+          </h5>
+        </div>
+        <div id="faqCollapse1" class="collapse show" data-parent="#faq-accordion">
+          <div class="card-body">
+            Vous pouvez prendre rendez-vous via la rubrique <strong>Devis</strong> ou la page
+            <strong>Contact</strong>. Remplissez le formulaire et nous vous rappelons pour confirmer.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 2 -->
+      <div class="card faq-item" data-category="general" data-keywords="services comptabilité fiscalité social conseil">
+        <div class="card-header" id="faqHeading2">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse2">
+              2. Quels services propose ML2C CONSEIL ?
+            </button>
+          </h5>
+        </div>
+        <div id="faqCollapse2" class="collapse" data-parent="#faq-accordion">
+          <div class="card-body">
+            Nous proposons un accompagnement complet en <strong>comptabilité</strong>,
+            <strong>fiscalité</strong>, <strong>gestion</strong>, <strong>social</strong> et
+            <strong>pilotage d'entreprise</strong>.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 3 -->
+      <div class="card faq-item" data-category="plateforme" data-keywords="plateforme client espace sécurisé portail document">
+        <div class="card-header" id="faqHeading3">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse3">
+              3. Qu’est-ce que la Plateforme Client ML2C ?
+            </button>
+          </h5>
+        </div>
+        <div id="faqCollapse3" class="collapse" data-parent="#faq-accordion">
+          <div class="card-body">
+            Un espace sécurisé pour déposer vos pièces, suivre vos dossiers, consulter vos tableaux
+            de bord et échanger avec le cabinet.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 4 -->
+      <div class="card faq-item" data-category="ia" data-keywords="intelligence artificielle automatisation lecture pièces ia comptable">
+        <div class="card-header" id="faqHeading4">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse4">
+              4. Comment ML2C utilise l’IA ?
+            </button>
+          </h5>
+        </div>
+        <div id="faqCollapse4" class="collapse" data-parent="#faq-accordion">
+          <div class="card-body">
+            L’IA permet de gagner du temps sur les tâches techniques (lecture de pièces, tri,
+            cohérences…) pour se concentrer sur le <strong>conseil</strong> et la relation client.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 5 -->
+      <div class="card faq-item" data-category="ia" data-keywords="chatbot aide questions support conversation">
+        <div class="card-header" id="faqHeading5">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse5">
+              5. À quoi sert le chatbot ?
+            </button>
+          </h5>
+        </div>
+        <div id="faqCollapse5" class="collapse" data-parent="#faq-accordion">
+          <div class="card-body">
+            Le chatbot répond 24h/24 aux questions simples sur nos services, la plateforme client,
+            les devis et les démarches.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 6 -->
+      <div class="card faq-item" data-category="securite" data-keywords="sécurité données rgpd confidentialité hébergement">
+        <div class="card-header" id="faqHeading6">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse6">
+              6. Comment protégez-vous mes données ?
+            </button>
+          </h5>
+        </div>
+        <div id="faqCollapse6" class="collapse" data-parent="#faq-accordion">
+          <div class="card-body">
+            Accès sécurisés, données chiffrées, sauvegardes régulières, conformité RGPD, infrastructure
+            sécurisée chez des hébergeurs certifiés.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 7 -->
+      <div class="card faq-item" data-category="plateforme" data-keywords="identifiants mot de passe oublié connexion">
+        <div class="card-header" id="faqHeading7">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse7">
+              7. Que faire si j’ai perdu mes identifiants ?
+            </button>
+          </h5>
+        </div>
+        <div id="faqCollapse7" class="collapse" data-parent="#faq-accordion">
+          <div class="card-body">
+            Cliquez sur “Mot de passe oublié” ou contactez ML2C pour réinitialiser votre accès
+            rapidement et en sécurité.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 8 -->
+      <div class="card faq-item" data-category="devis" data-keywords="devis tarif honoraires prix offre">
+        <div class="card-header" id="faqHeading8">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse8">
+              8. Comment obtenir un devis détaillé ?
+            </button>
+          </h5>
+        </div>
+        <div id="faqCollapse8" class="collapse" data-parent="#faq-accordion">
+          <div class="card-body">
+            Remplissez le formulaire Devis avec vos besoins. Nous analysons votre activité et vous
+            envoyons une estimation personnalisée.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 9 -->
+      <div class="card faq-item" data-category="general" data-keywords="différence modernité cabinet innovation ia">
+        <div class="card-header" id="faqHeading9">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse9">
+              9. En quoi ML2C est différent d’un cabinet classique ?
+            </button>
+          </h5>
+        </div>
+        <div id="faqCollapse9" class="collapse" data-parent="#faq-accordion">
+          <div class="card-body">
+            Nous combinons <strong>rigueur comptable</strong>,
+            <strong>plateforme numérique</strong>,
+            <strong>innovation IA</strong> et un accompagnement humain
+            centré sur le conseil et la pédagogie.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center mt-5">
+      <p class="mb-2">Vous ne trouvez pas votre réponse ?</p>
+      <a href="/contact" class="btn btn-pink mb-2">Contacter ML2C</a>
+      <a href="/chatbot" class="btn btn-outline-primary mb-2">Demander au Chatbot</a>
+    </div>
+
+  </div>
+
+  {% include "footer.html" %}
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Script FAQ -->
+  <script>
+  (function() {
+    const searchInput = document.getElementById('faq-search');
+    const clearBtn = document.getElementById('faq-clear');
+    const items = Array.from(document.querySelectorAll('#faq-accordion .faq-item'));
+    const count = document.getElementById('faq-result-count');
+    const expandAll = document.getElementById('faq-expand-all');
+    const collapseAll = document.getElementById('faq-collapse-all');
+    const filters = document.querySelectorAll('[data-faq-filter]');
+
+    function normalize(txt) {
+      return txt.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function runFilter() {
+      const query = normalize(searchInput.value);
+      const active = document.querySelector('[data-faq-filter].active');
+      const category = active ? active.dataset.faqFilter : "all";
+
+      let visible = 0;
+
+      items.forEach(item => {
+        const txt = normalize(item.innerText + item.dataset.keywords);
+        const cat = item.dataset.category;
+
+        const matchQuery = !query || txt.includes(query);
+        const matchCat = category === "all" || category === cat;
+
+        if (matchQuery && matchCat) {
+          item.style.display = "";
+          visible++;
+        } else {
+          item.style.display = "none";
+        }
+      });
+
+      if (visible === items.length) count.textContent = items.length + " questions au total";
+      else if (visible === 0) count.textContent = "Aucun résultat";
+      else count.textContent = visible + " question(s) trouvée(s)";
+    }
+
+    searchInput.addEventListener('input', runFilter);
+    clearBtn.addEventListener('click', () => {
+      searchInput.value = "";
+      runFilter();
+    });
+
+    filters.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filters.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        runFilter();
+      });
+    });
+
+    expandAll.addEventListener('click', () =>
+      items.forEach(i => $(i.querySelector(".collapse")).collapse("show"))
+    );
+    collapseAll.addEventListener('click', () =>
+      items.forEach(i => $(i.querySelector(".collapse")).collapse("hide"))
+    );
+
+    runFilter();
+  })();
+  </script>
+
+</body>
+</html>

@@ -678,6 +678,9 @@ def nos_outils():
 def aide():
     return render_template("aide.html")
 
+@app.route('/faq')
+def faq():
+    return render_template('faq.html')
 
 @app.route("/parametres", methods=["GET", "POST"])
 def parametres():

@@ -673,9 +673,9 @@ def atelier():
 def nos_outils():
     return render_template("nos_outils.html")
 
-@app.route('/contact')
-def contact():
-    return render_template('contact.html')
+@app.route("/nous-contacter")
+def nous_contacter():
+    return render_template("contact.html")
 
 @app.route("/aide")
 def aide():

@@ -100,18 +100,30 @@ nav {
   5) CARROUSEL DANS MENU.HTML
 ============================================================*/
 
-/* On limite la hauteur du carrousel */
-.carousel-item {
-  max-height: 450px;       /* hauteur max du bloc */
-  overflow: hidden;        /* on coupe ce qui dépasse */
+/* Le carrousel devient une zone "cadre" qui centre l'image */
+#carouselExampleIndicators {
+  background-color: rgb(248,249,250); /* léger fond neutre (optionnel) */
 }
 
-/* Images du carrousel : pas de déformation */
+/* Chaque slide : on centre le contenu, sans imposer un format bannière */
+.carousel-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem 0;        /* espace autour de l'image */
+  height: auto;             /* pas de hauteur fixe */
+  overflow: visible;
+}
+
+/* Image : on garde son format naturel (carré, portrait, etc.) */
 .carousel-item img {
-  width: 100%;             /* prendre la largeur du conteneur */
-  height: auto;            /* garder les proportions */
+  max-height: 450px;        /* limite la hauteur pour ne pas exploser la page */
+  width: auto;              /* pas de largeur forcée */
+  height: auto;             /* respecte les proportions */
+  object-fit: contain;      /* jamais de recadrage */
   display: block;
-  object-fit: cover;       /* recadre sans étirer */
+  margin: 0 auto;
+  border-radius: 8px;       /* optionnel : coins légèrement arrondis */
 }
 
 /*============================================================

@@ -297,8 +297,11 @@ footer.footer-custom {
 .container h2 {
   font-size: 2rem;
   margin-bottom: 1.5rem;
-  font-family: "Loves Regular", sans-serif;  /* Typo ML2C */
-  color: rgb(255,255,255);
+  font-family: "Loves Regular", sans-serif;   /* Typo ML2C */
+  color: rgb(51,51,51);                       /* gris foncé lisible */
+  /* si tu préfères les titres en rose :
+     color: rgb(193,0,122);  // Rose ML2C
+  */
 }
 
 .card-title {

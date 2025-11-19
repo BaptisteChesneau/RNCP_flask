@@ -102,7 +102,7 @@ nav {
 
 /* Le carrousel a le même fond que le menu/header */
 #carouselExampleIndicators {
-  background-color: rgb(96,125,139);  /* même couleur que le menu ML2C */
+  background-color: rgb(92,102,107);  /* même couleur que le menu ML2C */
   padding: 1.5rem 0;                  /* espace autour du contenu */
 }
 

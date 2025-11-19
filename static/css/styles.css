@@ -86,13 +86,15 @@ nav {
   margin-bottom: 1rem;
 }
 
-/* Liens navigation */
+/* Couleur régulière des liens du menu (lisible) */
 .nav-link {
-  color: rgb(255,255,255); /* lisibilité sur gris */
-  font-weight: 500;
+  color: rgb(51,51,51) !important; /* texte lisible */
+  font-weight: 600;
 }
+
+/* Survol en Rose ML2C */
 .nav-link:hover {
-  color: rgb(193,0,122); /* Rose ML2C */
+  color: rgb(193,0,122) !important;
   text-decoration: none;
 }
 

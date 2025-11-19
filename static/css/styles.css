@@ -27,11 +27,9 @@ header img {
 
 /* Titre (ML2C CONSEIL) */
 header h1 {
-  margin: 0;
-  font-size: 1.8rem;
+  color: rgb(51,51,51) !important;  /* gris lisible */
+  font-family: "Loves Regular", sans-serif; /* ML2C */
   font-weight: 600;
-  font-family: "Loves Regular", "Helvetica Neue", sans-serif; /* Typo ML2C */
-  color: rgb(255,255,255);
 }
 
 /* Bouton principal */
@@ -313,7 +311,12 @@ footer.footer-custom {
 .card-text {
   font-size: 1rem;
   line-height: 1.5;
-  color: rgb(255,255,255);
+  color: rgb(51,51,51);
+}
+
+.card-footer {
+  color: rgb(92,102,107) !important;  /* gris ML2C */
+  font-size: 0.9rem;
 }
 
 /*============================================================

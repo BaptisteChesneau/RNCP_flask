@@ -17,6 +17,9 @@
         <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo ML2C CONSEIL" class="img-fluid">
       </a>
 
+      <!-- Centered title -->
+      <h1 class="m-0 text-center flex-grow-1">ML2C CONSEIL</h1>
+      
       <!-- Right-side: either avatar if logged in, or login/signup buttons -->
       <div class="d-flex align-items-center">
         {% if session.get('user_id') %}

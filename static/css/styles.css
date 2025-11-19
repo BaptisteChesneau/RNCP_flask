@@ -234,21 +234,39 @@ footer.footer-custom {
 ============================================================*/
 #faq-accordion .card {
   margin-bottom: 1rem;
+  border: none; /* plus propre avec ton design */
 }
 
+/* En-tête de chaque question */
 #faq-accordion .card-header {
-  background-color: rgb(92,102,107); /* Bleu gris ML2C */
-  border-bottom: 1px solid #ddd;
+  background-color: rgb(96,125,139);   /* Bleu gris ML2C (#607D8B) */
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  padding: 0.75rem 1rem;
 }
 
-#faq-accordion .btn-link {
+/* Bouton question : texte blanc, bien lisible */
+#faq-accordion .card-header .btn-link {
   font-weight: 500;
-  color: #333;
+  color: rgb(255,255,255);             /* texte en blanc */
+  text-decoration: none;
+  width: 100%;
+  text-align: left;
+  padding: 0;
 }
 
-#faq-accordion .btn-link:hover {
-  text-decoration: underline;
+/* Survol / focus : on passe le texte en rose ML2C */
+#faq-accordion .card-header .btn-link:hover,
+#faq-accordion .card-header .btn-link:focus {
+  color: rgb(216,30,91);               /* Rose ML2C (#D81E5B) */
+  text-decoration: none;
 }
+
+/* Corps de la réponse */
+#faq-accordion .card-body {
+  background-color: rgb(255,255,255);
+  color: rgb(51,51,51);
+}
+
 
 /*============================================================
   10) RESUME DEVIS

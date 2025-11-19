@@ -100,9 +100,10 @@ nav {
   5) CARROUSEL DANS MENU.HTML
 ============================================================*/
 
-/* Le carrousel devient une zone "cadre" qui centre l'image */
+/* Le carrousel a le même fond que le menu/header */
 #carouselExampleIndicators {
-  background-color: rgb(248,249,250); /* léger fond neutre (optionnel) */
+  background-color: rgb(96,125,139);  /* même couleur que le menu ML2C */
+  padding: 1.5rem 0;                  /* espace autour du contenu */
 }
 
 /* Chaque slide : on centre le contenu, sans imposer un format bannière */
@@ -110,20 +111,19 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1.5rem 0;        /* espace autour de l'image */
-  height: auto;             /* pas de hauteur fixe */
+  height: auto;        /* pas de hauteur fixe → image gardée telle quelle */
   overflow: visible;
 }
 
-/* Image : on garde son format naturel (carré, portrait, etc.) */
+/* Image : garde son format naturel (carré, portrait…) et reste centrée */
 .carousel-item img {
-  max-height: 450px;        /* limite la hauteur pour ne pas exploser la page */
-  width: auto;              /* pas de largeur forcée */
-  height: auto;             /* respecte les proportions */
-  object-fit: contain;      /* jamais de recadrage */
+  max-height: 450px;   /* limite la hauteur pour éviter les images énormes */
+  width: auto;         /* pas de largeur forcée */
+  height: auto;        /* respect des proportions */
+  object-fit: contain; /* jamais de recadrage */
   display: block;
   margin: 0 auto;
-  border-radius: 8px;       /* optionnel : coins légèrement arrondis */
+  border-radius: 8px;  /* optionnel, juste pour un rendu plus doux */
 }
 
 /*============================================================

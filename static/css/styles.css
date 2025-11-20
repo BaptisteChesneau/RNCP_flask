@@ -1103,6 +1103,184 @@ pre.sql-code {
   font-size: 0.9rem;
 }
 
+/* ============================================================
+   41.1) ZONE TITRE ESPACE CLIENT
+============================================================ */
+
+.espace-client-header {
+    background: rgb(92,102,107); /* Gris ML2C */
+    padding: 25px;
+    border-radius: 12px;
+    color: white;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.7rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    animation: fadeSlideDown 0.8s ease;
+}
+
+@keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   41.2) ONGLET (TAB) — STYLE MODERNE ML2C
+============================================================ */
+
+.nav-tabs {
+    border-bottom: 2px solid rgb(92,102,107);
+    margin-bottom: 20px;
+}
+
+.nav-tabs .nav-link {
+    color: #444;
+    font-weight: 600;
+    padding: 12px 22px;
+    border-radius: 8px 8px 0 0;
+    transition: all 0.25s ease;
+    font-size: 1rem;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #D81E5B; /* Rose ML2C */
+    color: white !important;
+    border-color: #D81E5B;
+    box-shadow: 0 -2px 8px rgba(216,30,91,0.3);
+}
+
+.nav-tabs .nav-link:hover {
+    background-color: rgb(92,102,107);
+    color: white !important;
+}
+
+/* ============================================================
+   41.3) CARTES STYLE PREMIUM (Fiches Devis & Formulaire)
+============================================================ */
+
+.card {
+    border-radius: 12px;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    overflow: hidden;
+    animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card-header {
+    background: #D81E5B !important;
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+/* Style des éléments de liste */
+.list-group-item {
+    border: none;
+    padding: 14px 18px;
+    background: #f7f7f7;
+    font-size: 1rem;
+}
+
+.list-group-item:nth-child(even) {
+    background: #efefef;
+}
+
+/* ============================================================
+   41.4) FICHE RÉSUMÉ DEVIS ML2C
+============================================================ */
+
+.fiche-resume-card {
+    background-color: #00A89D !important;
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.fiche-resume-header {
+    background: #D81E5B !important;
+    padding: 15px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    border-radius: 12px 12px 0 0;
+}
+
+/* ============================================================
+   41.5) BOUTONS ML2C
+============================================================ */
+
+.btn-primary {
+    background-color: #D81E5B !important;
+    border: none;
+    font-weight: 600;
+    padding: 10px 22px;
+    border-radius: 6px;
+}
+
+.btn-primary:hover {
+    background-color: #009639 !important;
+}
+
+.btn-secondary {
+    background-color: rgb(92,102,107) !important;
+    border: none;
+    padding: 10px 22px;
+}
+
+.btn-secondary:hover {
+    background-color: #D81E5B !important;
+}
+
+/* ============================================================
+   41.6) CARTE BANCAIRE — STYLE ML2C
+============================================================ */
+
+.credit-card-display {
+    background: linear-gradient(135deg, #00A89D, #0097A7);
+    color: #fff;
+    max-width: 420px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    border-radius: 15px;
+    padding: 20px;
+    animation: fadeIn 0.8s ease;
+}
+
+/* ============================================================
+   7) ANIMATIONS APPLICABLES GÉNÉRALEMENT
+============================================================ */
+
+.fade-in {
+    animation: fadeIn 0.7s ease;
+}
+
+.slide-up {
+    animation: slideUp 0.7s ease;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   8) ZONE BOUTONS FINAL
+============================================================ */
+
+.account-actions {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.account-actions .btn {
+    margin: 12px;
+}
+
 /*============================================================
    42 - Page Erreur 404 
 ============================================================*/

@@ -1267,7 +1267,11 @@ def client():
 
 @app.route("/ajouter-carte-test")
 def ajouter_carte_test():
-    session["carte_bancaire"] = {...}
+    session["carte_bancaire"] = {
+        "nom": "Jean Dupont",
+        "numero": "4242424242424242",
+        "expiration": "12/26",
+    }
     return redirect(url_for("compte_client"))
 
 

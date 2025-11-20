@@ -666,6 +666,9 @@ def compte_client():
         devis_list=devis_list,
     )
 
+@app.route("/compte")
+def compte():
+    return redirect(url_for("compte_client"))
 
 @app.route("/newsletter", methods=["POST"])
 def newsletter():
@@ -1262,6 +1265,11 @@ def client():
     app.config["TESTING"] = True
     with app.test_client() as client:
         yield client
+
+@app.route("/ajouter-carte-test")
+def ajouter_carte_test():
+    session["carte_bancaire"] = {...}
+    return redirect(url_for("compte_client"))
 
 
 def test_admin_user_table_requires_login(client):

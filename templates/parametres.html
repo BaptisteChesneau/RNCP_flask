@@ -8,19 +8,19 @@
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 
-  <body class="{{ session.get('theme', 'light') }}">
+<body class="{{ session.get('theme', 'light') }}">
 
   {% include "header.html" %}
 
-  <!-- Message flash global -->
+  <!-- Message flash -->
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
       <div class="container mt-3">
         {% for category, message in messages %}
           <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
             {{ message }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
-              <span aria-hidden="true">&times;</span>
+            <button type="button" class="close" data-dismiss="alert">
+              <span>&times;</span>
             </button>
           </div>
         {% endfor %}
@@ -31,92 +31,149 @@
   <div class="container my-5">
     <h2 class="text-center mb-4">Paramètres du Compte</h2>
     <div class="row">
-      <!-- Menu latéral -->
+
+      <!-- ====================== MENU LATÉRAL ORGANISÉ ====================== -->
       <div class="col-md-3">
         <div class="list-group" id="paramMenu">
-          <a href="#profileSection" class="list-group-item list-group-item-action active" data-toggle="list">Profil</a>
-          <a href="#passwordSection" class="list-group-item list-group-item-action" data-toggle="list">Mot de passe</a>
-          <a href="#socialSection" class="list-group-item list-group-item-action" data-toggle="list">Réseaux sociaux</a>
-          <a href="#historySection" class="list-group-item list-group-item-action" data-toggle="list">Historique de navigation</a>
-          <a href="#preferencesSection" class="list-group-item list-group-item-action" data-toggle="list">Préférences</a>
-          <a href="#notificationsSection" class="list-group-item list-group-item-action" data-toggle="list">Notifications</a>
-          <a href="#billingSection" class="list-group-item list-group-item-action" data-toggle="list">Facturation</a>
-          <a href="#photoSection" class="list-group-item list-group-item-action" data-toggle="list">Photo de profil</a>>
-          <a href="#dataExportSection" class="list-group-item list-group-item-action" data-toggle="list">Mes données</a>
-          <a href="#supportSection" class="list-group-item list-group-item-action" data-toggle="list">Assistance</a>
-          <a href="{{ url_for('gerer_devis') }}" class="list-group-item list-group-item-action">Gérer mes devis</a>
 
+          <!-- Catégorie : Compte -->
+          <div class="list-group-item font-weight-bold bg-primary text-white">
+            Compte
+          </div>
+          <a href="#profileSection" class="list-group-item list-group-item-action active" data-toggle="list">
+            Profil
+          </a>
+          <a href="#passwordSection" class="list-group-item list-group-item-action" data-toggle="list">
+            Mot de passe
+          </a>
+          <a href="#photoSection" class="list-group-item list-group-item-action" data-toggle="list">
+            Photo de profil
+          </a>
+
+          <!-- Personnalisation -->
+          <div class="list-group-item font-weight-bold mt-3">
+            Personnalisation
+          </div>
+          <a href="#preferencesSection" class="list-group-item list-group-item-action" data-toggle="list">
+            Préférences
+          </a>
+          <a href="#notificationsSection" class="list-group-item list-group-item-action" data-toggle="list">
+            Notifications
+          </a>
+
+          <!-- Confidentialité -->
+          <div class="list-group-item font-weight-bold mt-3">
+            Confidentialité & Sécurité
+          </div>
+          <a href="#historySection" class="list-group-item list-group-item-action" data-toggle="list">
+            Historique de navigation
+          </a>
+          <a href="#dataExportSection" class="list-group-item list-group-item-action" data-toggle="list">
+            Mes données
+          </a>
+          <a href="#socialSection" class="list-group-item list-group-item-action" data-toggle="list">
+            Réseaux sociaux
+          </a>
+
+          <!-- Facturation -->
+          <div class="list-group-item font-weight-bold mt-3">
+            Facturation & Paiements
+          </div>
+          <a href="#billingSection" class="list-group-item list-group-item-action" data-toggle="list">
+            Infos de facturation
+          </a>
+          <a href="{{ url_for('paiement') }}#facturation"
+             class="list-group-item list-group-item-action">
+            Gérer mes paiements Stripe
+          </a>
+          <form method="POST" action="{{ url_for('supprimer_carte') }}"
+                onsubmit="return confirm('Confirmer la suppression ?')">
+            <button type="submit" class="list-group-item list-group-item-action text-danger">
+              Supprimer ma carte
+            </button>
+          </form>
+
+          <!-- Support -->
+          <div class="list-group-item font-weight-bold mt-3">
+            Support & Activités
+          </div>
+          <a href="#supportSection" class="list-group-item list-group-item-action" data-toggle="list">
+            Assistance
+          </a>
+          <a href="{{ url_for('gerer_devis') }}" class="list-group-item list-group-item-action">
+            Gérer mes devis
+          </a>
         </div>
       </div>
 
-      <!-- Contenu principal -->
+      <!-- ====================== CONTENU PRINCIPAL ====================== -->
       <div class="col-md-9">
         <div class="tab-content">
 
-          <!-- Profil -->
-          <div class="tab-pane fade show active" id="profileSection" role="tabpanel">
+          <!-- ================= PROFIL ================= -->
+          <div class="tab-pane fade show active" id="profileSection">
             <h4>Mettre à jour vos informations personnelles</h4>
             <form action="{{ url_for('update_profile') }}" method="POST">
               <div class="form-row">
                 <div class="form-group col-md-6">
-                  <label for="prenom">Prénom</label>
-                  <input type="text" class="form-control" id="prenom" name="prenom" value="{{ user.prenom }}" required>
+                  <label>Prénom</label>
+                  <input type="text" class="form-control" name="prenom" value="{{ user.prenom }}" required>
                 </div>
                 <div class="form-group col-md-6">
-                  <label for="nom">Nom</label>
-                  <input type="text" class="form-control" id="nom" name="nom" value="{{ user.nom }}" required>
+                  <label>Nom</label>
+                  <input type="text" class="form-control" name="nom" value="{{ user.nom }}" required>
                 </div>
               </div>
               <div class="form-group">
-                <label for="email">Adresse e-mail</label>
-                <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                <label>Email</label>
+                <input type="email" class="form-control" name="email" value="{{ user.email }}" required>
               </div>
-              <button type="submit" class="btn btn-primary btn-progress">Mettre à jour</button>
+              <button class="btn btn-primary btn-progress">Mettre à jour</button>
             </form>
           </div>
 
-          <!-- Mot de passe -->
-          <div class="tab-pane fade" id="passwordSection" role="tabpanel">
+          <!-- ================= MOT DE PASSE ================= -->
+          <div class="tab-pane fade" id="passwordSection">
             <h4>Changer votre mot de passe</h4>
             <form action="{{ url_for('update_password') }}" method="POST">
               <div class="form-group">
-                <label for="current_password">Mot de passe actuel</label>
-                <input type="password" class="form-control" id="current_password" name="current_password" required>
+                <label>Mot de passe actuel</label>
+                <input type="password" class="form-control" name="current_password" required>
               </div>
               <div class="form-group">
-                <label for="new_password">Nouveau mot de passe</label>
-                <input type="password" class="form-control" id="new_password" name="new_password" required>
+                <label>Nouveau mot de passe</label>
+                <input type="password" class="form-control" name="new_password" required>
               </div>
               <div class="form-group">
-                <label for="confirm_password">Confirmez le nouveau mot de passe</label>
-                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                <label>Confirmation</label>
+                <input type="password" class="form-control" name="confirm_password" required>
               </div>
-              <button type="submit" class="btn btn-primary btn-progress">Changer le mot de passe</button>
+              <button class="btn btn-primary btn-progress">Changer</button>
             </form>
           </div>
 
-          <!-- Réseaux sociaux -->
-          <div class="tab-pane fade" id="socialSection" role="tabpanel">
+          <!-- ================= RÉSEAUX SOCIAUX ================= -->
+          <div class="tab-pane fade" id="socialSection">
             <h4>Gérer vos réseaux sociaux</h4>
             <form action="{{ url_for('update_social') }}" method="POST">
               <div class="form-group">
-                <label for="facebook">Facebook</label>
-                <input type="url" class="form-control" id="facebook" name="facebook">
+                <label>Facebook</label>
+                <input type="url" class="form-control" name="facebook">
               </div>
               <div class="form-group">
-                <label for="linkedin">LinkedIn</label>
-                <input type="url" class="form-control" id="linkedin" name="linkedin">
+                <label>LinkedIn</label>
+                <input type="url" class="form-control" name="linkedin">
               </div>
               <div class="form-group">
-                <label for="instagram">Instagram</label>
-                <input type="url" class="form-control" id="instagram" name="instagram">
+                <label>Instagram</label>
+                <input type="url" class="form-control" name="instagram">
               </div>
-              <button type="submit" class="btn btn-primary btn-progress">Mettre à jour mes réseaux sociaux</button>
+              <button class="btn btn-primary btn-progress">Mettre à jour</button>
             </form>
           </div>
 
-          <!-- Historique -->
-          <div class="tab-pane fade" id="historySection" role="tabpanel">
+          <!-- ================= HISTORIQUE ================= -->
+          <div class="tab-pane fade" id="historySection">
             <h4>Historique de navigation</h4>
             {% if session.history %}
               <ul class="list-group">
@@ -125,138 +182,85 @@
                 {% endfor %}
               </ul>
             {% else %}
-              <p>Aucun historique enregistré.</p>
+              <p>Aucun historique.</p>
             {% endif %}
           </div>
 
-          <!-- Préférences -->
-          <div class="tab-pane fade" id="preferencesSection" role="tabpanel">
+          <!-- ================= PRÉFÉRENCES ================= -->
+          <div class="tab-pane fade" id="preferencesSection">
             <h4>Préférences utilisateur</h4>
             <form action="{{ url_for('update_preferences') }}" method="POST">
               <div class="form-group">
-                <label for="language">Langue préférée</label>
-                <select class="form-control" id="language" name="language">
-                  <option value="fr" {% if session.get('language') == 'fr' %}selected{% endif %}>Français</option>
-                  <option value="en" {% if session.get('language') == 'en' %}selected{% endif %}>Anglais</option>
+                <label>Langue</label>
+                <select class="form-control" name="language">
+                  <option value="fr">Français</option>
+                  <option value="en">Anglais</option>
                 </select>
               </div>
               <div class="form-group">
-                <label for="theme">Thème</label>
-                <select class="form-control" id="theme" name="theme">
-                  <option value="light" {% if session.get('theme') == 'light' %}selected{% endif %}>Clair</option>
-                  <option value="dark" {% if session.get('theme') == 'dark' %}selected{% endif %}>Sombre</option>
+                <label>Thème</label>
+                <select class="form-control" name="theme">
+                  <option value="light">Clair</option>
+                  <option value="dark">Sombre</option>
                 </select>
               </div>
-              <button type="submit" class="btn btn-primary btn-progress">Sauvegarder les préférences</button>
+              <button class="btn btn-primary btn-progress">Sauvegarder</button>
             </form>
           </div>
 
-          <!-- Notifications -->
-          <div class="tab-pane fade" id="notificationsSection" role="tabpanel">
-            <h4>Paramètres de notification</h4>
+          <!-- ================= NOTIFICATIONS ================= -->
+          <div class="tab-pane fade" id="notificationsSection">
+            <h4>Notifications</h4>
             <form action="{{ url_for('update_notifications') }}" method="POST">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="notif_email" name="notif_email" checked>
-                <label class="form-check-label" for="notif_email">Recevoir les notifications par email</label>
+                <input type="checkbox" class="form-check-input" id="notif_email" name="notif_email" checked>
+                <label for="notif_email">Notifications email</label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="notif_sms" name="notif_sms">
-                <label class="form-check-label" for="notif_sms">Recevoir les notifications par SMS</label>
+                <input type="checkbox" class="form-check-input" id="notif_sms" name="notif_sms">
+                <label for="notif_sms">Notifications SMS</label>
               </div>
-              <button type="submit" class="btn btn-primary btn-progress mt-3">Mettre à jour</button>
+              <button class="btn btn-primary btn-progress mt-3">Mettre à jour</button>
             </form>
           </div>
 
-          <!-- Facturation -->
-          <div class="tab-pane fade" id="billingSection" role="tabpanel">
-            <h4>Coordonnées de facturation</h4>
+          <!-- ================= FACTURATION ================= -->
+          <div class="tab-pane fade" id="billingSection">
+            <h4>Facturation</h4>
             <form action="{{ url_for('update_billing') }}" method="POST">
               <div class="form-group">
-                <label for="billing_name">Nom de facturation</label>
-                <input type="text" class="form-control" id="billing_name" name="billing_name" required>
+                <label>Nom de facturation</label>
+                <input type="text" class="form-control" name="billing_name" required>
               </div>
               <div class="form-group">
-                <label for="billing_address">Adresse de facturation</label>
-                <input type="text" class="form-control" id="billing_address" name="billing_address" required>
+                <label>Adresse</label>
+                <input type="text" class="form-control" name="billing_address" required>
               </div>
-              <button type="submit" class="btn btn-primary btn-progress">Enregistrer</button>
-            </form>
-
-            <div class="mt-3 d-flex flex-wrap align-items-center">
-              <a href="{{ url_for('paiement') }}#facturation" class="btn btn-outline-info mr-2 mb-2">
-                Gérer mes paiements Stripe
-              </a>
-
-              <form method="POST" action="{{ url_for('supprimer_carte') }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cette carte ?')">
-                <button type="submit" class="btn btn-outline-danger mb-2">Supprimer la carte</button>
-              </form>
-            </div>
-          </div> <!-- ✅ billingSection closed correctly -->
-
-          <!-- Mes données -->
-          <div class="tab-pane fade" id="dataExportSection" role="tabpanel">
-            <h4>Téléchargement de vos données</h4>
-            <p>Vous pouvez télécharger une copie de vos informations personnelles.</p>
-            <form action="{{ url_for('export_data') }}" method="POST">
-              <button type="submit" class="btn btn-outline-primary">Télécharger mes données</button>
+              <button class="btn btn-primary btn-progress">Enregistrer</button>
             </form>
           </div>
 
-          <!-- Assistance -->
-          <div class="tab-pane fade" id="supportSection" role="tabpanel">
-            <h4>Centre d’assistance</h4>
+          <!-- ================= MES DONNÉES ================= -->
+          <div class="tab-pane fade" id="dataExportSection">
+            <h4>Exporter vos données</h4>
+            <form action="{{ url_for('export_data') }}" method="POST">
+              <button class="btn btn-outline-primary">Télécharger mes données</button>
+            </form>
+          </div>
+
+          <!-- ================= ASSISTANCE ================= -->
+          <div class="tab-pane fade" id="supportSection">
+            <h4>Assistance</h4>
             <form action="{{ url_for('contact_support') }}" method="POST">
               <div class="form-group">
-                <label for="support_subject">Objet de votre demande</label>
-                <input type="text" class="form-control" id="support_subject" name="subject" required>
+                <label>Objet</label>
+                <input type="text" class="form-control" name="subject" required>
               </div>
               <div class="form-group">
-                <label for="support_message">Message</label>
-                <textarea class="form-control" id="support_message" name="message" rows="4" required></textarea>
+                <label>Message</label>
+                <textarea class="form-control" name="message" rows="4" required></textarea>
               </div>
-              <button type="submit" class="btn btn-primary btn-progress">Envoyer la demande</button>
-            </form>
-          </div>
-
-          <!-- Gérer mes devis -->
-          <div class="tab-pane fade" id="gererDevisSection" role="tabpanel">
-            <h4>Gérer mes devis</h4>
-            {% if devis_list %}
-              <form method="POST" action="{{ url_for('supprimer_devis') }}">
-                {% for devis in devis_list %}
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="devis_ids" value="{{ devis.id }}" id="devis{{ devis.id }}">
-                    <label class="form-check-label" for="devis{{ devis.id }}">
-                      {{ devis.nom }} - {{ devis.type_service }} - {{ devis.date_rdv }}
-                    </label>
-                  </div>
-                {% endfor %}
-                <button type="submit" class="btn btn-danger mt-2">Supprimer les devis sélectionnés</button>
-              </form>
-            {% else %}
-              <p>Aucun devis enregistré.</p>
-            {% endif %}
-          </div>
-
-          <!-- Photo de profil -->
-          <div class="tab-pane fade" id="photoSection" role="tabpanel">
-            <h4>Photo de profil</h4>
-            <p>Ajoutez ou modifiez votre photo de profil.</p>
-
-            {% if session.get('photo_url') %}
-              <div class="mb-3">
-                <img src="{{ url_for('static', filename='uploads/' ~ session['photo_url']) }}" class="img-thumbnail" width="150" alt="Photo actuelle">
-              </div>
-            {% endif %}
-
-            <form action="{{ url_for('update_photo') }}" method="POST" enctype="multipart/form-data">
-              <div class="form-group">
-                <label for="photo">Choisissez une photo</label>
-                <input type="file" class="form-control-file" id="photo" name="photo" accept="image/*" required>
-                <small id="filename-display" class="form-text text-muted">Aucun fichier sélectionné</small>
-                <small class="form-text text-muted">Taille maximale : 2 Mo. Formats : JPG, PNG.</small>
-              </div>
-              <button type="submit" class="btn btn-primary btn-progress">Téléverser</button>
+              <button class="btn btn-primary btn-progress">Envoyer</button>
             </form>
           </div>
 
@@ -265,18 +269,7 @@
     </div>
 
     <div class="text-center mt-4">
-        <a href="{{ url_for('menu') }}" class="btn btn-secondary">Retour au menu</a>
-      </div>
-    </div>
-    
-
-  <div id="progressOverlay">
-    <div class="text-center mb-2">
-      <i id="progressIcon" class="fas fa-sync fa-spin fa-2x"></i>
-      <h4 id="progressPercentage">0%</h4>
-    </div>
-    <div class="progress">
-      <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0"></div>
+      <a href="{{ url_for('menu') }}" class="btn btn-secondary">Retour au menu</a>
     </div>
   </div>
 
@@ -285,49 +278,34 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
+  <!-- Progress bar script identique -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      var username = "{{ session.get('prenom', 'Utilisateur') }}";
-      if (username) {
-        var welcome = document.getElementById("welcomeMessage");
-        if (welcome) welcome.innerHTML = "Bonjour " + username + " !";
-      }
-
-      const fileInput = document.getElementById("photo");
-      const filenameDisplay = document.getElementById("filename-display");
-      if (fileInput) {
-        fileInput.addEventListener("change", function () {
-          const file = this.files[0];
-          filenameDisplay.textContent = file ? "Fichier sélectionné : " + file.name : "Aucun fichier sélectionné";
-        });
-      }
+      const buttons = document.querySelectorAll(".btn-progress");
+      const overlay = document.getElementById("progressOverlay");
 
       function startProgress() {
-        document.getElementById("progressOverlay").style.display = "block";
-        let progress = 0;
-        const progressBar = document.getElementById("progressBar");
-        const progressPercentage = document.getElementById("progressPercentage");
-        const progressIcon = document.getElementById("progressIcon");
+        overlay.style.display = "block";
+        let p = 0;
+        const bar = document.getElementById("progressBar");
+        const percent = document.getElementById("progressPercentage");
+        const icon = document.getElementById("progressIcon");
 
-        const interval = setInterval(() => {
-          progress += 5;
-          if (progress > 100) progress = 100;
-          progressBar.style.width = progress + "%";
-          progressPercentage.innerHTML = progress + "%";
-          progressBar.setAttribute("aria-valuenow", progress);
+        const timer = setInterval(() => {
+          p += 4;
+          bar.style.width = p + "%";
+          percent.textContent = p + "%";
 
-          if (progress >= 100) {
-            clearInterval(interval);
-            progressIcon.classList.remove("fa-sync", "fa-spin");
-            progressIcon.classList.add("fa-check");
-            setTimeout(() => {
-              document.getElementById("progressOverlay").style.display = "none";
-            }, 1000);
+          if (p >= 100) {
+            clearInterval(timer);
+            icon.classList.remove("fa-sync", "fa-spin");
+            icon.classList.add("fa-check");
+            setTimeout(() => overlay.style.display = "none", 800);
           }
-        }, 100);
+        }, 80);
       }
 
-      document.querySelectorAll(".btn-progress").forEach(btn => {
+      buttons.forEach(btn => {
         btn.addEventListener("click", function (e) {
           e.preventDefault();
           startProgress();

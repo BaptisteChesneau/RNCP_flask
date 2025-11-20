@@ -65,14 +65,8 @@
           <div class="list-group-item font-weight-bold mt-3">
             Confidentialité & Sécurité
           </div>
-          <a href="#historySection" class="list-group-item list-group-item-action" data-toggle="list">
-            Historique de navigation
-          </a>
           <a href="#dataExportSection" class="list-group-item list-group-item-action" data-toggle="list">
             Mes données
-          </a>
-          <a href="#socialSection" class="list-group-item list-group-item-action" data-toggle="list">
-            Réseaux sociaux
           </a>
 
           <!-- Facturation -->
@@ -84,7 +78,7 @@
           </a>
           <a href="{{ url_for('paiement') }}#facturation"
              class="list-group-item list-group-item-action">
-            Gérer mes paiements Stripe
+            Gérer mes paiements
           </a>
           <form method="POST" action="{{ url_for('supprimer_carte') }}"
                 onsubmit="return confirm('Confirmer la suppression ?')">
@@ -150,40 +144,6 @@
               </div>
               <button class="btn btn-primary btn-progress">Changer</button>
             </form>
-          </div>
-
-          <!-- ================= RÉSEAUX SOCIAUX ================= -->
-          <div class="tab-pane fade" id="socialSection">
-            <h4>Gérer vos réseaux sociaux</h4>
-            <form action="{{ url_for('update_social') }}" method="POST">
-              <div class="form-group">
-                <label>Facebook</label>
-                <input type="url" class="form-control" name="facebook">
-              </div>
-              <div class="form-group">
-                <label>LinkedIn</label>
-                <input type="url" class="form-control" name="linkedin">
-              </div>
-              <div class="form-group">
-                <label>Instagram</label>
-                <input type="url" class="form-control" name="instagram">
-              </div>
-              <button class="btn btn-primary btn-progress">Mettre à jour</button>
-            </form>
-          </div>
-
-          <!-- ================= HISTORIQUE ================= -->
-          <div class="tab-pane fade" id="historySection">
-            <h4>Historique de navigation</h4>
-            {% if session.history %}
-              <ul class="list-group">
-                {% for url in session.history %}
-                  <li class="list-group-item">{{ url }}</li>
-                {% endfor %}
-              </ul>
-            {% else %}
-              <p>Aucun historique.</p>
-            {% endif %}
           </div>
 
           <!-- ================= PRÉFÉRENCES ================= -->

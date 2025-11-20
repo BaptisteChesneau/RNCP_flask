@@ -336,7 +336,6 @@ def menu():
 def footer():
     return render_template("footer.html")
 
-
 @app.route("/plateforme-client")
 def plateforme_client():
     return render_template("plateforme_client.html")

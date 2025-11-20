@@ -1265,16 +1265,6 @@ def client():
     with app.test_client() as client:
         yield client
 
-@app.route("/ajouter-carte-test")
-def ajouter_carte_test():
-    session["carte_bancaire"] = {
-        "nom": "Jean Dupont",
-        "numero": "4242424242424242",
-        "expiration": "12/26",
-    }
-    return redirect(url_for("compte_client"))
-
-
 def test_admin_user_table_requires_login(client):
     response = client.get("/admin-user-table")  # actual route to be adjusted
     assert response.status_code == 302  # redirect to login

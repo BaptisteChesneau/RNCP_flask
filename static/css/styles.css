@@ -304,7 +304,7 @@ footer.footer-custom {
 /* Survol / focus : on passe le texte en rose ML2C */
 #faq-accordion .card-header .btn-link:hover,
 #faq-accordion .card-header .btn-link:focus {
-  color: rgb(216,30,91);               /* Rose ML2C (#D81E5B) */
+  color: rgb(193,0,122);               /* Rose ML2C (#D81E5B) */
   text-decoration: none;
 }
 

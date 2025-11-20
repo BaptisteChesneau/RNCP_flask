@@ -38,6 +38,21 @@ header .btn {
   font-weight: 500;
 }
 
+header h1 {
+  font-size: 1.9rem;
+  color: #333;
+}
+
+nav a {
+  font-weight: 500;
+  color: #333;
+  text-decoration: none;
+}
+
+nav a:hover {
+  color: #c70086; /* Couleur rose de ML2C CONSEIL */
+}
+
 /*============================================================
   3) FORMULAIRES CONNEXION/CRÉATION
 ============================================================*/

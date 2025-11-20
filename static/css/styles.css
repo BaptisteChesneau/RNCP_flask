@@ -1173,7 +1173,7 @@ pre.sql-code {
 }
 
 .card-header {
-  background: #D81E5B !important;
+  background: rgb(193,0,122) !important;
   color: white !important;
   font-size: 1.3rem;
   font-weight: 600;

@@ -635,6 +635,16 @@ def signup():
 
     return render_template("signup.html")
 
+@app.route("/inscription", methods=["POST"])
+def inscription():
+    mot_de_passe = request.form.get("mot_de_passe", "")
+
+    # Test du mot de passe faible (3 caractères dans le test)
+    if len(mot_de_passe) < 6:
+        return "mot de passe trop faible", 200
+
+    return "inscription ok", 200
+
 
 @app.route("/compte-client")
 def compte_client():
@@ -1275,6 +1285,13 @@ def test_user_list_displays_users(client):
     assert b"test1" in response.data
     assert b"baptiste012chesneau@gmail.com" in response.data
 
+@app.route("/admin-user-table")
+def admin_user_table():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+
+    utilisateurs = Utilisateur.query.all()
+    return render_template("admin_user_table.html", utilisateurs=utilisateurs)
 
 def test_user_model():
     user = Utilisateur(nom_utilisateur="test_user", email="test@ml2c.com")
@@ -1430,6 +1447,13 @@ def add_security_headers(response):
 def page_not_found(e):
     return render_template("404.html"), 404
 
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template("500.html"), 500
+
+@app.route("/forcetest500")
+def forcetest500():
+    raise Exception("Erreur forcée pour test 500")
 
 
 if __name__ == "__main__":

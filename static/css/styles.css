@@ -17,7 +17,7 @@ html, body {
 ============================================================*/
 header {
   background-color: rgb(92,102,107); /* Bleu gris ML2C */
-  border-bottom: 1px solid rgb(92,102,107);
+  border-bottom: none !important;
   padding: 1rem 0;
 }
 

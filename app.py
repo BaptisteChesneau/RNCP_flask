@@ -336,6 +336,12 @@ def menu():
 def footer():
     return render_template("footer.html")
 
+
+@app.route("/plateforme-client")
+def plateforme_client():
+    return render_template("plateforme_client.html")
+
+
 @app.route("/formulaire", methods=["GET", "POST"])
 def formulaire_client():
     utilisateur_id = session.get("utilisateur_id")
@@ -629,29 +635,6 @@ def signup():
 
     return render_template("signup.html")
 
-@app.route("/inscription", methods=["GET", "POST"])
-def inscription():
-    # Alias vers signup pour que les tests /inscription fonctionnent
-    return signup()
-
-@app.route("/logout")
-def logout():
-    """Déconnexion utilisateur standard"""
-    session.clear()
-    flash("Vous avez été déconnecté.", "info")
-    return redirect(url_for("menu"))
-
-@app.route("/profil")
-def profil():
-    # À adapter avec un vrai template plus tard
-    return render_template("profil.html")
-
-@app.route("/videos")
-def videos():
-    # À adapter avec de vrais contenus plus tard
-    return render_template("videos.html")
-
-
 
 @app.route("/compte-client")
 def compte_client():
@@ -672,43 +655,6 @@ def compte_client():
         devis_data=devis_data,
         devis_list=devis_list,
     )
-
-@app.route("/ajouter-carte-test")
-def ajouter_carte_test():
-    session["carte_bancaire"] = {
-        "nom": "Jean Dupont",
-        "numero": "4242424242424242",
-        "expiration": "12/26",
-    }
-    return redirect(url_for("compte"))
-
-@app.route("/ajouter-carte-test")
-def ajouter_carte_test():
-    session["carte_bancaire"] = {
-        "nom": "Jean Dupont",
-        "numero": "4242424242424242",
-        "expiration": "12/26",
-    }
-    return redirect(url_for("compte_client"))  # au lieu de "compte"
-
-@app.route("/refresh")
-def refresh_page():
-    return redirect(url_for("admin_view"))
-
-@app.route("/admin-user-table")
-def admin_view():
-    if not session.get("admin_logged_in"):
-        flash("Accès interdit. Admin requis.", "danger")
-        return redirect(url_for("login_admin"))
-
-    utilisateurs = Utilisateur.query.all()
-    return render_template("admin_user_table.html", utilisateurs=utilisateurs)
-
-@app.route("/save-inline-edits", methods=["POST"])
-def save_inline_edits():
-    print("✅ Inline edits received:", dict(request.form))
-    flash("Changes saved (simulation)", "success")
-    return redirect(url_for("admin_view"))
 
 
 @app.route("/newsletter", methods=["POST"])
@@ -1484,14 +1430,6 @@ def add_security_headers(response):
 def page_not_found(e):
     return render_template("404.html"), 404
 
-@app.errorhandler(500)
-def internal_server_error(e):
-    return render_template("500.html"), 500
-
-@app.route("/forcetest500")
-def forcetest500():
-    # Route volontairement cassée pour les tests
-    raise Exception("Erreur de test 500 volontaire")
 
 
 if __name__ == "__main__":

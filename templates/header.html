@@ -11,47 +11,35 @@
 <body>
   <!-- Main Header -->
   <header class="bg-light py-3">
-    <div class="container">
-      <!-- Ligne du haut : logo + titre au centre + boutons à droite -->
-      <div class="d-flex justify-content-between align-items-center">
-        <!-- Logo à gauche -->
-        <a href="{{ url_for('menu') }}">
-          <img src="{{ url_for('static', filename='images/Logo.png') }}"
-               alt="Logo ML2C CONSEIL"
-               class="img-fluid"
-               style="height: 60px; width: auto;">
-        </a>
+    <div class="container d-flex justify-content-between align-items-center">
+      <!-- Logo on the left (clickable to return to the menu) -->
+      <a href="{{ url_for('menu') }}">
+        <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo ML2C CONSEIL" class="img-fluid">
+      </a>
 
-        <!-- Titre au centre -->
-        <h1 class="m-0 text-center flex-grow-1">ML2C CONSEIL</h1>
-        
-        <!-- À droite : avatar ou boutons -->
-        <div class="d-flex align-items-center">
-          {% if session.get('user_id') %}
-            <!-- Avatar displayed only when logged in -->
-            <img src="{{ url_for('static', filename='images/avatar.jpg') }}"
-                alt="Profil utilisateur"
-                class="rounded-circle ml-3"
-                style="width: 45px; height: 45px; object-fit: cover;">
-          {% else %}
-            <!-- Login/Signup Buttons when not logged in -->
-            <button class="btn btn-primary mr-2" data-toggle="modal" data-target="#accountModal">
-              Compte
-            </button>
-            <a href="https://app.ml2c-conseil.com/login" class="btn btn-outline-primary">
-              Se connecter à l'application
-            </a>
-          {% endif %}
-        </div>
-      </div>
 
-      <!-- MENU CENTRÉ EN DESSOUS -->
+      <!-- MENU CENTRÉ -->
       <nav class="text-center mt-3">
         <a href="#" class="mx-3">Notre histoire</a>
         <a href="#" class="mx-3">Notre équipe</a>
         <a href="#" class="mx-3">Nos Outils</a>
         <a href="#" class="mx-3">Nous Contacter</a>
       </nav>
+      
+      <!-- Right-side: either avatar if logged in, or login/signup buttons -->
+      <div class="d-flex align-items-center">
+        {% if session.get('user_id') %}
+          <!-- Avatar displayed only when logged in -->
+          <img src="{{ url_for('static', filename='images/avatar.jpg') }}"
+               alt="Profil utilisateur"
+               class="rounded-circle ml-3"
+               style="width: 45px; height: 45px; object-fit: cover;">
+        {% else %}
+          <!-- Login/Signup Buttons when not logged in -->
+          <button class="btn btn-primary mr-2" data-toggle="modal" data-target="#accountModal">Compte</button>
+          <a href="https://app.ml2c-conseil.com/login" class="btn btn-outline-primary">Se connecter à l'application</a>
+        {% endif %}
+      </div>
     </div>
   </header>
 

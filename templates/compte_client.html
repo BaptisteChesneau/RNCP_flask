@@ -1,176 +1,198 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <title>Compte Client - ML2C CONSEIL</title>
+
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
-  <!-- Your custom CSS file if needed -->
+
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
+
 <body>
   {% include "header.html" %}
 
   <div class="container my-5">
-    <!-- Dynamic welcome message -->
+
+    <!-- 🔵 ZONE TITRE ESPACE CLIENT -->
+    <div class="espace-client-header">
+      ESPACE CLIENT
+    </div>
+
+    <!-- Message dynamique -->
     <div id="welcomeMessage" class="alert alert-info text-center" role="alert"></div>
 
-    <h2 class="text-center mb-4">Compte Client</h2>
-    <p class="text-center">
-      Bienvenue dans votre espace client. Utilisez les onglets ci-dessous pour consulter votre devis et votre fiche client.
+    <p class="text-center mb-4">
+      Retrouvez ici votre devis, votre fiche client et vos informations bancaires.
     </p>
 
-    <!-- Nav tabs for Devis Rempli and Formulaire Rempli -->
+    <!-- 🔵 ONGLET NAVIGATION -->
     <ul class="nav nav-tabs" id="accountTab" role="tablist">
       <li class="nav-item">
-        <a class="nav-link active" id="devis-tab" data-toggle="tab" href="#devis" role="tab" aria-controls="devis" aria-selected="true">
+        <a class="nav-link active" id="devis-tab" data-toggle="tab" href="#devis" role="tab">
           Devis Rempli
         </a>
       </li>
+
       <li class="nav-item">
-        <a class="nav-link" id="formulaire-tab" data-toggle="tab" href="#formulaire" role="tab" aria-controls="formulaire" aria-selected="false">
+        <a class="nav-link" id="formulaire-tab" data-toggle="tab" href="#formulaire" role="tab">
           Formulaire Rempli
         </a>
       </li>
+
       <li class="nav-item">
-        <a class="nav-link" id="carte-tab" data-toggle="tab" href="#carte" role="tab" aria-controls="carte" aria-selected="false">
+        <a class="nav-link" id="carte-tab" data-toggle="tab" href="#carte" role="tab">
           Carte bancaire
         </a>
-      </li>          
+      </li>
     </ul>
 
-    <!-- Tab panes for Devis Rempli and Formulaire Rempli -->
+    <!-- 🔵 CONTENU ONGLET -->
     <div class="tab-content" id="accountTabContent">
 
-      <!-- Devis Rempli Tab -->
-      <div class="tab-pane fade show active" id="devis" role="tabpanel" aria-labelledby="devis-tab">
+      <!-- ===========================
+            🔹 ONGLET DEVIS REMPLI
+      ============================ -->
+      <div class="tab-pane fade show active" id="devis" role="tabpanel">
+
         {% if session.devis_data %}
-          <div class="card mt-3">
-            <div class="card-header">
-              <h4>Résumé de votre devis</h4>
-            </div>
-            <div class="card-body">
-              <ul class="list-group">
-                <li class="list-group-item"><strong>Secteur d'activité :</strong> {{ session.devis_data.secteur }}</li>
-                <li class="list-group-item"><strong>Nom / Raison sociale :</strong> {{ session.devis_data.nom }}</li>
-                <li class="list-group-item"><strong>Type de service :</strong> {{ session.devis_data.type_service }}</li>
-                <li class="list-group-item"><strong>Date du rendez-vous :</strong> {{ session.devis_data.date_rdv }}</li>
-                <li class="list-group-item"><strong>Heure du rendez-vous :</strong> {{ session.devis_data.heure_rdv }}</li>
-                <li class="list-group-item"><strong>Email :</strong> {{ session.devis_data.email }}</li>
-              </ul>
-            </div>
+        <div class="card mt-3">
+          <div class="card-header">
+            Résumé de votre devis
           </div>
+          <div class="card-body">
+            <ul class="list-group">
+              <li class="list-group-item"><strong>Secteur :</strong> {{ session.devis_data.secteur }}</li>
+              <li class="list-group-item"><strong>Nom / Raison sociale :</strong> {{ session.devis_data.nom }}</li>
+              <li class="list-group-item"><strong>Type de service :</strong> {{ session.devis_data.type_service }}</li>
+              <li class="list-group-item"><strong>Date du rendez-vous :</strong> {{ session.devis_data.date_rdv }}</li>
+              <li class="list-group-item"><strong>Heure du rendez-vous :</strong> {{ session.devis_data.heure_rdv }}</li>
+              <li class="list-group-item"><strong>Email :</strong> {{ session.devis_data.email }}</li>
+            </ul>
+          </div>
+        </div>
         {% endif %}
 
         {% if devis_list %}
-          <div class="card mt-4 fiche-resume-card">
-            <div class="card-header fiche-resume-header text-white">Fiche résumé devis</div>
-            <div class="card-body text-white">
-              {% for devis in devis_list %}
-                <p><strong>Nom :</strong> {{ devis.nom }}</p>
-                <p><strong>Secteur :</strong> {{ devis.secteur }}</p>
-                <p><strong>Type de service :</strong> {{ devis.type_service }}</p>
-                <p><strong>Date :</strong> {{ devis.date_rdv }}</p>
-                <p><strong>Heure :</strong> {{ devis.heure_rdv }}</p>
-                <hr>
-              {% endfor %}
-            </div>
+        <div class="card mt-4 fiche-resume-card">
+          <div class="fiche-resume-header text-white">Fiche résumé devis</div>
+          <div class="card-body text-white">
+            {% for devis in devis_list %}
+            <p><strong>Nom :</strong> {{ devis.nom }}</p>
+            <p><strong>Secteur :</strong> {{ devis.secteur }}</p>
+            <p><strong>Service :</strong> {{ devis.type_service }}</p>
+            <p><strong>Date :</strong> {{ devis.date_rdv }}</p>
+            <p><strong>Heure :</strong> {{ devis.heure_rdv }}</p>
+            <hr>
+            {% endfor %}
           </div>
+        </div>
         {% endif %}
 
         {% if not session.devis_data and not devis_list %}
-          <p class="mt-3">Aucun devis n'a été soumis.</p>
+        <p class="mt-3">Aucun devis n'a été soumis.</p>
         {% endif %}
+
       </div>
 
-      <!-- Formulaire Rempli Tab -->
-      <div class="tab-pane fade" id="formulaire" role="tabpanel" aria-labelledby="formulaire-tab">
+      <!-- ===========================
+            🔹 ONGLET FORMULAIRE
+      ============================ -->
+      <div class="tab-pane fade" id="formulaire" role="tabpanel">
+
         {% if clients %}
           {% for client in clients %}
-            <div class="card mt-3">
-              <div class="card-header">
-                <h4>Fiche client n°{{ client.id }}</h4>
-              </div>
-              <div class="card-body">
-                <ul class="list-group">
-                  <li class="list-group-item"><strong>Activité :</strong> {{ client.activite }}</li>
-                  <li class="list-group-item"><strong>Type d'entreprise :</strong> {{ client.type_entreprise }}</li>
-                  <li class="list-group-item"><strong>Cabinet :</strong> {{ client.cabinet }}</li>
-                  <li class="list-group-item"><strong>Civilité :</strong> {{ client.civilite }}</li>
-                  <li class="list-group-item"><strong>Nom :</strong> {{ client.nom }}</li>
-                  <li class="list-group-item"><strong>Prénom :</strong> {{ client.prenom }}</li>
-                  <li class="list-group-item"><strong>Email :</strong> {{ client.email }}</li>
-                  <li class="list-group-item"><strong>Adresse du siège :</strong> {{ client.adresse_siege }}</li>
-                </ul>
-              </div>
+          <div class="card mt-3">
+            <div class="card-header">
+              Fiche client n°{{ client.id }}
             </div>
+            <div class="card-body">
+              <ul class="list-group">
+                <li class="list-group-item"><strong>Activité :</strong> {{ client.activite }}</li>
+                <li class="list-group-item"><strong>Type d'entreprise :</strong> {{ client.type_entreprise }}</li>
+                <li class="list-group-item"><strong>Cabinet :</strong> {{ client.cabinet }}</li>
+                <li class="list-group-item"><strong>Civilité :</strong> {{ client.civilite }}</li>
+                <li class="list-group-item"><strong>Nom :</strong> {{ client.nom }}</li>
+                <li class="list-group-item"><strong>Prénom :</strong> {{ client.prenom }}</li>
+                <li class="list-group-item"><strong>Email :</strong> {{ client.email }}</li>
+                <li class="list-group-item"><strong>Adresse du siège :</strong> {{ client.adresse_siege }}</li>
+              </ul>
+            </div>
+          </div>
           {% endfor %}
-        {% else %}
-          <p class="mt-3">Aucune fiche client n'a été soumise.</p>
-        {% endif %}
-      </div>
-    </div>
 
-      <!-- Carte Bancaire Tab -->
-      <div class="tab-pane fade" id="carte" role="tabpanel" aria-labelledby="carte-tab">
+        {% else %}
+        <p class="mt-3">Aucune fiche client enregistrée.</p>
+        {% endif %}
+
+      </div>
+
+      <!-- ===========================
+            🔹 ONGLET CARTE BANCAIRE
+      ============================ -->
+      <div class="tab-pane fade" id="carte" role="tabpanel">
+
         <div class="text-center mt-4">
           <h4>Carte Bancaire Enregistrée</h4>
 
           {% if session.get('carte_bancaire') %}
-            <div class="credit-card-display mx-auto my-4 p-4 rounded text-white">
-              <div class="d-flex justify-content-between mb-3">
+
+          <div class="credit-card-display mx-auto my-4 p-4 rounded">
+            <div class="d-flex justify-content-between mb-3">
               <div class="card-number">•••• •••• •••• {{ session.carte_bancaire.numero[-4:] }}</div>
-            <div class="card-brand">{{ session.carte_bancaire.marque or 'VISA' }}</div>
-          </div>
-          <div class="d-flex justify-content-between">
-            <div>
-              <small class="text-uppercase">Titulaire</small><br>
-              <strong>{{ session.carte_bancaire.nom }}</strong>
+              <div class="card-brand">{{ session.carte_bancaire.marque or 'VISA' }}</div>
             </div>
-            <div>
-              <small class="text-uppercase">Expiration</small><br>
-              <strong>{{ session.carte_bancaire.expiration }}</strong>
+
+            <div class="d-flex justify-content-between">
+              <div>
+                <small class="text-uppercase">Titulaire</small><br>
+                <strong>{{ session.carte_bancaire.nom }}</strong>
+              </div>
+              <div>
+                <small class="text-uppercase">Expiration</small><br>
+                <strong>{{ session.carte_bancaire.expiration }}</strong>
+              </div>
             </div>
           </div>
+
+          <form method="POST" action="{{ url_for('supprimer_carte') }}" 
+                onsubmit="return confirm('Souhaitez-vous vraiment supprimer cette carte ?')">
+            <button type="submit" class="btn btn-outline-danger">🗑️ Supprimer la carte</button>
+          </form>
+
+          {% else %}
+          <p class="mt-4 text-muted">Aucune carte enregistrée.</p>
+          {% endif %}
+
+          <p class="text-muted mt-3">Les détails complets sont visibles dans l’onglet Facturation des paramètres.</p>
         </div>
 
-      <!-- 🗑️ Bouton Supprimer la carte -->
-      <form method="POST" action="{{ url_for('supprimer_carte') }}" onsubmit="return confirm('Souhaitez-vous vraiment supprimer cette carte ?')">
-        <button type="submit" class="btn btn-outline-danger">🗑️ Supprimer la carte</button>
-      </form>
-    {% else %}
-      <p class="mt-4 text-muted">Aucune carte enregistrée.</p>
-    {% endif %}
-
-    <p class="text-muted mt-3">Les détails complets sont visibles dans l’onglet Facturation des paramètres.</p>
-  </div>
-</div>
-
-    <!-- Bouton pour accéder aux paramètres du compte -->
-    <div class="text-center mt-4">
-      <a href="{{ url_for('parametres') }}" class="btn btn-primary">Paramètres du Compte</a>
+      </div>
     </div>
 
-    <!-- Bouton Retour au menu -->
-    <div class="text-center mt-4">
+    <!-- 🔵 BOUTONS BAS DE PAGE -->
+    <div class="account-actions">
+      <a href="{{ url_for('parametres') }}" class="btn btn-primary">Paramètres du Compte</a>
       <a href="{{ url_for('menu') }}" class="btn btn-secondary">Retour au menu</a>
     </div>
+
   </div>
 
   {% include "footer.html" %}
 
-  <!-- Bootstrap & jQuery JS Scripts -->
+  <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Script to display dynamic welcome message using session variable -->
+  <!-- Message dynamique -->
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       var username = "{{ session.get('prenom', 'Utilisateur') }}";
-      if (username) {
-        document.getElementById("welcomeMessage").innerHTML = "Bonjour " + username + " !";
-      }
+      document.getElementById("welcomeMessage").innerHTML = "Bonjour " + username + " !";
     });
   </script>
+
 </body>
 </html>

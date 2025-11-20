@@ -1068,40 +1068,143 @@ pre.sql-code {
 }
 
 /*============================================================
-   41) Carte bancaire (onglet compte client)
+   41) Carte bancaire (onglet compte client) — VERSION A
 ============================================================*/
 
 .credit-card-display {
-  background: linear-gradient(135deg, rgb(102,126,234), rgb(118,75,162));
-  color: rgb(255,255,255);
-  max-width: 400px;
+  background: linear-gradient(135deg, #00A89D, #0097A7);
+  color: #fff;
+  max-width: 420px;
   margin: auto;
-  padding: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  font-family: 'Courier New', monospace;
-  letter-spacing: 1px;
-  border-radius: 1rem;
+  padding: 22px;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  animation: fadeIn 0.7s ease;
 }
 
 .credit-card-display .card-number {
-  font-size: 1.3rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 2px;
 }
 
 .credit-card-display .card-brand {
   font-size: 1rem;
+  font-weight: 600;
   text-align: right;
+  opacity: 0.9;
 }
 
-.credit-card-display small {
-  font-size: 0.7rem;
-  opacity: 0.8;
+/*============================================================
+   41.1) En-tête ESPACE CLIENT
+============================================================*/
+
+.espace-client-header {
+  background: rgb(92,102,107);
+  padding: 25px;
+  border-radius: 12px;
+  color: white;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: .5px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  animation: fadeSlideDown 0.8s ease;
 }
 
-.credit-card-display strong {
-  font-size: 0.9rem;
+@keyframes fadeSlideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
+
+/*============================================================
+  41.2) Nav-tabs modernisés
+============================================================*/
+
+.nav-tabs {
+  border-bottom: 2px solid rgb(92,102,107);
+}
+
+.nav-tabs .nav-link {
+  color: #444;
+  font-weight: 600;
+  padding: 12px 22px;
+  border-radius: 8px 8px 0 0;
+  transition: all 0.25s ease;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #D81E5B;
+  color: white !important;
+  border-color: #D81E5B;
+  box-shadow: 0 -2px 8px rgba(216,30,91,0.3);
+}
+
+.nav-tabs .nav-link:hover {
+  background-color: rgb(92,102,107);
+  color: white !important;
+}
+
+/*============================================================
+  41.3) Cards devis / fiches clients
+============================================================*/
+
+.card {
+  border-radius: 12px !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  animation: fadeIn 0.6s ease;
+}
+
+.card-header {
+  background: #D81E5B !important;
+  color: white !important;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.list-group-item {
+  border: none !important;
+  padding: 14px 18px;
+  background: #f7f7f7;
+  font-size: 1rem;
+}
+
+.list-group-item:nth-child(even) {
+  background: #efefef;
+}
+
+/*============================================================
+  41.4) Fiche résumé devis 
+============================================================*/
+
+.fiche-resume-card {
+  background: #00A89D !important;
+  border-radius: 12px;
+  border: none;
+  color: white !important;
+}
+
+.fiche-resume-header {
+  background: #D81E5B !important;
+  padding: 15px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  border-radius: 12px 12px 0 0;
+}
+
+/*============================================================
+  41.5) Animations
+============================================================*/
+
+.fade-in { animation: fadeIn 0.7s ease; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 
 /*============================================================
    42 - Page Erreur 404 

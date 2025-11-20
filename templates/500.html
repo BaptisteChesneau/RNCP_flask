@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Erreur 500 - ML2C CONSEIL</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <!-- Ton CSS global -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  {% include "header.html" %}
+
+  <main class="error-500-page">
+    <div class="error-500-content container fade-in">
+      <div class="mb-4">
+        <div class="error-500-code">500</div>
+        <div class="error-500-message">
+          Oups... Une erreur interne s’est produite.
+        </div>
+      </div>
+
+      <p class="mb-4">
+        Notre équipe a été informée du problème.  
+        Vous pouvez réessayer dans quelques instants ou revenir à l’accueil.
+      </p>
+
+      <p class="mb-4">
+        Si l’erreur persiste, n’hésitez pas à nous contacter afin que nous puissions
+        analyser la situation et vous apporter une solution rapide et fiable.
+      </p>
+
+      <div class="d-flex justify-content-center flex-wrap">
+        <a href="{{ url_for('menu') }}" class="btn btn-primary m-2">
+          ⬅️ Retour au menu principal
+        </a>
+        <a href="{{ url_for('nous_contacter') }}" class="btn btn-secondary m-2">
+          📩 Contacter le support ML2C
+        </a>
+      </div>
+
+      <div class="mt-4 text-muted small">
+        ML2C CONSEIL – Fiabilité, proximité, et innovation au service de votre comptabilité.
+      </div>
+    </div>
+  </main>
+
+  {% include "footer.html" %}
+
+  <!-- JS Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Petite animation d'apparition (optionnelle si tu as déjà .fade-in au CSS) -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var block = document.querySelector('.error-500-content');
+      if (block) {
+        block.classList.add('slide-up');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -572,6 +572,9 @@ def rgpd():
 def mentions_legales():
     return render_template("mentions_legales.html")
 
+@app.route('/cookies')
+def cookies():
+    return render_template('cookies.html')
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

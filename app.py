@@ -321,17 +321,6 @@ mail = Mail(app)
 def header():
     return render_template("header.html")
 
-@app.route('/notre-vision')
-def notre_vision():
-    return render_template('notre_vision.html')
-
-@app.route('/nos-valeurs')
-def nos_valeurs():
-    return render_template('nos_valeurs.html')
-
-@app.route('/nos-engagements')
-def nos_engagements():
-    return render_template('nos_engagements.html')
 
 @app.route("/")
 def index():
@@ -586,6 +575,7 @@ def mentions_legales():
 @app.route('/cookies')
 def cookies():
     return render_template('cookies.html')
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -956,9 +946,6 @@ def modifier_client(client_id):
 
     return render_template("modifier_client.html", client=client)
 
-@app.errorhandler(500)
-def internal_error(e):
-    return f"<pre>Erreur 500 : {e}</pre>", 500
 
 @app.route("/supprimer-client/<int:client_id>", methods=["POST"])
 def supprimer_client(client_id):

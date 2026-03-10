@@ -34,48 +34,11 @@
           <!-- Dropdown : À propos -->
           <div class="nav-dropdown">
             <span class="nav-item">À propos <i class="fas fa-chevron-down fa-xs"></i></span>
-            <div class="dropdown-panel dropdown-wide" style="min-width:560px">
-              <div class="drop-col">
-                <span class="drop-cat">Découvrir ML2C CONSEIL</span>
-                <a href="{{ url_for('notre_vision') }}" class="drop-link drop-link-desc">
-                  <i class="fas fa-eye"></i>
-                  <span>
-                    <strong>Notre vision &amp; positionnement</strong>
-                    <em>Notre approche, ce qui nous différencie</em>
-                  </span>
-                </a>
-                <a href="{{ url_for('notre_histoire') }}" class="drop-link drop-link-desc">
-                  <i class="fas fa-landmark"></i>
-                  <span>
-                    <strong>Notre Histoire</strong>
-                    <em>Les étapes clés depuis 2009</em>
-                  </span>
-                </a>
-                <a href="{{ url_for('nos_valeurs') }}" class="drop-link drop-link-desc">
-                  <i class="fas fa-heart"></i>
-                  <span>
-                    <strong>Nos valeurs &amp; nos méthodes</strong>
-                    <em>Transparence, rigueur et innovation utile</em>
-                  </span>
-                </a>
-              </div>
-              <div class="drop-col">
-                <span class="drop-cat">L'équipe et la relation client</span>
-                <a href="{{ url_for('notre_equipe') }}" class="drop-link drop-link-desc">
-                  <i class="fas fa-users"></i>
-                  <span>
-                    <strong>Notre équipe</strong>
-                    <em>Une équipe à taille humaine et complémentaire</em>
-                  </span>
-                </a>
-                <a href="{{ url_for('nos_engagements') }}" class="drop-link drop-link-desc">
-                  <i class="fas fa-handshake"></i>
-                  <span>
-                    <strong>Nos engagements</strong>
-                    <em>Un accompagnement sur mesure et durable</em>
-                  </span>
-                </a>
-              </div>
+            <div class="dropdown-panel">
+              <a href="{{ url_for('notre_histoire') }}" class="drop-link"><i class="fas fa-landmark"></i> Notre histoire</a>
+              <a href="{{ url_for('notre_equipe') }}" class="drop-link"><i class="fas fa-users"></i> Notre équipe</a>
+              <a href="#" class="drop-link"><i class="fas fa-handshake"></i> Nos engagements</a>
+              <a href="#" class="drop-link"><i class="fas fa-eye"></i> Notre vision</a>
             </div>
           </div>
 
@@ -103,10 +66,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Lien direct : Nos Outils -->
-          <a href="{{ url_for('nos_outils') }}" class="nav-item">Nos Outils</a>
-
         </nav>
 
         <!-- Séparateur vertical -->
@@ -129,9 +88,6 @@
             <button class="btn-compte" data-toggle="modal" data-target="#accountModal">
               <i class="fas fa-user"></i> Compte
             </button>
-            <!-- Accès application externe -->
-            <a href="https://app.ml2c-conseil.com/login" class="btn-app" target="_blank">
-              <i class="fas fa-external-link-alt"></i> Application
             </a>
           {% endif %}
 

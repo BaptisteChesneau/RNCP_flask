@@ -945,6 +945,9 @@ def modifier_client(client_id):
 
     return render_template("modifier_client.html", client=client)
 
+@app.errorhandler(500)
+def internal_error(e):
+    return f"<pre>Erreur 500 : {e}</pre>", 500
 
 @app.route("/supprimer-client/<int:client_id>", methods=["POST"])
 def supprimer_client(client_id):

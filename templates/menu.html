@@ -1,103 +1,312 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Menu - Cabinet Comptable</title>
-  <!-- Intégration de Bootstrap (exemple) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ML2C CONSEIL — Cabinet d'Expertise Comptable</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
 </head>
 <body>
 
-  {% include "header.html" %}
+{% include "header.html" %}
 
-  <!-- CARROUSEL -->
-  <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
-    <ol class="carousel-indicators">
-      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-    </ol>
-
+<!-- ══════════════════════════════════════════
+     HERO
+══════════════════════════════════════════ -->
+<section class="hero" id="accueil">
+  <div id="heroCarousel" class="carousel slide hero-carousel" data-ride="carousel" data-interval="5000">
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img src="{{ url_for('static', filename='images/slide1.jpg') }}" class="d-block w-100" alt="Slide 1">
+        <img src="{{ url_for('static', filename='images/slide1.jpg') }}" class="hero-slide-img" alt="ML2C Conseil">
       </div>
       <div class="carousel-item">
-        <img src="{{ url_for('static', filename='images/slide2.jpg') }}" class="d-block w-100" alt="Slide 2">
+        <img src="{{ url_for('static', filename='images/slide2.jpg') }}" class="hero-slide-img" alt="ML2C Conseil">
       </div>
     </div>
-
-    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Précédent</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Suivant</span>
-    </a>
   </div>
-
-  <!-- SECTION NOTRE DIFFÉRENCE -->
-  <div class="container my-5">
-    <h2 class="mb-4">Pourquoi ML2C CONSEIL est différent&nbsp;?</h2>
-
-    <p>
-      Chez <strong>ML2C CONSEIL</strong>, nous ne sommes pas un simple cabinet comptable
-      qui se contente de traiter des chiffres. Notre ambition est d’être un
-      <strong>partenaire de confiance</strong> pour les dirigeants, les indépendants et les
-      structures en développement, en leur apportant une vision claire, utile et
-      exploitable de leur activité.
-    </p>
-
-    <p>
-      Nous combinons <strong>expertise comptable, fiscale et sociale</strong> avec une
-      approche centrée sur l’humain&nbsp;: écoute, pédagogie et disponibilité. Chaque
-      dossier est suivi avec sérieux, et nous prenons le temps d’expliquer les
-      enjeux, les options possibles et leurs impacts concrets sur votre entreprise.
-    </p>
-
-    <p>
-      Ce qui nous distingue également, c’est notre volonté d’intégrer les
-      <strong>outils numériques et l’intelligence artificielle</strong> dans notre
-      accompagnement. Là où beaucoup de cabinets restent sur des méthodes
-      classiques, nous utilisons des solutions innovantes pour :
-    </p>
-
-    <ul>
-      <li>fiabiliser et accélérer le traitement de vos données,</li>
-      <li>anticiper les risques et opportunités grâce à des analyses plus fines,</li>
-      <li>vous proposer des tableaux de bord clairs et personnalisés,</li>
-      <li>faciliter les échanges via une <strong>plateforme client</strong> moderne.</li>
-    </ul>
-
-    <p>
-      L’IA ne remplace pas le conseil&nbsp;: elle le renforce. Elle nous permet de consacrer
-      plus de temps à ce qui compte vraiment&nbsp;: <strong>vous accompagner dans vos décisions</strong>,
-      sécuriser votre activité et vous aider à construire l’avenir de votre entreprise.
-    </p>
-
-    <p class="mb-0">
-      Avec <strong>ML2C CONSEIL</strong>, vous bénéficiez à la fois de
-      <strong>la rigueur d’un cabinet comptable</strong>, de
-      <strong>la proximité d’un partenaire</strong> et de
-      <strong>la puissance des outils d’intelligence artificielle</strong>, au service
-      d’un seul objectif&nbsp;: la réussite durable de votre projet.
-    </p>
-  </div>
-
-  <!-- BOUTON CHATBOT -->
-  <div class="container">
-    <div class="d-flex justify-content-end mt-4">
-      <a href="{{ url_for('chatbot') }}" class="btn btn-primary btn-lg">
-        🤖 Accéder au Chatbot
-      </a>
+  <div class="hero-overlay"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">Cabinet d'expertise comptable — Dammarie</div>
+    <h1 class="hero-title">Votre partenaire<br><span>comptable & fiscal</span></h1>
+    <p class="hero-sub">Expertise, proximité et intelligence artificielle<br>au service de votre réussite durable.</p>
+    <div class="hero-ctas">
+      <a href="tel:+33672343294" class="cta-call"><i class="fas fa-phone-alt"></i> Appeler maintenant</a>
+      <a href="#contact" class="cta-devis"><i class="fas fa-file-invoice"></i> Devis gratuit</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item"><i class="fas fa-shield-alt"></i> Expert-comptable certifié</div>
+      <div class="trust-item"><i class="fas fa-clock"></i> Réponse sous 24h</div>
+      <div class="trust-item"><i class="fas fa-star"></i> +150 clients accompagnés</div>
     </div>
   </div>
+  <a href="#stats" class="scroll-down"><i class="fas fa-chevron-down"></i></a>
+</section>
 
-  {% include "footer.html" %}
+<!-- ══════════════════════════════════════════
+     CHIFFRES CLÉS
+══════════════════════════════════════════ -->
+<div class="stats-bar" id="stats">
+  <div class="stats-grid">
+    <div class="stat-item">
+      <span class="stat-num" data-target="150">0</span><span class="stat-acc">+</span>
+      <span class="stat-lbl">Clients accompagnés</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" data-target="15">0</span><span class="stat-acc"> ans</span>
+      <span class="stat-lbl">d'expérience</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" data-target="98">0</span><span class="stat-acc">%</span>
+      <span class="stat-lbl">de satisfaction</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" data-target="24">0</span><span class="stat-acc">h</span>
+      <span class="stat-lbl">délai de réponse</span>
+    </div>
+  </div>
+</div>
 
-  <!-- Scripts JS Bootstrap -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- ══════════════════════════════════════════
+     POURQUOI ML2C
+══════════════════════════════════════════ -->
+<section class="section-why" id="pourquoi">
+  <div class="container">
+    <div class="sec-head text-center">
+      <span class="sec-tag">Notre différence</span>
+      <h2 class="sec-title">Pourquoi choisir ML2C CONSEIL ?</h2>
+      <p class="sec-sub">Nous ne sommes pas un simple cabinet comptable — nous sommes votre partenaire de croissance.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon"><i class="fas fa-brain"></i></div>
+        <h3>IA & Innovation</h3>
+        <p>Nous intégrons l'intelligence artificielle pour fiabiliser vos données et produire des analyses prédictives inédites.</p>
+      </div>
+      <div class="why-card featured">
+        <div class="why-icon"><i class="fas fa-handshake"></i></div>
+        <h3>Proximité humaine</h3>
+        <p>Chaque dossier est suivi personnellement. Un interlocuteur dédié, disponible et pédagogue.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><i class="fas fa-chart-line"></i></div>
+        <h3>Vision stratégique</h3>
+        <p>Des tableaux de bord clairs pour piloter votre activité et anticiper les risques à temps.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><i class="fas fa-laptop-code"></i></div>
+        <h3>Plateforme client</h3>
+        <p>Un espace moderne pour centraliser vos documents, échanges et déclarations.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     NOS SERVICES
+══════════════════════════════════════════ -->
+<section class="section-services" id="services">
+  <div class="container">
+    <div class="sec-head text-center">
+      <span class="sec-tag">Ce que nous faisons</span>
+      <h2 class="sec-title">Nos Services</h2>
+      <p class="sec-sub">Une offre complète pour accompagner votre entreprise à chaque étape.</p>
+    </div>
+    <div class="svc-tabs">
+      <button class="svc-tab active" data-target="compta">📊 Comptabilité</button>
+      <button class="svc-tab" data-target="social">👥 Social & Paie</button>
+      <button class="svc-tab" data-target="juridique">⚖️ Juridique</button>
+      <button class="svc-tab" data-target="conseil">🤖 Conseil & IA</button>
+    </div>
+    <div class="svc-panels">
+      <div class="svc-panel active" id="svc-compta">
+        <div class="svc-img-box"><img src="{{ url_for('static', filename='images/slide1.jpg') }}" alt="Comptabilité"></div>
+        <div class="svc-content">
+          <h3>Tenue comptable & Fiscalité</h3>
+          <p>Nous prenons en charge l'intégralité de votre comptabilité : saisie, bilans et liasses fiscales. Votre expert dédié assure une conformité totale et anticipe vos échéances.</p>
+          <ul class="svc-list">
+            <li><i class="fas fa-check"></i> Tenue de comptabilité complète</li>
+            <li><i class="fas fa-check"></i> Bilans & comptes de résultat</li>
+            <li><i class="fas fa-check"></i> Déclarations TVA, IS, BIC/BNC</li>
+            <li><i class="fas fa-check"></i> Pilotage par tableaux de bord</li>
+          </ul>
+          <a href="#contact" class="btn-svc">Demander un devis <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="svc-panel" id="svc-social">
+        <div class="svc-img-box"><img src="{{ url_for('static', filename='images/slide2.jpg') }}" alt="Social"></div>
+        <div class="svc-content">
+          <h3>Paie & Gestion sociale</h3>
+          <p>Externalisez votre paie en toute sérénité. Bulletins de salaire, DSN et conseil en droit du travail.</p>
+          <ul class="svc-list">
+            <li><i class="fas fa-check"></i> Bulletins de paie</li>
+            <li><i class="fas fa-check"></i> DSN & déclarations sociales</li>
+            <li><i class="fas fa-check"></i> Conseil en droit du travail</li>
+            <li><i class="fas fa-check"></i> Optimisation de la rémunération</li>
+          </ul>
+          <a href="#contact" class="btn-svc">Demander un devis <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="svc-panel" id="svc-juridique">
+        <div class="svc-img-box"><img src="{{ url_for('static', filename='images/slide1.jpg') }}" alt="Juridique"></div>
+        <div class="svc-content">
+          <h3>Conseil juridique & Création</h3>
+          <p>De la création à la transmission, nous vous accompagnons sur le choix de forme juridique et la structuration.</p>
+          <ul class="svc-list">
+            <li><i class="fas fa-check"></i> Création & immatriculation</li>
+            <li><i class="fas fa-check"></i> Rédaction de statuts</li>
+            <li><i class="fas fa-check"></i> Cession, fusion, transmission</li>
+            <li><i class="fas fa-check"></i> Secrétariat juridique annuel</li>
+          </ul>
+          <a href="#contact" class="btn-svc">Demander un devis <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="svc-panel" id="svc-conseil">
+        <div class="svc-img-box"><img src="{{ url_for('static', filename='images/slide2.jpg') }}" alt="Conseil IA"></div>
+        <div class="svc-content">
+          <h3>Optimisation fiscale & IA</h3>
+          <p>Outils d'IA pour optimiser votre fiscalité, détecter des économies et produire des analyses prédictives.</p>
+          <ul class="svc-list">
+            <li><i class="fas fa-check"></i> Optimisation fiscale personnalisée</li>
+            <li><i class="fas fa-check"></i> Tableaux de bord IA & prédictifs</li>
+            <li><i class="fas fa-check"></i> Audit & organisation interne</li>
+            <li><i class="fas fa-check"></i> Accompagnement digital</li>
+          </ul>
+          <a href="#contact" class="btn-svc">Demander un devis <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     VALEURS
+══════════════════════════════════════════ -->
+<section class="section-valeurs" id="valeurs">
+  <div class="container">
+    <div class="sec-head text-center">
+      <span class="sec-tag">Ce qui nous guide</span>
+      <h2 class="sec-title">Nos Valeurs & Engagements</h2>
+      <p class="sec-sub">La confiance se construit sur des engagements tenus au quotidien.</p>
+    </div>
+    <div class="valeurs-grid">
+      <div class="valeur-card"><i class="fas fa-shield-alt"></i><h4>Fiabilité</h4><p>Chaque déclaration traitée avec rigueur absolue. Zéro approximation, zéro retard.</p></div>
+      <div class="valeur-card"><i class="fas fa-comments"></i><h4>Transparence</h4><p>Informé à chaque étape. Pas de surprises, pas de jargon — communication claire et honnête.</p></div>
+      <div class="valeur-card"><i class="fas fa-lightbulb"></i><h4>Innovation</h4><p>Nous intégrons en permanence les meilleurs outils digitaux et IA pour un service toujours plus performant.</p></div>
+      <div class="valeur-card"><i class="fas fa-user-tie"></i><h4>Expertise</h4><p>Professionnels certifiés avec +15 ans d'expérience au service des TPE et PME.</p></div>
+      <div class="valeur-card"><i class="fas fa-heart"></i><h4>Proximité</h4><p>Vous n'êtes pas un numéro de dossier. Votre réussite est notre priorité personnelle.</p></div>
+      <div class="valeur-card"><i class="fas fa-globe"></i><h4>Accessibilité</h4><p>Disponibles 24h/24 via notre conseiller et joignables sous 24h par téléphone ou email.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     CONTACT
+══════════════════════════════════════════ -->
+<section class="section-contact" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+
+      <!-- Infos -->
+      <div class="contact-info">
+        <span class="sec-tag">Parlons de votre projet</span>
+        <h2 class="sec-title">Contactez-nous</h2>
+        <p>Prenez rendez-vous ou envoyez-nous votre demande. Nous vous répondons sous 24h.</p>
+        <div class="contact-details">
+          <a href="tel:+33672343294" class="contact-item">
+            <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
+            <div><span class="c-label">Téléphone</span><span class="c-val">+33 (0)6 72 34 32 94</span></div>
+          </a>
+          <a href="mailto:contact@ml2cconseil.com" class="contact-item">
+            <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+            <div><span class="c-label">Email</span><span class="c-val">contact@ml2cconseil.com</span></div>
+          </a>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div><span class="c-label">Adresse</span><span class="c-val">6 Rue de la Vigne, 28360 Dammarie</span></div>
+          </div>
+        </div>
+        <button class="chatbot-cta-btn" onclick="toggleChat()">
+          <div class="chatbot-cta-human">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2" alt="Conseiller">
+          </div>
+          <div>
+            <strong>Parler à un conseiller</strong>
+            <span>Réponse instantanée 24h/24</span>
+          </div>
+          <i class="fas fa-arrow-right arr"></i>
+        </button>
+      </div>
+
+      <!-- Formulaire -->
+      <div class="contact-form-box">
+        <h3>Demande de devis gratuit</h3>
+        <form action="{{ url_for('contact_form') if 'contact_form' in dir() else '#' }}" method="POST">
+          <div class="form-row-2">
+            <div class="form-group"><label>Prénom & Nom</label><input type="text" class="form-control" name="nom" placeholder="Jean Dupont" required></div>
+            <div class="form-group"><label>Téléphone</label><input type="tel" class="form-control" name="tel" placeholder="06 XX XX XX XX"></div>
+          </div>
+          <div class="form-group"><label>Email</label><input type="email" class="form-control" name="email" placeholder="votre@email.com" required></div>
+          <div class="form-group">
+            <label>Votre besoin</label>
+            <select class="form-control" name="service">
+              <option value="">— Sélectionnez un service —</option>
+              <option>Tenue comptable</option>
+              <option>Déclarations fiscales</option>
+              <option>Paie & gestion sociale</option>
+              <option>Création d'entreprise</option>
+              <option>Conseil & optimisation fiscale</option>
+              <option>Autre</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Message (optionnel)</label><textarea class="form-control" name="message" rows="3" placeholder="Décrivez brièvement votre situation..."></textarea></div>
+          <button type="submit" class="btn-contact-submit"><i class="fas fa-paper-plane"></i> Envoyer ma demande</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% include "footer.html" %}
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// ── Onglets services ──
+document.querySelectorAll('.svc-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.svc-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.svc-panel').forEach(p => p.classList.remove('active'));
+    this.classList.add('active');
+    document.getElementById('svc-' + this.dataset.target).classList.add('active');
+  });
+});
+
+// ── Compteurs animés ──
+function animateCounters() {
+  document.querySelectorAll('.stat-num[data-target]').forEach(el => {
+    const target = +el.dataset.target;
+    const step = target / (1800 / 16);
+    let current = 0;
+    const timer = setInterval(() => {
+      current += step;
+      if (current >= target) { el.textContent = target; clearInterval(timer); }
+      else { el.textContent = Math.floor(current); }
+    }, 16);
+  });
+}
+const statsObs = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) { animateCounters(); statsObs.disconnect(); }
+}, { threshold: 0.3 });
+if (document.querySelector('.stats-bar')) statsObs.observe(document.querySelector('.stats-bar'));
+
+// ── Smooth scroll ──
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', function(e) {
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+</script>
 </body>
 </html>

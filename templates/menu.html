@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -216,9 +216,9 @@
             <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
             <div><span class="c-label">Téléphone</span><span class="c-val">+33 (0)6 72 34 32 94</span></div>
           </a>
-          <a href="mailto:contact@ml2cconseil.com" class="contact-item">
+          <a href="/cdn-cgi/l/email-protection#395a56574d585a4d7954550b5a5a56574a5c5055175a5654" class="contact-item">
             <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-            <div><span class="c-label">Email</span><span class="c-val">contact@ml2cconseil.com</span></div>
+            <div><span class="c-label">Email</span><span class="c-val"><span class="__cf_email__" data-cfemail="05666a6b716466714568693766666a6b76606c692b666a68">[email&#160;protected]</span></span></div>
           </a>
           <div class="contact-item">
             <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
@@ -240,7 +240,7 @@
       <!-- Formulaire -->
       <div class="contact-form-box">
         <h3>Demande de devis gratuit</h3>
-        <form action="{{ url_for('contact_form') if 'contact_form' in dir() else '#' }}" method="POST">
+        <form action="#" method="POST">
           <div class="form-row-2">
             <div class="form-group"><label>Prénom & Nom</label><input type="text" class="form-control" name="nom" placeholder="Jean Dupont" required></div>
             <div class="form-group"><label>Téléphone</label><input type="tel" class="form-control" name="tel" placeholder="06 XX XX XX XX"></div>
@@ -269,7 +269,7 @@
 
 {% include "footer.html" %}
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 // ── Onglets services ──
@@ -301,12 +301,4 @@ const statsObs = new IntersectionObserver(entries => {
 if (document.querySelector('.stats-bar')) statsObs.observe(document.querySelector('.stats-bar'));
 
 // ── Smooth scroll ──
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', function(e) {
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
-  });
-});
-</script>
-</body>
-</html>
+document.querySelectorAll('a[href^="#"]').f

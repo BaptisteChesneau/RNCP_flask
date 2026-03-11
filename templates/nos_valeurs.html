@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nos Valeurs & Méthodes — ML2C CONSEIL</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    /* ── HERO ── */
+    .page-hero {
+      background: linear-gradient(120deg, #2d1b4e 0%, #3d2060 50%, #1a1a2e 100%);
+      padding: 72px 0 56px; position: relative; overflow: hidden;
+    }
+    .page-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at 20% 50%, rgba(193,0,122,.18) 0%, transparent 55%),
+                  radial-gradient(circle at 80% 30%, rgba(79,166,149,.12) 0%, transparent 50%);
+    }
+    .page-hero::after {
+      content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 60px;
+      background: white; clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    .page-hero-inner { position: relative; z-index: 2; }
+    .page-breadcrumb { display: flex; align-items: center; gap: .4rem; font-size: .78rem; color: rgba(255,255,255,.45); margin-bottom: 1.5rem; }
+    .page-breadcrumb a { color: rgba(255,255,255,.45); } .page-breadcrumb a:hover { color: var(--rose); }
+    .page-hero h1 { font-family: var(--font-head); font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 700; color: white; line-height: 1.1; margin-bottom: 1rem; }
+    .page-hero h1 em { color: #f9a8d4; font-style: italic; }
+    .page-hero p { font-size: 1rem; color: rgba(255,255,255,.68); max-width: 540px; line-height: 1.75; }
+
+    /* ── COMMUN ── */
+    .pg-tag { display: inline-block; font-size: .73rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--rose); margin-bottom: .45rem; }
+    .pg-title { font-family: var(--font-head); font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 700; color: var(--gris-dark); line-height: 1.15; margin-bottom: .5rem; }
+    .pg-bar { width: 38px; height: 3px; background: linear-gradient(90deg, var(--rose), var(--turquoise)); border-radius: 2px; margin: .9rem 0 1.75rem; }
+    .pg-bar.center { margin-left: auto; margin-right: auto; }
+    .pg-lead { font-size: .96rem; color: var(--text-muted); line-height: 1.8; }
+    .pg-sec { padding: 5rem 0; }
+    .pg-sec-bg { background: var(--gris-light); }
+
+    /* ── INTRO ── */
+    .val-intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .val-intro-text p { font-size: .96rem; color: var(--text-muted); line-height: 1.85; margin-bottom: 1rem; }
+    .val-intro-visual {
+      border-radius: 20px; min-height: 360px;
+      background: linear-gradient(135deg, #fce4f3 0%, #ede9fe 100%);
+      display: flex; align-items: center; justify-content: center; position: relative;
+      box-shadow: 0 14px 44px rgba(0,0,0,.09);
+    }
+    .val-intro-visual > i { font-size: 7rem; color: var(--rose); opacity: .14; }
+    .val-intro-badge {
+      position: absolute; bottom: 1.5rem; left: 1.5rem;
+      background: var(--rose); color: white; border-radius: 12px;
+      padding: .85rem 1.25rem; font-size: .88rem; font-weight: 600;
+      display: flex; align-items: center; gap: .6rem;
+      box-shadow: 0 8px 24px rgba(193,0,122,.38);
+    }
+
+    /* ── 6 VALEURS DÉTAILLÉES ── */
+    .val-details-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .val-detail-card {
+      background: white; border-radius: 18px; padding: 2rem;
+      box-shadow: var(--shadow-sm); transition: var(--transition);
+      border-left: 4px solid transparent; position: relative; overflow: hidden;
+    }
+    .val-detail-card:hover { border-left-color: var(--rose); transform: translateX(4px); box-shadow: var(--shadow-md); }
+    .val-detail-card.turq:hover { border-left-color: var(--turquoise); }
+    .val-detail-card.gris-c:hover { border-left-color: var(--gris); }
+    .val-detail-ghost {
+      position: absolute; top: 1rem; right: 1.5rem;
+      font-size: 4rem; font-weight: 700; opacity: .04;
+      font-family: var(--font-head); color: var(--rose); line-height: 1; pointer-events: none;
+    }
+    .val-detail-card.turq .val-detail-ghost { color: var(--turquoise); }
+    .val-detail-card.gris-c .val-detail-ghost { color: var(--gris); }
+    .val-detail-head { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .val-detail-ico {
+      width: 52px; height: 52px; border-radius: 14px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+    }
+    .val-detail-ico.rose { background: var(--rose-light); color: var(--rose); }
+    .val-detail-ico.turq { background: rgba(79,166,149,.12); color: var(--turquoise); }
+    .val-detail-ico.gris-c { background: rgba(92,102,107,.1); color: var(--gris); }
+    .val-detail-head h3 { font-family: var(--font-head); font-size: 1.25rem; font-weight: 700; color: var(--gris-dark); margin: 0; }
+    .val-detail-card p { font-size: .92rem; color: var(--text-muted); line-height: 1.75; margin-bottom: .9rem; }
+    .val-detail-example {
+      display: flex; align-items: flex-start; gap: .6rem;
+      background: var(--gris-light); border-radius: 8px; padding: .75rem 1rem;
+      font-size: .83rem; color: var(--text-muted); line-height: 1.5;
+    }
+    .val-detail-example i { color: var(--turquoise); margin-top: .18rem; flex-shrink: 0; }
+
+    /* ── MÉTHODES ── */
+    .meth-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+    .meth-card {
+      background: white; border-radius: 16px; padding: 1.75rem;
+      box-shadow: var(--shadow-sm); text-align: center; transition: var(--transition);
+      position: relative; overflow: hidden;
+    }
+    .meth-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--rose), var(--turquoise));
+      transform: scaleX(0); transform-origin: center; transition: transform .35s ease;
+    }
+    .meth-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .meth-card:hover::after { transform: scaleX(1); }
+    .meth-num {
+      font-family: var(--font-head); font-size: 2.8rem; font-weight: 700;
+      color: var(--rose); opacity: .12; line-height: 1; margin-bottom: .25rem;
+    }
+    .meth-ico {
+      width: 52px; height: 52px; border-radius: 14px;
+      background: var(--rose-light); color: var(--rose);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; margin: 0 auto 1rem;
+    }
+    .meth-card h3 { font-size: 1rem; font-weight: 700; color: var(--gris-dark); margin-bottom: .5rem; }
+    .meth-card p { font-size: .87rem; color: var(--text-muted); line-height: 1.65; margin: 0; }
+
+    /* ── DIFFÉRENCES CONCRÈTES (tableau comparatif) ── */
+    .val-comparatif {
+      background: white; border-radius: 18px; overflow: hidden; box-shadow: var(--shadow-md);
+    }
+    .val-comp-header {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      background: var(--gris);
+    }
+    .val-comp-header div { padding: 1rem 1.5rem; font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: rgba(255,255,255,.6); }
+    .val-comp-header div:first-child { color: rgba(255,255,255,.4); }
+    .val-comp-header div:last-child { background: var(--rose); color: white; text-align: center; }
+    .val-comp-row {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      border-bottom: 1px solid var(--border); transition: var(--transition);
+    }
+    .val-comp-row:last-child { border-bottom: none; }
+    .val-comp-row:hover { background: var(--rose-light); }
+    .val-comp-row div { padding: .9rem 1.5rem; font-size: .88rem; color: var(--text-muted); display: flex; align-items: center; gap: .5rem; }
+    .val-comp-row div:first-child { font-weight: 600; color: var(--gris-dark); }
+    .val-comp-row div:last-child { background: rgba(193,0,122,.04); }
+    .val-comp-row .bad i { color: #ef4444; }
+    .val-comp-row .good i { color: var(--turquoise); font-weight: 700; }
+
+    /* ── MANIFESTE ── */
+    .val-manifeste {
+      background: linear-gradient(135deg, var(--rose), #9a0062);
+      border-radius: 20px; padding: 4rem 3rem; text-align: center;
+      position: relative; overflow: hidden;
+      box-shadow: 0 16px 48px rgba(193,0,122,.3);
+    }
+    .val-manifeste::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at 70% 30%, rgba(255,255,255,.08) 0%, transparent 60%);
+    }
+    .val-manifeste-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+    .val-manifeste h2 { font-family: var(--font-head); font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; color: white; margin-bottom: 1.5rem; line-height: 1.2; }
+    .val-manifeste h2 em { font-style: italic; color: #f9a8d4; }
+    .val-manifeste p { font-size: 1rem; color: rgba(255,255,255,.78); line-height: 1.8; margin-bottom: 2rem; }
+    .val-manifeste-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-wh { display: inline-flex; align-items: center; gap: .5rem; padding: .85rem 1.75rem; background: white; color: var(--rose); font-weight: 700; font-size: .93rem; border-radius: 9px; transition: var(--transition); text-decoration: none; }
+    .btn-wh:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.2); color: var(--rose-dark); text-decoration: none; }
+    .btn-owh { display: inline-flex; align-items: center; gap: .5rem; padding: .85rem 1.75rem; background: transparent; border: 2px solid rgba(255,255,255,.4); color: white; font-weight: 600; font-size: .93rem; border-radius: 9px; transition: var(--transition); text-decoration: none; }
+    .btn-owh:hover { border-color: white; background: rgba(255,255,255,.1); color: white; text-decoration: none; }
+
+    @media(max-width: 992px) {
+      .val-intro-grid { grid-template-columns: 1fr; }
+      .val-details-grid { grid-template-columns: 1fr; }
+      .meth-grid { grid-template-columns: 1fr 1fr; }
+      .val-comp-header, .val-comp-row { grid-template-columns: 1fr 1fr; }
+      .val-comp-header div:first-child, .val-comp-row div:first-child { display: none; }
+    }
+    @media(max-width: 576px) {
+      .meth-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+{% include "header.html" %}
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="container page-hero-inner">
+    <div class="page-breadcrumb">
+      <a href="{{ url_for('menu') }}">Accueil</a>
+      <i class="fas fa-chevron-right" style="font-size:.55rem"></i>
+      <a href="#">À propos</a>
+      <i class="fas fa-chevron-right" style="font-size:.55rem"></i>
+      <span>Nos valeurs & nos méthodes</span>
+    </div>
+    <h1>Nos valeurs & nos méthodes —<br><em>Transparence, rigueur et innovation utile</em></h1>
+    <p>Ce ne sont pas des mots affichés sur un mur. Ce sont les principes qui guident chacune de nos actions, chaque jour, avec chaque client.</p>
+  </div>
+</div>
+
+<!-- INTRO -->
+<section class="pg-sec">
+  <div class="container">
+    <div class="val-intro-grid">
+      <div class="val-intro-text">
+        <span class="pg-tag">Ce qui nous anime</span>
+        <h2 class="pg-title">Des valeurs vécues,<br>pas affichées</h2>
+        <div class="pg-bar"></div>
+        <p>Depuis 2009, ML2C CONSEIL s'est construit sur des valeurs claires et des méthodes de travail rigoureuses. Ces valeurs ne sont pas le résultat d'un exercice de communication — elles sont le reflet de la façon dont nous travaillons concrètement chaque jour.</p>
+        <p>Elles guident nos recrutements, notre organisation interne, notre relation avec les clients et notre façon d'aborder chaque dossier. Transparence, rigueur et innovation utile : trois mots qui résument notre philosophie.</p>
+        <p>Et parce que nous croyons en la cohérence entre ce que nous disons et ce que nous faisons, chacune de ces valeurs se traduit par des engagements mesurables et des méthodes concrètes.</p>
+      </div>
+      <div class="val-intro-visual">
+        <i class="fas fa-gem"></i>
+        <div class="val-intro-badge">
+          <i class="fas fa-star"></i> 6 valeurs, 1 philosophie
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 VALEURS DÉTAILLÉES -->
+<section class="pg-sec pg-sec-bg">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="pg-tag">Nos 6 valeurs fondamentales</span>
+      <h2 class="pg-title">Ce qui nous définit</h2>
+      <div class="pg-bar center"></div>
+      <p class="pg-lead mx-auto" style="max-width:520px">Chaque valeur se traduit concrètement dans notre façon de travailler au quotidien.</p>
+    </div>
+    <div class="val-details-grid">
+
+      <div class="val-detail-card">
+        <div class="val-detail-ghost">01</div>
+        <div class="val-detail-head">
+          <div class="val-detail-ico rose"><i class="fas fa-shield-alt"></i></div>
+          <h3>Fiabilité</h3>
+        </div>
+        <p>Zéro erreur, zéro retard — c'est notre standard, pas notre objectif. Chaque déclaration, chaque bulletin, chaque document est traité avec une rigueur absolue et contrôlé avant transmission. Votre conformité fiscale et sociale est notre priorité non négociable.</p>
+        <div class="val-detail-example">
+          <i class="fas fa-lightbulb"></i>
+          <span><strong>Concrètement :</strong> Chaque dossier est relu par un second expert avant envoi. Zéro pénalité de retard en 15 ans d'exercice.</span>
+        </div>
+      </div>
+
+      <div class="val-detail-card turq">
+        <div class="val-detail-ghost">02</div>
+        <div class="val-detail-head">
+          <div class="val-detail-ico turq"><i class="fas fa-comments"></i></div>
+          <h3>Transparence</h3>
+        </div>
+        <p>Pas de jargon comptable opaque, pas de surprises en fin de mission. Nous expliquons chaque décision, chaque choix fiscal, chaque impact sur votre activité en langage clair. Nos honoraires sont définis à l'avance et ne bougent pas sans votre accord explicite.</p>
+        <div class="val-detail-example">
+          <i class="fas fa-lightbulb"></i>
+          <span><strong>Concrètement :</strong> Lettre de mission détaillée dès le départ. Rapport mensuel envoyé sans demande. Aucun frais caché.</span>
+        </div>
+      </div>
+
+      <div class="val-detail-card gris-c">
+        <div class="val-detail-ghost">03</div>
+        <div class="val-detail-head">
+          <div class="val-detail-ico gris-c"><i class="fas fa-lightbulb"></i></div>
+          <h3>Innovation utile</h3>
+        </div>
+        <p>Nous intégrons les outils numériques et l'intelligence artificielle non par effet de mode, mais parce qu'ils nous permettent de vous apporter plus de valeur : analyses plus fines, anticipation des risques, tableaux de bord prédictifs. L'IA renforce le conseil humain, elle ne le remplace pas.</p>
+        <div class="val-detail-example">
+          <i class="fas fa-lightbulb"></i>
+          <span><strong>Concrètement :</strong> Tableaux de bord prédictifs, détection automatique d'optimisations fiscales, plateforme client digitale.</span>
+        </div>
+      </div>
+
+      <div class="val-detail-card">
+        <div class="val-detail-ghost">04</div>
+        <div class="val-detail-head">
+          <div class="val-detail-ico rose"><i class="fas fa-user-tie"></i></div>
+          <h3>Expertise</h3>
+        </div>
+        <p>15 ans d'expérience, des certifications à jour, une veille juridique et fiscale permanente. Nos équipes suivent au minimum 40 heures de formation par an pour rester au sommet de leur domaine. Vous bénéficiez toujours des conseils les plus actuels et les plus pertinents.</p>
+        <div class="val-detail-example">
+          <i class="fas fa-lightbulb"></i>
+          <span><strong>Concrètement :</strong> 40h de formation/an par collaborateur. Veille quotidienne sur les évolutions fiscales et sociales.</span>
+        </div>
+      </div>
+
+      <div class="val-detail-card turq">
+        <div class="val-detail-ghost">05</div>
+        <div class="val-detail-head">
+          <div class="val-detail-ico turq"><i class="fas fa-heart"></i></div>
+          <h3>Proximité humaine</h3>
+        </div>
+        <p>Vous n'êtes pas un numéro de dossier. Un interlocuteur dédié vous connaît, connaît votre activité, vos contraintes et vos ambitions. Il s'implique personnellement dans votre réussite et s'inscrit dans une relation de long terme, pas dans une logique transactionnelle.</p>
+        <div class="val-detail-example">
+          <i class="fas fa-lightbulb"></i>
+          <span><strong>Concrètement :</strong> Toujours le même expert. Réunion trimestrielle systématique. Disponible par téléphone direct, sans standard.</span>
+        </div>
+      </div>
+
+      <div class="val-detail-card gris-c">
+        <div class="val-detail-ghost">06</div>
+        <div class="val-detail-head">
+          <div class="val-detail-ico gris-c"><i class="fas fa-globe"></i></div>
+          <h3>Accessibilité</h3>
+        </div>
+        <p>Un cabinet comptable de qualité ne doit pas être réservé aux grandes entreprises. Nos offres s'adaptent à toutes les tailles de structures, de l'auto-entrepreneur à la PME de 50 personnes. Notre conseiller digital est disponible 24h/24, et nous répondons à toute demande sous 24 heures.</p>
+        <div class="val-detail-example">
+          <i class="fas fa-lightbulb"></i>
+          <span><strong>Concrètement :</strong> Réponse garantie sous 24h. Conseiller digital disponible 24h/24. Offres adaptées à toutes les tailles.</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- NOS MÉTHODES -->
+<section class="pg-sec">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="pg-tag">Notre façon de travailler</span>
+      <h2 class="pg-title">Nos méthodes au quotidien</h2>
+      <div class="pg-bar center"></div>
+      <p class="pg-lead mx-auto" style="max-width:520px">Des processus rodés et éprouvés pour garantir qualité, réactivité et sécurité à chaque étape.</p>
+    </div>
+    <div class="meth-grid">
+      <div class="meth-card">
+        <div class="meth-ico"><i class="fas fa-user-check"></i></div>
+        <h3>Interlocuteur unique dédié</h3>
+        <p>Un seul expert vous suit de A à Z. Vous ne réexpliquez jamais votre situation. Il connaît votre dossier dans ses moindres détails.</p>
+      </div>
+      <div class="meth-card">
+        <div class="meth-ico"><i class="fas fa-search"></i></div>
+        <h3>Double contrôle systématique</h3>
+        <p>Chaque document produit est relu par un second collaborateur avant transmission. Un filet de sécurité qui élimine les erreurs.</p>
+      </div>
+      <div class="meth-card">
+        <div class="meth-ico"><i class="fas fa-calendar-check"></i></div>
+        <h3>Revue trimestrielle proactive</h3>
+        <p>Sans que vous ayez à demander, nous organisons une réunion trimestrielle pour analyser vos résultats et anticiper les enjeux à venir.</p>
+      </div>
+      <div class="meth-card">
+        <div class="meth-ico"><i class="fas fa-bell"></i></div>
+        <h3>Alertes et veille proactive</h3>
+        <p>Changement de loi, opportunité fiscale, risque identifié — vous êtes prévenus avant que le problème survienne, pas après.</p>
+      </div>
+      <div class="meth-card">
+        <div class="meth-ico"><i class="fas fa-lock"></i></div>
+        <h3>Données sécurisées</h3>
+        <p>Vos données sont hébergées en France, chiffrées, sauvegardées quotidiennement. Accès sécurisé via notre plateforme client dédiée.</p>
+      </div>
+      <div class="meth-card">
+        <div class="meth-ico"><i class="fas fa-star"></i></div>
+        <h3>Enquête satisfaction annuelle</h3>
+        <p>Chaque année, nous mesurons votre satisfaction et adaptons nos méthodes en conséquence. Notre objectif : toujours faire mieux.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARATIF -->
+<section class="pg-sec pg-sec-bg">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="pg-tag">La différence ML2C</span>
+      <h2 class="pg-title">Cabinet classique vs ML2C CONSEIL</h2>
+      <div class="pg-bar center"></div>
+    </div>
+    <div class="val-comparatif">
+      <div class="val-comp-header">
+        <div>Ce qu'on compare</div>
+        <div>Cabinet classique</div>
+        <div>ML2C CONSEIL</div>
+      </div>
+      <div class="val-comp-row">
+        <div>Interlocuteur</div>
+        <div class="bad"><i class="fas fa-times-circle"></i> Change régulièrement</div>
+        <div class="good"><i class="fas fa-check-circle"></i> Toujours le même expert</div>
+      </div>
+      <div class="val-comp-row">
+        <div>Délai de réponse</div>
+        <div class="bad"><i class="fas fa-times-circle"></i> Plusieurs jours</div>
+        <div class="good"><i class="fas fa-check-circle"></i> Garanti sous 24h</div>
+      </div>
+      <div class="val-comp-row">
+        <div>Transparence des honoraires</div>
+        <div class="bad"><i class="fas fa-times-circle"></i> Surprises fréquentes</div>
+        <div class="good"><i class="fas fa-check-circle"></i> Définis à l'avance, fixes</div>
+      </div>
+      <div class="val-comp-row">
+        <div>Outils digitaux & IA</div>
+        <div class="bad"><i class="fas fa-times-circle"></i> Méthodes traditionnelles</div>
+        <div class="good"><i class="fas fa-check-circle"></i> IA, tableaux de bord prédictifs</div>
+      </div>
+      <div class="val-comp-row">
+        <div>Conseil proactif</div>
+        <div class="bad"><i class="fas fa-times-circle"></i> Réactif uniquement</div>
+        <div class="good"><i class="fas fa-check-circle"></i> Alertes &amp; recommandations</div>
+      </div>
+      <div class="val-comp-row">
+        <div>Formation continue</div>
+        <div class="bad"><i class="fas fa-times-circle"></i> Variable</div>
+        <div class="good"><i class="fas fa-check-circle"></i> 40h/an minimum par expert</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTE -->
+<section class="pg-sec">
+  <div class="container">
+    <div class="val-manifeste">
+      <div class="val-manifeste-inner">
+        <h2>Avec ML2C CONSEIL, vous bénéficiez à la fois<br>de la rigueur <em>et</em> de la proximité</h2>
+        <p>La rigueur d'un cabinet comptable certifié. La proximité d'un partenaire qui vous connaît vraiment. La puissance des outils d'intelligence artificielle. Au service d'un seul objectif : la réussite durable de votre projet.</p>
+        <div class="val-manifeste-btns">
+          <a href="{{ url_for('menu') }}#contact" class="btn-wh"><i class="fas fa-calendar-alt"></i> Prendre RDV gratuitement</a>
+          <a href="{{ url_for('nos_engagements') }}" class="btn-owh"><i class="fas fa-handshake"></i> Nos engagements</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include "footer.html" %}
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  window.addEventListener('scroll', () => document.getElementById('mainHeader').classList.toggle('scrolled', window.scrollY > 60));
+  document.getElementById('burgerBtn').addEventListener('click', function() { document.getElementById('mainNav').classList.toggle('open'); this.classList.toggle('active'); });
+  const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)';}}), {threshold:.08});
+  document.querySelectorAll('.val-detail-card,.meth-card,.val-comp-row').forEach(el => { el.style.opacity='0'; el.style.transform='translateY(14px)'; el.style.transition='opacity .4s ease, transform .4s ease'; obs.observe(el); });
+</script>
+</body>
+</html>

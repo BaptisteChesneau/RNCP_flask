@@ -321,6 +321,17 @@ mail = Mail(app)
 def header():
     return render_template("header.html")
 
+@app.route('/notre-vision')
+def notre_vision():
+    return render_template('notre_vision.html')
+
+@app.route('/nos-valeurs')
+def nos_valeurs():
+    return render_template('nos_valeurs.html')
+
+@app.route('/nos-engagements')
+def nos_engagements():
+    return render_template('nos_engagements.html')
 
 @app.route("/")
 def index():

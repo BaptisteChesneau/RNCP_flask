@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notre Vision — ML2C CONSEIL</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    .page-hero { background: linear-gradient(120deg, #0f2027 0%, #203a43 50%, #2c5364 100%); padding: 72px 0 56px; position: relative; overflow: hidden; }
+    .page-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 50%, rgba(79,166,149,.15) 0%, transparent 55%), radial-gradient(circle at 85% 25%, rgba(193,0,122,.12) 0%, transparent 45%); }
+    .page-hero::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 60px; background: white; clip-path: ellipse(55% 100% at 50% 100%); }
+    .page-hero-inner { position: relative; z-index: 2; }
+    .page-breadcrumb { display: flex; align-items: center; gap: .4rem; font-size: .78rem; color: rgba(255,255,255,.45); margin-bottom: 1.5rem; }
+    .page-breadcrumb a { color: rgba(255,255,255,.45); } .page-breadcrumb a:hover { color: var(--turquoise); }
+    .page-hero h1 { font-family: var(--font-head); font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 700; color: white; line-height: 1.1; margin-bottom: 1rem; }
+    .page-hero h1 em { color: #5eead4; font-style: italic; }
+    .page-hero p { font-size: 1rem; color: rgba(255,255,255,.68); max-width: 540px; line-height: 1.75; }
+
+    .pg-tag { display: inline-block; font-size: .73rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--rose); margin-bottom: .45rem; }
+    .pg-title { font-family: var(--font-head); font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 700; color: var(--gris-dark); line-height: 1.15; margin-bottom: .5rem; }
+    .pg-bar { width: 38px; height: 3px; background: linear-gradient(90deg, var(--rose), var(--turquoise)); border-radius: 2px; margin: .9rem 0 1.75rem; }
+    .pg-bar.center { margin-left: auto; margin-right: auto; }
+    .pg-lead { font-size: .96rem; color: var(--text-muted); line-height: 1.8; }
+    .pg-sec { padding: 5rem 0; }
+    .pg-sec-bg { background: var(--gris-light); }
+
+    /* ── VISION PRINCIPALE ── */
+    .vis-main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .vis-main-text p { font-size: .96rem; color: var(--text-muted); line-height: 1.85; margin-bottom: 1rem; }
+    .vis-quote {
+      border-left: 4px solid var(--rose); padding: 1.25rem 1.5rem;
+      background: var(--rose-light); border-radius: 0 12px 12px 0;
+      margin: 1.5rem 0;
+    }
+    .vis-quote p { font-family: var(--font-head); font-size: 1.15rem; font-style: italic; color: var(--gris-dark); margin: 0; line-height: 1.6; }
+    .vis-quote cite { font-size: .8rem; color: var(--rose); font-style: normal; font-weight: 600; margin-top: .5rem; display: block; }
+    .vis-main-visual {
+      border-radius: 20px; min-height: 400px;
+      background: linear-gradient(135deg, #0f2027, #2c5364);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; box-shadow: 0 20px 60px rgba(0,0,0,.2); overflow: hidden;
+    }
+    .vis-main-visual::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at 30% 70%, rgba(79,166,149,.2) 0%, transparent 60%),
+                  radial-gradient(circle at 80% 20%, rgba(193,0,122,.15) 0%, transparent 50%);
+    }
+    .vis-main-visual > i { font-size: 7rem; color: white; opacity: .08; position: relative; z-index: 1; }
+    .vis-main-visual-badge {
+      position: absolute; bottom: 1.5rem; left: 1.5rem;
+      background: rgba(255,255,255,.12); backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,.2);
+      color: white; border-radius: 12px; padding: 1rem 1.25rem;
+      font-size: .9rem; font-weight: 600;
+      display: flex; align-items: center; gap: .5rem; z-index: 1;
+    }
+    .vis-main-visual-badge i { color: var(--turquoise); }
+
+    /* ── PILIERS ── */
+    .vis-piliers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .vis-pilier {
+      background: white; border-radius: 18px; padding: 2rem 1.75rem;
+      box-shadow: var(--shadow-sm); text-align: center; transition: var(--transition);
+      position: relative; overflow: hidden;
+    }
+    .vis-pilier::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--rose), var(--turquoise));
+      transform: scaleX(0); transform-origin: left; transition: transform .35s ease;
+    }
+    .vis-pilier:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+    .vis-pilier:hover::before { transform: scaleX(1); }
+    .vis-pilier-num {
+      font-family: var(--font-head); font-size: 3.5rem; font-weight: 700;
+      color: var(--rose); opacity: .1; line-height: 1; margin-bottom: .5rem;
+    }
+    .vis-pilier-icon {
+      width: 60px; height: 60px; border-radius: 16px; margin: 0 auto 1.25rem;
+      background: var(--rose-light); color: var(--rose);
+      display: flex; align-items: center; justify-content: center; font-size: 1.35rem;
+    }
+    .vis-pilier h3 { font-family: var(--font-head); font-size: 1.25rem; font-weight: 700; color: var(--gris-dark); margin-bottom: .6rem; }
+    .vis-pilier p { font-size: .88rem; color: var(--text-muted); line-height: 1.65; margin: 0; }
+
+    /* ── IA & FUTUR ── */
+    .vis-ia-section {
+      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      padding: 5rem 0; position: relative; overflow: hidden;
+    }
+    .vis-ia-section::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at 15% 80%, rgba(79,166,149,.15) 0%, transparent 50%),
+                  radial-gradient(circle at 85% 20%, rgba(193,0,122,.12) 0%, transparent 50%);
+    }
+    .vis-ia-inner { position: relative; z-index: 1; }
+    .vis-ia-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .vis-ia-content .pg-tag { color: #5eead4; }
+    .vis-ia-content .pg-title { color: white; }
+    .vis-ia-content p { font-size: .96rem; color: rgba(255,255,255,.68); line-height: 1.85; margin-bottom: 1rem; }
+    .vis-ia-list { list-style: none; padding: 0; margin-top: 1.5rem; }
+    .vis-ia-list li { display: flex; align-items: flex-start; gap: .75rem; padding: .65rem 0; font-size: .92rem; color: rgba(255,255,255,.78); border-bottom: 1px solid rgba(255,255,255,.08); }
+    .vis-ia-list li:last-child { border-bottom: none; }
+    .vis-ia-list li i { color: var(--turquoise); margin-top: .22rem; flex-shrink: 0; }
+    .vis-ia-cards { display: flex; flex-direction: column; gap: 1rem; }
+    .vis-ia-card {
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
+      border-radius: 14px; padding: 1.25rem 1.5rem;
+      display: flex; align-items: center; gap: 1rem; transition: var(--transition);
+    }
+    .vis-ia-card:hover { background: rgba(255,255,255,.1); transform: translateX(4px); }
+    .vis-ia-card-icon {
+      width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
+      background: rgba(255,255,255,.1); display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; color: white;
+    }
+    .vis-ia-card strong { display: block; font-size: .92rem; font-weight: 700; color: white; margin-bottom: .2rem; }
+    .vis-ia-card span { font-size: .82rem; color: rgba(255,255,255,.6); }
+
+    /* ── DIFFÉRENCIATEURS ── */
+    .vis-diff-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+    .vis-diff {
+      display: flex; gap: 1.25rem; padding: 1.5rem; border-radius: 14px;
+      background: white; box-shadow: var(--shadow-sm); transition: var(--transition);
+      border-left: 3px solid transparent;
+    }
+    .vis-diff:hover { border-left-color: var(--rose); transform: translateX(4px); box-shadow: var(--shadow-md); }
+    .vis-diff-ico {
+      width: 46px; height: 46px; border-radius: 12px; flex-shrink: 0;
+      background: var(--rose-light); color: var(--rose);
+      display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+    }
+    .vis-diff h4 { font-size: .97rem; font-weight: 700; color: var(--gris-dark); margin-bottom: .35rem; }
+    .vis-diff p { font-size: .87rem; color: var(--text-muted); line-height: 1.6; margin: 0; }
+
+    /* ── CTA ── */
+    .pg-cta { background: linear-gradient(135deg, var(--rose), #9a0062); border-radius: 20px; padding: 3rem 2.5rem; display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center; box-shadow: 0 12px 36px rgba(193,0,122,.28); }
+    .pg-cta h2 { font-family: var(--font-head); font-size: 1.8rem; font-weight: 700; color: white; margin-bottom: .3rem; }
+    .pg-cta p { color: rgba(255,255,255,.75); margin: 0; }
+    .pg-cta-btns { display: flex; gap: .75rem; flex-wrap: wrap; }
+    .btn-wh { display: inline-flex; align-items: center; gap: .5rem; padding: .8rem 1.6rem; background: white; color: var(--rose); font-weight: 700; font-size: .9rem; border-radius: 9px; transition: var(--transition); text-decoration: none; white-space: nowrap; }
+    .btn-wh:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.18); color: var(--rose-dark); text-decoration: none; }
+    .btn-owh { display: inline-flex; align-items: center; gap: .5rem; padding: .8rem 1.6rem; background: transparent; border: 2px solid rgba(255,255,255,.45); color: white; font-weight: 600; font-size: .9rem; border-radius: 9px; transition: var(--transition); text-decoration: none; white-space: nowrap; }
+    .btn-owh:hover { border-color: white; background: rgba(255,255,255,.1); color: white; text-decoration: none; }
+
+    @media(max-width: 992px) {
+      .vis-main-grid, .vis-ia-grid { grid-template-columns: 1fr; }
+      .vis-piliers-grid { grid-template-columns: 1fr 1fr; }
+      .vis-diff-grid { grid-template-columns: 1fr; }
+      .pg-cta { grid-template-columns: 1fr; }
+    }
+    @media(max-width: 576px) {
+      .vis-piliers-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+{% include "header.html" %}
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="container page-hero-inner">
+    <div class="page-breadcrumb">
+      <a href="{{ url_for('menu') }}">Accueil</a>
+      <i class="fas fa-chevron-right" style="font-size:.55rem"></i>
+      <a href="#">À propos</a>
+      <i class="fas fa-chevron-right" style="font-size:.55rem"></i>
+      <span>Notre vision</span>
+    </div>
+    <h1>Notre vision —<br><em>Ce qui nous différencie</em></h1>
+    <p>Une approche résolument humaine et tournée vers l'avenir. ML2C CONSEIL réinvente le rôle de l'expert-comptable pour les entrepreneurs d'aujourd'hui.</p>
+  </div>
+</div>
+
+<!-- VISION PRINCIPALE -->
+<section class="pg-sec">
+  <div class="container">
+    <div class="vis-main-grid">
+      <div class="vis-main-text">
+        <span class="pg-tag">Notre positionnement</span>
+        <h2 class="pg-title">Votre partenaire de confiance,<br>pas juste votre comptable</h2>
+        <div class="pg-bar"></div>
+        <p>Chez ML2C CONSEIL, nous ne sommes pas un simple cabinet comptable qui se contente de traiter des chiffres. Notre ambition est d'être un partenaire de confiance pour les dirigeants, les indépendants et les structures en développement, en leur apportant une vision claire, utile et exploitable de leur activité.</p>
+        <div class="vis-quote">
+          <p>La comptabilité ne devrait pas être une contrainte — elle devrait être le carburant de votre croissance.</p>
+          <cite>— Marie-Laure Conseil, Fondatrice de ML2C CONSEIL</cite>
+        </div>
+        <p>Nous combinons expertise comptable, fiscale et sociale avec une approche centrée sur l'humain : écoute, pédagogie et disponibilité. Chaque dossier est suivi avec sérieux, et nous prenons le temps d'expliquer les enjeux, les options possibles et leurs impacts concrets sur votre entreprise.</p>
+      </div>
+      <div class="vis-main-visual">
+        <i class="fas fa-eye"></i>
+        <div class="vis-main-visual-badge">
+          <i class="fas fa-rocket"></i> ML2C CONSEIL — Since 2009
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOS 3 PILIERS -->
+<section class="pg-sec pg-sec-bg">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="pg-tag">Notre approche</span>
+      <h2 class="pg-title">Trois piliers, une philosophie</h2>
+      <div class="pg-bar center"></div>
+      <p class="pg-lead mx-auto" style="max-width:520px">Chaque décision, chaque service, chaque interaction est guidée par ces trois convictions fondamentales.</p>
+    </div>
+    <div class="vis-piliers-grid">
+      <div class="vis-pilier">
+        <div class="vis-pilier-icon"><i class="fas fa-heart"></i></div>
+        <h3>L'humain d'abord</h3>
+        <p>Avant d'être des chiffres, vous êtes des entrepreneurs avec des rêves, des contraintes et des ambitions. Nous vous écoutons vraiment, nous apprenons à vous connaître et nous adaptons chaque conseil à votre réalité.</p>
+      </div>
+      <div class="vis-pilier">
+        <div class="vis-pilier-icon"><i class="fas fa-shield-alt"></i></div>
+        <h3>La rigueur comme socle</h3>
+        <p>Notre réputation repose sur notre fiabilité. Zéro erreur, zéro retard, zéro surprise. Chaque déclaration, chaque bulletin, chaque document est traité avec une rigueur absolue et contrôlé avant transmission.</p>
+      </div>
+      <div class="vis-pilier">
+        <div class="vis-pilier-icon"><i class="fas fa-brain"></i></div>
+        <h3>L'innovation au service du conseil</h3>
+        <p>Nous utilisons les meilleurs outils digitaux et IA non pour faire moderne, mais pour vous apporter plus de valeur : analyses plus fines, anticipation des risques, tableaux de bord prédictifs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VISION IA & FUTUR -->
+<section class="vis-ia-section">
+  <div class="container vis-ia-inner">
+    <div class="vis-ia-grid">
+      <div class="vis-ia-content">
+        <span class="pg-tag">Notre vision du futur</span>
+        <h2 class="pg-title">L'IA au service du conseil humain</h2>
+        <div class="pg-bar"></div>
+        <p>Nous croyons que l'intelligence artificielle ne remplace pas l'expert-comptable — elle le libère des tâches répétitives pour qu'il puisse consacrer plus de temps à ce qui compte vraiment : vous conseiller, vous accompagner, vous aider à décider.</p>
+        <p>Là où beaucoup de cabinets restent sur des méthodes classiques, nous utilisons des solutions innovantes pour transformer la donnée brute en intelligence actionnable.</p>
+        <ul class="vis-ia-list">
+          <li><i class="fas fa-check-circle"></i> Fiabiliser et accélérer le traitement de vos données</li>
+          <li><i class="fas fa-check-circle"></i> Anticiper les risques et opportunités grâce à des analyses plus fines</li>
+          <li><i class="fas fa-check-circle"></i> Vous proposer des tableaux de bord clairs et personnalisés</li>
+          <li><i class="fas fa-check-circle"></i> Faciliter les échanges via une plateforme client moderne</li>
+        </ul>
+      </div>
+      <div class="vis-ia-cards">
+        <div class="vis-ia-card">
+          <div class="vis-ia-card-icon"><i class="fas fa-chart-line"></i></div>
+          <div>
+            <strong>Analyses prédictives</strong>
+            <span>Trésorerie, CA et marges projetés sur 12 mois</span>
+          </div>
+        </div>
+        <div class="vis-ia-card">
+          <div class="vis-ia-card-icon"><i class="fas fa-search-dollar"></i></div>
+          <div>
+            <strong>Détection d'optimisations</strong>
+            <span>Identification automatique des économies fiscales</span>
+          </div>
+        </div>
+        <div class="vis-ia-card">
+          <div class="vis-ia-card-icon"><i class="fas fa-tachometer-alt"></i></div>
+          <div>
+            <strong>Tableaux de bord temps réel</strong>
+            <span>Vos KPIs accessibles 24h/24 depuis votre espace client</span>
+          </div>
+        </div>
+        <div class="vis-ia-card">
+          <div class="vis-ia-card-icon"><i class="fas fa-bell"></i></div>
+          <div>
+            <strong>Alertes proactives</strong>
+            <span>Vous êtes prévenus avant que le problème survienne</span>
+          </div>
+        </div>
+        <div class="vis-ia-card">
+          <div class="vis-ia-card-icon"><i class="fas fa-lock"></i></div>
+          <div>
+            <strong>Plateforme sécurisée</strong>
+            <span>Données hébergées en France, chiffrées et sauvegardées</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CE QUI NOUS DIFFÉRENCIE -->
+<section class="pg-sec">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="pg-tag">Notre différence</span>
+      <h2 class="pg-title">Pourquoi ML2C CONSEIL plutôt qu'un autre ?</h2>
+      <div class="pg-bar center"></div>
+    </div>
+    <div class="vis-diff-grid">
+      <div class="vis-diff">
+        <div class="vis-diff-ico"><i class="fas fa-user-tie"></i></div>
+        <div><h4>Un expert dédié, pas un numéro</h4><p>Toujours le même interlocuteur qui vous connaît, connaît votre dossier et s'implique personnellement dans votre réussite.</p></div>
+      </div>
+      <div class="vis-diff">
+        <div class="vis-diff-ico"><i class="fas fa-comments"></i></div>
+        <div><h4>La pédagogie avant le jargon</h4><p>Nous traduisons la complexité comptable et fiscale en langage clair. Vous comprenez chaque décision et chaque impact réel sur votre entreprise.</p></div>
+      </div>
+      <div class="vis-diff">
+        <div class="vis-diff-ico"><i class="fas fa-bolt"></i></div>
+        <div><h4>Proactivité systématique</h4><p>Nous n'attendons pas que vous appeliez. Nous anticipons, nous alertons, nous proposons — avant que vous ayez à demander.</p></div>
+      </div>
+      <div class="vis-diff">
+        <div class="vis-diff-ico"><i class="fas fa-laptop-code"></i></div>
+        <div><h4>Le meilleur des deux mondes</h4><p>La proximité humaine d'un cabinet local combinée à la puissance des outils digitaux et IA les plus avancés du marché.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="pg-sec pg-sec-bg">
+  <div class="container">
+    <div class="pg-cta">
+      <div>
+        <h2>Partageons notre vision ensemble</h2>
+        <p>Un premier échange gratuit pour découvrir comment notre approche peut transformer votre rapport aux chiffres.</p>
+      </div>
+      <div class="pg-cta-btns">
+        <a href="{{ url_for('menu') }}#contact" class="btn-wh"><i class="fas fa-calendar-alt"></i> Prendre RDV</a>
+        <a href="{{ url_for('notre_histoire') }}" class="btn-owh"><i class="fas fa-landmark"></i> Notre histoire</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include "footer.html" %}
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  window.addEventListener('scroll', () => document.getElementById('mainHeader').classList.toggle('scrolled', window.scrollY > 60));
+  document.getElementById('burgerBtn').addEventListener('click', function() { document.getElementById('mainNav').classList.toggle('open'); this.classList.toggle('active'); });
+  const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)';}}), {threshold:.08});
+  document.querySelectorAll('.vis-pilier,.vis-ia-card,.vis-diff').forEach(el => { el.style.opacity='0'; el.style.transform='translateY(16px)'; el.style.transition='opacity .45s ease, transform .45s ease'; obs.observe(el); });
+</script>
+</body>
+</html>

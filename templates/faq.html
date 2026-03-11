@@ -2,314 +2,940 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>FAQ - ML2C CONSEIL</title>
-
-  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ — ML2C CONSEIL</title>
+  <meta name="description" content="Foire aux questions ML2C CONSEIL — retrouvez les réponses sur nos services, notre plateforme client et notre approche IA.">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
-  
-  <!-- Styles du site -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-</head>
+  <style>
+    :root {
+      --rose:    #C1007A;
+      --rose-lt: #fce4f3;
+      --turq:    #4FA695;
+      --turq-lt: #d4f0ec;
+      --gris:    #5C666B;
+      --dark:    #2d3436;
+      --dark2:   #3d4549;
+      --bg:      #f4f5f7;
+      --text:    #374151;
+      --focus:   #005fcc; /* couleur focus RGAA */
+    }
 
+    /* FOCUS RGAA — tous les éléments interactifs */
+    *:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); }
+
+    /* BARRE DE LECTURE */
+    #read-progress {
+      position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+      background: linear-gradient(90deg, var(--rose), var(--turq));
+      z-index: 9999; transition: width .1s linear;
+      role: progressbar;
+    }
+
+    /* SKIP LINK RGAA */
+    .skip-link {
+      position: absolute; top: -100px; left: 1rem;
+      background: var(--focus); color: #fff; padding: .5rem 1rem;
+      border-radius: 0 0 8px 8px; font-weight: 700; font-size: .9rem;
+      text-decoration: none; z-index: 99999;
+      transition: top .2s;
+    }
+    .skip-link:focus { top: 0; }
+
+    /* HERO */
+    .page-hero {
+      background: linear-gradient(125deg, var(--dark) 0%, var(--dark2) 55%, #1a2526 100%);
+      padding: 90px 0 80px; position: relative; overflow: hidden;
+    }
+    .page-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 20% 70%, rgba(79,166,149,.14) 0%, transparent 45%),
+        radial-gradient(circle at 80% 20%, rgba(193,0,122,.10) 0%, transparent 40%);
+    }
+    .page-hero::after {
+      content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 60px;
+      background: var(--bg); clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    .ph-inner { position: relative; z-index: 2; }
+
+    .breadcrumb-ml2c {
+      display: flex; align-items: center; gap: .45rem;
+      list-style: none; padding: 0; margin-bottom: 1.75rem;
+      font-size: .73rem; color: rgba(255,255,255,.38);
+    }
+    .breadcrumb-ml2c a { color: rgba(255,255,255,.38); transition: color .2s; text-decoration: none; }
+    .breadcrumb-ml2c a:hover, .breadcrumb-ml2c a:focus { color: #5eead4; text-decoration: underline; }
+    .breadcrumb-ml2c .sep { font-size: .45rem; opacity: .5; }
+    .breadcrumb-ml2c li:last-child { color: rgba(255,255,255,.75); }
+
+    .ph-eyebrow {
+      font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+      text-transform: uppercase; color: #5eead4;
+      display: flex; align-items: center; gap: .5rem; margin-bottom: .75rem;
+    }
+    .ph-eyebrow::before { content: ''; display: block; width: 28px; height: 2px; background: #5eead4; }
+
+    .ph-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.1rem, 5vw, 3.4rem);
+      font-weight: 700; color: #fff; line-height: 1.08; margin-bottom: 1.1rem;
+    }
+    .ph-title em { color: #5eead4; font-style: italic; }
+    .ph-sub { font-size: .92rem; color: rgba(255,255,255,.58); max-width: 500px; line-height: 1.85; margin: 0; }
+
+    /* COMPTEUR HERO */
+    .ph-stats {
+      display: flex; gap: 2rem; flex-wrap: wrap; margin-top: 2rem;
+    }
+    .ph-stat { text-align: center; }
+    .ph-stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 700; color: #5eead4; display: block; line-height: 1;
+    }
+    .ph-stat-label { font-size: .72rem; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; }
+
+    /* ZONE RECHERCHE + FILTRES */
+    .faq-controls {
+      background: #fff; border-radius: 20px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.08);
+      padding: 2rem 2.25rem; margin: -2rem 0 2.5rem;
+      position: relative; z-index: 5;
+    }
+
+    /* CHAMP RECHERCHE */
+    .search-wrap {
+      position: relative; margin-bottom: 1.5rem;
+    }
+    .search-wrap label {
+      display: block; font-size: .78rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .1em; color: var(--gris);
+      margin-bottom: .5rem;
+    }
+    .search-input-row { display: flex; gap: .75rem; }
+    .search-icon-wrap { position: relative; flex: 1; }
+    .search-icon-wrap i {
+      position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
+      color: #aaa; font-size: .9rem; pointer-events: none;
+    }
+    #faq-search {
+      width: 100%; padding: .75rem 1rem .75rem 2.75rem;
+      border: 2px solid #e5e7eb; border-radius: 10px;
+      font-size: .92rem; font-family: 'DM Sans', sans-serif;
+      transition: border-color .2s, box-shadow .2s;
+      background: #fafafa;
+    }
+    #faq-search:focus {
+      outline: none;
+      border-color: var(--turq);
+      box-shadow: 0 0 0 3px rgba(79,166,149,.2);
+      background: #fff;
+    }
+    .btn-clear {
+      padding: .75rem 1.1rem; background: #f3f4f6;
+      border: 2px solid #e5e7eb; border-radius: 10px;
+      font-size: .82rem; font-weight: 600; color: var(--gris);
+      cursor: pointer; transition: all .2s; white-space: nowrap;
+      display: flex; align-items: center; gap: .4rem;
+    }
+    .btn-clear:hover { background: var(--rose-lt); border-color: var(--rose); color: var(--rose); }
+
+    /* COMPTEUR RÉSULTATS */
+    #faq-result-count {
+      font-size: .8rem; color: var(--gris); margin-top: .5rem;
+      display: flex; align-items: center; gap: .35rem;
+    }
+    #faq-result-count i { color: var(--turq); }
+    #count-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--turq); color: #fff;
+      width: 22px; height: 22px; border-radius: 50%;
+      font-size: .72rem; font-weight: 700; line-height: 1;
+    }
+
+    /* SÉPARATEUR */
+    .controls-sep { height: 1px; background: #f0f2f4; margin: 0 0 1.5rem; }
+
+    /* FILTRES */
+    .filters-row {
+      display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;
+    }
+    .filters-label {
+      font-size: .75rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .1em; color: var(--gris); white-space: nowrap;
+    }
+    .filter-pills { display: flex; gap: .5rem; flex-wrap: wrap; flex: 1; }
+    .filter-pill {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .38rem .9rem; border-radius: 20px;
+      font-size: .8rem; font-weight: 600;
+      border: 2px solid #e5e7eb; background: #f9fafb; color: var(--gris);
+      cursor: pointer; transition: all .2s; text-decoration: none;
+    }
+    .filter-pill i { font-size: .72rem; }
+    .filter-pill:hover { border-color: var(--turq); color: var(--turq); background: var(--turq-lt); }
+    .filter-pill.active { background: var(--turq); border-color: var(--turq); color: #fff; }
+    .filter-pill[aria-pressed="true"] { background: var(--turq); border-color: var(--turq); color: #fff; }
+
+    /* BOUTONS TOUT OUVRIR/FERMER */
+    .expand-row {
+      display: flex; justify-content: flex-end; align-items: center;
+      gap: .5rem; margin-bottom: 1.25rem;
+    }
+    .btn-expand {
+      display: inline-flex; align-items: center; gap: .35rem;
+      padding: .4rem .85rem; border-radius: 8px;
+      font-size: .78rem; font-weight: 600; cursor: pointer;
+      border: 1.5px solid #e5e7eb; background: #fff; color: var(--gris);
+      transition: all .2s;
+    }
+    .btn-expand:hover { border-color: var(--rose); color: var(--rose); background: var(--rose-lt); }
+    .btn-expand i { font-size: .7rem; }
+
+    /* MESSAGE AUCUN RÉSULTAT */
+    #no-results {
+      display: none; text-align: center; padding: 3rem 2rem;
+      background: #fff; border-radius: 20px;
+      box-shadow: 0 2px 16px rgba(0,0,0,.06);
+    }
+    #no-results i { font-size: 2.5rem; color: #e5e7eb; display: block; margin-bottom: 1rem; }
+    #no-results p { color: var(--gris); margin: 0; }
+    #no-results strong { color: var(--rose); }
+
+    /* SECTIONS FAQ */
+    .faq-section { margin-bottom: 2.5rem; }
+    .faq-section-title {
+      display: flex; align-items: center; gap: .75rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem; font-weight: 700; color: var(--dark2);
+      margin-bottom: 1rem; padding-bottom: .75rem;
+      border-bottom: 2px solid #f0f2f4;
+    }
+    .faq-section-icon {
+      width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .9rem;
+    }
+    .si-turq   { background: var(--turq-lt); color: var(--turq); }
+    .si-rose   { background: var(--rose-lt); color: var(--rose); }
+    .si-blue   { background: #dbeafe; color: #1d4ed8; }
+    .si-green  { background: #dcfce7; color: #15803d; }
+    .si-purple { background: #f3e8ff; color: #6d28d9; }
+
+    /* ITEMS FAQ */
+    .faq-item {
+      background: #fff; border-radius: 16px; margin-bottom: .75rem;
+      box-shadow: 0 1px 8px rgba(0,0,0,.06);
+      border: 1.5px solid transparent;
+      transition: box-shadow .25s, border-color .25s;
+      overflow: hidden;
+    }
+    .faq-item:hover { box-shadow: 0 4px 20px rgba(0,0,0,.10); }
+    .faq-item.open { border-color: rgba(193,0,122,.15); }
+
+    .faq-question {
+      width: 100%; display: flex; align-items: center; gap: 1rem;
+      padding: 1.15rem 1.5rem; cursor: pointer;
+      background: transparent; border: none; text-align: left;
+      transition: background .2s;
+    }
+    .faq-question:hover { background: #fafafa; }
+
+    /* NUMÉRO */
+    .fq-num {
+      width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem; font-weight: 700;
+      background: var(--rose-lt); color: var(--rose);
+      transition: background .2s, color .2s;
+    }
+    .faq-item.open .fq-num { background: var(--rose); color: #fff; }
+
+    .fq-text { flex: 1; font-size: .95rem; font-weight: 600; color: var(--dark2); line-height: 1.4; }
+
+    /* CHEVRON animé */
+    .fq-chevron {
+      width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: #f3f4f6; color: #aaa;
+      font-size: .72rem; transition: all .3s;
+    }
+    .faq-item.open .fq-chevron { background: var(--rose-lt); color: var(--rose); transform: rotate(180deg); }
+
+    /* RÉPONSE */
+    .faq-answer {
+      max-height: 0; overflow: hidden;
+      transition: max-height .4s cubic-bezier(.4,0,.2,1), padding .3s;
+      padding: 0 1.5rem;
+    }
+    .faq-item.open .faq-answer { max-height: 400px; padding: 0 1.5rem 1.5rem; }
+
+    .faq-answer-inner {
+      border-top: 1px solid #f0f2f4; padding-top: 1rem;
+      font-size: .91rem; color: #6b7280; line-height: 1.88;
+    }
+    .faq-answer-inner strong { color: var(--dark2); }
+
+    /* TAGS */
+    .fq-tags { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: .85rem; }
+    .fq-tag {
+      font-size: .68rem; font-weight: 700; letter-spacing: .06em;
+      text-transform: uppercase; padding: .2rem .6rem;
+      border-radius: 6px; background: #f3f4f6; color: var(--gris);
+    }
+    .tag-turq   { background: var(--turq-lt); color: #2d7a70; }
+    .tag-rose   { background: var(--rose-lt); color: var(--rose); }
+    .tag-blue   { background: #dbeafe; color: #1d4ed8; }
+    .tag-green  { background: #dcfce7; color: #15803d; }
+    .tag-purple { background: #f3e8ff; color: #6d28d9; }
+
+    /* CTA FINAL */
+    .faq-cta {
+      background: linear-gradient(135deg, var(--dark2) 0%, var(--dark) 100%);
+      border-radius: 24px; padding: 3rem 2.5rem; text-align: center;
+      box-shadow: 0 12px 40px rgba(0,0,0,.18); margin-top: 3rem;
+      position: relative; overflow: hidden;
+    }
+    .faq-cta::before {
+      content: ''; position: absolute; top: -60px; right: -60px;
+      width: 220px; height: 220px; border-radius: 50%;
+      background: rgba(79,166,149,.12);
+    }
+    .faq-cta::after {
+      content: ''; position: absolute; bottom: -40px; left: -40px;
+      width: 160px; height: 160px; border-radius: 50%;
+      background: rgba(193,0,122,.10);
+    }
+    .faq-cta-inner { position: relative; z-index: 1; }
+    .faq-cta h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 700; color: #fff; margin-bottom: .5rem;
+    }
+    .faq-cta h2 em { color: #5eead4; font-style: italic; }
+    .faq-cta p { color: rgba(255,255,255,.58); font-size: .92rem; margin-bottom: 1.75rem; }
+    .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-cta-rose {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .85rem 1.75rem; background: var(--rose); color: #fff;
+      font-weight: 700; font-size: .9rem; border-radius: 12px;
+      text-decoration: none; transition: all .25s;
+    }
+    .btn-cta-rose:hover { background: #9a0062; color: #fff; text-decoration: none; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(193,0,122,.4); }
+    .btn-cta-outline {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .85rem 1.75rem; background: transparent;
+      border: 2px solid rgba(255,255,255,.3); color: #fff;
+      font-weight: 700; font-size: .9rem; border-radius: 12px;
+      text-decoration: none; transition: all .25s;
+    }
+    .btn-cta-outline:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.6); color: #fff; text-decoration: none; }
+
+    /* ANIMATIONS */
+    [data-anim] { opacity: 0; transition: opacity .5s ease, transform .5s ease; }
+    [data-anim="fade"]  { transform: translateY(18px); }
+    [data-anim="up"]    { transform: translateY(24px); }
+    [data-anim].visible { opacity: 1 !important; transform: translate(0) !important; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .faq-controls { padding: 1.5rem; margin: -1.5rem 0 2rem; }
+      .filters-row { flex-direction: column; align-items: flex-start; }
+      .faq-cta { padding: 2rem 1.5rem; }
+    }
+    @media (max-width: 576px) {
+      .ph-stats { gap: 1.25rem; }
+      .search-input-row { flex-direction: column; }
+      .expand-row { justify-content: center; }
+    }
+  </style>
+</head>
 <body>
 
-  {% include "header.html" %}
+<!-- SKIP LINK RGAA -->
+<a class="skip-link" href="#faq-main">Aller au contenu principal</a>
+<div id="read-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progression de lecture"></div>
 
-  <!-- ========================================= -->
-  <!--                PAGE FAQ                   -->
-  <!-- ========================================= -->
+{% include "header.html" %}
 
-  <div class="container my-5 faq-page">
+<!-- ══════════ HERO ══════════ -->
+<section class="page-hero" aria-label="En-tête de la page FAQ">
+  <div class="container ph-inner">
+    <nav aria-label="Fil d'Ariane">
+      <ol class="breadcrumb-ml2c">
+        <li><a href="{{ url_for('menu') }}">Accueil</a></li>
+        <li><span class="sep" aria-hidden="true"><i class="fas fa-chevron-right"></i></span></li>
+        <li aria-current="page">FAQ</li>
+      </ol>
+    </nav>
+    <div class="ph-eyebrow" aria-hidden="true">Questions fréquentes</div>
+    <h1 class="ph-title">Foire aux questions —<br><em>réponses &amp; clarté</em></h1>
+    <p class="ph-sub">Retrouvez ici les réponses aux questions fréquentes sur ML2C CONSEIL, notre plateforme client et notre approche moderne basée sur l'IA.</p>
+    <div class="ph-stats" aria-label="Statistiques de la FAQ">
+      <div class="ph-stat">
+        <span class="ph-stat-num" aria-label="9 questions">9</span>
+        <span class="ph-stat-label">Questions</span>
+      </div>
+      <div class="ph-stat">
+        <span class="ph-stat-num" aria-label="5 catégories">5</span>
+        <span class="ph-stat-label">Catégories</span>
+      </div>
+      <div class="ph-stat">
+        <span class="ph-stat-num" aria-label="Réponse rapide en moins de 24h">24h</span>
+        <span class="ph-stat-label">Réponse max.</span>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- TITRE -->
-    <div class="text-center mb-4">
-      <h2 class="section-title mb-3">Foire Aux Questions</h2>
-      <p class="text-muted">
-        Retrouvez ici les réponses aux questions fréquentes sur
-        <strong>ML2C CONSEIL</strong>, notre plateforme client et notre approche moderne basée sur l’IA.
+<!-- ══════════ CONTENU ══════════ -->
+<main id="faq-main" class="container" style="padding-bottom: 5rem;">
+
+  <!-- CONTRÔLES -->
+  <section class="faq-controls" aria-label="Recherche et filtrage de la FAQ" data-anim="fade">
+
+    <!-- RECHERCHE -->
+    <div class="search-wrap">
+      <label for="faq-search"><i class="fas fa-search" aria-hidden="true"></i> Rechercher une question</label>
+      <div class="search-input-row">
+        <div class="search-icon-wrap">
+          <i class="fas fa-search" aria-hidden="true"></i>
+          <input
+            type="search"
+            id="faq-search"
+            name="faq-search"
+            autocomplete="off"
+            placeholder="Ex : devis, plateforme, IA, mot de passe…"
+            aria-label="Rechercher dans la FAQ"
+            aria-controls="faq-accordion"
+            aria-describedby="faq-result-count"
+          >
+        </div>
+        <button class="btn-clear" id="faq-clear" type="button" aria-label="Effacer la recherche">
+          <i class="fas fa-times" aria-hidden="true"></i> Effacer
+        </button>
+      </div>
+      <p id="faq-result-count" aria-live="polite" aria-atomic="true">
+        <i class="fas fa-circle-check" aria-hidden="true"></i>
+        <span id="count-badge">9</span> questions au total
       </p>
     </div>
 
-    <!-- BARRE DE RECHERCHE -->
-    <div class="row mb-4">
-      <div class="col-md-8 mx-auto">
-        <div class="input-group">
-          <input id="faq-search" type="text" class="form-control"
-                 placeholder="Rechercher une question (ex : devis, IA, plateforme, rendez-vous...)">
-          <div class="input-group-append">
-            <button class="btn btn-ml2c-green" type="button" id="faq-clear">Effacer</button>
-          </div>
-        </div>
-        <small id="faq-result-count" class="form-text text-muted mt-1">
-          9 questions au total
-        </small>
-      </div>
-    </div>
+    <div class="controls-sep" role="separator"></div>
 
     <!-- FILTRES -->
-    <div class="row mb-4">
-      <div class="col text-center">
-        <div class="btn-group btn-group-sm" role="group">
-          <button class="btn btn-outline-ml2c-green active" data-faq-filter="all">Toutes</button>
-          <button class="btn btn-outline-ml2c-green" data-faq-filter="general">Cabinet</button>
-          <button class="btn btn-outline-ml2c-green" data-faq-filter="plateforme">Plateforme</button>
-          <button class="btn btn-outline-ml2c-green" data-faq-filter="devis">Devis</button>
-          <button class="btn btn-outline-ml2c-green" data-faq-filter="ia">IA</button>
-          <button class="btn btn-outline-ml2c-green" data-faq-filter="securite">Sécurité</button>
-        </div>
+    <div class="filters-row" role="group" aria-label="Filtrer par catégorie">
+      <span class="filters-label" id="filters-label" aria-hidden="true">
+        <i class="fas fa-filter" aria-hidden="true"></i> Filtrer
+      </span>
+      <div class="filter-pills" role="group" aria-labelledby="filters-label">
+        <button class="filter-pill active" data-faq-filter="all" type="button" aria-pressed="true">
+          <i class="fas fa-th-large" aria-hidden="true"></i> Toutes
+        </button>
+        <button class="filter-pill" data-faq-filter="general" type="button" aria-pressed="false">
+          <i class="fas fa-building" aria-hidden="true"></i> Cabinet
+        </button>
+        <button class="filter-pill" data-faq-filter="plateforme" type="button" aria-pressed="false">
+          <i class="fas fa-desktop" aria-hidden="true"></i> Plateforme
+        </button>
+        <button class="filter-pill" data-faq-filter="devis" type="button" aria-pressed="false">
+          <i class="fas fa-file-invoice" aria-hidden="true"></i> Devis
+        </button>
+        <button class="filter-pill" data-faq-filter="ia" type="button" aria-pressed="false">
+          <i class="fas fa-robot" aria-hidden="true"></i> IA
+        </button>
+        <button class="filter-pill" data-faq-filter="securite" type="button" aria-pressed="false">
+          <i class="fas fa-shield-alt" aria-hidden="true"></i> Sécurité
+        </button>
       </div>
     </div>
 
-    <!-- OUVRIR / FERMER -->
-    <div class="row mb-3">
-      <div class="col text-center">
-        <button class="btn btn-outline-ml2c-green mr-2" id="faq-expand-all">Tout ouvrir</button>
-        <button class="btn btn-outline-ml2c-green" id="faq-collapse-all">Tout fermer</button>
-      </div>
-    </div>
+  </section>
 
-    <!-- ACCORDÉON FAQ -->
-    <div id="faq-accordion">
-
-      <!-- FAQ 1 -->
-      <div class="card faq-item" data-category="devis" data-keywords="rendez-vous contact demande devis">
-        <div class="card-header" id="faqHeading1">
-          <h5 class="mb-0">
-            <button class="btn btn-link" data-toggle="collapse" data-target="#faqCollapse1">
-              1. Comment prendre rendez-vous avec ML2C CONSEIL ?
-            </button>
-          </h5>
-        </div>
-        <div id="faqCollapse1" class="collapse show" data-parent="#faq-accordion">
-          <div class="card-body">
-            Vous pouvez prendre rendez-vous via la rubrique <strong>Devis</strong> ou la page
-            <strong>Contact</strong>. Remplissez le formulaire et nous vous rappelons pour confirmer.
-          </div>
-        </div>
-      </div>
-
-      <!-- FAQ 2 -->
-      <div class="card faq-item" data-category="general" data-keywords="services comptabilité fiscalité social conseil">
-        <div class="card-header" id="faqHeading2">
-          <h5 class="mb-0">
-            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse2">
-              2. Quels services propose ML2C CONSEIL ?
-            </button>
-          </h5>
-        </div>
-        <div id="faqCollapse2" class="collapse" data-parent="#faq-accordion">
-          <div class="card-body">
-            Nous proposons un accompagnement complet en <strong>comptabilité</strong>,
-            <strong>fiscalité</strong>, <strong>gestion</strong>, <strong>social</strong> et
-            <strong>pilotage d'entreprise</strong>.
-          </div>
-        </div>
-      </div>
-
-      <!-- FAQ 3 -->
-      <div class="card faq-item" data-category="plateforme" data-keywords="plateforme client espace sécurisé portail document">
-        <div class="card-header" id="faqHeading3">
-          <h5 class="mb-0">
-            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse3">
-              3. Qu’est-ce que la Plateforme Client ML2C ?
-            </button>
-          </h5>
-        </div>
-        <div id="faqCollapse3" class="collapse" data-parent="#faq-accordion">
-          <div class="card-body">
-            Un espace sécurisé pour déposer vos pièces, suivre vos dossiers, consulter vos tableaux
-            de bord et échanger avec le cabinet.
-          </div>
-        </div>
-      </div>
-
-      <!-- FAQ 4 -->
-      <div class="card faq-item" data-category="ia" data-keywords="intelligence artificielle automatisation lecture pièces ia comptable">
-        <div class="card-header" id="faqHeading4">
-          <h5 class="mb-0">
-            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse4">
-              4. Comment ML2C utilise l’IA ?
-            </button>
-          </h5>
-        </div>
-        <div id="faqCollapse4" class="collapse" data-parent="#faq-accordion">
-          <div class="card-body">
-            L’IA permet de gagner du temps sur les tâches techniques (lecture de pièces, tri,
-            cohérences…) pour se concentrer sur le <strong>conseil</strong> et la relation client.
-          </div>
-        </div>
-      </div>
-
-      <!-- FAQ 5 -->
-      <div class="card faq-item" data-category="ia" data-keywords="chatbot aide questions support conversation">
-        <div class="card-header" id="faqHeading5">
-          <h5 class="mb-0">
-            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse5">
-              5. À quoi sert le chatbot ?
-            </button>
-          </h5>
-        </div>
-        <div id="faqCollapse5" class="collapse" data-parent="#faq-accordion">
-          <div class="card-body">
-            Le chatbot répond 24h/24 aux questions simples sur nos services, la plateforme client,
-            les devis et les démarches.
-          </div>
-        </div>
-      </div>
-
-      <!-- FAQ 6 -->
-      <div class="card faq-item" data-category="securite" data-keywords="sécurité données rgpd confidentialité hébergement">
-        <div class="card-header" id="faqHeading6">
-          <h5 class="mb-0">
-            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse6">
-              6. Comment protégez-vous mes données ?
-            </button>
-          </h5>
-        </div>
-        <div id="faqCollapse6" class="collapse" data-parent="#faq-accordion">
-          <div class="card-body">
-            Accès sécurisés, données chiffrées, sauvegardes régulières, conformité RGPD, infrastructure
-            sécurisée chez des hébergeurs certifiés.
-          </div>
-        </div>
-      </div>
-
-      <!-- FAQ 7 -->
-      <div class="card faq-item" data-category="plateforme" data-keywords="identifiants mot de passe oublié connexion">
-        <div class="card-header" id="faqHeading7">
-          <h5 class="mb-0">
-            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse7">
-              7. Que faire si j’ai perdu mes identifiants ?
-            </button>
-          </h5>
-        </div>
-        <div id="faqCollapse7" class="collapse" data-parent="#faq-accordion">
-          <div class="card-body">
-            Cliquez sur “Mot de passe oublié” ou contactez ML2C pour réinitialiser votre accès
-            rapidement et en sécurité.
-          </div>
-        </div>
-      </div>
-
-      <!-- FAQ 8 -->
-      <div class="card faq-item" data-category="devis" data-keywords="devis tarif honoraires prix offre">
-        <div class="card-header" id="faqHeading8">
-          <h5 class="mb-0">
-            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse8">
-              8. Comment obtenir un devis détaillé ?
-            </button>
-          </h5>
-        </div>
-        <div id="faqCollapse8" class="collapse" data-parent="#faq-accordion">
-          <div class="card-body">
-            Remplissez le formulaire Devis avec vos besoins. Nous analysons votre activité et vous
-            envoyons une estimation personnalisée.
-          </div>
-        </div>
-      </div>
-
-      <!-- FAQ 9 -->
-      <div class="card faq-item" data-category="general" data-keywords="différence modernité cabinet innovation ia">
-        <div class="card-header" id="faqHeading9">
-          <h5 class="mb-0">
-            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#faqCollapse9">
-              9. En quoi ML2C est différent d’un cabinet classique ?
-            </button>
-          </h5>
-        </div>
-        <div id="faqCollapse9" class="collapse" data-parent="#faq-accordion">
-          <div class="card-body">
-            Nous combinons <strong>rigueur comptable</strong>,
-            <strong>plateforme numérique</strong>,
-            <strong>innovation IA</strong> et un accompagnement humain
-            centré sur le conseil et la pédagogie.
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- CTA -->
-    <div class="text-center mt-5">
-      <p class="mb-2">Vous ne trouvez pas votre réponse ?</p>
-      <a href="/contact" class="btn btn-pink mb-2">Contacter ML2C</a>
-      <a href="/chatbot" class="btn btn-outline-primary mb-2">Demander au Chatbot</a>
-    </div>
-
+  <!-- BOUTONS TOUT OUVRIR/FERMER -->
+  <div class="expand-row" role="group" aria-label="Gestion de l'affichage des réponses">
+    <button class="btn-expand" id="faq-expand-all" type="button" aria-label="Ouvrir toutes les questions">
+      <i class="fas fa-chevron-down" aria-hidden="true"></i> Tout ouvrir
+    </button>
+    <button class="btn-expand" id="faq-collapse-all" type="button" aria-label="Fermer toutes les questions">
+      <i class="fas fa-chevron-up" aria-hidden="true"></i> Tout fermer
+    </button>
   </div>
 
-  {% include "footer.html" %}
+  <!-- MESSAGE AUCUN RÉSULTAT -->
+  <div id="no-results" role="alert" aria-live="polite">
+    <i class="fas fa-search-minus" aria-hidden="true"></i>
+    <p>Aucune question ne correspond à votre recherche.<br>
+    <strong>Contactez-nous directement</strong>, nous répondrons sous 24h.</p>
+  </div>
 
-  <!-- Scripts -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- ACCORDÉON FAQ -->
+  <div id="faq-accordion" aria-label="Questions fréquentes">
 
-  <!-- Script FAQ -->
-  <script>
-  (function() {
-    const searchInput = document.getElementById('faq-search');
-    const clearBtn = document.getElementById('faq-clear');
-    const items = Array.from(document.querySelectorAll('#faq-accordion .faq-item'));
-    const count = document.getElementById('faq-result-count');
-    const expandAll = document.getElementById('faq-expand-all');
-    const collapseAll = document.getElementById('faq-collapse-all');
-    const filters = document.querySelectorAll('[data-faq-filter]');
+    <!-- ── SECTION CABINET ── -->
+    <section class="faq-section" id="section-general" data-anim="fade" style="transition-delay:.04s">
+      <h2 class="faq-section-title">
+        <span class="faq-section-icon si-turq" aria-hidden="true"><i class="fas fa-building"></i></span>
+        Le cabinet ML2C
+      </h2>
 
-    function normalize(txt) {
-      return txt.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      <!-- Q2 -->
+      <div class="faq-item" data-category="general" data-keywords="services comptabilité fiscalité social conseil">
+        <button
+          class="faq-question"
+          aria-expanded="false"
+          aria-controls="faq-body-2"
+          id="faq-btn-2"
+          type="button"
+        >
+          <span class="fq-num" aria-hidden="true">2</span>
+          <span class="fq-text">Quels services propose ML2C CONSEIL ?</span>
+          <span class="fq-chevron" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="faq-answer" id="faq-body-2" role="region" aria-labelledby="faq-btn-2" hidden>
+          <div class="faq-answer-inner">
+            Nous proposons un accompagnement complet en <strong>comptabilité</strong>,
+            <strong>fiscalité</strong>, <strong>gestion</strong>, <strong>social</strong> et
+            <strong>pilotage d'entreprise</strong>. Chaque mission est adaptée à votre activité et à vos enjeux.
+            <div class="fq-tags">
+              <span class="fq-tag tag-turq">Comptabilité</span>
+              <span class="fq-tag tag-rose">Fiscalité</span>
+              <span class="fq-tag tag-blue">Gestion</span>
+              <span class="fq-tag">Social</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q9 -->
+      <div class="faq-item" data-category="general" data-keywords="différence modernité cabinet innovation ia">
+        <button
+          class="faq-question"
+          aria-expanded="false"
+          aria-controls="faq-body-9"
+          id="faq-btn-9"
+          type="button"
+        >
+          <span class="fq-num" aria-hidden="true">9</span>
+          <span class="fq-text">En quoi ML2C est différent d'un cabinet classique ?</span>
+          <span class="fq-chevron" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="faq-answer" id="faq-body-9" role="region" aria-labelledby="faq-btn-9" hidden>
+          <div class="faq-answer-inner">
+            Nous combinons <strong>rigueur comptable</strong>, <strong>plateforme numérique</strong>,
+            <strong>innovation IA</strong> et un accompagnement humain centré sur le conseil et la pédagogie.
+            Notre approche "zéro friction" réduit vos démarches administratives au minimum.
+            <div class="fq-tags">
+              <span class="fq-tag tag-turq">Innovation</span>
+              <span class="fq-tag tag-purple">IA</span>
+              <span class="fq-tag">Pédagogie</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION DEVIS ── -->
+    <section class="faq-section" id="section-devis" data-anim="fade" style="transition-delay:.08s">
+      <h2 class="faq-section-title">
+        <span class="faq-section-icon si-rose" aria-hidden="true"><i class="fas fa-file-invoice"></i></span>
+        Rendez-vous &amp; devis
+      </h2>
+
+      <!-- Q1 -->
+      <div class="faq-item" data-category="devis" data-keywords="rendez-vous contact demande devis">
+        <button
+          class="faq-question"
+          aria-expanded="true"
+          aria-controls="faq-body-1"
+          id="faq-btn-1"
+          type="button"
+        >
+          <span class="fq-num" aria-hidden="true">1</span>
+          <span class="fq-text">Comment prendre rendez-vous avec ML2C CONSEIL ?</span>
+          <span class="fq-chevron" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="faq-answer" id="faq-body-1" role="region" aria-labelledby="faq-btn-1">
+          <div class="faq-answer-inner">
+            Vous pouvez prendre rendez-vous via la rubrique <strong>Devis</strong> ou la page
+            <strong>Contact</strong>. Remplissez le formulaire et nous vous rappelons sous 24h pour confirmer.
+            <div class="fq-tags">
+              <span class="fq-tag tag-rose">Rendez-vous</span>
+              <span class="fq-tag">Contact</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="faq-item" data-category="devis" data-keywords="devis tarif honoraires prix offre">
+        <button
+          class="faq-question"
+          aria-expanded="false"
+          aria-controls="faq-body-8"
+          id="faq-btn-8"
+          type="button"
+        >
+          <span class="fq-num" aria-hidden="true">8</span>
+          <span class="fq-text">Comment obtenir un devis détaillé ?</span>
+          <span class="fq-chevron" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="faq-answer" id="faq-body-8" role="region" aria-labelledby="faq-btn-8" hidden>
+          <div class="faq-answer-inner">
+            Remplissez le formulaire Devis avec vos besoins et votre activité. Nous analysons votre
+            situation et vous envoyons une estimation personnalisée sous 24–48h ouvrées.
+            <div class="fq-tags">
+              <span class="fq-tag tag-rose">Devis</span>
+              <span class="fq-tag">Tarif</span>
+              <span class="fq-tag">Personnalisé</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION PLATEFORME ── -->
+    <section class="faq-section" id="section-plateforme" data-anim="fade" style="transition-delay:.12s">
+      <h2 class="faq-section-title">
+        <span class="faq-section-icon si-blue" aria-hidden="true"><i class="fas fa-desktop"></i></span>
+        Plateforme client
+      </h2>
+
+      <!-- Q3 -->
+      <div class="faq-item" data-category="plateforme" data-keywords="plateforme client espace sécurisé portail document">
+        <button
+          class="faq-question"
+          aria-expanded="false"
+          aria-controls="faq-body-3"
+          id="faq-btn-3"
+          type="button"
+        >
+          <span class="fq-num" aria-hidden="true">3</span>
+          <span class="fq-text">Qu'est-ce que la Plateforme Client ML2C ?</span>
+          <span class="fq-chevron" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="faq-answer" id="faq-body-3" role="region" aria-labelledby="faq-btn-3" hidden>
+          <div class="faq-answer-inner">
+            Un espace sécurisé pour déposer vos pièces, suivre vos dossiers, consulter vos tableaux
+            de bord et échanger directement avec le cabinet. Disponible 24h/24, 7j/7.
+            <div class="fq-tags">
+              <span class="fq-tag tag-blue">Espace sécurisé</span>
+              <span class="fq-tag">Documents</span>
+              <span class="fq-tag">Tableau de bord</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="faq-item" data-category="plateforme" data-keywords="identifiants mot de passe oublié connexion">
+        <button
+          class="faq-question"
+          aria-expanded="false"
+          aria-controls="faq-body-7"
+          id="faq-btn-7"
+          type="button"
+        >
+          <span class="fq-num" aria-hidden="true">7</span>
+          <span class="fq-text">Que faire si j'ai perdu mes identifiants ?</span>
+          <span class="fq-chevron" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="faq-answer" id="faq-body-7" role="region" aria-labelledby="faq-btn-7" hidden>
+          <div class="faq-answer-inner">
+            Cliquez sur <strong>"Mot de passe oublié"</strong> sur la page de connexion pour recevoir
+            un lien de réinitialisation par e-mail. Vous pouvez aussi contacter ML2C directement pour
+            rétablir votre accès rapidement et en sécurité.
+            <div class="fq-tags">
+              <span class="fq-tag tag-blue">Connexion</span>
+              <span class="fq-tag">Mot de passe</span>
+              <span class="fq-tag">Sécurité</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION IA ── -->
+    <section class="faq-section" id="section-ia" data-anim="fade" style="transition-delay:.16s">
+      <h2 class="faq-section-title">
+        <span class="faq-section-icon si-purple" aria-hidden="true"><i class="fas fa-robot"></i></span>
+        Intelligence artificielle
+      </h2>
+
+      <!-- Q4 -->
+      <div class="faq-item" data-category="ia" data-keywords="intelligence artificielle automatisation lecture pièces ia comptable">
+        <button
+          class="faq-question"
+          aria-expanded="false"
+          aria-controls="faq-body-4"
+          id="faq-btn-4"
+          type="button"
+        >
+          <span class="fq-num" aria-hidden="true">4</span>
+          <span class="fq-text">Comment ML2C utilise l'intelligence artificielle ?</span>
+          <span class="fq-chevron" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="faq-answer" id="faq-body-4" role="region" aria-labelledby="faq-btn-4" hidden>
+          <div class="faq-answer-inner">
+            L'IA permet de gagner du temps sur les tâches techniques — lecture de pièces, tri automatique,
+            contrôles de cohérences — pour que notre équipe se concentre sur l'essentiel :
+            le <strong>conseil</strong> et la <strong>relation client</strong>.
+            <div class="fq-tags">
+              <span class="fq-tag tag-purple">IA</span>
+              <span class="fq-tag">Automatisation</span>
+              <span class="fq-tag">Conseil</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="faq-item" data-category="ia" data-keywords="chatbot aide questions support conversation">
+        <button
+          class="faq-question"
+          aria-expanded="false"
+          aria-controls="faq-body-5"
+          id="faq-btn-5"
+          type="button"
+        >
+          <span class="fq-num" aria-hidden="true">5</span>
+          <span class="fq-text">À quoi sert le chatbot ML2C ?</span>
+          <span class="fq-chevron" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="faq-answer" id="faq-body-5" role="region" aria-labelledby="faq-btn-5" hidden>
+          <div class="faq-answer-inner">
+            Le chatbot répond <strong>24h/24</strong> aux questions simples sur nos services,
+            la plateforme client, les devis et les démarches administratives. Pour toute question complexe,
+            il vous oriente vers notre équipe.
+            <div class="fq-tags">
+              <span class="fq-tag tag-purple">Chatbot</span>
+              <span class="fq-tag">24h/24</span>
+              <span class="fq-tag">Support</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION SÉCURITÉ ── -->
+    <section class="faq-section" id="section-securite" data-anim="fade" style="transition-delay:.20s">
+      <h2 class="faq-section-title">
+        <span class="faq-section-icon si-green" aria-hidden="true"><i class="fas fa-shield-alt"></i></span>
+        Sécurité &amp; données
+      </h2>
+
+      <!-- Q6 -->
+      <div class="faq-item" data-category="securite" data-keywords="sécurité données rgpd confidentialité hébergement">
+        <button
+          class="faq-question"
+          aria-expanded="false"
+          aria-controls="faq-body-6"
+          id="faq-btn-6"
+          type="button"
+        >
+          <span class="fq-num" aria-hidden="true">6</span>
+          <span class="fq-text">Comment protégez-vous mes données personnelles ?</span>
+          <span class="fq-chevron" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="faq-answer" id="faq-body-6" role="region" aria-labelledby="faq-btn-6" hidden>
+          <div class="faq-answer-inner">
+            Accès sécurisés, données chiffrées (AES-256), sauvegardes quotidiennes,
+            <strong>conformité RGPD</strong> totale et infrastructure hébergée en France chez Scalingo.
+            Aucune donnée n'est revendue à des tiers.
+            <div class="fq-tags">
+              <span class="fq-tag tag-green">RGPD</span>
+              <span class="fq-tag">Chiffrement</span>
+              <span class="fq-tag">France</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /#faq-accordion -->
+
+  <!-- CTA FINAL -->
+  <div class="faq-cta" data-anim="fade">
+    <div class="faq-cta-inner">
+      <h2>Vous ne trouvez pas<br><em>votre réponse ?</em></h2>
+      <p>Notre équipe est disponible pour répondre à toutes vos questions — sous 24h maximum.</p>
+      <div class="cta-btns">
+        <a href="{{ url_for('nous_contacter') }}" class="btn-cta-rose">
+          <i class="fas fa-paper-plane" aria-hidden="true"></i> Contacter ML2C
+        </a>
+        <a href="{{ url_for('chatbot') }}" class="btn-cta-outline">
+          <i class="fas fa-robot" aria-hidden="true"></i> Poser ma question au chatbot
+        </a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  // ── ÉLÉMENTS ──
+  const searchInput  = document.getElementById('faq-search');
+  const clearBtn     = document.getElementById('faq-clear');
+  const countBadge   = document.getElementById('count-badge');
+  const countLabel   = document.getElementById('faq-result-count');
+  const expandAll    = document.getElementById('faq-expand-all');
+  const collapseAll  = document.getElementById('faq-collapse-all');
+  const filterBtns   = document.querySelectorAll('[data-faq-filter]');
+  const noResults    = document.getElementById('no-results');
+  const items        = Array.from(document.querySelectorAll('.faq-item'));
+  const sections     = Array.from(document.querySelectorAll('.faq-section'));
+
+  // ── NORMALISATION ──
+  function normalize(str) {
+    return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  // ── ÉTAT ──
+  let currentFilter = 'all';
+
+  // ── OUVRIR / FERMER UN ITEM ──
+  function openItem(item) {
+    item.classList.add('open');
+    const btn = item.querySelector('.faq-question');
+    const body = item.querySelector('.faq-answer');
+    btn.setAttribute('aria-expanded', 'true');
+    body.removeAttribute('hidden');
+  }
+
+  function closeItem(item) {
+    item.classList.remove('open');
+    const btn = item.querySelector('.faq-question');
+    const body = item.querySelector('.faq-answer');
+    btn.setAttribute('aria-expanded', 'false');
+    body.setAttribute('hidden', '');
+  }
+
+  // ── CLIC SUR UNE QUESTION ──
+  items.forEach(item => {
+    const btn = item.querySelector('.faq-question');
+    btn.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      isOpen ? closeItem(item) : openItem(item);
+    });
+    // Keyboard : Enter & Space déjà gérés par button
+  });
+
+  // ── FILTRAGE ──
+  function runFilter() {
+    const query = normalize(searchInput.value.trim());
+    let visible = 0;
+
+    items.forEach(item => {
+      const text = normalize(item.innerText + ' ' + (item.dataset.keywords || ''));
+      const cat  = item.dataset.category;
+
+      const matchQuery = !query || text.includes(query);
+      const matchCat   = currentFilter === 'all' || currentFilter === cat;
+
+      if (matchQuery && matchCat) {
+        item.style.display = '';
+        visible++;
+      } else {
+        item.style.display = 'none';
+      }
+    });
+
+    // Masquer sections vides
+    sections.forEach(sec => {
+      const sectionCat = sec.id.replace('section-', '');
+      const hasVisible = Array.from(sec.querySelectorAll('.faq-item')).some(i => i.style.display !== 'none');
+      sec.style.display = hasVisible ? '' : 'none';
+    });
+
+    // Compteur
+    const total = items.length;
+    countBadge.textContent = visible;
+    if (visible === total && !query) {
+      countLabel.innerHTML = `<i class="fas fa-circle-check" aria-hidden="true"></i> <span id="count-badge">${total}</span> questions au total`;
+    } else if (visible === 0) {
+      countLabel.innerHTML = `<i class="fas fa-times-circle" aria-hidden="true" style="color:#dc2626"></i> <span id="count-badge" style="background:#dc2626">0</span> résultat trouvé`;
+    } else {
+      countLabel.innerHTML = `<i class="fas fa-magnifying-glass" aria-hidden="true"></i> <span id="count-badge">${visible}</span> question${visible > 1 ? 's' : ''} trouvée${visible > 1 ? 's' : ''}`;
     }
 
-    function runFilter() {
-      const query = normalize(searchInput.value);
-      const active = document.querySelector('[data-faq-filter].active');
-      const category = active ? active.dataset.faqFilter : "all";
+    // Message aucun résultat
+    noResults.style.display = visible === 0 ? 'block' : 'none';
+  }
 
-      let visible = 0;
+  // ── EVENTS RECHERCHE ──
+  searchInput.addEventListener('input', runFilter);
+  clearBtn.addEventListener('click', () => { searchInput.value = ''; runFilter(); searchInput.focus(); });
 
-      items.forEach(item => {
-        const txt = normalize(item.innerText + item.dataset.keywords);
-        const cat = item.dataset.category;
-
-        const matchQuery = !query || txt.includes(query);
-        const matchCat = category === "all" || category === cat;
-
-        if (matchQuery && matchCat) {
-          item.style.display = "";
-          visible++;
-        } else {
-          item.style.display = "none";
-        }
-      });
-
-      if (visible === items.length) count.textContent = items.length + " questions au total";
-      else if (visible === 0) count.textContent = "Aucun résultat";
-      else count.textContent = visible + " question(s) trouvée(s)";
-    }
-
-    searchInput.addEventListener('input', runFilter);
-    clearBtn.addEventListener('click', () => {
-      searchInput.value = "";
+  // ── EVENTS FILTRES ──
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+      currentFilter = btn.dataset.faqFilter;
       runFilter();
     });
+  });
 
-    filters.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filters.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        runFilter();
-      });
-    });
+  // ── TOUT OUVRIR / FERMER ──
+  expandAll.addEventListener('click', () => {
+    items.forEach(item => { if (item.style.display !== 'none') openItem(item); });
+  });
+  collapseAll.addEventListener('click', () => {
+    items.forEach(closeItem);
+  });
 
-    expandAll.addEventListener('click', () =>
-      items.forEach(i => $(i.querySelector(".collapse")).collapse("show"))
-    );
-    collapseAll.addEventListener('click', () =>
-      items.forEach(i => $(i.querySelector(".collapse")).collapse("hide"))
-    );
+  // ── BARRE DE LECTURE ──
+  const bar = document.getElementById('read-progress');
+  window.addEventListener('scroll', () => {
+    const h   = document.documentElement;
+    const pct = Math.round(window.scrollY / (h.scrollHeight - h.clientHeight) * 100);
+    bar.style.width = pct + '%';
+    bar.setAttribute('aria-valuenow', pct);
+  });
 
-    runFilter();
-  })();
-  </script>
+  // ── HEADER STICKY ──
+  const hdr = document.getElementById('mainHeader');
+  if (hdr) window.addEventListener('scroll', () => hdr.classList.toggle('scrolled', window.scrollY > 60));
+
+  // ── BURGER ──
+  const burger = document.getElementById('burgerBtn');
+  const nav    = document.getElementById('mainNav');
+  if (burger && nav) burger.addEventListener('click', function() {
+    const expanded = this.getAttribute('aria-expanded') === 'true';
+    this.setAttribute('aria-expanded', String(!expanded));
+    nav.classList.toggle('open'); this.classList.toggle('active');
+  });
+
+  // ── ANIMATIONS SCROLL ──
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('[data-anim]').forEach(el => obs.observe(el));
+
+  // ── INIT ──
+  // Ouvrir Q1 par défaut
+  const firstItem = document.querySelector('.faq-item[data-category="devis"]');
+  if (firstItem) openItem(firstItem);
+
+  runFilter();
+})();
+</script>
 
 </body>
 </html>

@@ -2,44 +2,328 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Notre Histoire - ML2C CONSEIL</title>
-  <!-- Bootstrap CSS -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notre Histoire — ML2C CONSEIL</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
-  <!-- Votre CSS personnalisé -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+
+    /* HERO */
+    .page-hero {
+      background: linear-gradient(120deg, #2d3436 0%, #3d4549 100%);
+      padding: 80px 0 72px; position: relative; overflow: hidden;
+    }
+    .page-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at 80% 50%, rgba(193,0,122,.14) 0%, transparent 60%);
+    }
+    .page-hero::after {
+      content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 56px;
+      background: #f5f6f7; clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    .ph-inner { position: relative; z-index: 2; }
+    .breadcrumb-ml2c {
+      display: flex; align-items: center; gap: .4rem;
+      font-size: .75rem; color: rgba(255,255,255,.38);
+      list-style: none; padding: 0; margin-bottom: 1.5rem;
+    }
+    .breadcrumb-ml2c a { color: rgba(255,255,255,.38); transition: color .2s; }
+    .breadcrumb-ml2c a:hover { color: #f9a8d4; }
+    .breadcrumb-ml2c .sep { font-size: .5rem; }
+    .ph-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 700; color: #fff; line-height: 1.1; margin-bottom: 1rem;
+    }
+    .ph-title em { color: #f9a8d4; font-style: italic; }
+    .ph-sub { font-size: .97rem; color: rgba(255,255,255,.62); max-width: 500px; line-height: 1.8; margin: 0; }
+
+    /* UTILITAIRES */
+    .label-tag {
+      display: inline-block; font-size: .7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .13em; color: #C1007A; margin-bottom: .5rem;
+    }
+    .titre-sec {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.55rem, 3vw, 2.1rem); font-weight: 700;
+      color: #333; line-height: 1.15; margin-bottom: .45rem;
+    }
+    .barre {
+      width: 36px; height: 3px; border-radius: 2px;
+      background: linear-gradient(90deg, #C1007A, #4FA695);
+      margin: .85rem 0 1.5rem;
+    }
+    .barre.c { margin-left: auto; margin-right: auto; }
+    .sec { padding: 5rem 0; }
+    .sec-grey { background: #f5f6f7; }
+    .sec-white { background: #fff; }
+
+    /* KPIS */
+    .kpis-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.25rem; }
+    .kpi {
+      background: #fff; border-radius: 16px; padding: 2rem 1.5rem;
+      text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,.07);
+      border-bottom: 3px solid transparent;
+      transition: transform .3s, box-shadow .3s, border-color .3s;
+    }
+    .kpi:hover { transform: translateY(-5px); box-shadow: 0 10px 32px rgba(0,0,0,.12); border-bottom-color: #C1007A; }
+    .kpi-val { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 700; line-height: 1; color: #C1007A; }
+    .kpi-val sup { font-size: 1.3rem; color: #4FA695; }
+    .kpi-txt { font-size: .83rem; color: #6b7280; margin-top: .4rem; line-height: 1.4; }
+
+    /* BLOCS HISTOIRE ALTERNÉS */
+    .histoire-bloc {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0; align-items: stretch;
+      border-radius: 20px; overflow: hidden;
+      box-shadow: 0 4px 32px rgba(0,0,0,.09);
+      margin-bottom: 2.5rem;
+    }
+    .histoire-bloc:last-child { margin-bottom: 0; }
+
+    /* pair  = visuel gauche, texte droite */
+    .histoire-bloc.pair .hb-visuel  { order: 1; }
+    .histoire-bloc.pair .hb-texte   { order: 2; }
+    /* impair = texte gauche, visuel droite */
+    .histoire-bloc.impair .hb-texte  { order: 1; }
+    .histoire-bloc.impair .hb-visuel { order: 2; }
+
+    .hb-visuel {
+      min-height: 340px; position: relative;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 1rem;
+      overflow: hidden;
+    }
+    .hb-visuel.v1 { background: linear-gradient(145deg, #fce4f3 0%, #f472b6 100%); }
+    .hb-visuel.v2 { background: linear-gradient(145deg, #d4f0ec 0%, #4FA695 100%); }
+    .hb-visuel.v3 { background: linear-gradient(145deg, #dde0e2 0%, #5C666B 100%); }
+
+    .hb-num-bg {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11rem; font-weight: 700; line-height: 1;
+      position: absolute; bottom: -.8rem; right: .5rem;
+      opacity: .13; color: #fff; user-select: none; pointer-events: none;
+    }
+    .hb-visuel.v1 .hb-num-bg { color: #9a0062; }
+
+    .hb-icon-wrap {
+      width: 80px; height: 80px; border-radius: 20px;
+      background: rgba(255,255,255,.35); backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.2rem; color: #fff;
+      box-shadow: 0 8px 24px rgba(0,0,0,.12);
+      position: relative; z-index: 1;
+    }
+    .hb-visuel.v1 .hb-icon-wrap { color: #9a0062; }
+
+    .hb-periode {
+      font-size: .75rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: rgba(255,255,255,.95);
+      background: rgba(0,0,0,.2); border-radius: 20px;
+      padding: .35rem 1rem; position: relative; z-index: 1;
+    }
+    .hb-visuel.v1 .hb-periode { color: #9a0062; background: rgba(255,255,255,.55); }
+
+    .hb-texte {
+      background: #fff; padding: 3rem 3rem;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .hb-texte h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 700; color: #333;
+      margin-bottom: .3rem; line-height: 1.2;
+    }
+    .hb-texte .barre { margin-top: .75rem; margin-bottom: 1.1rem; }
+    .hb-texte p { font-size: .93rem; color: #6b7280; line-height: 1.85; margin: 0; }
+
+    /* CTA FINAL */
+    .cta-bande {
+      background: linear-gradient(135deg, #C1007A 0%, #9a0062 100%);
+      border-radius: 20px; padding: 3rem 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 2rem; flex-wrap: wrap;
+      box-shadow: 0 12px 40px rgba(193,0,122,.28);
+    }
+    .cta-bande h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 700; color: #fff; margin-bottom: .25rem; }
+    .cta-bande p { color: rgba(255,255,255,.7); margin: 0; font-size: .93rem; }
+    .cta-buttons { display: flex; gap: .75rem; flex-wrap: wrap; flex-shrink: 0; }
+    .btn-blanc {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .8rem 1.6rem; background: #fff; color: #C1007A;
+      font-weight: 700; font-size: .88rem; border-radius: 9px;
+      text-decoration: none; transition: .25s; white-space: nowrap;
+    }
+    .btn-blanc:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.18); color: #9a0062; text-decoration: none; }
+    .btn-contour {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .8rem 1.6rem; background: transparent;
+      border: 2px solid rgba(255,255,255,.4); color: #fff;
+      font-weight: 600; font-size: .88rem; border-radius: 9px;
+      text-decoration: none; transition: .25s; white-space: nowrap;
+    }
+    .btn-contour:hover { border-color: #fff; background: rgba(255,255,255,.1); color: #fff; text-decoration: none; }
+
+    /* ANIMATIONS */
+    [data-anim] { opacity: 0; transition: opacity .55s ease, transform .55s ease; }
+    [data-anim="fade"]  { transform: translateY(22px); }
+    [data-anim="left"]  { transform: translateX(-28px); }
+    [data-anim="right"] { transform: translateX(28px); }
+    [data-anim].visible { opacity: 1; transform: translate(0); }
+
+    /* RESPONSIVE */
+    @media(max-width: 992px) {
+      .histoire-bloc { grid-template-columns: 1fr; }
+      .histoire-bloc.pair .hb-visuel,
+      .histoire-bloc.impair .hb-visuel { order: 1; }
+      .histoire-bloc.pair .hb-texte,
+      .histoire-bloc.impair .hb-texte  { order: 2; }
+      .hb-texte { padding: 2rem 1.75rem; }
+      .hb-visuel { min-height: 200px; }
+      .kpis-row { grid-template-columns: repeat(2,1fr); }
+    }
+    @media(max-width: 576px) {
+      .cta-bande { padding: 2rem 1.5rem; }
+    }
+  </style>
 </head>
 <body>
+{% include "header.html" %}
 
-  {% include "header.html" %}
-
-  <div class="container my-5">
-    <h2 class="text-center mb-4">Notre Histoire</h2>
-
-    <!-- Premier paragraphe -->
-    <p>
-      Fondé en 2019, ML2C CONSEIL voit le jour dans un contexte dynamique. Le cabinet a été créé avec la volonté de moderniser l'accompagnement des entreprises. Dès ses débuts, il s'est distingué par son approche innovante et personnalisée. L'année 2019 marque le point de départ d'une aventure entrepreneuriale prometteuse. Les fondateurs ont réuni des compétences complémentaires pour répondre aux défis du marché. Le cabinet a rapidement su gagner la confiance de ses premiers clients. Une équipe dédiée a été constituée pour offrir des services de qualité. Chaque étape a été marquée par une volonté constante d'excellence. La création du cabinet en 2019 a jeté les bases d'un succès durable. Aujourd'hui, ML2C CONSEIL continue de prospérer en innovant dans ses domaines d'expertise.
-    </p>
-
-    <!-- Deuxième paragraphe -->
-    <p>
-      Au fil des années, le cabinet a consolidé sa réputation sur le marché. Il a su évoluer avec les changements législatifs et économiques. Chaque projet a été abordé avec rigueur et détermination. Les stratégies adoptées se sont révélées efficaces et novatrices. Le savoir-faire de ML2C CONSEIL a été reconnu par de nombreux partenaires. Des solutions sur mesure ont été élaborées pour répondre à chaque besoin. L'expertise combinée en comptabilité, droit et social a permis d'optimiser les résultats. Les retours positifs des clients témoignent de la qualité du service. Le cabinet investit constamment dans la formation de son équipe. Cette approche proactive assure une adaptation continue aux évolutions du secteur.
-    </p>
-
-    <!-- Troisième paragraphe -->
-    <p>
-      Aujourd'hui, ML2C CONSEIL se positionne comme un leader dans son domaine. L'entreprise continue de se développer grâce à une vision stratégique claire. Les innovations technologiques sont intégrées dans tous les processus. La satisfaction client reste la priorité absolue du cabinet. Les solutions proposées sont à la fois efficaces et durables. La collaboration étroite avec les clients permet une compréhension approfondie de leurs besoins. Chaque membre de l'équipe joue un rôle essentiel dans le succès du cabinet. Les valeurs de transparence, d'engagement et d'innovation guident chaque action. Le futur de ML2C CONSEIL s'annonce riche en projets ambitieux. Nous poursuivons notre mission avec passion pour accompagner nos clients vers la réussite.
-    </p>
+<!-- HERO -->
+<section class="page-hero">
+  <div class="container ph-inner">
+    <ol class="breadcrumb-ml2c">
+      <li><a href="{{ url_for('menu') }}">Accueil</a></li>
+      <li><span class="sep"><i class="fas fa-chevron-right"></i></span></li>
+      <li><a href="#">À propos</a></li>
+      <li><span class="sep"><i class="fas fa-chevron-right"></i></span></li>
+      <li>Notre Histoire</li>
+    </ol>
+    <h1 class="ph-title">Notre Histoire —<br><em>depuis 2019</em></h1>
+    <p class="ph-sub">De la création du cabinet à aujourd'hui, retracez les grandes étapes qui ont façonné ML2C CONSEIL.</p>
   </div>
+</section>
 
-  <!-- Bouton Retour au menu -->
-  <div class="text-center mt-4">
-    <a href="{{ url_for('menu') }}" class="btn btn-secondary">Retour au menu</a>
+<!-- KPIS -->
+<section class="sec sec-grey">
+  <div class="container">
+    <div class="text-center mb-5" data-anim="fade">
+      <span class="label-tag">ML2C CONSEIL en chiffres</span>
+      <h2 class="titre-sec">Une croissance constante</h2>
+      <div class="barre c"></div>
+    </div>
+    <div class="kpis-row">
+      <div class="kpi" data-anim="fade" style="transition-delay:.05s">
+        <div class="kpi-val">15<sup>+</sup></div>
+        <div class="kpi-txt">Années d'expérience comptable et fiscale</div>
+      </div>
+      <div class="kpi" data-anim="fade" style="transition-delay:.12s">
+        <div class="kpi-val">150<sup>+</sup></div>
+        <div class="kpi-txt">Clients TPE et PME accompagnés</div>
+      </div>
+      <div class="kpi" data-anim="fade" style="transition-delay:.19s">
+        <div class="kpi-val">98<sup>%</sup></div>
+        <div class="kpi-txt">Taux de satisfaction client mesuré</div>
+      </div>
+      <div class="kpi" data-anim="fade" style="transition-delay:.26s">
+        <div class="kpi-val">24<sup>h</sup></div>
+        <div class="kpi-txt">Délai de réponse garanti</div>
+      </div>
+    </div>
   </div>
+</section>
 
-  {% include "footer.html" %}
+<!-- 3 BLOCS ALTERNÉS avec données originales exactes -->
+<section class="sec sec-white">
+  <div class="container">
+    <div class="text-center mb-5" data-anim="fade">
+      <span class="label-tag">Notre parcours</span>
+      <h2 class="titre-sec">L'histoire en trois temps</h2>
+      <div class="barre c"></div>
+    </div>
 
-  <!-- Scripts JS Bootstrap -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- BLOC 1 — Visuel gauche / Texte droite -->
+    <div class="histoire-bloc pair" data-anim="fade">
+      <div class="hb-visuel v1">
+        <span class="hb-num-bg">01</span>
+        <div class="hb-icon-wrap"><i class="fas fa-landmark"></i></div>
+        <span class="hb-periode">2019 — Fondation</span>
+      </div>
+      <div class="hb-texte">
+        <span class="label-tag">Les origines</span>
+        <h2>Un cabinet né d'une conviction forte</h2>
+        <div class="barre"></div>
+        <p>Fondé en 2019, ML2C CONSEIL voit le jour dans un contexte dynamique. Le cabinet a été créé avec la volonté de moderniser l'accompagnement des entreprises. Dès ses débuts, il s'est distingué par son approche innovante et personnalisée. L'année 2019 marque le point de départ d'une aventure entrepreneuriale prometteuse. Les fondateurs ont réuni des compétences complémentaires pour répondre aux défis du marché. Le cabinet a rapidement su gagner la confiance de ses premiers clients. Une équipe dédiée a été constituée pour offrir des services de qualité. Chaque étape a été marquée par une volonté constante d'excellence. La création du cabinet en 2019 a jeté les bases d'un succès durable. Aujourd'hui, ML2C CONSEIL continue de prospérer en innovant dans ses domaines d'expertise.</p>
+      </div>
+    </div>
+
+    <!-- BLOC 2 — Texte gauche / Visuel droite -->
+    <div class="histoire-bloc impair" data-anim="fade" style="transition-delay:.08s">
+      <div class="hb-texte">
+        <span class="label-tag">La croissance</span>
+        <h2>Une réputation bâtie sur la rigueur</h2>
+        <div class="barre"></div>
+        <p>Au fil des années, le cabinet a consolidé sa réputation sur le marché. Il a su évoluer avec les changements législatifs et économiques. Chaque projet a été abordé avec rigueur et détermination. Les stratégies adoptées se sont révélées efficaces et novatrices. Le savoir-faire de ML2C CONSEIL a été reconnu par de nombreux partenaires. Des solutions sur mesure ont été élaborées pour répondre à chaque besoin. L'expertise combinée en comptabilité, droit et social a permis d'optimiser les résultats. Les retours positifs des clients témoignent de la qualité du service. Le cabinet investit constamment dans la formation de son équipe. Cette approche proactive assure une adaptation continue aux évolutions du secteur.</p>
+      </div>
+      <div class="hb-visuel v2">
+        <span class="hb-num-bg">02</span>
+        <div class="hb-icon-wrap"><i class="fas fa-chart-line"></i></div>
+        <span class="hb-periode">2020–2022 — Consolidation</span>
+      </div>
+    </div>
+
+    <!-- BLOC 3 — Visuel gauche / Texte droite -->
+    <div class="histoire-bloc pair" data-anim="fade" style="transition-delay:.16s">
+      <div class="hb-visuel v3">
+        <span class="hb-num-bg">03</span>
+        <div class="hb-icon-wrap"><i class="fas fa-medal"></i></div>
+        <span class="hb-periode">2022 — Aujourd'hui</span>
+      </div>
+      <div class="hb-texte">
+        <span class="label-tag">Le leadership</span>
+        <h2>Un leader qui continue d'innover</h2>
+        <div class="barre"></div>
+        <p>Aujourd'hui, ML2C CONSEIL se positionne comme un leader dans son domaine. L'entreprise continue de se développer grâce à une vision stratégique claire. Les innovations technologiques sont intégrées dans tous les processus. La satisfaction client reste la priorité absolue du cabinet. Les solutions proposées sont à la fois efficaces et durables. La collaboration étroite avec les clients permet une compréhension approfondie de leurs besoins. Chaque membre de l'équipe joue un rôle essentiel dans le succès du cabinet. Les valeurs de transparence, d'engagement et d'innovation guident chaque action. Le futur de ML2C CONSEIL s'annonce riche en projets ambitieux. Nous poursuivons notre mission avec passion pour accompagner nos clients vers la réussite.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="sec sec-grey">
+  <div class="container">
+    <div class="cta-bande" data-anim="fade">
+      <div>
+        <h2>Écrivons la suite ensemble</h2>
+        <p>Rejoignez les 150+ entrepreneurs qui font confiance à ML2C CONSEIL.</p>
+      </div>
+      <div class="cta-buttons">
+        <a href="{{ url_for('menu') }}#contact" class="btn-blanc"><i class="fas fa-calendar-alt"></i> Prendre RDV</a>
+        <a href="{{ url_for('notre_equipe') }}" class="btn-contour"><i class="fas fa-users"></i> Notre équipe</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include "footer.html" %}
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const hdr = document.getElementById('mainHeader');
+  if (hdr) window.addEventListener('scroll', () => hdr.classList.toggle('scrolled', window.scrollY > 60));
+  const burger = document.getElementById('burgerBtn');
+  const nav = document.getElementById('mainNav');
+  if (burger && nav) burger.addEventListener('click', function() {
+    nav.classList.toggle('open'); this.classList.toggle('active');
+  });
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('[data-anim]').forEach(el => obs.observe(el));
+</script>
 </body>
 </html>

@@ -3,24 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <title>Header - ML2C CONSEIL</title>
-  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <!-- CSS ML2C -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
 
-  <!-- ══════════════════════════════════════════
-       HEADER PRINCIPAL
-  ══════════════════════════════════════════ -->
   <header class="main-header" id="mainHeader">
     <div class="container header-inner">
 
-      <!-- LOGO (cliquable → menu) -->
+      <!-- LOGO -->
       <a href="{{ url_for('menu') }}" class="logo-box">
         <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo ML2C CONSEIL" class="logo-img">
       </a>
@@ -28,44 +21,125 @@
       <!-- DROITE : nav + séparateur + boutons -->
       <div class="header-right">
 
-        <!-- Navigation -->
         <nav class="main-nav" id="mainNav">
 
-          <!-- Dropdown : À propos -->
+          <!-- ── Dropdown : À propos ── -->
           <div class="nav-dropdown">
             <span class="nav-item">À propos <i class="fas fa-chevron-down fa-xs"></i></span>
-            <div class="dropdown-panel">
-              <a href="{{ url_for('notre_histoire') }}" class="drop-link"><i class="fas fa-landmark"></i> Notre histoire</a>
-              <a href="{{ url_for('notre_equipe') }}" class="drop-link"><i class="fas fa-users"></i> Notre équipe</a>
-              <a href="#" class="drop-link"><i class="fas fa-handshake"></i> Nos engagements</a>
-              <a href="#" class="drop-link"><i class="fas fa-eye"></i> Notre vision</a>
+            <div class="dropdown-panel dropdown-wide">
+
+              <div class="drop-col">
+                <span class="drop-cat">Découvrir ML2C CONSEIL</span>
+                <a href="{{ url_for('notre_vision') }}" class="drop-link drop-link-desc">
+                  <span>
+                    <strong class="drop-title-rose">Notre vision</strong>
+                    <em>Ce qui nous différencie</em>
+                  </span>
+                </a>
+                <a href="{{ url_for('notre_histoire') }}" class="drop-link drop-link-desc">
+                  <span>
+                    <strong class="drop-title-rose">Notre histoire</strong>
+                    <em>Les étapes clés depuis 2009</em>
+                  </span>
+                </a>
+                <a href="{{ url_for('nos_valeurs') }}" class="drop-link drop-link-desc">
+                  <span>
+                    <strong class="drop-title-rose">Nos valeurs &amp; méthodes</strong>
+                    <em>Transparence, rigueur, innovation</em>
+                  </span>
+                </a>
+              </div>
+
+              <div class="drop-col">
+                <span class="drop-cat">L'équipe &amp; la relation client</span>
+                <a href="{{ url_for('notre_equipe') }}" class="drop-link drop-link-desc">
+                  <span>
+                    <strong class="drop-title-turq">Notre équipe</strong>
+                    <em>À taille humaine et complémentaire</em>
+                  </span>
+                </a>
+                <a href="{{ url_for('nos_engagements') }}" class="drop-link drop-link-desc">
+                  <span>
+                    <strong class="drop-title-turq">Nos engagements</strong>
+                    <em>Un accompagnement sur mesure et durable</em>
+                  </span>
+                </a>
+              </div>
+
             </div>
           </div>
 
-          <!-- Dropdown : Nos services -->
+          <!-- ── Dropdown : Nos services ── -->
           <div class="nav-dropdown">
             <span class="nav-item">Nos services <i class="fas fa-chevron-down fa-xs"></i></span>
-            <div class="dropdown-panel dropdown-wide">
+            <div class="dropdown-panel dropdown-wide" style="min-width:640px">
+
               <div class="drop-col">
-                <span class="drop-cat">Comptabilité</span>
-                <a href="#" class="drop-link"><i class="fas fa-book"></i> Tenue comptable</a>
-                <a href="#" class="drop-link"><i class="fas fa-file-invoice"></i> Déclarations fiscales</a>
-                <a href="#" class="drop-link"><i class="fas fa-chart-pie"></i> Pilotage & tableaux de bord</a>
+                <span class="drop-cat">Comptabilité &amp; fiscalité</span>
+                <a href="#" class="drop-link drop-link-desc">
+                  <span>
+                    <strong class="drop-title-rose">Tenue comptable &amp; révision</strong>
+                    <em>Suivi, révision, fiabilisation des comptes</em>
+                  </span>
+                </a>
+                <a href="#" class="drop-link drop-link-desc">
+                  <span>
+                    <strong class="drop-title-rose">Déclarations fiscales</strong>
+                    <em>TVA, obligations périodiques, conformité</em>
+                  </span>
+                </a>
+                <a href="#" class="drop-link drop-link-desc">
+                  <span>
+                    <strong class="drop-title-rose">Pilotage &amp; tableau de bord</strong>
+                    <em>Indicateurs clés, reporting, lecture simplifiée</em>
+                  </span>
+                </a>
+                <span class="drop-cat" style="margin-top:1.1rem">Social</span>
+                <a href="#" class="drop-link drop-link-desc">
+                  <span>
+                    <strong class="drop-title-rose">Paie &amp; Gestion</strong>
+                    <em>Bulletin, DSN, suivi RH</em>
+                  </span>
+                </a>
               </div>
+
               <div class="drop-col">
-                <span class="drop-cat">Social & Juridique</span>
-                <a href="#" class="drop-link"><i class="fas fa-users-cog"></i> Paie & gestion sociale</a>
-                <a href="#" class="drop-link"><i class="fas fa-balance-scale"></i> Conseil juridique</a>
-                <a href="#" class="drop-link"><i class="fas fa-building"></i> Création d'entreprise</a>
+                <span class="drop-cat">Conseils &amp; accompagnements</span>
+                <a href="#" class="drop-link drop-link-desc">
+                  <span>
+                    <strong class="drop-title-turq">Conseils &amp; organisations</strong>
+                    <em>Structuration, process, aide à la décision</em>
+                  </span>
+                </a>
+                <a href="#" class="drop-link drop-link-desc">
+                  <span>
+                    <strong class="drop-title-turq">Création/reprise d'entreprise</strong>
+                    <em>Statuts, démarrage, mise en place des outils</em>
+                  </span>
+                </a>
+                <a href="#" class="drop-link drop-link-desc">
+                  <span>
+                    <strong class="drop-title-turq">Juridique courant</strong>
+                    <em>Démarche récurrente, documents, suivis</em>
+                  </span>
+                </a>
+                <a href="#" class="drop-link drop-link-desc">
+                  <span>
+                    <strong class="drop-title-turq">Optimisation &amp; digitalisation</strong>
+                    <em>Centralisation, flux, gain de temps</em>
+                  </span>
+                </a>
+                <a href="#" class="drop-link drop-link-desc">
+                  <span>
+                    <strong class="drop-title-turq">Assistance &amp; support</strong>
+                    <em>Question, accompagnement, suivi</em>
+                  </span>
+                </a>
               </div>
-              <div class="drop-col">
-                <span class="drop-cat">Conseil</span>
-                <a href="#" class="drop-link"><i class="fas fa-lightbulb"></i> Optimisation fiscale</a>
-                <a href="#" class="drop-link"><i class="fas fa-chart-line"></i> Conseil & organisation</a>
-                <a href="#" class="drop-link"><i class="fas fa-robot"></i> Outils IA & digital</a>
-              </div>
+
             </div>
           </div>
+
         </nav>
 
         <!-- Séparateur vertical -->
@@ -75,23 +149,19 @@
         <div class="header-actions">
 
           {% if session.get('utilisateur_id') %}
-            <!-- ✅ Connecté : avatar + lien vers compte_client -->
             <a href="{{ url_for('compte_client') }}" class="btn-compte">
               <img src="{{ url_for('static', filename='images/avatar.jpg') }}"
-                   alt="Profil utilisateur"
+                   alt="Profil"
                    class="rounded-circle"
                    style="width:32px;height:32px;object-fit:cover;margin-right:.4rem;">
               {{ session.get('prenom', 'Mon Espace') }}
             </a>
           {% else %}
-            <!-- ✅ Non connecté : bouton modal -->
             <button class="btn-compte" data-toggle="modal" data-target="#accountModal">
               <i class="fas fa-user"></i> Compte
             </button>
-            </a>
           {% endif %}
 
-          <!-- Bouton RDV -->
           <a href="{{ url_for('menu') }}#contact" class="btn-rdv-header">
             <i class="fas fa-calendar-alt"></i> Prendre RDV
           </a>
@@ -106,15 +176,13 @@
     </div>
   </header>
 
-  <!-- ══════════════════════════════════════════
-       MODAL CONNEXION / CRÉATION DE COMPTE
-  ══════════════════════════════════════════ -->
-  <div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="accountModalLabel" aria-hidden="true">
+  <!-- ══ MODAL COMPTE ══ -->
+  <div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content modal-ml2c">
 
         <div class="modal-header">
-          <h5 class="modal-title" id="accountModalLabel">Accès Client</h5>
+          <h5 class="modal-title">Accès Client</h5>
           <button type="button" class="close close-white" data-dismiss="modal" aria-label="Fermer">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -123,52 +191,46 @@
         <div class="modal-body">
           <ul class="nav nav-tabs nav-tabs-ml2c" id="accountTab" role="tablist">
             <li class="nav-item">
-              <a class="nav-link active" id="signup-tab" data-toggle="tab" href="#signup" role="tab" aria-selected="true">
-                Créer un compte
-              </a>
+              <a class="nav-link active" id="signup-tab" data-toggle="tab" href="#signup" role="tab">Créer un compte</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-selected="false">
-                Se connecter
-              </a>
+              <a class="nav-link" id="login-tab" data-toggle="tab" href="#login" role="tab">Se connecter</a>
             </li>
           </ul>
 
-          <div class="tab-content mt-3" id="accountTabContent">
+          <div class="tab-content mt-3">
 
-            <!-- Inscription -->
-            <div class="tab-pane fade show active" id="signup" role="tabpanel" aria-labelledby="signup-tab">
+            <div class="tab-pane fade show active" id="signup" role="tabpanel">
               <form action="{{ url_for('signup') }}" method="POST">
                 <div class="form-group">
-                  <label for="signup-username">Nom d'utilisateur</label>
-                  <input type="text" class="form-control" id="signup-username" name="username" placeholder="Votre nom d'utilisateur" required>
+                  <label>Nom d'utilisateur</label>
+                  <input type="text" class="form-control" name="username" placeholder="Votre nom d'utilisateur" required>
                 </div>
                 <div class="form-group">
-                  <label for="signup-email">Adresse email</label>
-                  <input type="email" class="form-control" id="signup-email" name="email" placeholder="votre@email.com" required>
+                  <label>Adresse email</label>
+                  <input type="email" class="form-control" name="email" placeholder="votre@email.com" required>
                 </div>
                 <div class="form-group">
-                  <label for="signup-password">Mot de passe</label>
-                  <input type="password" class="form-control" id="signup-password" name="password" placeholder="••••••••" required>
+                  <label>Mot de passe</label>
+                  <input type="password" class="form-control" name="password" placeholder="••••••••" required>
                 </div>
                 <button type="submit" class="btn-ml2c-full">Créer mon compte</button>
               </form>
               <div class="mt-3 text-center">
-                <p class="mb-1 text-muted" style="font-size:.85rem;">Vous avez déjà un compte ?</p>
+                <p class="mb-1 text-muted" style="font-size:.85rem;">Déjà un compte ?</p>
                 <a href="#login" data-toggle="tab" class="btn btn-sm btn-outline-secondary">Se connecter</a>
               </div>
             </div>
 
-            <!-- Connexion -->
-            <div class="tab-pane fade" id="login" role="tabpanel" aria-labelledby="login-tab">
+            <div class="tab-pane fade" id="login" role="tabpanel">
               <form action="{{ url_for('login') }}" method="POST">
                 <div class="form-group">
-                  <label for="login-email">Adresse email</label>
-                  <input type="email" class="form-control" id="login-email" name="email" placeholder="votre@email.com" required>
+                  <label>Adresse email</label>
+                  <input type="email" class="form-control" name="email" placeholder="votre@email.com" required>
                 </div>
                 <div class="form-group">
-                  <label for="login-password">Mot de passe</label>
-                  <input type="password" class="form-control" id="login-password" name="password" placeholder="••••••••" required>
+                  <label>Mot de passe</label>
+                  <input type="password" class="form-control" name="password" placeholder="••••••••" required>
                 </div>
                 <button type="submit" class="btn-ml2c-full">Se connecter</button>
               </form>
@@ -184,16 +246,12 @@
     </div>
   </div>
 
-  <!-- JS Bootstrap + jQuery -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-
   <script>
-    // Sticky header au scroll
     window.addEventListener('scroll', function() {
       document.getElementById('mainHeader').classList.toggle('scrolled', window.scrollY > 60);
     });
-    // Burger menu mobile
     document.getElementById('burgerBtn').addEventListener('click', function() {
       document.getElementById('mainNav').classList.toggle('open');
       this.classList.toggle('active');

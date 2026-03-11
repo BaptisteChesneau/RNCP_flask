@@ -333,6 +333,42 @@ def nos_valeurs():
 def nos_engagements():
     return render_template('nos_engagements.html')
 
+@app.route('/tenue-comptable')
+def tenue_comptable():
+    return render_template('tenue_comptable.html')
+
+@app.route('/declarations-fiscales')
+def declarations_fiscales():
+    return render_template('declarations_fiscales.html')
+
+@app.route('/pilotage-tableau-de-bord')
+def pilotage_tableau_de_bord():
+    return render_template('pilotage_tableau_de_bord.html')
+
+@app.route('/paie-gestion')
+def paie_gestion():
+    return render_template('paie_gestion.html')
+
+@app.route('/conseils-organisations')
+def conseils_organisations():
+    return render_template('conseils_organisations.html')
+
+@app.route('/creation-reprise')
+def creation_reprise():
+    return render_template('creation_reprise.html')
+
+@app.route('/juridique-courant')
+def juridique_courant():
+    return render_template('juridique_courant.html')
+
+@app.route('/optimisation-digitalisation')
+def optimisation_digitalisation():
+    return render_template('optimisation_digitalisation.html')
+
+@app.route('/assistance-support')
+def assistance_support():
+    return render_template('assistance_support.html')
+
 @app.route("/")
 def index():
     return render_template("menu.html")

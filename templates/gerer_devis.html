@@ -2,64 +2,400 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gérer mes devis - ML2C CONSEIL</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    :root {
+      --rose:#C1007A; --rose-dark:#9a0062; --rose-light:#fce4f3;
+      --turq:#4FA695; --turq-dark:#3a7d70; --turq-light:#d4f0ec;
+      --gris:#5C666B; --gris-dark:#2d3436; --border:#e5e7eb;
+      --text:#2d2d2d; --muted:#6b7280;
+    }
+    *, *::before, *::after { box-sizing:border-box; }
+    body { background:#f0f2f5; font-family:'DM Sans',sans-serif; margin:0; }
+
+    /* ── HERO ── */
+    .gd-hero {
+      background:linear-gradient(135deg,#1e2729 0%,#2d3436 55%,#1a3333 100%);
+      padding:2.25rem 0 3.25rem; position:relative; overflow:hidden; margin-bottom:-2rem;
+    }
+    .gd-hero::before {
+      content:''; position:absolute; inset:0;
+      background:radial-gradient(ellipse at 80% 40%,rgba(79,166,149,.16) 0%,transparent 55%),
+                 radial-gradient(ellipse at 8% 85%,rgba(193,0,122,.12) 0%,transparent 45%);
+    }
+    .gd-hero-inner { position:relative; z-index:1; }
+    .gd-breadcrumb { font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:.6rem; }
+    .gd-breadcrumb a { color:rgba(255,255,255,.35); text-decoration:none; transition:.2s; }
+    .gd-breadcrumb a:hover { color:var(--turq); }
+    .gd-breadcrumb span { color:var(--turq); }
+    .gd-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,4vw,2.7rem); font-weight:700; color:#fff; line-height:1.1; margin-bottom:.4rem; }
+    .gd-title em { color:#5eead4; font-style:italic; }
+    .gd-sub { font-size:.86rem; color:rgba(255,255,255,.45); margin:0; }
+
+    /* ── PAGE ── */
+    .gd-page { padding:2.5rem 0 4rem; }
+
+    /* ── TOOLBAR ── */
+    .gd-toolbar {
+      background:#fff; border-radius:16px; padding:1rem 1.5rem;
+      box-shadow:0 4px 20px rgba(0,0,0,.06); margin-bottom:1.25rem;
+      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.75rem;
+    }
+    .toolbar-left { display:flex; align-items:center; gap:.75rem; flex-wrap:wrap; }
+    .select-all-btn {
+      display:inline-flex; align-items:center; gap:.4rem;
+      padding:.5rem 1rem; border-radius:8px; font-size:.82rem; font-weight:600;
+      background:#f0f2f5; color:var(--gris); border:1.5px solid var(--border);
+      cursor:pointer; transition:.2s;
+    }
+    .select-all-btn:hover { background:var(--border); color:var(--text); }
+    .selection-count {
+      font-size:.82rem; color:var(--muted); font-weight:500;
+    }
+    .selection-count span { font-weight:700; color:var(--rose); }
+    .btn-delete-selected {
+      display:inline-flex; align-items:center; gap:.45rem;
+      padding:.55rem 1.25rem; border-radius:9px;
+      background:#fef2f2; color:#dc2626; font-weight:700; font-size:.86rem;
+      border:1.5px solid #fecaca; cursor:pointer; transition:.2s;
+      opacity:.4; pointer-events:none;
+    }
+    .btn-delete-selected.active { opacity:1; pointer-events:all; }
+    .btn-delete-selected.active:hover { background:#dc2626; color:#fff; border-color:#dc2626; }
+
+    /* ── DEVIS CARDS ── */
+    .devis-grid { display:flex; flex-direction:column; gap:.75rem; }
+
+    .devis-row {
+      background:#fff; border-radius:14px;
+      box-shadow:0 3px 16px rgba(0,0,0,.06);
+      border:2px solid transparent;
+      transition:.2s; cursor:pointer;
+      overflow:hidden; position:relative;
+    }
+    .devis-row:hover { border-color:var(--border); box-shadow:0 6px 24px rgba(0,0,0,.1); }
+    .devis-row.selected { border-color:var(--rose); background:#fff8fc; box-shadow:0 4px 20px rgba(193,0,122,.12); }
+
+    /* Barre latérale colorée */
+    .devis-row::before {
+      content:''; position:absolute; left:0; top:0; bottom:0;
+      width:4px; background:var(--border); border-radius:4px 0 0 4px; transition:.2s;
+    }
+    .devis-row.selected::before { background:var(--rose); }
+
+    .devis-row-inner {
+      display:grid; grid-template-columns:44px 1fr auto;
+      align-items:center; gap:1rem; padding:1.1rem 1.25rem 1.1rem 1.5rem;
+    }
+
+    /* Checkbox custom */
+    .custom-check { position:relative; width:20px; height:20px; flex-shrink:0; }
+    .custom-check input { position:absolute; opacity:0; width:0; height:0; }
+    .check-box {
+      width:20px; height:20px; border-radius:6px;
+      border:2px solid var(--border); background:#fff;
+      display:flex; align-items:center; justify-content:center;
+      transition:.2s; font-size:.7rem; color:#fff;
+    }
+    .custom-check input:checked + .check-box { background:var(--rose); border-color:var(--rose); }
+
+    /* Infos devis */
+    .devis-info { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:.5rem .9rem; }
+    .di-label { font-size:.62rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:.12rem; }
+    .di-val { font-size:.88rem; font-weight:600; color:var(--text); }
+    .di-val.service { color:var(--rose); }
+
+    /* RDV pill */
+    .rdv-pill-sm {
+      display:inline-flex; align-items:center; gap:.35rem;
+      padding:.3rem .7rem; border-radius:7px;
+      background:var(--turq-light); color:var(--turq-dark);
+      font-size:.74rem; font-weight:700; white-space:nowrap;
+      border:1px solid rgba(79,166,149,.25);
+    }
+
+    /* Action rapide */
+    .devis-actions { display:flex; gap:.4rem; flex-shrink:0; }
+    .action-icon-btn {
+      width:32px; height:32px; border-radius:8px; border:none;
+      display:flex; align-items:center; justify-content:center;
+      font-size:.78rem; cursor:pointer; transition:.2s;
+    }
+    .action-icon-btn.del { background:#fef2f2; color:#dc2626; }
+    .action-icon-btn.del:hover { background:#dc2626; color:#fff; }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      background:#fff; border-radius:20px; box-shadow:0 6px 28px rgba(0,0,0,.07);
+      padding:3.5rem 2rem; text-align:center;
+    }
+    .empty-ico-wrap { width:72px; height:72px; border-radius:50%; background:var(--rose-light); margin:0 auto 1.1rem; display:flex; align-items:center; justify-content:center; font-size:1.6rem; color:var(--rose); }
+    .empty-state h4 { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:700; color:var(--text); margin-bottom:.4rem; }
+    .empty-state p { font-size:.88rem; color:var(--muted); margin-bottom:1.5rem; }
+
+    /* ── BOUTONS ── */
+    .btn-rose { display:inline-flex; align-items:center; gap:.45rem; padding:.65rem 1.4rem; border-radius:9px; background:var(--rose); color:#fff; font-weight:600; font-size:.88rem; border:none; cursor:pointer; transition:.2s; text-decoration:none; }
+    .btn-rose:hover { background:var(--rose-dark); color:#fff; transform:translateY(-1px); box-shadow:0 4px 14px rgba(193,0,122,.3); }
+    .btn-ghost { display:inline-flex; align-items:center; gap:.45rem; padding:.65rem 1.4rem; border-radius:9px; background:#f0f2f5; color:var(--gris); font-weight:600; font-size:.88rem; border:none; cursor:pointer; transition:.2s; text-decoration:none; }
+    .btn-ghost:hover { background:var(--border); color:var(--text); text-decoration:none; }
+
+    /* ── CONFIRM MODAL ── */
+    .modal-overlay {
+      position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:1000;
+      display:none; align-items:center; justify-content:center;
+      backdrop-filter:blur(3px);
+    }
+    .modal-overlay.open { display:flex; animation:fadeIn .2s ease; }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    .modal-box {
+      background:#fff; border-radius:20px; padding:2rem 2.25rem;
+      max-width:420px; width:90%; box-shadow:0 24px 60px rgba(0,0,0,.2);
+      animation:slideUp .25s ease;
+    }
+    @keyframes slideUp { from{transform:translateY(16px);opacity:0} to{transform:translateY(0);opacity:1} }
+    .modal-ico { width:52px; height:52px; border-radius:50%; background:#fef2f2; margin:0 auto .9rem; display:flex; align-items:center; justify-content:center; font-size:1.25rem; color:#dc2626; }
+    .modal-box h4 { font-size:1.05rem; font-weight:700; color:var(--text); text-align:center; margin-bottom:.4rem; }
+    .modal-box p { font-size:.85rem; color:var(--muted); text-align:center; margin-bottom:1.5rem; }
+    .modal-btns { display:flex; gap:.65rem; }
+    .modal-btns .btn-cancel { flex:1; padding:.65rem; border-radius:9px; background:#f0f2f5; color:var(--gris); font-weight:600; border:none; cursor:pointer; transition:.2s; }
+    .modal-btns .btn-cancel:hover { background:var(--border); }
+    .modal-btns .btn-confirm { flex:1; padding:.65rem; border-radius:9px; background:#dc2626; color:#fff; font-weight:700; border:none; cursor:pointer; transition:.2s; }
+    .modal-btns .btn-confirm:hover { background:#b91c1c; }
+
+    @media(max-width:640px) {
+      .devis-row-inner { grid-template-columns:36px 1fr; }
+      .devis-actions { display:none; }
+      .devis-info { grid-template-columns:1fr 1fr; }
+      .gd-toolbar { flex-direction:column; align-items:flex-start; }
+    }
+  </style>
 </head>
 <body>
+{% include "header.html" %}
 
-  {% include "header.html" %}
+<!-- HERO -->
+<div class="gd-hero">
+  <div class="container gd-hero-inner">
+    <div class="gd-breadcrumb">
+      <a href="{{ url_for('compte_client') }}">Espace client</a> &rsaquo; <span>Gérer mes devis</span>
+    </div>
+    <h1 class="gd-title">Mes <em>devis</em></h1>
+    <p class="gd-sub">Consultez et supprimez vos demandes de rendez-vous.</p>
+  </div>
+</div>
 
-  <div class="container my-5">
-    <h2 class="text-center mb-4">Gérer mes devis</h2>
+<div class="gd-page">
+  <div class="container">
 
-    <p class="text-center">Sélectionnez les fiches devis que vous souhaitez supprimer.</p>
+    {% if devis_list %}
 
-    <form method="POST" action="{{ url_for('gerer_devis') }}">
-      {% if devis_list %}
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped">
-            <thead class="thead-dark">
-              <tr>
-                <th>Sélection</th>
-                <th>Nom</th>
-                <th>Secteur</th>
-                <th>Service</th>
-                <th>Date</th>
-                <th>Heure</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for devis in devis_list %}
-              <tr>
-                <td class="text-center">
-                  <input type="checkbox" name="devis_ids" value="{{ devis.id }}">
-                </td>
-                <td>{{ devis.nom }}</td>
-                <td>{{ devis.secteur }}</td>
-                <td>{{ devis.type_service }}</td>
-                <td>{{ devis.date_rdv }}</td>
-                <td>{{ devis.heure_rdv }}</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+    <!-- TOOLBAR -->
+    <div class="gd-toolbar">
+      <div class="toolbar-left">
+        <button type="button" class="select-all-btn" id="btnSelectAll">
+          <i class="fas fa-check-square"></i> Tout sélectionner
+        </button>
+        <div class="selection-count">
+          <span id="countSelected">0</span> sélectionné(s) sur {{ devis_list|length }}
         </div>
-        <div class="text-center mt-3">
-          <button type="submit" class="btn btn-danger">Supprimer les devis sélectionnés</button>
+      </div>
+      <button type="button" class="btn-delete-selected" id="btnDeleteSelected">
+        <i class="fas fa-trash-alt"></i> Supprimer la sélection
+      </button>
+    </div>
+
+    <!-- LISTE DEVIS -->
+    <form method="POST" action="{{ url_for('gerer_devis') }}" id="formGerer">
+      <div class="devis-grid" id="devisGrid">
+        {% for devis in devis_list %}
+        <div class="devis-row" id="row-{{ devis.id }}" onclick="toggleRow(this, '{{ devis.id }}')">
+          <div class="devis-row-inner">
+
+            <!-- Checkbox -->
+            <label class="custom-check" onclick="event.stopPropagation()">
+              <input type="checkbox" name="devis_ids" value="{{ devis.id }}" class="devis-cb" onchange="updateCount()">
+              <div class="check-box"><i class="fas fa-check"></i></div>
+            </label>
+
+            <!-- Infos -->
+            <div class="devis-info">
+              <div class="devis-info-item">
+                <div class="di-label">Nom / Société</div>
+                <div class="di-val">{{ devis.nom }}</div>
+              </div>
+              <div class="devis-info-item">
+                <div class="di-label">Secteur</div>
+                <div class="di-val">{{ devis.secteur }}</div>
+              </div>
+              <div class="devis-info-item">
+                <div class="di-label">Service</div>
+                <div class="di-val service">{{ devis.type_service }}</div>
+              </div>
+              <div class="devis-info-item">
+                <div class="di-label">Rendez-vous</div>
+                <div class="di-val">
+                  <span class="rdv-pill-sm">
+                    <i class="fas fa-calendar-check"></i>
+                    {{ devis.date_rdv }} — {{ devis.heure_rdv }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action rapide -->
+            <div class="devis-actions">
+              <button type="button" class="action-icon-btn del"
+                      onclick="event.stopPropagation(); confirmDeleteOne('{{ devis.id }}')"
+                      title="Supprimer ce devis">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
+
+          </div>
         </div>
-      {% else %}
-        <div class="alert alert-info text-center">Aucun devis à afficher.</div>
-      {% endif %}
+        {% endfor %}
+      </div>
+
+      <!-- Input caché pour suppression unitaire -->
+      <input type="hidden" name="devis_ids_single" id="singleDeleteId">
     </form>
 
-    <div class="text-center mt-4">
-      <a href="{{ url_for('parametres') }}" class="btn btn-secondary">Retour aux paramètres</a>
+    {% else %}
+
+    <!-- EMPTY STATE -->
+    <div class="empty-state">
+      <div class="empty-ico-wrap"><i class="fas fa-folder-open"></i></div>
+      <h4>Aucun devis enregistré</h4>
+      <p>Vous n'avez pas encore soumis de demande de devis.</p>
+      <a href="{{ url_for('devis') }}" class="btn-rose">
+        <i class="fas fa-plus-circle"></i> Créer un devis
+      </a>
+    </div>
+
+    {% endif %}
+
+    <!-- ACTIONS BAS -->
+    <div style="display:flex;gap:.65rem;flex-wrap:wrap;margin-top:1.75rem;">
+      <a href="{{ url_for('devis') }}" class="btn-rose">
+        <i class="fas fa-plus-circle"></i> Nouveau devis
+      </a>
+      <a href="{{ url_for('compte_client') }}" class="btn-ghost">
+        <i class="fas fa-arrow-left"></i> Retour à l'espace client
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL CONFIRMATION SUPPRESSION MULTIPLE -->
+<div class="modal-overlay" id="modalMulti">
+  <div class="modal-box">
+    <div class="modal-ico"><i class="fas fa-trash-alt"></i></div>
+    <h4>Supprimer les devis sélectionnés ?</h4>
+    <p id="modalMultiText">Cette action est irréversible.</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('modalMulti')">Annuler</button>
+      <button class="btn-confirm" onclick="submitDelete()">Supprimer</button>
     </div>
   </div>
+</div>
 
-  {% include "footer.html" %}
+<!-- MODAL CONFIRMATION SUPPRESSION UNITAIRE -->
+<div class="modal-overlay" id="modalSingle">
+  <div class="modal-box">
+    <div class="modal-ico"><i class="fas fa-trash-alt"></i></div>
+    <h4>Supprimer ce devis ?</h4>
+    <p>Cette action est irréversible.</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('modalSingle')">Annuler</button>
+      <button class="btn-confirm" onclick="submitSingle()">Supprimer</button>
+    </div>
+  </div>
+</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+{% include "footer.html" %}
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  let pendingSingleId = null;
+  let allSelected = false;
+
+  // ── Toggle ligne au clic ──
+  function toggleRow(row, id) {
+    const cb = row.querySelector('.devis-cb');
+    cb.checked = !cb.checked;
+    row.classList.toggle('selected', cb.checked);
+    updateCount();
+  }
+
+  // ── Mise à jour compteur ──
+  function updateCount() {
+    const checked = document.querySelectorAll('.devis-cb:checked').length;
+    document.getElementById('countSelected').textContent = checked;
+    const btn = document.getElementById('btnDeleteSelected');
+    btn.classList.toggle('active', checked > 0);
+
+    // Sync état des rows
+    document.querySelectorAll('.devis-cb').forEach(cb => {
+      const row = cb.closest('.devis-row');
+      row.classList.toggle('selected', cb.checked);
+    });
+  }
+
+  // ── Tout sélectionner / désélectionner ──
+  document.getElementById('btnSelectAll').addEventListener('click', function() {
+    allSelected = !allSelected;
+    document.querySelectorAll('.devis-cb').forEach(cb => cb.checked = allSelected);
+    this.innerHTML = allSelected
+      ? '<i class="fas fa-times-square"></i> Tout désélectionner'
+      : '<i class="fas fa-check-square"></i> Tout sélectionner';
+    updateCount();
+  });
+
+  // ── Suppression multiple ──
+  document.getElementById('btnDeleteSelected').addEventListener('click', function() {
+    const n = document.querySelectorAll('.devis-cb:checked').length;
+    document.getElementById('modalMultiText').textContent =
+      `Vous allez supprimer ${n} devis. Cette action est irréversible.`;
+    openModal('modalMulti');
+  });
+
+  function submitDelete() {
+    document.getElementById('formGerer').submit();
+  }
+
+  // ── Suppression unitaire ──
+  function confirmDeleteOne(id) {
+    pendingSingleId = id;
+    openModal('modalSingle');
+  }
+
+  function submitSingle() {
+    if(!pendingSingleId) return;
+    // Cocher uniquement ce devis et soumettre
+    document.querySelectorAll('.devis-cb').forEach(cb => cb.checked = false);
+    const cb = document.querySelector(`.devis-cb[value="${pendingSingleId}"]`);
+    if(cb) cb.checked = true;
+    closeModal('modalSingle');
+    document.getElementById('formGerer').submit();
+  }
+
+  // ── Modals ──
+  function openModal(id) { document.getElementById(id).classList.add('open'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+  // Fermer modal en cliquant à l'extérieur
+  document.querySelectorAll('.modal-overlay').forEach(m => {
+    m.addEventListener('click', function(e) {
+      if(e.target === this) this.classList.remove('open');
+    });
+  });
+</script>
 </body>
 </html>

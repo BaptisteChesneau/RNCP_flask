@@ -2,75 +2,354 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Résumé Devis - ML2C CONSEIL</title>
-  <!-- Bootstrap CSS -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Résumé de votre devis - ML2C CONSEIL</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
-  <!-- Feuille de style personnalisée -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    :root {
+      --rose:#C1007A; --rose-dark:#9a0062; --rose-light:#fce4f3;
+      --turq:#4FA695; --turq-dark:#3a7d70; --turq-light:#d4f0ec;
+      --gris:#5C666B; --gris-dark:#2d3436; --border:#e5e7eb;
+      --text:#2d2d2d; --muted:#6b7280;
+    }
+    *, *::before, *::after { box-sizing:border-box; }
+    body { background:#f0f2f5; font-family:'DM Sans',sans-serif; margin:0; }
+
+    /* ── HERO ── */
+    .rv-hero {
+      background:linear-gradient(135deg,#1e2729 0%,#2d3436 55%,#1a3333 100%);
+      padding:2.25rem 0 3.5rem; position:relative; overflow:hidden; margin-bottom:-2rem;
+    }
+    .rv-hero::before {
+      content:''; position:absolute; inset:0;
+      background:radial-gradient(ellipse at 80% 40%,rgba(79,166,149,.16) 0%,transparent 55%),
+                 radial-gradient(ellipse at 8% 85%,rgba(193,0,122,.12) 0%,transparent 45%);
+    }
+    .rv-hero-inner { position:relative; z-index:1; }
+    .rv-breadcrumb { font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:.6rem; }
+    .rv-breadcrumb a { color:rgba(255,255,255,.35); text-decoration:none; transition:.2s; }
+    .rv-breadcrumb a:hover { color:var(--turq); }
+    .rv-breadcrumb span { color:var(--turq); }
+
+    /* Badge confirmation animé */
+    .rv-badge-confirm {
+      display:inline-flex; align-items:center; gap:.5rem;
+      padding:.35rem .95rem; background:rgba(79,166,149,.15);
+      border:1px solid rgba(79,166,149,.35); border-radius:20px;
+      font-size:.72rem; font-weight:700; color:#5eead4; margin-bottom:.85rem;
+    }
+    .rv-badge-dot { width:7px; height:7px; border-radius:50%; background:#4ade80; animation:pulse-dot 2s infinite; }
+    @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    .rv-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,4vw,2.8rem); font-weight:700; color:#fff; line-height:1.1; margin-bottom:.4rem; }
+    .rv-title em { color:#5eead4; font-style:italic; }
+    .rv-sub { font-size:.86rem; color:rgba(255,255,255,.45); margin:0; }
+
+    /* ── PAGE ── */
+    .rv-page { padding:2rem 0 4rem; }
+    .rv-layout { display:grid; grid-template-columns:1fr 320px; gap:1.75rem; align-items:start; }
+
+    /* ── TICKET RDV ── */
+    .ticket-wrap { position:relative; }
+    .ticket {
+      background:#fff; border-radius:20px;
+      box-shadow:0 8px 40px rgba(0,0,0,.1);
+      overflow:hidden; margin-bottom:1.5rem;
+      animation:ticketIn .5s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    @keyframes ticketIn {
+      from { opacity:0; transform:scale(.92) translateY(20px); }
+      to   { opacity:1; transform:scale(1) translateY(0); }
+    }
+
+    /* Entête ticket */
+    .ticket-head {
+      background:linear-gradient(135deg,var(--gris-dark) 0%,#3d4549 100%);
+      padding:1.5rem 1.75rem; position:relative; overflow:hidden;
+    }
+    .ticket-head::after {
+      content:''; position:absolute; right:-30px; top:-30px;
+      width:120px; height:120px; border-radius:50%;
+      background:rgba(79,166,149,.1); pointer-events:none;
+    }
+    .ticket-head-top { display:flex; justify-content:space-between; align-items:flex-start; }
+    .ticket-logo { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:700; color:rgba(255,255,255,.7); letter-spacing:.05em; }
+    .ticket-ref { font-size:.7rem; color:rgba(255,255,255,.35); background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); border-radius:6px; padding:.2rem .55rem; }
+    .ticket-rdv-block { margin-top:1.1rem; }
+    .ticket-rdv-label { font-size:.65rem; text-transform:uppercase; letter-spacing:.1em; color:rgba(255,255,255,.35); margin-bottom:.25rem; }
+    .ticket-rdv-date { font-family:'Cormorant Garamond',serif; font-size:1.7rem; font-weight:700; color:#fff; line-height:1; }
+    .ticket-rdv-time { font-size:.95rem; color:#5eead4; font-weight:600; margin-top:.2rem; }
+
+    /* Tirets de découpe */
+    .ticket-cut {
+      display:flex; align-items:center; gap:0;
+      background:#f0f2f5; padding:0 1.75rem;
+      position:relative;
+    }
+    .ticket-cut::before, .ticket-cut::after {
+      content:''; position:absolute; top:50%; transform:translateY(-50%);
+      width:22px; height:22px; border-radius:50%; background:#f0f2f5;
+      z-index:1;
+    }
+    .ticket-cut::before { left:-11px; }
+    .ticket-cut::after { right:-11px; }
+    .ticket-dashes { flex:1; border-top:2px dashed var(--border); }
+
+    /* Corps du ticket */
+    .ticket-body { padding:1.5rem 1.75rem; }
+    .ticket-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    .ticket-field-label { font-size:.65rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin-bottom:.25rem; display:flex; align-items:center; gap:.35rem; }
+    .ticket-field-label i { color:var(--turq); font-size:.7rem; }
+    .ticket-field-val { font-size:.92rem; font-weight:600; color:var(--text); }
+    .ticket-field-val.accent { color:var(--rose); }
+    .ticket-field.full { grid-column:1/-1; }
+
+    /* Service pill */
+    .service-pill {
+      display:inline-flex; align-items:center; gap:.4rem;
+      padding:.35rem .85rem; border-radius:8px;
+      background:var(--rose-light); color:var(--rose);
+      font-size:.82rem; font-weight:700; border:1px solid rgba(193,0,122,.2);
+    }
+
+    /* ── SECTION ACTIONS ── */
+    .actions-card { background:#fff; border-radius:20px; box-shadow:0 6px 28px rgba(0,0,0,.07); overflow:hidden; }
+    .actions-head { padding:1.25rem 1.6rem; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:.7rem; }
+    .actions-head-ico { width:36px; height:36px; border-radius:9px; background:var(--rose-light); color:var(--rose); display:flex; align-items:center; justify-content:center; font-size:.85rem; }
+    .actions-head h3 { font-size:1rem; font-weight:700; color:var(--text); margin:0; }
+    .actions-body { padding:1.25rem 1.6rem; display:flex; flex-direction:column; gap:.75rem; }
+
+    .action-btn {
+      display:flex; align-items:center; gap:1rem;
+      padding:1rem 1.25rem; border-radius:13px;
+      border:2px solid var(--border); background:#fafbfc;
+      cursor:pointer; transition:.2s; text-decoration:none; color:var(--text);
+    }
+    .action-btn:hover { text-decoration:none; transform:translateX(4px); }
+    .action-btn.rose { border-color:var(--rose-light); }
+    .action-btn.rose:hover { border-color:var(--rose); background:var(--rose-light); color:var(--rose); }
+    .action-btn.turq { border-color:var(--turq-light); }
+    .action-btn.turq:hover { border-color:var(--turq); background:var(--turq-light); color:var(--turq-dark); }
+    .action-btn.dark { border-color:#e2e8f0; }
+    .action-btn.dark:hover { border-color:var(--gris-dark); background:var(--gris-dark); color:#fff; }
+    .action-btn-ico { width:42px; height:42px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:.95rem; flex-shrink:0; transition:.2s; }
+    .action-btn.rose .action-btn-ico { background:var(--rose-light); color:var(--rose); }
+    .action-btn.rose:hover .action-btn-ico { background:var(--rose); color:#fff; }
+    .action-btn.turq .action-btn-ico { background:var(--turq-light); color:var(--turq); }
+    .action-btn.turq:hover .action-btn-ico { background:var(--turq); color:#fff; }
+    .action-btn.dark .action-btn-ico { background:#f0f2f5; color:var(--gris); }
+    .action-btn.dark:hover .action-btn-ico { background:rgba(255,255,255,.15); color:#fff; }
+    .action-btn-text strong { display:block; font-size:.92rem; font-weight:700; }
+    .action-btn-text span { font-size:.76rem; color:var(--muted); }
+    .action-btn:hover .action-btn-text span { color:inherit; opacity:.7; }
+    .action-btn-arrow { margin-left:auto; font-size:.8rem; opacity:.4; transition:.2s; }
+    .action-btn:hover .action-btn-arrow { opacity:1; transform:translateX(3px); }
+
+    /* ── SIDEBAR DROITE ── */
+    .side-card { background:#fff; border-radius:20px; box-shadow:0 6px 28px rgba(0,0,0,.07); overflow:hidden; position:sticky; top:100px; }
+    .side-card-head { background:linear-gradient(135deg,var(--gris-dark),#3d4549); padding:1.25rem 1.5rem; color:#fff; }
+    .side-card-head h3 { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:700; margin:0 0 .2rem; }
+    .side-card-head p { font-size:.74rem; color:rgba(255,255,255,.4); margin:0; }
+    .side-body { padding:1rem 1.5rem; }
+
+    /* Timeline étapes */
+    .timeline { position:relative; padding-left:1.6rem; }
+    .timeline::before { content:''; position:absolute; left:.55rem; top:.5rem; bottom:.5rem; width:2px; background:var(--border); }
+    .tl-item { position:relative; padding-bottom:1.1rem; }
+    .tl-item:last-child { padding-bottom:0; }
+    .tl-dot {
+      position:absolute; left:-1.6rem; top:.25rem;
+      width:20px; height:20px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:.6rem; z-index:1;
+    }
+    .tl-dot.done { background:var(--turq); color:#fff; }
+    .tl-dot.active { background:var(--rose); color:#fff; box-shadow:0 0 0 4px rgba(193,0,122,.15); }
+    .tl-dot.pending { background:#f0f2f5; color:var(--muted); border:2px solid var(--border); }
+    .tl-label { font-size:.82rem; font-weight:600; color:var(--text); }
+    .tl-sub { font-size:.72rem; color:var(--muted); margin-top:.1rem; }
+
+    /* Sécurité badges */
+    .sec-badges { display:flex; flex-wrap:wrap; gap:.4rem; padding:.9rem 1.5rem; border-top:1px solid var(--border); }
+    .sec-badge { display:inline-flex; align-items:center; gap:.3rem; font-size:.68rem; color:var(--muted); border-radius:6px; padding:.22rem .55rem; background:#f8f9fb; border:1px solid var(--border); }
+    .sec-badge i { color:var(--turq); }
+
+    @media(max-width:860px) { .rv-layout { grid-template-columns:1fr; } .side-card { position:static; } }
+    @media(max-width:580px) { .ticket-grid { grid-template-columns:1fr; } .rv-hero { padding:1.75rem 0 2.75rem; } }
+  </style>
 </head>
 <body>
+{% include "header.html" %}
 
-  {% include "header.html" %}
-
-  <div class="container my-4">
-    <h2>Résumé de votre demande de rendez-vous</h2>
-    <p>Voici les informations que vous avez renseignées :</p>
-
-    <ul class="list-group mb-4">
-      <li class="list-group-item">
-        <strong>Secteur d'activité :</strong> {{ secteur }}
-      </li>
-      <li class="list-group-item">
-        <strong>Nom / Raison sociale :</strong> {{ nom }}
-      </li>
-      <li class="list-group-item">
-        <strong>Type de service :</strong> {{ type_service }}
-      </li>
-      <li class="list-group-item">
-        <strong>Date du rendez-vous :</strong> {{ date_rdv }}
-      </li>
-      <li class="list-group-item">
-        <strong>Heure du rendez-vous :</strong> {{ heure_rdv }}
-      </li>
-      <li class="list-group-item">
-        <strong>Email :</strong> {{ adresse_email }}
-      </li>
-    </ul>
-
-    <h4>Paiement</h4>
-    <p>Découvrez nos offres tarifaires :</p>
-
-    <!-- Groupe de boutons avec couleur personnalisée -->
-    <div class="resume-buttons">
-      <a href="{{ url_for('grille_tarifaire') }}" class="btn btn-primary">
-        Nos Offres
-      </a>
-      <a href="{{ url_for('envoyer_mail') }}" class="btn btn-pink">
-        Envoyer par mail
-      </a>
-
-      <!-- ✅ Formulaire pour "Envoyer au compte" -->
-      <form action="{{ url_for('resume_devis') }}" method="post" style="display: inline;">
-        <input type="hidden" name="secteur" value="{{ secteur }}">
-        <input type="hidden" name="nom" value="{{ nom }}">
-        <input type="hidden" name="type_service" value="{{ type_service }}">
-        <input type="hidden" name="date_rdv" value="{{ date_rdv }}">
-        <input type="hidden" name="heure_rdv" value="{{ heure_rdv }}">
-        <input type="hidden" name="user_email" value="{{ session.get('email') }}">
-        <button type="submit" class="btn btn-pink">Envoyer au compte</button>
-      </form>
+<!-- HERO -->
+<div class="rv-hero">
+  <div class="container rv-hero-inner">
+    <div class="rv-breadcrumb">
+      <a href="{{ url_for('menu') }}">Accueil</a> &rsaquo;
+      <a href="{{ url_for('devis') }}">Devis</a> &rsaquo;
+      <span>Confirmation</span>
     </div>
+    <div class="rv-badge-confirm"><span class="rv-badge-dot"></span> Demande enregistrée</div>
+    <h1 class="rv-title">Récapitulatif de<br><em>votre rendez-vous</em></h1>
+    <p class="rv-sub">Voici le résumé de votre demande. Choisissez la suite ci-dessous.</p>
+  </div>
+</div>
 
-    <!-- Bouton Retour au menu -->
-    <div class="text-center mt-4">
-      <a href="{{ url_for('menu') }}" class="btn btn-secondary">Retour au menu</a>
+<div class="rv-page">
+  <div class="container">
+    <div class="rv-layout">
+
+      <!-- ════ COLONNE GAUCHE ════ -->
+      <div>
+
+        <!-- TICKET RDV -->
+        <div class="ticket">
+          <!-- En-tête sombre -->
+          <div class="ticket-head">
+            <div class="ticket-head-top">
+              <div class="ticket-logo">ML2C CONSEIL</div>
+              <div class="ticket-ref">#{{ range(10000,99999) | random if false else 'RDV-2026' }}</div>
+            </div>
+            <div class="ticket-rdv-block">
+              <div class="ticket-rdv-label">Rendez-vous confirmé</div>
+              <div class="ticket-rdv-date">{{ date_rdv }}</div>
+              <div class="ticket-rdv-time"><i class="fas fa-clock"></i> {{ heure_rdv }}</div>
+            </div>
+          </div>
+
+          <!-- Séparation découpe -->
+          <div class="ticket-cut"><div class="ticket-dashes"></div></div>
+
+          <!-- Corps -->
+          <div class="ticket-body">
+            <div class="ticket-grid">
+              <div class="ticket-field">
+                <div class="ticket-field-label"><i class="fas fa-building"></i> Société / Nom</div>
+                <div class="ticket-field-val">{{ nom }}</div>
+              </div>
+              <div class="ticket-field">
+                <div class="ticket-field-label"><i class="fas fa-industry"></i> Secteur</div>
+                <div class="ticket-field-val">{{ secteur }}</div>
+              </div>
+              <div class="ticket-field">
+                <div class="ticket-field-label"><i class="fas fa-envelope"></i> Email</div>
+                <div class="ticket-field-val">{{ adresse_email }}</div>
+              </div>
+              <div class="ticket-field">
+                <div class="ticket-field-label"><i class="fas fa-briefcase"></i> Service demandé</div>
+                <div class="ticket-field-val">
+                  <span class="service-pill"><i class="fas fa-check-circle"></i> {{ type_service }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="actions-card">
+          <div class="actions-head">
+            <div class="actions-head-ico"><i class="fas fa-bolt"></i></div>
+            <h3>Que souhaitez-vous faire ?</h3>
+          </div>
+          <div class="actions-body">
+
+            <!-- Nos offres -->
+            <a href="{{ url_for('grille_tarifaire') }}" class="action-btn rose">
+              <div class="action-btn-ico"><i class="fas fa-tags"></i></div>
+              <div class="action-btn-text">
+                <strong>Voir nos offres tarifaires</strong>
+                <span>Découvrez nos formules adaptées à votre besoin</span>
+              </div>
+              <i class="fas fa-arrow-right action-btn-arrow"></i>
+            </a>
+
+            <!-- Envoyer par mail -->
+            <a href="{{ url_for('envoyer_mail') }}" class="action-btn turq">
+              <div class="action-btn-ico"><i class="fas fa-paper-plane"></i></div>
+              <div class="action-btn-text">
+                <strong>Recevoir par email</strong>
+                <span>Un récapitulatif envoyé à {{ adresse_email }}</span>
+              </div>
+              <i class="fas fa-arrow-right action-btn-arrow"></i>
+            </a>
+
+            <!-- Envoyer au compte -->
+            <form action="{{ url_for('resume_devis') }}" method="post" style="margin:0">
+              <input type="hidden" name="secteur" value="{{ secteur }}">
+              <input type="hidden" name="nom" value="{{ nom }}">
+              <input type="hidden" name="type_service" value="{{ type_service }}">
+              <input type="hidden" name="date_rdv" value="{{ date_rdv }}">
+              <input type="hidden" name="heure_rdv" value="{{ heure_rdv }}">
+              <input type="hidden" name="user_email" value="{{ session.get('email') }}">
+              <button type="submit" class="action-btn dark w-100" style="border:2px solid #e2e8f0">
+                <div class="action-btn-ico"><i class="fas fa-user-check"></i></div>
+                <div class="action-btn-text">
+                  <strong>Sauvegarder dans mon compte</strong>
+                  <span>Retrouvez ce devis dans votre espace client</span>
+                </div>
+                <i class="fas fa-arrow-right action-btn-arrow"></i>
+              </button>
+            </form>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ════ COLONNE DROITE ════ -->
+      <div>
+        <div class="side-card">
+          <div class="side-card-head">
+            <h3>Prochaines étapes</h3>
+            <p>Ce qui se passe maintenant</p>
+          </div>
+          <div class="side-body">
+            <div class="timeline">
+              <div class="tl-item">
+                <div class="tl-dot done"><i class="fas fa-check"></i></div>
+                <div class="tl-label">Demande reçue</div>
+                <div class="tl-sub">Votre formulaire a bien été enregistré</div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot active"><i class="fas fa-hourglass-half"></i></div>
+                <div class="tl-label">Confirmation cabinet</div>
+                <div class="tl-sub">Nous validons votre créneau sous 24h</div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot pending"><i class="fas fa-envelope"></i></div>
+                <div class="tl-label">Email de confirmation</div>
+                <div class="tl-sub">Récapitulatif envoyé à {{ adresse_email }}</div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot pending"><i class="fas fa-handshake"></i></div>
+                <div class="tl-label">Rendez-vous</div>
+                <div class="tl-sub">{{ date_rdv }} à {{ heure_rdv }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="sec-badges">
+            <div class="sec-badge"><i class="fas fa-lock"></i> Données sécurisées</div>
+            <div class="sec-badge"><i class="fas fa-shield-alt"></i> RGPD</div>
+            <div class="sec-badge"><i class="fas fa-undo"></i> Modifiable</div>
+          </div>
+          <div style="padding:.9rem 1.5rem; border-top:1px solid var(--border);">
+            <a href="{{ url_for('menu') }}" style="display:flex;align-items:center;gap:.4rem;font-size:.82rem;color:var(--muted);text-decoration:none;transition:.2s;">
+              <i class="fas fa-arrow-left"></i> Retour à l'accueil
+            </a>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
+</div>
 
-  {% include "footer.html" %}
+{% include "footer.html" %}
 
-  <!-- Scripts Bootstrap & jQuery -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

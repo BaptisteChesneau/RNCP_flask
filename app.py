@@ -1099,7 +1099,6 @@ def logout_admin():
 
 @app.route('/logout')
 def logout():
-    session.pop("admin_logged_in", None)
     flash("Déconnecté avec succès ✅", "success")
     return redirect(url_for('menu'))
 

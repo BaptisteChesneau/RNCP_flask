@@ -1,99 +1,666 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Prendre Rendez-Vous - ML2C CONSEIL</title>
-
-  <!-- Bootstrap CSS (CDN) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demande de Devis - ML2C CONSEIL</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
-  <!-- Votre fichier CSS si nécessaire -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    :root {
+      --rose:#C1007A; --rose-dark:#9a0062; --rose-light:#fce4f3;
+      --turq:#4FA695; --turq-dark:#3a7d70; --turq-light:#d4f0ec;
+      --gris:#5C666B; --gris-dark:#2d3436; --border:#e5e7eb;
+      --text:#2d2d2d; --muted:#6b7280;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { background:#f0f2f5; font-family:'DM Sans',sans-serif; margin:0; }
+
+    /* ── HERO ── */
+    .dv-hero {
+      background:linear-gradient(135deg,#1e2729 0%,#2d3436 55%,#1a3333 100%);
+      padding:2.25rem 0 3.5rem; position:relative; overflow:hidden; margin-bottom:-2rem;
+    }
+    .dv-hero::before {
+      content:''; position:absolute; inset:0;
+      background:radial-gradient(ellipse at 80% 40%,rgba(79,166,149,.16) 0%,transparent 55%),
+                 radial-gradient(ellipse at 8% 85%,rgba(193,0,122,.12) 0%,transparent 45%);
+    }
+    .dv-hero-inner { position:relative; z-index:1; }
+    .dv-breadcrumb { font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:.6rem; }
+    .dv-breadcrumb a { color:rgba(255,255,255,.35); text-decoration:none; transition:.2s; }
+    .dv-breadcrumb a:hover { color:var(--turq); }
+    .dv-breadcrumb span { color:var(--turq); }
+    .dv-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,4vw,2.8rem); font-weight:700; color:#fff; line-height:1.1; margin-bottom:.4rem; }
+    .dv-title em { color:#5eead4; font-style:italic; }
+    .dv-sub { font-size:.86rem; color:rgba(255,255,255,.45); margin:0; }
+
+    /* ── STEPS ── */
+    .steps-bar { display:flex; align-items:center; gap:0; margin-bottom:2rem; }
+    .step-item { display:flex; align-items:center; gap:.5rem; flex:1; }
+    .step-num {
+      width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+      font-size:.75rem; font-weight:700; flex-shrink:0; transition:.3s;
+      background:#e5e7eb; color:var(--muted); border:2px solid #e5e7eb;
+    }
+    .step-item.active .step-num { background:var(--rose); color:#fff; border-color:var(--rose); box-shadow:0 0 0 4px rgba(193,0,122,.15); }
+    .step-item.done .step-num { background:var(--turq); color:#fff; border-color:var(--turq); }
+    .step-label { font-size:.74rem; font-weight:600; color:var(--muted); transition:.3s; white-space:nowrap; }
+    .step-item.active .step-label { color:var(--rose); }
+    .step-item.done .step-label { color:var(--turq); }
+    .step-line { flex:1; height:2px; background:#e5e7eb; margin:0 .5rem; transition:.3s; }
+    .step-line.done { background:var(--turq); }
+
+    /* ── PAGE ── */
+    .dv-page { padding:2rem 0 4rem; }
+    .dv-layout { display:grid; grid-template-columns:1fr 340px; gap:1.75rem; align-items:start; }
+
+    /* ── CARD ── */
+    .dv-card { background:#fff; border-radius:20px; box-shadow:0 6px 32px rgba(0,0,0,.07); overflow:hidden; }
+    .dv-card-head { padding:1.35rem 1.75rem; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:.75rem; }
+    .dv-card-ico { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:.95rem; flex-shrink:0; }
+    .dv-card-ico.rose { background:var(--rose-light); color:var(--rose); }
+    .dv-card-ico.turq { background:var(--turq-light); color:var(--turq); }
+    .dv-card-head h2 { font-size:1.05rem; font-weight:700; color:var(--text); margin:0; }
+    .dv-card-head p { font-size:.78rem; color:var(--muted); margin:0; }
+    .dv-card-body { padding:1.75rem; }
+
+    /* ── PANELS ── */
+    .form-panel { display:none; animation:fadeUp .28s ease; }
+    .form-panel.active { display:block; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+    /* ── CHAMPS ── */
+    .field-wrap { margin-bottom:1.1rem; }
+    .field-label { display:block; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin-bottom:.4rem; }
+    .field-input { width:100%; padding:.75rem 1rem; border:1.5px solid var(--border); border-radius:10px; font-size:.92rem; color:var(--text); background:#fafbfc; transition:.2s; outline:none; font-family:'DM Sans',sans-serif; }
+    .field-input:focus { border-color:var(--rose); background:#fff; box-shadow:0 0 0 3px rgba(193,0,122,.08); }
+    .field-row { display:grid; gap:.9rem; }
+    .field-row.col2 { grid-template-columns:1fr 1fr; }
+
+    /* ── SERVICE CARDS ── */
+    .service-grid { display:grid; grid-template-columns:1fr 1fr; gap:.75rem; }
+    .service-card {
+      padding:.85rem 1rem; border-radius:12px; border:2px solid var(--border);
+      cursor:pointer; transition:.2s; background:#fafbfc;
+      display:flex; align-items:flex-start; gap:.65rem;
+    }
+    .service-card:hover { border-color:var(--rose-light); background:var(--rose-light); }
+    .service-card.selected { border-color:var(--rose); background:var(--rose-light); }
+    .service-card input { display:none; }
+    .service-ico { width:32px; height:32px; border-radius:8px; background:#f0f2f5; color:var(--muted); display:flex; align-items:center; justify-content:center; font-size:.8rem; flex-shrink:0; transition:.2s; }
+    .service-card.selected .service-ico { background:var(--rose); color:#fff; }
+    .service-card-label { font-size:.86rem; font-weight:600; color:var(--text); }
+    .service-card-sub { font-size:.72rem; color:var(--muted); margin-top:.1rem; }
+
+    /* ── CALENDRIER 3D ── */
+    .cal-scene {
+      perspective:900px; margin-bottom:1.25rem;
+    }
+    .cal-card-3d {
+      background:#fff; border-radius:16px;
+      box-shadow:0 20px 60px rgba(0,0,0,.15), 0 4px 16px rgba(0,0,0,.08);
+      transform:rotateX(4deg) rotateY(-2deg);
+      transform-style:preserve-3d;
+      transition:transform .4s ease, box-shadow .4s ease;
+      overflow:hidden;
+    }
+    .cal-card-3d:hover {
+      transform:rotateX(0deg) rotateY(0deg) translateY(-4px);
+      box-shadow:0 32px 80px rgba(0,0,0,.18), 0 8px 24px rgba(0,0,0,.1);
+    }
+    .cal-header {
+      background:linear-gradient(135deg,var(--rose),var(--rose-dark));
+      padding:.9rem 1.25rem; display:flex; align-items:center; justify-content:space-between; color:#fff;
+    }
+    .cal-nav-btn { background:rgba(255,255,255,.2); border:none; color:#fff; width:28px; height:28px; border-radius:50%; cursor:pointer; font-size:.8rem; transition:.2s; display:flex; align-items:center; justify-content:center; }
+    .cal-nav-btn:hover { background:rgba(255,255,255,.35); }
+    .cal-month-label { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:700; }
+    .cal-year { font-size:.75rem; opacity:.7; margin-top:.1rem; text-align:center; }
+    .cal-dow { display:grid; grid-template-columns:repeat(7,1fr); background:#f8f9fb; border-bottom:1px solid var(--border); }
+    .cal-dow-cell { text-align:center; font-size:.65rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); padding:.5rem 0; }
+    .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); padding:.5rem; gap:2px; }
+    .cal-day {
+      aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+      border-radius:8px; font-size:.82rem; font-weight:500; cursor:pointer;
+      transition:.18s; color:var(--text); position:relative;
+    }
+    .cal-day:hover:not(.empty):not(.past) { background:var(--rose-light); color:var(--rose); transform:scale(1.1); }
+    .cal-day.today { background:var(--turq-light); color:var(--turq); font-weight:700; }
+    .cal-day.selected { background:var(--rose); color:#fff; font-weight:700; box-shadow:0 3px 10px rgba(193,0,122,.35); }
+    .cal-day.empty { cursor:default; }
+    .cal-day.past { color:#d1d5db; cursor:not-allowed; }
+    .cal-day.weekend:not(.past):not(.selected) { color:var(--muted); }
+
+    /* ── HEURES ── */
+    .time-slots { display:grid; grid-template-columns:repeat(4,1fr); gap:.45rem; }
+    .time-slot {
+      padding:.45rem; border-radius:8px; border:1.5px solid var(--border);
+      text-align:center; font-size:.78rem; font-weight:600; cursor:pointer;
+      transition:.18s; background:#fafbfc; color:var(--text);
+    }
+    .time-slot:hover { border-color:var(--turq); background:var(--turq-light); color:var(--turq-dark); }
+    .time-slot.selected { background:var(--turq); color:#fff; border-color:var(--turq); }
+    .time-slot.unavailable { background:#f0f2f5; color:#d1d5db; cursor:not-allowed; border-color:#f0f2f5; }
+    .time-section-label { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin:.75rem 0 .4rem; }
+
+    /* ── NAV BOUTONS ── */
+    .form-nav { display:flex; justify-content:space-between; align-items:center; margin-top:1.5rem; padding-top:1.25rem; border-top:1px solid var(--border); }
+    .btn-prev { display:inline-flex; align-items:center; gap:.45rem; padding:.65rem 1.25rem; border-radius:9px; background:#f0f2f5; color:var(--gris); font-weight:600; font-size:.88rem; border:none; cursor:pointer; transition:.2s; }
+    .btn-prev:hover { background:var(--border); color:var(--text); }
+    .btn-next { display:inline-flex; align-items:center; gap:.45rem; padding:.65rem 1.4rem; border-radius:9px; background:var(--rose); color:#fff; font-weight:600; font-size:.88rem; border:none; cursor:pointer; transition:.2s; box-shadow:0 4px 14px rgba(193,0,122,.25); }
+    .btn-next:hover { background:var(--rose-dark); transform:translateY(-1px); box-shadow:0 6px 20px rgba(193,0,122,.35); }
+    .btn-next:disabled { background:#d1d5db; box-shadow:none; cursor:not-allowed; transform:none; }
+    .btn-submit { display:inline-flex; align-items:center; gap:.45rem; padding:.75rem 1.75rem; border-radius:9px; background:linear-gradient(135deg,var(--rose),var(--rose-dark)); color:#fff; font-weight:700; font-size:.97rem; border:none; cursor:pointer; transition:.25s; box-shadow:0 4px 18px rgba(193,0,122,.28); }
+    .btn-submit:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(193,0,122,.42); }
+
+    /* ── RECAP DROITE ── */
+    .recap-card { background:#fff; border-radius:20px; box-shadow:0 6px 32px rgba(0,0,0,.07); overflow:hidden; position:sticky; top:100px; }
+    .recap-head { background:linear-gradient(135deg,var(--gris-dark),#3d4549); padding:1.25rem 1.5rem; color:#fff; }
+    .recap-head h3 { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:700; margin:0 0 .2rem; }
+    .recap-head p { font-size:.74rem; color:rgba(255,255,255,.4); margin:0; }
+    .recap-body { padding:1rem 1.5rem; }
+    .recap-row { display:flex; justify-content:space-between; align-items:flex-start; padding:.55rem 0; border-bottom:1px solid var(--border); font-size:.84rem; gap:.5rem; }
+    .recap-row:last-child { border-bottom:none; }
+    .recap-label { color:var(--muted); flex-shrink:0; }
+    .recap-val { font-weight:600; color:var(--text); text-align:right; }
+    .recap-val.empty { color:#d1d5db; font-weight:400; font-style:italic; }
+    .recap-val.rose { color:var(--rose); }
+    .recap-val.turq { color:var(--turq); }
+
+    /* ── SELECTED DATE DISPLAY ── */
+    .date-display {
+      padding:.75rem 1rem; background:var(--turq-light); border-radius:10px;
+      border:1.5px solid rgba(79,166,149,.3); font-size:.88rem; font-weight:600;
+      color:var(--turq-dark); display:flex; align-items:center; gap:.5rem; margin-bottom:1rem;
+    }
+    .date-display.hidden { display:none; }
+
+    @media(max-width:900px) { .dv-layout { grid-template-columns:1fr; } .recap-card { position:static; } }
+    @media(max-width:600px) {
+      .service-grid { grid-template-columns:1fr; }
+      .time-slots { grid-template-columns:repeat(3,1fr); }
+      .field-row.col2 { grid-template-columns:1fr; }
+      .steps-bar { gap:0; }
+      .step-label { display:none; }
+    }
+  </style>
 </head>
 <body>
+{% include "header.html" %}
 
-  {% include "header.html" %}
+<!-- HERO -->
+<div class="dv-hero">
+  <div class="container dv-hero-inner">
+    <div class="dv-breadcrumb">
+      <a href="{{ url_for('menu') }}">Accueil</a> &rsaquo; <span>Demande de devis</span>
+    </div>
+    <h1 class="dv-title">Votre demande<br><em>de devis</em></h1>
+    <p class="dv-sub">3 étapes simples pour obtenir votre rendez-vous personnalisé.</p>
+  </div>
+</div>
 
-  <div class="container my-4">
-    <h2>Demande de Devis / Rendez-Vous</h2>
-    <p>Veuillez remplir les informations ci-dessous afin de prendre rendez-vous.</p>
+<div class="dv-page">
+  <div class="container">
 
-    <!-- Form: POST to /resume-devis -->
-    <form action="{{ url_for('resume_devis') }}" method="POST" class="mt-4">
+    <!-- STEPS -->
+    <div class="steps-bar mb-4" id="stepsBar">
+      <div class="step-item active" id="step-1">
+        <div class="step-num">1</div>
+        <div class="step-label">Informations</div>
+      </div>
+      <div class="step-line" id="line-1"></div>
+      <div class="step-item" id="step-2">
+        <div class="step-num">2</div>
+        <div class="step-label">Service</div>
+      </div>
+      <div class="step-line" id="line-2"></div>
+      <div class="step-item" id="step-3">
+        <div class="step-num">3</div>
+        <div class="step-label">Rendez-vous</div>
+      </div>
+    </div>
 
-      <!-- Business sector -->
-      <div class="form-group">
-        <label for="secteur">Secteur d'activité</label>
-        <input type="text" class="form-control" id="secteur" name="secteur" placeholder="Ex: Commerce, Informatique, Artisanat..." required>
+    <div class="dv-layout">
+
+      <!-- ════ FORMULAIRE ════ -->
+      <div>
+        <form action="{{ url_for('resume_devis') }}" method="POST" id="mainForm">
+          <!-- champs cachés pour les données -->
+          <input type="hidden" name="secteur" id="h-secteur">
+          <input type="hidden" name="nom" id="h-nom">
+          <input type="hidden" name="user_email" id="h-email">
+          <input type="hidden" name="type_service" id="h-service">
+          <input type="hidden" name="date_rdv" id="h-date">
+          <input type="hidden" name="heure_rdv" id="h-heure">
+
+          <!-- ── ÉTAPE 1 : Informations ── -->
+          <div class="dv-card form-panel active" id="panel-1">
+            <div class="dv-card-head">
+              <div class="dv-card-ico rose"><i class="fas fa-user"></i></div>
+              <div>
+                <h2>Vos informations</h2>
+                <p>Secteur d'activité, nom et email de contact</p>
+              </div>
+            </div>
+            <div class="dv-card-body">
+              <div class="field-wrap">
+                <label class="field-label">Secteur d'activité</label>
+                <input type="text" class="field-input" id="f-secteur" placeholder="Ex : Commerce, Informatique, Artisanat…" required>
+              </div>
+              <div class="field-wrap">
+                <label class="field-label">Nom / Raison sociale</label>
+                <input type="text" class="field-input" id="f-nom" placeholder="Ex : Dupont SARL" required>
+              </div>
+              <div class="field-wrap">
+                <label class="field-label">Adresse email</label>
+                <input type="email" class="field-input" id="f-email" placeholder="exemple@domaine.com" required>
+              </div>
+              <div class="form-nav">
+                <span></span>
+                <button type="button" class="btn-next" id="next1">
+                  Suivant <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── ÉTAPE 2 : Service ── -->
+          <div class="dv-card form-panel" id="panel-2">
+            <div class="dv-card-head">
+              <div class="dv-card-ico rose"><i class="fas fa-briefcase"></i></div>
+              <div>
+                <h2>Type de service</h2>
+                <p>Choisissez le service qui correspond à votre besoin</p>
+              </div>
+            </div>
+            <div class="dv-card-body">
+              <div class="service-grid" id="serviceGrid">
+                <label class="service-card" data-value="Tenue Comptable">
+                  <input type="radio" name="service_select" value="Tenue Comptable">
+                  <div class="service-ico"><i class="fas fa-book"></i></div>
+                  <div>
+                    <div class="service-card-label">Tenue comptable</div>
+                    <div class="service-card-sub">Saisie, révision, bilan</div>
+                  </div>
+                </label>
+                <label class="service-card" data-value="Déclarations Fiscales">
+                  <input type="radio" name="service_select" value="Déclarations Fiscales">
+                  <div class="service-ico"><i class="fas fa-file-invoice-dollar"></i></div>
+                  <div>
+                    <div class="service-card-label">Déclarations fiscales</div>
+                    <div class="service-card-sub">TVA, IS, IR, liasses</div>
+                  </div>
+                </label>
+                <label class="service-card" data-value="Paie & Gestion RH">
+                  <input type="radio" name="service_select" value="Paie & Gestion RH">
+                  <div class="service-ico"><i class="fas fa-users"></i></div>
+                  <div>
+                    <div class="service-card-label">Paie & Gestion RH</div>
+                    <div class="service-card-sub">Fiches de paie, charges</div>
+                  </div>
+                </label>
+                <label class="service-card" data-value="Création / Reprise">
+                  <input type="radio" name="service_select" value="Création / Reprise">
+                  <div class="service-ico"><i class="fas fa-rocket"></i></div>
+                  <div>
+                    <div class="service-card-label">Création / Reprise</div>
+                    <div class="service-card-sub">Accompagnement projet</div>
+                  </div>
+                </label>
+                <label class="service-card" data-value="Conseils & Organisation">
+                  <input type="radio" name="service_select" value="Conseils & Organisation">
+                  <div class="service-ico"><i class="fas fa-lightbulb"></i></div>
+                  <div>
+                    <div class="service-card-label">Conseils & Organisation</div>
+                    <div class="service-card-sub">Stratégie, optimisation</div>
+                  </div>
+                </label>
+                <label class="service-card" data-value="Autre">
+                  <input type="radio" name="service_select" value="Autre">
+                  <div class="service-ico"><i class="fas fa-ellipsis-h"></i></div>
+                  <div>
+                    <div class="service-card-label">Autre</div>
+                    <div class="service-card-sub">À préciser à l'entretien</div>
+                  </div>
+                </label>
+              </div>
+              <div class="form-nav">
+                <button type="button" class="btn-prev" id="prev2"><i class="fas fa-arrow-left"></i> Retour</button>
+                <button type="button" class="btn-next" id="next2" disabled>
+                  Suivant <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── ÉTAPE 3 : Calendrier ── -->
+          <div class="dv-card form-panel" id="panel-3">
+            <div class="dv-card-head">
+              <div class="dv-card-ico turq"><i class="fas fa-calendar-alt"></i></div>
+              <div>
+                <h2>Choisissez votre rendez-vous</h2>
+                <p>Sélectionnez une date et un créneau horaire disponible</p>
+              </div>
+            </div>
+            <div class="dv-card-body">
+
+              <!-- CALENDRIER 3D -->
+              <div class="cal-scene">
+                <div class="cal-card-3d" id="calCard">
+                  <div class="cal-header">
+                    <button type="button" class="cal-nav-btn" id="prevMonth"><i class="fas fa-chevron-left"></i></button>
+                    <div style="text-align:center">
+                      <div class="cal-month-label" id="calMonthLabel">—</div>
+                      <div class="cal-year" id="calYearLabel">—</div>
+                    </div>
+                    <button type="button" class="cal-nav-btn" id="nextMonth"><i class="fas fa-chevron-right"></i></button>
+                  </div>
+                  <div class="cal-dow">
+                    <div class="cal-dow-cell">Lu</div>
+                    <div class="cal-dow-cell">Ma</div>
+                    <div class="cal-dow-cell">Me</div>
+                    <div class="cal-dow-cell">Je</div>
+                    <div class="cal-dow-cell">Ve</div>
+                    <div class="cal-dow-cell" style="color:#dc2626">Sa</div>
+                    <div class="cal-dow-cell" style="color:#dc2626">Di</div>
+                  </div>
+                  <div class="cal-grid" id="calGrid"></div>
+                </div>
+              </div>
+
+              <!-- Date sélectionnée -->
+              <div class="date-display hidden" id="dateDisplay">
+                <i class="fas fa-calendar-check" style="color:var(--turq)"></i>
+                <span id="dateDisplayText"></span>
+              </div>
+
+              <!-- CRÉNEAUX HORAIRES -->
+              <div id="timeSlotsWrap" style="display:none">
+                <div class="time-section-label">Matin</div>
+                <div class="time-slots" id="slots-am">
+                  <div class="time-slot" data-time="09:00">09h00</div>
+                  <div class="time-slot" data-time="09:30">09h30</div>
+                  <div class="time-slot" data-time="10:00">10h00</div>
+                  <div class="time-slot" data-time="10:30">10h30</div>
+                  <div class="time-slot" data-time="11:00">11h00</div>
+                  <div class="time-slot" data-time="11:30">11h30</div>
+                </div>
+                <div class="time-section-label">Après-midi</div>
+                <div class="time-slots" id="slots-pm">
+                  <div class="time-slot" data-time="14:00">14h00</div>
+                  <div class="time-slot" data-time="14:30">14h30</div>
+                  <div class="time-slot" data-time="15:00">15h00</div>
+                  <div class="time-slot" data-time="15:30">15h30</div>
+                  <div class="time-slot" data-time="16:00">16h00</div>
+                  <div class="time-slot" data-time="16:30">16h30</div>
+                </div>
+              </div>
+
+              <div class="form-nav">
+                <button type="button" class="btn-prev" id="prev3"><i class="fas fa-arrow-left"></i> Retour</button>
+                <button type="submit" class="btn-submit" id="btnSubmit" disabled>
+                  <i class="fas fa-check-circle"></i> Confirmer le rendez-vous
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </form>
       </div>
 
-      <!-- Name / Company name -->
-      <div class="form-group">
-        <label for="nom">Nom / Raison sociale</label>
-        <input type="text" class="form-control" id="nom" name="nom" placeholder="Ex: Dupont SARL" required>
-      </div>
-
-      <!-- Email Address -->
-      <div class="form-group">
-        <label for="user_email">Adresse E-mail</label>
-        <input type="email" class="form-control" id="user_email" name="user_email" placeholder="exemple@domaine.com" required>
-      </div>
-
-      <!-- Service type (drop-down menu) -->
-      <div class="form-group">
-        <label for="type_service">Type de service</label>
-        <select class="form-control" id="type_service" name="type_service" required>
-          <option value="">-- Sélectionnez un service --</option>
-          <option value="Conseil Juridique">Conseil Juridique</option>
-          <option value="Conseil Fiscal">Conseil Fiscal</option>
-          <option value="Création d'entreprise">Création d'entreprise</option>
-          <option value="Audit Complet">Audit Complet</option>
-          <option value="Autre">Autre (à préciser)</option>
-        </select>
-      </div>
-
-      <!-- Appointment date and time -->
-      <div class="form-row">
-        <!-- Date -->
-        <div class="form-group col-md-6">
-          <label for="date_rdv">Date du rendez-vous</label>
-          <input type="date" class="form-control" id="date_rdv" name="date_rdv" required>
+      <!-- ════ RÉCAP DROITE ════ -->
+      <div>
+        <div class="recap-card">
+          <div class="recap-head">
+            <h3>Récapitulatif</h3>
+            <p>Votre demande en cours</p>
+          </div>
+          <div class="recap-body">
+            <div class="recap-row">
+              <span class="recap-label">Société</span>
+              <span class="recap-val empty" id="r-nom">—</span>
+            </div>
+            <div class="recap-row">
+              <span class="recap-label">Secteur</span>
+              <span class="recap-val empty" id="r-secteur">—</span>
+            </div>
+            <div class="recap-row">
+              <span class="recap-label">Email</span>
+              <span class="recap-val empty" id="r-email">—</span>
+            </div>
+            <div class="recap-row">
+              <span class="recap-label">Service</span>
+              <span class="recap-val rose empty" id="r-service">—</span>
+            </div>
+            <div class="recap-row">
+              <span class="recap-label">Date</span>
+              <span class="recap-val turq empty" id="r-date">—</span>
+            </div>
+            <div class="recap-row">
+              <span class="recap-label">Heure</span>
+              <span class="recap-val turq empty" id="r-heure">—</span>
+            </div>
+          </div>
         </div>
-        <!-- Time -->
-        <div class="form-group col-md-6">
-          <label for="heure_rdv">Heure du rendez-vous</label>
-          <input type="time" class="form-control" id="heure_rdv" name="heure_rdv" required>
-        </div>
       </div>
 
-      <!-- Validate button -->
-      <button type="submit" class="btn btn-primary">Valider</button>
-    </form>
-
-    <!-- Back to menu button -->
-    <div class="text-center mt-4">
-      <a href="{{ url_for('menu') }}" class="btn btn-secondary">Retour au menu</a>
     </div>
   </div>
+</div>
 
-  {% include "footer.html" %}
+{% include "footer.html" %}
 
-  <!-- Scripts JS Bootstrap & jQuery -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// ══════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════
+const state = { step:1, secteur:'', nom:'', email:'', service:'', date:'', heure:'' };
+const MOIS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+const JOURS = ['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche'];
 
-  <!-- Script to validate date -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      var dateInput = document.getElementById('date_rdv');
-      dateInput.addEventListener('change', function() {
-        var selectedDate = new Date(this.value);
-        // Check if the selected year is earlier than 2025
-        if (selectedDate.getFullYear() < 2025) {
-          alert("Veuillez choisir une date en 2025 ou ultérieure.");
-          this.value = ""; // Reset date field
-        }
-      });
-    });
-  </script>
+let calYear, calMonth, selectedDate = null, selectedTime = null;
+
+// ── Init calendrier sur mois courant ──
+const now = new Date();
+calYear = now.getFullYear();
+calMonth = now.getMonth();
+
+// ══════════════════════════════════════
+//  STEPS
+// ══════════════════════════════════════
+function goStep(n) {
+  document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + n).classList.add('active');
+
+  for(let i=1; i<=3; i++) {
+    const s = document.getElementById('step-'+i);
+    s.classList.remove('active','done');
+    if(i < n) s.classList.add('done');
+    else if(i === n) s.classList.add('active');
+  }
+  for(let i=1; i<=2; i++) {
+    const l = document.getElementById('line-'+i);
+    l.classList.toggle('done', i < n);
+  }
+  state.step = n;
+  // Marquer icônes done
+  document.querySelectorAll('.step-item.done .step-num').forEach(el => {
+    el.innerHTML = '<i class="fas fa-check" style="font-size:.6rem"></i>';
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ══════════════════════════════════════
+//  STEP 1 → 2
+// ══════════════════════════════════════
+document.getElementById('next1').addEventListener('click', () => {
+  const s = document.getElementById('f-secteur').value.trim();
+  const n = document.getElementById('f-nom').value.trim();
+  const e = document.getElementById('f-email').value.trim();
+  if(!s || !n || !e) { alert('Veuillez remplir tous les champs.'); return; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) { alert('Email invalide.'); return; }
+  state.secteur = s; state.nom = n; state.email = e;
+  setRecap('r-nom', n); setRecap('r-secteur', s); setRecap('r-email', e);
+  goStep(2);
+});
+
+// ══════════════════════════════════════
+//  SERVICE CARDS
+// ══════════════════════════════════════
+document.querySelectorAll('.service-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    state.service = card.dataset.value;
+    setRecap('r-service', state.service, true);
+    document.getElementById('next2').disabled = false;
+  });
+});
+
+document.getElementById('prev2').addEventListener('click', () => goStep(1));
+document.getElementById('next2').addEventListener('click', () => {
+  if(!state.service) return;
+  goStep(3);
+  renderCal();
+});
+
+// ══════════════════════════════════════
+//  CALENDRIER 3D
+// ══════════════════════════════════════
+function renderCal() {
+  const label = document.getElementById('calMonthLabel');
+  const yearLabel = document.getElementById('calYearLabel');
+  const grid = document.getElementById('calGrid');
+  label.textContent = MOIS[calMonth];
+  yearLabel.textContent = calYear;
+  grid.innerHTML = '';
+
+  const firstDay = new Date(calYear, calMonth, 1);
+  let startDow = firstDay.getDay(); // 0=dim
+  startDow = startDow === 0 ? 6 : startDow - 1; // lundi=0
+
+  const daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  // Cellules vides début
+  for(let i=0; i<startDow; i++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day empty';
+    grid.appendChild(el);
+  }
+
+  for(let d=1; d<=daysInMonth; d++) {
+    const date = new Date(calYear, calMonth, d);
+    const el = document.createElement('div');
+    el.className = 'cal-day';
+    el.textContent = d;
+
+    const dow = date.getDay(); // 0=dim, 6=sam
+    if(dow === 0 || dow === 6) el.classList.add('weekend');
+    if(date < today) { el.classList.add('past'); }
+    else if(date.toDateString() === today.toDateString()) el.classList.add('today');
+
+    // Sélection actuelle
+    const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    if(selectedDate === dateStr) el.classList.add('selected');
+
+    if(!el.classList.contains('past')) {
+      el.addEventListener('click', () => selectDate(dateStr, date, d));
+    }
+    grid.appendChild(el);
+  }
+}
+
+function selectDate(dateStr, dateObj, d) {
+  selectedDate = dateStr;
+  selectedTime = null;
+
+  // Afficher la date choisie
+  const dow = dateObj.getDay();
+  const dowName = JOURS[dow===0?6:dow-1];
+  const txt = `${dowName.charAt(0).toUpperCase()+dowName.slice(1)} ${d} ${MOIS[calMonth]} ${calYear}`;
+  document.getElementById('dateDisplayText').textContent = txt;
+  document.getElementById('dateDisplay').classList.remove('hidden');
+
+  // Mettre à jour le récap
+  setRecap('r-date', txt, true);
+  setRecap('r-heure', '—');
+  document.getElementById('btnSubmit').disabled = true;
+
+  // Rendre les créneaux
+  document.getElementById('timeSlotsWrap').style.display = 'block';
+  document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+
+  // Simuler quelques créneaux indisponibles
+  const unavailable = ['09:30','14:30','16:00'];
+  document.querySelectorAll('.time-slot').forEach(slot => {
+    slot.classList.remove('unavailable');
+    if(unavailable.includes(slot.dataset.time)) slot.classList.add('unavailable');
+    slot.onclick = () => {
+      if(slot.classList.contains('unavailable')) return;
+      document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+      slot.classList.add('selected');
+      selectedTime = slot.dataset.time;
+      setRecap('r-heure', selectedTime, true);
+      document.getElementById('btnSubmit').disabled = false;
+    };
+  });
+
+  renderCal(); // redraw pour highlight
+}
+
+document.getElementById('prevMonth').addEventListener('click', () => {
+  calMonth--; if(calMonth < 0) { calMonth=11; calYear--; }
+  renderCal();
+});
+document.getElementById('nextMonth').addEventListener('click', () => {
+  calMonth++; if(calMonth > 11) { calMonth=0; calYear++; }
+  renderCal();
+});
+
+// ══════════════════════════════════════
+//  SUBMIT — injecter dans hidden inputs
+// ══════════════════════════════════════
+document.getElementById('prev3').addEventListener('click', () => goStep(2));
+
+document.getElementById('mainForm').addEventListener('submit', e => {
+  if(!selectedDate || !selectedTime) { e.preventDefault(); return; }
+  document.getElementById('h-secteur').value = state.secteur;
+  document.getElementById('h-nom').value = state.nom;
+  document.getElementById('h-email').value = state.email;
+  document.getElementById('h-service').value = state.service;
+  document.getElementById('h-date').value = selectedDate;
+  document.getElementById('h-heure').value = selectedTime;
+});
+
+// ══════════════════════════════════════
+//  RECAP HELPER
+// ══════════════════════════════════════
+function setRecap(id, val, colored) {
+  const el = document.getElementById(id);
+  el.textContent = val || '—';
+  el.classList.toggle('empty', !val || val === '—');
+}
+
+// Effet 3D tilt sur le calendrier
+const calCard = document.getElementById('calCard');
+const calScene = calCard.closest('.cal-scene');
+calScene.addEventListener('mousemove', e => {
+  const r = calScene.getBoundingClientRect();
+  const x = (e.clientX - r.left) / r.width - .5;
+  const y = (e.clientY - r.top) / r.height - .5;
+  calCard.style.transform = `rotateX(${-y*10}deg) rotateY(${x*12}deg) translateY(-4px)`;
+  calCard.style.boxShadow = `${-x*20}px ${y*20+20}px 60px rgba(0,0,0,.2)`;
+});
+calScene.addEventListener('mouseleave', () => {
+  calCard.style.transform = 'rotateX(4deg) rotateY(-2deg)';
+  calCard.style.boxShadow = '';
+});
+</script>
 </body>
 </html>

@@ -7,6 +7,79 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    /* ── CASE À COCHER CONSENTEMENT ── */
+    .consent-wrap {
+      background: #f8f9fb;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 10px;
+      padding: .85rem 1rem;
+      margin-bottom: 1rem;
+      transition: border-color .2s, background .2s;
+    }
+    .consent-wrap.is-checked {
+      border-color: #4FA695;
+      background: #d4f0ec;
+    }
+    .consent-wrap.is-error {
+      border-color: #ef4444;
+      background: #fef2f2;
+    }
+    .consent-label {
+      display: flex;
+      align-items: flex-start;
+      gap: .65rem;
+      cursor: pointer;
+      margin: 0;
+      user-select: none;
+    }
+    /* checkbox cachée */
+    .consent-label input[type="checkbox"] { display: none; }
+    /* carré custom */
+    .check-box {
+      width: 18px; height: 18px;
+      border: 2px solid #d1d5db;
+      border-radius: 5px;
+      background: #fff;
+      flex-shrink: 0;
+      margin-top: .15rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: .2s;
+    }
+    .consent-label input[type="checkbox"]:checked ~ .check-box {
+      background: #4FA695;
+      border-color: #4FA695;
+    }
+    .consent-label input[type="checkbox"]:checked ~ .check-box::after {
+      content: '';
+      width: 4px; height: 8px;
+      border: 2px solid #fff;
+      border-top: none; border-left: none;
+      transform: rotate(45deg) translate(-1px,-1px);
+      display: block;
+    }
+    .consent-text {
+      font-size: .8rem;
+      color: #6b7280;
+      line-height: 1.55;
+    }
+    .consent-text a {
+      color: #C1007A;
+      font-weight: 600;
+      text-decoration: none;
+      border-bottom: 1px dashed #C1007A;
+    }
+    .consent-text a:hover { color: #9a0062; }
+    .consent-error-msg {
+      font-size: .75rem;
+      color: #ef4444;
+      margin-top: .35rem;
+      display: none;
+      align-items: center;
+      gap: .3rem;
+    }
+    .consent-error-msg.show { display: flex; }
+  </style>
 </head>
 <body>
 
@@ -200,8 +273,10 @@
 
           <div class="tab-content mt-3">
 
+            <!-- ── ONGLET INSCRIPTION ── -->
             <div class="tab-pane fade show active" id="signup" role="tabpanel">
-              <form action="{{ url_for('signup') }}" method="POST">
+              <form action="{{ url_for('signup') }}" method="POST" id="modalSignupForm" novalidate>
+
                 <div class="form-group">
                   <label>Nom d'utilisateur</label>
                   <input type="text" class="form-control" name="username" placeholder="Votre nom d'utilisateur" required>
@@ -214,6 +289,28 @@
                   <label>Mot de passe</label>
                   <input type="password" class="form-control" name="password" placeholder="••••••••" required>
                 </div>
+
+                <!-- ═══════════════════════════════════════
+                     CASE À COCHER — Mentions légales / Cookies / RGPD
+                ═══════════════════════════════════════ -->
+                <div class="consent-wrap" id="modalConsentBox">
+                  <label class="consent-label" for="modalConsent">
+                    <input type="checkbox" id="modalConsent" name="consent">
+                    <span class="check-box"></span>
+                    <span class="consent-text">
+                      J'accepte les
+                      <a href="{{ url_for('mentions_legales') }}" target="_blank">Mentions légales</a>,
+                      la <a href="{{ url_for('cookies') }}" target="_blank">Politique de cookies</a>
+                      et la <a href="{{ url_for('rgpd') }}" target="_blank">Politique RGPD</a>.
+                    </span>
+                  </label>
+                </div>
+                <div class="consent-error-msg" id="modalConsentError">
+                  <i class="fas fa-exclamation-circle"></i>
+                  Vous devez accepter les conditions pour vous inscrire.
+                </div>
+                <!-- ═══════════════════════════════════════ -->
+
                 <button type="submit" class="btn-ml2c-full">Créer mon compte</button>
               </form>
               <div class="mt-3 text-center">
@@ -222,6 +319,7 @@
               </div>
             </div>
 
+            <!-- ── ONGLET CONNEXION ── -->
             <div class="tab-pane fade" id="login" role="tabpanel">
               <form action="{{ url_for('login') }}" method="POST">
                 <div class="form-group">
@@ -249,12 +347,44 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    // Header sticky
     window.addEventListener('scroll', function() {
       document.getElementById('mainHeader').classList.toggle('scrolled', window.scrollY > 60);
     });
+
+    // Burger mobile
     document.getElementById('burgerBtn').addEventListener('click', function() {
       document.getElementById('mainNav').classList.toggle('open');
       this.classList.toggle('active');
+    });
+
+    // ── CONSENTEMENT MODAL ──
+    const modalCb    = document.getElementById('modalConsent');
+    const modalBox   = document.getElementById('modalConsentBox');
+    const modalErr   = document.getElementById('modalConsentError');
+
+    // Style dynamique au clic sur la case
+    modalCb.addEventListener('change', function() {
+      modalBox.classList.toggle('is-checked', this.checked);
+      modalBox.classList.remove('is-error');
+      if (this.checked) modalErr.classList.remove('show');
+    });
+
+    // Bloquer la soumission si non cochée
+    document.getElementById('modalSignupForm').addEventListener('submit', function(e) {
+      if (!modalCb.checked) {
+        e.preventDefault();
+        modalBox.classList.add('is-error');
+        modalErr.classList.add('show');
+        modalBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+
+    // Réinitialiser l'état quand la modal se ferme
+    $('#accountModal').on('hidden.bs.modal', function() {
+      modalCb.checked = false;
+      modalBox.classList.remove('is-checked', 'is-error');
+      modalErr.classList.remove('show');
     });
   </script>
 

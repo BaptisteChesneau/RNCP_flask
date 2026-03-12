@@ -521,8 +521,10 @@ def resume_devis():
         heure_rdv=heure_rdv,
     )
 
-@app.route('/paiement')
+@app.route("/paiement")
 def paiement():
+    if 'utilisateur_id' not in session:
+        return redirect(url_for('login'))
     return render_template('paiement.html')
 
 @app.route("/envoyer_mail")

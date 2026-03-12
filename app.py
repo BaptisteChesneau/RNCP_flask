@@ -1097,6 +1097,11 @@ def logout_admin():
     flash("Déconnecté avec succès ✅", "success")
     return redirect(url_for("login_admin"))
 
+@app.route('/logout')
+def logout():
+    session.pop("admin_logged_in", None)
+    flash("Déconnecté avec succès ✅", "success")
+    return redirect(url_for('menu'))
 
 # ✅ DELETE A MESSAGE
 @app.route("/supprimer-message/<message_id>", methods=["POST"])

@@ -2,278 +2,359 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Paramètres du Compte - ML2C CONSEIL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paramètres - ML2C CONSEIL</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --rose:#C1007A; --rose-dark:#9a0062; --rose-light:#fce4f3;
+      --turq:#4FA695; --turq-dark:#3a7d70; --turq-light:#d4f0ec;
+      --gris:#5C666B; --gris-dark:#2d3436; --border:#e5e7eb;
+      --text:#2d2d2d; --muted:#6b7280;
+    }
+    body { background:#f0f2f5; font-family:'DM Sans',sans-serif; }
+
+    /* ── HERO ── */
+    .set-hero {
+      background:linear-gradient(135deg,#1e2729 0%,#2d3436 55%,#1a3333 100%);
+      padding:2.25rem 0 3.25rem; position:relative; overflow:hidden; margin-bottom:-2rem;
+    }
+    .set-hero::before {
+      content:''; position:absolute; inset:0;
+      background:radial-gradient(ellipse at 80% 40%,rgba(79,166,149,.16) 0%,transparent 55%),
+                 radial-gradient(ellipse at 8% 85%,rgba(193,0,122,.12) 0%,transparent 45%);
+    }
+    .set-hero-inner { position:relative; z-index:1; }
+    .set-breadcrumb { font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:.6rem; }
+    .set-breadcrumb a { color:rgba(255,255,255,.35); text-decoration:none; }
+    .set-breadcrumb a:hover { color:var(--turq); }
+    .set-breadcrumb span { color:var(--turq); }
+    .set-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,4vw,2.7rem); font-weight:700; color:#fff; line-height:1.1; margin-bottom:.4rem; }
+    .set-title em { color:#5eead4; font-style:italic; }
+    .set-sub { font-size:.86rem; color:rgba(255,255,255,.45); margin:0; }
+
+    /* ── PAGE ── */
+    .set-page { padding:2.5rem 0 4rem; }
+    .set-layout { display:grid; grid-template-columns:240px 1fr; gap:1.75rem; align-items:start; }
+
+    /* ── SIDEBAR ── */
+    .set-sidebar { background:#fff; border-radius:18px; box-shadow:0 6px 28px rgba(0,0,0,.07); overflow:hidden; position:sticky; top:100px; }
+    .sidebar-section-label {
+      font-size:.67rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em;
+      color:var(--muted); padding:.85rem 1.25rem .4rem; background:#f8f9fb;
+      border-bottom:1px solid var(--border);
+    }
+    .sidebar-btn {
+      display:flex; align-items:center; gap:.7rem;
+      width:100%; padding:.72rem 1.25rem; font-size:.86rem; font-weight:500;
+      color:var(--text); background:none; border:none; cursor:pointer;
+      border-left:3px solid transparent; transition:.18s; text-align:left;
+    }
+    .sidebar-btn:hover { background:var(--rose-light); color:var(--rose); border-left-color:var(--rose-light); }
+    .sidebar-btn.active { background:var(--rose-light); color:var(--rose); border-left-color:var(--rose); font-weight:700; }
+    .sidebar-btn i { width:16px; text-align:center; font-size:.8rem; }
+    .sidebar-divider { height:1px; background:var(--border); margin:.3rem 0; }
+    .sidebar-btn.danger { color:#dc2626; }
+    .sidebar-btn.danger:hover { background:#fef2f2; border-left-color:#dc2626; }
+
+    /* ── PANELS ── */
+    .set-panel { display:none; }
+    .set-panel.active { display:block; animation:panelIn .25s ease; }
+    @keyframes panelIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+    /* ── CARD ── */
+    .set-card { background:#fff; border-radius:18px; box-shadow:0 6px 28px rgba(0,0,0,.07); overflow:hidden; margin-bottom:1.25rem; }
+    .set-card-head { padding:1.25rem 1.6rem; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:.75rem; }
+    .set-card-ico { width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:.85rem; flex-shrink:0; }
+    .set-card-ico.rose { background:var(--rose-light); color:var(--rose); }
+    .set-card-ico.turq { background:var(--turq-light); color:var(--turq); }
+    .set-card-ico.grey { background:#f0f2f5; color:var(--gris); }
+    .set-card-head h3 { font-size:1rem; font-weight:700; color:var(--text); margin:0; }
+    .set-card-head p { font-size:.76rem; color:var(--muted); margin:0; }
+    .set-card-body { padding:1.5rem 1.6rem; }
+
+    /* ── CHAMPS ── */
+    .field-wrap { margin-bottom:1rem; }
+    .field-label { display:block; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin-bottom:.4rem; }
+    .field-input { width:100%; padding:.7rem 1rem; border:1.5px solid var(--border); border-radius:10px; font-size:.92rem; color:var(--text); background:#fafbfc; transition:.2s; outline:none; font-family:'DM Sans',sans-serif; }
+    .field-input:focus { border-color:var(--rose); background:#fff; box-shadow:0 0 0 3px rgba(193,0,122,.08); }
+    .field-row { display:grid; gap:.9rem; }
+    .field-row.col2 { grid-template-columns:1fr 1fr; }
+
+    /* ── BOUTONS ── */
+    .btn-rose { display:inline-flex; align-items:center; gap:.45rem; padding:.65rem 1.4rem; border-radius:9px; background:var(--rose); color:#fff; font-weight:600; font-size:.88rem; border:none; cursor:pointer; transition:.2s; }
+    .btn-rose:hover { background:var(--rose-dark); transform:translateY(-1px); box-shadow:0 4px 14px rgba(193,0,122,.3); }
+    .btn-ghost { display:inline-flex; align-items:center; gap:.45rem; padding:.65rem 1.4rem; border-radius:9px; background:#f0f2f5; color:var(--gris); font-weight:600; font-size:.88rem; border:none; cursor:pointer; transition:.2s; text-decoration:none; }
+    .btn-ghost:hover { background:var(--border); color:var(--text); text-decoration:none; }
+    .btn-danger { display:inline-flex; align-items:center; gap:.45rem; padding:.65rem 1.4rem; border-radius:9px; background:#fef2f2; color:#dc2626; font-weight:600; font-size:.88rem; border:1.5px solid #fecaca; cursor:pointer; transition:.2s; }
+    .btn-danger:hover { background:#dc2626; color:#fff; border-color:#dc2626; }
+
+    /* ── TOGGLE NOTIF ── */
+    .toggle-row { display:flex; align-items:center; justify-content:space-between; padding:.85rem 0; border-bottom:1px solid var(--border); }
+    .toggle-row:last-child { border-bottom:none; }
+    .toggle-info strong { display:block; font-size:.9rem; font-weight:600; color:var(--text); }
+    .toggle-info span { font-size:.78rem; color:var(--muted); }
+    .toggle-switch { position:relative; width:42px; height:24px; flex-shrink:0; }
+    .toggle-switch input { opacity:0; width:0; height:0; }
+    .toggle-slider { position:absolute; inset:0; background:#d1d5db; border-radius:24px; cursor:pointer; transition:.25s; }
+    .toggle-slider::before { content:''; position:absolute; width:18px; height:18px; background:#fff; border-radius:50%; bottom:3px; left:3px; transition:.25s; box-shadow:0 1px 4px rgba(0,0,0,.2); }
+    .toggle-switch input:checked + .toggle-slider { background:var(--turq); }
+    .toggle-switch input:checked + .toggle-slider::before { transform:translateX(18px); }
+
+    /* ── DANGER ZONE ── */
+    .danger-zone { background:#fff8f8; border:1.5px solid #fecaca; border-radius:14px; padding:1.25rem 1.5rem; }
+    .danger-zone h4 { font-size:.92rem; font-weight:700; color:#dc2626; margin-bottom:.35rem; }
+    .danger-zone p { font-size:.82rem; color:var(--muted); margin-bottom:1rem; }
+
+    /* ── FLASH ── */
+    .flash-wrap { margin-bottom:1.25rem; }
+
+    @media(max-width:860px) {
+      .set-layout { grid-template-columns:1fr; }
+      .set-sidebar { position:static; display:flex; flex-wrap:wrap; border-radius:14px; }
+      .sidebar-section-label { display:none; }
+      .sidebar-btn { border-left:none; border-bottom:3px solid transparent; padding:.6rem .9rem; font-size:.8rem; }
+      .sidebar-btn.active { border-bottom-color:var(--rose); border-left:none; }
+      .sidebar-divider { display:none; }
+    }
+  </style>
 </head>
+<body>
+{% include "header.html" %}
 
-<body class="{{ session.get('theme', 'light') }}">
-
-  {% include "header.html" %}
-
-  <!-- Message flash -->
-  {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      <div class="container mt-3">
-        {% for category, message in messages %}
-          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="close" data-dismiss="alert">
-              <span>&times;</span>
-            </button>
-          </div>
-        {% endfor %}
-      </div>
-    {% endif %}
-  {% endwith %}
-
-  <div class="container my-5">
-    <h2 class="text-center mb-4">Paramètres du Compte</h2>
-    <div class="row">
-
-      <!-- ====================== MENU LATÉRAL ORGANISÉ ====================== -->
-      <div class="col-md-3">
-        <div class="list-group" id="paramMenu">
-
-          <!-- Catégorie : Compte -->
-          <div class="list-group-item font-weight-bold bg-primary text-white">
-            Compte
-          </div>
-          <a href="#profileSection" class="list-group-item list-group-item-action active" data-toggle="list">
-            Profil
-          </a>
-          <a href="#passwordSection" class="list-group-item list-group-item-action" data-toggle="list">
-            Mot de passe
-          </a>
-          <a href="#photoSection" class="list-group-item list-group-item-action" data-toggle="list">
-            Photo de profil
-          </a>
-
-          <!-- Personnalisation -->
-          <div class="list-group-item font-weight-bold mt-3">
-            Personnalisation
-          </div>
-          <a href="#preferencesSection" class="list-group-item list-group-item-action" data-toggle="list">
-            Préférences
-          </a>
-          <a href="#notificationsSection" class="list-group-item list-group-item-action" data-toggle="list">
-            Notifications
-          </a>
-
-          <!-- Confidentialité -->
-          <div class="list-group-item font-weight-bold mt-3">
-            Confidentialité & Sécurité
-          </div>
-          <a href="#dataExportSection" class="list-group-item list-group-item-action" data-toggle="list">
-            Mes données
-          </a>
-
-          <!-- Facturation -->
-          <div class="list-group-item font-weight-bold mt-3">
-            Facturation & Paiements
-          </div>
-          <a href="#billingSection" class="list-group-item list-group-item-action" data-toggle="list">
-            Infos de facturation
-          </a>
-          <a href="{{ url_for('paiement') }}#facturation"
-             class="list-group-item list-group-item-action">
-            Gérer mes paiements
-          </a>
-          <form method="POST" action="{{ url_for('supprimer_carte') }}"
-                onsubmit="return confirm('Confirmer la suppression ?')">
-            <button type="submit" class="list-group-item list-group-item-action text-danger">
-              Supprimer ma carte
-            </button>
-          </form>
-
-          <!-- Support -->
-          <div class="list-group-item font-weight-bold mt-3">
-            Support & Activités
-          </div>
-          <a href="#supportSection" class="list-group-item list-group-item-action" data-toggle="list">
-            Assistance
-          </a>
-          <a href="{{ url_for('gerer_devis') }}" class="list-group-item list-group-item-action">
-            Gérer mes devis
-          </a>
-        </div>
-      </div>
-
-      <!-- ====================== CONTENU PRINCIPAL ====================== -->
-      <div class="col-md-9">
-        <div class="tab-content">
-
-          <!-- ================= PROFIL ================= -->
-          <div class="tab-pane fade show active" id="profileSection">
-            <h4>Mettre à jour vos informations personnelles</h4>
-            <form action="{{ url_for('update_profile') }}" method="POST">
-              <div class="form-row">
-                <div class="form-group col-md-6">
-                  <label>Prénom</label>
-                  <input type="text" class="form-control" name="prenom" value="{{ user.prenom }}" required>
-                </div>
-                <div class="form-group col-md-6">
-                  <label>Nom</label>
-                  <input type="text" class="form-control" name="nom" value="{{ user.nom }}" required>
-                </div>
-              </div>
-              <div class="form-group">
-                <label>Email</label>
-                <input type="email" class="form-control" name="email" value="{{ user.email }}" required>
-              </div>
-              <button class="btn btn-primary btn-progress">Mettre à jour</button>
-            </form>
-          </div>
-
-          <!-- ================= MOT DE PASSE ================= -->
-          <div class="tab-pane fade" id="passwordSection">
-            <h4>Changer votre mot de passe</h4>
-            <form action="{{ url_for('update_password') }}" method="POST">
-              <div class="form-group">
-                <label>Mot de passe actuel</label>
-                <input type="password" class="form-control" name="current_password" required>
-              </div>
-              <div class="form-group">
-                <label>Nouveau mot de passe</label>
-                <input type="password" class="form-control" name="new_password" required>
-              </div>
-              <div class="form-group">
-                <label>Confirmation</label>
-                <input type="password" class="form-control" name="confirm_password" required>
-              </div>
-              <button class="btn btn-primary btn-progress">Changer</button>
-            </form>
-          </div>
-
-          <!-- ================= PRÉFÉRENCES ================= -->
-          <div class="tab-pane fade" id="preferencesSection">
-            <h4>Préférences utilisateur</h4>
-            <form action="{{ url_for('update_preferences') }}" method="POST">
-              <div class="form-group">
-                <label>Langue</label>
-                <select class="form-control" name="language">
-                  <option value="fr">Français</option>
-                  <option value="en">Anglais</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Thème</label>
-                <select class="form-control" name="theme">
-                  <option value="light">Clair</option>
-                  <option value="dark">Sombre</option>
-                </select>
-              </div>
-              <button class="btn btn-primary btn-progress">Sauvegarder</button>
-            </form>
-          </div>
-
-          <!-- ================= NOTIFICATIONS ================= -->
-          <div class="tab-pane fade" id="notificationsSection">
-            <h4>Notifications</h4>
-            <form action="{{ url_for('update_notifications') }}" method="POST">
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="notif_email" name="notif_email" checked>
-                <label for="notif_email">Notifications email</label>
-              </div>
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="notif_sms" name="notif_sms">
-                <label for="notif_sms">Notifications SMS</label>
-              </div>
-              <button class="btn btn-primary btn-progress mt-3">Mettre à jour</button>
-            </form>
-          </div>
-
-          <!-- ================= FACTURATION ================= -->
-          <div class="tab-pane fade" id="billingSection">
-            <h4>Facturation</h4>
-            <form action="{{ url_for('update_billing') }}" method="POST">
-              <div class="form-group">
-                <label>Nom de facturation</label>
-                <input type="text" class="form-control" name="billing_name" required>
-              </div>
-              <div class="form-group">
-                <label>Adresse</label>
-                <input type="text" class="form-control" name="billing_address" required>
-              </div>
-              <button class="btn btn-primary btn-progress">Enregistrer</button>
-            </form>
-          </div>
-
-          <!-- ================= MES DONNÉES ================= -->
-          <div class="tab-pane fade" id="dataExportSection">
-            <h4>Exporter vos données</h4>
-            <form action="{{ url_for('export_data') }}" method="POST">
-              <button class="btn btn-outline-primary">Télécharger mes données</button>
-            </form>
-          </div>
-
-          <!-- ================= ASSISTANCE ================= -->
-          <div class="tab-pane fade" id="supportSection">
-            <h4>Assistance</h4>
-            <form action="{{ url_for('contact_support') }}" method="POST">
-              <div class="form-group">
-                <label>Objet</label>
-                <input type="text" class="form-control" name="subject" required>
-              </div>
-              <div class="form-group">
-                <label>Message</label>
-                <textarea class="form-control" name="message" rows="4" required></textarea>
-              </div>
-              <button class="btn btn-primary btn-progress">Envoyer</button>
-            </form>
-          </div>
-
-        </div>
-      </div>
+<!-- HERO -->
+<div class="set-hero">
+  <div class="container set-hero-inner">
+    <div class="set-breadcrumb">
+      <a href="{{ url_for('compte_client') }}">Espace client</a> &rsaquo; <span>Paramètres</span>
     </div>
+    <h1 class="set-title">Mon <em>compte</em></h1>
+    <p class="set-sub">Gérez vos informations, sécurité et préférences.</p>
+  </div>
+</div>
 
-    <div class="text-center mt-4">
-      <a href="{{ url_for('menu') }}" class="btn btn-secondary">Retour au menu</a>
+<div class="set-page">
+  <div class="container">
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-wrap">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="set-layout">
+
+      <!-- ══ SIDEBAR ══ -->
+      <div class="set-sidebar">
+        <div class="sidebar-section-label">Mon compte</div>
+        <button class="sidebar-btn active" data-panel="profil">
+          <i class="fas fa-user"></i> Profil
+        </button>
+        <button class="sidebar-btn" data-panel="password">
+          <i class="fas fa-lock"></i> Mot de passe
+        </button>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-label">Préférences</div>
+        <button class="sidebar-btn" data-panel="notifs">
+          <i class="fas fa-bell"></i> Notifications
+        </button>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-label">Données</div>
+        <button class="sidebar-btn" data-panel="donnees">
+          <i class="fas fa-download"></i> Mes données
+        </button>
+        <div class="sidebar-divider"></div>
+        <button class="sidebar-btn danger" data-panel="danger">
+          <i class="fas fa-exclamation-triangle"></i> Zone de danger
+        </button>
+      </div>
+
+      <!-- ══ CONTENU ══ -->
+      <div>
+
+        <!-- ── PROFIL ── -->
+        <div class="set-panel active" id="panel-profil">
+          <div class="set-card">
+            <div class="set-card-head">
+              <div class="set-card-ico rose"><i class="fas fa-user"></i></div>
+              <div>
+                <h3>Informations personnelles</h3>
+                <p>Nom, prénom et adresse email du compte</p>
+              </div>
+            </div>
+            <div class="set-card-body">
+              <form action="{{ url_for('update_profile') }}" method="POST">
+                <div class="field-row col2">
+                  <div class="field-wrap" style="margin:0">
+                    <label class="field-label">Prénom</label>
+                    <input type="text" class="field-input" name="prenom" value="{{ user.prenom }}" required>
+                  </div>
+                  <div class="field-wrap" style="margin:0">
+                    <label class="field-label">Nom</label>
+                    <input type="text" class="field-input" name="nom" value="{{ user.nom }}" required>
+                  </div>
+                </div>
+                <div class="field-wrap mt-3">
+                  <label class="field-label">Adresse email</label>
+                  <input type="email" class="field-input" name="email" value="{{ user.email }}" required>
+                </div>
+                <div class="mt-3 d-flex gap-2" style="gap:.65rem">
+                  <button type="submit" class="btn-rose"><i class="fas fa-save"></i> Enregistrer</button>
+                  <a href="{{ url_for('compte_client') }}" class="btn-ghost"><i class="fas fa-arrow-left"></i> Retour</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── MOT DE PASSE ── -->
+        <div class="set-panel" id="panel-password">
+          <div class="set-card">
+            <div class="set-card-head">
+              <div class="set-card-ico rose"><i class="fas fa-lock"></i></div>
+              <div>
+                <h3>Changer le mot de passe</h3>
+                <p>Utilisez un mot de passe fort d'au moins 8 caractères</p>
+              </div>
+            </div>
+            <div class="set-card-body">
+              <form action="{{ url_for('update_password') }}" method="POST">
+                <div class="field-wrap">
+                  <label class="field-label">Mot de passe actuel</label>
+                  <input type="password" class="field-input" name="current_password" required>
+                </div>
+                <div class="field-wrap">
+                  <label class="field-label">Nouveau mot de passe</label>
+                  <input type="password" class="field-input" name="new_password" required>
+                </div>
+                <div class="field-wrap">
+                  <label class="field-label">Confirmer le nouveau mot de passe</label>
+                  <input type="password" class="field-input" name="confirm_password" required>
+                </div>
+                <button type="submit" class="btn-rose mt-1"><i class="fas fa-key"></i> Changer le mot de passe</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── NOTIFICATIONS ── -->
+        <div class="set-panel" id="panel-notifs">
+          <div class="set-card">
+            <div class="set-card-head">
+              <div class="set-card-ico turq"><i class="fas fa-bell"></i></div>
+              <div>
+                <h3>Notifications</h3>
+                <p>Choisissez comment vous souhaitez être contacté</p>
+              </div>
+            </div>
+            <div class="set-card-body">
+              <form action="{{ url_for('update_notifications') }}" method="POST">
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <strong>Notifications par email</strong>
+                    <span>Devis, rendez-vous, confirmations</span>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" name="notif_email" checked>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <strong>Notifications par SMS</strong>
+                    <span>Rappels de rendez-vous uniquement</span>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" name="notif_sms">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <button type="submit" class="btn-rose mt-3"><i class="fas fa-save"></i> Enregistrer</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── MES DONNÉES ── -->
+        <div class="set-panel" id="panel-donnees">
+          <div class="set-card">
+            <div class="set-card-head">
+              <div class="set-card-ico grey"><i class="fas fa-download"></i></div>
+              <div>
+                <h3>Exporter mes données</h3>
+                <p>Téléchargez l'ensemble des informations liées à votre compte</p>
+              </div>
+            </div>
+            <div class="set-card-body">
+              <p style="font-size:.88rem;color:var(--muted);margin-bottom:1.25rem;">
+                Conformément au RGPD, vous pouvez demander à tout moment l'export de vos données personnelles. Le fichier vous sera envoyé par email sous 48h.
+              </p>
+              <form action="{{ url_for('export_data') }}" method="POST">
+                <button type="submit" class="btn-ghost"><i class="fas fa-file-export"></i> Demander l'export</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── ZONE DE DANGER ── -->
+        <div class="set-panel" id="panel-danger">
+          <div class="set-card">
+            <div class="set-card-head">
+              <div class="set-card-ico" style="background:#fef2f2;color:#dc2626"><i class="fas fa-exclamation-triangle"></i></div>
+              <div>
+                <h3>Zone de danger</h3>
+                <p>Actions irréversibles — à utiliser avec précaution</p>
+              </div>
+            </div>
+            <div class="set-card-body">
+              <div class="danger-zone mb-3">
+                <h4><i class="fas fa-credit-card"></i> Supprimer ma carte bancaire</h4>
+                <p>La carte enregistrée sera définitivement supprimée de votre compte.</p>
+                <form method="POST" action="{{ url_for('supprimer_carte') }}"
+                      onsubmit="return confirm('Confirmer la suppression de la carte ?')">
+                  <button type="submit" class="btn-danger"><i class="fas fa-trash-alt"></i> Supprimer la carte</button>
+                </form>
+              </div>
+              <div class="danger-zone">
+                <h4><i class="fas fa-user-times"></i> Supprimer mon compte</h4>
+                <p>Cette action est définitive. Toutes vos données seront effacées sans possibilité de récupération.</p>
+                <button type="button" class="btn-danger" onclick="return confirm('Êtes-vous absolument certain ? Cette action est irréversible.')">
+                  <i class="fas fa-trash-alt"></i> Supprimer mon compte
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
+</div>
 
-  {% include "footer.html" %}
+{% include "footer.html" %}
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Progress bar script identique -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const buttons = document.querySelectorAll(".btn-progress");
-      const overlay = document.getElementById("progressOverlay");
-
-      function startProgress() {
-        overlay.style.display = "block";
-        let p = 0;
-        const bar = document.getElementById("progressBar");
-        const percent = document.getElementById("progressPercentage");
-        const icon = document.getElementById("progressIcon");
-
-        const timer = setInterval(() => {
-          p += 4;
-          bar.style.width = p + "%";
-          percent.textContent = p + "%";
-
-          if (p >= 100) {
-            clearInterval(timer);
-            icon.classList.remove("fa-sync", "fa-spin");
-            icon.classList.add("fa-check");
-            setTimeout(() => overlay.style.display = "none", 800);
-          }
-        }, 80);
-      }
-
-      buttons.forEach(btn => {
-        btn.addEventListener("click", function (e) {
-          e.preventDefault();
-          startProgress();
-          this.closest("form").submit();
-        });
-      });
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.querySelectorAll('.sidebar-btn[data-panel]').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.set-panel').forEach(p => p.classList.remove('active'));
+      this.classList.add('active');
+      document.getElementById('panel-' + this.dataset.panel).classList.add('active');
     });
-  </script>
-
+  });
+</script>
 </body>
 </html>

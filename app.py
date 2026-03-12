@@ -521,6 +521,9 @@ def resume_devis():
         heure_rdv=heure_rdv,
     )
 
+@app.route('/paiement')
+def paiement():
+    return render_template('paiement.html')
 
 @app.route("/envoyer_mail")
 def envoyer_mail():

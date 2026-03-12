@@ -105,112 +105,41 @@
     .fiche-item-label { font-size:.67rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:.18rem; }
     .fiche-item-val { font-size:.88rem; font-weight:500; color:var(--text); }
 
-    /* ══════════════════════════════════════
-       CARTE BANCAIRE RÉALISTE CSS PUR
-    ══════════════════════════════════════ */
+    /* ── CARTE BANCAIRE ── */
     .carte-wrap { max-width:400px; margin:0 auto; }
-
     .credit-card {
-      width:100%; aspect-ratio:1.586;
-      border-radius:18px; padding:1.6rem 1.75rem;
+      width:100%; aspect-ratio:1.586; border-radius:18px; padding:1.6rem 1.75rem;
       position:relative; overflow:hidden;
       background:linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
-      box-shadow: 0 24px 60px rgba(0,0,0,.4), 0 4px 16px rgba(0,0,0,.2),
-                  inset 0 1px 0 rgba(255,255,255,.08);
-      color:#fff; cursor:default;
-      transition:transform .3s ease, box-shadow .3s ease;
-      margin-bottom:1.5rem;
+      box-shadow:0 24px 60px rgba(0,0,0,.4), 0 4px 16px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.08);
+      color:#fff; cursor:default; transition:transform .3s ease, box-shadow .3s ease; margin-bottom:1.5rem;
     }
     .credit-card:hover { transform:translateY(-4px) rotateX(2deg); box-shadow:0 32px 80px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.1); }
-
-    /* Cercles décoratifs */
-    .card-circle-1 {
-      position:absolute; top:-60px; right:-40px;
-      width:220px; height:220px; border-radius:50%;
-      background:rgba(255,255,255,.04); pointer-events:none;
-    }
-    .card-circle-2 {
-      position:absolute; bottom:-70px; left:-30px;
-      width:200px; height:200px; border-radius:50%;
-      background:rgba(193,0,122,.1); pointer-events:none;
-    }
-    .card-circle-3 {
-      position:absolute; top:30px; right:60px;
-      width:120px; height:120px; border-radius:50%;
-      background:rgba(79,166,149,.06); pointer-events:none;
-    }
-    /* Reflet diagonale */
-    .card-shine {
-      position:absolute; inset:0;
-      background:linear-gradient(105deg, rgba(255,255,255,.06) 0%, transparent 40%, rgba(255,255,255,.03) 60%, transparent 100%);
-      pointer-events:none;
-    }
-
+    .card-circle-1 { position:absolute; top:-60px; right:-40px; width:220px; height:220px; border-radius:50%; background:rgba(255,255,255,.04); pointer-events:none; }
+    .card-circle-2 { position:absolute; bottom:-70px; left:-30px; width:200px; height:200px; border-radius:50%; background:rgba(193,0,122,.1); pointer-events:none; }
+    .card-circle-3 { position:absolute; top:30px; right:60px; width:120px; height:120px; border-radius:50%; background:rgba(79,166,149,.06); pointer-events:none; }
+    .card-shine { position:absolute; inset:0; background:linear-gradient(105deg, rgba(255,255,255,.06) 0%, transparent 40%, rgba(255,255,255,.03) 60%, transparent 100%); pointer-events:none; }
     .card-inner { position:relative; z-index:1; height:100%; display:flex; flex-direction:column; justify-content:space-between; }
-
-    /* Logo banque + réseau */
     .card-top { display:flex; justify-content:space-between; align-items:center; }
     .card-bank-name { font-family:'Cormorant Garamond',serif; font-size:1rem; font-weight:700; color:rgba(255,255,255,.85); letter-spacing:.04em; }
-    .card-network {
-      display:flex; gap:-6px;
-    }
-    .card-network-circle {
-      width:28px; height:28px; border-radius:50%;
-      opacity:.85;
-    }
+    .card-network { display:flex; }
+    .card-network-circle { width:28px; height:28px; border-radius:50%; opacity:.85; }
     .card-network-circle:first-child { background:#eb001b; margin-right:-10px; }
     .card-network-circle:last-child { background:#f79e1b; }
-
-    /* Puce */
     .card-chip-row { display:flex; align-items:center; gap:.75rem; }
-    .card-chip {
-      width:42px; height:32px; border-radius:6px;
-      background:linear-gradient(135deg, #c9a227 0%, #f0d060 40%, #c9a227 70%, #e8c340 100%);
-      position:relative; overflow:hidden;
-      box-shadow:0 1px 4px rgba(0,0,0,.3);
-    }
-    .card-chip::before {
-      content:''; position:absolute;
-      top:50%; left:0; right:0; height:1px;
-      background:rgba(0,0,0,.15); transform:translateY(-50%);
-    }
-    .card-chip::after {
-      content:''; position:absolute;
-      left:50%; top:0; bottom:0; width:1px;
-      background:rgba(0,0,0,.12); transform:translateX(-50%);
-    }
-    .card-chip-inner {
-      position:absolute; inset:4px; border-radius:3px;
-      border:1px solid rgba(0,0,0,.12);
-      background:linear-gradient(135deg, #d4a843 0%, #f0c96e 50%, #d4a843 100%);
-    }
+    .card-chip { width:42px; height:32px; border-radius:6px; background:linear-gradient(135deg,#c9a227 0%,#f0d060 40%,#c9a227 70%,#e8c340 100%); position:relative; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,.3); }
+    .card-chip::before { content:''; position:absolute; top:50%; left:0; right:0; height:1px; background:rgba(0,0,0,.15); transform:translateY(-50%); }
+    .card-chip::after { content:''; position:absolute; left:50%; top:0; bottom:0; width:1px; background:rgba(0,0,0,.12); transform:translateX(-50%); }
+    .card-chip-inner { position:absolute; inset:4px; border-radius:3px; border:1px solid rgba(0,0,0,.12); background:linear-gradient(135deg,#d4a843 0%,#f0c96e 50%,#d4a843 100%); }
     .card-nfc { color:rgba(255,255,255,.35); font-size:.85rem; }
-
-    /* Numéro */
-    .card-number {
-      font-family:'Share Tech Mono', 'Courier New', monospace;
-      font-size:1.1rem; letter-spacing:.22em;
-      color:rgba(255,255,255,.9);
-      text-shadow:0 1px 3px rgba(0,0,0,.4);
-    }
+    .card-number { font-family:'Share Tech Mono','Courier New',monospace; font-size:1.1rem; letter-spacing:.22em; color:rgba(255,255,255,.9); text-shadow:0 1px 3px rgba(0,0,0,.4); }
     .card-number-censored { color:rgba(255,255,255,.5); letter-spacing:.28em; }
-
-    /* Bas de carte */
     .card-bottom { display:flex; justify-content:space-between; align-items:flex-end; }
     .card-field-label { font-size:.55rem; text-transform:uppercase; letter-spacing:.12em; color:rgba(255,255,255,.35); margin-bottom:.2rem; }
     .card-field-val { font-family:'Share Tech Mono','Courier New',monospace; font-size:.85rem; color:rgba(255,255,255,.88); letter-spacing:.06em; }
     .card-field-val.censored { color:rgba(255,255,255,.35); letter-spacing:.2em; }
-
-    /* Badge sécurisé */
-    .card-secure-badge {
-      display:inline-flex; align-items:center; gap:.4rem;
-      font-size:.72rem; color:rgba(255,255,255,.35);
-      background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1);
-      border-radius:6px; padding:.25rem .6rem; margin-bottom:1rem;
-    }
+    .card-secure-badge { display:inline-flex; align-items:center; gap:.4rem; font-size:.72rem; color:rgba(255,255,255,.35); background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:6px; padding:.25rem .6rem; margin-bottom:1rem; }
     .card-secure-badge i { color:rgba(79,166,149,.8); }
-
-    /* Bouton supprimer */
     .btn-delete-card { width:100%; padding:.68rem; border-radius:10px; background:#fef2f2; border:1.5px solid #fecaca; color:#dc2626; font-weight:600; font-size:.86rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:.5rem; transition:.2s; }
     .btn-delete-card:hover { background:#dc2626; color:#fff; border-color:#dc2626; }
 
@@ -241,7 +170,6 @@
 <body>
 {% include "header.html" %}
 
-<!-- HERO -->
 <div class="ec-hero">
   <div class="container ec-hero-inner">
     <div class="ec-breadcrumb">ML2C CONSEIL &rsaquo; <span>Espace client</span></div>
@@ -254,7 +182,6 @@
 <div class="ec-page">
   <div class="container ec-main">
 
-    <!-- ONGLETS -->
     <div class="ec-tabs-wrap">
       <ul class="ec-tabs">
         <li>
@@ -280,40 +207,21 @@
       </ul>
     </div>
 
-    <!-- PANNEAUX -->
     <div class="ec-panels">
 
-      <!-- ════ PANNEAU DEVIS ════ -->
+      <!-- PANNEAU DEVIS -->
       <div class="ec-panel active" id="panel-devis">
-
         {% if session.devis_data %}
         <div class="devis-card">
           <div class="devis-card-label"><i class="fas fa-file-alt"></i> Devis en cours</div>
           <div class="devis-grid">
-            <div>
-              <div class="devis-field-label">Secteur</div>
-              <div class="devis-field-val">{{ session.devis_data.secteur }}</div>
-            </div>
-            <div>
-              <div class="devis-field-label">Nom / Raison sociale</div>
-              <div class="devis-field-val">{{ session.devis_data.nom }}</div>
-            </div>
-            <div>
-              <div class="devis-field-label">Service</div>
-              <div class="devis-field-val accent">{{ session.devis_data.type_service }}</div>
-            </div>
-            <div>
-              <div class="devis-field-label">Email</div>
-              <div class="devis-field-val">{{ session.devis_data.email }}</div>
-            </div>
+            <div><div class="devis-field-label">Secteur</div><div class="devis-field-val">{{ session.devis_data.secteur }}</div></div>
+            <div><div class="devis-field-label">Nom / Raison sociale</div><div class="devis-field-val">{{ session.devis_data.nom }}</div></div>
+            <div><div class="devis-field-label">Service</div><div class="devis-field-val accent">{{ session.devis_data.type_service }}</div></div>
+            <div><div class="devis-field-label">Email</div><div class="devis-field-val">{{ session.devis_data.email }}</div></div>
           </div>
           {% if session.devis_data.date_rdv %}
-          <div>
-            <span class="rdv-pill">
-              <i class="fas fa-calendar-check"></i>
-              RDV le {{ session.devis_data.date_rdv }} à {{ session.devis_data.heure_rdv }}
-            </span>
-          </div>
+          <div><span class="rdv-pill"><i class="fas fa-calendar-check"></i> RDV le {{ session.devis_data.date_rdv }} à {{ session.devis_data.heure_rdv }}</span></div>
           {% endif %}
         </div>
         {% endif %}
@@ -323,22 +231,10 @@
           <div class="devis-card">
             <div class="devis-card-label"><i class="fas fa-folder-open"></i> Fiche résumé devis</div>
             <div class="devis-grid">
-              <div>
-                <div class="devis-field-label">Nom</div>
-                <div class="devis-field-val">{{ devis.nom }}</div>
-              </div>
-              <div>
-                <div class="devis-field-label">Secteur</div>
-                <div class="devis-field-val">{{ devis.secteur }}</div>
-              </div>
-              <div>
-                <div class="devis-field-label">Service</div>
-                <div class="devis-field-val accent">{{ devis.type_service }}</div>
-              </div>
-              <div>
-                <div class="devis-field-label">Rendez-vous</div>
-                <div class="devis-field-val">{{ devis.date_rdv }} — {{ devis.heure_rdv }}</div>
-              </div>
+              <div><div class="devis-field-label">Nom</div><div class="devis-field-val">{{ devis.nom }}</div></div>
+              <div><div class="devis-field-label">Secteur</div><div class="devis-field-val">{{ devis.secteur }}</div></div>
+              <div><div class="devis-field-label">Service</div><div class="devis-field-val accent">{{ devis.type_service }}</div></div>
+              <div><div class="devis-field-label">Rendez-vous</div><div class="devis-field-val">{{ devis.date_rdv }} — {{ devis.heure_rdv }}</div></div>
             </div>
           </div>
           {% endfor %}
@@ -352,11 +248,8 @@
         </div>
         {% endif %}
 
-        <!-- CTA CRÉER UN DEVIS -->
         <a href="{{ url_for('devis') }}" class="panel-cta">
-          <div class="cta-ico">
-            <i class="fas fa-plus-circle"></i>
-          </div>
+          <div class="cta-ico"><i class="fas fa-plus-circle"></i></div>
           <div class="cta-text">
             <strong>Créer un nouveau devis</strong>
             <span>Remplir une demande de devis personnalisée</span>
@@ -365,9 +258,8 @@
         </a>
       </div>
 
-      <!-- ════ PANNEAU FICHE CLIENT ════ -->
+      <!-- PANNEAU FICHE CLIENT -->
       <div class="ec-panel" id="panel-formulaire">
-
         {% if clients %}
           {% for client in clients %}
           <div class="mb-4">
@@ -379,30 +271,12 @@
               </div>
             </div>
             <div class="fiche-grid">
-              <div class="fiche-item">
-                <div class="fiche-item-label">Activité</div>
-                <div class="fiche-item-val">{{ client.activite }}</div>
-              </div>
-              <div class="fiche-item">
-                <div class="fiche-item-label">Type d'entreprise</div>
-                <div class="fiche-item-val">{{ client.type_entreprise }}</div>
-              </div>
-              <div class="fiche-item">
-                <div class="fiche-item-label">Cabinet</div>
-                <div class="fiche-item-val">{{ client.cabinet }}</div>
-              </div>
-              <div class="fiche-item">
-                <div class="fiche-item-label">Civilité</div>
-                <div class="fiche-item-val">{{ client.civilite }}</div>
-              </div>
-              <div class="fiche-item">
-                <div class="fiche-item-label">Email</div>
-                <div class="fiche-item-val">{{ client.email }}</div>
-              </div>
-              <div class="fiche-item">
-                <div class="fiche-item-label">Adresse du siège</div>
-                <div class="fiche-item-val">{{ client.adresse_siege }}</div>
-              </div>
+              <div class="fiche-item"><div class="fiche-item-label">Activité</div><div class="fiche-item-val">{{ client.activite }}</div></div>
+              <div class="fiche-item"><div class="fiche-item-label">Type d'entreprise</div><div class="fiche-item-val">{{ client.type_entreprise }}</div></div>
+              <div class="fiche-item"><div class="fiche-item-label">Cabinet</div><div class="fiche-item-val">{{ client.cabinet }}</div></div>
+              <div class="fiche-item"><div class="fiche-item-label">Civilité</div><div class="fiche-item-val">{{ client.civilite }}</div></div>
+              <div class="fiche-item"><div class="fiche-item-label">Email</div><div class="fiche-item-val">{{ client.email }}</div></div>
+              <div class="fiche-item"><div class="fiche-item-label">Adresse du siège</div><div class="fiche-item-val">{{ client.adresse_siege }}</div></div>
             </div>
           </div>
           {% endfor %}
@@ -414,11 +288,8 @@
         </div>
         {% endif %}
 
-        <!-- CTA REMPLIR FORMULAIRE -->
         <a href="{{ url_for('formulaire_client') }}" class="panel-cta turq">
-          <div class="cta-ico turq">
-            <i class="fas fa-user-edit"></i>
-          </div>
+          <div class="cta-ico turq"><i class="fas fa-user-edit"></i></div>
           <div class="cta-text">
             <strong>Remplir ma fiche client</strong>
             <span>Compléter ou mettre à jour vos informations</span>
@@ -427,25 +298,20 @@
         </a>
       </div>
 
-      <!-- ════ PANNEAU CARTE BANCAIRE ════ -->
+      <!-- PANNEAU CARTE BANCAIRE -->
       <div class="ec-panel" id="panel-carte">
         <div class="carte-wrap">
 
           {% if session.get('carte_bancaire') %}
-
           <div class="card-secure-badge">
             <i class="fas fa-lock"></i> Données chiffrées &amp; sécurisées
           </div>
-
-          <!-- CARTE RÉALISTE CSS -->
           <div class="credit-card">
             <div class="card-circle-1"></div>
             <div class="card-circle-2"></div>
             <div class="card-circle-3"></div>
             <div class="card-shine"></div>
             <div class="card-inner">
-
-              <!-- Haut : nom banque + réseau -->
               <div class="card-top">
                 <div class="card-bank-name">ML2C PAY</div>
                 <div class="card-network">
@@ -453,20 +319,14 @@
                   <div class="card-network-circle"></div>
                 </div>
               </div>
-
-              <!-- Puce + NFC -->
               <div class="card-chip-row">
                 <div class="card-chip"><div class="card-chip-inner"></div></div>
                 <div class="card-nfc"><i class="fas fa-wifi fa-rotate-90"></i></div>
               </div>
-
-              <!-- Numéro censuré -->
               <div class="card-number">
                 <span class="card-number-censored">•••• •••• ••••</span>
                 &nbsp;{{ session.carte_bancaire.numero[-4:] }}
               </div>
-
-              <!-- Bas : titulaire + expiration + CVV -->
               <div class="card-bottom">
                 <div>
                   <div class="card-field-label">Titulaire</div>
@@ -481,10 +341,8 @@
                   <div class="card-field-val censored">•••</div>
                 </div>
               </div>
-
             </div>
           </div>
-
           <form method="POST" action="{{ url_for('supprimer_carte') }}"
                 onsubmit="return confirm('Souhaitez-vous vraiment supprimer cette carte ?')">
             <button type="submit" class="btn-delete-card">
@@ -500,13 +358,14 @@
           <div class="empty-state">
             <div class="empty-ico"><i class="fas fa-credit-card"></i></div>
             <h5>Aucune carte enregistrée</h5>
-            <p>Ajoutez une carte dans vos paramètres de facturation.</p>
+            <p>Ajoutez une carte de paiement pour simplifier vos règlements.</p>
           </div>
-          <a href="{{ url_for('parametres') }}" class="panel-cta" style="margin-top:.5rem;">
+          <!-- ✅ LIEN CORRIGÉ → paiement -->
+          <a href="{{ url_for('paiement') }}" class="panel-cta" style="margin-top:.5rem;">
             <div class="cta-ico"><i class="fas fa-plus-circle"></i></div>
             <div class="cta-text">
               <strong>Ajouter une carte bancaire</strong>
-              <span>Accéder aux paramètres de facturation</span>
+              <span>Visa, Mastercard ou American Express</span>
             </div>
             <i class="fas fa-arrow-right cta-arrow"></i>
           </a>
@@ -534,13 +393,10 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  // Prénom dans le titre hero
   document.addEventListener('DOMContentLoaded', function() {
     const prenom = "{{ session.get('prenom', 'Utilisateur') }}";
     document.getElementById('welcomeTitle').innerHTML = 'Bonjour,&nbsp;<em>' + prenom + '</em>';
   });
-
-  // Navigation onglets
   document.querySelectorAll('.ec-tab-btn').forEach(btn => {
     btn.addEventListener('click', function() {
       document.querySelectorAll('.ec-tab-btn').forEach(b => b.classList.remove('active'));

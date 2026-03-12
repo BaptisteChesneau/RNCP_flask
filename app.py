@@ -573,33 +573,6 @@ def envoyer_compte():
 
     return redirect(url_for("compte_client"))
 
-
-@app.route("/paiement-stripe", methods=["GET", "POST"])
-def paiement_stripe():
-    if request.method == "POST":
-        # Retrieve fields
-        card_holder_name = request.form.get("card_holder_name")
-        card_number = request.form.get("card_number")
-        card_expiry = request.form.get("card_expiry")
-        card_cvv = request.form.get("card_cvv")
-        # ... Process / Validate / Call the Stripe API ...
-        return "Paiement Stripe effectué (simulation)."
-    return render_template("paiement_stripe.html")
-
-
-@app.route("/paiement-paypal", methods=["GET", "POST"])
-def paiement_paypal():
-    if request.method == "POST":
-        # Retrieve fields
-        card_holder_name = request.form.get("card_holder_name")
-        card_number = request.form.get("card_number")
-        card_expiry = request.form.get("card_expiry")
-        card_cvv = request.form.get("card_cvv")
-        # ... Process / Verify / Call the PayPal API ...
-        return "Paiement PayPal effectué (simulation)."
-    return render_template("paiement_paypal.html")
-
-
 @app.route("/blog")
 def blog():
     return render_template("blog.html")

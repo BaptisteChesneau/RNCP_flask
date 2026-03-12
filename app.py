@@ -938,9 +938,6 @@ def update_photo():
     return redirect(url_for("parametres"))
 
 
-@app.route("/paiement")
-def paiement():
-    return render_template("paiement.html")
 
 
 @app.route("/supprimer-carte", methods=["POST"])

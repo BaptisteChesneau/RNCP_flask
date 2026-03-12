@@ -222,13 +222,17 @@
         <div class="header-actions">
 
           {% if session.get('utilisateur_id') %}
-            <a href="{{ url_for('compte_client') }}" class="btn-compte">
-              <img src="{{ url_for('static', filename='images/avatar.jpg') }}"
-                   alt="Profil"
-                   class="rounded-circle"
-                   style="width:32px;height:32px;object-fit:cover;margin-right:.4rem;">
-              {{ session.get('prenom', 'Mon Espace') }}
-            </a>
+            <a href="{{ url_for('compte_client') }}" class="btn-compte" style="position:relative;">
+              <span style="position:relative;display:inline-block;margin-right:.4rem;">
+                <img src="{{ url_for('static', filename='images/avatar.jpg') }}"
+                    alt="Profil"
+                    class="rounded-circle"
+                    style="width:32px;height:32px;object-fit:cover;">
+                <span style="position:absolute;bottom:1px;right:1px;width:9px;height:9px;background:#4ade80;border-radius:50%;border:2px solid #fff;"></span>
+              </span>
+            {{ session.get('prenom', 'Mon Espace') }}
+          </a>
+          
           {% else %}
             <button class="btn-compte" data-toggle="modal" data-target="#accountModal">
               <i class="fas fa-user"></i> Compte

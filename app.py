@@ -521,6 +521,19 @@ def resume_devis():
         heure_rdv=heure_rdv,
     )
 
+@app.route('/sauvegarder-devis', methods=['POST'])
+def sauvegarder_devis():
+    # Vérifier si ce devis existe déjà avant d'insérer
+    existing = db.session.query(Devis).filter_by(
+        email=request.form.get('user_email'),
+        date_rdv=request.form.get('date_rdv'),
+        heure_rdv=request.form.get('heure_rdv')
+    ).first()
+    if not existing:
+        # insérer seulement si pas de doublon
+        ...
+    return redirect(url_for('compte_client'))
+
 @app.route("/paiement")
 def paiement():
     if 'utilisateur_id' not in session:

@@ -214,6 +214,11 @@
       }, delay);
     }
 
+    function quickSend(txt) {
+      document.getElementById('cwInput').value = txt;
+      sendMsg();
+    }
+
     // Badge apparaît après 4s
     setTimeout(() => {
       const n = document.getElementById('chatNotif');

@@ -3,12 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>ML2C CONSEIL - Footer</title>
-
-  <!-- Bootstrap -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <!-- CSS ML2C -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
@@ -18,7 +14,7 @@
   ══════════════════════════════════════════ -->
   <button class="chatbot-fab" id="chatFab" onclick="toggleChat()" aria-label="Parler à un conseiller">
     <div class="fab-avatar icon-open">
-      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2" alt="Conseiller ML2C">
+      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy&eyebrows=default" alt="Conseiller ML2C">
     </div>
     <i class="fas fa-times icon-close"></i>
     <span class="chatbot-notif" id="chatNotif">1</span>
@@ -28,7 +24,7 @@
   <div class="chatbot-widget" id="chatWidget">
     <div class="cw-header">
       <div class="cw-avatar-human">
-        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2" alt="Conseiller ML2C">
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy&eyebrows=default" alt="Conseiller ML2C">
       </div>
       <div>
         <span class="cw-name">Conseiller ML2C</span>
@@ -39,7 +35,7 @@
     <div class="cw-body" id="cwBody">
       <div class="cw-msg bot">
         <div class="cw-msg-av-human">
-          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2" alt="Conseiller">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy&eyebrows=default" alt="Conseiller">
         </div>
         <div class="cw-bubble">Bonjour 👋 Je suis votre conseiller <strong>ML2C CONSEIL</strong>.<br>Comment puis-je vous aider ?</div>
       </div>
@@ -88,10 +84,10 @@
         <div class="footer-col">
           <h4 class="footer-col-title">Le Cabinet</h4>
           <ul class="footer-links">
-            <li><a href="#">Notre histoire</a></li>
-            <li><a href="#">Notre équipe</a></li>
-            <li><a href="#">Nos engagements</a></li>
-            <li><a href="#">Notre vision</a></li>
+            <li><a href="{{ url_for('notre_histoire') }}">Notre histoire</a></li>
+            <li><a href="{{ url_for('notre_equipe') }}">Notre équipe</a></li>
+            <li><a href="{{ url_for('nos_engagements') }}">Nos engagements</a></li>
+            <li><a href="{{ url_for('notre_vision') }}">Notre vision</a></li>
           </ul>
         </div>
 
@@ -99,11 +95,11 @@
         <div class="footer-col">
           <h4 class="footer-col-title">Nos Services</h4>
           <ul class="footer-links">
-            <li><a href="#">Tenue comptable</a></li>
-            <li><a href="#">Paie & gestion sociale</a></li>
-            <li><a href="#">Conseil juridique</a></li>
-            <li><a href="#">Optimisation fiscale</a></li>
-            <li><a href="#">Création d'entreprise</a></li>
+            <li><a href="{{ url_for('tenue_comptable') }}">Tenue comptable</a></li>
+            <li><a href="{{ url_for('paie_gestion') }}">Paie & gestion sociale</a></li>
+            <li><a href="{{ url_for('juridique_courant') }}">Conseil juridique</a></li>
+            <li><a href="{{ url_for('declarations_fiscales') }}">Optimisation fiscale</a></li>
+            <li><a href="{{ url_for('creation_reprise') }}">Création d'entreprise</a></li>
           </ul>
         </div>
 
@@ -188,7 +184,7 @@
       const div = document.createElement('div');
       div.className = `cw-msg ${role}`;
       div.innerHTML = role === 'bot'
-        ? `<div class="cw-msg-av-human"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2" alt="Conseiller"></div><div class="cw-bubble">${html}</div>`
+        ? `<div class="cw-msg-av-human"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy&eyebrows=default" alt="Conseiller"></div><div class="cw-bubble">${html}</div>`
         : `<div class="cw-msg-av"><i class="fas fa-user"></i></div><div class="cw-bubble">${html}</div>`;
       body.appendChild(div);
       body.scrollTop = body.scrollHeight;

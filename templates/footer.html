@@ -159,14 +159,19 @@
 
     // ── Réponses chatbot ──
     const REPLIES = {
-      services: { kw:['service','comptab','fiscal','paie','social','juridique','conseil','ia','bilan'], r:`Nous proposons :<br>📊 <b>Comptabilité & Fiscalité</b><br>👥 <b>Paie & Social</b><br>⚖️ <b>Juridique & Création</b><br>🤖 <b>Conseil & IA</b><br><br>Quel service vous intéresse ?` },
-      contact:  { kw:['contact','joindre','appel','téléphone','email','adresse','où'], r:`📞 <a href="tel:+33672343294" style="color:#C1007A">+33 (0)6 72 34 32 94</a><br>✉️ <a href="mailto:contact@ml2cconseil.com" style="color:#C1007A">contact@ml2cconseil.com</a><br>📍 6 Rue de la Vigne, 28360 Dammarie<br><br>Réponse garantie sous <b>24h</b> !` },
-      devis:    { kw:['devis','tarif','prix','coût','gratuit'], r:`Notre devis est <b>100% gratuit</b> 🎉<br>Remplissez le formulaire de contact ou appelez-nous. Nous vous rappelons sous 24h.` },
-      rdv:      { kw:['rendez','rdv','réunion','rencontre','disponible','agenda'], r:`Pour prendre RDV :<br>📞 <a href="tel:+33672343294" style="color:#C1007A">+33 (0)6 72 34 32 94</a><br>✉️ <a href="mailto:contact@ml2cconseil.com" style="color:#C1007A">contact@ml2cconseil.com</a>` },
-      bonjour:  { kw:['bonjour','salut','hello','bonsoir','coucou'], r:`Bonjour ! 😊 Ravi de vous accueillir chez <b>ML2C CONSEIL</b>. Comment puis-je vous aider ?` },
-      merci:    { kw:['merci','parfait','super','génial','top'], r:`Avec plaisir ! 😊 L'équipe ML2C est toujours là pour vous.` },
-      histoire: { kw:['histoire','cabinet','qui','depuis','expérience'], r:`<b>ML2C CONSEIL</b> accompagne depuis +15 ans les TPE et PME. +150 clients nous font confiance.` },
-      default:  { r:`Je ne suis pas sûr de comprendre 🤔<br>Je peux vous aider sur nos <b>services</b>, coordonnées ou un <b>devis gratuit</b>.<br>📞 <a href="tel:+33672343294" style="color:#C1007A">+33 (0)6 72 34 32 94</a>` }
+      services:     { kw:['service','comptab','fiscal','paie','social','juridique','conseil','ia','bilan','tva','liasse','bulletin'], r:`Nous proposons :<br>📊 <b>Comptabilité & Fiscalité</b> — tenue, bilans, TVA<br>👥 <b>Paie & Social</b> — bulletins, DSN, droit du travail<br>⚖️ <b>Juridique & Création</b> — statuts, cessions, AG<br>🤖 <b>Conseil & IA</b> — optimisation fiscale, tableaux de bord<br><br>Quel service vous intéresse ?` },
+      contact:      { kw:['contact','joindre','appel','téléphone','email','adresse','où','localisation'], r:`📞 <a href="tel:+33672343294" style="color:#C1007A">+33 (0)6 72 34 32 94</a><br>✉️ <a href="mailto:contact@ml2cconseil.com" style="color:#C1007A">contact@ml2cconseil.com</a><br>📍 6 Rue de la Vigne, 28360 Dammarie<br><br>Réponse garantie sous <b>24h</b> !` },
+      devis:        { kw:['devis','tarif','prix','coût','gratuit','combien'], r:`Notre devis est <b>100% gratuit</b> 🎉<br>Remplissez le formulaire de contact ou appelez-nous directement.<br>📞 <a href="tel:+33672343294" style="color:#C1007A">+33 (0)6 72 34 32 94</a><br>Nous vous rappelons sous <b>24h</b>.` },
+      rdv:          { kw:['rendez','rdv','réunion','rencontre','disponible','agenda','prendre rdv'], r:`Pour prendre RDV :<br>📞 <a href="tel:+33672343294" style="color:#C1007A">+33 (0)6 72 34 32 94</a><br>✉️ <a href="mailto:contact@ml2cconseil.com" style="color:#C1007A">contact@ml2cconseil.com</a><br><br>Nous sommes disponibles du <b>lundi au vendredi</b>.` },
+      bonjour:      { kw:['bonjour','salut','hello','bonsoir','coucou','bjr'], r:`Bonjour ! 😊 Ravi de vous accueillir chez <b>ML2C CONSEIL</b>.<br>Je peux vous renseigner sur nos services, tarifs ou prendre un RDV. Comment puis-je vous aider ?` },
+      merci:        { kw:['merci','parfait','super','génial','top','nickel','excellent'], r:`Avec plaisir ! 😊 L'équipe ML2C est toujours disponible pour vous accompagner. N'hésitez pas à revenir !` },
+      histoire:     { kw:['histoire','cabinet','qui','depuis','expérience','fondé','equipe'], r:`<b>ML2C CONSEIL</b> accompagne les TPE et PME depuis <b>+15 ans</b>.<br>+150 clients nous font confiance pour leur comptabilité, fiscalité et conseils stratégiques.<br><br>👉 <a href="/notre-histoire" style="color:#C1007A">En savoir plus</a>` },
+      comptabilite: { kw:['comptabilite','saisie','lettrage','révision','bilan annuel','liasse'], r:`Notre service comptabilité comprend :<br>✅ Tenue complète & révision<br>✅ Bilans & comptes de résultat<br>✅ Déclarations TVA, IS, BIC/BNC<br>✅ Tableaux de bord personnalisés<br><br>📞 <a href="tel:+33672343294" style="color:#C1007A">Nous appeler</a>` },
+      paie:         { kw:['paie','bulletin','salaire','dsn','rh','embauche','salarié'], r:`Notre service paie & social :<br>✅ Bulletins de salaire<br>✅ DSN & déclarations sociales<br>✅ Gestion entrées/sorties du personnel<br>✅ Conseil en droit du travail<br><br>📞 <a href="tel:+33672343294" style="color:#C1007A">Nous appeler</a>` },
+      juridique:    { kw:['juridique','statut','création','sas','sarl','immatriculation','cession','fusion'], r:`Notre service juridique :<br>✅ Création & immatriculation<br>✅ Rédaction de statuts<br>✅ Cession, fusion, transmission<br>✅ Secrétariat juridique annuel<br><br>📞 <a href="tel:+33672343294" style="color:#C1007A">Nous appeler</a>` },
+      horaires:     { kw:['horaire','ouvert','ferme','heure','disponible','quand'], r:`Nous sommes disponibles :<br>🕗 <b>Lundi — Vendredi</b> : 9h00 — 18h00<br>📞 <a href="tel:+33672343294" style="color:#C1007A">+33 (0)6 72 34 32 94</a><br>✉️ <a href="mailto:contact@ml2cconseil.com" style="color:#C1007A">contact@ml2cconseil.com</a>` },
+      localisation: { kw:['dammarie','eure','loir','région','secteur','zone','deplacement'], r:`Notre cabinet est situé au :<br>📍 <b>6 Rue de la Vigne, 28360 Dammarie</b><br><br>Nous intervenons en Eure-et-Loir et en région Centre-Val de Loire.` },
+      default:      { r:`Je ne suis pas sûr de comprendre 🤔<br>Je peux vous aider sur nos <b>services</b>, <b>tarifs</b>, <b>horaires</b> ou pour prendre <b>RDV</b>.<br><br>📞 <a href="tel:+33672343294" style="color:#C1007A">+33 (0)6 72 34 32 94</a>` }
     };
 
     function getReply(txt) {
@@ -194,19 +199,19 @@
       const txt = inp.value.trim();
       if (!txt) return;
       inp.value = '';
+      inp.disabled = true;
       const q = document.getElementById('cwQuick');
-      if (q) q.remove();
+      if (q) q.style.display = 'none';
       addMsg(txt, 'user');
-      document.getElementById('cwTyping').classList.add('show');
+      const typing = document.getElementById('cwTyping');
+      typing.classList.add('show');
+      const delay = 900 + Math.random() * 700;
       setTimeout(() => {
-        document.getElementById('cwTyping').classList.remove('show');
+        typing.classList.remove('show');
         addMsg(getReply(txt), 'bot');
-      }, 800 + Math.random() * 600);
-    }
-
-    function quickSend(txt) {
-      document.getElementById('cwInput').value = txt;
-      sendMsg();
+        inp.disabled = false;
+        inp.focus();
+      }, delay);
     }
 
     // Badge apparaît après 4s
@@ -214,6 +219,16 @@
       const n = document.getElementById('chatNotif');
       if (n) n.classList.remove('hide');
     }, 4000);
+
+    // Message de relance après 12s si pas d'interaction
+    setTimeout(() => {
+      const widget = document.getElementById('chatWidget');
+      if (!widget.classList.contains('is-open')) {
+        const n = document.getElementById('chatNotif');
+        if (n) { n.textContent = '1'; n.classList.remove('hide'); }
+      }
+    }, 12000);
+
   </script>
 
 </body>

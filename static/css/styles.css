@@ -1653,40 +1653,59 @@ a.contact-item:hover { color: var(--rose); }
 /* ════════════════════════════════════════════════
    ILLUSTRATIONS CSS SERVICES
 ════════════════════════════════════════════════ */
-  .svc-img-box {
-    border-radius: 16px;
-    overflow: hidden;
-    background: linear-gradient(135deg, #1e2729 0%, #2d3436 100%);
-    min-height: 260px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-  }
+.svc-img-box {
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f1e20 0%, #1a2e32 50%, #0d1a2e 100%);
+  min-height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
 
-  /* COMPTABILITÉ — barres animées */
-  .svc-illus-compta {
-    display: flex;
-    gap: .6rem;
-    padding: 1.5rem;
-    align-items: flex-end;
-    min-height: 320px;
-  }
-  .illus-bar {
-    flex: 1;
-    border-radius: 6px 6px 0 0;
-    background: linear-gradient(180deg, #C1007A, #4FA695);
-    animation: barGrow .8s ease both;
-    transform-origin: bottom;
-  }
-  @keyframes barGrow { from{transform:scaleY(0)} to{transform:scaleY(1)} }
-  .illus-line {
-    position: absolute;
-    bottom: 1.5rem; left: 1rem; right: 1rem;
-    height: 2px;
-    background: rgba(255,255,255,.15);
-    border-radius: 2px;
-  }
+/* COMPTABILITÉ — barres animées */
+.svc-illus-compta {
+  display: flex;
+  gap: .6rem;
+  padding: 1.5rem;
+  align-items: flex-end;
+  min-height: 320px;
+}
+.illus-bar {
+  flex: 1;
+  border-radius: 6px 6px 0 0;
+  animation: barGrow .8s ease both, barShimmer 3s ease-in-out infinite;
+  transform-origin: bottom;
+}
+.illus-bar:nth-child(1) { background: linear-gradient(180deg, #f472b6, #C1007A); animation-delay: 0s, .2s; }
+.illus-bar:nth-child(2) { background: linear-gradient(180deg, #5eead4, #4FA695); animation-delay: .15s, .5s; }
+.illus-bar:nth-child(3) { background: linear-gradient(180deg, #f472b6, #9a0062); animation-delay: .3s, .1s; }
+.illus-bar:nth-child(4) { background: linear-gradient(180deg, #5eead4, #3a7d70); animation-delay: .45s, .7s; }
+.illus-bar:nth-child(5) { background: linear-gradient(180deg, #f9a8d4, #C1007A); animation-delay: .6s, .3s; }
+.illus-bar:nth-child(6) { background: linear-gradient(180deg, #99f6e4, #4FA695); animation-delay: .75s, .9s; }
+
+@keyframes barGrow {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+@keyframes barShimmer {
+  0%, 100% { filter: brightness(1); }
+  50%       { filter: brightness(1.35); }
+}
+
+.illus-line {
+  position: absolute;
+  bottom: 1.5rem; left: 1rem; right: 1rem;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
+  border-radius: 2px;
+  animation: lineGlow 2.5s ease-in-out infinite;
+}
+@keyframes lineGlow {
+  0%, 100% { opacity: .4; }
+  50%       { opacity: 1; box-shadow: 0 0 8px rgba(255,255,255,.3); }
+}
 
   /* SOCIAL — silhouettes */
   .svc-illus-social { gap: 1.5rem; }

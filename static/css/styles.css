@@ -1795,3 +1795,17 @@ a.contact-item:hover { color: var(--rose); }
     animation: dashMove 2s linear infinite;
   }
   @keyframes dashMove { to{stroke-dashoffset:-18} }
+
+  /* footer */  
+  .footer-social-img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: .75;
+    transition: .2s;
+  }
+  .footer-socials a:hover .footer-social-img {
+    opacity: 1;
+    filter: brightness(0) invert(1) drop-shadow(0 0 4px rgba(255,255,255,.4));
+  }

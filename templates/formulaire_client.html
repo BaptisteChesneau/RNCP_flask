@@ -1,166 +1,453 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Formulaire Client - ML2C CONSEIL</title>
-  <!-- Bootstrap CSS (CDN) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fiche Client - ML2C CONSEIL</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
-  <!-- Your custom CSS file if needed -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    :root {
+      --rose:#C1007A; --rose-dark:#9a0062; --rose-light:#fce4f3;
+      --turq:#4FA695; --turq-dark:#3a7d70; --turq-light:#d4f0ec;
+      --gris:#5C666B; --gris-dark:#2d3436; --border:#e5e7eb;
+      --text:#2d2d2d; --muted:#6b7280;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { background: #f0f2f5; font-family: 'DM Sans', sans-serif; }
+
+    /* ── HERO ── */
+    .fc-hero {
+      background: linear-gradient(135deg, #1e2729 0%, #2d3436 55%, #1a3333 100%);
+      padding: 2.25rem 0 3.25rem; position: relative; overflow: hidden; margin-bottom: -2rem;
+    }
+    .fc-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 75% 40%, rgba(79,166,149,.16) 0%, transparent 55%),
+                  radial-gradient(ellipse at 10% 85%, rgba(193,0,122,.12) 0%, transparent 45%);
+    }
+    .fc-hero-inner { position: relative; z-index: 1; }
+    .fc-breadcrumb { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: .6rem; }
+    .fc-breadcrumb a { color: rgba(255,255,255,.35); text-decoration: none; transition: .2s; }
+    .fc-breadcrumb a:hover { color: var(--turq); }
+    .fc-breadcrumb span { color: var(--turq); }
+    .fc-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 4vw, 2.7rem); font-weight: 700; color: #fff; line-height: 1.1; margin-bottom: .4rem; }
+    .fc-title em { color: #5eead4; font-style: italic; }
+    .fc-sub { font-size: .86rem; color: rgba(255,255,255,.45); margin: 0; }
+
+    /* ── PAGE ── */
+    .fc-page { padding: 2.5rem 0 4rem; }
+
+    /* ── CARD PRINCIPALE ── */
+    .fc-card {
+      background: #fff; border-radius: 20px;
+      box-shadow: 0 8px 40px rgba(0,0,0,.08);
+      overflow: hidden;
+    }
+
+    /* ── STEPPER ── */
+    .fc-stepper {
+      display: flex; align-items: center;
+      padding: 1.5rem 2rem; border-bottom: 1px solid var(--border);
+      gap: 0; background: #fafbfc;
+    }
+    .fc-step {
+      display: flex; align-items: center; gap: .6rem; flex: 1;
+      position: relative;
+    }
+    .fc-step:not(:last-child)::after {
+      content: ''; position: absolute; left: calc(100% - 1rem); top: 50%;
+      transform: translateY(-50%); width: calc(100% - 2rem);
+      height: 2px; background: var(--border); z-index: 0;
+    }
+    .fc-step.done:not(:last-child)::after { background: var(--turq); }
+    .step-num {
+      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .8rem; font-weight: 700; border: 2px solid var(--border);
+      background: #fff; color: var(--muted); z-index: 1; transition: .3s;
+    }
+    .fc-step.active .step-num { border-color: var(--rose); background: var(--rose); color: #fff; }
+    .fc-step.done .step-num { border-color: var(--turq); background: var(--turq); color: #fff; }
+    .step-label { font-size: .78rem; font-weight: 600; color: var(--muted); white-space: nowrap; }
+    .fc-step.active .step-label { color: var(--rose); }
+    .fc-step.done .step-label { color: var(--turq); }
+
+    /* ── BODY FORMULAIRE ── */
+    .fc-body { padding: 2rem 2.5rem 2.5rem; }
+
+    /* ── ÉTAPES ── */
+    .fc-step-panel { display: none; animation: stepIn .3s ease; }
+    .fc-step-panel.active { display: block; }
+    @keyframes stepIn { from{opacity:0;transform:translateX(14px)} to{opacity:1;transform:translateX(0)} }
+
+    .step-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 700;
+      color: var(--gris-dark); margin-bottom: .25rem;
+    }
+    .step-desc { font-size: .84rem; color: var(--muted); margin-bottom: 1.75rem; }
+
+    /* ── CHAMPS ── */
+    .fc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 1.25rem; }
+    .fc-grid.full { grid-template-columns: 1fr; }
+    .fc-field { display: flex; flex-direction: column; gap: .35rem; }
+    .fc-field.span2 { grid-column: span 2; }
+
+    .fc-label {
+      font-size: .72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .08em; color: var(--muted);
+    }
+    .fc-label span { color: var(--rose); margin-left: 2px; }
+
+    .fc-input, .fc-select, .fc-textarea {
+      padding: .7rem 1rem; border: 1.5px solid var(--border); border-radius: 10px;
+      font-size: .92rem; font-family: 'DM Sans', sans-serif; color: var(--text);
+      background: #fafbfc; transition: .2s; outline: none; width: 100%;
+    }
+    .fc-input:focus, .fc-select:focus, .fc-textarea:focus {
+      border-color: var(--rose); background: #fff;
+      box-shadow: 0 0 0 3px rgba(193,0,122,.08);
+    }
+    .fc-input.valid { border-color: var(--turq); }
+    .fc-textarea { resize: vertical; min-height: 90px; }
+
+    /* ── CIVILITÉ TOGGLE ── */
+    .civ-toggle { display: flex; gap: .5rem; }
+    .civ-btn {
+      flex: 1; padding: .65rem; border-radius: 10px; border: 1.5px solid var(--border);
+      background: #fafbfc; font-size: .88rem; font-weight: 600; color: var(--muted);
+      cursor: pointer; transition: .2s; text-align: center;
+    }
+    .civ-btn.active { border-color: var(--rose); background: var(--rose-light); color: var(--rose); }
+    .civ-hidden { display: none; }
+
+    /* ── TYPE ENTREPRISE CARDS ── */
+    .type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .65rem; margin-top: .25rem; }
+    .type-card {
+      padding: .75rem; border-radius: 10px; border: 1.5px solid var(--border);
+      background: #fafbfc; text-align: center; cursor: pointer; transition: .2s;
+    }
+    .type-card:hover { border-color: var(--rose); background: var(--rose-light); }
+    .type-card.active { border-color: var(--rose); background: var(--rose-light); }
+    .type-card-icon { font-size: 1.2rem; margin-bottom: .3rem; }
+    .type-card-label { font-size: .78rem; font-weight: 700; color: var(--text); }
+    .type-card.active .type-card-label { color: var(--rose); }
+    .type-hidden { display: none; }
+
+    /* ── NAVIGATION ── */
+    .fc-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .btn-fc-prev {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .65rem 1.25rem; border-radius: 9px; background: #f0f2f5;
+      color: var(--gris); font-weight: 600; font-size: .88rem; border: none;
+      cursor: pointer; transition: .2s;
+    }
+    .btn-fc-prev:hover { background: var(--border); color: var(--text); }
+    .btn-fc-next {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .65rem 1.4rem; border-radius: 9px; background: var(--rose);
+      color: #fff; font-weight: 600; font-size: .88rem; border: none;
+      cursor: pointer; transition: .2s;
+    }
+    .btn-fc-next:hover { background: var(--rose-dark); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(193,0,122,.3); }
+    .btn-fc-submit {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .65rem 1.6rem; border-radius: 9px; background: var(--turq);
+      color: #fff; font-weight: 700; font-size: .88rem; border: none;
+      cursor: pointer; transition: .2s;
+    }
+    .btn-fc-submit:hover { background: var(--turq-dark); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(79,166,149,.3); }
+
+    /* ── RÉCAP ── */
+    .recap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; }
+    .recap-item { background: #f8f9fb; border-radius: 10px; padding: .75rem 1rem; border-left: 3px solid var(--border); }
+    .recap-item.highlight { border-left-color: var(--turq); background: var(--turq-light); }
+    .recap-label { font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: .18rem; }
+    .recap-val { font-size: .9rem; font-weight: 600; color: var(--text); }
+
+    /* ── SUCCÈS ── */
+    .fc-success { display: none; text-align: center; padding: 3rem 2rem; }
+    .fc-success.show { display: block; animation: successIn .4s ease; }
+    @keyframes successIn { from{opacity:0;transform:scale(.95)} to{opacity:1;transform:scale(1)} }
+    .success-ico { width: 72px; height: 72px; border-radius: 50%; background: var(--turq-light); margin: 0 auto 1.25rem; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: var(--turq); }
+    .success-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 700; color: var(--gris-dark); margin-bottom: .5rem; }
+    .success-sub { font-size: .9rem; color: var(--muted); margin-bottom: 1.75rem; }
+
+    @media(max-width: 640px) {
+      .fc-body { padding: 1.5rem 1rem; }
+      .fc-grid { grid-template-columns: 1fr; }
+      .fc-field.span2 { grid-column: span 1; }
+      .type-grid { grid-template-columns: repeat(2, 1fr); }
+      .recap-grid { grid-template-columns: 1fr; }
+      .fc-stepper { padding: 1rem; gap: .5rem; }
+      .step-label { display: none; }
+    }
+  </style>
 </head>
 <body>
+{% include "header.html" %}
 
-  {% include "header.html" %}
-
-  <div class="container my-4">
-    <h2>Formulaire de création de fiche client</h2>
-
-    <!-- Form: POST to /formulaire_client -->
-    <form action="{{ url_for('formulaire_client') }}" method="POST" class="mt-4">
-
-      <!-- Nature de l'activité -->
-      <div class="form-group">
-        <label for="activite">Nature de l'activité</label>
-        <input
-          type="text"
-          class="form-control"
-          id="activite"
-          name="activite"
-          placeholder="Ex: Conseil, Vente, Artisanat..."
-          required
-        >
-      </div>
-
-      <!-- Type d'entreprise -->
-      <div class="form-group">
-        <label for="type_entreprise">Type d'entreprise</label>
-        <select
-          class="form-control"
-          id="type_entreprise"
-          name="type_entreprise"
-          required
-        >
-          <option value="">-- Sélectionnez un type --</option>
-          <option value="SAS">SAS</option>
-          <option value="SARL">SARL</option>
-          <option value="Auto-entrepreneur">Auto-entrepreneur</option>
-          <option value="Association">Association</option>
-          <option value="Autre">Autre</option>
-        </select>
-      </div>
-
-      <!-- Nom du cabinet -->
-      <div class="form-group">
-        <label for="cabinet">Nom du cabinet</label>
-        <input
-          type="text"
-          class="form-control"
-          id="cabinet"
-          name="cabinet"
-          placeholder="Ex: Cabinet Dupont"
-          required
-        >
-      </div>
-
-      <!-- Civilité -->
-      <div class="form-group">
-        <label>Civilité :</label>
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="civilite"
-            id="monsieur"
-            value="Monsieur"
-            required
-          >
-          <label class="form-check-label" for="monsieur">
-            M.
-          </label>
-        </div>
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="civilite"
-            id="madame"
-            value="Madame"
-          >
-          <label class="form-check-label" for="madame">
-            Mme
-          </label>
-        </div>
-      </div>
-
-      <!-- Nom et prénom -->
-      <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="nom">Nom</label>
-          <input
-            type="text"
-            class="form-control"
-            id="nom"
-            name="nom"
-            placeholder="Ex: Durand"
-            required
-          >
-        </div>
-        <div class="form-group col-md-6">
-          <label for="prenom">Prénom</label>
-          <input
-            type="text"
-            class="form-control"
-            id="prenom"
-            name="prenom"
-            placeholder="Ex: Marie"
-            required
-          >
-        </div>
-      </div>
-
-      <!-- Adresse e-mail -->
-      <div class="form-group">
-        <label for="email">Adresse e-mail</label>
-        <input
-          type="email"
-          class="form-control"
-          id="email"
-          name="email"
-          placeholder="exemple@domaine.com"
-          required
-        >
-      </div>
-
-      <!-- Adresse du siège social -->
-      <div class="form-group">
-        <label for="adresse_siege">Adresse du siège social</label>
-        <input
-          type="text"
-          class="form-control"
-          id="adresse_siege"
-          name="adresse_siege"
-          placeholder="Ex: 123 Rue de l'Entreprise, 75000 Paris"
-          required
-        >
-      </div>
-
-      <!-- Submission buttons aligned: "Envoyer" and "Envoyer vers le compte" -->
-      <div class="d-flex justify-content-start mt-4">
-        <button type="submit" class="btn btn-primary">Envoyer</button>
-        <a href="{{ url_for('compte_client') }}" class="btn btn-primary ml-2">Envoyer vers le compte</a>
-      </div>
-    </form>
+<!-- HERO -->
+<div class="fc-hero">
+  <div class="container fc-hero-inner">
+    <div class="fc-breadcrumb">
+      <a href="{{ url_for('compte_client') }}">Espace client</a> &rsaquo; <span>Fiche client</span>
+    </div>
+    <h1 class="fc-title">Ma fiche <em>client</em></h1>
+    <p class="fc-sub">Complétez vos informations pour personnaliser votre accompagnement.</p>
   </div>
+</div>
 
-  <!-- Bouton Retour au menu -->
-  <div class="text-center mt-4">
-    <a href="{{ url_for('menu') }}" class="btn btn-secondary">Retour au menu</a>
+<div class="fc-page">
+  <div class="container" style="max-width:760px;">
+
+    <div class="fc-card">
+
+      <!-- STEPPER -->
+      <div class="fc-stepper">
+        <div class="fc-step active" id="step-indicator-1">
+          <div class="step-num">1</div>
+          <span class="step-label">Entreprise</span>
+        </div>
+        <div class="fc-step" id="step-indicator-2">
+          <div class="step-num">2</div>
+          <span class="step-label">Contact</span>
+        </div>
+        <div class="fc-step" id="step-indicator-3">
+          <div class="step-num">3</div>
+          <span class="step-label">Récapitulatif</span>
+        </div>
+      </div>
+
+      <!-- FORMULAIRE -->
+      <form action="{{ url_for('formulaire_client') }}" method="POST" id="ficheForm">
+
+        <div class="fc-body">
+
+          <!-- ── ÉTAPE 1 : Entreprise ── -->
+          <div class="fc-step-panel active" id="panel-1">
+            <div class="step-title">Votre entreprise</div>
+            <div class="step-desc">Renseignez les informations sur votre structure.</div>
+
+            <div class="fc-grid">
+
+              <div class="fc-field span2">
+                <label class="fc-label">Type d'entreprise <span>*</span></label>
+                <div class="type-grid">
+                  <div class="type-card" data-val="SAS" onclick="selectType(this)">
+                    <div class="type-card-icon">🏢</div>
+                    <div class="type-card-label">SAS</div>
+                  </div>
+                  <div class="type-card" data-val="SARL" onclick="selectType(this)">
+                    <div class="type-card-icon">🏗️</div>
+                    <div class="type-card-label">SARL</div>
+                  </div>
+                  <div class="type-card" data-val="Auto-entrepreneur" onclick="selectType(this)">
+                    <div class="type-card-icon">👤</div>
+                    <div class="type-card-label">Auto-entrepreneur</div>
+                  </div>
+                  <div class="type-card" data-val="Association" onclick="selectType(this)">
+                    <div class="type-card-icon">🤝</div>
+                    <div class="type-card-label">Association</div>
+                  </div>
+                  <div class="type-card" data-val="EURL" onclick="selectType(this)">
+                    <div class="type-card-icon">📋</div>
+                    <div class="type-card-label">EURL</div>
+                  </div>
+                  <div class="type-card" data-val="Autre" onclick="selectType(this)">
+                    <div class="type-card-icon">➕</div>
+                    <div class="type-card-label">Autre</div>
+                  </div>
+                </div>
+                <input type="hidden" name="type_entreprise" id="type_entreprise" required>
+              </div>
+
+              <div class="fc-field span2">
+                <label class="fc-label" for="activite">Nature de l'activité <span>*</span></label>
+                <input type="text" class="fc-input" id="activite" name="activite" placeholder="Ex : Conseil, Vente, Artisanat, BTP…" required>
+              </div>
+
+              <div class="fc-field span2">
+                <label class="fc-label" for="cabinet">Nom du cabinet / société <span>*</span></label>
+                <input type="text" class="fc-input" id="cabinet" name="cabinet" placeholder="Ex : Cabinet Dupont" required>
+              </div>
+
+              <div class="fc-field span2">
+                <label class="fc-label" for="adresse_siege">Adresse du siège social <span>*</span></label>
+                <input type="text" class="fc-input" id="adresse_siege" name="adresse_siege" placeholder="Ex : 6 Rue de la Vigne, 28360 Dammarie" required>
+              </div>
+
+            </div>
+
+            <div class="fc-nav">
+              <a href="{{ url_for('compte_client') }}" class="btn-fc-prev">
+                <i class="fas fa-arrow-left"></i> Retour
+              </a>
+              <button type="button" class="btn-fc-next" onclick="goStep(2)">
+                Suivant <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- ── ÉTAPE 2 : Contact ── -->
+          <div class="fc-step-panel" id="panel-2">
+            <div class="step-title">Vos coordonnées</div>
+            <div class="step-desc">Informations personnelles du responsable du dossier.</div>
+
+            <div class="fc-grid">
+
+              <div class="fc-field span2">
+                <label class="fc-label">Civilité <span>*</span></label>
+                <div class="civ-toggle">
+                  <div class="civ-btn" data-val="Monsieur" onclick="selectCiv(this)">👔 M.</div>
+                  <div class="civ-btn" data-val="Madame" onclick="selectCiv(this)">👩 Mme</div>
+                </div>
+                <input type="hidden" name="civilite" id="civilite" required>
+              </div>
+
+              <div class="fc-field">
+                <label class="fc-label" for="prenom">Prénom <span>*</span></label>
+                <input type="text" class="fc-input" id="prenom" name="prenom" placeholder="Marie" required>
+              </div>
+
+              <div class="fc-field">
+                <label class="fc-label" for="nom">Nom <span>*</span></label>
+                <input type="text" class="fc-input" id="nom" name="nom" placeholder="Dupont" required>
+              </div>
+
+              <div class="fc-field span2">
+                <label class="fc-label" for="email">Adresse e-mail <span>*</span></label>
+                <input type="email" class="fc-input" id="email" name="email" placeholder="exemple@domaine.com" required>
+              </div>
+
+            </div>
+
+            <div class="fc-nav">
+              <button type="button" class="btn-fc-prev" onclick="goStep(1)">
+                <i class="fas fa-arrow-left"></i> Précédent
+              </button>
+              <button type="button" class="btn-fc-next" onclick="goStep(3)">
+                Vérifier <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- ── ÉTAPE 3 : Récap ── -->
+          <div class="fc-step-panel" id="panel-3">
+            <div class="step-title">Récapitulatif</div>
+            <div class="step-desc">Vérifiez vos informations avant d'enregistrer.</div>
+
+            <div class="recap-grid" id="recapGrid">
+              <!-- rempli par JS -->
+            </div>
+
+            <div class="fc-nav">
+              <button type="button" class="btn-fc-prev" onclick="goStep(2)">
+                <i class="fas fa-arrow-left"></i> Modifier
+              </button>
+              <button type="submit" class="btn-fc-submit">
+                <i class="fas fa-check"></i> Enregistrer ma fiche
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </form>
+
+    </div>
+
   </div>
+</div>
 
-  {% include "footer.html" %}
+{% include "footer.html" %}
 
-  <!-- Scripts JS (Bootstrap + jQuery) -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  let currentStep = 1;
+
+  // ── Type entreprise ──
+  function selectType(card) {
+    document.querySelectorAll('.type-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    document.getElementById('type_entreprise').value = card.dataset.val;
+  }
+
+  // ── Civilité ──
+  function selectCiv(btn) {
+    document.querySelectorAll('.civ-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('civilite').value = btn.dataset.val;
+  }
+
+  // ── Navigation ──
+  function goStep(n) {
+    // Validation basique avant d'avancer
+    if (n > currentStep) {
+      const panel = document.getElementById('panel-' + currentStep);
+      const required = panel.querySelectorAll('[required]');
+      let valid = true;
+      required.forEach(f => {
+        if (!f.value.trim()) {
+          f.style.borderColor = '#ef4444';
+          f.style.background = '#fef2f2';
+          valid = false;
+          setTimeout(() => { f.style.borderColor = ''; f.style.background = ''; }, 2000);
+        }
+      });
+      if (!valid) return;
+    }
+
+    // Mise à jour affichage
+    document.querySelectorAll('.fc-step-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + n).classList.add('active');
+
+    // Stepper
+    for (let i = 1; i <= 3; i++) {
+      const ind = document.getElementById('step-indicator-' + i);
+      ind.classList.remove('active', 'done');
+      if (i < n) ind.classList.add('done');
+      if (i === n) ind.classList.add('active');
+      // Icône check pour done
+      const num = ind.querySelector('.step-num');
+      if (i < n) num.innerHTML = '<i class="fas fa-check" style="font-size:.7rem"></i>';
+      else num.textContent = i;
+    }
+
+    if (n === 3) buildRecap();
+    currentStep = n;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── Récap ──
+  function buildRecap() {
+    const fields = [
+      { label: 'Type d\'entreprise', val: document.getElementById('type_entreprise').value, hl: true },
+      { label: 'Activité', val: document.getElementById('activite').value },
+      { label: 'Cabinet / Société', val: document.getElementById('cabinet').value },
+      { label: 'Adresse du siège', val: document.getElementById('adresse_siege').value },
+      { label: 'Civilité', val: document.getElementById('civilite').value },
+      { label: 'Prénom & Nom', val: document.getElementById('prenom').value + ' ' + document.getElementById('nom').value, hl: true },
+      { label: 'Email', val: document.getElementById('email').value },
+    ];
+    const grid = document.getElementById('recapGrid');
+    grid.innerHTML = fields.map(f => `
+      <div class="recap-item ${f.hl ? 'highlight' : ''}">
+        <div class="recap-label">${f.label}</div>
+        <div class="recap-val">${f.val || '—'}</div>
+      </div>
+    `).join('');
+  }
+
+  // ── Validation input temps réel ──
+  document.querySelectorAll('.fc-input, .fc-select').forEach(input => {
+    input.addEventListener('blur', function() {
+      if (this.value.trim()) this.classList.add('valid');
+      else this.classList.remove('valid');
+    });
+  });
+</script>
 </body>
 </html>

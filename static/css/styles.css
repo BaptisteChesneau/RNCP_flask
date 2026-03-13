@@ -1519,8 +1519,8 @@ a.contact-item:hover { color: var(--rose); }
 .svc-panel { display: none; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
 .svc-panel.active { display: grid; animation: fadeInPanel .4s ease; }
 @keyframes fadeInPanel { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-.svc-img-box img { border-radius: var(--radius-lg); height: 100%; width: 100%; object-fit: cover; box-shadow: var(--shadow-md); min-height: 320px; }
-.svc-img-box { min-height: 320px; }
+.svc-img-box { min-height: 320px; display: flex; align-items: center; justify-content: center; position: relative; }
+.svc-img-box img { border-radius: var(--radius-lg); height: 100%; min-height: 320px; width: 100%; object-fit: cover; box-shadow: var(--shadow-md); }
 .svc-content h3 { font-family: var(--font-head); font-size: 1.8rem; font-weight: 700; color: var(--gris-dark); margin-bottom: 1rem; }
 .svc-content p { color: var(--text-muted); margin-bottom: 1.25rem; line-height: 1.7; }
 .svc-list { list-style: none; margin-bottom: 1.75rem; }

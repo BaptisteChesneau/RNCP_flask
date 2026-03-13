@@ -1648,3 +1648,128 @@ a.contact-item:hover { color: var(--rose); }
   gap: .3rem;
 }
 .consent-error-msg.show { display: flex; }
+
+/* ════════════════════════════════════════════════
+   ILLUSTRATIONS CSS SERVICES
+════════════════════════════════════════════════ */
+  .svc-img-box {
+    border-radius: 16px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #1e2729 0%, #2d3436 100%);
+    min-height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  /* COMPTABILITÉ — barres animées */
+  .svc-illus-compta {
+    gap: .6rem;
+    padding: 1.5rem;
+    align-items: flex-end;
+  }
+  .illus-bar {
+    flex: 1;
+    border-radius: 6px 6px 0 0;
+    background: linear-gradient(180deg, #C1007A, #4FA695);
+    animation: barGrow .8s ease both;
+    transform-origin: bottom;
+  }
+  @keyframes barGrow { from{transform:scaleY(0)} to{transform:scaleY(1)} }
+  .illus-line {
+    position: absolute;
+    bottom: 1.5rem; left: 1rem; right: 1rem;
+    height: 2px;
+    background: rgba(255,255,255,.15);
+    border-radius: 2px;
+  }
+
+  /* SOCIAL — silhouettes */
+  .svc-illus-social { gap: 1.5rem; }
+  .illus-person { display: flex; flex-direction: column; align-items: center; gap: .4rem; }
+  .illus-head {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,.15);
+  }
+  .illus-body {
+    width: 48px; height: 56px; border-radius: 12px 12px 0 0;
+    background: rgba(255,255,255,.1);
+  }
+  .illus-p2.featured .illus-head { background: #C1007A; width: 44px; height: 44px; }
+  .illus-p2.featured .illus-body { background: rgba(193,0,122,.4); width: 58px; height: 68px; }
+  .illus-badge-pay {
+    position: absolute; top: 1.2rem; right: 1.2rem;
+    background: #4FA695; color: #fff;
+    font-size: .75rem; font-weight: 700;
+    padding: .3rem .7rem; border-radius: 20px;
+    display: flex; align-items: center; gap: .3rem;
+    animation: badgePop .5s .6s ease both;
+    transform-origin: center;
+  }
+  .illus-badge-pay span { font-size: .9rem; }
+  @keyframes badgePop { from{transform:scale(0)} to{transform:scale(1)} }
+
+  /* JURIDIQUE — balance */
+  .svc-illus-juridique { flex-direction: column; }
+  .illus-scale-arm { position: relative; width: 200px; }
+  .illus-scale-bar {
+    height: 4px; width: 100%; background: rgba(255,255,255,.5);
+    border-radius: 2px; position: relative;
+    animation: scaleTilt 3s ease-in-out infinite;
+    transform-origin: center;
+  }
+  @keyframes scaleTilt {
+    0%,100%{transform:rotate(-6deg)} 50%{transform:rotate(6deg)}
+  }
+  .illus-scale-left, .illus-scale-right {
+    position: absolute; top: 0;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .illus-scale-left { left: 0; }
+  .illus-scale-right { right: 0; }
+  .illus-scale-pan {
+    width: 52px; height: 14px; border-radius: 0 0 30px 30px;
+    background: rgba(193,0,122,.6); margin-top: 10px;
+    border: 1.5px solid rgba(193,0,122,.8);
+  }
+  .illus-scale-base {
+    width: 6px; height: 60px;
+    background: rgba(255,255,255,.3); border-radius: 3px; margin-top: .5rem;
+  }
+
+  /* IA — réseau de nœuds */
+  .svc-illus-ia { position: relative; }
+  .illus-node {
+    position: absolute; width: 36px; height: 36px;
+    border-radius: 50%; background: rgba(79,166,149,.3);
+    border: 2px solid rgba(79,166,149,.6);
+    animation: nodePulse 2.5s ease-in-out infinite;
+  }
+  .illus-node.central {
+    width: 64px; height: 64px;
+    background: rgba(193,0,122,.3);
+    border-color: #C1007A;
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+    display: flex; align-items: center; justify-content: center;
+    color: #C1007A; font-size: 1.4rem;
+    animation: nodePulse 2s ease-in-out infinite;
+  }
+  .illus-node.n1 { top: 20%; left: 15%; animation-delay: 0s; }
+  .illus-node.n2 { top: 20%; right: 15%; animation-delay: .4s; }
+  .illus-node.n3 { bottom: 20%; left: 15%; animation-delay: .8s; }
+  .illus-node.n4 { bottom: 20%; right: 15%; animation-delay: 1.2s; }
+  @keyframes nodePulse {
+    0%,100%{box-shadow:0 0 0 0 rgba(79,166,149,.4)}
+    50%{box-shadow:0 0 0 10px rgba(79,166,149,0)}
+  }
+  .illus-lines {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    pointer-events: none;
+  }
+  .illus-lines line {
+    stroke: rgba(255,255,255,.12); stroke-width: 1.5;
+    stroke-dasharray: 5 4;
+    animation: dashMove 2s linear infinite;
+  }
+  @keyframes dashMove { to{stroke-dashoffset:-18} }

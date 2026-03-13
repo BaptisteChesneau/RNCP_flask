@@ -119,7 +119,15 @@
     </div>
     <div class="svc-panels">
     <div class="svc-panel active" id="svc-compta">
-      <div class="svc-img-box"><img src="{{ url_for('static', filename='images/slide1.jpg') }}" alt="Comptabilité"></div>
+      <div class="svc-img-box svc-illus-compta">
+      <div class="illus-bar" style="height:55%;animation-delay:0s"></div>
+      <div class="illus-bar" style="height:80%;animation-delay:.15s"></div>
+      <div class="illus-bar" style="height:40%;animation-delay:.3s"></div>
+      <div class="illus-bar" style="height:95%;animation-delay:.45s"></div>
+      <div class="illus-bar" style="height:65%;animation-delay:.6s"></div>
+      <div class="illus-bar" style="height:75%;animation-delay:.75s"></div>
+      <div class="illus-line"></div>
+    </div>
       <div class="svc-content">
         <h3>Tenue comptable & Fiscalité</h3>
         <p>Nous prenons en charge l'intégralité de votre comptabilité au quotidien : saisie des pièces, lettrage, révision des comptes et établissement des bilans annuels. Notre approche proactive vous permet d'anticiper vos échéances fiscales et d'éviter toute pénalité.</p>
@@ -135,7 +143,12 @@
 </div>
 
 <div class="svc-panel" id="svc-social">
-  <div class="svc-img-box"><img src="{{ url_for('static', filename='images/slide2.jpg') }}" alt="Social"></div>
+  <div class="svc-img-box svc-illus-social">
+  <div class="illus-person illus-p1"><div class="illus-head"></div><div class="illus-body"></div></div>
+  <div class="illus-person illus-p2 featured"><div class="illus-head"></div><div class="illus-body"></div></div>
+  <div class="illus-person illus-p3"><div class="illus-head"></div><div class="illus-body"></div></div>
+  <div class="illus-badge-pay">Paie <span>✓</span></div>
+</div>
   <div class="svc-content">
     <h3>Paie & Gestion sociale</h3>
     <p>Externalisez votre paie en toute sérénité. Nous gérons l'ensemble du cycle social de votre entreprise : de l'embauche à la sortie du salarié, en passant par les déclarations obligatoires. Vous restez concentré sur votre cœur de métier.</p>
@@ -151,7 +164,14 @@
 </div>
 
 <div class="svc-panel" id="svc-juridique">
-  <div class="svc-img-box"><img src="{{ url_for('static', filename='images/slide1.jpg') }}" alt="Juridique"></div>
+  <div class="svc-img-box svc-illus-juridique">
+  <div class="illus-scale-arm">
+    <div class="illus-scale-bar"></div>
+    <div class="illus-scale-left"><div class="illus-scale-pan"></div></div>
+    <div class="illus-scale-right"><div class="illus-scale-pan"></div></div>
+  </div>
+  <div class="illus-scale-base"></div>
+</div>
   <div class="svc-content">
     <h3>Conseil juridique & Création</h3>
     <p>De la création à la transmission de votre entreprise, nous vous accompagnons à chaque étape clé : choix de la forme juridique, rédaction des statuts, accompagnement lors des cessions ou fusions. Un expert à vos côtés pour sécuriser chaque décision.</p>
@@ -167,7 +187,14 @@
 </div>
 
 <div class="svc-panel" id="svc-conseil">
-  <div class="svc-img-box"><img src="{{ url_for('static', filename='images/slide2.jpg') }}" alt="Conseil IA"></div>
+  <div class="svc-img-box svc-illus-ia">
+  <div class="illus-node n1"></div>
+  <div class="illus-node n2"></div>
+  <div class="illus-node n3"></div>
+  <div class="illus-node n4"></div>
+  <div class="illus-node n5 central"><i class="fas fa-brain"></i></div>
+  <svg class="illus-lines" viewBox="0 0 300 220"><line x1="150" y1="110" x2="60" y2="50"/><line x1="150" y1="110" x2="240" y2="50"/><line x1="150" y1="110" x2="50" y2="170"/><line x1="150" y1="110" x2="250" y2="170"/></svg>
+</div>
   <div class="svc-content">
     <h3>Optimisation fiscale & IA</h3>
     <p>Nous intégrons l'intelligence artificielle dans notre approche conseil pour vous offrir des analyses prédictives et des recommandations ultra-personnalisées. Anticipez les risques, optimisez votre fiscalité et pilotez votre activité avec des indicateurs clés en temps réel.</p>

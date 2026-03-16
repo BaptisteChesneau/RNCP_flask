@@ -234,7 +234,7 @@
               <div><div class="devis-field-label">Nom</div><div class="devis-field-val">{{ devis.nom }}</div></div>
               <div><div class="devis-field-label">Secteur</div><div class="devis-field-val">{{ devis.secteur }}</div></div>
               <div><div class="devis-field-label">Service</div><div class="devis-field-val accent">{{ devis.type_service }}</div></div>
-              <div><div class="devis-field-label">Rendez-vous</div><div class="devis-field-val">{{ devis.date_rdv.strftime('%d/%m/%Y') if devis.date_rdv else '—' }} — {{ devis.heure_rdv }}</div></div>
+              <div><div class="devis-field-label">Rendez-vous</div><div class="devis-field-val">{{ devis.date_rdv | replace('-', '/') if devis.date_rdv else '—' }} — {{ devis.heure_rdv }}</div></div>
             </div>
           </div>
           {% endfor %}

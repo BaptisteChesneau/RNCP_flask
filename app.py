@@ -848,6 +848,25 @@ def parametres():
     }
     return render_template("parametres.html", user=user)
 
+@app.route("/supprimer-compte", methods=["POST"])
+def supprimer_compte():
+    utilisateur_id = session.get("utilisateur_id")
+    if not utilisateur_id:
+        return redirect(url_for("login"))
+
+    try:
+        user = Utilisateur.query.get(utilisateur_id)
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+        session.clear()
+        flash("Votre compte a été supprimé définitivement.", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash("Une erreur est survenue lors de la suppression.", "danger")
+        return redirect(url_for("parametres"))
+
+    return redirect(url_for("menu"))
 
 @app.route("/supprimer-devis", methods=["POST"])
 def supprimer_devis():

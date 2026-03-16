@@ -8,77 +8,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <style>
-    /* ── CASE À COCHER CONSENTEMENT ── */
-    .consent-wrap {
-      background: #f8f9fb;
-      border: 1.5px solid #e5e7eb;
-      border-radius: 10px;
-      padding: .85rem 1rem;
-      margin-bottom: 1rem;
-      transition: border-color .2s, background .2s;
-    }
-    .consent-wrap.is-checked {
-      border-color: #4FA695;
-      background: #d4f0ec;
-    }
-    .consent-wrap.is-error {
-      border-color: #ef4444;
-      background: #fef2f2;
-    }
-    .consent-label {
-      display: flex;
-      align-items: flex-start;
-      gap: .65rem;
-      cursor: pointer;
-      margin: 0;
-      user-select: none;
-    }
-    /* checkbox cachée */
-    .consent-label input[type="checkbox"] { display: none; }
-    /* carré custom */
-    .check-box {
-      width: 18px; height: 18px;
-      border: 2px solid #d1d5db;
-      border-radius: 5px;
-      background: #fff;
-      flex-shrink: 0;
-      margin-top: .15rem;
-      display: flex; align-items: center; justify-content: center;
-      transition: .2s;
-    }
-    .consent-label input[type="checkbox"]:checked ~ .check-box {
-      background: #4FA695;
-      border-color: #4FA695;
-    }
-    .consent-label input[type="checkbox"]:checked ~ .check-box::after {
-      content: '';
-      width: 4px; height: 8px;
-      border: 2px solid #fff;
-      border-top: none; border-left: none;
-      transform: rotate(45deg) translate(-1px,-1px);
-      display: block;
-    }
-    .consent-text {
-      font-size: .8rem;
-      color: #6b7280;
-      line-height: 1.55;
-    }
-    .consent-text a {
-      color: #C1007A;
-      font-weight: 600;
-      text-decoration: none;
-      border-bottom: 1px dashed #C1007A;
-    }
-    .consent-text a:hover { color: #9a0062; }
-    .consent-error-msg {
-      font-size: .75rem;
-      color: #ef4444;
-      margin-top: .35rem;
-      display: none;
-      align-items: center;
-      gap: .3rem;
-    }
-    .consent-error-msg.show { display: flex; }
+    .consent-wrap { background:#f8f9fb; border:1.5px solid #e5e7eb; border-radius:10px; padding:.85rem 1rem; margin-bottom:1rem; transition:border-color .2s,background .2s; }
+    .consent-wrap.is-checked { border-color:#4FA695; background:#d4f0ec; }
+    .consent-wrap.is-error { border-color:#ef4444; background:#fef2f2; }
+    .consent-label { display:flex; align-items:flex-start; gap:.65rem; cursor:pointer; margin:0; user-select:none; }
+    .consent-label input[type="checkbox"] { display:none; }
+    .check-box { width:18px; height:18px; border:2px solid #d1d5db; border-radius:5px; background:#fff; flex-shrink:0; margin-top:.15rem; display:flex; align-items:center; justify-content:center; transition:.2s; }
+    .consent-label input[type="checkbox"]:checked ~ .check-box { background:#4FA695; border-color:#4FA695; }
+    .consent-label input[type="checkbox"]:checked ~ .check-box::after { content:''; width:4px; height:8px; border:2px solid #fff; border-top:none; border-left:none; transform:rotate(45deg) translate(-1px,-1px); display:block; }
+    .consent-text { font-size:.8rem; color:#6b7280; line-height:1.55; }
+    .consent-text a { color:#C1007A; font-weight:600; text-decoration:none; border-bottom:1px dashed #C1007A; }
+    .consent-text a:hover { color:#9a0062; }
+    .consent-error-msg { font-size:.75rem; color:#ef4444; margin-top:.35rem; display:none; align-items:center; gap:.3rem; }
+    .consent-error-msg.show { display:flex; }
+    .modal-pw-wrap { position:relative; }
+    .modal-pw-toggle { position:absolute; right:.75rem; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:#9ca3af; font-size:.9rem; padding:0; line-height:1; transition:color .2s; }
+    .modal-pw-toggle:hover { color:#4FA695; }
+    .forgot-link { display:block; text-align:right; font-size:.78rem; color:#C1007A; font-weight:600; margin-top:.4rem; text-decoration:none; }
+    .forgot-link:hover { color:#9a0062; text-decoration:underline; }
   </style>
 </head>
 <body>
@@ -100,45 +47,27 @@
           <div class="nav-dropdown">
             <span class="nav-item">À propos <i class="fas fa-chevron-down fa-xs"></i></span>
             <div class="dropdown-panel dropdown-wide">
-
               <div class="drop-col">
                 <span class="drop-cat">Découvrir ML2C CONSEIL</span>
                 <a href="{{ url_for('notre_vision') }}" class="drop-link drop-link-desc">
-                  <span>
-                    <strong class="drop-title-rose">Notre vision</strong>
-                    <em>Ce qui nous différencie</em>
-                  </span>
+                  <span><strong class="drop-title-rose">Notre vision</strong><em>Ce qui nous différencie</em></span>
                 </a>
                 <a href="{{ url_for('notre_histoire') }}" class="drop-link drop-link-desc">
-                  <span>
-                    <strong class="drop-title-rose">Notre histoire</strong>
-                    <em>Les étapes clés depuis 2009</em>
-                  </span>
+                  <span><strong class="drop-title-rose">Notre histoire</strong><em>Les étapes clés depuis 2009</em></span>
                 </a>
                 <a href="{{ url_for('nos_valeurs') }}" class="drop-link drop-link-desc">
-                  <span>
-                    <strong class="drop-title-rose">Nos valeurs &amp; méthodes</strong>
-                    <em>Transparence, rigueur, innovation</em>
-                  </span>
+                  <span><strong class="drop-title-rose">Nos valeurs &amp; méthodes</strong><em>Transparence, rigueur, innovation</em></span>
                 </a>
               </div>
-
               <div class="drop-col">
                 <span class="drop-cat">L'équipe &amp; la relation client</span>
                 <a href="{{ url_for('notre_equipe') }}" class="drop-link drop-link-desc">
-                  <span>
-                    <strong class="drop-title-turq">Notre équipe</strong>
-                    <em>À taille humaine et complémentaire</em>
-                  </span>
+                  <span><strong class="drop-title-turq">Notre équipe</strong><em>À taille humaine et complémentaire</em></span>
                 </a>
                 <a href="{{ url_for('nos_engagements') }}" class="drop-link drop-link-desc">
-                  <span>
-                    <strong class="drop-title-turq">Nos engagements</strong>
-                    <em>Un accompagnement sur mesure et durable</em>
-                  </span>
+                  <span><strong class="drop-title-turq">Nos engagements</strong><em>Un accompagnement sur mesure et durable</em></span>
                 </a>
               </div>
-
             </div>
           </div>
 
@@ -146,92 +75,59 @@
           <div class="nav-dropdown">
             <span class="nav-item">Nos services <i class="fas fa-chevron-down fa-xs"></i></span>
             <div class="dropdown-panel dropdown-wide" style="min-width:640px">
-
               <div class="drop-col">
                 <span class="drop-cat">Comptabilité &amp; fiscalité</span>
                 <a href="{{ url_for('tenue_comptable') }}" class="drop-link drop-link-desc">
-                  <span>
-                    <strong class="drop-title-rose">Tenue comptable &amp; révision</strong>
-                    <em>Suivi, révision, fiabilisation des comptes</em>
-                  </span>
+                  <span><strong class="drop-title-rose">Tenue comptable &amp; révision</strong><em>Suivi, révision, fiabilisation des comptes</em></span>
                 </a>
                 <a href="{{ url_for('declarations_fiscales') }}" class="drop-link drop-link-desc">
-                  <span>
-                    <strong class="drop-title-rose">Déclarations fiscales</strong>
-                    <em>TVA, obligations périodiques, conformité</em>
-                  </span>
+                  <span><strong class="drop-title-rose">Déclarations fiscales</strong><em>TVA, obligations périodiques, conformité</em></span>
                 </a>
                 <a href="{{ url_for('pilotage_tableau_de_bord') }}" class="drop-link drop-link-desc">
-                  <span>
-                    <strong class="drop-title-rose">Pilotage &amp; tableau de bord</strong>
-                    <em>Indicateurs clés, reporting, lecture simplifiée</em>
-                  </span>
+                  <span><strong class="drop-title-rose">Pilotage &amp; tableau de bord</strong><em>Indicateurs clés, reporting, lecture simplifiée</em></span>
                 </a>
                 <span class="drop-cat" style="margin-top:1.1rem">Social</span>
                 <a href="{{ url_for('paie_gestion') }}" class="drop-link drop-link-desc">
-                  <span>
-                    <strong class="drop-title-rose">Paie &amp; Gestion</strong>
-                    <em>Bulletin, DSN, suivi RH</em>
-                  </span>
+                  <span><strong class="drop-title-rose">Paie &amp; Gestion</strong><em>Bulletin, DSN, suivi RH</em></span>
                 </a>
               </div>
-
               <div class="drop-col">
                 <span class="drop-cat">Conseils &amp; accompagnements</span>
                 <a href="{{ url_for('conseils_organisations') }}" class="drop-link drop-link-desc">
-                  <span>
-                    <strong class="drop-title-turq">Conseils &amp; organisations</strong>
-                    <em>Structuration, process, aide à la décision</em>
-                  </span>
+                  <span><strong class="drop-title-turq">Conseils &amp; organisations</strong><em>Structuration, process, aide à la décision</em></span>
                 </a>
                 <a href="{{ url_for('creation_reprise') }}" class="drop-link drop-link-desc">
-                  <span>
-                    <strong class="drop-title-turq">Création/reprise d'entreprise</strong>
-                    <em>Statuts, démarrage, mise en place des outils</em>
-                  </span>
+                  <span><strong class="drop-title-turq">Création/reprise d'entreprise</strong><em>Statuts, démarrage, mise en place des outils</em></span>
                 </a>
                 <a href="{{ url_for('juridique_courant') }}" class="drop-link drop-link-desc">
-                  <span>
-                    <strong class="drop-title-turq">Juridique courant</strong>
-                    <em>Démarche récurrente, documents, suivis</em>
-                  </span>
+                  <span><strong class="drop-title-turq">Juridique courant</strong><em>Démarche récurrente, documents, suivis</em></span>
                 </a>
                 <a href="{{ url_for('optimisation_digitalisation') }}" class="drop-link drop-link-desc">
-                  <span>
-                    <strong class="drop-title-turq">Optimisation &amp; digitalisation</strong>
-                    <em>Centralisation, flux, gain de temps</em>
-                  </span>
+                  <span><strong class="drop-title-turq">Optimisation &amp; digitalisation</strong><em>Centralisation, flux, gain de temps</em></span>
                 </a>
                 <a href="{{ url_for('assistance_support') }}" class="drop-link drop-link-desc">
-                  <span>
-                    <strong class="drop-title-turq">Assistance &amp; support</strong>
-                    <em>Question, accompagnement, suivi</em>
-                  </span>
+                  <span><strong class="drop-title-turq">Assistance &amp; support</strong><em>Question, accompagnement, suivi</em></span>
                 </a>
               </div>
-
             </div>
           </div>
 
         </nav>
 
-        <!-- Séparateur vertical -->
         <div class="header-sep"></div>
 
-        <!-- Boutons droite -->
         <div class="header-actions">
 
-      {% if session.get('utilisateur_id') %}
-        <a href="{{ url_for('compte_client') }}" class="btn-compte">
-          <span style="position:relative;display:inline-block;margin-right:.4rem;">
-            <span style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#C1007A,#9a0062);color:#fff;font-size:.82rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;">
-              {{ session.get('prenom', 'U')[0] | upper }}
-            </span>
-          <span style="position:absolute;bottom:1px;right:1px;width:9px;height:9px;background:#4ade80;border-radius:50%;border:2px solid #fff;"></span>
-        </span>
-        {{ session.get('prenom', 'Mon Espace') }}
-      </a>
-
+          {% if session.get('utilisateur_id') %}
+            <a href="{{ url_for('compte_client') }}" class="btn-compte">
+              <span style="position:relative;display:inline-block;margin-right:.4rem;">
+                <span style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#C1007A,#9a0062);color:#fff;font-size:.82rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;">
+                  {{ session.get('prenom', 'U')[0] | upper }}
+                </span>
+                <span style="position:absolute;bottom:1px;right:1px;width:9px;height:9px;background:#4ade80;border-radius:50%;border:2px solid #fff;"></span>
+              </span>
+              {{ session.get('prenom', 'Mon Espace') }}
+            </a>
           {% else %}
             <button class="btn-compte" data-toggle="modal" data-target="#accountModal">
               <i class="fas fa-user"></i> Compte
@@ -242,7 +138,6 @@
             <i class="fas fa-calendar-alt"></i> Prendre RDV
           </a>
 
-          <!-- Burger mobile -->
           <button class="burger-btn" id="burgerBtn" aria-label="Menu">
             <span></span><span></span><span></span>
           </button>
@@ -284,18 +179,23 @@
                   <label>Nom d'utilisateur</label>
                   <input type="text" class="form-control" name="username" placeholder="Votre nom d'utilisateur" required>
                 </div>
+
                 <div class="form-group">
                   <label>Adresse email</label>
                   <input type="email" class="form-control" name="email" placeholder="votre@email.com" required>
                 </div>
+
                 <div class="form-group">
                   <label>Mot de passe</label>
-                  <input type="password" class="form-control" name="password" placeholder="••••••••" required>
+                  <div class="modal-pw-wrap">
+                    <input type="password" class="form-control" name="password" id="modalSignupPw"
+                      placeholder="••••••••" required style="padding-right:2.5rem;">
+                    <button type="button" class="modal-pw-toggle" id="signupPwToggle" aria-label="Afficher/masquer">
+                      <i class="fas fa-eye" id="signupPwIcon"></i>
+                    </button>
+                  </div>
                 </div>
 
-                <!-- ═══════════════════════════════════════
-                     CASE À COCHER — Mentions légales / Cookies / RGPD
-                ═══════════════════════════════════════ -->
                 <div class="consent-wrap" id="modalConsentBox">
                   <label class="consent-label" for="modalConsent">
                     <input type="checkbox" id="modalConsent" name="consent">
@@ -312,7 +212,6 @@
                   <i class="fas fa-exclamation-circle"></i>
                   Vous devez accepter les conditions pour vous inscrire.
                 </div>
-                <!-- ═══════════════════════════════════════ -->
 
                 <button type="submit" class="btn-ml2c-full">Créer mon compte</button>
               </form>
@@ -324,15 +223,28 @@
 
             <!-- ── ONGLET CONNEXION ── -->
             <div class="tab-pane fade" id="login" role="tabpanel">
-              <form action="{{ url_for('login') }}" method="POST">
+              <form action="{{ url_for('login') }}" method="POST" id="modalLoginForm" novalidate>
+
                 <div class="form-group">
                   <label>Adresse email</label>
-                  <input type="email" class="form-control" name="email" placeholder="votre@email.com" required>
+                  <input type="email" class="form-control" name="email" id="modalLoginEmail"
+                    placeholder="votre@email.com" required>
                 </div>
+
                 <div class="form-group">
                   <label>Mot de passe</label>
-                  <input type="password" class="form-control" name="password" placeholder="••••••••" required>
+                  <div class="modal-pw-wrap">
+                    <input type="password" class="form-control" name="password" id="modalLoginPw"
+                      placeholder="••••••••" required style="padding-right:2.5rem;">
+                    <button type="button" class="modal-pw-toggle" id="loginPwToggle" aria-label="Afficher/masquer">
+                      <i class="fas fa-eye" id="loginPwIcon"></i>
+                    </button>
+                  </div>
+                  <a href="{{ url_for('mot_de_passe_oublie') }}" class="forgot-link">
+                    Mot de passe oublié ?
+                  </a>
                 </div>
+
                 <button type="submit" class="btn-ml2c-full">Se connecter</button>
               </form>
               <div class="mt-3 text-center">
@@ -350,30 +262,54 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Header sticky
+    // ── Header sticky ──
     window.addEventListener('scroll', function() {
       document.getElementById('mainHeader').classList.toggle('scrolled', window.scrollY > 60);
     });
 
-    // Burger mobile
+    // ── Burger mobile ──
     document.getElementById('burgerBtn').addEventListener('click', function() {
       document.getElementById('mainNav').classList.toggle('open');
       this.classList.toggle('active');
     });
 
-    // ── CONSENTEMENT MODAL ──
-    const modalCb    = document.getElementById('modalConsent');
-    const modalBox   = document.getElementById('modalConsentBox');
-    const modalErr   = document.getElementById('modalConsentError');
+    // ── ŒIL — Inscription ──
+    const signupPw = document.getElementById('modalSignupPw');
+    document.getElementById('signupPwToggle').addEventListener('click', function() {
+      const icon = document.getElementById('signupPwIcon');
+      if (signupPw.type === 'password') {
+        signupPw.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+      } else {
+        signupPw.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+    });
 
-    // Style dynamique au clic sur la case
+    // ── ŒIL — Connexion ──
+    const loginPw = document.getElementById('modalLoginPw');
+    document.getElementById('loginPwToggle').addEventListener('click', function() {
+      const icon = document.getElementById('loginPwIcon');
+      if (loginPw.type === 'password') {
+        loginPw.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+      } else {
+        loginPw.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+    });
+
+    // ── CONSENTEMENT MODAL ──
+    const modalCb  = document.getElementById('modalConsent');
+    const modalBox = document.getElementById('modalConsentBox');
+    const modalErr = document.getElementById('modalConsentError');
+
     modalCb.addEventListener('change', function() {
       modalBox.classList.toggle('is-checked', this.checked);
       modalBox.classList.remove('is-error');
       if (this.checked) modalErr.classList.remove('show');
     });
 
-    // Bloquer la soumission si non cochée
     document.getElementById('modalSignupForm').addEventListener('submit', function(e) {
       if (!modalCb.checked) {
         e.preventDefault();
@@ -383,11 +319,16 @@
       }
     });
 
-    // Réinitialiser l'état quand la modal se ferme
+    // ── Reset modal à la fermeture ──
     $('#accountModal').on('hidden.bs.modal', function() {
       modalCb.checked = false;
       modalBox.classList.remove('is-checked', 'is-error');
       modalErr.classList.remove('show');
+      // Reset œils
+      signupPw.type = 'password';
+      document.getElementById('signupPwIcon').className = 'fas fa-eye';
+      loginPw.type = 'password';
+      document.getElementById('loginPwIcon').className = 'fas fa-eye';
     });
   </script>
 

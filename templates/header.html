@@ -128,10 +128,11 @@
               </span>
               {{ session.get('prenom', 'Mon Espace') }}
             </a>
+          
           {% else %}
-            <button class="btn-compte" data-toggle="modal" data-target="#accountModal">
+            <a href="{{ url_for('login') }}" class="btn-compte">
               <i class="fas fa-user"></i> Compte
-            </button>
+            </a>
           {% endif %}
 
           <a href="{{ url_for('menu') }}#contact" class="btn-rdv-header">

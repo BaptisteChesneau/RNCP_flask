@@ -2,147 +2,314 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Grille Tarifaire - ML2C CONSEIL</title>
-  <!-- Bootstrap CSS (CDN) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
-  <!-- Votre CSS personnalisé -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    :root {
+      --rose:#C1007A; --rose-dark:#9a0062; --rose-light:#fce4f3;
+      --turq:#4FA695; --turq-dark:#3a7d70; --turq-light:#d4f0ec;
+      --gris:#5C666B; --gris-dark:#2d3436; --border:#e5e7eb;
+      --text:#2d2d2d; --muted:#6b7280;
+    }
+    body { background:#f0f2f5; font-family:'DM Sans',sans-serif; }
+
+    /* ── HERO ── */
+    .tar-hero {
+      background:linear-gradient(135deg,#1e2729 0%,#2d3436 55%,#1a3333 100%);
+      padding:3rem 0 4.5rem; position:relative; overflow:hidden; margin-bottom:-2.5rem;
+    }
+    .tar-hero::before {
+      content:''; position:absolute; inset:0;
+      background:radial-gradient(ellipse at 80% 40%,rgba(79,166,149,.18) 0%,transparent 55%),
+                 radial-gradient(ellipse at 8% 85%,rgba(193,0,122,.14) 0%,transparent 45%);
+    }
+    .tar-hero-inner { position:relative; z-index:1; text-align:center; }
+    .tar-badge { display:inline-flex; align-items:center; gap:.5rem; padding:.3rem .9rem; background:rgba(193,0,122,.15); border:1px solid rgba(193,0,122,.35); border-radius:20px; font-size:.72rem; font-weight:700; color:#f9a8d4; letter-spacing:.08em; text-transform:uppercase; margin-bottom:1rem; }
+    .tar-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,5vw,3.2rem); font-weight:700; color:#fff; line-height:1.1; margin-bottom:.6rem; }
+    .tar-title em { color:#5eead4; font-style:italic; }
+    .tar-sub { font-size:.95rem; color:rgba(255,255,255,.5); max-width:520px; margin:0 auto; }
+
+    /* ── PAGE ── */
+    .tar-page { padding:2.5rem 0 5rem; }
+
+    /* ── GRILLE ── */
+    .tar-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; align-items:start; }
+
+    /* ── CARD ── */
+    .tar-card {
+      background:#fff; border-radius:22px;
+      box-shadow:0 6px 32px rgba(0,0,0,.07);
+      overflow:hidden; position:relative;
+      transition:transform .25s ease, box-shadow .25s ease;
+    }
+    .tar-card:hover { transform:translateY(-4px); box-shadow:0 16px 48px rgba(0,0,0,.12); }
+    .tar-card.featured {
+      background:linear-gradient(160deg,#1e2729 0%,#2d3436 60%,#1a3333 100%);
+      border:2px solid var(--rose);
+      box-shadow:0 12px 48px rgba(193,0,122,.22);
+      transform:scale(1.03);
+    }
+    .tar-card.featured:hover { transform:scale(1.03) translateY(-4px); }
+
+    /* Barre colorée haut */
+    .tar-accentbar { height:4px; }
+    .tar-accentbar.ess { background:var(--turq); }
+    .tar-accentbar.pro { background:var(--rose); }
+    .tar-accentbar.prem { background:linear-gradient(90deg,var(--rose),var(--turq)); }
+
+    /* Badge populaire */
+    .popular-badge {
+      display:inline-block; font-size:.65rem; font-weight:700; padding:.28rem .75rem;
+      border-radius:12px; background:var(--rose-light); color:var(--rose-dark);
+      margin-bottom:.6rem;
+    }
+    .tar-card.featured .popular-badge { background:rgba(193,0,122,.25); color:#f9a8d4; }
+
+    /* En-tête card */
+    .tar-card-head { padding:1.75rem 1.75rem 1.25rem; }
+    .tar-plan-name { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); margin-bottom:.75rem; }
+    .tar-card.featured .tar-plan-name { color:rgba(255,255,255,.45); }
+
+    .tar-plan-icon { width:46px; height:46px; border-radius:13px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; margin-bottom:1rem; }
+    .tar-plan-icon.ess { background:var(--turq-light); color:var(--turq-dark); }
+    .tar-plan-icon.pro { background:var(--rose); color:#fff; }
+    .tar-plan-icon.prem { background:#2d3436; color:#5eead4; border:1px solid rgba(94,234,212,.25); }
+
+    .tar-price { font-family:'Cormorant Garamond',serif; font-size:2.4rem; font-weight:700; color:var(--text); line-height:1; margin-bottom:.3rem; }
+    .tar-card.featured .tar-price { color:#fff; }
+    .tar-price-note { font-size:.75rem; color:var(--muted); margin-bottom:1rem; }
+    .tar-card.featured .tar-price-note { color:rgba(255,255,255,.35); }
+    .tar-plan-desc { font-size:.83rem; color:var(--muted); line-height:1.55; }
+    .tar-card.featured .tar-plan-desc { color:rgba(255,255,255,.5); }
+
+    /* Séparateur */
+    .tar-divider { height:1px; background:var(--border); margin:0 1.75rem; }
+    .tar-card.featured .tar-divider { background:rgba(255,255,255,.1); }
+
+    /* Features */
+    .tar-features { padding:1.25rem 1.75rem 1.75rem; }
+    .tar-feat { display:flex; align-items:flex-start; gap:.65rem; padding:.42rem 0; font-size:.86rem; color:var(--text); border-bottom:1px solid var(--border); }
+    .tar-card.featured .tar-feat { color:rgba(255,255,255,.82); border-bottom-color:rgba(255,255,255,.08); }
+    .tar-feat:last-child { border-bottom:none; }
+    .tar-feat i { width:16px; font-size:.72rem; flex-shrink:0; margin-top:.15rem; }
+    .tar-feat.on i { color:var(--turq); }
+    .tar-card.featured .tar-feat.on i { color:#5eead4; }
+    .tar-feat.on.rose i { color:var(--rose); }
+    .tar-feat.off { color:var(--muted); }
+    .tar-card.featured .tar-feat.off { color:rgba(255,255,255,.22); }
+    .tar-feat.off i { color:#d1d5db; }
+    .tar-card.featured .tar-feat.off i { color:rgba(255,255,255,.15); }
+    .new-tag { display:inline-block; font-size:.6rem; font-weight:700; padding:.1rem .45rem; border-radius:6px; background:var(--rose-light); color:var(--rose-dark); margin-left:.35rem; vertical-align:middle; }
+
+    /* CTA */
+    .tar-cta { padding:0 1.75rem 1.75rem; }
+    .btn-tar-outline { width:100%; padding:.8rem; border-radius:11px; background:transparent; color:var(--turq); border:2px solid var(--turq); font-weight:700; font-size:.9rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:.5rem; transition:.2s; text-decoration:none; }
+    .btn-tar-outline:hover { background:var(--turq-light); color:var(--turq-dark); text-decoration:none; }
+    .btn-tar-ghost { width:100%; padding:.8rem; border-radius:11px; background:rgba(255,255,255,.1); color:#fff; border:1.5px solid rgba(255,255,255,.2); font-weight:700; font-size:.9rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:.5rem; transition:.2s; text-decoration:none; }
+    .btn-tar-ghost:hover { background:rgba(255,255,255,.18); color:#fff; text-decoration:none; }
+    .btn-tar-solid { width:100%; padding:.8rem; border-radius:11px; background:linear-gradient(135deg,var(--rose),var(--rose-dark)); color:#fff; border:none; font-weight:700; font-size:.9rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:.5rem; transition:.2s; text-decoration:none; }
+    .btn-tar-solid:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(193,0,122,.35); color:#fff; text-decoration:none; }
+
+    /* ── BANDEAU DEVIS ── */
+    .tar-devis-banner { background:linear-gradient(135deg,var(--gris-dark),#3d4549); border-radius:20px; padding:2rem 2.5rem; display:flex; align-items:center; justify-content:space-between; gap:1.5rem; margin-top:2.5rem; flex-wrap:wrap; }
+    .tar-devis-banner h3 { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:700; color:#fff; margin:0 0 .3rem; }
+    .tar-devis-banner p { font-size:.84rem; color:rgba(255,255,255,.45); margin:0; }
+    .btn-devis-banner { display:inline-flex; align-items:center; gap:.5rem; padding:.75rem 1.6rem; background:var(--rose); color:#fff; font-weight:700; border-radius:10px; text-decoration:none; transition:.2s; white-space:nowrap; }
+    .btn-devis-banner:hover { background:var(--rose-dark); color:#fff; transform:translateY(-1px); box-shadow:0 6px 18px rgba(193,0,122,.35); }
+
+    /* ── FAQ ── */
+    .tar-faq { max-width:700px; margin:3rem auto 0; }
+    .tar-faq-title { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:700; color:var(--gris-dark); text-align:center; margin-bottom:1.5rem; }
+    .tar-faq-item { background:#fff; border-radius:12px; margin-bottom:.65rem; box-shadow:0 2px 10px rgba(0,0,0,.05); overflow:hidden; }
+    .tar-faq-q { display:flex; justify-content:space-between; align-items:center; padding:1rem 1.25rem; cursor:pointer; font-weight:600; font-size:.9rem; color:var(--text); }
+    .tar-faq-q:hover { color:var(--rose); }
+    .tar-faq-q i { color:var(--muted); transition:.2s; font-size:.75rem; }
+    .tar-faq-a { display:none; padding:0 1.25rem 1rem; font-size:.86rem; color:var(--muted); line-height:1.6; }
+    .tar-faq-item.open .tar-faq-q i { transform:rotate(180deg); color:var(--rose); }
+    .tar-faq-item.open .tar-faq-a { display:block; }
+
+    @media(max-width:900px) { .tar-grid { grid-template-columns:1fr; } .tar-card.featured { transform:none; } .tar-card.featured:hover { transform:translateY(-4px); } }
+    @media(max-width:600px) { .tar-hero { padding:2rem 0 3.5rem; } .tar-devis-banner { flex-direction:column; text-align:center; } }
+  </style>
 </head>
 <body>
-  {% include "header.html" %}
+{% include "header.html" %}
 
-  <div class="container my-5">
-    <h2 class="text-center mb-4">Grille Tarifaire</h2>
-    <p class="text-center mb-5">
-      Découvrez nos différentes offres tarifaires adaptées à vos besoins.
-    </p>
+<div class="tar-hero">
+  <div class="container tar-hero-inner">
+    <div class="tar-badge"><i class="fas fa-tag"></i> Grille tarifaire</div>
+    <h1 class="tar-title">Des formules adaptées à<br><em>chaque besoin</em></h1>
+    <p class="tar-sub">Choisissez l'accompagnement qui correspond à votre structure. Tous nos tarifs sont personnalisés sur devis.</p>
+  </div>
+</div>
 
-    <div class="row">
-      <!-- Offre 1 : Basic -->
-      <div class="col-md-4">
-        <div class="card mb-4">
-          <div class="card-header text-center">
-            <h4>Offre Basic</h4>
-          </div>
-          <div class="card-body text-center">
-            <h2 class="card-title">€49/mois</h2>
-            <ul class="list-unstyled">
-              <li>Consultation mensuelle</li>
-              <li>Accès aux outils de base</li>
-              <li>Support par email</li>
-            </ul>
-            <a href="#" class="btn btn-primary">Choisir cette offre</a>
-          </div>
+<div class="tar-page">
+  <div class="container">
+
+    <div class="tar-grid">
+
+      <!-- ── ESSENTIEL ── -->
+      <div class="tar-card">
+        <div class="tar-accentbar ess"></div>
+        <div class="tar-card-head">
+          <div class="tar-plan-name">Essentiel</div>
+          <div class="tar-plan-icon ess"><i class="fas fa-seedling"></i></div>
+          <div class="tar-price">Sur devis</div>
+          <div class="tar-price-note">TPE / Auto-entrepreneur</div>
+          <div class="tar-plan-desc">Idéal pour les indépendants et petites structures qui démarrent leur activité.</div>
+        </div>
+        <div class="tar-divider"></div>
+        <div class="tar-features">
+          <div class="tar-feat on"><i class="fas fa-check"></i>Tenue comptable complète</div>
+          <div class="tar-feat on"><i class="fas fa-check"></i>Déclarations TVA</div>
+          <div class="tar-feat on"><i class="fas fa-check"></i>Bilan annuel</div>
+          <div class="tar-feat on"><i class="fas fa-check"></i>Accès espace client</div>
+          <div class="tar-feat on"><i class="fas fa-check"></i>1 rendez-vous bilan / an</div>
+          <div class="tar-feat off"><i class="fas fa-times"></i>Gestion de la paie</div>
+          <div class="tar-feat off"><i class="fas fa-times"></i>Juridique courant</div>
+          <div class="tar-feat off"><i class="fas fa-times"></i>Pilotage & tableau de bord</div>
+          <div class="tar-feat off"><i class="fas fa-times"></i>Conseil IA & digitalisation</div>
+          <div class="tar-feat off"><i class="fas fa-times"></i>Assistance prioritaire</div>
+        </div>
+        <div class="tar-cta">
+          <a href="{{ url_for('devis') }}" class="btn-tar-outline">
+            <i class="fas fa-file-invoice"></i> Demander un devis
+          </a>
         </div>
       </div>
 
-      <!-- Offre 2 : Standard -->
-      <div class="col-md-4">
-        <div class="card mb-4">
-          <div class="card-header text-center">
-            <h4>Offre Standard</h4>
-          </div>
-          <div class="card-body text-center">
-            <h2 class="card-title">€99/mois</h2>
-            <ul class="list-unstyled">
-              <li>Consultations bi-mensuelles</li>
-              <li>Accès complet aux outils</li>
-              <li>Support téléphonique</li>
-              <li>Webinaires exclusifs</li>
-            </ul>
-            <a href="#" class="btn btn-primary">Choisir cette offre</a>
-          </div>
+      <!-- ── PRO ── -->
+      <div class="tar-card featured">
+        <div class="tar-accentbar pro"></div>
+        <div class="tar-card-head">
+          <div class="popular-badge"><i class="fas fa-star" style="font-size:.6rem;margin-right:.3rem;"></i>Populaire</div>
+          <div class="tar-plan-name">Pro</div>
+          <div class="tar-plan-icon pro"><i class="fas fa-rocket"></i></div>
+          <div class="tar-price">Sur devis</div>
+          <div class="tar-price-note">PME avec salariés</div>
+          <div class="tar-plan-desc">Pour les sociétés avec salariés souhaitant un accompagnement comptable et social complet.</div>
+        </div>
+        <div class="tar-divider"></div>
+        <div class="tar-features">
+          <div class="tar-feat on"><i class="fas fa-check"></i>Tenue comptable complète</div>
+          <div class="tar-feat on"><i class="fas fa-check"></i>Déclarations TVA</div>
+          <div class="tar-feat on"><i class="fas fa-check"></i>Bilan annuel</div>
+          <div class="tar-feat on"><i class="fas fa-check"></i>Accès espace client</div>
+          <div class="tar-feat on"><i class="fas fa-check"></i>2 rendez-vous bilan / an</div>
+          <div class="tar-feat on"><i class="fas fa-check"></i>Gestion de la paie & DSN</div>
+          <div class="tar-feat on"><i class="fas fa-check"></i>Juridique courant</div>
+          <div class="tar-feat on"><i class="fas fa-check"></i>Pilotage & tableau de bord</div>
+          <div class="tar-feat off"><i class="fas fa-times"></i>Conseil IA & digitalisation</div>
+          <div class="tar-feat off"><i class="fas fa-times"></i>Assistance prioritaire</div>
+        </div>
+        <div class="tar-cta">
+          <a href="{{ url_for('devis') }}" class="btn-tar-ghost">
+            <i class="fas fa-file-invoice"></i> Demander un devis
+          </a>
         </div>
       </div>
 
-      <!-- Offre 3 : Premium -->
-      <div class="col-md-4">
-        <div class="card mb-4">
-          <div class="card-header text-center">
-            <h4>Offre Premium</h4>
-          </div>
-          <div class="card-body text-center">
-            <h2 class="card-title">€199/mois</h2>
-            <ul class="list-unstyled">
-              <li>Consultations hebdomadaires</li>
-              <li>Accès prioritaire à tous les outils</li>
-              <li>Support dédié 24/7</li>
-              <li>Analyse personnalisée</li>
-            </ul>
-            <a href="#" class="btn btn-primary">Choisir cette offre</a>
-          </div>
+      <!-- ── PREMIUM ── -->
+      <div class="tar-card">
+        <div class="tar-accentbar prem"></div>
+        <div class="tar-card-head">
+          <div class="tar-plan-name">Premium</div>
+          <div class="tar-plan-icon prem"><i class="fas fa-crown"></i></div>
+          <div class="tar-price">Sur devis</div>
+          <div class="tar-price-note">Croissance & exigence</div>
+          <div class="tar-plan-desc">L'accompagnement le plus complet pour les entreprises en forte croissance.</div>
+        </div>
+        <div class="tar-divider"></div>
+        <div class="tar-features">
+          <div class="tar-feat on rose"><i class="fas fa-check"></i>Tenue comptable complète</div>
+          <div class="tar-feat on rose"><i class="fas fa-check"></i>Déclarations TVA</div>
+          <div class="tar-feat on rose"><i class="fas fa-check"></i>Bilan annuel</div>
+          <div class="tar-feat on rose"><i class="fas fa-check"></i>Accès espace client</div>
+          <div class="tar-feat on rose"><i class="fas fa-check"></i>Rendez-vous illimités</div>
+          <div class="tar-feat on rose"><i class="fas fa-check"></i>Gestion de la paie & DSN</div>
+          <div class="tar-feat on rose"><i class="fas fa-check"></i>Juridique courant</div>
+          <div class="tar-feat on rose"><i class="fas fa-check"></i>Pilotage & tableau de bord</div>
+          <div class="tar-feat on rose"><i class="fas fa-check"></i>Conseil IA & digitalisation <span class="new-tag">Nouveau</span></div>
+          <div class="tar-feat on rose"><i class="fas fa-check"></i>Assistance prioritaire 24h</div>
+        </div>
+        <div class="tar-cta">
+          <a href="{{ url_for('devis') }}" class="btn-tar-solid">
+            <i class="fas fa-file-invoice"></i> Demander un devis
+          </a>
         </div>
       </div>
 
-      <!-- Offre 4 : Deluxe -->
-      <div class="col-md-6">
-        <div class="card mb-4">
-          <div class="card-header text-center">
-            <h4>Offre Deluxe</h4>
-          </div>
-          <div class="card-body text-center">
-            <h2 class="card-title">€299/mois</h2>
-            <ul class="list-unstyled">
-              <li>Accès illimité aux outils</li>
-              <li>Consultations illimitées</li>
-              <li>Support prioritaire</li>
-              <li>Formation personnalisée</li>
-            </ul>
-            <a href="#" class="btn btn-primary">Choisir cette offre</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Offre 5 : Enterprise -->
-      <div class="col-md-6">
-        <div class="card mb-4">
-          <div class="card-header text-center">
-            <h4>Offre Enterprise</h4>
-          </div>
-          <div class="card-body text-center">
-            <h2 class="card-title">€499/mois</h2>
-            <ul class="list-unstyled">
-              <li>Solution personnalisée</li>
-              <li>Support dédié et formation</li>
-              <li>Consultations quotidiennes</li>
-              <li>Fonctionnalités premium complètes</li>
-            </ul>
-            <a href="#" class="btn btn-primary">Choisir cette offre</a>
-          </div>
-        </div>
-      </div>
     </div>
 
-    <h4>Paiement</h4>
-    <p>Choisissez votre mode de paiement :</p>
+    <!-- BANDEAU DEVIS -->
+    <div class="tar-devis-banner">
+      <div>
+        <h3>Besoin d'une offre sur mesure ?</h3>
+        <p>Chaque entreprise est unique. Contactez-nous pour un devis entièrement personnalisé.</p>
+      </div>
+      <a href="{{ url_for('menu') }}#contact" class="btn-devis-banner">
+        <i class="fas fa-calendar-alt"></i> Prendre rendez-vous
+      </a>
+    </div>
 
-    <!-- Bouton Paiement PayPal -->
-    <a
-      href="{{ url_for('paiement_paypal') }}"
-      class="btn btn-warning mr-2"
-    >
-      Payer avec PayPal
-    </a>
+    <!-- FAQ -->
+    <div class="tar-faq">
+      <div class="tar-faq-title">Questions fréquentes</div>
 
-    <!-- Bouton Paiement Stripe -->
-    <a
-      href="{{ url_for('paiement_stripe') }}"
-      class="btn btn-info"
-    >
-      Payer avec Stripe
-    </a>
-  </div>
+      <div class="tar-faq-item">
+        <div class="tar-faq-q" onclick="toggleFaq(this)">
+          Comment sont calculés les tarifs ? <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="tar-faq-a">Nos tarifs sont établis sur devis personnalisé selon votre secteur d'activité, votre forme juridique, votre volume de pièces comptables et vos besoins spécifiques. Contactez-nous pour recevoir une proposition adaptée.</div>
+      </div>
 
-    <!-- Bouton Retour au résumé de devis -->
-    <div class="text-center mt-4">
-      <a href="{{ url_for('resume_devis') }}" class="btn btn-secondary">Retour au résumé de devis</a>
+      <div class="tar-faq-item">
+        <div class="tar-faq-q" onclick="toggleFaq(this)">
+          Puis-je changer de formule en cours d'année ? <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="tar-faq-a">Oui, il est possible de faire évoluer votre formule à tout moment. Un avenant à votre contrat sera établi pour prendre en compte les nouveaux services souhaités.</div>
+      </div>
+
+      <div class="tar-faq-item">
+        <div class="tar-faq-q" onclick="toggleFaq(this)">
+          Quels modes de paiement sont acceptés ? <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="tar-faq-a">Nous acceptons les virements bancaires, prélèvements automatiques et paiements par carte bancaire (Visa, Mastercard, American Express) via votre espace client.</div>
+      </div>
+
+      <div class="tar-faq-item">
+        <div class="tar-faq-q" onclick="toggleFaq(this)">
+          Y a-t-il un engagement minimum ? <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="tar-faq-a">Nos contrats sont établis à l'année civile, renouvelables par tacite reconduction. Une résiliation est possible avec un préavis de 3 mois avant la date anniversaire du contrat.</div>
+      </div>
+
+      <div class="tar-faq-item">
+        <div class="tar-faq-q" onclick="toggleFaq(this)">
+          Le devis est-il vraiment gratuit ? <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="tar-faq-a">Absolument. Votre demande de devis est entièrement gratuite et sans engagement. Nous vous répondons sous 24h ouvrées avec une proposition chiffrée et détaillée.</div>
+      </div>
+
     </div>
   </div>
+</div>
 
-  {% include "footer.html" %}
+{% include "footer.html" %}
 
-  <!-- Bootstrap & jQuery JS Scripts -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function toggleFaq(el) {
+    const item = el.closest('.tar-faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.tar-faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+</script>
 </body>
 </html>

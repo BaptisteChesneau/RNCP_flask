@@ -1,6 +1,7 @@
 import io
 import base64
 import os
+import secrets
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
@@ -13,7 +14,7 @@ load_dotenv()  # ✅ Loads variables from .env
 from flask_migrate import Migrate
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
-from datetime import datetime
+from datetime import datetime, timedelta
 import pytest
 from bs4 import BeautifulSoup
 
@@ -388,6 +389,7 @@ def plateforme_client():
     return render_template("plateforme_client.html")
 
 
+
 @app.route("/formulaire", methods=["GET", "POST"])
 def formulaire_client():
     utilisateur_id = session.get("utilisateur_id")
@@ -651,27 +653,123 @@ def login():
     # Affichage de la page de connexion
     return render_template("login.html")
 
+@app.route("/mot-de-passe-oublie", methods=["GET", "POST"])
+def mot_de_passe_oublie():
+    if request.method == "POST":
+        email = request.form.get("email", "").strip()
+        user = Utilisateur.query.filter_by(email=email).first()
+
+        # On répond toujours la même chose (sécurité anti-enumération)
+        if user:
+            token = secrets.token_urlsafe(32)
+            user.reset_token = token
+            user.reset_token_expiry = datetime.utcnow() + timedelta(hours=1)
+            db.session.commit()
+
+            reset_url = url_for("reset_password", token=token, _external=True)
+            msg = Message(
+                subject="Réinitialisation de votre mot de passe - ML2C CONSEIL",
+                sender=app.config["MAIL_USERNAME"],
+                recipients=[user.email],
+                body=f"""Bonjour {user.nom_utilisateur},
+
+Vous avez demandé à réinitialiser votre mot de passe.
+Cliquez sur le lien suivant (valable 1 heure) :
+
+{reset_url}
+
+Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail.
+
+— L'équipe ML2C CONSEIL
+"""
+            )
+            try:
+                mail.send(msg)
+            except Exception:
+                pass  # Ne pas révéler si l'envoi a échoué
+
+        flash("Si un compte existe avec cette adresse, un e-mail de réinitialisation a été envoyé.", "success")
+        return redirect(url_for("mot_de_passe_oublie"))
+
+    return render_template("mot_de_passe_oublie.html")
+
+
+@app.route("/reset-password/<token>", methods=["GET", "POST"])
+def reset_password(token):
+    user = Utilisateur.query.filter_by(reset_token=token).first()
+
+    if not user or not user.reset_token_expiry or user.reset_token_expiry < datetime.utcnow():
+        flash("Ce lien est invalide ou a expiré.", "danger")
+        return redirect(url_for("mot_de_passe_oublie"))
+
+    if request.method == "POST":
+        password = request.form.get("password", "").strip()
+        confirm  = request.form.get("confirm_password", "").strip()
+
+        if not password or len(password) < 8:
+            flash("Le mot de passe doit contenir au moins 8 caractères.", "danger")
+            return render_template("reset_password.html", token=token)
+
+        if password != confirm:
+            flash("Les mots de passe ne correspondent pas.", "danger")
+            return render_template("reset_password.html", token=token)
+
+        user.set_password(password)
+        user.reset_token = None
+        user.reset_token_expiry = None
+        db.session.commit()
+
+        flash("Mot de passe modifié avec succès ! Vous pouvez vous connecter.", "success")
+        return redirect(url_for("login"))
+
+    return render_template("reset_password.html", token=token)
 
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-        username = request.form.get("username")
-        email = request.form.get("email")
-        password = request.form.get("password")
+        username = request.form.get("username", "").strip()
+        email    = request.form.get("email", "").strip()
+        password = request.form.get("password", "").strip()
 
-        # Create user
-        user = Utilisateur(nom_utilisateur=username, email=email)
-        user.set_password(password)
-        db.session.add(user)
-        db.session.commit()
+        # ── Validations serveur ──
+        if not username:
+            flash("Le nom d'utilisateur est obligatoire.", "danger")
+            return render_template("signup.html")
 
-        # Start the session for the user
+        if not email or "@" not in email:
+            flash("Veuillez saisir une adresse e-mail valide.", "danger")
+            return render_template("signup.html")
+
+        if not password or len(password) < 8:
+            flash("Le mot de passe doit contenir au moins 8 caractères.", "danger")
+            return render_template("signup.html")
+
+        if not request.form.get("consent"):
+            flash("Vous devez accepter les conditions pour créer un compte.", "danger")
+            return render_template("signup.html")
+
+        # ── Email déjà utilisé ──
+        if Utilisateur.query.filter_by(email=email).first():
+            flash("Un compte existe déjà avec cette adresse e-mail.", "danger")
+            return render_template("signup.html")
+
+        # ── Création ──
+        try:
+            user = Utilisateur(nom_utilisateur=username, email=email)
+            user.set_password(password)
+            db.session.add(user)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            flash("Une erreur est survenue, veuillez réessayer.", "danger")
+            return render_template("signup.html")
+
         session["utilisateur_id"] = user.id
-        session["email"] = user.email
-        session["prenom"] = username  # For the welcome message
+        session["email"]          = user.email
+        session["prenom"]         = username
 
-        # Redirect to the customer form
+        flash("Compte créé avec succès ! Bienvenue 🎉", "success")
         return redirect(url_for("formulaire_client"))
 
     return render_template("signup.html")

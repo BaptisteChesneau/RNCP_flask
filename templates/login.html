@@ -1,45 +1,188 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>Connexion</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion - ML2C CONSEIL</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    :root {
+      --rose: #C1007A; --rose-lt: #fce4f3;
+      --turq: #4FA695; --turq-lt: #d4f0ec;
+      --dark: #2d3436; --bg: #f4f5f7;
+    }
+    body { background: var(--bg); font-family: 'DM Sans', sans-serif; }
+
+    .login-wrap { min-height: calc(100vh - 160px); display: flex; align-items: center; justify-content: center; padding: 3rem 1rem; }
+
+    .login-card { background: #fff; border-radius: 24px; box-shadow: 0 4px 40px rgba(0,0,0,.10); width: 100%; max-width: 460px; overflow: hidden; animation: cardIn .4s ease both; }
+    @keyframes cardIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+    .card-top { background: linear-gradient(135deg, var(--dark) 0%, #1e3a3a 100%); padding: 2.5rem 2.5rem 2rem; position: relative; overflow: hidden; }
+    .card-top::before { content: ''; position: absolute; top: -40px; right: -40px; width: 160px; height: 160px; border-radius: 50%; background: rgba(79,166,149,.12); }
+    .card-top::after { content: ''; position: absolute; bottom: -30px; left: -30px; width: 120px; height: 120px; border-radius: 50%; background: rgba(193,0,122,.10); }
+    .ct-inner { position: relative; z-index: 2; }
+    .ct-logo { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 700; color: rgba(255,255,255,.5); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 1rem; }
+    .ct-title { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 700; color: #fff; line-height: 1.1; margin-bottom: .4rem; }
+    .ct-title em { color: #5eead4; font-style: italic; }
+    .ct-sub { font-size: .83rem; color: rgba(255,255,255,.5); margin: 0; }
+
+    .card-body-form { padding: 2.25rem 2.5rem 2.5rem; }
+
+    .field-group { margin-bottom: 1.25rem; }
+    .field-label { display: block; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #6b7280; margin-bottom: .45rem; }
+    .field-input-wrap { position: relative; }
+    .field-icon { position: absolute; left: .9rem; top: 50%; transform: translateY(-50%); color: #c4cbd0; font-size: .85rem; pointer-events: none; }
+    .field-input { width: 100%; padding: .75rem .9rem .75rem 2.4rem; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: .9rem; color: #333; background: #fafafa; transition: border-color .2s, box-shadow .2s; font-family: 'DM Sans', sans-serif; outline: none; }
+    .field-input:focus { border-color: var(--turq); box-shadow: 0 0 0 3px rgba(79,166,149,.12); background: #fff; }
+    .field-input.error { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,.1); }
+
+    .pw-toggle-btn { position: absolute; right: .75rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #9ca3af; font-size: .9rem; padding: 0; line-height: 1; transition: color .2s; }
+    .pw-toggle-btn:hover { color: var(--turq); }
+
+    .forgot-link { display: block; text-align: right; font-size: .78rem; color: var(--rose); font-weight: 600; margin-top: .4rem; text-decoration: none; transition: .2s; }
+    .forgot-link:hover { color: #9a0062; text-decoration: underline; }
+
+    .btn-login { width: 100%; padding: .9rem; background: linear-gradient(135deg, var(--rose), #9a0062); color: #fff; font-weight: 700; font-size: .95rem; border: none; border-radius: 12px; cursor: pointer; transition: .25s; display: flex; align-items: center; justify-content: center; gap: .5rem; font-family: 'DM Sans', sans-serif; margin-top: 1.75rem; }
+    .btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(193,0,122,.35); }
+
+    .divider { display: flex; align-items: center; gap: .75rem; margin: 1.5rem 0; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #e5e7eb; }
+    .divider span { font-size: .75rem; color: #9ca3af; white-space: nowrap; }
+
+    .signup-link { text-align: center; font-size: .85rem; color: #9ca3af; }
+    .signup-link a { color: var(--rose); font-weight: 700; text-decoration: none; }
+    .signup-link a:hover { color: #9a0062; text-decoration: underline; }
+
+    .flash-msg { padding: .75rem 1rem; border-radius: 10px; margin-bottom: 1.25rem; font-size: .85rem; display: flex; align-items: flex-start; gap: .5rem; }
+    .flash-msg.danger  { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+    .flash-msg.success { background: var(--turq-lt); color: #2d7a70; border: 1px solid #a7f3d0; }
+    .flash-msg.warning { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+  </style>
 </head>
 <body>
+{% include "header.html" %}
 
-    <div class="container">
+<div class="login-wrap">
+  <div class="login-card">
 
-        <h1>Connexion</h1>
-
-        <!-- Affichage des messages flash -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="flashes">
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}">{{ message }}</div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
-
-        <!-- Formulaire de connexion -->
-        <form action="{{ url_for('login') }}" method="POST" class="form-connexion">
-            <div class="form-group">
-                <label for="email">Adresse e-mail :</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-
-            <div class="form-group">
-                <label for="password">Mot de passe :</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-
-            <button type="submit" class="btn">Se connecter</button>
-        </form>
-
-        <p>Pas encore de compte ? <a href="{{ url_for('signup') }}">Créer un compte</a></p>
-
+    <!-- EN-TÊTE -->
+    <div class="card-top">
+      <div class="ct-inner">
+        <div class="ct-logo">ML2C CONSEIL</div>
+        <h1 class="ct-title">Bon<br><em>retour !</em></h1>
+        <p class="ct-sub">Connectez-vous à votre espace client</p>
+      </div>
     </div>
 
+    <!-- FORMULAIRE -->
+    <div class="card-body-form">
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="flash-msg {{ category }}">
+              <i class="fas {% if category == 'danger' %}fa-exclamation-circle{% elif category == 'success' %}fa-check-circle{% else %}fa-exclamation-triangle{% endif %}"></i>
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <form action="{{ url_for('login') }}" method="POST" id="loginForm" novalidate>
+
+        <!-- Email -->
+        <div class="field-group">
+          <label class="field-label" for="email">Adresse e-mail</label>
+          <div class="field-input-wrap">
+            <i class="fas fa-envelope field-icon"></i>
+            <input type="email" class="field-input" id="email" name="email"
+              placeholder="votre@email.com" required autocomplete="email">
+          </div>
+        </div>
+
+        <!-- Mot de passe + œil + mot de passe oublié -->
+        <div class="field-group">
+          <label class="field-label" for="password">Mot de passe</label>
+          <div class="field-input-wrap">
+            <i class="fas fa-lock field-icon"></i>
+            <input type="password" class="field-input" id="password" name="password"
+              placeholder="Votre mot de passe" required autocomplete="current-password"
+              style="padding-right: 2.8rem;">
+            <button type="button" class="pw-toggle-btn" id="pwToggle" aria-label="Afficher/masquer le mot de passe">
+              <i class="fas fa-eye" id="pwToggleIcon"></i>
+            </button>
+          </div>
+          <a href="{{ url_for('mot_de_passe_oublie') if 'mot_de_passe_oublie' in url_for.__globals__['current_app'].view_functions else '#' }}" class="forgot-link">
+            Mot de passe oublié ?
+          </a>
+        </div>
+
+        <button type="submit" class="btn-login">
+          <i class="fas fa-sign-in-alt"></i> Se connecter
+        </button>
+
+      </form>
+
+      <div class="divider"><span>Pas encore de compte ?</span></div>
+      <div class="signup-link">
+        <a href="{{ url_for('signup') }}"><i class="fas fa-user-plus"></i> Créer un compte</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% include "footer.html" %}
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Header sticky
+  const hdr = document.getElementById('mainHeader');
+  if (hdr) window.addEventListener('scroll', () => hdr.classList.toggle('scrolled', window.scrollY > 60));
+
+  // ── ŒIL MOT DE PASSE ──
+  const pwInput = document.getElementById('password');
+  document.getElementById('pwToggle').addEventListener('click', function() {
+    const icon = document.getElementById('pwToggleIcon');
+    if (pwInput.type === 'password') {
+      pwInput.type = 'text';
+      icon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+      pwInput.type = 'password';
+      icon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+    pwInput.focus();
+  });
+
+  // ── VALIDATION AVANT ENVOI ──
+  document.getElementById('loginForm').addEventListener('submit', function(e) {
+    let valid = true;
+
+    const emailEl = document.getElementById('email');
+    if (!emailEl.value.trim() || !emailEl.value.includes('@')) {
+      emailEl.classList.add('error'); valid = false;
+    } else { emailEl.classList.remove('error'); }
+
+    if (!pwInput.value.trim()) {
+      pwInput.classList.add('error'); valid = false;
+    } else { pwInput.classList.remove('error'); }
+
+    if (!valid) {
+      e.preventDefault();
+      const firstError = document.querySelector('.field-input.error');
+      if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+
+  // Retirer erreur à la saisie
+  document.querySelectorAll('.field-input').forEach(input => {
+    input.addEventListener('input', () => input.classList.remove('error'));
+  });
+</script>
 </body>
 </html>

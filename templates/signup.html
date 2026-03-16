@@ -12,83 +12,37 @@
     :root {
       --rose: #C1007A; --rose-lt: #fce4f3;
       --turq: #4FA695; --turq-lt: #d4f0ec;
-      --dark: #2d3436; --dark2: #3d4549; --bg: #f4f5f7;
+      --dark: #2d3436; --bg: #f4f5f7;
     }
     body { background: var(--bg); font-family: 'DM Sans', sans-serif; }
 
-    /* WRAPPER CENTRÉ */
-    .signup-wrap {
-      min-height: calc(100vh - 160px);
-      display: flex; align-items: center; justify-content: center;
-      padding: 3rem 1rem;
-    }
+    .signup-wrap { min-height: calc(100vh - 160px); display: flex; align-items: center; justify-content: center; padding: 3rem 1rem; }
 
-    /* CARTE */
-    .signup-card {
-      background: #fff; border-radius: 24px;
-      box-shadow: 0 4px 40px rgba(0,0,0,.10);
-      width: 100%; max-width: 480px;
-      overflow: hidden;
-    }
+    .signup-card { background: #fff; border-radius: 24px; box-shadow: 0 4px 40px rgba(0,0,0,.10); width: 100%; max-width: 480px; overflow: hidden; animation: cardIn .4s ease both; }
+    @keyframes cardIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
 
-    /* EN-TÊTE CARTE */
-    .card-top {
-      background: linear-gradient(135deg, var(--dark) 0%, #1e3a3a 100%);
-      padding: 2.5rem 2.5rem 2rem;
-      position: relative; overflow: hidden;
-    }
-    .card-top::before {
-      content: ''; position: absolute;
-      top: -40px; right: -40px; width: 160px; height: 160px;
-      border-radius: 50%; background: rgba(79,166,149,.12);
-    }
-    .card-top::after {
-      content: ''; position: absolute;
-      bottom: -30px; left: -30px; width: 120px; height: 120px;
-      border-radius: 50%; background: rgba(193,0,122,.10);
-    }
+    .card-top { background: linear-gradient(135deg, var(--dark) 0%, #1e3a3a 100%); padding: 2.5rem 2.5rem 2rem; position: relative; overflow: hidden; }
+    .card-top::before { content: ''; position: absolute; top: -40px; right: -40px; width: 160px; height: 160px; border-radius: 50%; background: rgba(79,166,149,.12); }
+    .card-top::after { content: ''; position: absolute; bottom: -30px; left: -30px; width: 120px; height: 120px; border-radius: 50%; background: rgba(193,0,122,.10); }
     .ct-inner { position: relative; z-index: 2; }
-    .ct-logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1rem; font-weight: 700; color: rgba(255,255,255,.5);
-      letter-spacing: .12em; text-transform: uppercase; margin-bottom: 1rem;
-    }
-    .ct-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.9rem; font-weight: 700; color: #fff; line-height: 1.1; margin-bottom: .4rem;
-    }
+    .ct-logo { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 700; color: rgba(255,255,255,.5); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 1rem; }
+    .ct-title { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 700; color: #fff; line-height: 1.1; margin-bottom: .4rem; }
     .ct-title em { color: #5eead4; font-style: italic; }
     .ct-sub { font-size: .83rem; color: rgba(255,255,255,.5); margin: 0; }
 
-    /* CORPS FORMULAIRE */
     .card-body-form { padding: 2.25rem 2.5rem 2.5rem; }
 
-    /* CHAMPS */
     .field-group { margin-bottom: 1.25rem; }
-    .field-label {
-      display: block; font-size: .75rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: .08em;
-      color: #6b7280; margin-bottom: .45rem;
-    }
+    .field-label { display: block; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #6b7280; margin-bottom: .45rem; }
     .field-input-wrap { position: relative; }
-    .field-icon {
-      position: absolute; left: .9rem; top: 50%; transform: translateY(-50%);
-      color: #c4cbd0; font-size: .85rem; pointer-events: none;
-    }
-    .field-input {
-      width: 100%; padding: .75rem .9rem .75rem 2.4rem;
-      border: 1.5px solid #e5e7eb; border-radius: 10px;
-      font-size: .9rem; color: #333; background: #fafafa;
-      transition: border-color .2s, box-shadow .2s;
-      font-family: 'DM Sans', sans-serif;
-      outline: none;
-    }
-    .field-input:focus {
-      border-color: var(--turq);
-      box-shadow: 0 0 0 3px rgba(79,166,149,.12);
-      background: #fff;
-    }
+    .field-icon { position: absolute; left: .9rem; top: 50%; transform: translateY(-50%); color: #c4cbd0; font-size: .85rem; pointer-events: none; }
+    .field-input { width: 100%; padding: .75rem .9rem .75rem 2.4rem; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: .9rem; color: #333; background: #fafafa; transition: border-color .2s, box-shadow .2s; font-family: 'DM Sans', sans-serif; outline: none; }
+    .field-input:focus { border-color: var(--turq); box-shadow: 0 0 0 3px rgba(79,166,149,.12); background: #fff; }
     .field-input.error { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,.1); }
+
+    /* ŒIL MOT DE PASSE */
+    .pw-toggle-btn { position: absolute; right: .75rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #9ca3af; font-size: .9rem; padding: 0; line-height: 1; transition: color .2s; }
+    .pw-toggle-btn:hover { color: var(--turq); }
 
     /* FORCE MOT DE PASSE */
     .pw-strength { margin-top: .45rem; display: none; }
@@ -97,93 +51,36 @@
     .pw-bar-fill { height: 100%; border-radius: 2px; transition: width .3s, background .3s; width: 0%; }
     .pw-label { font-size: .72rem; color: #9ca3af; }
 
-    /* CASE À COCHER PERSONNALISÉE */
-    .consent-box {
-      background: #f8f9fb; border: 1.5px solid #e5e7eb;
-      border-radius: 12px; padding: 1.1rem 1.2rem;
-      margin-bottom: 1.5rem; transition: border-color .2s;
-    }
+    /* CONSENTEMENT */
+    .consent-box { background: #f8f9fb; border: 1.5px solid #e5e7eb; border-radius: 12px; padding: 1.1rem 1.2rem; margin-bottom: .75rem; transition: border-color .2s; }
     .consent-box.checked { border-color: var(--turq); background: var(--turq-lt); }
     .consent-box.error-box { border-color: #ef4444; background: #fef2f2; }
-
-    .consent-label {
-      display: flex; align-items: flex-start; gap: .75rem;
-      cursor: pointer; user-select: none; margin: 0;
-    }
-
-    /* checkbox cachée + custom */
+    .consent-label { display: flex; align-items: flex-start; gap: .75rem; cursor: pointer; user-select: none; margin: 0; }
     .consent-checkbox { display: none; }
-    .custom-check {
-      width: 20px; height: 20px; border-radius: 6px;
-      border: 2px solid #d1d5db; background: #fff;
-      flex-shrink: 0; margin-top: .1rem;
-      display: flex; align-items: center; justify-content: center;
-      transition: .2s;
-    }
-    .consent-checkbox:checked ~ .custom-check {
-      background: var(--turq); border-color: var(--turq);
-    }
-    .consent-checkbox:checked ~ .custom-check::after {
-      content: ''; display: block;
-      width: 5px; height: 9px;
-      border: 2px solid #fff; border-top: none; border-left: none;
-      transform: rotate(45deg) translate(-1px, -1px);
-    }
-
-    .consent-text {
-      font-size: .84rem; color: #6b7280; line-height: 1.6;
-    }
-    .consent-text a {
-      color: var(--rose); font-weight: 600; text-decoration: none;
-      border-bottom: 1px dashed var(--rose); transition: .2s;
-    }
+    .custom-check { width: 20px; height: 20px; border-radius: 6px; border: 2px solid #d1d5db; background: #fff; flex-shrink: 0; margin-top: .1rem; display: flex; align-items: center; justify-content: center; transition: .2s; }
+    .consent-checkbox:checked ~ .custom-check { background: var(--turq); border-color: var(--turq); }
+    .consent-checkbox:checked ~ .custom-check::after { content: ''; display: block; width: 5px; height: 9px; border: 2px solid #fff; border-top: none; border-left: none; transform: rotate(45deg) translate(-1px, -1px); }
+    .consent-text { font-size: .84rem; color: #6b7280; line-height: 1.6; }
+    .consent-text a { color: var(--rose); font-weight: 600; text-decoration: none; border-bottom: 1px dashed var(--rose); transition: .2s; }
     .consent-text a:hover { color: #9a0062; border-bottom-color: #9a0062; }
-
-    /* MESSAGE ERREUR CONSENT */
-    .consent-error {
-      display: none; font-size: .78rem; color: #ef4444;
-      display: flex; align-items: center; gap: .4rem;
-      margin-top: .6rem;
-    }
+    .consent-error { display: none; font-size: .78rem; color: #ef4444; align-items: center; gap: .4rem; margin-bottom: 1rem; }
     .consent-error.show { display: flex; }
 
-    /* BOUTON SUBMIT */
-    .btn-signup {
-      width: 100%; padding: .9rem;
-      background: linear-gradient(135deg, var(--rose), #9a0062);
-      color: #fff; font-weight: 700; font-size: .95rem;
-      border: none; border-radius: 12px; cursor: pointer;
-      transition: .25s; display: flex; align-items: center; justify-content: center; gap: .5rem;
-      font-family: 'DM Sans', sans-serif;
-    }
+    .btn-signup { width: 100%; padding: .9rem; background: linear-gradient(135deg, var(--rose), #9a0062); color: #fff; font-weight: 700; font-size: .95rem; border: none; border-radius: 12px; cursor: pointer; transition: .25s; display: flex; align-items: center; justify-content: center; gap: .5rem; font-family: 'DM Sans', sans-serif; }
     .btn-signup:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(193,0,122,.35); }
     .btn-signup:disabled { opacity: .6; cursor: not-allowed; transform: none; box-shadow: none; }
 
-    /* SÉPARATEUR */
     .divider { display: flex; align-items: center; gap: .75rem; margin: 1.5rem 0; }
     .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #e5e7eb; }
     .divider span { font-size: .75rem; color: #9ca3af; white-space: nowrap; }
 
-    /* LIEN CONNEXION */
-    .login-link {
-      text-align: center; font-size: .85rem; color: #9ca3af;
-    }
-    .login-link a {
-      color: var(--rose); font-weight: 700; text-decoration: none;
-    }
+    .login-link { text-align: center; font-size: .85rem; color: #9ca3af; }
+    .login-link a { color: var(--rose); font-weight: 700; text-decoration: none; }
     .login-link a:hover { color: #9a0062; text-decoration: underline; }
 
-    /* FLASH MESSAGES */
-    .flash-msg {
-      padding: .75rem 1rem; border-radius: 10px; margin-bottom: 1.25rem;
-      font-size: .85rem; display: flex; align-items: flex-start; gap: .5rem;
-    }
-    .flash-msg.danger { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+    .flash-msg { padding: .75rem 1rem; border-radius: 10px; margin-bottom: 1.25rem; font-size: .85rem; display: flex; align-items: flex-start; gap: .5rem; }
+    .flash-msg.danger  { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
     .flash-msg.success { background: var(--turq-lt); color: #2d7a70; border: 1px solid #a7f3d0; }
-
-    /* ANIMATION ENTRÉE */
-    .signup-card { animation: cardIn .4s ease both; }
-    @keyframes cardIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
   </style>
 </head>
 <body>
@@ -204,7 +101,6 @@
     <!-- FORMULAIRE -->
     <div class="card-body-form">
 
-      <!-- Flash messages -->
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
           {% for category, message in messages %}
@@ -238,13 +134,17 @@
           </div>
         </div>
 
-        <!-- Mot de passe -->
+        <!-- Mot de passe + œil -->
         <div class="field-group">
           <label class="field-label" for="signup-password">Mot de passe</label>
           <div class="field-input-wrap">
             <i class="fas fa-lock field-icon"></i>
             <input type="password" class="field-input" id="signup-password" name="password"
-              placeholder="Minimum 8 caractères" required autocomplete="new-password">
+              placeholder="Minimum 8 caractères" required autocomplete="new-password"
+              style="padding-right: 2.8rem;">
+            <button type="button" class="pw-toggle-btn" id="pwToggle" aria-label="Afficher/masquer le mot de passe">
+              <i class="fas fa-eye" id="pwToggleIcon"></i>
+            </button>
           </div>
           <div class="pw-strength" id="pwStrength">
             <div class="pw-bar-bg"><div class="pw-bar-fill" id="pwBar"></div></div>
@@ -252,9 +152,7 @@
           </div>
         </div>
 
-        <!-- ════════════════════════════════
-             CASE À COCHER OBLIGATOIRE
-        ════════════════════════════════ -->
+        <!-- Consentement -->
         <div class="consent-box" id="consentBox">
           <label class="consent-label" for="consent">
             <input type="checkbox" class="consent-checkbox" id="consent" name="consent" required>
@@ -268,13 +166,11 @@
             </span>
           </label>
         </div>
-        <!-- Message d'erreur si non coché -->
         <div class="consent-error" id="consentError">
           <i class="fas fa-exclamation-circle"></i>
           Vous devez accepter les conditions pour créer un compte.
         </div>
 
-        <!-- BOUTON -->
         <button type="submit" class="btn-signup" id="btnSignup">
           <i class="fas fa-user-plus"></i> Créer mon compte
         </button>
@@ -282,7 +178,6 @@
       </form>
 
       <div class="divider"><span>Déjà inscrit ?</span></div>
-
       <div class="login-link">
         <a href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt"></i> Se connecter</a>
       </div>
@@ -300,40 +195,22 @@
   const hdr = document.getElementById('mainHeader');
   if (hdr) window.addEventListener('scroll', () => hdr.classList.toggle('scrolled', window.scrollY > 60));
 
-  // ── CASE À COCHER — style dynamique ──
-  const checkbox    = document.getElementById('consent');
-  const consentBox  = document.getElementById('consentBox');
-  const customCheck = document.getElementById('customCheck');
-  const consentErr  = document.getElementById('consentError');
+  // ── ŒIL MOT DE PASSE ──
+  const pwInput = document.getElementById('signup-password');
 
-  checkbox.addEventListener('change', () => {
-    consentBox.classList.toggle('checked', checkbox.checked);
-    consentBox.classList.remove('error-box');
-    if (checkbox.checked) {
-      consentErr.classList.remove('show');
-    }
-    // Sync visuel custom check (redondant mais sûr)
-    if (checkbox.checked) {
-      customCheck.style.background   = 'var(--turq)';
-      customCheck.style.borderColor  = 'var(--turq)';
+  document.getElementById('pwToggle').addEventListener('click', function() {
+    const icon = document.getElementById('pwToggleIcon');
+    if (pwInput.type === 'password') {
+      pwInput.type = 'text';
+      icon.classList.replace('fa-eye', 'fa-eye-slash');
     } else {
-      customCheck.style.background   = '#fff';
-      customCheck.style.borderColor  = '#d1d5db';
+      pwInput.type = 'password';
+      icon.classList.replace('fa-eye-slash', 'fa-eye');
     }
-  });
-
-  // ── VALIDATION FORMULAIRE ──
-  document.getElementById('signupForm').addEventListener('submit', function(e) {
-    if (!checkbox.checked) {
-      e.preventDefault();
-      consentBox.classList.add('error-box');
-      consentErr.classList.add('show');
-      consentBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+    pwInput.focus();
   });
 
   // ── FORCE MOT DE PASSE ──
-  const pwInput  = document.getElementById('signup-password');
   const pwBar    = document.getElementById('pwBar');
   const pwLabel  = document.getElementById('pwLabel');
   const pwStrBox = document.getElementById('pwStrength');
@@ -343,10 +220,10 @@
     pwStrBox.classList.toggle('visible', val.length > 0);
 
     let score = 0;
-    if (val.length >= 8)  score++;
-    if (/[A-Z]/.test(val)) score++;
-    if (/[0-9]/.test(val)) score++;
-    if (/[^A-Za-z0-9]/.test(val)) score++;
+    if (val.length >= 8)           score++;
+    if (/[A-Z]/.test(val))         score++;
+    if (/[0-9]/.test(val))         score++;
+    if (/[^A-Za-z0-9]/.test(val))  score++;
 
     const levels = [
       { w: '25%',  bg: '#ef4444', lbl: 'Très faible' },
@@ -359,6 +236,56 @@
     pwBar.style.background = lvl.bg;
     pwLabel.textContent    = lvl.lbl;
     pwLabel.style.color    = lvl.bg;
+  });
+
+  // ── CONSENTEMENT ──
+  const checkbox    = document.getElementById('consent');
+  const consentBox  = document.getElementById('consentBox');
+  const customCheck = document.getElementById('customCheck');
+  const consentErr  = document.getElementById('consentError');
+
+  checkbox.addEventListener('change', () => {
+    consentBox.classList.toggle('checked', checkbox.checked);
+    consentBox.classList.remove('error-box');
+    consentErr.classList.toggle('show', !checkbox.checked && consentErr.classList.contains('show'));
+    customCheck.style.background  = checkbox.checked ? 'var(--turq)' : '#fff';
+    customCheck.style.borderColor = checkbox.checked ? 'var(--turq)' : '#d1d5db';
+  });
+
+  // ── VALIDATION AVANT ENVOI ──
+  document.getElementById('signupForm').addEventListener('submit', function(e) {
+    let valid = true;
+
+    const usernameEl = document.getElementById('signup-username');
+    if (!usernameEl.value.trim()) {
+      usernameEl.classList.add('error'); valid = false;
+    } else { usernameEl.classList.remove('error'); }
+
+    const emailEl = document.getElementById('signup-email');
+    if (!emailEl.value.trim() || !emailEl.value.includes('@')) {
+      emailEl.classList.add('error'); valid = false;
+    } else { emailEl.classList.remove('error'); }
+
+    if (!pwInput.value.trim() || pwInput.value.length < 8) {
+      pwInput.classList.add('error'); valid = false;
+    } else { pwInput.classList.remove('error'); }
+
+    if (!checkbox.checked) {
+      consentBox.classList.add('error-box');
+      consentErr.classList.add('show');
+      valid = false;
+    }
+
+    if (!valid) {
+      e.preventDefault();
+      const firstError = document.querySelector('.field-input.error, .consent-box.error-box');
+      if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+
+  // Retirer erreur à la saisie
+  document.querySelectorAll('.field-input').forEach(input => {
+    input.addEventListener('input', () => input.classList.remove('error'));
   });
 </script>
 </body>

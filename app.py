@@ -1032,7 +1032,7 @@ def supprimer_carte():
     return redirect(url_for("parametres"))
 
 
-@app.route("/ajouter-carte-test")
+@app.route("/ajouter-carte-test", methods=["GET", "POST"])
 def ajouter_carte_test():
     session["carte_bancaire"] = {
         "nom": "Jean Dupont",

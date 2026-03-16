@@ -17,16 +17,8 @@
     }
     body { background:#f0f2f5; font-family:'DM Sans',sans-serif; }
 
-    /* ── HERO ── */
-    .pay-hero {
-      background:linear-gradient(135deg,#1e2729 0%,#2d3436 55%,#1a3333 100%);
-      padding:2.25rem 0 3.25rem; position:relative; overflow:hidden; margin-bottom:-2rem;
-    }
-    .pay-hero::before {
-      content:''; position:absolute; inset:0;
-      background:radial-gradient(ellipse at 85% 40%,rgba(79,166,149,.16) 0%,transparent 55%),
-                 radial-gradient(ellipse at 8% 85%,rgba(193,0,122,.12) 0%,transparent 45%);
-    }
+    .pay-hero { background:linear-gradient(135deg,#1e2729 0%,#2d3436 55%,#1a3333 100%); padding:2.25rem 0 3.25rem; position:relative; overflow:hidden; margin-bottom:-2rem; }
+    .pay-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 85% 40%,rgba(79,166,149,.16) 0%,transparent 55%), radial-gradient(ellipse at 8% 85%,rgba(193,0,122,.12) 0%,transparent 45%); }
     .pay-hero-inner { position:relative; z-index:1; }
     .pay-breadcrumb { font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:.6rem; }
     .pay-breadcrumb a { color:rgba(255,255,255,.35); text-decoration:none; transition:.2s; }
@@ -37,11 +29,9 @@
     .pay-title em { color:#5eead4; font-style:italic; }
     .pay-sub { font-size:.86rem; color:rgba(255,255,255,.45); margin:0; }
 
-    /* ── PAGE ── */
     .pay-page { padding:2.5rem 0 4rem; }
     .pay-layout { display:grid; grid-template-columns:1fr 360px; gap:1.75rem; align-items:start; }
 
-    /* ── CARD ── */
     .pay-card { background:#fff; border-radius:20px; box-shadow:0 6px 32px rgba(0,0,0,.07); overflow:hidden; }
     .pay-card-head { padding:1.4rem 1.75rem; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:.75rem; }
     .pay-card-head-ico { width:38px; height:38px; border-radius:10px; background:var(--rose-light); color:var(--rose); display:flex; align-items:center; justify-content:center; font-size:.95rem; }
@@ -49,13 +39,7 @@
     .pay-card-head p { font-size:.78rem; color:var(--muted); margin:0; }
     .pay-card-body { padding:1.75rem; }
 
-    /* ── RÉSEAUX ACCEPTÉS ── */
-    .networks-accepted {
-      display:flex; align-items:center; gap:.75rem; flex-wrap:wrap;
-      padding:1rem 1.25rem; background:#f8f9fb;
-      border-radius:12px; margin-bottom:1.75rem;
-      border:1.5px solid var(--border);
-    }
+    .networks-accepted { display:flex; align-items:center; gap:.75rem; flex-wrap:wrap; padding:1rem 1.25rem; background:#f8f9fb; border-radius:12px; margin-bottom:1.75rem; border:1.5px solid var(--border); }
     .networks-accepted-label { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); }
     .net-visa { font-weight:900; font-style:italic; color:#1a1f71; font-size:1.1rem; font-family:Georgia,serif; }
     .net-mc { display:flex; align-items:center; }
@@ -64,16 +48,7 @@
     .net-mc-c:last-child { background:#f79e1b; }
     .net-amex { font-size:.72rem; font-weight:800; color:#016fd0; letter-spacing:.02em; background:#e8f2ff; border-radius:5px; padding:3px 8px; border:1px solid #bfdbfe; }
 
-    /* ── PREVIEW CARTE ── */
-    .card-preview {
-      width:100%; aspect-ratio:1.586;
-      border-radius:18px; padding:1.6rem 1.75rem;
-      position:relative; overflow:hidden;
-      background:linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%);
-      box-shadow:0 20px 55px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08);
-      color:#fff; margin-bottom:1.75rem;
-      transition:transform .3s ease;
-    }
+    .card-preview { width:100%; aspect-ratio:1.586; border-radius:18px; padding:1.6rem 1.75rem; position:relative; overflow:hidden; background:linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%); box-shadow:0 20px 55px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08); color:#fff; margin-bottom:1.75rem; transition:transform .3s ease; }
     .card-preview:hover { transform:translateY(-3px) rotateX(2deg); }
     .cp-circle-1 { position:absolute; top:-50px; right:-30px; width:200px; height:200px; border-radius:50%; background:rgba(255,255,255,.04); pointer-events:none; }
     .cp-circle-2 { position:absolute; bottom:-60px; left:-20px; width:180px; height:180px; border-radius:50%; background:rgba(193,0,122,.1); pointer-events:none; }
@@ -97,7 +72,6 @@
     .cp-lbl { font-size:.55rem; text-transform:uppercase; letter-spacing:.12em; color:rgba(255,255,255,.35); margin-bottom:.18rem; }
     .cp-val { font-family:'Share Tech Mono','Courier New',monospace; font-size:.82rem; color:rgba(255,255,255,.85); }
 
-    /* ── CHAMPS ── */
     .field-wrap { margin-bottom:1.1rem; }
     .field-label { display:block; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin-bottom:.4rem; }
     .field-input { width:100%; padding:.75rem 1rem; border:1.5px solid var(--border); border-radius:10px; font-size:.92rem; color:var(--text); background:#fafbfc; transition:.2s; outline:none; font-family:'DM Sans',sans-serif; }
@@ -106,22 +80,11 @@
     .field-row { display:grid; gap:.9rem; }
     .field-row.col2 { grid-template-columns:1fr 1fr; }
     .field-row.col3 { grid-template-columns:1.5fr 1fr 1fr; }
-
-    /* Hint CVV */
     .cvv-hint { font-size:.7rem; color:var(--muted); margin-top:.3rem; display:flex; align-items:center; gap:.3rem; }
 
-    /* ── BOUTON VALIDER ── */
-    .btn-pay-submit {
-      width:100%; padding:.9rem; border-radius:12px;
-      background:linear-gradient(135deg,var(--rose),var(--rose-dark));
-      color:#fff; font-weight:700; font-size:.97rem;
-      border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:.55rem;
-      transition:.25s; margin-top:1.35rem;
-      box-shadow:0 4px 18px rgba(193,0,122,.28);
-    }
+    .btn-pay-submit { width:100%; padding:.9rem; border-radius:12px; background:linear-gradient(135deg,var(--rose),var(--rose-dark)); color:#fff; font-weight:700; font-size:.97rem; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:.55rem; transition:.25s; margin-top:1.35rem; box-shadow:0 4px 18px rgba(193,0,122,.28); }
     .btn-pay-submit:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(193,0,122,.42); }
 
-    /* ── RÉCAP DROITE ── */
     .recap-card { background:#fff; border-radius:20px; box-shadow:0 6px 32px rgba(0,0,0,.07); overflow:hidden; position:sticky; top:100px; }
     .recap-head { background:linear-gradient(135deg,var(--gris-dark),#3d4549); padding:1.25rem 1.5rem; color:#fff; }
     .recap-head h3 { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:700; margin:0 0 .2rem; }
@@ -139,17 +102,12 @@
     .recap-back a:hover { color:var(--rose); }
 
     @media(max-width:900px) { .pay-layout { grid-template-columns:1fr; } .recap-card { position:static; } }
-    @media(max-width:600px) {
-      .pay-card-body { padding:1.1rem 1rem; }
-      .field-row.col3 { grid-template-columns:1fr 1fr; }
-      .card-preview { padding:1.1rem 1.25rem; }
-    }
+    @media(max-width:600px) { .pay-card-body { padding:1.1rem 1rem; } .field-row.col3 { grid-template-columns:1fr 1fr; } .card-preview { padding:1.1rem 1.25rem; } }
   </style>
 </head>
 <body>
 {% include "header.html" %}
 
-<!-- HERO -->
 <div class="pay-hero">
   <div class="container pay-hero-inner">
     <div class="pay-breadcrumb">
@@ -165,7 +123,7 @@
   <div class="container">
     <div class="pay-layout">
 
-      <!-- ════ COLONNE GAUCHE ════ -->
+      <!-- COLONNE GAUCHE -->
       <div>
         <div class="pay-card">
           <div class="pay-card-head">
@@ -177,7 +135,6 @@
           </div>
           <div class="pay-card-body">
 
-            <!-- Réseaux acceptés -->
             <div class="networks-accepted">
               <span class="networks-accepted-label">Réseaux acceptés</span>
               <span class="net-visa">VISA</span>
@@ -185,7 +142,7 @@
               <span class="net-amex">AMERICAN EXPRESS</span>
             </div>
 
-            <!-- Preview carte temps réel -->
+            <!-- Preview carte -->
             <div class="card-preview">
               <div class="cp-circle-1"></div>
               <div class="cp-circle-2"></div>
@@ -228,11 +185,11 @@
             <!-- Formulaire -->
             <form action="{{ url_for('ajouter_carte_test') }}" method="POST" id="formCarte" novalidate>
 
-              <!-- Numéro -->
+              <!-- Numéro — maxlength 22 : 16 chiffres + 3 doubles espaces -->
               <div class="field-wrap">
                 <label class="field-label" for="c-numero">Numéro de carte</label>
                 <input type="text" class="field-input mono" id="c-numero" name="numero"
-                  placeholder="1234  5678  9012  3456" maxlength="19"
+                  placeholder="1234  5678  9012  3456" maxlength="22"
                   autocomplete="cc-number" required>
               </div>
 
@@ -254,8 +211,10 @@
                 <div class="field-wrap" style="margin:0">
                   <label class="field-label" for="c-cvv">CVV / CID</label>
                   <input type="password" class="field-input mono" id="c-cvv" name="cvv"
-                    placeholder="•••" maxlength="4" autocomplete="cc-csc" required>
-                  <div class="cvv-hint"><i class="fas fa-info-circle"></i> 3 chiffres au dos (4 pour Amex)</div>
+                    placeholder="•••" maxlength="3" autocomplete="cc-csc" required>
+                  <div class="cvv-hint" id="cvv-hint">
+                    <i class="fas fa-info-circle"></i> 3 chiffres au dos
+                  </div>
                 </div>
                 <div class="field-wrap" style="margin:0">
                   <label class="field-label" for="c-marque">Réseau</label>
@@ -277,7 +236,7 @@
         </div>
       </div>
 
-      <!-- ════ COLONNE DROITE ════ -->
+      <!-- COLONNE DROITE -->
       <div>
         <div class="recap-card">
           <div class="recap-head">
@@ -329,6 +288,24 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+  // ── CVV dynamique selon réseau ──
+  function updateCvv() {
+    const marque = document.getElementById('c-marque').value;
+    const numero = document.getElementById('c-numero').value.replace(/\D/g,'');
+    const isAmex = marque === 'AMEX' || numero.startsWith('34') || numero.startsWith('37');
+    const cvv    = document.getElementById('c-cvv');
+    const hint   = document.getElementById('cvv-hint');
+    if (isAmex) {
+      cvv.maxLength   = 4;
+      cvv.placeholder = '••••';
+      hint.innerHTML  = '<i class="fas fa-info-circle"></i> 4 chiffres au recto (Amex)';
+    } else {
+      cvv.maxLength   = 3;
+      cvv.placeholder = '•••';
+      hint.innerHTML  = '<i class="fas fa-info-circle"></i> 3 chiffres au dos';
+    }
+  }
+
   // ── Preview numéro ──
   document.getElementById('c-numero').addEventListener('input', function() {
     let v = this.value.replace(/\D/g,'').slice(0,16);
@@ -337,9 +314,9 @@
     ['prev-p1','prev-p2','prev-p3','prev-p4'].forEach((id,i) => {
       document.getElementById(id).textContent = parts[i] || '••••';
     });
-    // p1-p3 censurés, p4 visible
     ['prev-p1','prev-p2','prev-p3'].forEach(id => document.getElementById(id).className = 'cp-censored');
     document.getElementById('prev-p4').className = '';
+    updateCvv(); // détection auto Amex via préfixe
   });
 
   // ── Preview nom ──
@@ -352,7 +329,7 @@
   // ── Preview expiration ──
   document.getElementById('c-exp').addEventListener('input', function() {
     let v = this.value.replace(/\D/g,'');
-    if(v.length > 2) v = v.slice(0,2) + '/' + v.slice(2,4);
+    if (v.length > 2) v = v.slice(0,2) + '/' + v.slice(2,4);
     this.value = v;
     document.getElementById('prev-exp').textContent = v || 'MM/AA';
     document.getElementById('recap-exp').textContent = v || '—';
@@ -362,6 +339,7 @@
   document.getElementById('c-marque').addEventListener('change', function() {
     document.getElementById('prev-marque').textContent = this.value || '—';
     document.getElementById('recap-marque').textContent = this.value || '—';
+    updateCvv();
   });
 </script>
 </body>

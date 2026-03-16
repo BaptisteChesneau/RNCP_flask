@@ -444,7 +444,8 @@ def formulaire_client():
         )
         # mail.send(msg) # ❌ to be temporarily disabled
 
-        return redirect(url_for("confirmation"))
+        flash("Fiche client enregistrée avec succès ! ✅", "success")
+        return redirect(url_for("compte_client"))
 
     return render_template("formulaire_client.html")
 

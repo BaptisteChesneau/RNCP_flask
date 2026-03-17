@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <style>
 
-    /* HERO */
     .page-hero {
       background: linear-gradient(120deg, #2d3436 0%, #3d4549 100%);
       padding: 80px 0 72px; position: relative; overflow: hidden;
@@ -40,7 +39,6 @@
     .ph-title em { color: #5eead4; font-style: italic; }
     .ph-sub { font-size: .97rem; color: rgba(255,255,255,.62); max-width: 520px; line-height: 1.8; margin: 0; }
 
-    /* UTILITAIRES */
     .label-tag {
       display: inline-block; font-size: .7rem; font-weight: 700;
       text-transform: uppercase; letter-spacing: .13em; color: #C1007A; margin-bottom: .5rem;
@@ -60,13 +58,12 @@
     .sec-grey { background: #f5f6f7; }
     .sec-white { background: #fff; }
 
-    /* INTRO TEXTE */
     .intro-equipe {
       max-width: 780px; margin: 0 auto;
       font-size: .97rem; color: #6b7280; line-height: 1.85; text-align: center;
     }
 
-    /* FICHES MEMBRES — 1 par ligne, alternées */
+    /* FICHES MEMBRES */
     .membre-bloc {
       display: grid; grid-template-columns: 340px 1fr;
       gap: 0; align-items: stretch;
@@ -78,23 +75,23 @@
     .membre-bloc:hover { box-shadow: 0 10px 48px rgba(0,0,0,.13); transform: translateY(-2px); }
     .membre-bloc:last-child { margin-bottom: 0; }
 
-    /* Alternance : impair = avatar gauche, pair = avatar droite */
-    .membre-bloc.impair .mb-avatar { order: 1; }
+    /* Fiche Sébastien — avatar plus petit pour équilibrer */
+    .membre-bloc.sebastien { grid-template-columns: 1fr 280px; }
+
+    .membre-bloc.impair .mb-avatar  { order: 1; }
     .membre-bloc.impair .mb-content { order: 2; }
     .membre-bloc.pair   .mb-content { order: 1; }
     .membre-bloc.pair   .mb-avatar  { order: 2; }
 
-    /* Panneau avatar */
     .mb-avatar {
       position: relative; display: flex;
       flex-direction: column; align-items: center; justify-content: flex-end;
       padding: 2.5rem 2rem 0; overflow: hidden; min-height: 380px;
     }
-    .mb-avatar.rose    { background: linear-gradient(160deg, #fce4f3 0%, #f9a8d4 100%); }
-    .mb-avatar.turq    { background: linear-gradient(160deg, #d4f0ec 0%, #4FA695 100%); }
-    .mb-avatar.gris    { background: linear-gradient(160deg, #dde0e2 0%, #5C666B 100%); }
+    .mb-avatar.rose { background: linear-gradient(160deg, #fce4f3 0%, #f9a8d4 100%); }
+    .mb-avatar.turq { background: linear-gradient(160deg, #d4f0ec 0%, #4FA695 100%); }
+    .mb-avatar.gris { background: linear-gradient(160deg, #dde0e2 0%, #5C666B 100%); }
 
-    /* Grand numéro déco */
     .mb-deco-num {
       position: absolute; top: .5rem; right: 1rem;
       font-family: 'Cormorant Garamond', serif;
@@ -103,7 +100,6 @@
     }
     .mb-avatar.rose .mb-deco-num { color: #9a0062; }
 
-    /* Initiales / avatar placeholder */
     .mb-initiales {
       width: 110px; height: 110px; border-radius: 50%;
       background: rgba(255,255,255,.35); backdrop-filter: blur(6px);
@@ -117,7 +113,6 @@
     }
     .mb-avatar.rose .mb-initiales { color: #9a0062; }
 
-    /* Badge poste */
     .mb-poste-badge {
       background: rgba(0,0,0,.2); color: rgba(255,255,255,.95);
       font-size: .72rem; font-weight: 700; text-transform: uppercase;
@@ -126,7 +121,6 @@
     }
     .mb-avatar.rose .mb-poste-badge { background: rgba(255,255,255,.5); color: #9a0062; }
 
-    /* Panneau contenu */
     .mb-content {
       background: #fff; padding: 3rem 3rem;
       display: flex; flex-direction: column; justify-content: center;
@@ -144,7 +138,6 @@
     .mb-content .barre { margin-top: .7rem; margin-bottom: 1.1rem; }
     .mb-content p { font-size: .93rem; color: #6b7280; line-height: 1.85; margin: 0; }
 
-    /* Tags compétences */
     .mb-tags { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: 1.25rem; }
     .mb-tag {
       display: inline-block; padding: .28rem .85rem;
@@ -156,7 +149,6 @@
     .mb-tag.turq { background: #d4f0ec; color: #3a7d70; border-color: #99d9d0; }
     .mb-tag.dark { background: #e8eaeb; color: #3d4549; border-color: #c8cbcd; }
 
-    /* SECTION VALEURS / CONCLUSION */
     .conclusion-grid {
       display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem;
       margin-bottom: 3rem;
@@ -170,7 +162,6 @@
     .conc-card h4 { font-size: .97rem; font-weight: 700; color: #333; margin-bottom: .4rem; }
     .conc-card p  { font-size: .86rem; color: #6b7280; line-height: 1.65; margin: 0; }
 
-    /* CTA FINAL */
     .cta-bande {
       background: linear-gradient(135deg, #C1007A 0%, #9a0062 100%);
       border-radius: 20px; padding: 3rem 3rem;
@@ -197,16 +188,15 @@
     }
     .btn-contour:hover { border-color: #fff; background: rgba(255,255,255,.1); color: #fff; text-decoration: none; }
 
-    /* ANIMATIONS */
     [data-anim] { opacity: 0; transition: opacity .55s ease, transform .55s ease; }
     [data-anim="fade"]  { transform: translateY(22px); }
     [data-anim="left"]  { transform: translateX(-28px); }
     [data-anim="right"] { transform: translateX(28px); }
     [data-anim].visible { opacity: 1; transform: translate(0); }
 
-    /* RESPONSIVE */
     @media(max-width: 992px) {
-      .membre-bloc { grid-template-columns: 1fr; }
+      .membre-bloc,
+      .membre-bloc.sebastien { grid-template-columns: 1fr; }
       .membre-bloc.pair .mb-avatar,
       .membre-bloc.impair .mb-avatar  { order: 1; }
       .membre-bloc.pair .mb-content,
@@ -223,7 +213,6 @@
 <body>
 {% include "header.html" %}
 
-<!-- HERO -->
 <section class="page-hero">
   <div class="container ph-inner">
     <ol class="breadcrumb-ml2c">
@@ -238,7 +227,6 @@
   </div>
 </section>
 
-<!-- INTRO -->
 <section class="sec sec-grey">
   <div class="container">
     <div class="text-center mb-4" data-anim="fade">
@@ -252,11 +240,10 @@
   </div>
 </section>
 
-<!-- FICHES MEMBRES -->
 <section class="sec sec-white">
   <div class="container">
 
-    <!-- MARIE-LINE — Avatar gauche / Texte droite -->
+    <!-- MARIE-LINE -->
     <div class="membre-bloc impair" data-anim="fade">
       <div class="mb-avatar rose">
         <span class="mb-deco-num">ML</span>
@@ -279,8 +266,8 @@
       </div>
     </div>
 
-    <!-- SÉBASTIEN — Texte gauche / Avatar droite -->
-    <div class="membre-bloc pair" data-anim="fade" style="transition-delay:.08s">
+    <!-- SÉBASTIEN — colonne avatar réduite via classe sebastien -->
+    <div class="membre-bloc pair sebastien" data-anim="fade" style="transition-delay:.08s">
       <div class="mb-content">
         <span class="label-tag">Collaborateur</span>
         <h2>Sébastien Chesneau</h2>
@@ -301,7 +288,7 @@
       </div>
     </div>
 
-    <!-- BAPTISTE — Avatar gauche / Texte droite -->
+    <!-- BAPTISTE -->
     <div class="membre-bloc impair" data-anim="fade" style="transition-delay:.16s">
       <div class="mb-avatar gris">
         <span class="mb-deco-num">BC</span>
@@ -327,7 +314,6 @@
   </div>
 </section>
 
-<!-- CONCLUSION + VALEURS -->
 <section class="sec sec-grey">
   <div class="container">
     <div class="text-center mb-5" data-anim="fade">
@@ -353,7 +339,6 @@
       </div>
     </div>
 
-    <!-- CTA FINAL -->
     <div class="cta-bande" data-anim="fade">
       <div>
         <h2>Rencontrons-nous</h2>

@@ -545,7 +545,8 @@ def paiement():
 
 @app.route("/envoyer_mail")
 def envoyer_mail():
-    return "Fonction d'envoi par mail ici"
+    flash("Cette fonctionnalité sera bientôt disponible. 🚀", "info")
+    return redirect(url_for("menu"))
 
 
 @app.route("/envoyer_compte")

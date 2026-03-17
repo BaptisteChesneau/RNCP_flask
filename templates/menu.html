@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ML2C CONSEIL — Cabinet d'Expertise Comptable</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
 
@@ -25,43 +28,47 @@
     </div>
   </div>
   <div class="hero-overlay"></div>
-  <div class="hero-inner">
-    <div class="hero-badge">Cabinet d'expertise comptable — Dammarie</div>
-    <h1 class="hero-title">Votre partenaire<br><span>comptable & fiscal</span></h1>
-    <p class="hero-sub">Expertise, proximité et intelligence artificielle<br>au service de votre réussite durable.</p>
-    <div class="hero-ctas">
-      <a href="tel:+33672343294" class="cta-call"><i class="fas fa-phone-alt"></i> Appeler maintenant</a>
-      <a href="#contact" class="cta-devis"><i class="fas fa-file-invoice"></i> Devis gratuit</a>
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-badge">Cabinet d'expertise comptable — Dammarie</div>
+      <h1 class="hero-title">Votre partenaire<br><span>comptable & fiscal</span></h1>
+      <p class="hero-sub">Expertise, proximité et intelligence artificielle<br>au service de votre réussite durable.</p>
+      <div class="hero-ctas">
+        <a href="tel:+33672343294" class="cta-call"><i class="fas fa-phone-alt"></i> Appeler maintenant</a>
+        <a href="#contact" class="cta-devis"><i class="fas fa-file-invoice"></i> Devis gratuit</a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-item"><i class="fas fa-shield-alt"></i> Expert-comptable certifié</div>
+        <div class="trust-item"><i class="fas fa-clock"></i> Réponse sous 24h</div>
+        <div class="trust-item"><i class="fas fa-star"></i> +150 clients accompagnés</div>
+      </div>
     </div>
-    <div class="hero-trust">
-      <div class="trust-item"><i class="fas fa-shield-alt"></i> Expert-comptable certifié</div>
-      <div class="trust-item"><i class="fas fa-clock"></i> Réponse sous 24h</div>
-      <div class="trust-item"><i class="fas fa-star"></i> +150 clients accompagnés</div>
-    </div>
+    <a href="#stats" class="scroll-down"><i class="fas fa-chevron-down"></i></a>
   </div>
-  <a href="#stats" class="scroll-down"><i class="fas fa-chevron-down"></i></a>
 </section>
 
 <!-- ══════════════════════════════════════════
      CHIFFRES CLÉS
 ══════════════════════════════════════════ -->
 <div class="stats-bar" id="stats">
-  <div class="stats-grid">
-    <div class="stat-item">
-      <span class="stat-num" data-target="150">0</span><span class="stat-acc">+</span>
-      <span class="stat-lbl">Clients accompagnés</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num" data-target="15">0</span><span class="stat-acc"> ans</span>
-      <span class="stat-lbl">d'expérience</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num" data-target="98">0</span><span class="stat-acc">%</span>
-      <span class="stat-lbl">de satisfaction</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num" data-target="24">0</span><span class="stat-acc">h</span>
-      <span class="stat-lbl">délai de réponse</span>
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <span class="stat-num" data-target="150">0</span><span class="stat-acc">+</span>
+        <span class="stat-lbl">Clients accompagnés</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" data-target="15">0</span><span class="stat-acc"> ans</span>
+        <span class="stat-lbl">d'expérience</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" data-target="98">0</span><span class="stat-acc">%</span>
+        <span class="stat-lbl">de satisfaction</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" data-target="24">0</span><span class="stat-acc">h</span>
+        <span class="stat-lbl">délai de réponse</span>
+      </div>
     </div>
   </div>
 </div>
@@ -118,96 +125,98 @@
       <button class="svc-tab" data-target="conseil">🤖 Conseil & IA</button>
     </div>
     <div class="svc-panels">
-    <div class="svc-panel active" id="svc-compta">
-      <div class="svc-img-box svc-illus-compta">
-      <div class="illus-bar" style="height:55%;animation-delay:0s"></div>
-      <div class="illus-bar" style="height:80%;animation-delay:.15s"></div>
-      <div class="illus-bar" style="height:40%;animation-delay:.3s"></div>
-      <div class="illus-bar" style="height:95%;animation-delay:.45s"></div>
-      <div class="illus-bar" style="height:65%;animation-delay:.6s"></div>
-      <div class="illus-bar" style="height:75%;animation-delay:.75s"></div>
-      <div class="illus-line"></div>
-    </div>
-      <div class="svc-content">
-        <h3>Tenue comptable & Fiscalité</h3>
-        <p>Nous prenons en charge l'intégralité de votre comptabilité au quotidien : saisie des pièces, lettrage, révision des comptes et établissement des bilans annuels. Notre approche proactive vous permet d'anticiper vos échéances fiscales et d'éviter toute pénalité.</p>
-        <ul class="svc-list">
-      <li><i class="fas fa-check"></i> Tenue de comptabilité complète & révision</li>
-      <li><i class="fas fa-check"></i> Bilans, comptes de résultat & annexes</li>
-      <li><i class="fas fa-check"></i> Déclarations TVA, IS, BIC/BNC & liasses fiscales</li>
-      <li><i class="fas fa-check"></i> Pilotage par tableaux de bord personnalisés</li>
-      <li><i class="fas fa-check"></i> Alertes anticipées sur vos obligations fiscales</li>
-    </ul>
-    <a href="#contact" class="btn-svc">Demander un devis <i class="fas fa-arrow-right"></i></a>
-  </div>
-</div>
 
-<div class="svc-panel" id="svc-social">
-  <div class="svc-img-box svc-illus-social">
-  <div class="illus-person illus-p1"><div class="illus-head"></div><div class="illus-body"></div></div>
-  <div class="illus-person illus-p2 featured"><div class="illus-head"></div><div class="illus-body"></div></div>
-  <div class="illus-person illus-p3"><div class="illus-head"></div><div class="illus-body"></div></div>
-  <div class="illus-badge-pay">Paie <span>✓</span></div>
-</div>
-  <div class="svc-content">
-    <h3>Paie & Gestion sociale</h3>
-    <p>Externalisez votre paie en toute sérénité. Nous gérons l'ensemble du cycle social de votre entreprise : de l'embauche à la sortie du salarié, en passant par les déclarations obligatoires. Vous restez concentré sur votre cœur de métier.</p>
-    <ul class="svc-list">
-      <li><i class="fas fa-check"></i> Établissement des bulletins de paie</li>
-      <li><i class="fas fa-check"></i> DSN mensuelle & déclarations sociales</li>
-      <li><i class="fas fa-check"></i> Gestion des entrées & sorties de personnel</li>
-      <li><i class="fas fa-check"></i> Conseil en droit du travail au quotidien</li>
-      <li><i class="fas fa-check"></i> Optimisation de la rémunération dirigeant</li>
-    </ul>
-    <a href="#contact" class="btn-svc">Demander un devis <i class="fas fa-arrow-right"></i></a>
-  </div>
-</div>
-
-<div class="svc-panel" id="svc-juridique">
-  <div class="svc-img-box svc-illus-juridique">
-  <div class="illus-scale-arm">
-    <div class="illus-scale-bar"></div>
-    <div class="illus-scale-left"><div class="illus-scale-pan"></div></div>
-    <div class="illus-scale-right"><div class="illus-scale-pan"></div></div>
-  </div>
-  <div class="illus-scale-base"></div>
-</div>
-  <div class="svc-content">
-    <h3>Conseil juridique & Création</h3>
-    <p>De la création à la transmission de votre entreprise, nous vous accompagnons à chaque étape clé : choix de la forme juridique, rédaction des statuts, accompagnement lors des cessions ou fusions. Un expert à vos côtés pour sécuriser chaque décision.</p>
-    <ul class="svc-list">
-      <li><i class="fas fa-check"></i> Création, immatriculation & choix du statut</li>
-      <li><i class="fas fa-check"></i> Rédaction & modification des statuts</li>
-      <li><i class="fas fa-check"></i> Cession, fusion & transmission d'entreprise</li>
-      <li><i class="fas fa-check"></i> Secrétariat juridique annuel (AG, PV)</li>
-      <li><i class="fas fa-check"></i> Accompagnement lors des levées de fonds</li>
-    </ul>
-    <a href="#contact" class="btn-svc">Demander un devis <i class="fas fa-arrow-right"></i></a>
-  </div>
-</div>
-
-<div class="svc-panel" id="svc-conseil">
-  <div class="svc-img-box svc-illus-ia">
-  <div class="illus-node n1"></div>
-  <div class="illus-node n2"></div>
-  <div class="illus-node n3"></div>
-  <div class="illus-node n4"></div>
-  <div class="illus-node n5 central"><i class="fas fa-brain"></i></div>
-  <svg class="illus-lines" viewBox="0 0 300 220"><line x1="150" y1="110" x2="60" y2="50"/><line x1="150" y1="110" x2="240" y2="50"/><line x1="150" y1="110" x2="50" y2="170"/><line x1="150" y1="110" x2="250" y2="170"/></svg>
-</div>
-  <div class="svc-content">
-    <h3>Optimisation fiscale & IA</h3>
-    <p>Nous intégrons l'intelligence artificielle dans notre approche conseil pour vous offrir des analyses prédictives et des recommandations ultra-personnalisées. Anticipez les risques, optimisez votre fiscalité et pilotez votre activité avec des indicateurs clés en temps réel.</p>
-    <ul class="svc-list">
-      <li><i class="fas fa-check"></i> Optimisation fiscale personnalisée & niches</li>
-      <li><i class="fas fa-check"></i> Tableaux de bord IA & analyses prédictives</li>
-      <li><i class="fas fa-check"></i> Audit interne & restructuration organisationnelle</li>
-      <li><i class="fas fa-check"></i> Accompagnement à la transformation digitale</li>
-      <li><i class="fas fa-check"></i> Détection d'économies & optimisation des charges</li>
+      <div class="svc-panel active" id="svc-compta">
+        <div class="svc-img-box svc-illus-compta">
+          <div class="illus-bar" style="height:55%;animation-delay:0s"></div>
+          <div class="illus-bar" style="height:80%;animation-delay:.15s"></div>
+          <div class="illus-bar" style="height:40%;animation-delay:.3s"></div>
+          <div class="illus-bar" style="height:95%;animation-delay:.45s"></div>
+          <div class="illus-bar" style="height:65%;animation-delay:.6s"></div>
+          <div class="illus-bar" style="height:75%;animation-delay:.75s"></div>
+          <div class="illus-line"></div>
+        </div>
+        <div class="svc-content">
+          <h3>Tenue comptable & Fiscalité</h3>
+          <p>Nous prenons en charge l'intégralité de votre comptabilité au quotidien : saisie des pièces, lettrage, révision des comptes et établissement des bilans annuels. Notre approche proactive vous permet d'anticiper vos échéances fiscales et d'éviter toute pénalité.</p>
+          <ul class="svc-list">
+            <li><i class="fas fa-check"></i> Tenue de comptabilité complète & révision</li>
+            <li><i class="fas fa-check"></i> Bilans, comptes de résultat & annexes</li>
+            <li><i class="fas fa-check"></i> Déclarations TVA, IS, BIC/BNC & liasses fiscales</li>
+            <li><i class="fas fa-check"></i> Pilotage par tableaux de bord personnalisés</li>
+            <li><i class="fas fa-check"></i> Alertes anticipées sur vos obligations fiscales</li>
           </ul>
           <a href="#contact" class="btn-svc">Demander un devis <i class="fas fa-arrow-right"></i></a>
         </div>
       </div>
+
+      <div class="svc-panel" id="svc-social">
+        <div class="svc-img-box svc-illus-social">
+          <div class="illus-person illus-p1"><div class="illus-head"></div><div class="illus-body"></div></div>
+          <div class="illus-person illus-p2 featured"><div class="illus-head"></div><div class="illus-body"></div></div>
+          <div class="illus-person illus-p3"><div class="illus-head"></div><div class="illus-body"></div></div>
+          <div class="illus-badge-pay">Paie <span>✓</span></div>
+        </div>
+        <div class="svc-content">
+          <h3>Paie & Gestion sociale</h3>
+          <p>Externalisez votre paie en toute sérénité. Nous gérons l'ensemble du cycle social de votre entreprise : de l'embauche à la sortie du salarié, en passant par les déclarations obligatoires. Vous restez concentré sur votre cœur de métier.</p>
+          <ul class="svc-list">
+            <li><i class="fas fa-check"></i> Établissement des bulletins de paie</li>
+            <li><i class="fas fa-check"></i> DSN mensuelle & déclarations sociales</li>
+            <li><i class="fas fa-check"></i> Gestion des entrées & sorties de personnel</li>
+            <li><i class="fas fa-check"></i> Conseil en droit du travail au quotidien</li>
+            <li><i class="fas fa-check"></i> Optimisation de la rémunération dirigeant</li>
+          </ul>
+          <a href="#contact" class="btn-svc">Demander un devis <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+      <div class="svc-panel" id="svc-juridique">
+        <div class="svc-img-box svc-illus-juridique">
+          <div class="illus-scale-arm">
+            <div class="illus-scale-bar"></div>
+            <div class="illus-scale-left"><div class="illus-scale-pan"></div></div>
+            <div class="illus-scale-right"><div class="illus-scale-pan"></div></div>
+          </div>
+          <div class="illus-scale-base"></div>
+        </div>
+        <div class="svc-content">
+          <h3>Conseil juridique & Création</h3>
+          <p>De la création à la transmission de votre entreprise, nous vous accompagnons à chaque étape clé : choix de la forme juridique, rédaction des statuts, accompagnement lors des cessions ou fusions. Un expert à vos côtés pour sécuriser chaque décision.</p>
+          <ul class="svc-list">
+            <li><i class="fas fa-check"></i> Création, immatriculation & choix du statut</li>
+            <li><i class="fas fa-check"></i> Rédaction & modification des statuts</li>
+            <li><i class="fas fa-check"></i> Cession, fusion & transmission d'entreprise</li>
+            <li><i class="fas fa-check"></i> Secrétariat juridique annuel (AG, PV)</li>
+            <li><i class="fas fa-check"></i> Accompagnement lors des levées de fonds</li>
+          </ul>
+          <a href="#contact" class="btn-svc">Demander un devis <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+      <div class="svc-panel" id="svc-conseil">
+        <div class="svc-img-box svc-illus-ia">
+          <div class="illus-node n1"></div>
+          <div class="illus-node n2"></div>
+          <div class="illus-node n3"></div>
+          <div class="illus-node n4"></div>
+          <div class="illus-node n5 central"><i class="fas fa-brain"></i></div>
+          <svg class="illus-lines" viewBox="0 0 300 220"><line x1="150" y1="110" x2="60" y2="50"/><line x1="150" y1="110" x2="240" y2="50"/><line x1="150" y1="110" x2="50" y2="170"/><line x1="150" y1="110" x2="250" y2="170"/></svg>
+        </div>
+        <div class="svc-content">
+          <h3>Optimisation fiscale & IA</h3>
+          <p>Nous intégrons l'intelligence artificielle dans notre approche conseil pour vous offrir des analyses prédictives et des recommandations ultra-personnalisées. Anticipez les risques, optimisez votre fiscalité et pilotez votre activité avec des indicateurs clés en temps réel.</p>
+          <ul class="svc-list">
+            <li><i class="fas fa-check"></i> Optimisation fiscale personnalisée & niches</li>
+            <li><i class="fas fa-check"></i> Tableaux de bord IA & analyses prédictives</li>
+            <li><i class="fas fa-check"></i> Audit interne & restructuration organisationnelle</li>
+            <li><i class="fas fa-check"></i> Accompagnement à la transformation digitale</li>
+            <li><i class="fas fa-check"></i> Détection d'économies & optimisation des charges</li>
+          </ul>
+          <a href="#contact" class="btn-svc">Demander un devis <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -250,9 +259,9 @@
             <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
             <div><span class="c-label">Téléphone</span><span class="c-val">+33 (0)6 72 34 32 94</span></div>
           </a>
-          <a href="/cdn-cgi/l/email-protection#395a56574d585a4d7954550b5a5a56574a5c5055175a5654" class="contact-item">
+          <a href="mailto:contact@ml2cconseil.com" class="contact-item">
             <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-            <div><span class="c-label">Email</span><span class="c-val"><span class="__cf_email__" data-cfemail="05666a6b716466714568693766666a6b76606c692b666a68">[email&#160;protected]</span></span></div>
+            <div><span class="c-label">Email</span><span class="c-val">contact@ml2cconseil.com</span></div>
           </a>
           <div class="contact-item">
             <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
@@ -303,7 +312,7 @@
 
 {% include "footer.html" %}
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 // ── Onglets services ──
@@ -334,14 +343,17 @@ const statsObs = new IntersectionObserver(entries => {
 }, { threshold: 0.3 });
 if (document.querySelector('.stats-bar')) statsObs.observe(document.querySelector('.stats-bar'));
 
-// ── Smooth scroll ──
+// ── Smooth scroll avec offset header ──
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', function(e) {
     const target = document.querySelector(this.getAttribute('href'));
     if (target) {
       e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth' });
+      const headerH = document.querySelector('.main-header')?.offsetHeight || 80;
+      window.scrollTo({ top: target.offsetTop - headerH - 16, behavior: 'smooth' });
     }
   });
 });
 </script>
+</body>
+</html>

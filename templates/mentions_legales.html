@@ -21,12 +21,14 @@
     }
     body { background: var(--bg); font-family: 'DM Sans', sans-serif; }
 
+    /* BARRE DE LECTURE */
     #read-progress {
       position: fixed; top: 0; left: 0; height: 3px; width: 0%;
       background: linear-gradient(90deg, var(--rose), var(--turq));
       z-index: 9999; transition: width .1s linear;
     }
 
+    /* HERO */
     .page-hero {
       background: linear-gradient(125deg, var(--dark) 0%, var(--dark2) 55%, #1a2526 100%);
       padding: 90px 0 80px; position: relative; overflow: hidden;
@@ -77,9 +79,11 @@
     }
     .ph-badge i { color: #f9a8d4; font-size: .7rem; }
 
+    /* LAYOUT */
     .ml-wrap { padding: 4.5rem 0 6rem; }
     .ml-grid { display: grid; grid-template-columns: 272px 1fr; gap: 2.5rem; align-items: start; }
 
+    /* SIDEBAR */
     .ml-sidebar { position: sticky; top: 88px; }
     .sdb-card {
       background: #fff; border-radius: 18px;
@@ -123,6 +127,7 @@
     }
     .conform-tag i { color: #22c55e; }
 
+    /* SECTIONS */
     .ml-content { min-width: 0; }
     .section-card {
       background: #fff; border-radius: 20px;
@@ -136,9 +141,9 @@
 
     .sc-header {
       display: flex; align-items: center; gap: 1rem;
-      padding: 1.4rem 1.75rem; transition: background .2s;
+      padding: 1.4rem 1.75rem; cursor: pointer; user-select: none; transition: background .2s;
     }
-    
+    .sc-header:hover { background: #fafafa; }
 
     .sc-num {
       width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
@@ -159,7 +164,7 @@
     .sc-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 700; color: #222; margin: 0; line-height: 1.2; }
     .sc-header p { font-size: .78rem; color: #a0aab4; margin: .12rem 0 0; }
     .sc-chevron { color: #c4cbd0; font-size: .8rem; flex-shrink: 0; transition: transform .32s; }
-    
+    .section-card.open .sc-chevron { transform: rotate(180deg); color: var(--rose); }
 
     .sc-sep { height: 1px; background: #f0f2f4; margin: 0 1.75rem; }
     .section-card:not(.open) .sc-sep { display: none; }
@@ -181,6 +186,7 @@
     }
     .kp i { color: var(--turq); flex-shrink: 0; margin-top: .12rem; font-size: .8rem; }
 
+    /* BANNIÈRE */
     .contact-banner {
       background: linear-gradient(135deg, var(--dark2) 0%, var(--dark) 100%);
       border-radius: 20px; padding: 2.4rem 2.5rem;
@@ -208,11 +214,13 @@
     }
     .btn-cb:hover { background: #9a0062; color: #fff; text-decoration: none; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(193,0,122,.35); }
 
+    /* ANIMATIONS */
     [data-anim] { opacity: 0; transition: opacity .55s ease, transform .55s ease; }
     [data-anim="fade"]  { transform: translateY(20px); }
     [data-anim="left"]  { transform: translateX(-24px); }
     [data-anim].visible { opacity: 1 !important; transform: translate(0) !important; }
 
+    /* RESPONSIVE */
     @media (max-width: 992px) {
       .ml-grid { grid-template-columns: 1fr; }
       .ml-sidebar { position: static; }
@@ -231,6 +239,7 @@
 
 {% include "header.html" %}
 
+<!-- HERO -->
 <section class="page-hero">
   <div class="container ph-inner">
     <ol class="breadcrumb-ml2c">
@@ -250,6 +259,7 @@
   </div>
 </section>
 
+<!-- CONTENU -->
 <div class="ml-wrap">
   <div class="container">
     <div class="ml-grid">
@@ -273,35 +283,35 @@
         <div class="sdb-card" data-anim="left" style="transition-delay:.12s">
           <div class="sdb-head rose"><i class="fas fa-building"></i> Fiche société</div>
           <div class="identity-rows">
-            <div class="id-row"><i class="fas fa-map-marker-alt"></i><div><strong>Siège social</strong><span>6 Rue de la Vigne, 28360 Dammarie</span></div></div>
-            <div class="id-row"><i class="fas fa-hashtag"></i><div><strong>RCS</strong><span>À compléter</span></div></div>
+            <div class="id-row"><i class="fas fa-map-marker-alt"></i><div><strong>Siège social</strong><span>6 rue de la vigne, Dammarie</span></div></div>
+            <div class="id-row"><i class="fas fa-hashtag"></i><div><strong>RCS</strong><span>123 456 789</span></div></div>
             <div class="id-row"><i class="fas fa-calendar-alt"></i><div><strong>Fondée</strong><span>1er juillet 2019</span></div></div>
             <div class="id-row"><i class="fas fa-user-tie"></i><div><strong>Dirigeante</strong><span>Marie-Line Chesneau</span></div></div>
             <div class="id-row"><i class="fas fa-server"></i><div><strong>Hébergeur</strong><span>Scalingo SAS, France</span></div></div>
-            <div class="id-row"><i class="fas fa-envelope"></i><div><strong>Contact</strong><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d6b5b9b8a2b7b5a296bbbae4b5b5b9b8a5b3bfbaf8b5b9bb">[email&#160;protected]</a></span></div></div>
+            <div class="id-row"><i class="fas fa-envelope"></i><div><strong>Contact</strong><span>contact@ml2c-conseil.fr</span></div></div>
           </div>
           <div class="conform-tag"><i class="fas fa-check-circle"></i> Société conforme — droit français</div>
         </div>
       </aside>
 
-      <!-- CONTENU -->
+      <!-- CONTENU SECTIONS -->
       <main class="ml-content">
 
         <!-- S1 -->
         <div class="section-card open" id="s1" data-anim="fade">
-          <div class="sc-header">
+          <div class="sc-header" onclick="toggleSection(this)">
             <div class="sc-num num-turq">01</div>
             <div class="sc-info">
               <span class="sc-label">Section 01</span>
               <h2>Informations générales</h2>
               <p>Présentation de la société et de ses activités</p>
             </div>
-            
+            <i class="fas fa-chevron-down sc-chevron"></i>
           </div>
           <div class="sc-sep"></div>
           <div class="sc-body">
-            <p>ML2C CONSEIL est une société spécialisée dans le conseil, la comptabilité et le droit, dont le siège social se situe au <strong>6 Rue de la Vigne, 28360 Dammarie</strong>. La société est dûment enregistrée et dispose d'un capital social conséquent. Nos activités englobent un large éventail de services professionnels, destinés à offrir une expertise complète à nos clients.</p>
-            <p>L'information publiée sur ce site est mise à jour régulièrement afin de garantir sa fiabilité et sa pertinence. Nous nous engageons à respecter toutes les obligations légales et réglementaires en vigueur, et à assurer la transparence de nos activités.</p>
+            <p>ML2C CONSEIL est une société spécialisée dans le conseil, la comptabilité et le droit, dont le siège social se situe au 123 Rue de l'Entreprise à Paris. La société est dûment enregistrée et dispose d'un capital social conséquent. Nos activités englobent un large éventail de services professionnels, destinés à offrir une expertise complète à nos clients.</p>
+            <p>L'information publiée sur ce site est mise à jour régulièrement afin de garantir sa fiabilité et sa pertinence. Nous nous engageons à respecter toutes les obligations légales et réglementaires en vigueur, et à assurer la transparence de nos activités. La protection des droits de propriété intellectuelle est également un axe majeur de notre politique.</p>
             <div class="kp-grid">
               <div class="kp"><i class="fas fa-check-circle"></i> Société immatriculée et conforme</div>
               <div class="kp"><i class="fas fa-check-circle"></i> Informations vérifiables sur demande</div>
@@ -312,22 +322,22 @@
         </div>
 
         <!-- S2 -->
-        <div class="section-card open" id="s2" data-anim="fade" style="transition-delay:.04s">
-          <div class="sc-header">
+        <div class="section-card" id="s2" data-anim="fade" style="transition-delay:.04s">
+          <div class="sc-header" onclick="toggleSection(this)">
             <div class="sc-num num-rose">02</div>
             <div class="sc-info">
               <span class="sc-label">Section 02</span>
               <h2>Identité &amp; enregistrement</h2>
               <p>Directrice de publication, RCS, capital social</p>
             </div>
-            
+            <i class="fas fa-chevron-down sc-chevron"></i>
           </div>
           <div class="sc-sep"></div>
           <div class="sc-body">
-            <p>La dirigeante et directrice de la publication de ML2C CONSEIL est <strong>Marie-Line Chesneau</strong>, qui assure la conformité et la transparence de toutes nos communications. La société a été fondée le <strong>1er juillet 2019</strong> et est immatriculée au Registre du Commerce et des Sociétés.</p>
-            <p>Les statuts de l'entreprise sont conformes aux exigences légales. Toute modification de notre structure ou de notre enregistrement est immédiatement communiquée et mise à jour sur ce site.</p>
+            <p>La dirigeante et directrice de la publication de ML2C CONSEIL est Marie-Line Chesneau, qui assure la conformité et la transparence de toutes nos communications. La société est immatriculée au Registre du Commerce et des Sociétés sous le numéro 123456789 et a été fondée le 1er juillet 2019.</p>
+            <p>Les statuts de l'entreprise sont conformes aux exigences légales, et le capital social est clairement défini dans nos documents officiels. Toute modification de notre structure ou de notre enregistrement est immédiatement communiquée et mise à jour sur ce site.</p>
             <div class="kp-grid">
-              <div class="kp"><i class="fas fa-check-circle"></i> Siège : 6 Rue de la Vigne, 28360 Dammarie</div>
+              <div class="kp"><i class="fas fa-check-circle"></i> RCS : 123 456 789</div>
               <div class="kp"><i class="fas fa-check-circle"></i> Fondée le 1er juillet 2019</div>
               <div class="kp"><i class="fas fa-check-circle"></i> Statuts conformes au droit en vigueur</div>
               <div class="kp"><i class="fas fa-check-circle"></i> Modifications mises à jour en temps réel</div>
@@ -336,19 +346,19 @@
         </div>
 
         <!-- S3 -->
-        <div class="section-card open" id="s3" data-anim="fade" style="transition-delay:.08s">
-          <div class="sc-header">
+        <div class="section-card" id="s3" data-anim="fade" style="transition-delay:.08s">
+          <div class="sc-header" onclick="toggleSection(this)">
             <div class="sc-num num-blue">03</div>
             <div class="sc-info">
               <span class="sc-label">Section 03</span>
               <h2>Hébergeur du site</h2>
               <p>Infrastructure, disponibilité, sécurité</p>
             </div>
-            
+            <i class="fas fa-chevron-down sc-chevron"></i>
           </div>
           <div class="sc-sep"></div>
           <div class="sc-body">
-            <p>Le site de ML2C CONSEIL est hébergé par <strong>Scalingo SAS</strong>, spécialiste français du Platform as a Service (PaaS), dont les serveurs sont situés en France dans des centres de données soumis à des contrôles de sécurité stricts. Scalingo offre une infrastructure fiable assurant disponibilité maximale et protection avancée des données.</p>
+            <p>Le site de ML2C CONSEIL est hébergé par Scalingo SAS, spécialiste français du Platform as a Service (PaaS), dont les serveurs sont situés en France dans des centres de données soumis à des contrôles de sécurité stricts. Scalingo offre une infrastructure fiable assurant disponibilité maximale et protection avancée des données.</p>
             <p>Toutes les informations transmises via notre site sont protégées par des protocoles de chiffrement robustes. Scalingo respecte la confidentialité et la sécurité des données hébergées, en conformité totale avec le RGPD et la législation française.</p>
             <div class="kp-grid">
               <div class="kp"><i class="fas fa-check-circle"></i> Hébergeur : Scalingo SAS (France)</div>
@@ -360,15 +370,15 @@
         </div>
 
         <!-- S4 -->
-        <div class="section-card open" id="s4" data-anim="fade" style="transition-delay:.12s">
-          <div class="sc-header">
+        <div class="section-card" id="s4" data-anim="fade" style="transition-delay:.12s">
+          <div class="sc-header" onclick="toggleSection(this)">
             <div class="sc-num num-purple">04</div>
             <div class="sc-info">
               <span class="sc-label">Section 04</span>
               <h2>Propriété intellectuelle</h2>
               <p>Droits d'auteur, marques, reproduction</p>
             </div>
-            
+            <i class="fas fa-chevron-down sc-chevron"></i>
           </div>
           <div class="sc-sep"></div>
           <div class="sc-body">
@@ -384,15 +394,15 @@
         </div>
 
         <!-- S5 -->
-        <div class="section-card open" id="s5" data-anim="fade" style="transition-delay:.16s">
-          <div class="sc-header">
+        <div class="section-card" id="s5" data-anim="fade" style="transition-delay:.16s">
+          <div class="sc-header" onclick="toggleSection(this)">
             <div class="sc-num num-amber">05</div>
             <div class="sc-info">
               <span class="sc-label">Section 05</span>
               <h2>Conditions d'utilisation</h2>
               <p>Accès au site, contenu informatif, règles d'usage</p>
             </div>
-            
+            <i class="fas fa-chevron-down sc-chevron"></i>
           </div>
           <div class="sc-sep"></div>
           <div class="sc-body">
@@ -408,20 +418,20 @@
         </div>
 
         <!-- S6 -->
-        <div class="section-card open" id="s6" data-anim="fade" style="transition-delay:.20s">
-          <div class="sc-header">
+        <div class="section-card" id="s6" data-anim="fade" style="transition-delay:.20s">
+          <div class="sc-header" onclick="toggleSection(this)">
             <div class="sc-num num-red">06</div>
             <div class="sc-info">
               <span class="sc-label">Section 06</span>
               <h2>Responsabilités &amp; limitations</h2>
               <p>Exclusions, force majeure, usage prudent</p>
             </div>
-            
+            <i class="fas fa-chevron-down sc-chevron"></i>
           </div>
           <div class="sc-sep"></div>
           <div class="sc-body">
             <p>ML2C CONSEIL ne saurait être tenue responsable des dommages directs ou indirects résultant de l'utilisation du site. Le contenu est fourni "tel quel", sans garantie expresse ou implicite. Les informations présentes peuvent contenir des erreurs ou omissions, et l'utilisateur assume l'entière responsabilité de l'utilisation des données.</p>
-            <p>Toute utilisation abusive pourra entraîner une suspension d'accès ou des poursuites judiciaires. Les limitations de responsabilité s'appliquent même en cas de force majeure.</p>
+            <p>Toute utilisation abusive pourra entraîner une suspension d'accès ou des poursuites judiciaires. Les limitations de responsabilité s'appliquent même en cas de force majeure. L'utilisateur est invité à utiliser le site de manière prudente et à vérifier l'exactitude des informations obtenues.</p>
             <div class="kp-grid">
               <div class="kp"><i class="fas fa-check-circle"></i> Contenu fourni sans garantie implicite</div>
               <div class="kp"><i class="fas fa-check-circle"></i> Responsabilité utilisateur sur les données</div>
@@ -432,20 +442,20 @@
         </div>
 
         <!-- S7 -->
-        <div class="section-card open" id="s7" data-anim="fade" style="transition-delay:.24s">
-          <div class="sc-header">
+        <div class="section-card" id="s7" data-anim="fade" style="transition-delay:.24s">
+          <div class="sc-header" onclick="toggleSection(this)">
             <div class="sc-num num-gris">07</div>
             <div class="sc-info">
               <span class="sc-label">Section 07</span>
               <h2>Transfert des données</h2>
               <p>Canaux sécurisés, traçabilité, conformité RGPD</p>
             </div>
-            
+            <i class="fas fa-chevron-down sc-chevron"></i>
           </div>
           <div class="sc-sep"></div>
           <div class="sc-body">
-            <p>Les données échangées sur ce site sont transférées via des canaux sécurisés et chiffrés. Nous nous assurons que tous les transferts respectent les normes de protection des données et les régulations du RGPD. Les informations sensibles ne sont utilisées que pour les finalités prévues, et chaque transfert est consigné pour garantir sa traçabilité.</p>
-            <p>Des accords contractuels stricts encadrent tout transfert vers des tiers, et les transferts internationaux respectent les obligations légales en vigueur.</p>
+            <p>Les données échangées sur ce site sont transférées via des canaux sécurisés et cryptés. Nous nous assurons que tous les transferts respectent les normes de protection des données et les régulations du RGPD. Les informations sensibles ne sont utilisées que pour les finalités prévues, et chaque transfert est consigné pour garantir sa traçabilité.</p>
+            <p>Des accords contractuels stricts encadrent tout transfert vers des tiers, et les transferts internationaux respectent les obligations légales en vigueur. La sécurité des données est assurée à chaque étape grâce à des technologies de chiffrement avancées.</p>
             <div class="kp-grid">
               <div class="kp"><i class="fas fa-check-circle"></i> HTTPS/TLS obligatoire sur tous les flux</div>
               <div class="kp"><i class="fas fa-check-circle"></i> Journaux de transfert conservés</div>
@@ -456,20 +466,20 @@
         </div>
 
         <!-- S8 -->
-        <div class="section-card open" id="s8" data-anim="fade" style="transition-delay:.28s">
-          <div class="sc-header">
+        <div class="section-card" id="s8" data-anim="fade" style="transition-delay:.28s">
+          <div class="sc-header" onclick="toggleSection(this)">
             <div class="sc-num num-green">08</div>
             <div class="sc-info">
               <span class="sc-label">Section 08</span>
               <h2>Modifications des mentions</h2>
               <p>Évolutions légales, notification, transparence</p>
             </div>
-            
+            <i class="fas fa-chevron-down sc-chevron"></i>
           </div>
           <div class="sc-sep"></div>
           <div class="sc-body">
             <p>Nous nous réservons le droit de modifier ces mentions légales à tout moment afin de refléter les évolutions législatives, réglementaires et technologiques. Chaque modification sera clairement indiquée sur cette page avec la date d'entrée en vigueur.</p>
-            <p>Les utilisateurs seront informés des changements significatifs par e-mail ou via une notification sur le site. En continuant d'utiliser ce site, vous acceptez tacitement les termes de la version mise à jour.</p>
+            <p>Les utilisateurs seront informés des changements significatifs par e-mail ou via une notification sur le site. En continuant d'utiliser ce site, vous acceptez tacitement les termes de la version mise à jour. La transparence de toute modification est notre engagement.</p>
             <div class="kp-grid">
               <div class="kp"><i class="fas fa-check-circle"></i> Notification par e-mail des changements majeurs</div>
               <div class="kp"><i class="fas fa-check-circle"></i> Date d'entrée en vigueur toujours affichée</div>
@@ -498,9 +508,26 @@
 
 {% include "footer.html" %}
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+  // Header sticky
+  const hdr = document.getElementById('mainHeader');
+  if (hdr) window.addEventListener('scroll', () => hdr.classList.toggle('scrolled', window.scrollY > 60));
+
+  // Burger mobile
+  const burger = document.getElementById('burgerBtn');
+  const nav = document.getElementById('mainNav');
+  if (burger && nav) burger.addEventListener('click', function() {
+    nav.classList.toggle('open'); this.classList.toggle('active');
+  });
+
+  // Accordion
+  function toggleSection(header) {
+    header.closest('.section-card').classList.toggle('open');
+  }
+
+  // Sidebar active au scroll
   const sections  = document.querySelectorAll('.section-card[id]');
   const sideLinks = document.querySelectorAll('#sidebar-nav a');
   window.addEventListener('scroll', () => {
@@ -509,6 +536,7 @@
     sideLinks.forEach(a => a.classList.toggle('active', a.getAttribute('data-target') === current));
   });
 
+  // Smooth scroll + ouverture auto
   sideLinks.forEach(a => {
     a.addEventListener('click', e => {
       e.preventDefault();
@@ -520,10 +548,18 @@
     });
   });
 
+  // Barre de lecture
   const bar = document.getElementById('read-progress');
   window.addEventListener('scroll', () => {
     const h = document.documentElement;
     bar.style.width = (window.scrollY / (h.scrollHeight - h.clientHeight) * 100) + '%';
   });
 
-  const obs = new IntersectionObse
+  // Animations
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.07 });
+  document.querySelectorAll('[data-anim]').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

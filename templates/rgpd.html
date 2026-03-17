@@ -9,6 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <style>
+
+    /* HERO */
     .page-hero {
       background: linear-gradient(120deg, #2d3436 0%, #3d4549 100%);
       padding: 80px 0 72px; position: relative; overflow: hidden;
@@ -37,6 +39,8 @@
     }
     .ph-title em { color: #5eead4; font-style: italic; }
     .ph-sub { font-size: .95rem; color: rgba(255,255,255,.62); max-width: 520px; line-height: 1.8; margin: 0; }
+
+    /* BADGES HERO */
     .ph-badges { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: 1.5rem; }
     .ph-badge {
       display: inline-flex; align-items: center; gap: .4rem;
@@ -46,15 +50,21 @@
     }
     .ph-badge i { color: #5eead4; }
 
+    /* LAYOUT PRINCIPAL */
     .rgpd-layout {
       display: grid; grid-template-columns: 280px 1fr;
       gap: 3rem; align-items: start;
       padding: 4rem 0 5rem;
     }
-    .rgpd-sidebar { position: sticky; top: 90px; }
+
+    /* SIDEBAR STICKY */
+    .rgpd-sidebar {
+      position: sticky; top: 90px;
+    }
     .sidebar-box {
       background: #fff; border-radius: 16px;
-      box-shadow: 0 2px 16px rgba(0,0,0,.08); overflow: hidden;
+      box-shadow: 0 2px 16px rgba(0,0,0,.08);
+      overflow: hidden;
     }
     .sidebar-title {
       background: #3d4549; color: #fff;
@@ -72,19 +82,24 @@
       transition: all .2s; text-decoration: none;
       border-left: 3px solid transparent;
     }
-    .sidebar-nav li a:hover, .sidebar-nav li a.active {
-      color: #C1007A; background: #fce4f3; border-left-color: #C1007A;
+    .sidebar-nav li a:hover,
+    .sidebar-nav li a.active {
+      color: #C1007A; background: #fce4f3;
+      border-left-color: #C1007A;
     }
     .sidebar-nav li a i { font-size: .8rem; width: 16px; text-align: center; }
     .sidebar-nav li a .s-num {
       margin-left: auto; font-size: .68rem; font-weight: 700;
       color: #C1007A; opacity: 0; transition: opacity .2s;
     }
-    .sidebar-nav li a:hover .s-num, .sidebar-nav li a.active .s-num { opacity: 1; }
+    .sidebar-nav li a:hover .s-num,
+    .sidebar-nav li a.active .s-num { opacity: 1; }
 
+    /* BOX INFO DATE */
     .sidebar-meta {
       margin-top: 1rem; background: #fff; border-radius: 16px;
-      box-shadow: 0 2px 16px rgba(0,0,0,.08); padding: 1.25rem;
+      box-shadow: 0 2px 16px rgba(0,0,0,.08);
+      padding: 1.25rem;
     }
     .meta-item {
       display: flex; align-items: center; gap: .75rem;
@@ -95,7 +110,9 @@
     .meta-item i { color: #4FA695; width: 16px; text-align: center; flex-shrink: 0; }
     .meta-item strong { color: #333; display: block; font-size: .78rem; }
 
+    /* CONTENU SECTIONS */
     .rgpd-content { min-width: 0; }
+
     .section-rgpd {
       background: #fff; border-radius: 20px;
       box-shadow: 0 2px 16px rgba(0,0,0,.07);
@@ -103,24 +120,28 @@
       transition: box-shadow .3s;
     }
     .section-rgpd:hover { box-shadow: 0 6px 32px rgba(0,0,0,.11); }
+
     .section-header-rgpd {
       display: flex; align-items: center; gap: 1rem;
-      padding: 1.5rem 2rem; 
+      padding: 1.5rem 2rem; cursor: pointer;
       user-select: none; transition: background .2s;
     }
-    
+    .section-header-rgpd:hover { background: #fafafa; }
+
     .section-icon {
       width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
     }
-    .icon-rose   { background: #fce4f3; color: #C1007A; }
-    .icon-turq   { background: #d4f0ec; color: #3a7d70; }
-    .icon-gris   { background: #e8eaeb; color: #3d4549; }
-    .icon-blue   { background: #dbeafe; color: #1d4ed8; }
-    .icon-orange { background: #fef3c7; color: #d97706; }
-    .icon-green  { background: #dcfce7; color: #16a34a; }
-    .icon-purple { background: #f3e8ff; color: #7c3aed; }
-    .icon-red    { background: #fee2e2; color: #dc2626; }
+    .icon-rose    { background: #fce4f3; color: #C1007A; }
+    .icon-turq    { background: #d4f0ec; color: #3a7d70; }
+    .icon-gris    { background: #e8eaeb; color: #3d4549; }
+    .icon-blue    { background: #dbeafe; color: #1d4ed8; }
+    .icon-orange  { background: #fef3c7; color: #d97706; }
+    .icon-green   { background: #dcfce7; color: #16a34a; }
+    .icon-purple  { background: #f3e8ff; color: #7c3aed; }
+    .icon-red     { background: #fee2e2; color: #dc2626; }
+
     .section-header-info { flex: 1; }
     .section-num {
       font-size: .68rem; font-weight: 700; text-transform: uppercase;
@@ -128,21 +149,41 @@
     }
     .section-header-rgpd h2 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.25rem; font-weight: 700; color: #333; margin: 0; line-height: 1.2;
+      font-size: 1.25rem; font-weight: 700; color: #333;
+      margin: 0; line-height: 1.2;
     }
-    .section-header-rgpd p { font-size: .8rem; color: #9ca3af; margin: .15rem 0 0; }
-    .section-chevron { color: #9ca3af; transition: transform .3s; font-size: .85rem; flex-shrink: 0; }
-    
+    .section-header-rgpd p {
+      font-size: .8rem; color: #9ca3af; margin: .15rem 0 0;
+    }
+
+    .section-chevron {
+      color: #9ca3af; transition: transform .3s;
+      font-size: .85rem; flex-shrink: 0;
+    }
+    .section-rgpd.open .section-chevron { transform: rotate(180deg); }
+
     .section-body {
       max-height: 0; overflow: hidden;
       transition: max-height .45s cubic-bezier(.4,0,.2,1), padding .3s;
       padding: 0 2rem;
     }
-    .section-rgpd.open .section-body { max-height: 800px; padding: 0 2rem 2rem; }
-    .section-divider { height: 1px; background: #f0f0f0; margin: 0 2rem; }
-    .section-rgpd:not(.open) .section-divider { display: none; }
-    .section-body p { font-size: .93rem; color: #6b7280; line-height: 1.85; margin: 0; }
+    .section-rgpd.open .section-body {
+      max-height: 800px;
+      padding: 0 2rem 2rem;
+    }
 
+    .section-divider {
+      height: 1px; background: #f0f0f0;
+      margin: 0 2rem;
+    }
+    .section-rgpd:not(.open) .section-divider { display: none; }
+
+    .section-body p {
+      font-size: .93rem; color: #6b7280;
+      line-height: 1.85; margin: 0;
+    }
+
+    /* Points clés sous forme de liste */
     .key-points {
       display: grid; grid-template-columns: 1fr 1fr;
       gap: .6rem; margin-top: 1.25rem;
@@ -154,23 +195,27 @@
     }
     .kp i { color: #4FA695; flex-shrink: 0; margin-top: .1rem; }
 
+    /* DROITS UTILISATEURS — grid spéciale */
     .droits-grid {
       display: grid; grid-template-columns: repeat(3, 1fr);
       gap: .75rem; margin-top: 1.25rem;
     }
     .droit-card {
       background: #f9fafb; border-radius: 12px; padding: 1rem;
-      text-align: center; border: 1.5px solid #f0f0f0; transition: .25s;
+      text-align: center; border: 1.5px solid #f0f0f0;
+      transition: .25s;
     }
     .droit-card:hover { border-color: #C1007A; background: #fce4f3; }
     .droit-card i { font-size: 1.3rem; color: #C1007A; display: block; margin-bottom: .5rem; }
     .droit-card span { font-size: .78rem; font-weight: 600; color: #333; }
 
+    /* BANNIÈRE CONTACT RGPD */
     .rgpd-contact-banner {
       background: linear-gradient(135deg, #3d4549 0%, #2d3436 100%);
       border-radius: 20px; padding: 2.5rem;
       display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;
-      box-shadow: 0 8px 32px rgba(0,0,0,.15); margin-top: 2rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,.15);
+      margin-top: 2rem;
     }
     .rcb-icon {
       width: 64px; height: 64px; border-radius: 16px;
@@ -188,21 +233,26 @@
       display: inline-flex; align-items: center; gap: .5rem;
       padding: .8rem 1.6rem; background: #C1007A; color: #fff;
       font-weight: 700; font-size: .88rem; border-radius: 10px;
-      text-decoration: none; transition: .25s; white-space: nowrap; flex-shrink: 0;
+      text-decoration: none; transition: .25s; white-space: nowrap;
+      flex-shrink: 0;
     }
     .btn-rgpd-contact:hover { background: #9a0062; color: #fff; transform: translateY(-2px); text-decoration: none; }
 
+    /* PROGRESS BAR DE LECTURE */
     #read-progress {
       position: fixed; top: 0; left: 0; height: 3px;
       background: linear-gradient(90deg, #C1007A, #4FA695);
       width: 0%; z-index: 9999; transition: width .1s;
     }
 
+    /* ANIMATIONS */
     [data-anim] { opacity: 0; transition: opacity .5s ease, transform .5s ease; }
     [data-anim="fade"]  { transform: translateY(18px); }
     [data-anim="left"]  { transform: translateX(-22px); }
+    [data-anim="right"] { transform: translateX(22px); }
     [data-anim].visible { opacity: 1; transform: translate(0); }
 
+    /* RESPONSIVE */
     @media(max-width: 992px) {
       .rgpd-layout { grid-template-columns: 1fr; }
       .rgpd-sidebar { position: static; }
@@ -211,9 +261,8 @@
     }
     @media(max-width: 576px) {
       .droits-grid { grid-template-columns: 1fr 1fr; }
-      .section-header-rgpd { padding: 1.25rem; }
-      .section-body { padding: 0 1.25rem; }
-      .section-rgpd.open .section-body { padding: 0 1.25rem 1.5rem; }
+      .section-header-rgpd { padding: 1.25rem 1.25rem; }
+      .section-body.open-body { padding: 0 1.25rem 1.5rem; }
       .rcb-icon { display: none; }
     }
   </style>
@@ -222,6 +271,7 @@
 <div id="read-progress"></div>
 {% include "header.html" %}
 
+<!-- HERO -->
 <section class="page-hero">
   <div class="container ph-inner">
     <ol class="breadcrumb-ml2c">
@@ -240,262 +290,307 @@
   </div>
 </section>
 
-<div style="background:#f5f6f7;">
-  <div class="container">
-    <div class="rgpd-layout">
+<!-- LAYOUT PRINCIPAL -->
+<div style="background: #f5f6f7;">
+<div class="container">
+<div class="rgpd-layout">
 
-      <!-- SIDEBAR -->
-      <aside class="rgpd-sidebar" data-anim="left">
-        <div class="sidebar-box">
-          <div class="sidebar-title"><i class="fas fa-list"></i> Sommaire</div>
-          <ul class="sidebar-nav" id="sidebar-nav">
-            <li><a href="#s1" data-target="s1"><i class="fas fa-balance-scale"></i> Principes fondamentaux <span class="s-num">01</span></a></li>
-            <li><a href="#s2" data-target="s2"><i class="fas fa-database"></i> Collecte des données <span class="s-num">02</span></a></li>
-            <li><a href="#s3" data-target="s3"><i class="fas fa-cogs"></i> Utilisation des données <span class="s-num">03</span></a></li>
-            <li><a href="#s4" data-target="s4"><i class="fas fa-archive"></i> Conservation <span class="s-num">04</span></a></li>
-            <li><a href="#s5" data-target="s5"><i class="fas fa-user-shield"></i> Droits des utilisateurs <span class="s-num">05</span></a></li>
-            <li><a href="#s6" data-target="s6"><i class="fas fa-lock"></i> Sécurité <span class="s-num">06</span></a></li>
-            <li><a href="#s7" data-target="s7"><i class="fas fa-exchange-alt"></i> Transfert des données <span class="s-num">07</span></a></li>
-            <li><a href="#s8" data-target="s8"><i class="fas fa-edit"></i> Modifications <span class="s-num">08</span></a></li>
-          </ul>
-        </div>
-        <div class="sidebar-meta">
-          <div class="meta-item"><i class="fas fa-calendar-alt"></i><div><strong>Dernière mise à jour</strong> Janvier 2025</div></div>
-          <div class="meta-item"><i class="fas fa-gavel"></i><div><strong>Cadre légal</strong> RGPD (UE) 2016/679</div></div>
-          <div class="meta-item"><i class="fas fa-map-marker-alt"></i><div><strong>DPO</strong> Marie-Line Chesneau</div></div>
-          <div class="meta-item"><i class="fas fa-envelope"></i><div><strong>Contact RGPD</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6d1f0a1d092d00015f0e400e02031e080401430b1f">[email&#160;protected]</a></div></div>
-        </div>
-      </aside>
-
-      <!-- CONTENU -->
-      <main class="rgpd-content">
-
-        <div class="section-rgpd open" id="s1" data-anim="fade">
-          <div class="section-header-rgpd">
-            <div class="section-icon icon-turq"><i class="fas fa-balance-scale"></i></div>
-            <div class="section-header-info">
-              <span class="section-num">Section 01</span>
-              <h2>Principes fondamentaux</h2>
-              <p>Respect, confidentialité, transparence</p>
-            </div>
-            
-          </div>
-          <div class="section-divider"></div>
-          <div class="section-body">
-            <p>ML2C CONSEIL s'engage à protéger vos données personnelles en veillant à ce que chaque information recueillie soit traitée avec la plus grande rigueur et transparence. Notre politique repose sur des principes de respect, de confidentialité et de sécurité. Nous limitons la collecte de données aux seuls éléments strictement nécessaires à l'amélioration de nos services et à la personnalisation de votre expérience.</p>
-            <p style="margin-top:.75rem;">La sécurité de vos informations est assurée par des protocoles de chiffrement et des mesures techniques avancées, garantissant ainsi que seul un personnel autorisé puisse y accéder. Nous réalisons régulièrement des audits de sécurité pour nous assurer que nos pratiques restent conformes aux exigences du RGPD.</p>
-            <div class="key-points">
-              <div class="kp"><i class="fas fa-check-circle"></i> Minimisation des données collectées</div>
-              <div class="kp"><i class="fas fa-check-circle"></i> Chiffrement de bout en bout</div>
-              <div class="kp"><i class="fas fa-check-circle"></i> Audits de sécurité réguliers</div>
-              <div class="kp"><i class="fas fa-check-circle"></i> Traçabilité et intégrité garanties</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="section-rgpd open" id="s2" data-anim="fade" style="transition-delay:.05s">
-          <div class="section-header-rgpd">
-            <div class="section-icon icon-rose"><i class="fas fa-database"></i></div>
-            <div class="section-header-info">
-              <span class="section-num">Section 02</span>
-              <h2>Collecte des données</h2>
-              <p>Formulaires sécurisés, consentement éclairé</p>
-            </div>
-            
-          </div>
-          <div class="section-divider"></div>
-          <div class="section-body">
-            <p>La collecte des données se fait exclusivement via des formulaires sécurisés et dans le respect de votre consentement éclairé. Nous recueillons des informations telles que votre nom, votre adresse e-mail, ainsi que d'autres données pertinentes pour adapter nos services à vos besoins. Chaque formulaire explique clairement la finalité de la collecte.</p>
-            <p style="margin-top:.75rem;">Nous veillons à ce que seules les données strictement nécessaires soient collectées, minimisant ainsi tout risque de sur-collecte. La collecte se fait dans un environnement sécurisé, où chaque donnée est validée et stockée de manière à garantir sa qualité et sa pertinence.</p>
-            <div class="key-points">
-              <div class="kp"><i class="fas fa-check-circle"></i> Consentement explicite requis</div>
-              <div class="kp"><i class="fas fa-check-circle"></i> Finalité clairement indiquée</div>
-              <div class="kp"><i class="fas fa-check-circle"></i> Données strictement nécessaires</div>
-              <div class="kp"><i class="fas fa-check-circle"></i> Environnement de collecte sécurisé</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="section-rgpd open" id="s3" data-anim="fade" style="transition-delay:.08s">
-          <div class="section-header-rgpd">
-            <div class="section-icon icon-blue"><i class="fas fa-cogs"></i></div>
-            <div class="section-header-info">
-              <span class="section-num">Section 03</span>
-              <h2>Utilisation des données</h2>
-              <p>Personnalisation, amélioration, respect légal</p>
-            </div>
-            
-          </div>
-          <div class="section-divider"></div>
-          <div class="section-body">
-            <p>Les données recueillies sont utilisées pour personnaliser et améliorer nos services, vous offrant ainsi une expérience adaptée à vos besoins. Nous exploitons ces informations pour optimiser la gestion de nos prestations et pour vous tenir informé(e) des nouveautés qui pourraient vous intéresser.</p>
-            <p style="margin-top:.75rem;">Chaque donnée est analysée de manière à identifier les tendances et à anticiper les demandes futures. L'utilisation des données se fait toujours dans le respect du cadre légal.</p>
-            <div class="key-points">
-              <div class="kp"><i class="fas fa-check-circle"></i> Aucune vente à des tiers</div>
-              <div class="kp"><i class="fas fa-check-circle"></i> Utilisation dans le cadre légal</div>
-              <div class="kp"><i class="fas fa-check-circle"></i> Analyse anonymisée uniquement</div>
-              <div class="kp"><i class="fas fa-check-circle"></i> Outils analytiques conformes RGPD</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="section-rgpd open" id="s4" data-anim="fade" style="transition-delay:.11s">
-          <div class="section-header-rgpd">
-            <div class="section-icon icon-orange"><i class="fas fa-archive"></i></div>
-            <div class="section-header-info">
-              <span class="section-num">Section 04</span>
-              <h2>Conservation des données</h2>
-              <p>Durée limitée, suppression sécurisée</p>
-            </div>
-            
-          </div>
-          <div class="section-divider"></div>
-          <div class="section-body">
-            <p>Vos données personnelles sont conservées pour une durée limitée, strictement nécessaire à la réalisation des finalités pour lesquelles elles ont été collectées, et conformément aux exigences légales. Nous archiverons ces informations sur des serveurs sécurisés et mettrons en place des procédures d'effacement automatique lorsque leur conservation ne sera plus justifiée.</p>
-            <p style="margin-top:.75rem;">Chaque donnée est revue régulièrement pour s'assurer qu'elle est toujours pertinente et à jour, et toute information obsolète est supprimée de manière sécurisée.</p>
-            <div class="key-points">
-              <div class="kp"><i class="fas fa-check-circle"></i> Durée de conservation définie</div>
-              <div class="kp"><i class="fas fa-check-circle"></i> Suppression automatique à expiration</div>
-              <div class="kp"><i class="fas fa-check-circle"></i> Serveurs sécurisés en Europe</div>
-              <div class="kp"><i class="fas fa-check-circle"></i> Revue annuelle des données stockées</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="section-rgpd open" id="s5" data-anim="fade" style="transition-delay:.14s">
-          <div class="section-header-rgpd">
-            <div class="section-icon icon-purple"><i class="fas fa-user-shield"></i></div>
-            <div class="section-header-info">
-              <span class="section-num">Section 05</span>
-              <h2>Droits des utilisateurs</h2>
-              <p>Accès, rectification, suppression, portabilité</p>
-            </div>
-            
-          </div>
-          <div class="section-divider"></div>
-          <div class="section-body">
-            <p>Vous disposez de droits essentiels concernant vos données personnelles. Pour exercer ces droits, vous pouvez nous contacter via notre adresse officielle. Nous nous engageons à traiter toute demande dans les délais prévus par la loi (30 jours maximum) et à vous fournir toutes les informations nécessaires.</p>
-            <div class="droits-grid">
-              <div class="droit-card"><i class="fas fa-eye"></i><span>Accès</span></div>
-              <div class="droit-card"><i class="fas fa-pen"></i><span>Rectification</span></div>
-              <div class="droit-card"><i class="fas fa-trash-alt"></i><span>Effacement</span></div>
-              <div class="droit-card"><i class="fas fa-pause-circle"></i><span>Limitation</span></div>
-              <div class="droit-card"><i class="fas fa-hand-paper"></i><span>Opposition</span></div>
-              <div class="droit-card"><i class="fas fa-file-export"></i><span>Portabilité</span></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="section-rgpd open" id="s6" data-anim="fade" style="transition-delay:.17s">
-          <div class="section-header-rgpd">
-            <div class="section-icon icon-green"><i class="fas fa-lock"></i></div>
-            <div class="section-header-info">
-              <span class="section-num">Section 06</span>
-              <h2>Sécurité des données</h2>
-              <p>Chiffrement, pare-feux, surveillance continue</p>
-            </div>
-            
-          </div>
-          <div class="section-divider"></div>
-          <div class="section-body">
-            <p>La sécurité de vos données est une priorité pour ML2C CONSEIL. Nous avons mis en place des infrastructures techniques robustes, comprenant des protocoles de chiffrement, des pare-feux, et des systèmes de surveillance continue. Chaque accès aux informations est strictement contrôlé et les données sont sauvegardées régulièrement pour prévenir toute perte.</p>
-            <p style="margin-top:.75rem;">Nos mesures de sécurité sont régulièrement mises à jour pour contrer les menaces émergentes, et des audits internes et externes sont effectués afin d'assurer la conformité de nos systèmes aux normes en vigueur.</p>
-            <div class="key-points">
-              <div class="kp"><i class="fas fa-check-circle"></i> Chiffrement AES-256</div>
-              <div class="kp"><i class="fas fa-check-circle"></i> Accès restreint par rôles</div>
-              <div class="kp"><i class="fas fa-check-circle"></i> Sauvegardes quotidiennes</div>
-              <div class="kp"><i class="fas fa-check-circle"></i> Audits de sécurité réguliers</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="section-rgpd open" id="s7" data-anim="fade" style="transition-delay:.2s">
-          <div class="section-header-rgpd">
-            <div class="section-icon icon-gris"><i class="fas fa-exchange-alt"></i></div>
-            <div class="section-header-info">
-              <span class="section-num">Section 07</span>
-              <h2>Transfert des données</h2>
-              <p>Canaux cryptés, traçabilité, conformité UE</p>
-            </div>
-            
-          </div>
-          <div class="section-divider"></div>
-          <div class="section-body">
-            <p>Le transfert de données entre nos différents systèmes se fait de manière sécurisée via des canaux cryptés. Nous nous assurons que toutes les informations transférées respectent les normes du RGPD et sont utilisées uniquement pour les finalités annoncées.</p>
-            <p style="margin-top:.75rem;">Des accords contractuels rigoureux encadrent tout transfert de données vers des tiers, et les transferts internationaux sont réalisés en conformité avec les régulations européennes.</p>
-            <div class="key-points">
-              <div class="kp"><i class="fas fa-check-circle"></i> Canaux HTTPS/TLS uniquement</div>
-              <div class="kp"><i class="fas fa-check-circle"></i> Journaux de transfert conservés</div>
-              <div class="kp"><i class="fas fa-check-circle"></i> Contrats DPA avec les sous-traitants</div>
-              <div class="kp"><i class="fas fa-check-circle"></i> Transferts intra-UE privilégiés</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="section-rgpd open" id="s8" data-anim="fade" style="transition-delay:.23s">
-          <div class="section-header-rgpd">
-            <div class="section-icon icon-red"><i class="fas fa-edit"></i></div>
-            <div class="section-header-info">
-              <span class="section-num">Section 08</span>
-              <h2>Modifications de la politique</h2>
-              <p>Transparence des mises à jour, notification</p>
-            </div>
-            
-          </div>
-          <div class="section-divider"></div>
-          <div class="section-body">
-            <p>Nous nous réservons le droit de modifier cette politique de confidentialité à tout moment afin de l'adapter aux évolutions législatives et technologiques. Chaque modification sera clairement indiquée sur cette page, avec la date d'entrée en vigueur de la nouvelle version.</p>
-            <p style="margin-top:.75rem;">Les utilisateurs seront informés par e-mail des changements significatifs, et la version en vigueur sera toujours accessible sur notre site.</p>
-            <div class="key-points">
-              <div class="kp"><i class="fas fa-check-circle"></i> Notification par e-mail</div>
-              <div class="kp"><i class="fas fa-check-circle"></i> Date d'entrée en vigueur visible</div>
-              <div class="kp"><i class="fas fa-check-circle"></i> Historique des versions disponible</div>
-              <div class="kp"><i class="fas fa-check-circle"></i> Version actuelle toujours accessible</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="rgpd-contact-banner" data-anim="fade">
-          <div class="rcb-icon"><i class="fas fa-envelope-open-text"></i></div>
-          <div class="rcb-text">
-            <h3>Exercer vos droits RGPD</h3>
-            <p>Pour toute demande d'accès, rectification ou suppression de vos données, contactez notre DPO directement.</p>
-          </div>
-          <a href="/cdn-cgi/l/email-protection#88faeff8ecc8e5e4baeba5ebe7e6fbede1e4a6eefa" class="btn-rgpd-contact">
-            <i class="fas fa-paper-plane"></i> Contacter le DPO
-          </a>
-        </div>
-
-      </main>
+  <!-- SIDEBAR -->
+  <aside class="rgpd-sidebar" data-anim="left">
+    <div class="sidebar-box">
+      <div class="sidebar-title"><i class="fas fa-list"></i> Sommaire</div>
+      <ul class="sidebar-nav" id="sidebar-nav">
+        <li><a href="#s1" data-target="s1"><i class="fas fa-balance-scale"></i> Principes fondamentaux <span class="s-num">01</span></a></li>
+        <li><a href="#s2" data-target="s2"><i class="fas fa-database"></i> Collecte des données <span class="s-num">02</span></a></li>
+        <li><a href="#s3" data-target="s3"><i class="fas fa-cogs"></i> Utilisation des données <span class="s-num">03</span></a></li>
+        <li><a href="#s4" data-target="s4"><i class="fas fa-archive"></i> Conservation <span class="s-num">04</span></a></li>
+        <li><a href="#s5" data-target="s5"><i class="fas fa-user-shield"></i> Droits des utilisateurs <span class="s-num">05</span></a></li>
+        <li><a href="#s6" data-target="s6"><i class="fas fa-lock"></i> Sécurité <span class="s-num">06</span></a></li>
+        <li><a href="#s7" data-target="s7"><i class="fas fa-exchange-alt"></i> Transfert des données <span class="s-num">07</span></a></li>
+        <li><a href="#s8" data-target="s8"><i class="fas fa-edit"></i> Modifications <span class="s-num">08</span></a></li>
+      </ul>
     </div>
-  </div>
+    <div class="sidebar-meta">
+      <div class="meta-item"><i class="fas fa-calendar-alt"></i><div><strong>Dernière mise à jour</strong> Janvier 2025</div></div>
+      <div class="meta-item"><i class="fas fa-gavel"></i><div><strong>Cadre légal</strong> RGPD (UE) 2016/679</div></div>
+      <div class="meta-item"><i class="fas fa-map-marker-alt"></i><div><strong>DPO</strong> Marie-Line Chesneau</div></div>
+      <div class="meta-item"><i class="fas fa-envelope"></i><div><strong>Contact RGPD</strong> rgpd@ml2c-conseil.fr</div></div>
+    </div>
+  </aside>
+
+  <!-- CONTENU -->
+  <main class="rgpd-content">
+
+    <!-- S1 — Principes fondamentaux -->
+    <div class="section-rgpd open" id="s1" data-anim="fade">
+      <div class="section-header-rgpd" onclick="toggleSection(this)">
+        <div class="section-icon icon-turq"><i class="fas fa-balance-scale"></i></div>
+        <div class="section-header-info">
+          <span class="section-num">Section 01</span>
+          <h2>Principes fondamentaux</h2>
+          <p>Respect, confidentialité, transparence</p>
+        </div>
+        <i class="fas fa-chevron-down section-chevron"></i>
+      </div>
+      <div class="section-divider"></div>
+      <div class="section-body">
+        <p>ML2C CONSEIL s'engage à protéger vos données personnelles en veillant à ce que chaque information recueillie soit traitée avec la plus grande rigueur et transparence. Notre politique repose sur des principes de respect, de confidentialité et de sécurité. Nous limitons la collecte de données aux seuls éléments strictement nécessaires à l'amélioration de nos services et à la personnalisation de votre expérience.</p>
+        <p style="margin-top:.75rem;">La sécurité de vos informations est assurée par des protocoles de chiffrement et des mesures techniques avancées, garantissant ainsi que seul un personnel autorisé puisse y accéder. Nous réalisons régulièrement des audits de sécurité pour nous assurer que nos pratiques restent conformes aux exigences du RGPD.</p>
+        <div class="key-points">
+          <div class="kp"><i class="fas fa-check-circle"></i> Minimisation des données collectées</div>
+          <div class="kp"><i class="fas fa-check-circle"></i> Chiffrement de bout en bout</div>
+          <div class="kp"><i class="fas fa-check-circle"></i> Audits de sécurité réguliers</div>
+          <div class="kp"><i class="fas fa-check-circle"></i> Traçabilité et intégrité garanties</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S2 — Collecte -->
+    <div class="section-rgpd" id="s2" data-anim="fade" style="transition-delay:.05s">
+      <div class="section-header-rgpd" onclick="toggleSection(this)">
+        <div class="section-icon icon-rose"><i class="fas fa-database"></i></div>
+        <div class="section-header-info">
+          <span class="section-num">Section 02</span>
+          <h2>Collecte des données</h2>
+          <p>Formulaires sécurisés, consentement éclairé</p>
+        </div>
+        <i class="fas fa-chevron-down section-chevron"></i>
+      </div>
+      <div class="section-divider"></div>
+      <div class="section-body">
+        <p>La collecte des données se fait exclusivement via des formulaires sécurisés et dans le respect de votre consentement éclairé. Nous recueillons des informations telles que votre nom, votre adresse e-mail, ainsi que d'autres données pertinentes pour adapter nos services à vos besoins. Chaque formulaire explique clairement la finalité de la collecte, afin que vous sachiez exactement à quoi servent vos informations.</p>
+        <p style="margin-top:.75rem;">Nous veillons à ce que seules les données strictement nécessaires soient collectées, minimisant ainsi tout risque de sur-collecte. La collecte se fait dans un environnement sécurisé, où chaque donnée est validée et stockée de manière à garantir sa qualité et sa pertinence.</p>
+        <div class="key-points">
+          <div class="kp"><i class="fas fa-check-circle"></i> Consentement explicite requis</div>
+          <div class="kp"><i class="fas fa-check-circle"></i> Finalité clairement indiquée</div>
+          <div class="kp"><i class="fas fa-check-circle"></i> Données strictement nécessaires</div>
+          <div class="kp"><i class="fas fa-check-circle"></i> Environnement de collecte sécurisé</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S3 — Utilisation -->
+    <div class="section-rgpd" id="s3" data-anim="fade" style="transition-delay:.08s">
+      <div class="section-header-rgpd" onclick="toggleSection(this)">
+        <div class="section-icon icon-blue"><i class="fas fa-cogs"></i></div>
+        <div class="section-header-info">
+          <span class="section-num">Section 03</span>
+          <h2>Utilisation des données</h2>
+          <p>Personnalisation, amélioration, respect légal</p>
+        </div>
+        <i class="fas fa-chevron-down section-chevron"></i>
+      </div>
+      <div class="section-divider"></div>
+      <div class="section-body">
+        <p>Les données recueillies sont utilisées pour personnaliser et améliorer nos services, vous offrant ainsi une expérience adaptée à vos besoins. Nous exploitons ces informations pour optimiser la gestion de nos prestations et pour vous tenir informé(e) des nouveautés qui pourraient vous intéresser.</p>
+        <p style="margin-top:.75rem;">Chaque donnée est analysée de manière à identifier les tendances et à anticiper les demandes futures. L'utilisation des données se fait toujours dans le respect du cadre légal, et chaque information est traitée avec le plus grand soin pour garantir sa confidentialité.</p>
+        <div class="key-points">
+          <div class="kp"><i class="fas fa-check-circle"></i> Aucune vente à des tiers</div>
+          <div class="kp"><i class="fas fa-check-circle"></i> Utilisation dans le cadre légal</div>
+          <div class="kp"><i class="fas fa-check-circle"></i> Analyse anonymisée uniquement</div>
+          <div class="kp"><i class="fas fa-check-circle"></i> Outils analytiques conformes RGPD</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S4 — Conservation -->
+    <div class="section-rgpd" id="s4" data-anim="fade" style="transition-delay:.11s">
+      <div class="section-header-rgpd" onclick="toggleSection(this)">
+        <div class="section-icon icon-orange"><i class="fas fa-archive"></i></div>
+        <div class="section-header-info">
+          <span class="section-num">Section 04</span>
+          <h2>Conservation des données</h2>
+          <p>Durée limitée, suppression sécurisée</p>
+        </div>
+        <i class="fas fa-chevron-down section-chevron"></i>
+      </div>
+      <div class="section-divider"></div>
+      <div class="section-body">
+        <p>Vos données personnelles sont conservées pour une durée limitée, strictement nécessaire à la réalisation des finalités pour lesquelles elles ont été collectées, et conformément aux exigences légales. Nous archiverons ces informations sur des serveurs sécurisés et mettrons en place des procédures d'effacement automatique lorsque leur conservation ne sera plus justifiée.</p>
+        <p style="margin-top:.75rem;">Chaque donnée est revue régulièrement pour s'assurer qu'elle est toujours pertinente et à jour, et toute information obsolète est supprimée de manière sécurisée. Notre politique de conservation est conçue pour minimiser le risque tout en respectant les obligations légales.</p>
+        <div class="key-points">
+          <div class="kp"><i class="fas fa-check-circle"></i> Durée de conservation définie</div>
+          <div class="kp"><i class="fas fa-check-circle"></i> Suppression automatique à expiration</div>
+          <div class="kp"><i class="fas fa-check-circle"></i> Serveurs sécurisés en Europe</div>
+          <div class="kp"><i class="fas fa-check-circle"></i> Revue annuelle des données stockées</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S5 — Droits -->
+    <div class="section-rgpd" id="s5" data-anim="fade" style="transition-delay:.14s">
+      <div class="section-header-rgpd" onclick="toggleSection(this)">
+        <div class="section-icon icon-purple"><i class="fas fa-user-shield"></i></div>
+        <div class="section-header-info">
+          <span class="section-num">Section 05</span>
+          <h2>Droits des utilisateurs</h2>
+          <p>Accès, rectification, suppression, portabilité</p>
+        </div>
+        <i class="fas fa-chevron-down section-chevron"></i>
+      </div>
+      <div class="section-divider"></div>
+      <div class="section-body">
+        <p>Vous disposez de droits essentiels concernant vos données personnelles. Pour exercer ces droits, vous pouvez nous contacter via notre adresse officielle. Nous nous engageons à traiter toute demande dans les délais prévus par la loi (30 jours maximum) et à vous fournir toutes les informations nécessaires.</p>
+        <div class="droits-grid">
+          <div class="droit-card"><i class="fas fa-eye"></i><span>Accès</span></div>
+          <div class="droit-card"><i class="fas fa-pen"></i><span>Rectification</span></div>
+          <div class="droit-card"><i class="fas fa-trash-alt"></i><span>Effacement</span></div>
+          <div class="droit-card"><i class="fas fa-pause-circle"></i><span>Limitation</span></div>
+          <div class="droit-card"><i class="fas fa-hand-paper"></i><span>Opposition</span></div>
+          <div class="droit-card"><i class="fas fa-file-export"></i><span>Portabilité</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S6 — Sécurité -->
+    <div class="section-rgpd" id="s6" data-anim="fade" style="transition-delay:.17s">
+      <div class="section-header-rgpd" onclick="toggleSection(this)">
+        <div class="section-icon icon-green"><i class="fas fa-lock"></i></div>
+        <div class="section-header-info">
+          <span class="section-num">Section 06</span>
+          <h2>Sécurité des données</h2>
+          <p>Chiffrement, pare-feux, surveillance continue</p>
+        </div>
+        <i class="fas fa-chevron-down section-chevron"></i>
+      </div>
+      <div class="section-divider"></div>
+      <div class="section-body">
+        <p>La sécurité de vos données est une priorité pour ML2C CONSEIL. Nous avons mis en place des infrastructures techniques robustes, comprenant des protocoles de chiffrement, des pare-feux, et des systèmes de surveillance continue. Chaque accès aux informations est strictement contrôlé et les données sont sauvegardées régulièrement pour prévenir toute perte.</p>
+        <p style="margin-top:.75rem;">Nos mesures de sécurité sont régulièrement mises à jour pour contrer les menaces émergentes, et des audits internes et externes sont effectués afin d'assurer la conformité de nos systèmes aux normes en vigueur.</p>
+        <div class="key-points">
+          <div class="kp"><i class="fas fa-check-circle"></i> Chiffrement AES-256</div>
+          <div class="kp"><i class="fas fa-check-circle"></i> Accès restreint par rôles</div>
+          <div class="kp"><i class="fas fa-check-circle"></i> Sauvegardes quotidiennes</div>
+          <div class="kp"><i class="fas fa-check-circle"></i> Audits de sécurité réguliers</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S7 — Transfert -->
+    <div class="section-rgpd" id="s7" data-anim="fade" style="transition-delay:.2s">
+      <div class="section-header-rgpd" onclick="toggleSection(this)">
+        <div class="section-icon icon-gris"><i class="fas fa-exchange-alt"></i></div>
+        <div class="section-header-info">
+          <span class="section-num">Section 07</span>
+          <h2>Transfert des données</h2>
+          <p>Canaux cryptés, traçabilité, conformité UE</p>
+        </div>
+        <i class="fas fa-chevron-down section-chevron"></i>
+      </div>
+      <div class="section-divider"></div>
+      <div class="section-body">
+        <p>Le transfert de données entre nos différents systèmes se fait de manière sécurisée via des canaux cryptés. Nous nous assurons que toutes les informations transférées respectent les normes du RGPD et sont utilisées uniquement pour les finalités annoncées. Chaque transfert est surveillé et consigné pour garantir sa traçabilité.</p>
+        <p style="margin-top:.75rem;">Des accords contractuels rigoureux encadrent tout transfert de données vers des tiers, et les transferts internationaux sont réalisés en conformité avec les régulations européennes. La sécurité des transferts est régulièrement auditée.</p>
+        <div class="key-points">
+          <div class="kp"><i class="fas fa-check-circle"></i> Canaux HTTPS/TLS uniquement</div>
+          <div class="kp"><i class="fas fa-check-circle"></i> Journaux de transfert conservés</div>
+          <div class="kp"><i class="fas fa-check-circle"></i> Contrats DPA avec les sous-traitants</div>
+          <div class="kp"><i class="fas fa-check-circle"></i> Transferts intra-UE privilégiés</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S8 — Modifications -->
+    <div class="section-rgpd" id="s8" data-anim="fade" style="transition-delay:.23s">
+      <div class="section-header-rgpd" onclick="toggleSection(this)">
+        <div class="section-icon icon-red"><i class="fas fa-edit"></i></div>
+        <div class="section-header-info">
+          <span class="section-num">Section 08</span>
+          <h2>Modifications de la politique</h2>
+          <p>Transparence des mises à jour, notification</p>
+        </div>
+        <i class="fas fa-chevron-down section-chevron"></i>
+      </div>
+      <div class="section-divider"></div>
+      <div class="section-body">
+        <p>Nous nous réservons le droit de modifier cette politique de confidentialité à tout moment afin de l'adapter aux évolutions législatives et technologiques. Chaque modification sera clairement indiquée sur cette page, avec la date d'entrée en vigueur de la nouvelle version.</p>
+        <p style="margin-top:.75rem;">Les utilisateurs seront informés par e-mail des changements significatifs, et la version en vigueur sera toujours accessible sur notre site. En continuant à utiliser notre site, vous acceptez automatiquement les modifications apportées à notre politique de confidentialité.</p>
+        <div class="key-points">
+          <div class="kp"><i class="fas fa-check-circle"></i> Notification par e-mail</div>
+          <div class="kp"><i class="fas fa-check-circle"></i> Date d'entrée en vigueur visible</div>
+          <div class="kp"><i class="fas fa-check-circle"></i> Historique des versions disponible</div>
+          <div class="kp"><i class="fas fa-check-circle"></i> Version actuelle toujours accessible</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BANNIÈRE CONTACT -->
+    <div class="rgpd-contact-banner" data-anim="fade">
+      <div class="rcb-icon"><i class="fas fa-envelope-open-text"></i></div>
+      <div class="rcb-text">
+        <h3>Exercer vos droits RGPD</h3>
+        <p>Pour toute demande d'accès, rectification ou suppression de vos données, contactez notre DPO directement.</p>
+      </div>
+      <a href="{{ url_for('menu') }}#contact" class="btn-rgpd-contact">
+        <i class="fas fa-paper-plane"></i> Contacter le DPO
+      </a>
+    </div>
+
+  </main>
+</div>
+</div>
 </div>
 
 {% include "footer.html" %}
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  const sections  = document.querySelectorAll('.section-rgpd[id]');
+  // Sticky header + burger
+  const hdr = document.getElementById('mainHeader');
+  if (hdr) window.addEventListener('scroll', () => hdr.classList.toggle('scrolled', window.scrollY > 60));
+  const burger = document.getElementById('burgerBtn');
+  const nav = document.getElementById('mainNav');
+  if (burger && nav) burger.addEventListener('click', function() {
+    nav.classList.toggle('open'); this.classList.toggle('active');
+  });
+
+  // Accordion
+  function toggleSection(header) {
+    const section = header.closest('.section-rgpd');
+    const isOpen = section.classList.contains('open');
+    section.classList.toggle('open', !isOpen);
+  }
+
+  // Sidebar active au scroll
+  const sections = document.querySelectorAll('.section-rgpd[id]');
   const sideLinks = document.querySelectorAll('#sidebar-nav a');
   window.addEventListener('scroll', () => {
     let current = '';
-    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
-    sideLinks.forEach(a => a.classList.toggle('active', a.getAttribute('data-target') === current));
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    sideLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('data-target') === current);
+    });
   });
 
+  // Smooth scroll sidebar
   sideLinks.forEach(a => {
     a.addEventListener('click', e => {
       e.preventDefault();
       const target = document.getElementById(a.getAttribute('data-target'));
       if (target) {
+        // Ouvrir la section
         target.classList.add('open');
         window.scrollTo({ top: target.offsetTop - 100, behavior: 'smooth' });
       }
     });
   });
 
+  // Barre de progression de lecture
   const bar = document.getElementById('read-progress');
   window.addEventListener('scroll', () => {
     const h = document.documentElement;
-    bar.style.width = (window.scrollY / (h.scrollHeight - h.clientHeight) * 100) + '%'  });
+    const pct = (window.scrollY / (h.scrollHeight - h.clientHeight)) * 100;
+    bar.style.width = pct + '%';
+  });
+
+  // Animations scroll
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('[data-anim]').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

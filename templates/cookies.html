@@ -21,7 +21,7 @@
     html { scroll-behavior: smooth; }
     body { font-family: var(--font-body); color: var(--text); background: #fff; }
 
-    /* ── HERO COOKIES ── */
+    /* ── HERO ── */
     .cookies-hero {
       background: linear-gradient(135deg, var(--gris) 0%, #3a4347 100%);
       padding: 80px 0 60px;
@@ -32,7 +32,10 @@
       position: absolute; right: 8%; top: 50%; transform: translateY(-50%);
       font-size: 9rem; opacity: .07; pointer-events: none;
     }
-    .cookies-hero-inner { max-width: 820px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* ── HERO INNER avec container standard ── */
+    .cookies-hero .container { position: relative; z-index: 2; }
+
     .cookies-breadcrumb {
       display: flex; align-items: center; gap: .5rem;
       font-size: .8rem; color: rgba(255,255,255,.55); margin-bottom: 1.2rem;
@@ -40,23 +43,29 @@
     .cookies-breadcrumb a { color: rgba(255,255,255,.55); }
     .cookies-breadcrumb a:hover { color: var(--rose); }
     .cookies-breadcrumb i { font-size: .6rem; }
+
+    /* ── TITRE HERO — aligné comme mentions légales ── */
     .cookies-hero h1 {
-      font-family: var(--font-head); font-size: clamp(2.2rem, 5vw, 3.2rem);
-      font-weight: 700; color: white; line-height: 1.15; margin-bottom: 1rem;
+      font-family: var(--font-head);
+      font-size: clamp(2.1rem, 5vw, 3.4rem);
+      font-weight: 700; color: white; line-height: 1.08; margin-bottom: 1rem;
     }
-    .cookies-hero h1 span { color: var(--rose); }
-    .cookies-hero p {
-      color: rgba(255,255,255,.72); font-size: 1.05rem; line-height: 1.7;
-      max-width: 600px;
+    .cookies-hero h1 span { color: #f9a8d4; font-style: italic; }
+    .cookies-hero > .container > p,
+    .cookies-hero p.hero-sub {
+      color: rgba(255,255,255,.62); font-size: .95rem; line-height: 1.8;
+      max-width: 520px; margin: 0;
     }
     .cookies-meta {
-      display: flex; gap: 1.5rem; margin-top: 1.8rem; flex-wrap: wrap;
+      display: flex; gap: 1.5rem; margin-top: 1.5rem; flex-wrap: wrap;
     }
     .cookies-meta-item {
       display: flex; align-items: center; gap: .5rem;
-      font-size: .8rem; color: rgba(255,255,255,.6);
+      font-size: .75rem; font-weight: 600; color: rgba(255,255,255,.8);
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16);
+      border-radius: 20px; padding: .32rem .9rem;
     }
-    .cookies-meta-item i { color: var(--rose); }
+    .cookies-meta-item i { color: #f9a8d4; font-size: .7rem; }
 
     /* ── BARRE PROGRESSION ── */
     .reading-bar {
@@ -65,9 +74,9 @@
       width: 0%; z-index: 9999; transition: width .1s linear;
     }
 
-    /* ── LAYOUT PRINCIPAL ── */
+    /* ── LAYOUT ── */
     .cookies-layout {
-      max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem 5rem;
+      max-width: 1200px; margin: 0 auto; padding: 3rem 1.5rem 5rem;
       display: grid; grid-template-columns: 260px 1fr; gap: 3rem;
     }
     @media(max-width: 768px) {
@@ -75,7 +84,7 @@
       .cookies-sidebar { display: none; }
     }
 
-    /* ── SIDEBAR NAVIGATION ── */
+    /* ── SIDEBAR ── */
     .cookies-sidebar { position: relative; }
     .cookies-sidebar-inner {
       position: sticky; top: 90px;
@@ -99,7 +108,7 @@
     }
     .sidebar-nav a i { width: 16px; text-align: center; font-size: .8rem; }
 
-    /* Panneau gestion consentement */
+    /* Panneau consentement */
     .consent-panel {
       margin-top: 1.5rem; padding: 1rem; background: white;
       border-radius: 12px; border: 1.5px solid var(--border);
@@ -110,8 +119,7 @@
     }
     .consent-toggle-row {
       display: flex; align-items: center; justify-content: space-between;
-      padding: .5rem 0; border-bottom: 1px solid #f0f0f0;
-      font-size: .83rem;
+      padding: .5rem 0; border-bottom: 1px solid #f0f0f0; font-size: .83rem;
     }
     .consent-toggle-row:last-child { border-bottom: none; }
     .consent-toggle-row span { color: var(--text); }
@@ -119,7 +127,6 @@
       font-size: .65rem; background: var(--gris-light); color: var(--text-muted);
       padding: .15rem .45rem; border-radius: 20px;
     }
-    /* Toggle switch */
     .toggle-switch { position: relative; width: 38px; height: 20px; flex-shrink: 0; }
     .toggle-switch input { opacity: 0; width: 0; height: 0; }
     .toggle-slider {
@@ -142,15 +149,9 @@
     }
     .consent-save-btn:hover { background: var(--rose-dark); }
 
-    /* ── CONTENU ── */
+    /* ── SECTIONS ── */
     .cookies-content { display: block; }
-
-    /* Sections */
-    .cookie-section {
-      margin-bottom: 3rem; scroll-margin-top: 90px;
-      animation: fadeUp .5s ease both;
-    }
-    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    .cookie-section { margin-bottom: 3rem; scroll-margin-top: 90px; }
 
     .section-anchor-title {
       display: flex; align-items: center; gap: .75rem; margin-bottom: 1.25rem;
@@ -163,20 +164,18 @@
     .section-anchor-title h2 {
       font-family: var(--font-head); font-size: 1.6rem; font-weight: 700; color: var(--text);
     }
-
     .cookies-content p {
       color: #4b5563; line-height: 1.8; font-size: .97rem; margin-bottom: 1rem;
     }
 
-    /* ── TABLEAU COOKIES ── */
+    /* ── TABLEAU ── */
     .cookie-table-wrapper {
       border-radius: 12px; overflow: hidden;
       border: 1px solid var(--border); margin: 1.5rem 0;
     }
     .cookie-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
     .cookie-table thead {
-      background: linear-gradient(135deg, var(--rose), var(--rose-dark));
-      color: white;
+      background: linear-gradient(135deg, var(--rose), var(--rose-dark)); color: white;
     }
     .cookie-table thead th { padding: .85rem 1rem; font-weight: 600; text-align: left; }
     .cookie-table tbody tr { border-bottom: 1px solid #f3f4f6; transition: background .15s; }
@@ -190,7 +189,7 @@
       font-size: .75rem; color: var(--text-muted); font-weight: 500;
     }
 
-    /* ── CARTES TYPES DE COOKIES ── */
+    /* ── CARDS TYPES ── */
     .cookie-types-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1rem; margin: 1.5rem 0;
@@ -214,16 +213,16 @@
     .card-marketing .cookie-type-icon { background: #fef3c7; color: #d97706; }
     .card-preferences .cookie-type-icon { background: var(--rose-light); color: var(--rose); }
 
-    /* ── BLOC INFO ── */
+    /* ── BLOCS INFO ── */
     .info-block {
       display: flex; gap: 1rem; padding: 1.2rem 1.4rem;
       border-radius: 12px; margin: 1.25rem 0;
     }
-    .info-block.info { background: #eff6ff; border-left: 3px solid #3b82f6; }
+    .info-block.info    { background: #eff6ff; border-left: 3px solid #3b82f6; }
     .info-block.warning { background: #fffbeb; border-left: 3px solid #f59e0b; }
     .info-block.success { background: #f0fdf4; border-left: 3px solid #22c55e; }
     .info-block-icon { font-size: 1.1rem; margin-top: .1rem; flex-shrink: 0; }
-    .info-block.info .info-block-icon { color: #3b82f6; }
+    .info-block.info    .info-block-icon { color: #3b82f6; }
     .info-block.warning .info-block-icon { color: #f59e0b; }
     .info-block.success .info-block-icon { color: #22c55e; }
     .info-block p { margin: 0; font-size: .9rem; color: #374151; line-height: 1.65; }
@@ -242,7 +241,25 @@
     }
     .browser-header:hover { background: var(--gris-light); }
     .browser-header-left { display: flex; align-items: center; gap: .75rem; }
-    .browser-logo { width: 28px; height: 28px; border-radius: 6px; object-fit: contain; }
+    .browser-logo { width: 28px; height: 28px; border-radius: 6px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+
+    /* Chrome */
+    .logo-chrome { background: conic-gradient(#4285f4 0deg 90deg, #34a853 90deg 180deg, #fbbc05 180deg 270deg, #ea4335 270deg 360deg); border-radius: 50%; position:relative; }
+    .logo-chrome::after { content:''; position:absolute; width:40%; height:40%; background:#fff; border-radius:50%; top:50%; left:50%; transform:translate(-50%,-50%); }
+
+    /* Firefox */
+    .logo-firefox { background: radial-gradient(circle at 35% 40%, #ff980e 0%, #ff6611 40%, #c6251a 70%, #891616 100%); border-radius: 50%; position:relative; overflow:hidden; }
+    .logo-firefox::after { content:''; position:absolute; width:55%; height:55%; background: radial-gradient(circle at 40% 35%, #6af 0%, #2a6db5 100%); border-radius:50%; top:20%; left:20%; }
+
+    /* Edge */
+    .logo-edge { background: linear-gradient(135deg, #0078d4 0%, #00b7c3 100%); border-radius: 50%; position:relative; overflow:hidden; }
+    .logo-edge::before { content:''; position:absolute; width:70%; height:70%; background:rgba(255,255,255,.2); border-radius:50% 0 50% 50%; top:15%; left:10%; transform:rotate(-20deg); }
+    .logo-edge::after { content:''; position:absolute; width:60%; height:25%; background:rgba(255,255,255,.5); border-radius:20px; bottom:18%; left:15%; }
+
+    /* Safari */
+    .logo-safari { background: radial-gradient(circle, #e8e8e8 0%, #c8c8c8 100%); border-radius: 50%; border: 1px solid #bbb; position:relative; }
+    .logo-safari::before { content:''; position:absolute; width:2px; height:45%; background: linear-gradient(180deg,#e33,#c00); top:5%; left:50%; transform:translateX(-50%); }
+    .logo-safari::after { content:''; position:absolute; width:2px; height:45%; background: linear-gradient(180deg,#aaa,#888); bottom:5%; left:50%; transform:translateX(-50%); }
     .browser-name { font-weight: 600; font-size: .92rem; }
     .browser-arrow { color: var(--text-muted); font-size: .75rem; transition: transform .3s; }
     .browser-item.open .browser-arrow { transform: rotate(180deg); }
@@ -251,31 +268,44 @@
       background: #fafafa; border-top: 1px solid var(--border);
     }
     .browser-item.open .browser-body { max-height: 200px; }
-    .browser-steps {
-      padding: 1rem 1.2rem; font-size: .87rem;
-      color: #4b5563; line-height: 1.75;
-    }
+    .browser-steps { padding: 1rem 1.2rem; font-size: .87rem; color: #4b5563; line-height: 1.75; }
     .browser-steps ol { margin: 0; padding-left: 1.3rem; }
     .browser-steps li { margin-bottom: .25rem; }
-    .browser-steps a { color: var(--rose); }
 
-    /* ── CONTACT CARD ── */
+    /* ── CONTACT CARD — texte lisible (fond rose foncé → texte blanc clair) ── */
     .contact-cookies-card {
       background: linear-gradient(135deg, var(--rose) 0%, var(--rose-dark) 100%);
       border-radius: 16px; padding: 2rem; color: white; margin-top: 2rem;
       display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
     }
-    .contact-cookies-card i { font-size: 2.5rem; opacity: .8; }
-    .contact-cookies-card h3 { font-family: var(--font-head); font-size: 1.4rem; margin-bottom: .4rem; }
-    .contact-cookies-card p { opacity: .85; font-size: .9rem; margin: 0; }
-    .contact-cookies-card a {
-      margin-left: auto; background: white; color: var(--rose);
-      padding: .65rem 1.4rem; border-radius: 8px; font-weight: 600;
-      font-size: .9rem; text-decoration: none; white-space: nowrap; transition: opacity .2s;
+    .contact-cookies-card > i { font-size: 2.5rem; opacity: .85; flex-shrink: 0; }
+    .contact-cookies-card h3 {
+      font-family: var(--font-head); font-size: 1.4rem;
+      margin-bottom: .4rem; color: #fff;
     }
-    .contact-cookies-card a:hover { opacity: .9; }
+    .contact-cookies-card p { opacity: .9; font-size: .9rem; margin: 0; color: #fff; }
 
-    /* ── BANNER TOAST ── */
+    /* ── BOUTON "NOUS ÉCRIRE" — aligné à droite, bien visible ── */
+    .contact-cookies-card .btn-ecrire {
+      margin-left: auto;
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: white; color: var(--rose-dark);
+      padding: .7rem 1.5rem; border-radius: 9px;
+      font-weight: 700; font-size: .9rem;
+      text-decoration: none; white-space: nowrap;
+      transition: all .2s; flex-shrink: 0;
+      box-shadow: 0 2px 10px rgba(0,0,0,.15);
+    }
+    .contact-cookies-card .btn-ecrire:hover {
+      background: #fce4f3; color: var(--rose-dark);
+      transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,.2);
+    }
+    @media(max-width: 640px) {
+      .contact-cookies-card { flex-direction: column; text-align: center; }
+      .contact-cookies-card .btn-ecrire { margin-left: 0; width: 100%; justify-content: center; }
+    }
+
+    /* ── TOAST ── */
     .consent-toast {
       position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(120px);
       background: #1f2937; color: white; padding: .8rem 1.5rem;
@@ -295,18 +325,16 @@
 
 {% include "header.html" %}
 
-<!-- ══════════════════════════════════════════
-     HERO
-══════════════════════════════════════════ -->
+<!-- HERO -->
 <div class="cookies-hero">
-  <div class="cookies-hero-inner">
+  <div class="container">
     <div class="cookies-breadcrumb">
       <a href="{{ url_for('menu') }}">Accueil</a>
       <i class="fas fa-chevron-right"></i>
       <span>Politique de cookies</span>
     </div>
     <h1>Politique de <span>Cookies</span></h1>
-    <p>Transparence totale sur l'utilisation des cookies sur notre site. Vous gardez le contrôle à tout moment.</p>
+    <p class="hero-sub">Transparence totale sur l'utilisation des cookies sur notre site. Vous gardez le contrôle à tout moment.</p>
     <div class="cookies-meta">
       <div class="cookies-meta-item"><i class="fas fa-calendar-alt"></i> Mise à jour : Janvier 2025</div>
       <div class="cookies-meta-item"><i class="fas fa-clock"></i> Lecture : ~3 minutes</div>
@@ -315,12 +343,10 @@
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     LAYOUT : SIDEBAR + CONTENU
-══════════════════════════════════════════ -->
+<!-- LAYOUT -->
 <div class="cookies-layout">
 
-  <!-- ── SIDEBAR ── -->
+  <!-- SIDEBAR -->
   <aside class="cookies-sidebar">
     <div class="cookies-sidebar-inner">
       <div class="sidebar-title">Sur cette page</div>
@@ -333,50 +359,32 @@
         <li><a href="#droits" class="sidebar-link"><i class="fas fa-user-shield"></i> Vos droits</a></li>
         <li><a href="#contact" class="sidebar-link"><i class="fas fa-envelope"></i> Nous contacter</a></li>
       </ul>
-
-      <!-- Panneau de consentement rapide -->
       <div class="consent-panel">
         <div class="consent-panel-title">🎛️ Mes préférences</div>
-
         <div class="consent-toggle-row">
           <span>Essentiels <span class="badge-required">requis</span></span>
-          <label class="toggle-switch">
-            <input type="checkbox" checked disabled>
-            <span class="toggle-slider"></span>
-          </label>
+          <label class="toggle-switch"><input type="checkbox" checked disabled><span class="toggle-slider"></span></label>
         </div>
         <div class="consent-toggle-row">
           <span>Analytiques</span>
-          <label class="toggle-switch">
-            <input type="checkbox" id="toggle-analytics" checked>
-            <span class="toggle-slider"></span>
-          </label>
+          <label class="toggle-switch"><input type="checkbox" id="toggle-analytics" checked><span class="toggle-slider"></span></label>
         </div>
         <div class="consent-toggle-row">
           <span>Marketing</span>
-          <label class="toggle-switch">
-            <input type="checkbox" id="toggle-marketing">
-            <span class="toggle-slider"></span>
-          </label>
+          <label class="toggle-switch"><input type="checkbox" id="toggle-marketing"><span class="toggle-slider"></span></label>
         </div>
         <div class="consent-toggle-row">
           <span>Préférences</span>
-          <label class="toggle-switch">
-            <input type="checkbox" id="toggle-prefs" checked>
-            <span class="toggle-slider"></span>
-          </label>
+          <label class="toggle-switch"><input type="checkbox" id="toggle-prefs" checked><span class="toggle-slider"></span></label>
         </div>
-        <button class="consent-save-btn" onclick="saveConsent()">
-          <i class="fas fa-save"></i> Enregistrer
-        </button>
+        <button class="consent-save-btn" onclick="saveConsent()"><i class="fas fa-save"></i> Enregistrer</button>
       </div>
     </div>
   </aside>
 
-  <!-- ── CONTENU ── -->
+  <!-- CONTENU -->
   <main class="cookies-content">
 
-    <!-- 1. DÉFINITION -->
     <div class="cookie-section" id="definition">
       <div class="section-anchor-title">
         <div class="section-icon"><i class="fas fa-cookie-bite"></i></div>
@@ -390,7 +398,6 @@
       </div>
     </div>
 
-    <!-- 2. TYPES -->
     <div class="cookie-section" id="types">
       <div class="section-anchor-title">
         <div class="section-icon"><i class="fas fa-layer-group"></i></div>
@@ -421,7 +428,6 @@
       </div>
     </div>
 
-    <!-- 3. LISTE COOKIES -->
     <div class="cookie-section" id="liste">
       <div class="section-anchor-title">
         <div class="section-icon"><i class="fas fa-list"></i></div>
@@ -432,55 +438,17 @@
         <table class="cookie-table">
           <thead>
             <tr>
-              <th>Nom</th>
-              <th>Type</th>
-              <th>Finalité</th>
-              <th>Durée</th>
+              <th>Nom</th><th>Type</th><th>Finalité</th><th>Durée</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>session</td>
-              <td>Essentiel</td>
-              <td>Maintient votre session active et sécurisée</td>
-              <td><span class="duration-badge">Session</span></td>
-            </tr>
-            <tr>
-              <td>csrf_token</td>
-              <td>Essentiel</td>
-              <td>Protection contre les attaques CSRF</td>
-              <td><span class="duration-badge">Session</span></td>
-            </tr>
-            <tr>
-              <td>ml2c_consent</td>
-              <td>Essentiel</td>
-              <td>Mémorise vos préférences de cookies</td>
-              <td><span class="duration-badge">12 mois</span></td>
-            </tr>
-            <tr>
-              <td>_ga</td>
-              <td>Analytique</td>
-              <td>Google Analytics — distingue les utilisateurs</td>
-              <td><span class="duration-badge">24 mois</span></td>
-            </tr>
-            <tr>
-              <td>_gid</td>
-              <td>Analytique</td>
-              <td>Google Analytics — distingue les utilisateurs (24h)</td>
-              <td><span class="duration-badge">24h</span></td>
-            </tr>
-            <tr>
-              <td>_gat</td>
-              <td>Analytique</td>
-              <td>Google Analytics — limite le taux de requêtes</td>
-              <td><span class="duration-badge">1 minute</span></td>
-            </tr>
-            <tr>
-              <td>ml2c_prefs</td>
-              <td>Préférence</td>
-              <td>Mémorise vos préférences d'affichage</td>
-              <td><span class="duration-badge">6 mois</span></td>
-            </tr>
+            <tr><td>session</td><td>Essentiel</td><td>Maintient votre session active et sécurisée</td><td><span class="duration-badge">Session</span></td></tr>
+            <tr><td>csrf_token</td><td>Essentiel</td><td>Protection contre les attaques CSRF</td><td><span class="duration-badge">Session</span></td></tr>
+            <tr><td>ml2c_consent</td><td>Essentiel</td><td>Mémorise vos préférences de cookies</td><td><span class="duration-badge">12 mois</span></td></tr>
+            <tr><td>_ga</td><td>Analytique</td><td>Google Analytics — distingue les utilisateurs</td><td><span class="duration-badge">24 mois</span></td></tr>
+            <tr><td>_gid</td><td>Analytique</td><td>Google Analytics — distingue les utilisateurs (24h)</td><td><span class="duration-badge">24h</span></td></tr>
+            <tr><td>_gat</td><td>Analytique</td><td>Google Analytics — limite le taux de requêtes</td><td><span class="duration-badge">1 minute</span></td></tr>
+            <tr><td>ml2c_prefs</td><td>Préférence</td><td>Mémorise vos préférences d'affichage</td><td><span class="duration-badge">6 mois</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -490,7 +458,6 @@
       </div>
     </div>
 
-    <!-- 4. GESTION -->
     <div class="cookie-section" id="gestion">
       <div class="section-anchor-title">
         <div class="section-icon"><i class="fas fa-sliders-h"></i></div>
@@ -504,7 +471,6 @@
       <p>Le refus des cookies analytiques et marketing n'affecte pas votre accès aux services du cabinet ni à votre espace client.</p>
     </div>
 
-    <!-- 5. NAVIGATEURS -->
     <div class="cookie-section" id="navigateurs">
       <div class="section-anchor-title">
         <div class="section-icon"><i class="fas fa-globe"></i></div>
@@ -512,91 +478,77 @@
       </div>
       <p>Vous pouvez également gérer ou supprimer les cookies directement depuis votre navigateur :</p>
       <div class="browser-accordion">
-
         <div class="browser-item">
           <div class="browser-header" onclick="toggleBrowser(this)">
             <div class="browser-header-left">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/48px-Google_Chrome_icon_%28February_2022%29.svg.png" class="browser-logo" alt="Chrome">
+              <div class="browser-logo logo-chrome"></div>
               <span class="browser-name">Google Chrome</span>
             </div>
             <i class="fas fa-chevron-down browser-arrow"></i>
           </div>
           <div class="browser-body">
-            <div class="browser-steps">
-              <ol>
-                <li>Cliquez sur les 3 points en haut à droite</li>
-                <li>Allez dans <strong>Paramètres → Confidentialité et sécurité</strong></li>
-                <li>Cliquez sur <strong>Cookies et autres données de sites</strong></li>
-                <li>Choisissez vos préférences ou supprimez tous les cookies</li>
-              </ol>
-            </div>
+            <div class="browser-steps"><ol>
+              <li>Cliquez sur les 3 points en haut à droite</li>
+              <li>Allez dans <strong>Paramètres → Confidentialité et sécurité</strong></li>
+              <li>Cliquez sur <strong>Cookies et autres données de sites</strong></li>
+              <li>Choisissez vos préférences ou supprimez tous les cookies</li>
+            </ol></div>
           </div>
         </div>
-
         <div class="browser-item">
           <div class="browser-header" onclick="toggleBrowser(this)">
             <div class="browser-header-left">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Firefox_logo%2C_2019.svg/48px-Firefox_logo%2C_2019.svg.png" class="browser-logo" alt="Firefox">
+              <div class="browser-logo logo-firefox"></div>
               <span class="browser-name">Mozilla Firefox</span>
             </div>
             <i class="fas fa-chevron-down browser-arrow"></i>
           </div>
           <div class="browser-body">
-            <div class="browser-steps">
-              <ol>
-                <li>Cliquez sur le menu hamburger en haut à droite</li>
-                <li>Allez dans <strong>Paramètres → Vie privée et sécurité</strong></li>
-                <li>Sous <strong>Cookies et données de sites</strong>, cliquez sur <strong>Effacer les données</strong></li>
-                <li>Configurez vos préférences de protection renforcée</li>
-              </ol>
-            </div>
+            <div class="browser-steps"><ol>
+              <li>Cliquez sur le menu hamburger en haut à droite</li>
+              <li>Allez dans <strong>Paramètres → Vie privée et sécurité</strong></li>
+              <li>Sous <strong>Cookies et données de sites</strong>, cliquez sur <strong>Effacer les données</strong></li>
+              <li>Configurez vos préférences de protection renforcée</li>
+            </ol></div>
           </div>
         </div>
-
         <div class="browser-item">
           <div class="browser-header" onclick="toggleBrowser(this)">
             <div class="browser-header-left">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Microsoft_Edge_logo_%282019%29.svg/48px-Microsoft_Edge_logo_%282019%29.svg.png" class="browser-logo" alt="Edge">
+              <div class="browser-logo logo-edge"></div>
               <span class="browser-name">Microsoft Edge</span>
             </div>
             <i class="fas fa-chevron-down browser-arrow"></i>
           </div>
           <div class="browser-body">
-            <div class="browser-steps">
-              <ol>
-                <li>Cliquez sur les 3 points en haut à droite</li>
-                <li>Allez dans <strong>Paramètres → Cookies et autorisations de site</strong></li>
-                <li>Cliquez sur <strong>Cookies et données de site</strong></li>
-                <li>Gérez ou supprimez les cookies selon vos préférences</li>
-              </ol>
-            </div>
+            <div class="browser-steps"><ol>
+              <li>Cliquez sur les 3 points en haut à droite</li>
+              <li>Allez dans <strong>Paramètres → Cookies et autorisations de site</strong></li>
+              <li>Cliquez sur <strong>Cookies et données de site</strong></li>
+              <li>Gérez ou supprimez les cookies selon vos préférences</li>
+            </ol></div>
           </div>
         </div>
-
         <div class="browser-item">
           <div class="browser-header" onclick="toggleBrowser(this)">
             <div class="browser-header-left">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Safari_browser_logo.svg/48px-Safari_browser_logo.svg.png" class="browser-logo" alt="Safari">
+              <div class="browser-logo logo-safari"></div>
               <span class="browser-name">Safari (Mac / iPhone)</span>
             </div>
             <i class="fas fa-chevron-down browser-arrow"></i>
           </div>
           <div class="browser-body">
-            <div class="browser-steps">
-              <ol>
-                <li>Allez dans <strong>Safari → Préférences</strong> (Mac) ou <strong>Réglages → Safari</strong> (iPhone)</li>
-                <li>Cliquez sur l'onglet <strong>Confidentialité</strong></li>
-                <li>Cochez <strong>Bloquer tous les cookies</strong> ou gérez-les manuellement</li>
-                <li>Cliquez sur <strong>Gérer les données de sites web</strong> pour les supprimer</li>
-              </ol>
-            </div>
+            <div class="browser-steps"><ol>
+              <li>Allez dans <strong>Safari → Préférences</strong> (Mac) ou <strong>Réglages → Safari</strong> (iPhone)</li>
+              <li>Cliquez sur l'onglet <strong>Confidentialité</strong></li>
+              <li>Cochez <strong>Bloquer tous les cookies</strong> ou gérez-les manuellement</li>
+              <li>Cliquez sur <strong>Gérer les données de sites web</strong> pour les supprimer</li>
+            </ol></div>
           </div>
         </div>
-
       </div>
     </div>
 
-    <!-- 6. DROITS -->
     <div class="cookie-section" id="droits">
       <div class="section-anchor-title">
         <div class="section-icon"><i class="fas fa-user-shield"></i></div>
@@ -613,11 +565,10 @@
       </ul>
       <div class="info-block info">
         <i class="fas fa-info-circle info-block-icon"></i>
-        <p>Pour exercer vos droits, contactez-nous à <a href="mailto:contact@ml2cconseil.com" style="color:var(--rose)">contact@ml2cconseil.com</a>. Vous pouvez également introduire une réclamation auprès de la <strong>CNIL</strong> sur <a href="https://www.cnil.fr" target="_blank" style="color:var(--rose)">cnil.fr</a>.</p>
+        <p>Pour exercer vos droits, contactez-nous à <a href="/cdn-cgi/l/email-protection#94f7fbfae0f5f7e0d4f9f8a6f7f7fbfae7f1fdf8baf7fbf9" style="color:var(--rose)"><span class="__cf_email__" data-cfemail="88ebe7e6fce9ebfcc8e5e4baebebe7e6fbede1e4a6ebe7e5">[email&#160;protected]</span></a>. Vous pouvez également introduire une réclamation auprès de la <strong>CNIL</strong> sur <a href="https://www.cnil.fr" target="_blank" style="color:var(--rose)">cnil.fr</a>.</p>
       </div>
     </div>
 
-    <!-- 7. CONTACT -->
     <div class="cookie-section" id="contact">
       <div class="section-anchor-title">
         <div class="section-icon"><i class="fas fa-envelope"></i></div>
@@ -630,7 +581,7 @@
           <h3>Délégué à la Protection des Données</h3>
           <p>ML2C CONSEIL — 6 Rue de la Vigne, 28360 Dammarie</p>
         </div>
-        <a href="mailto:contact@ml2cconseil.com">
+        <a href="/cdn-cgi/l/email-protection#bfdcd0d1cbdedccbffd2d38ddcdcd0d1ccdad6d391dcd0d2" class="btn-ecrire">
           <i class="fas fa-envelope"></i> Nous écrire
         </a>
       </div>
@@ -641,11 +592,10 @@
 
 {% include "footer.html" %}
 
-<!-- Scripts -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  // ── Barre de lecture ──
+  // Barre de lecture
   window.addEventListener('scroll', function() {
     const doc = document.documentElement;
     const scrolled = doc.scrollTop || document.body.scrollTop;
@@ -653,47 +603,30 @@
     document.getElementById('readingBar').style.width = (scrolled / total * 100) + '%';
   });
 
-  // ── Accordion navigateurs ──
+  // Accordion navigateurs — un seul ouvert à la fois
   function toggleBrowser(header) {
     const item = header.parentElement;
-    item.classList.toggle('open');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.browser-item.open').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
   }
 
-  // ── Navigation sidebar active ──
+  // Sidebar active
   const sections = document.querySelectorAll('.cookie-section');
   const links = document.querySelectorAll('.sidebar-link');
   window.addEventListener('scroll', function() {
     let current = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 120) current = s.id;
-    });
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
     links.forEach(l => {
       l.classList.remove('active');
       if (l.getAttribute('href') === '#' + current) l.classList.add('active');
     });
   });
 
-  // ── Sauvegarde consentement ──
-  function saveConsent() {
-    const prefs = {
-      analytics: document.getElementById('toggle-analytics').checked,
-      marketing: document.getElementById('toggle-marketing').checked,
-      preferences: document.getElementById('toggle-prefs').checked,
-      date: new Date().toISOString()
-    };
-    document.cookie = `ml2c_consent=${JSON.stringify(prefs)};max-age=31536000;path=/`;
-    const toast = document.getElementById('consentToast');
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3000);
-  }
-
-  // ── Animation sections au scroll ──
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) e.target.style.animationDelay = '0s';
-    });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.cookie-section').forEach(s => observer.observe(s));
-</script>
-</body>
-</html>
+  // Sauvegarde consentement
+function saveConsent() {
+    var analytics = document.getElementById('toggle-analytics').checked;
+    var marketing = document.getElementById('toggle-marketing').checked;
+    var preferences = document.getElementById('toggle-prefs').checked;
+    var consentStr = 'analytics=' + analytics + '&marketing=' + marketing + '&prefs=' + preferences;
+    document.cookie = 'ml2c_consent=' + consentStr + ';max-age=31536000;path=/'; }

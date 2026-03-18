@@ -1263,6 +1263,12 @@ def admin_dashboard():
         last_question=last_question,
     )
 
+@app.route("/admin-feedbacks")
+def admin_feedbacks():
+    if not session.get("admin_logged_in"):
+        flash("Accès interdit.", "danger")
+        return redirect(url_for("login_admin"))
+    return app.send_static_file('resume_feedback.html')
 
 @app.route("/ajouter-message", methods=["GET", "POST"])
 def ajouter_message():

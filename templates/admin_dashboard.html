@@ -1,63 +1,257 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Dashboard Admin - ML2C CONSEIL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin — ML2C CONSEIL</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    :root {
+      --rose: #C1007A; --rose-dark: #9a0062; --rose-light: #fce4f3;
+      --turq: #4FA695; --turq-dark: #3a7d70; --turq-light: #d4f0ec;
+      --gris: #5C666B; --dark: #2d3436; --dark2: #3d4549;
+      --bg: #f0f2f5; --border: #e5e7eb; --text: #1a1a1a; --muted: #6b7280;
+    }
+    body { background: var(--bg); font-family: 'DM Sans', sans-serif; }
+
+    /* HERO */
+    .admin-hero {
+      background: linear-gradient(135deg, var(--dark) 0%, var(--dark2) 60%, #1a2e2e 100%);
+      padding: 3.5rem 0 4rem; position: relative; overflow: hidden; margin-bottom: 0;
+    }
+    .admin-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 85% 30%, rgba(193,0,122,.15) 0%, transparent 50%),
+                  radial-gradient(ellipse at 10% 80%, rgba(79,166,149,.12) 0%, transparent 45%);
+    }
+    .admin-hero::after {
+      content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 56px;
+      background: var(--bg); clip-path: ellipse(55% 100% at 50% 100%); height: 56px;
+    }
+    .hero-inner { position: relative; z-index: 1; }
+    .admin-tag { font-size: .7rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: .6rem; }
+    .admin-hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; color: #fff; margin-bottom: .3rem; line-height: 1.15; }
+    .admin-hero h1 em { color: #f9a8d4; font-style: italic; }
+    .admin-hero p { font-size: .88rem; color: rgba(255,255,255,.45); margin: 0; }
+    .admin-badge {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15);
+      border-radius: 20px; padding: .28rem .85rem; font-size: .72rem; font-weight: 600;
+      color: rgba(255,255,255,.75); margin-top: .85rem;
+    }
+    .admin-badge i { color: #4ade80; font-size: .6rem; }
+
+    /* PAGE */
+    .admin-page { padding: 2.5rem 0 4rem; }
+
+    /* KPI CARDS */
+    .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; margin-bottom: 2rem; }
+    .kpi-card {
+      background: #fff; border-radius: 18px; padding: 1.5rem 1.75rem;
+      box-shadow: 0 2px 16px rgba(0,0,0,.06); border: 1.5px solid transparent;
+      transition: transform .25s, box-shadow .25s, border-color .25s; position: relative; overflow: hidden;
+    }
+    .kpi-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,.1); }
+    .kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+    .kpi-card.rose::before { background: linear-gradient(90deg, var(--rose), #f472b6); border-color: var(--rose-light); }
+    .kpi-card.turq::before { background: linear-gradient(90deg, var(--turq), #5eead4); }
+    .kpi-card.gris::before { background: linear-gradient(90deg, var(--gris), #94a3b8); }
+    .kpi-card:hover.rose { border-color: var(--rose-light); }
+    .kpi-card:hover.turq { border-color: var(--turq-light); }
+    .kpi-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; margin-bottom: 1rem;
+    }
+    .kpi-icon.rose { background: var(--rose-light); color: var(--rose); }
+    .kpi-icon.turq { background: var(--turq-light); color: var(--turq-dark); }
+    .kpi-icon.gris { background: #e8eaeb; color: var(--gris); }
+    .kpi-label { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: .35rem; }
+    .kpi-val { font-family: 'Cormorant Garamond', serif; font-size: 2.6rem; font-weight: 700; line-height: 1; color: var(--text); margin-bottom: .25rem; }
+    .kpi-sub { font-size: .8rem; color: var(--muted); line-height: 1.5; }
+    .kpi-sub strong { color: var(--text); font-weight: 600; }
+
+    /* SECTION TITLE */
+    .sec-title { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem; }
+    .sec-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* ACTIONS GRID */
+    .actions-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .85rem; margin-bottom: 2rem; }
+    .action-card {
+      background: #fff; border-radius: 16px; padding: 1.25rem 1.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,.05); border: 1.5px solid var(--border);
+      display: flex; align-items: center; gap: 1rem;
+      text-decoration: none; color: var(--text); transition: all .22s;
+    }
+    .action-card:hover { border-color: var(--rose); box-shadow: 0 6px 24px rgba(193,0,122,.1); transform: translateY(-2px); text-decoration: none; color: var(--text); }
+    .action-card:hover .ac-icon { background: var(--rose-light); color: var(--rose); }
+    .ac-icon {
+      width: 42px; height: 42px; border-radius: 11px; flex-shrink: 0;
+      background: #f0f2f5; color: var(--gris);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .95rem; transition: all .22s;
+    }
+    .ac-info { flex: 1; min-width: 0; }
+    .ac-title { font-size: .9rem; font-weight: 600; color: var(--text); margin-bottom: .1rem; }
+    .ac-desc { font-size: .76rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ac-arrow { color: var(--border); font-size: .75rem; flex-shrink: 0; transition: color .2s, transform .2s; }
+    .action-card:hover .ac-arrow { color: var(--rose); transform: translateX(3px); }
+
+    /* LOGOUT */
+    .logout-wrap { text-align: center; padding: 1.5rem 0; }
+    .btn-logout {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .7rem 1.75rem; border-radius: 10px;
+      background: #fff; border: 1.5px solid var(--border);
+      color: var(--muted); font-size: .88rem; font-weight: 600;
+      text-decoration: none; transition: all .2s;
+    }
+    .btn-logout:hover { background: #fee2e2; border-color: #fca5a5; color: #dc2626; text-decoration: none; }
+
+    /* LAST QUESTION */
+    .last-q-card {
+      background: #fff; border-radius: 16px; padding: 1.25rem 1.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,.05); border: 1.5px solid var(--border);
+      margin-bottom: 2rem; display: flex; align-items: flex-start; gap: 1rem;
+    }
+    .lq-icon { width: 38px; height: 38px; border-radius: 10px; background: var(--turq-light); color: var(--turq-dark); display: flex; align-items: center; justify-content: center; font-size: .9rem; flex-shrink: 0; margin-top: .1rem; }
+    .lq-label { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: .3rem; }
+    .lq-text { font-size: .92rem; color: var(--text); line-height: 1.55; }
+    .lq-text.empty { color: var(--muted); font-style: italic; }
+
+    @media(max-width: 768px) {
+      .kpi-grid { grid-template-columns: 1fr 1fr; }
+      .actions-grid { grid-template-columns: 1fr; }
+    }
+    @media(max-width: 480px) {
+      .kpi-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
-  {% include "header.html" %}
+{% include "header.html" %}
 
-  <div class="container my-5">
-    <h1 class="text-center mb-4">Dashboard Administrateur 🚀</h1>
+<!-- HERO -->
+<div class="admin-hero">
+  <div class="container hero-inner">
+    <div class="admin-tag">Espace administrateur</div>
+    <h1>Dashboard <em>Admin</em></h1>
+    <p>ML2C CONSEIL — Vue d'ensemble et gestion</p>
+    <div class="admin-badge"><i class="fas fa-circle"></i> Session active</div>
+  </div>
+</div>
 
-    <div class="row text-center">
+<div class="admin-page">
+  <div class="container">
 
-      <div class="col-md-4 mb-4">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title">Questions en Base</h5>
-            <p class="card-text display-4">{{ total_questions }}</p>
-          </div>
-        </div>
+    <!-- KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi-card rose">
+        <div class="kpi-icon rose"><i class="fas fa-comments"></i></div>
+        <div class="kpi-label">Questions chatbot</div>
+        <div class="kpi-val">{{ total_questions }}</div>
+        <div class="kpi-sub">Entrées enregistrées en base</div>
       </div>
-
-      <div class="col-md-4 mb-4">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title">Dernière Question Ajoutée</h5>
-            {% if last_question %}
-              <p class="card-text">{{ last_question }}</p>
-            {% else %}
-              <p class="card-text">Aucune question enregistrée.</p>
-            {% endif %}
-          </div>
-        </div>
+      <div class="kpi-card turq">
+        <div class="kpi-icon turq"><i class="fas fa-users"></i></div>
+        <div class="kpi-label">Utilisateurs</div>
+        <div class="kpi-val">—</div>
+        <div class="kpi-sub">Comptes créés sur la plateforme</div>
       </div>
-
-      <div class="col-md-4 mb-4">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title">Actions Rapides</h5>
-            <a href="{{ url_for('admin_chatbot') }}" class="btn btn-primary mb-2">Gérer les Questions ➡️</a><br>
-            <a href="{{ url_for('base_test') }}" class="btn btn-outline-dark">🗂️ Voir la base utilisateurs (test)</a>
-          </div>
-        </div>
+      <div class="kpi-card gris">
+        <div class="kpi-icon gris"><i class="fas fa-clock"></i></div>
+        <div class="kpi-label">Dernière activité</div>
+        <div class="kpi-val" style="font-size:1.4rem" id="last-time">—</div>
+        <div class="kpi-sub">Mise à jour en temps réel</div>
       </div>
+    </div>
+
+    <!-- DERNIÈRE QUESTION -->
+    <div class="sec-title"><i class="fas fa-comment-alt"></i> Dernière question chatbot</div>
+    <div class="last-q-card">
+      <div class="lq-icon"><i class="fas fa-quote-left"></i></div>
+      <div>
+        <div class="lq-label">Question la plus récente</div>
+        {% if last_question %}
+          <div class="lq-text">{{ last_question }}</div>
+        {% else %}
+          <div class="lq-text empty">Aucune question enregistrée pour le moment.</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="sec-title"><i class="fas fa-bolt"></i> Actions rapides</div>
+    <div class="actions-grid">
+
+      <a href="{{ url_for('admin_chatbot') }}" class="action-card">
+        <div class="ac-icon"><i class="fas fa-comments"></i></div>
+        <div class="ac-info">
+          <div class="ac-title">Gérer les questions</div>
+          <div class="ac-desc">Chatbot — base de questions/réponses</div>
+        </div>
+        <i class="fas fa-chevron-right ac-arrow"></i>
+      </a>
+
+      <a href="{{ url_for('base_test') }}" class="action-card">
+        <div class="ac-icon"><i class="fas fa-database"></i></div>
+        <div class="ac-info">
+          <div class="ac-title">Base utilisateurs</div>
+          <div class="ac-desc">Consulter les comptes enregistrés</div>
+        </div>
+        <i class="fas fa-chevron-right ac-arrow"></i>
+      </a>
+
+      <a href="/admin-feedbacks" class="action-card">
+        <div class="ac-icon"><i class="fas fa-poll"></i></div>
+        <div class="ac-info">
+          <div class="ac-title">Résumés feedback clients</div>
+          <div class="ac-desc">Résultats du formulaire de test</div>
+        </div>
+        <i class="fas fa-chevron-right ac-arrow"></i>
+      </a>
+
+      <a href="/feedback" class="action-card" target="_blank">
+        <div class="ac-icon"><i class="fas fa-external-link-alt"></i></div>
+        <div class="ac-info">
+          <div class="ac-title">Formulaire feedback</div>
+          <div class="ac-desc">Ouvrir le formulaire client</div>
+        </div>
+        <i class="fas fa-chevron-right ac-arrow"></i>
+      </a>
 
     </div>
 
-    <div class="text-center mt-4">
-      <a href="{{ url_for('logout_admin') }}" class="btn btn-danger">Se déconnecter 🔒</a>
+    <!-- LOGOUT -->
+    <div class="logout-wrap">
+      <a href="{{ url_for('logout_admin') }}" class="btn-logout">
+        <i class="fas fa-sign-out-alt"></i> Se déconnecter
+      </a>
     </div>
 
   </div>
+</div>
 
-  {% include "footer.html" %}
+{% include "footer.html" %}
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Heure en temps réel
+  function updateTime() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2,'0');
+    const m = String(now.getMinutes()).padStart(2,'0');
+    const s = String(now.getSeconds()).padStart(2,'0');
+    document.getElementById('last-time').textContent = h+':'+m+':'+s;
+  }
+  updateTime();
+  setInterval(updateTime, 1000);
+</script>
 
 </body>
 </html>

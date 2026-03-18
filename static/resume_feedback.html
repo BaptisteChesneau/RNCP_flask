@@ -79,6 +79,13 @@
     .btn.rose{background:var(--rose);border-color:var(--rose);color:#fff}
     .btn.rose:hover{background:var(--rose-dark)}
 
+
+    @media print {
+      .site-header,.actions,.no-print{display:none!important}
+      body{background:#fff}
+      .container{padding:1rem}
+      .q-card,.score-card,.glob-card,.testeur-bar{box-shadow:none;border:1px solid #ddd;break-inside:avoid}
+    }
     @media(max-width:480px){.score-big{font-size:48px}.merci-hero h1{font-size:24px}.score-chips{gap:6px}}
   </style>
 </head>
@@ -140,7 +147,8 @@
 
   <div class="actions">
     <a href="/feedback" class="btn">← Recommencer</a>
-    <a href="/" class="btn rose">Retour au site</a>
+    <button onclick="downloadPDF()" class="btn rose">⬇ Télécharger en PDF</button>
+    <a href="/" class="btn">Retour au site</a>
   </div>
 </div>
 
@@ -237,6 +245,11 @@ function init(){
 }
 
 init();
+
+function downloadPDF(){
+  window.print();
+}
+
 </script>
 </body>
 </html>

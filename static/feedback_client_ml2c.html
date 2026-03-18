@@ -168,17 +168,16 @@ function updateStats(){
 document.getElementById('stars').addEventListener('click',e=>{if(!e.target.dataset.v)return;starVal=parseInt(e.target.dataset.v);document.querySelectorAll('.star').forEach(s=>s.classList.toggle('on',parseInt(s.dataset.v)<=starVal));});
 function reset(){if(!confirm('Recommencer le questionnaire ?'))return;QS.forEach(q=>{state[q.id]={val:'',note:''};});starVal=0;document.querySelectorAll('.star').forEach(s=>s.classList.remove('on'));['g-good','g-hard','g-suggest'].forEach(id=>document.getElementById(id).value='');build();}
 function exportFile(){
-  const nom=document.getElementById('m-nom').value||'Client';
+  const nom=document.getElementById('m-nom').value||'';
   const date=document.getElementById('m-date').value||new Date().toISOString().slice(0,10);
-  let txt='RETOUR CLIENT — ML2C CONSEIL\n';
-  txt+='Prénom : '+nom+' | Date : '+date+' | Note : '+starVal+'/5\n'+'='.repeat(50)+'\n\n';
-  QS.forEach((q,i)=>{const s=state[q.id];const ch=q.choices.find(c=>c.val===s.val);txt+=(i+1)+'. '+q.title+'\n   Réponse : '+(ch?ch.label:'Sans réponse')+'\n';if(s.note)txt+='   Commentaire : '+s.note+'\n';txt+='\n';});
-  txt+='Ce qui a plu : '+(document.getElementById('g-good').value||'—')+'\n';
-  txt+='Difficultés : '+(document.getElementById('g-hard').value||'—')+'\n';
-  txt+='Suggestions : '+(document.getElementById('g-suggest').value||'—')+'\n';
-  const blob=new Blob([txt],{type:'text/plain;charset=utf-8'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='avis_'+nom.replace(/\s/g,'_')+'_'+date+'.txt';a.click();
-  const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);
+  const good=document.getElementById('g-good').value||'';
+  const hard=document.getElementById('g-hard').value||'';
+  const suggest=document.getElementById('g-suggest').value||'';
+  const params=new URLSearchParams();
+  params.set('nom',nom);params.set('date',date);params.set('star',starVal);
+  params.set('good',good);params.set('hard',hard);params.set('suggest',suggest);
+  QS.forEach((q,i)=>{params.set('q'+(i+1),state[q.id].val||'');params.set('n'+(i+1),state[q.id].note||'');});
+  window.location.href='/resume-feedback?'+params.toString();
 }
 document.getElementById('m-date').valueAsDate=new Date();build();
 </script>

@@ -470,21 +470,13 @@ MAX_DEVIS_PAR_UTILISATEUR = 1  # Maximum number of quotes per user
 
 @app.route("/resume-devis", methods=["POST"])
 def resume_devis():
-    # Check that the user is logged in
     if "utilisateur_id" not in session:
         flash("Veuillez vous connecter pour consulter le résumé du devis.", "warning")
         return redirect(url_for("login"))
 
-    # Limit the number of quotes per user (e.g., max 3)
     utilisateur_id = session.get("utilisateur_id")
-    nombre_devis = Devis.query.filter_by(utilisateur_id=utilisateur_id).count()
-    if nombre_devis >= 3:
-        flash(
-            "Vous avez déjà soumis le nombre maximum de devis autorisé (3).", "danger"
-        )
-        return redirect(url_for("compte_client"))
 
-    # Retrieve form fields
+    # Récupération des champs
     secteur = request.form.get("secteur")
     nom = request.form.get("nom")
     type_service = request.form.get("type_service")
@@ -492,16 +484,7 @@ def resume_devis():
     heure_rdv = request.form.get("heure_rdv")
     form_email = request.form.get("user_email")
 
-    # Verify that the email matches
-    client_email = session.get("email")
-    if client_email and form_email != client_email:
-        flash(
-            "L'adresse e-mail renseignée ne correspond pas à celle de votre compte client.",
-            "danger",
-        )
-        return redirect(url_for("devis"))
-
-    # Save to the database
+    # Sauvegarde en base
     nouveau_devis = Devis(
         utilisateur_id=utilisateur_id,
         secteur=secteur,
@@ -514,7 +497,6 @@ def resume_devis():
     db.session.add(nouveau_devis)
     db.session.commit()
 
-    # Send data to the summary page
     return render_template(
         "resume_devis.html",
         secteur=secteur,

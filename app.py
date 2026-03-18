@@ -322,6 +322,10 @@ mail = Mail(app)
 def header():
     return render_template("header.html")
 
+@app.route('/feedback')
+def feedback():
+    return app.send_static_file('feedback_client_ml2c.html')
+
 @app.route('/notre-vision')
 def notre_vision():
     return render_template('notre_vision.html')

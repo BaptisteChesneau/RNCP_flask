@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Votre avis — ML2C CONSEIL</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--rose:#C1007A;--rose-dark:#9a0062;--turq:#4FA695;--ok:#1D9E75;--ok-l:#EAF3DE;--ok-b:#97C459;--meh:#EF9F27;--meh-l:#FAEEDA;--meh-b:#EF9F27;--no:#E24B4A;--no-l:#FCEBEB;--no-b:#F09595;--text:#1a1a1a;--muted:#6b7280;--border:#e5e7eb;--bg:#f5f6f7;--white:#fff;--surface:#f9fafb}
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);font-size:16px;line-height:1.6}
+    .site-header{background:var(--white);border-bottom:1px solid var(--border);padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .site-header .logo{font-size:15px;font-weight:600;color:var(--rose)}
+    .site-header .sub{font-size:13px;color:var(--muted)}
+    .container{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+    .hero{margin-bottom:2.5rem}
+    .hero-tag{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .hero h1{font-size:28px;font-weight:600;color:var(--text);line-height:1.25;margin-bottom:10px}
+    .hero h1 span{color:var(--rose)}
+    .hero p{font-size:15px;color:var(--muted);line-height:1.7;max-width:520px}
+    .tip{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--turq);border-radius:0 12px 12px 0;padding:1rem 1.1rem;font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:2rem;display:flex;gap:10px;align-items:flex-start}
+    .tip-icon{font-size:16px;flex-shrink:0;margin-top:2px}
+    .meta{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:2.5rem}
+    .field label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px;font-weight:500}
+    .field input{width:100%;font-size:15px;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;transition:border-color .2s}
+    .field input:focus{outline:none;border-color:var(--rose)}
+    .prog{margin-bottom:2.5rem}
+    .prog-top{display:flex;justify-content:space-between;margin-bottom:8px}
+    .prog-label{font-size:14px;color:var(--muted)}
+    .prog-n{font-size:14px;font-weight:600;color:var(--text)}
+    .prog-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+    .prog-fill{height:100%;background:var(--ok);border-radius:3px;transition:width .4s}
+    .card{background:var(--white);border:1.5px solid var(--border);border-radius:16px;margin-bottom:20px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+    .card-head{padding:1.5rem 1.5rem 0}
+    .card-num{font-size:12px;color:var(--muted);letter-spacing:.05em;margin-bottom:6px;font-weight:500}
+    .card-title{font-size:18px;font-weight:600;color:var(--text);margin-bottom:6px;line-height:1.3}
+    .card-desc{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:1.25rem}
+    .what-to-do{background:var(--surface);border-radius:10px;padding:1rem 1.1rem;margin:0 1.5rem 1.25rem;font-size:14px;color:var(--muted);line-height:1.65;border:1px solid var(--border)}
+    .what-to-do strong{color:var(--text);font-weight:600;display:block;margin-bottom:4px;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+    .actions{padding:1.5rem;border-top:1px solid var(--border)}
+    .actions-label{font-size:15px;font-weight:600;color:var(--text);margin-bottom:14px}
+    .choice-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
+    .choice{border:1.5px solid var(--border);border-radius:12px;padding:1rem .85rem;cursor:pointer;transition:all .2s;background:var(--white);text-align:center;user-select:none}
+    .choice:hover{border-color:#aaa;transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.07)}
+    .choice.s-ok{border-color:var(--ok-b);background:var(--ok-l)}
+    .choice.s-meh{border-color:var(--meh-b);background:var(--meh-l)}
+    .choice.s-no{border-color:var(--no-b);background:var(--no-l)}
+    .choice-icon{font-size:24px;margin-bottom:8px;line-height:1;display:block}
+    .choice-label{font-size:13px;font-weight:600;color:var(--text);line-height:1.3}
+    .note-wrap{margin-top:4px}
+    .note-lbl{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+    .note-lbl em{font-style:normal;color:#aaa}
+    .note-txt{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:.7rem .9rem;font-size:14px;color:var(--text);background:var(--surface);resize:none;min-height:68px;font-family:'DM Sans',sans-serif;transition:border-color .2s}
+    .note-txt:focus{outline:none;border-color:var(--rose);background:var(--white)}
+    .bilan{background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:2rem;margin-top:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+    .bilan h3{font-size:20px;font-weight:600;color:var(--text);margin-bottom:1.5rem}
+    .score-big{text-align:center;padding:1.5rem 0 1.25rem;margin-bottom:1.5rem;border-bottom:1px solid var(--border)}
+    .score-val{font-size:56px;font-weight:700;line-height:1;color:var(--text)}
+    .score-label{font-size:14px;color:var(--muted);margin-top:6px}
+    .score-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin:14px 0 4px}
+    .score-fill{height:100%;border-radius:4px;transition:width .5s,background .5s}
+    .bilan-rows{margin-bottom:1.5rem}
+    .brow{display:flex;align-items:center;gap:12px;padding:.6rem 0;border-bottom:1px solid var(--border)}
+    .brow:last-child{border-bottom:none}
+    .brow-icon{font-size:16px;width:24px;text-align:center}
+    .brow-label{font-size:14px;color:var(--muted);flex:1}
+    .brow-val{font-size:16px;font-weight:700;color:var(--text)}
+    .stars{display:flex;gap:10px;margin:.75rem 0 1.5rem}
+    .star{font-size:32px;cursor:pointer;color:var(--border);line-height:1;transition:color .15s}
+    .star.on{color:var(--meh)}
+    .glob-lbl{font-size:13px;color:var(--muted);font-weight:500;margin-bottom:6px}
+    .glob-txt{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:.75rem .9rem;font-size:14px;color:var(--text);background:var(--surface);resize:vertical;min-height:72px;font-family:'DM Sans',sans-serif;margin-bottom:1.25rem;transition:border-color .2s}
+    .glob-txt:focus{outline:none;border-color:var(--rose);background:var(--white)}
+    .btn-row{display:flex;gap:10px;justify-content:flex-end;margin-top:.75rem}
+    .btn{padding:10px 22px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;border:1.5px solid var(--border);background:var(--white);color:var(--text);transition:.2s}
+    .btn:hover{background:var(--surface)}
+    .btn.send{background:var(--rose);border-color:var(--rose);color:#fff}
+    .btn.send:hover{background:var(--rose-dark)}
+    .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(120px);background:#1a1a1a;color:#fff;padding:.75rem 1.5rem;border-radius:40px;font-size:14px;font-weight:500;transition:transform .4s cubic-bezier(.34,1.56,.64,1);z-index:999;white-space:nowrap}
+    .toast.show{transform:translateX(-50%) translateY(0)}
+    @media(max-width:540px){.meta{grid-template-columns:1fr}.choice-grid{grid-template-columns:1fr}.choice{display:flex;align-items:center;gap:12px;text-align:left;padding:.85rem 1rem}.choice-icon{margin-bottom:0;font-size:20px;flex-shrink:0}.hero h1{font-size:22px}}
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <span class="logo">ML2C CONSEIL</span>
+  <span class="sub">Retour client</span>
+</header>
+<div class="container">
+  <div class="hero">
+    <div class="hero-tag">Votre avis compte</div>
+    <h1>Aidez-nous à améliorer <span>votre expérience</span></h1>
+    <p>Parcourez le site et répondez aux questions. Pas besoin d'être expert — dites-nous simplement ce que vous voyez et ce que vous ressentez.</p>
+  </div>
+  <div class="tip">
+    <span class="tip-icon">💡</span>
+    <span>Il n'y a pas de bonne ou mauvaise réponse. Si quelque chose vous semble bizarre ou difficile à trouver, c'est une information très utile pour nous. Le champ texte sous chaque question est <strong>facultatif</strong>.</span>
+  </div>
+  <div class="meta">
+    <div class="field"><label>Votre prénom</label><input type="text" id="m-nom" placeholder="Ex : Sophie"></div>
+    <div class="field"><label>Date d'aujourd'hui</label><input type="date" id="m-date"></div>
+  </div>
+  <div class="prog">
+    <div class="prog-top"><span class="prog-label">Votre avancement</span><span class="prog-n" id="prog-n">0 sur 6 questions</span></div>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+  <div id="questions"></div>
+  <div class="bilan">
+    <h3>Votre ressenti global</h3>
+    <div class="score-big">
+      <div class="score-val" id="score-val">—</div>
+      <div class="score-label">score de satisfaction</div>
+      <div class="score-bar"><div class="score-fill" id="score-fill" style="width:0%"></div></div>
+    </div>
+    <div class="bilan-rows" id="bilan-rows"></div>
+    <div class="glob-lbl">Note générale du site</div>
+    <div class="stars" id="stars">
+      <span class="star" data-v="1">★</span><span class="star" data-v="2">★</span>
+      <span class="star" data-v="3">★</span><span class="star" data-v="4">★</span>
+      <span class="star" data-v="5">★</span>
+    </div>
+    <div class="glob-lbl">Ce que vous avez aimé</div>
+    <textarea class="glob-txt" id="g-good" placeholder="Ce qui était agréable, clair, pratique…"></textarea>
+    <div class="glob-lbl">Ce qui était difficile ou confus</div>
+    <textarea class="glob-txt" id="g-hard" placeholder="Ce que vous n'avez pas trouvé, ce qui vous a semblé bizarre…"></textarea>
+    <div class="glob-lbl">Vos suggestions</div>
+    <textarea class="glob-txt" id="g-suggest" placeholder="Une idée, quelque chose qui manque…"></textarea>
+    <div class="btn-row">
+      <button class="btn" onclick="reset()">Recommencer</button>
+      <button class="btn send" onclick="exportFile()">Envoyer mon avis</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast">Votre avis a été téléchargé !</div>
+<script>
+const QS=[
+  {id:"q1",title:"La navigation sur le site",desc:"Les menus et liens qui permettent de se déplacer d'une page à l'autre.",todo:"Survolez les menus en haut de la page et cliquez sur quelques rubriques. Naviguez librement quelques minutes.",question:"La navigation est…",choices:[{val:"ok",icon:"😊",label:"Agréable et claire"},{val:"meh",icon:"😐",label:"Un peu confuse"},{val:"no",icon:"😕",label:"Difficile à utiliser"}]},
+  {id:"q2",title:"Créer un compte",desc:"Pour accéder à l'espace client, il faut s'inscrire. On veut savoir si vous trouvez le bon bouton.",todo:"Sans qu'on vous indique où cliquer, essayez de trouver par vous-même comment créer un compte sur le site.",question:"Trouver le bouton pour créer un compte était…",choices:[{val:"ok",icon:"✅",label:"Facile à trouver"},{val:"meh",icon:"🔍",label:"Pas évident"},{val:"no",icon:"❓",label:"Introuvable"}]},
+  {id:"q3",title:"Trouver la page de paiement",desc:"Après s'être connecté, on cherche à savoir si l'accès au paiement est facile à repérer.",todo:"Connectez-vous à votre compte, puis essayez de trouver la section paiement dans votre espace client.",question:"Trouver la section paiement était…",choices:[{val:"ok",icon:"💳",label:"Simple et rapide"},{val:"meh",icon:"🤔",label:"J'ai cherché un moment"},{val:"no",icon:"🚫",label:"Je n'ai pas trouvé"}]},
+  {id:"q4",title:"Faire une demande de rendez-vous",desc:"Le formulaire pour prendre contact et choisir un créneau avec le cabinet.",todo:"Depuis votre espace client, remplissez le formulaire de demande de rendez-vous jusqu'au bout.",question:"Le formulaire de rendez-vous était…",choices:[{val:"ok",icon:"🗓️",label:"Ça marche bien"},{val:"meh",icon:"🎲",label:"C'est le bazar"},{val:"no",icon:"🔇",label:"Ça ne marche pas"}]},
+  {id:"q5",title:"La lisibilité du site",desc:"Est-ce que les textes, les couleurs et la mise en page sont agréables à lire ?",todo:"Regardez quelques pages du site en faisant attention aux textes, aux couleurs et à la mise en page.",question:"Le site est…",choices:[{val:"ok",icon:"👌",label:"Ça marche bien"},{val:"meh",icon:"🤨",label:"C'est un peu moche"},{val:"no",icon:"🙈",label:"Ce n'est pas lisible"}]},
+  {id:"q6",title:"Confiance générale",desc:"Votre ressenti global — est-ce que ce site vous donnerait envie de contacter ce cabinet ?",todo:"Naviguez librement encore quelques minutes, puis répondez à cette dernière question.",question:"Ce site vous inspire…",choices:[{val:"ok",icon:"🤝",label:"Confiance et sérieux"},{val:"meh",icon:"🙂",label:"Plutôt bien"},{val:"no",icon:"😶",label:"Pas vraiment confiance"}]},
+];
+const state={};QS.forEach(q=>{state[q.id]={val:'',note:''};});let starVal=0;
+function build(){
+  const cont=document.getElementById('questions');cont.innerHTML='';
+  QS.forEach((q,i)=>{
+    const s=state[q.id];const div=document.createElement('div');div.className='card';
+    div.innerHTML=`<div class="card-head"><div class="card-num">Question ${i+1} sur ${QS.length}</div><div class="card-title">${q.title}</div><div class="card-desc">${q.desc}</div></div><div class="what-to-do"><strong>Ce qu'on vous demande</strong>${q.todo}</div><div class="actions"><div class="actions-label">${q.question}</div><div class="choice-grid">${q.choices.map(c=>`<div class="choice${s.val===c.val?' s-'+c.val:''}" onclick="pick('${q.id}','${c.val}')"><span class="choice-icon">${c.icon}</span><span class="choice-label">${c.label}</span></div>`).join('')}</div><div class="note-wrap"><span class="note-lbl">Votre commentaire <em>(facultatif)</em></span><textarea class="note-txt" placeholder="Ajoutez un détail si vous le souhaitez…" oninput="saveNote('${q.id}',this.value)">${s.note}</textarea></div></div>`;
+    cont.appendChild(div);
+  });updateStats();
+}
+function pick(id,val){state[id].val=state[id].val===val?'':val;build();}
+function saveNote(id,v){state[id].note=v;}
+function updateStats(){
+  let done=0,ok=0,meh=0,no=0;const tot=QS.length;
+  QS.forEach(q=>{const v=state[q.id].val;if(v){done++;if(v==='ok')ok++;else if(v==='meh')meh++;else if(v==='no')no++;}});
+  const pct=Math.round(done/tot*100);
+  document.getElementById('prog-n').textContent=done+' sur '+tot+' questions';
+  document.getElementById('prog-fill').style.width=pct+'%';
+  const score=done?Math.round((ok+(meh*.5))/done*100):0;
+  document.getElementById('score-val').textContent=done?score+'%':'—';
+  const fill=document.getElementById('score-fill');fill.style.width=score+'%';
+  fill.style.background=score>=70?'#1D9E75':score>=40?'#EF9F27':'#E24B4A';
+  document.getElementById('bilan-rows').innerHTML=[{icon:'😊',label:'Ça marche bien',val:ok},{icon:'😐',label:'Quelques remarques',val:meh},{icon:'😕',label:'Problèmes signalés',val:no},{icon:'·',label:'Sans réponse',val:tot-done}].map(r=>`<div class="brow"><span class="brow-icon">${r.icon}</span><span class="brow-label">${r.label}</span><span class="brow-val">${r.val}</span></div>`).join('');
+}
+document.getElementById('stars').addEventListener('click',e=>{if(!e.target.dataset.v)return;starVal=parseInt(e.target.dataset.v);document.querySelectorAll('.star').forEach(s=>s.classList.toggle('on',parseInt(s.dataset.v)<=starVal));});
+function reset(){if(!confirm('Recommencer le questionnaire ?'))return;QS.forEach(q=>{state[q.id]={val:'',note:''};});starVal=0;document.querySelectorAll('.star').forEach(s=>s.classList.remove('on'));['g-good','g-hard','g-suggest'].forEach(id=>document.getElementById(id).value='');build();}
+function exportFile(){
+  const nom=document.getElementById('m-nom').value||'Client';
+  const date=document.getElementById('m-date').value||new Date().toISOString().slice(0,10);
+  let txt='RETOUR CLIENT — ML2C CONSEIL\n';
+  txt+='Prénom : '+nom+' | Date : '+date+' | Note : '+starVal+'/5\n'+'='.repeat(50)+'\n\n';
+  QS.forEach((q,i)=>{const s=state[q.id];const ch=q.choices.find(c=>c.val===s.val);txt+=(i+1)+'. '+q.title+'\n   Réponse : '+(ch?ch.label:'Sans réponse')+'\n';if(s.note)txt+='   Commentaire : '+s.note+'\n';txt+='\n';});
+  txt+='Ce qui a plu : '+(document.getElementById('g-good').value||'—')+'\n';
+  txt+='Difficultés : '+(document.getElementById('g-hard').value||'—')+'\n';
+  txt+='Suggestions : '+(document.getElementById('g-suggest').value||'—')+'\n';
+  const blob=new Blob([txt],{type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='avis_'+nom.replace(/\s/g,'_')+'_'+date+'.txt';a.click();
+  const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);
+}
+document.getElementById('m-date').valueAsDate=new Date();build();
+</script>
+</body>
+</html>

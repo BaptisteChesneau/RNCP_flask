@@ -362,27 +362,6 @@
     .btn.success:hover{background:#15803d}
     .btn:disabled{opacity:.75;cursor:not-allowed;transform:none}
 
-    .toast{
-      position:fixed;
-      bottom:2rem;
-      left:50%;
-      transform:translateX(-50%) translateY(120px);
-      padding:.75rem 1.5rem;
-      border-radius:40px;
-      font-size:14px;
-      font-weight:500;
-      transition:transform .4s cubic-bezier(.34,1.56,.64,1);
-      z-index:999;
-      white-space:nowrap;
-      display:flex;
-      align-items:center;
-      gap:.5rem
-    }
-
-    .toast.show{transform:translateX(-50%) translateY(0)}
-    .toast.success{background:#1a1a1a;color:#fff}
-    .toast.error{background:#dc2626;color:#fff}
-
     @media print{
       .site-header,.actions,.confirm-box{display:none!important}
       body{background:#fff}
@@ -464,14 +443,12 @@
 
   <div class="actions">
     <a href="{{ url_for('feedback') }}" class="btn">← Recommencer</a>
-    <button onclick="envoyerAdmin()" class="btn rose" id="btn-envoyer">
+    <button type="button" onclick="envoyerAdmin()" class="btn rose" id="btn-envoyer">
       📤 Envoyer à l'admin
     </button>
     <a href="/" class="btn">Retour au site</a>
   </div>
 </div>
-
-<div class="toast" id="toast"></div>
 
 <script>
 const QS = [
@@ -487,16 +464,6 @@ let alreadySent = false;
 
 function getParam(key){
   return decodeURIComponent((new URLSearchParams(window.location.search)).get(key) || '');
-}
-
-function showToast(msg, type){
-  // ⚠️ Désactivé volontairement pour supprimer les erreurs visuelles
-  if(type === 'error') return;
-
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast ' + type + ' show';
-  setTimeout(() => t.classList.remove('show'), 3500);
 }
 
 function init(){
@@ -587,7 +554,7 @@ function init(){
   setGlob('r-suggest', suggest);
 }
 
-function envoyerAdmin(){
+async function envoyerAdmin(){
   if(alreadySent) return;
 
   const btn = document.getElementById('btn-envoyer');
@@ -603,28 +570,31 @@ function envoyerAdmin(){
     data[key] = val;
   }
 
-  fetch('/admin-save-feedback', {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify(data)
-  })
-  .then(r => r.json())
-  .then(r => {
-    if(r.ok){
-      alreadySent = true;
-      btn.textContent = '✅ Avis pris en compte';
-      btn.classList.remove('rose');
-      btn.classList.add('success');
-      confirmBox.classList.add('show');
-      showToast('Votre avis a bien été pris en compte','success');
+  try {
+    const response = await fetch('/admin-save-feedback', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+      throw new Error('HTTP error');
     }
-  })
-  .catch(() => {
-      // ✔️ SILENCIEUX → pas d’erreur affichée
-      btn.disabled = false;
-      btn.textContent = "📤 Envoyer à l'admin";
-  });
+
+    alreadySent = true;
+    btn.textContent = '✅ Avis pris en compte';
+    btn.classList.remove('rose');
+    btn.classList.add('success');
+    confirmBox.classList.add('show');
+
+  } catch (error) {
+    btn.disabled = false;
+    btn.textContent = "📤 Envoyer à l'admin";
+    console.error('Erreur envoi feedback :', error);
+  }
 }
 
 init();
 </script>
+</body>
+</html>

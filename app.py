@@ -1182,7 +1182,9 @@ def admin_chatbot():
 
 @app.route('/admin-save-feedback', methods=['POST'])
 def admin_save_feedback():
-    ...
+    data = request.get_json()
+    # enregistrement ici
+    return jsonify({"ok": True}), 200
 
 # ✅ EDIT AN ANSWER
 @app.route("/modifier-reponse/<message_id>", methods=["POST"])

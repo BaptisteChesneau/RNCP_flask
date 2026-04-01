@@ -1180,6 +1180,9 @@ def admin_chatbot():
     messages = list(mongo.db.chatbot.find())
     return render_template("admin_chatbot.html", messages=messages)
 
+@app.route('/admin-save-feedback', methods=['POST'])
+def admin_save_feedback():
+    ...
 
 # ✅ EDIT AN ANSWER
 @app.route("/modifier-reponse/<message_id>", methods=["POST"])

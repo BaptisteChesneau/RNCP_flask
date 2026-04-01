@@ -2,88 +2,395 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Administration - Chatbot ML2C CONSEIL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administration — Chatbot ML2C CONSEIL</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
 </head>
 <body>
 
-  {% include "header.html" %}
+{% include "header.html" %}
 
-  <div class="container my-5">
+<!-- ════════════════════════════════════════
+     TOASTS (messages flash)
+════════════════════════════════════════ -->
+<div class="adm-toasts" id="admToasts">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="adm-toast adm-toast-{{ category }}" data-auto-dismiss>
+          {% if category == 'success' %}
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          {% elif category == 'danger' %}
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          {% else %}
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          {% endif %}
+          {{ message }}
+          <button class="adm-toast-close" onclick="this.parentElement.remove()">✕</button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+</div>
 
-    <h1 class="text-center mb-4">Gestion des Questions / Réponses</h1>
-
-    <!-- 🔥 Bouton Ajouter -->
-    <div class="text-center mb-4">
-      <a href="{{ url_for('ajouter_message') }}" class="btn btn-success">➕ Ajouter une Question / Réponse</a>
+<!-- ════════════════════════════════════════
+     MODALE SUPPRESSION
+════════════════════════════════════════ -->
+<div class="adm-modal-veil" id="delModal">
+  <div class="adm-modal-box">
+    <h3>Confirmer la suppression</h3>
+    <div class="adm-modal-q" id="delModalQ"></div>
+    <p>Cette entrée sera définitivement retirée de la base du chatbot. Cette action est irréversible.</p>
+    <div class="adm-modal-acts">
+      <button class="adm-btn" onclick="closeDelModal()">Annuler</button>
+      <form id="delForm" method="POST" action="">
+        <button type="submit" class="adm-btn adm-btn-danger">Oui, supprimer</button>
+      </form>
     </div>
-
-    <!-- 🔥 Message Flash avec icône -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="alert alert-{{ category }} alert-dismissible fade show d-flex align-items-center" role="alert">
-            {% if category == 'success' %}
-              <span class="mr-2" style="font-size: 1.5rem;">✅</span>
-            {% elif category == 'danger' %}
-              <span class="mr-2" style="font-size: 1.5rem;">❌</span>
-            {% elif category == 'warning' %}
-              <span class="mr-2" style="font-size: 1.5rem;">⚠️</span>
-            {% endif %}
-            <div>{{ message }}</div>
-            <button type="button" class="close ml-auto" data-dismiss="alert" aria-label="Fermer">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-
-    <!-- 🔥 Tableau Questions / Réponses -->
-    <table class="table table-bordered table-hover">
-      <thead class="thead-dark">
-        <tr>
-          <th>Question</th>
-          <th>Réponse</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for message in messages %}
-          <tr>
-            <td>{{ message.question }}</td>
-            <td>
-              <form action="{{ url_for('modifier_reponse', message_id=message._id) }}" method="POST" class="form-inline">
-                <input type="text" name="reponse" value="{{ message.reponse }}" class="form-control mr-2" style="width: 70%;" required>
-                <button type="submit" class="btn btn-success btn-sm">Modifier</button>
-              </form>
-            </td>
-            <td>
-              <form action="{{ url_for('supprimer_message', message_id=message._id) }}" method="POST" onsubmit="return confirm('Confirmer la suppression ?');">
-                <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
-              </form>
-            </td>
-          </tr>
-        {% else %}
-          <tr><td colspan="3" class="text-center">Aucun message enregistré pour l'instant.</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
-
-    <!-- 🔥 Boutons retour -->
-    <div class="text-center mt-4">
-      <a href="{{ url_for('menu') }}" class="btn btn-secondary">Retour au menu</a>
-      <a href="{{ url_for('admin_dashboard') }}" class="btn btn-primary ml-2">Accéder au Dashboard</a>
-      <a href="{{ url_for('logout_admin') }}" class="btn btn-danger ml-2">Se déconnecter</a>
-    </div>
-
   </div>
+</div>
 
-  {% include "footer.html" %}
+<!-- ════════════════════════════════════════
+     SHELL PRINCIPAL
+════════════════════════════════════════ -->
+<div class="adm-shell">
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- ── Sidebar ── -->
+  <aside class="adm-sidebar">
+    <div class="adm-sb-logo">
+      <div class="adm-sb-dot">
+        <svg width="15" height="15" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      </div>
+      <div class="adm-sb-brand">ML2C Conseil<span>Administration</span></div>
+    </div>
+
+    <p class="adm-sb-sec">Principal</p>
+    <a href="{{ url_for('admin_dashboard') }}" class="adm-sb-item">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </a>
+    <a href="{{ url_for('admin_messages') }}" class="adm-sb-item adm-sb-item--active">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      Questions / Réponses
+      <span class="adm-sb-badge">{{ messages|length }}</span>
+    </a>
+    <a href="#" class="adm-sb-item">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      Utilisateurs
+    </a>
+    <a href="#" class="adm-sb-item">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Statistiques
+    </a>
+
+    <p class="adm-sb-sec">Compte</p>
+    <a href="{{ url_for('menu') }}" class="adm-sb-item">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+      Paramètres
+    </a>
+
+    <div class="adm-sb-footer">
+      <div class="adm-sb-user">
+        <div class="adm-sb-avatar">AD</div>
+        <div class="adm-sb-info">
+          Administrateur
+          <span>ML2C Conseil</span>
+        </div>
+        <a href="{{ url_for('logout_admin') }}" class="adm-sb-logout" title="Déconnexion">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── Zone principale ── -->
+  <div class="adm-main">
+
+    <!-- Topbar -->
+    <div class="adm-topbar">
+      <div class="adm-topbar-left">
+        <h2>Questions / Réponses</h2>
+        <p>Base de connaissance du chatbot ML2C Conseil</p>
+      </div>
+      <div class="adm-topbar-right">
+        <a href="{{ url_for('export_messages') }}" class="adm-btn adm-btn-ghost">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Exporter
+        </a>
+        <a href="{{ url_for('ajouter_message') }}" class="adm-btn adm-btn-turq">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nouvelle entrée
+        </a>
+        <a href="{{ url_for('logout_admin') }}" class="adm-btn adm-btn-ghost-danger">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Déconnexion
+        </a>
+      </div>
+    </div>
+
+    <!-- Contenu -->
+    <div class="adm-content">
+
+      <!-- KPI Cards -->
+      <div class="adm-kpi-row">
+        <div class="adm-kpi adm-kpi--rose">
+          <div class="adm-kpi-icon">
+            <svg width="18" height="18" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          </div>
+          <div>
+            <div class="adm-kpi-val">{{ messages|length }}</div>
+            <div class="adm-kpi-lbl">Total entrées</div>
+          </div>
+        </div>
+        <div class="adm-kpi adm-kpi--turq">
+          <div class="adm-kpi-icon">
+            <svg width="18" height="18" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div>
+            <div class="adm-kpi-val">{{ messages|selectattr('tag','equalto','auto')|list|length }}</div>
+            <div class="adm-kpi-lbl">Auto-générées</div>
+          </div>
+        </div>
+        <div class="adm-kpi adm-kpi--gris">
+          <div class="adm-kpi-icon">
+            <svg width="18" height="18" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div class="adm-kpi-val">{{ messages|selectattr('tag','equalto','new')|list|length }}</div>
+            <div class="adm-kpi-lbl">Récentes</div>
+          </div>
+        </div>
+        <div class="adm-kpi adm-kpi--turq-dark">
+          <div class="adm-kpi-icon">
+            <svg width="18" height="18" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div>
+            <div class="adm-kpi-val">
+              {% if messages|length > 0 %}
+                {{ ((messages|length / 10) * 100)|round|int }}%
+              {% else %}0%{% endif %}
+            </div>
+            <div class="adm-kpi-lbl">Couverture</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel tableau -->
+      <div class="adm-panel">
+
+        <!-- En-tête panel -->
+        <div class="adm-panel-head">
+          <div class="adm-ph-left">
+            <span class="adm-panel-title">Base de connaissance</span>
+            <span class="adm-entry-count">{{ messages|length }} entrée{{ 's' if messages|length > 1 }}</span>
+          </div>
+          <div class="adm-ph-right">
+            <!-- Filtres -->
+            <div class="adm-chips" id="filterChips">
+              <button class="adm-chip adm-chip--on" onclick="filterTable(this,'all')">
+                <span class="adm-cdot"></span>Toutes
+              </button>
+              <button class="adm-chip" onclick="filterTable(this,'new')">
+                <span class="adm-cdot" style="color:#1D9E75"></span>Récentes
+              </button>
+              <button class="adm-chip" onclick="filterTable(this,'auto')">
+                <span class="adm-cdot" style="color:#185FA5"></span>Auto
+              </button>
+            </div>
+            <!-- Recherche -->
+            <div class="adm-search-wrap">
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="searchInput" placeholder="Rechercher…" oninput="searchTable()">
+            </div>
+          </div>
+        </div>
+
+        <!-- Tableau -->
+        <div class="adm-table-head">
+          <div class="adm-th adm-th--idx">#</div>
+          <div class="adm-th">Question</div>
+          <div class="adm-th">Réponse</div>
+          <div class="adm-th adm-th--actions">Actions</div>
+        </div>
+
+        <div class="adm-list-body" id="qaList">
+          {% for message in messages %}
+          <div class="adm-qa-row" data-tag="{{ message.tag if message.tag else 'auto' }}"
+               data-q="{{ message.question|lower }}" data-r="{{ message.reponse|lower }}">
+
+            <div class="adm-idx-c">{{ loop.index }}</div>
+
+            <div class="adm-q-c">
+              <div class="adm-q-txt">{{ message.question }}</div>
+              <span class="adm-tag adm-tag--{{ message.tag if message.tag else 'auto' }}">
+                <span class="adm-tdot"></span>
+                {{ 'Récent' if message.tag == 'new' else 'Modifié' if message.tag == 'manual' else 'Auto' }}
+              </span>
+            </div>
+
+            <div class="adm-r-c">
+              <!-- Affichage statique -->
+              <div class="adm-r-txt" id="rStatic-{{ message._id }}">{{ message.reponse }}</div>
+              <!-- Zone édition inline -->
+              <div class="adm-edit-area" id="rEdit-{{ message._id }}">
+                <form action="{{ url_for('modifier_reponse', message_id=message._id) }}" method="POST">
+                  <textarea name="reponse" rows="3" id="rInput-{{ message._id }}">{{ message.reponse }}</textarea>
+                  <div class="adm-ebtns">
+                    <button type="submit" class="adm-eb adm-eb-save">Enregistrer</button>
+                    <button type="button" class="adm-eb adm-eb-cancel js-cancel-btn"
+                            data-id="{{ message._id }}">Annuler</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="adm-act-c">
+              <button class="adm-ico adm-ico--edit js-edit-btn" title="Modifier"
+                      data-id="{{ message._id }}">
+                <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4z"/></svg>
+              </button>
+              <button class="adm-ico adm-ico--del js-del-btn" title="Supprimer"
+                      data-id="{{ message._id }}"
+                      data-question="{{ message.question | e }}"
+                      data-url="{{ url_for('supprimer_message', message_id=message._id) }}">
+                <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+              </button>
+            </div>
+
+          </div>
+          {% else %}
+          <div class="adm-empty">
+            <div class="adm-empty-ring">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+            <p>Aucune question enregistrée pour l'instant.</p>
+            <a href="{{ url_for('ajouter_message') }}" class="adm-btn adm-btn-rose" style="margin-top:.75rem">
+              Ajouter la première entrée
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- Pied de panel -->
+        <div class="adm-panel-foot">
+          <span class="adm-pfi" id="paginInfo">{{ messages|length }} entrée{{ 's' if messages|length > 1 }}</span>
+          <div class="adm-pg-grp">
+            <button class="adm-pg">‹</button>
+            <button class="adm-pg adm-pg--on">1</button>
+            <button class="adm-pg">›</button>
+          </div>
+        </div>
+
+      </div><!-- /.adm-panel -->
+    </div><!-- /.adm-content -->
+  </div><!-- /.adm-main -->
+</div><!-- /.adm-shell -->
+
+{% include "footer.html" %}
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+/* ════════════════════════════════════════
+   ÉDITION INLINE
+════════════════════════════════════════ */
+function startEdit(id) {
+  var rs = document.getElementById('rStatic-' + id);
+  var ea = document.getElementById('rEdit-' + id);
+  var row = ea ? ea.closest('.adm-qa-row') : null;
+  if (rs) rs.style.display = 'none';
+  if (ea) ea.classList.add('adm-edit-area--show');
+  if (row) row.classList.add('adm-qa-row--editing');
+  var ta = document.getElementById('rInput-' + id);
+  if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
+}
+
+function cancelEdit(id) {
+  var rs = document.getElementById('rStatic-' + id);
+  var ea = document.getElementById('rEdit-' + id);
+  var row = ea ? ea.closest('.adm-qa-row') : null;
+  if (rs) rs.style.display = 'block';
+  if (ea) ea.classList.remove('adm-edit-area--show');
+  if (row) row.classList.remove('adm-qa-row--editing');
+}
+
+/* Délégation — boutons édition */
+document.addEventListener('click', function(e) {
+  var editBtn = e.target.closest('.js-edit-btn');
+  if (editBtn) { startEdit(editBtn.getAttribute('data-id')); return; }
+
+  var cancelBtn = e.target.closest('.js-cancel-btn');
+  if (cancelBtn) { cancelEdit(cancelBtn.getAttribute('data-id')); return; }
+
+  var delBtn = e.target.closest('.js-del-btn');
+  if (delBtn) {
+    var q   = delBtn.getAttribute('data-question') || '';
+    var url = delBtn.getAttribute('data-url') || '';
+    document.getElementById('delModalQ').textContent = q;
+    document.getElementById('delForm').action = url;
+    document.getElementById('delModal').classList.add('adm-modal-veil--show');
+    return;
+  }
+});
+
+/* ════════════════════════════════════════
+   MODALE SUPPRESSION
+════════════════════════════════════════ */
+function closeDelModal() {
+  document.getElementById('delModal').classList.remove('adm-modal-veil--show');
+}
+
+/* ════════════════════════════════════════
+   FILTRES
+════════════════════════════════════════ */
+function filterTable(btn, mode) {
+  document.querySelectorAll('.adm-chip').forEach(function(c) {
+    c.classList.remove('adm-chip--on');
+  });
+  btn.classList.add('adm-chip--on');
+  document.querySelectorAll('.adm-qa-row').forEach(function(row) {
+    var tag = row.getAttribute('data-tag') || 'auto';
+    row.style.display = (mode === 'all' || tag === mode) ? '' : 'none';
+  });
+  updateCount();
+}
+
+/* ════════════════════════════════════════
+   RECHERCHE
+════════════════════════════════════════ */
+function searchTable() {
+  var q = document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('.adm-qa-row').forEach(function(row) {
+    var inQ = (row.getAttribute('data-q') || '').indexOf(q) !== -1;
+    var inR = (row.getAttribute('data-r') || '').indexOf(q) !== -1;
+    row.style.display = (inQ || inR) ? '' : 'none';
+  });
+  updateCount();
+}
+
+function updateCount() {
+  var rows    = document.querySelectorAll('.adm-qa-row');
+  var visible = 0;
+  rows.forEach(function(r) {
+    if (r.style.display !== 'none') visible++;
+  });
+  var el = document.getElementById('paginInfo');
+  if (el) el.textContent = visible + ' / ' + rows.length + ' entrée' + (rows.length > 1 ? 's' : '');
+}
+
+/* ════════════════════════════════════════
+   AUTO-DISMISS TOASTS
+════════════════════════════════════════ */
+document.querySelectorAll('[data-auto-dismiss]').forEach(function(t) {
+  setTimeout(function() {
+    t.style.transition = 'opacity .4s';
+    t.style.opacity    = '0';
+    setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 420);
+  }, 3500);
+});
+</script>
 
 </body>
 </html>

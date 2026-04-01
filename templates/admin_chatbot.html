@@ -71,7 +71,7 @@
       <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
       Dashboard
     </a>
-    <a href="{{ url_for('admin_messages') }}" class="adm-sb-item adm-sb-item--active">
+    <a href="{{ url_for('admin_chatbot') }}" class="adm-sb-item adm-sb-item--active">
       <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
       Questions / Réponses
       <span class="adm-sb-badge">{{ messages|length }}</span>
@@ -115,7 +115,7 @@
         <p>Base de connaissance du chatbot ML2C Conseil</p>
       </div>
       <div class="adm-topbar-right">
-        <a href="{{ url_for('export_messages') }}" class="adm-btn adm-btn-ghost">
+        <a href="#" class="adm-btn adm-btn-ghost">
           <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Exporter
         </a>

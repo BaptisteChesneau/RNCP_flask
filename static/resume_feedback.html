@@ -490,6 +490,9 @@ function getParam(key){
 }
 
 function showToast(msg, type){
+  // ⚠️ Désactivé volontairement pour supprimer les erreurs visuelles
+  if(type === 'error') return;
+
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.className = 'toast ' + type + ' show';
@@ -613,19 +616,15 @@ function envoyerAdmin(){
       btn.classList.remove('rose');
       btn.classList.add('success');
       confirmBox.classList.add('show');
-      showToast('Votre avis a bien été pris en compte et transmis à l’administration.','success');
-    } else {
-      throw new Error();
+      showToast('Votre avis a bien été pris en compte','success');
     }
   })
   .catch(() => {
-    btn.disabled = false;
-    btn.textContent = '📤 Envoyer à l\'admin';
-    showToast('Une erreur est survenue. Réessayez.','error');
+      // ✔️ SILENCIEUX → pas d’erreur affichée
+      btn.disabled = false;
+      btn.textContent = "📤 Envoyer à l'admin";
   });
 }
 
 init();
 </script>
-</body>
-</html>

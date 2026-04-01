@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Détail avis — Admin | ML2C CONSEIL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --rose:#C1007A;
+      --rose-dark:#9a0062;
+      --rose-light:#fce4f3;
+      --turq:#4FA695;
+      --ok:#1D9E75;
+      --ok-l:#EAF3DE;
+      --ok-b:#97C459;
+      --meh:#EF9F27;
+      --meh-l:#FAEEDA;
+      --meh-b:#EF9F27;
+      --no:#E24B4A;
+      --no-l:#FCEBEB;
+      --no-b:#F09595;
+      --text:#1a1a1a;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --bg:#f5f6f7;
+      --white:#fff;
+      --surface:#f9fafb;
+      --shadow:0 10px 30px rgba(0,0,0,.06);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+
+    body{
+      background:var(--bg);
+      font-family:'DM Sans',sans-serif;
+      color:var(--text);
+      line-height:1.6;
+    }
+
+    .page{
+      max-width:1400px;
+      margin:0 auto;
+      padding:1.5rem;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-bottom:1.5rem;
+    }
+
+    .topbar h1{
+      font-family:'Cormorant Garamond',serif;
+      font-size:38px;
+      line-height:1.05;
+      font-weight:700;
+    }
+
+    .topbar h1 span{color:var(--rose)}
+
+    .topbar p{
+      color:var(--muted);
+      font-size:14px;
+      margin-top:8px;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      border:1.5px solid var(--border);
+      background:var(--white);
+      color:var(--text);
+      border-radius:12px;
+      padding:10px 16px;
+      text-decoration:none;
+      font-size:14px;
+      font-weight:600;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      cursor:pointer;
+      transition:.2s;
+    }
+
+    .btn:hover{background:var(--surface)}
+    .btn.rose{
+      background:var(--rose);
+      border-color:var(--rose);
+      color:#fff;
+    }
+    .btn.rose:hover{background:var(--rose-dark)}
+
+    .layout{
+      display:grid;
+      grid-template-columns:1fr 330px;
+      gap:16px;
+    }
+
+    .main-col{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .side-col{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .card{
+      background:var(--white);
+      border:1.5px solid var(--border);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .card-head{
+      padding:1.1rem 1.25rem;
+      border-bottom:1px solid var(--border);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .card-head h3{
+      font-size:16px;
+      font-weight:700;
+    }
+
+    .hero{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:16px;
+    }
+
+    .hero-panel{
+      padding:1.5rem;
+    }
+
+    .tester{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-bottom:1rem;
+    }
+
+    .avatar{
+      width:62px;
+      height:62px;
+      border-radius:18px;
+      background:var(--rose-light);
+      color:var(--rose);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:28px;
+      font-weight:700;
+      flex-shrink:0;
+    }
+
+    .tester .name{
+      font-size:20px;
+      font-weight:700;
+      margin-bottom:2px;
+    }
+
+    .tester .sub{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .score-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      margin-top:1rem;
+    }
+
+    .mini-kpi{
+      border:1.5px solid var(--border);
+      border-radius:16px;
+      padding:1rem;
+      background:var(--surface);
+    }
+
+    .mini-kpi .t{
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--muted);
+      font-weight:700;
+      margin-bottom:8px;
+    }
+
+    .mini-kpi .v{
+      font-size:28px;
+      font-weight:700;
+      line-height:1;
+    }
+
+    .v.ok{color:var(--ok)}
+    .v.meh{color:var(--meh)}
+    .v.no{color:var(--no)}
+    .v.rose{color:var(--rose)}
+
+    .score-right{
+      background:linear-gradient(135deg,#111827 0%, #1f2937 100%);
+      color:#fff;
+      padding:1.5rem;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      border-radius:22px;
+    }
+
+    .score-right .label{
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      color:#cbd5e1;
+      margin-bottom:10px;
+      font-weight:700;
+    }
+
+    .score-big{
+      font-size:72px;
+      font-weight:700;
+      line-height:1;
+      margin-bottom:8px;
+    }
+
+    .score-right .sub{
+      font-size:14px;
+      color:#e5e7eb;
+      margin-bottom:1.25rem;
+    }
+
+    .progress{
+      height:12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.12);
+      overflow:hidden;
+      margin-bottom:1rem;
+    }
+
+    .progress > span{
+      display:block;
+      height:100%;
+      border-radius:999px;
+      width:0%;
+      background:linear-gradient(90deg, #4FA695, #C1007A);
+    }
+
+    .stars{
+      display:flex;
+      gap:8px;
+      font-size:28px;
+    }
+
+    .star{color:rgba(255,255,255,.18)}
+    .star.on{color:#fbbf24}
+
+    .question-list{
+      padding:1.25rem;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .q-card{
+      border:1.5px solid var(--border);
+      border-radius:18px;
+      background:var(--surface);
+      overflow:hidden;
+    }
+
+    .q-top{
+      display:flex;
+      gap:12px;
+      padding:1rem;
+      align-items:flex-start;
+    }
+
+    .q-icon{
+      width:44px;
+      height:44px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      flex-shrink:0;
+    }
+
+    .q-icon.ok{background:var(--ok-l)}
+    .q-icon.meh{background:var(--meh-l)}
+    .q-icon.no{background:var(--no-l)}
+    .q-icon.nd{background:#eef2f7}
+
+    .q-meta{
+      flex:1;
+    }
+
+    .q-num{
+      font-size:11px;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      font-weight:700;
+      margin-bottom:4px;
+    }
+
+    .q-title{
+      font-size:15px;
+      font-weight:700;
+      line-height:1.35;
+      margin-bottom:4px;
+    }
+
+    .q-answer{
+      font-size:13px;
+      font-weight:600;
+    }
+
+    .q-answer.ok{color:var(--ok)}
+    .q-answer.meh{color:#b45309}
+    .q-answer.no{color:var(--no)}
+    .q-answer.nd{color:var(--muted)}
+
+    .q-note{
+      border-top:1px solid var(--border);
+      padding:.9rem 1rem;
+      font-size:13px;
+      color:#374151;
+      background:#fff;
+    }
+
+    .q-note strong{
+      color:var(--text);
+    }
+
+    .comments{
+      padding:1.25rem;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+    }
+
+    .comment-box{
+      border:1.5px solid var(--border);
+      border-radius:16px;
+      padding:1rem 1rem 1rem 1.1rem;
+      background:var(--surface);
+    }
+
+    .comment-box h4{
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--muted);
+      font-weight:700;
+      margin-bottom:8px;
+    }
+
+    .comment-box p{
+      font-size:14px;
+      line-height:1.7;
+      color:var(--text);
+    }
+
+    .comment-box p.empty{
+      color:var(--muted);
+      font-style:italic;
+    }
+
+    .timeline{
+      padding:1rem 1rem 1.25rem;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      max-height:700px;
+      overflow:auto;
+    }
+
+    .t-item{
+      border:1.5px solid var(--border);
+      border-radius:14px;
+      padding:.9rem;
+      background:var(--surface);
+      text-decoration:none;
+      color:inherit;
+      transition:.2s;
+    }
+
+    .t-item:hover{
+      background:#fff;
+      border-color:#d1d5db;
+    }
+
+    .t-item .t-name{
+      font-size:14px;
+      font-weight:700;
+      margin-bottom:4px;
+    }
+
+    .t-item .t-sub{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+
+    .t-badges{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .badge{
+      font-size:12px;
+      font-weight:700;
+      padding:5px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:#fff;
+    }
+
+    .badge.ok{background:var(--ok-l); border-color:var(--ok-b); color:#166534;}
+    .badge.meh{background:var(--meh-l); border-color:var(--meh-b); color:#92400e;}
+    .badge.no{background:var(--no-l); border-color:var(--no-b); color:#991b1b;}
+
+    @media(max-width:1100px){
+      .layout{grid-template-columns:1fr}
+      .hero{grid-template-columns:1fr}
+    }
+
+    @media(max-width:760px){
+      .question-list{grid-template-columns:1fr}
+      .score-grid{grid-template-columns:1fr}
+      .score-big{font-size:56px}
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <div class="topbar">
+      <div>
+        <h1>Détail du <span>retour client</span></h1>
+        <p>Vue administrateur du questionnaire avec synthèse visuelle et historique.</p>
+      </div>
+
+      <div class="actions">
+        <a href="/admin-feedback-dashboard" class="btn">← Historique</a>
+        <button class="btn" onclick="window.print()">🖨 Imprimer</button>
+        <button class="btn rose" onclick="deleteCurrent()">🗑 Supprimer</button>
+      </div>
+    </div>
+
+    <div class="layout">
+      <div class="main-col">
+
+        <section class="hero">
+          <div class="card hero-panel">
+            <div class="tester">
+              <div class="avatar" id="avatar">A</div>
+              <div>
+                <div class="name" id="nom">Anonyme</div>
+                <div class="sub">📅 <span id="date">—</span></div>
+              </div>
+            </div>
+
+            <div class="score-grid">
+              <div class="mini-kpi">
+                <div class="t">Score</div>
+                <div class="v rose" id="scoreMini">0%</div>
+              </div>
+              <div class="mini-kpi">
+                <div class="t">Réponses OK</div>
+                <div class="v ok" id="okMini">0</div>
+              </div>
+              <div class="mini-kpi">
+                <div class="t">Problèmes</div>
+                <div class="v no" id="noMini">0</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="score-right">
+            <div class="label">Performance du parcours</div>
+            <div class="score-big" id="scoreBig">0%</div>
+            <div class="sub">Lecture synthétique du retour utilisateur</div>
+
+            <div class="progress">
+              <span id="scoreBar"></span>
+            </div>
+
+            <div class="stars" id="stars"></div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-head">
+            <h3>Analyse question par question</h3>
+          </div>
+          <div class="question-list" id="questionList"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-head">
+            <h3>Commentaires libres</h3>
+          </div>
+          <div class="comments">
+            <div class="comment-box">
+              <h4>Ce qui a plu</h4>
+              <p id="goodTxt" class="empty">Aucun commentaire renseigné</p>
+            </div>
+
+            <div class="comment-box">
+              <h4>Ce qui était difficile</h4>
+              <p id="hardTxt" class="empty">Aucun commentaire renseigné</p>
+            </div>
+
+            <div class="comment-box">
+              <h4>Suggestions</h4>
+              <p id="suggestTxt" class="empty">Aucun commentaire renseigné</p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <aside class="side-col">
+        <section class="card">
+          <div class="card-head">
+            <h3>Historique récent</h3>
+          </div>
+          <div class="timeline" id="timeline">
+            <div class="t-item">Chargement…</div>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    const QS = [
+      {id:"q1",title:"La navigation sur le site",labels:{ok:"Agréable et claire",meh:"Un peu confuse",no:"Difficile à utiliser"},icons:{ok:"😊",meh:"😐",no:"😕"}},
+      {id:"q2",title:"Créer un compte",labels:{ok:"Facile à trouver",meh:"Pas évident",no:"Introuvable"},icons:{ok:"✅",meh:"🔍",no:"❓"}},
+      {id:"q3",title:"Trouver la page de paiement",labels:{ok:"Simple et rapide",meh:"J'ai cherché un moment",no:"Je n'ai pas trouvé"},icons:{ok:"💳",meh:"🤔",no:"🚫"}},
+      {id:"q4",title:"Faire une demande de rendez-vous",labels:{ok:"Ça marche bien",meh:"C'est le bazar",no:"Ça ne marche pas"},icons:{ok:"🗓️",meh:"🎲",no:"🔇"}},
+      {id:"q5",title:"La lisibilité du site",labels:{ok:"Ça marche bien",meh:"C'est un peu moche",no:"Ce n'est pas lisible"},icons:{ok:"👌",meh:"🤨",no:"🙈"}},
+      {id:"q6",title:"Confiance générale",labels:{ok:"Confiance et sérieux",meh:"Plutôt bien",no:"Pas vraiment confiance"},icons:{ok:"🤝",meh:"🙂",no:"😶"}}
+    ];
+
+    let currentFeedback = null;
+
+    function getIdFromUrl(){
+      const parts = window.location.pathname.split('/');
+      return parts[parts.length - 1];
+    }
+
+    function calcScore(item){
+      let ok=0, meh=0, no=0, done=0;
+      for(let i=1;i<=6;i++){
+        const v = item['q'+i];
+        if(v){
+          done++;
+          if(v === 'ok') ok++;
+          else if(v === 'meh') meh++;
+          else if(v === 'no') no++;
+        }
+      }
+      const score = done ? Math.round((ok + meh * 0.5) / done * 100) : 0;
+      return { score, ok, meh, no, done };
+    }
+
+    function scoreColor(score){
+      if(score >= 70) return '#1D9E75';
+      if(score >= 40) return '#EF9F27';
+      return '#E24B4A';
+    }
+
+    function setText(id, value){
+      const el = document.getElementById(id);
+      if(value){
+        el.textContent = value;
+        el.classList.remove('empty');
+      }else{
+        el.textContent = 'Aucun commentaire renseigné';
+        el.classList.add('empty');
+      }
+    }
+
+    async function loadDetail(){
+      const id = getIdFromUrl();
+
+      try{
+        const res = await fetch('/admin-feedback-get/' + id);
+        const data = await res.json();
+        currentFeedback = data.feedback || {};
+
+        renderDetail(currentFeedback);
+      }catch(e){
+        alert('Impossible de charger ce retour.');
+      }
+    }
+
+    function renderDetail(item){
+      const r = calcScore(item);
+      const star = parseInt(item.star) || 0;
+      const name = item.nom || 'Anonyme';
+      const date = item.date || '—';
+
+      document.getElementById('nom').textContent = name;
+      document.getElementById('date').textContent = date;
+      document.getElementById('avatar').textContent = name ? name.charAt(0).toUpperCase() : 'A';
+
+      document.getElementById('scoreMini').textContent = r.score + '%';
+      document.getElementById('okMini').textContent = r.ok;
+      document.getElementById('noMini').textContent = r.no;
+
+      document.getElementById('scoreBig').textContent = r.score + '%';
+      document.getElementById('scoreBar').style.width = r.score + '%';
+      document.getElementById('scoreBar').style.background = scoreColor(r.score);
+
+      const stars = document.getElementById('stars');
+      stars.innerHTML = Array.from({length:5}, (_,i) =>
+        `<span class="star ${i < star ? 'on' : ''}">★</span>`
+      ).join('');
+
+      const qList = document.getElementById('questionList');
+      qList.innerHTML = QS.map((q, index) => {
+        const val = item['q'+(index+1)] || 'nd';
+        const note = item['n'+(index+1)] || '';
+        const icon = val === 'nd' ? '·' : q.icons[val];
+        const label = val === 'nd' ? 'Sans réponse' : q.labels[val];
+
+        return `
+          <div class="q-card">
+            <div class="q-top">
+              <div class="q-icon ${val}">${icon}</div>
+              <div class="q-meta">
+                <div class="q-num">Question ${index+1}</div>
+                <div class="q-title">${q.title}</div>
+                <div class="q-answer ${val}">${label}</div>
+              </div>
+            </div>
+            <div class="q-note">
+              <strong>Commentaire :</strong> ${note || 'Aucun détail ajouté'}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      setText('goodTxt', item.good);
+      setText('hardTxt', item.hard);
+      setText('suggestTxt', item.suggest);
+
+      loadTimeline();
+    }
+
+    async function loadTimeline(){
+      try{
+        const res = await fetch('/admin-feedback-list');
+        const data = await res.json();
+        const list = Array.isArray(data.feedbacks) ? data.feedbacks : [];
+        const timeline = document.getElementById('timeline');
+
+        timeline.innerHTML = list
+          .sort((a,b) => (b.date || '').localeCompare(a.date || ''))
+          .slice(0,10)
+          .map(item => {
+            const r = calcScore(item);
+
+            let badgeClass = 'ok';
+            let badgeLabel = 'Bon avis';
+            if(r.score < 40){
+              badgeClass = 'no';
+              badgeLabel = 'À revoir';
+            }else if(r.score < 70){
+              badgeClass = 'meh';
+              badgeLabel = 'Mitigé';
+            }
+
+            return `
+              <a class="t-item" href="/admin-feedback-detail/${item.id}">
+                <div class="t-name">${item.nom || 'Anonyme'}</div>
+                <div class="t-sub">📅 ${item.date || '—'} · ⭐ ${parseInt(item.star)||0}/5</div>
+                <div class="t-badges">
+                  <span class="badge ${badgeClass}">${r.score}%</span>
+                  <span class="badge">${badgeLabel}</span>
+                </div>
+              </a>
+            `;
+          }).join('');
+      }catch(e){
+        document.getElementById('timeline').innerHTML = '<div class="t-item">Historique indisponible.</div>';
+      }
+    }
+
+    async function deleteCurrent(){
+      if(!currentFeedback || !currentFeedback.id) return;
+      if(!confirm('Supprimer ce retour ?')) return;
+
+      try{
+        const res = await fetch('/admin-feedback-delete/' + currentFeedback.id, {
+          method:'POST'
+        });
+        const data = await res.json();
+
+        if(data.ok){
+          window.location.href = '/admin-feedback-dashboard';
+        }else{
+          alert('Suppression impossible.');
+        }
+      }catch(e){
+        alert('Erreur serveur.');
+      }
+    }
+
+    loadDetail();
+  </script>
+</body>
+</html>

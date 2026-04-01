@@ -1435,6 +1435,33 @@ def test_admin_user_table_as_admin(client):
     response = client.get("/admin-user-table")
     assert b"User Database (Admin Only)" in response.data
 
+@app.route("/admin-feedback-dashboard")
+def admin_feedback_dashboard():
+    return render_template("admin_feedback_dashboard.html")
+
+@app.route("/admin-feedback-detail/<feedback_id>")
+def admin_feedback_detail(feedback_id):
+    return render_template("admin_feedback_detail.html")
+
+@app.route("/admin-feedback-list")
+def admin_feedback_list():
+    # retourne {"feedbacks": [...]}
+    ...
+
+@app.route("/admin-feedback-get/<feedback_id>")
+def admin_feedback_get(feedback_id):
+    # retourne {"feedback": {...}}
+    ...
+
+@app.route("/admin-feedback-delete/<feedback_id>", methods=["POST"])
+def admin_feedback_delete(feedback_id):
+    # supprime et retourne {"ok": True}
+    ...
+
+@app.route("/admin-feedback-export")
+def admin_feedback_export():
+    # export CSV
+    ...
 
 def test_user_list_displays_users(client):
     with client.session_transaction() as sess:

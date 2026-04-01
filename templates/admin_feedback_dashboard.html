@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Historique des avis | ML2C CONSEIL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --rose:#C1007A;
+      --rose-dark:#9a0062;
+      --rose-light:#fce4f3;
+      --turq:#4FA695;
+      --ok:#1D9E75;
+      --ok-l:#EAF3DE;
+      --ok-b:#97C459;
+      --meh:#EF9F27;
+      --meh-l:#FAEEDA;
+      --meh-b:#EF9F27;
+      --no:#E24B4A;
+      --no-l:#FCEBEB;
+      --no-b:#F09595;
+      --text:#1a1a1a;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --bg:#f5f6f7;
+      --white:#fff;
+      --surface:#f9fafb;
+      --shadow:0 8px 24px rgba(0,0,0,.06);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+
+    body{
+      background:var(--bg);
+      font-family:'DM Sans',sans-serif;
+      color:var(--text);
+      font-size:16px;
+      line-height:1.6;
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns:270px 1fr;
+      min-height:100vh;
+    }
+
+    .sidebar{
+      background:#111827;
+      color:#fff;
+      padding:1.5rem 1.25rem;
+      position:sticky;
+      top:0;
+      height:100vh;
+      border-right:1px solid rgba(255,255,255,.06);
+    }
+
+    .brand{
+      margin-bottom:2rem;
+    }
+
+    .brand h2{
+      font-size:18px;
+      font-weight:700;
+      letter-spacing:.03em;
+    }
+
+    .brand p{
+      color:#cbd5e1;
+      font-size:13px;
+      margin-top:4px;
+    }
+
+    .nav{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .nav a{
+      text-decoration:none;
+      color:#e5e7eb;
+      padding:12px 14px;
+      border-radius:12px;
+      font-size:14px;
+      font-weight:500;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      transition:.2s;
+    }
+
+    .nav a:hover,
+    .nav a.active{
+      background:rgba(255,255,255,.08);
+      color:#fff;
+    }
+
+    .main{
+      padding:1.5rem;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      margin-bottom:1.5rem;
+      flex-wrap:wrap;
+    }
+
+    .topbar h1{
+      font-family:'Cormorant Garamond',serif;
+      font-size:36px;
+      line-height:1.1;
+      font-weight:700;
+    }
+
+    .topbar h1 span{color:var(--rose)}
+
+    .topbar p{
+      color:var(--muted);
+      font-size:14px;
+      margin-top:6px;
+    }
+
+    .top-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      border:1.5px solid var(--border);
+      background:var(--white);
+      color:var(--text);
+      border-radius:12px;
+      padding:10px 16px;
+      text-decoration:none;
+      font-size:14px;
+      font-weight:600;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      cursor:pointer;
+      transition:.2s;
+    }
+
+    .btn:hover{background:var(--surface)}
+    .btn.rose{
+      background:var(--rose);
+      color:#fff;
+      border-color:var(--rose);
+    }
+    .btn.rose:hover{background:var(--rose-dark)}
+
+    .kpis{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+      margin-bottom:1.5rem;
+    }
+
+    .kpi{
+      background:var(--white);
+      border:1.5px solid var(--border);
+      border-radius:18px;
+      padding:1.25rem;
+      box-shadow:var(--shadow);
+    }
+
+    .kpi .label{
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--muted);
+      margin-bottom:10px;
+      font-weight:700;
+    }
+
+    .kpi .value{
+      font-size:34px;
+      font-weight:700;
+      line-height:1;
+      margin-bottom:6px;
+    }
+
+    .kpi .meta{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .kpi.ok .value{color:var(--ok)}
+    .kpi.meh .value{color:var(--meh)}
+    .kpi.no .value{color:var(--no)}
+    .kpi.rose .value{color:var(--rose)}
+
+    .content-grid{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:16px;
+    }
+
+    .panel{
+      background:var(--white);
+      border:1.5px solid var(--border);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .panel-head{
+      padding:1.1rem 1.25rem;
+      border-bottom:1px solid var(--border);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .panel-head h3{
+      font-size:16px;
+      font-weight:700;
+    }
+
+    .filters{
+      padding:1rem 1.25rem;
+      border-bottom:1px solid var(--border);
+      display:grid;
+      grid-template-columns:1.2fr .7fr .7fr auto;
+      gap:10px;
+    }
+
+    .filters input,
+    .filters select{
+      width:100%;
+      border:1.5px solid var(--border);
+      border-radius:10px;
+      padding:10px 12px;
+      font-size:14px;
+      font-family:'DM Sans',sans-serif;
+      background:var(--white);
+    }
+
+    .filters input:focus,
+    .filters select:focus{
+      outline:none;
+      border-color:var(--rose);
+    }
+
+    .history-list{
+      padding:1rem 1.25rem 1.25rem;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      max-height:760px;
+      overflow:auto;
+    }
+
+    .history-item{
+      border:1.5px solid var(--border);
+      border-radius:14px;
+      padding:1rem;
+      background:var(--surface);
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      gap:14px;
+      align-items:center;
+      transition:.2s;
+    }
+
+    .history-item:hover{
+      border-color:#d1d5db;
+      background:#fff;
+    }
+
+    .score-badge{
+      width:64px;
+      height:64px;
+      border-radius:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:20px;
+      font-weight:700;
+      color:#fff;
+    }
+
+    .score-ok{background:var(--ok)}
+    .score-meh{background:var(--meh)}
+    .score-no{background:var(--no)}
+
+    .history-main .name{
+      font-size:15px;
+      font-weight:700;
+      margin-bottom:4px;
+    }
+
+    .history-main .sub{
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+
+    .history-main .snippet{
+      font-size:13px;
+      color:#374151;
+      line-height:1.5;
+    }
+
+    .history-actions{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      align-items:flex-end;
+    }
+
+    .mini-btn{
+      border:1.5px solid var(--border);
+      background:#fff;
+      color:var(--text);
+      border-radius:10px;
+      padding:8px 12px;
+      font-size:13px;
+      font-weight:600;
+      text-decoration:none;
+      transition:.2s;
+    }
+
+    .mini-btn:hover{background:var(--surface)}
+
+    .chart-wrap{
+      padding:1.25rem;
+    }
+
+    .bar-group{
+      margin-bottom:1rem;
+    }
+
+    .bar-top{
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:6px;
+      font-size:14px;
+    }
+
+    .bar{
+      height:12px;
+      border-radius:999px;
+      background:var(--border);
+      overflow:hidden;
+    }
+
+    .bar > span{
+      display:block;
+      height:100%;
+      border-radius:999px;
+    }
+
+    .bar.ok > span{background:var(--ok)}
+    .bar.meh > span{background:var(--meh)}
+    .bar.no > span{background:var(--no)}
+    .bar.rose > span{background:var(--rose)}
+
+    .mini-stats{
+      padding:0 1.25rem 1.25rem;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .mini-box{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:1rem;
+    }
+
+    .mini-box .t{
+      font-size:12px;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      font-weight:700;
+      margin-bottom:8px;
+    }
+
+    .mini-box .v{
+      font-size:26px;
+      font-weight:700;
+      line-height:1.1;
+    }
+
+    .empty{
+      padding:1.5rem;
+      color:var(--muted);
+      text-align:center;
+      font-style:italic;
+    }
+
+    @media(max-width:1100px){
+      .kpis{grid-template-columns:repeat(2,1fr)}
+      .content-grid{grid-template-columns:1fr}
+    }
+
+    @media(max-width:860px){
+      .layout{grid-template-columns:1fr}
+      .sidebar{
+        position:relative;
+        height:auto;
+      }
+    }
+
+    @media(max-width:680px){
+      .filters{grid-template-columns:1fr}
+      .kpis{grid-template-columns:1fr}
+      .history-item{
+        grid-template-columns:1fr;
+        text-align:left;
+      }
+      .history-actions{
+        align-items:flex-start;
+        flex-direction:row;
+        flex-wrap:wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+
+    <aside class="sidebar">
+      <div class="brand">
+        <h2>ML2C CONSEIL</h2>
+        <p>Espace administrateur</p>
+      </div>
+
+      <nav class="nav">
+        <a href="/admin" class="active">📊 Dashboard avis</a>
+        <a href="/admin/feedback-history">🕘 Historique</a>
+        <a href="/admin/users">👤 Utilisateurs</a>
+        <a href="/admin/rendezvous">🗓️ Rendez-vous</a>
+        <a href="/">↩ Retour au site</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <h1>Dashboard <span>retours clients</span></h1>
+          <p>Vue d’ensemble, historique des avis, score moyen et tendances.</p>
+        </div>
+
+        <div class="top-actions">
+          <button class="btn" onclick="loadFeedbacks()">🔄 Actualiser</button>
+          <button class="btn rose" onclick="exportCSV()">⬇ Export CSV</button>
+        </div>
+      </div>
+
+      <section class="kpis">
+        <div class="kpi rose">
+          <div class="label">Avis reçus</div>
+          <div class="value" id="k-total">0</div>
+          <div class="meta">Total enregistré</div>
+        </div>
+
+        <div class="kpi ok">
+          <div class="label">Score moyen</div>
+          <div class="value" id="k-score">0%</div>
+          <div class="meta">Satisfaction globale</div>
+        </div>
+
+        <div class="kpi meh">
+          <div class="label">Note moyenne</div>
+          <div class="value" id="k-star">0/5</div>
+          <div class="meta">Étoiles données</div>
+        </div>
+
+        <div class="kpi no">
+          <div class="label">Problèmes</div>
+          <div class="value" id="k-problems">0</div>
+          <div class="meta">Réponses “problème”</div>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Historique des avis</h3>
+          </div>
+
+          <div class="filters">
+            <input type="text" id="searchInput" placeholder="Rechercher par prénom, commentaire, date..." />
+            <select id="filterVerdict">
+              <option value="">Tous les statuts</option>
+              <option value="ok">Favorables</option>
+              <option value="meh">Mitigés</option>
+              <option value="no">Problèmes</option>
+            </select>
+            <select id="sortBy">
+              <option value="recent">Plus récents</option>
+              <option value="oldest">Plus anciens</option>
+              <option value="score_desc">Score décroissant</option>
+              <option value="score_asc">Score croissant</option>
+            </select>
+            <button class="btn" onclick="applyFilters()">Filtrer</button>
+          </div>
+
+          <div class="history-list" id="historyList">
+            <div class="empty">Chargement de l’historique…</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Synthèse visuelle</h3>
+          </div>
+
+          <div class="chart-wrap">
+            <div class="bar-group">
+              <div class="bar-top">
+                <span>Réponses positives</span>
+                <strong id="p-ok">0%</strong>
+              </div>
+              <div class="bar ok"><span id="bar-ok" style="width:0%"></span></div>
+            </div>
+
+            <div class="bar-group">
+              <div class="bar-top">
+                <span>Réponses mitigées</span>
+                <strong id="p-meh">0%</strong>
+              </div>
+              <div class="bar meh"><span id="bar-meh" style="width:0%"></span></div>
+            </div>
+
+            <div class="bar-group">
+              <div class="bar-top">
+                <span>Problèmes signalés</span>
+                <strong id="p-no">0%</strong>
+              </div>
+              <div class="bar no"><span id="bar-no" style="width:0%"></span></div>
+            </div>
+
+            <div class="bar-group">
+              <div class="bar-top">
+                <span>Taux de réponse complété</span>
+                <strong id="p-complete">0%</strong>
+              </div>
+              <div class="bar rose"><span id="bar-complete" style="width:0%"></span></div>
+            </div>
+          </div>
+
+          <div class="mini-stats">
+            <div class="mini-box">
+              <div class="t">Dernier retour</div>
+              <div class="v" id="m-last">—</div>
+            </div>
+            <div class="mini-box">
+              <div class="t">Commentaire moyen</div>
+              <div class="v" id="m-comments">0</div>
+            </div>
+            <div class="mini-box">
+              <div class="t">Avis 5 étoiles</div>
+              <div class="v" id="m-five">0</div>
+            </div>
+            <div class="mini-box">
+              <div class="t">Avis à revoir</div>
+              <div class="v" id="m-review">0</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const QS_COUNT = 6;
+    let feedbacks = [];
+    let filteredFeedbacks = [];
+
+    function calcScore(item){
+      let ok = 0, meh = 0, no = 0, done = 0;
+      for(let i=1;i<=QS_COUNT;i++){
+        const v = item['q'+i];
+        if(v){
+          done++;
+          if(v === 'ok') ok++;
+          else if(v === 'meh') meh++;
+          else if(v === 'no') no++;
+        }
+      }
+      const score = done ? Math.round((ok + (meh * 0.5)) / done * 100) : 0;
+      return { score, ok, meh, no, done };
+    }
+
+    function getScoreClass(score){
+      if(score >= 70) return 'score-ok';
+      if(score >= 40) return 'score-meh';
+      return 'score-no';
+    }
+
+    function escapeHtml(text){
+      return (text || '').replace(/[&<>"']/g, function(m){
+        return ({
+          '&':'&amp;',
+          '<':'&lt;',
+          '>':'&gt;',
+          '"':'&quot;',
+          "'":'&#039;'
+        })[m];
+      });
+    }
+
+    async function loadFeedbacks(){
+      try{
+        const res = await fetch('/admin-feedback-list');
+        const data = await res.json();
+
+        feedbacks = Array.isArray(data.feedbacks) ? data.feedbacks : [];
+        filteredFeedbacks = [...feedbacks];
+
+        updateDashboard();
+        renderHistory();
+      }catch(err){
+        document.getElementById('historyList').innerHTML =
+          '<div class="empty">Impossible de charger l’historique.</div>';
+      }
+    }
+
+    function updateDashboard(){
+      const total = feedbacks.length;
+
+      let scoreSum = 0;
+      let starSum = 0;
+      let starCount = 0;
+      let totalOk = 0;
+      let totalMeh = 0;
+      let totalNo = 0;
+      let totalDone = 0;
+      let commentCount = 0;
+      let fiveStars = 0;
+      let reviewCount = 0;
+      let latestDate = '';
+
+      feedbacks.forEach(item => {
+        const r = calcScore(item);
+        scoreSum += r.score;
+        totalOk += r.ok;
+        totalMeh += r.meh;
+        totalNo += r.no;
+        totalDone += r.done;
+
+        if(r.score < 40) reviewCount++;
+
+        const star = parseInt(item.star) || 0;
+        if(star){
+          starSum += star;
+          starCount++;
+          if(star === 5) fiveStars++;
+        }
+
+        if(item.date && (!latestDate || item.date > latestDate)){
+          latestDate = item.date;
+        }
+
+        if(item.good) commentCount++;
+        if(item.hard) commentCount++;
+        if(item.suggest) commentCount++;
+      });
+
+      const avgScore = total ? Math.round(scoreSum / total) : 0;
+      const avgStar = starCount ? (starSum / starCount).toFixed(1) : '0.0';
+
+      const answersTotal = totalOk + totalMeh + totalNo;
+      const okPct = answersTotal ? Math.round((totalOk / answersTotal) * 100) : 0;
+      const mehPct = answersTotal ? Math.round((totalMeh / answersTotal) * 100) : 0;
+      const noPct = answersTotal ? Math.round((totalNo / answersTotal) * 100) : 0;
+      const completePct = total ? Math.round((totalDone / (total * QS_COUNT)) * 100) : 0;
+
+      document.getElementById('k-total').textContent = total;
+      document.getElementById('k-score').textContent = avgScore + '%';
+      document.getElementById('k-star').textContent = avgStar + '/5';
+      document.getElementById('k-problems').textContent = totalNo;
+
+      document.getElementById('p-ok').textContent = okPct + '%';
+      document.getElementById('p-meh').textContent = mehPct + '%';
+      document.getElementById('p-no').textContent = noPct + '%';
+      document.getElementById('p-complete').textContent = completePct + '%';
+
+      document.getElementById('bar-ok').style.width = okPct + '%';
+      document.getElementById('bar-meh').style.width = mehPct + '%';
+      document.getElementById('bar-no').style.width = noPct + '%';
+      document.getElementById('bar-complete').style.width = completePct + '%';
+
+      document.getElementById('m-last').textContent = latestDate || '—';
+      document.getElementById('m-comments').textContent = commentCount;
+      document.getElementById('m-five').textContent = fiveStars;
+      document.getElementById('m-review').textContent = reviewCount;
+    }
+
+    function renderHistory(){
+      const list = document.getElementById('historyList');
+
+      if(!filteredFeedbacks.length){
+        list.innerHTML = '<div class="empty">Aucun avis trouvé avec ces filtres.</div>';
+        return;
+      }
+
+      list.innerHTML = filteredFeedbacks.map((item, idx) => {
+        const { score } = calcScore(item);
+        const scoreClass = getScoreClass(score);
+        const preview = item.hard || item.suggest || item.good || 'Aucun commentaire libre';
+        const name = item.nom || 'Anonyme';
+        const date = item.date || 'Sans date';
+        const star = parseInt(item.star) || 0;
+
+        return `
+          <div class="history-item">
+            <div class="score-badge ${scoreClass}">${score}%</div>
+
+            <div class="history-main">
+              <div class="name">${escapeHtml(name)}</div>
+              <div class="sub">📅 ${escapeHtml(date)} · ⭐ ${star}/5</div>
+              <div class="snippet">${escapeHtml(preview).slice(0,140)}</div>
+            </div>
+
+            <div class="history-actions">
+              <a class="mini-btn" href="/admin-feedback-detail/${item.id}">Voir détail</a>
+              <button class="mini-btn" onclick="deleteFeedback('${item.id}')">Supprimer</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function applyFilters(){
+      const q = document.getElementById('searchInput').value.toLowerCase().trim();
+      const verdict = document.getElementById('filterVerdict').value;
+      const sortBy = document.getElementById('sortBy').value;
+
+      filteredFeedbacks = feedbacks.filter(item => {
+        const blob = [
+          item.nom, item.date, item.good, item.hard, item.suggest,
+          item.n1, item.n2, item.n3, item.n4, item.n5, item.n6
+        ].join(' ').toLowerCase();
+
+        const r = calcScore(item);
+
+        let verdictOk = true;
+        if(verdict === 'ok') verdictOk = r.score >= 70;
+        else if(verdict === 'meh') verdictOk = r.score >= 40 && r.score < 70;
+        else if(verdict === 'no') verdictOk = r.score < 40;
+
+        return (!q || blob.includes(q)) && verdictOk;
+      });
+
+      filteredFeedbacks.sort((a,b) => {
+        const sa = calcScore(a).score;
+        const sb = calcScore(b).score;
+
+        if(sortBy === 'recent') return (b.date || '').localeCompare(a.date || '');
+        if(sortBy === 'oldest') return (a.date || '').localeCompare(b.date || '');
+        if(sortBy === 'score_desc') return sb - sa;
+        if(sortBy === 'score_asc') return sa - sb;
+        return 0;
+      });
+
+      renderHistory();
+    }
+
+    async function deleteFeedback(id){
+      if(!confirm('Supprimer cet avis ?')) return;
+
+      try{
+        const res = await fetch(`/admin-feedback-delete/${id}`, { method:'POST' });
+        const data = await res.json();
+        if(data.ok){
+          loadFeedbacks();
+        }else{
+          alert('Suppression impossible.');
+        }
+      }catch(e){
+        alert('Erreur serveur.');
+      }
+    }
+
+    function exportCSV(){
+      window.location.href = '/admin-feedback-export';
+    }
+
+    loadFeedbacks();
+  </script>
+</body>
+</html>

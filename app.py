@@ -322,13 +322,6 @@ mail = Mail(app)
 def header():
     return render_template("header.html")
 
-@app.route('/feedback')
-def feedback():
-    return app.send_static_file('feedback_client_ml2c.html')
-
-@app.route('/resume-feedback')
-def resume_feedback():
-    return app.send_static_file('resume_feedback.html')
 
 @app.route('/notre-vision')
 def notre_vision():
@@ -1180,11 +1173,6 @@ def admin_chatbot():
     messages = list(mongo.db.chatbot.find())
     return render_template("admin_chatbot.html", messages=messages)
 
-@app.route('/admin-save-feedback', methods=['POST'])
-def admin_save_feedback():
-    data = request.get_json()
-    # enregistrement ici
-    return jsonify({"ok": True}), 200
 
 # ✅ EDIT AN ANSWER
 @app.route("/modifier-reponse/<message_id>", methods=["POST"])
@@ -1268,12 +1256,6 @@ def admin_dashboard():
         last_question=last_question,
     )
 
-@app.route("/admin-feedbacks")
-def admin_feedbacks():
-    if not session.get("admin_logged_in"):
-        flash("Accès interdit.", "danger")
-        return redirect(url_for("login_admin"))
-    return app.send_static_file('resume_feedback.html')
 
 @app.route("/ajouter-message", methods=["GET", "POST"])
 def ajouter_message():
@@ -1440,33 +1422,6 @@ def test_admin_user_table_as_admin(client):
     response = client.get("/admin-user-table")
     assert b"User Database (Admin Only)" in response.data
 
-@app.route("/admin-feedback-dashboard")
-def admin_feedback_dashboard():
-    return render_template("admin_feedback_dashboard.html")
-
-@app.route("/admin-feedback-detail/<feedback_id>")
-def admin_feedback_detail(feedback_id):
-    return render_template("admin_feedback_detail.html")
-
-@app.route("/admin-feedback-list")
-def admin_feedback_list():
-    # retourne {"feedbacks": [...]}
-    ...
-
-@app.route("/admin-feedback-get/<feedback_id>")
-def admin_feedback_get(feedback_id):
-    # retourne {"feedback": {...}}
-    ...
-
-@app.route("/admin-feedback-delete/<feedback_id>", methods=["POST"])
-def admin_feedback_delete(feedback_id):
-    # supprime et retourne {"ok": True}
-    ...
-
-@app.route("/admin-feedback-export")
-def admin_feedback_export():
-    # export CSV
-    ...
 
 def test_user_list_displays_users(client):
     with client.session_transaction() as sess:

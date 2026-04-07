@@ -2,117 +2,1054 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Nous contacter - ML2C CONSEIL</title>
+  <title>Prendre rendez-vous — ML2C CONSEIL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Bootstrap -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
-
-  <!-- Styles ML2C -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+
+  <style>
+    /* ═══════════════════════════════════════
+       PAGE CONTACT — ML2C CONSEIL
+    ═══════════════════════════════════════ */
+
+    /* Hero contact */
+    .contact-hero {
+      background: linear-gradient(135deg, #2d2d2d 0%, #3d4549 55%, #1a0d14 100%);
+      padding: 5rem 0 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-hero::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(193,0,122,.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .contact-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -5%;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(79,166,149,.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .contact-hero-tag {
+      display: inline-block;
+      padding: .3rem .9rem;
+      background: rgba(193,0,122,.18);
+      border: 1px solid rgba(193,0,122,.4);
+      border-radius: 30px;
+      font-size: .78rem;
+      font-weight: 600;
+      color: rgba(255,255,255,.9);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+    .contact-hero-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: .75rem;
+    }
+    .contact-hero-title span { color: #f472b6; }
+    .contact-hero-sub {
+      font-size: 1rem;
+      color: rgba(255,255,255,.72);
+      max-width: 480px;
+      line-height: 1.65;
+    }
+
+    /* Indicateurs de réponse */
+    .contact-badges {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    .contact-badge {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      font-size: .82rem;
+      color: rgba(255,255,255,.75);
+    }
+    .contact-badge i { color: #4FA695; }
+
+    /* Layout principal */
+    .contact-main {
+      background: #f5f6f7;
+      padding: 4rem 0 5rem;
+    }
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.55fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    /* Panneau gauche — infos */
+    .contact-info-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      position: sticky;
+      top: 100px;
+    }
+
+    .contact-info-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,.07);
+      border-left: 3px solid var(--rose, #C1007A);
+    }
+    .contact-info-card h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 1rem;
+    }
+    .contact-detail {
+      display: flex;
+      align-items: flex-start;
+      gap: .85rem;
+      margin-bottom: .9rem;
+      color: #2d2d2d;
+      font-size: .9rem;
+      text-decoration: none;
+      transition: color .2s;
+    }
+    a.contact-detail:hover { color: #C1007A; }
+    .contact-detail:last-child { margin-bottom: 0; }
+    .contact-icon-sm {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: #fce4f3;
+      color: #C1007A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .9rem;
+      flex-shrink: 0;
+    }
+    .contact-detail-label { font-size: .72rem; color: #6b7280; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; display: block; }
+    .contact-detail-value { font-size: .92rem; font-weight: 500; display: block; }
+
+    /* Chatbot CTA */
+    .chatbot-panel {
+      background: linear-gradient(135deg, #4FA695, #3a7d70);
+      border-radius: 14px;
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: #fff;
+      text-decoration: none;
+      transition: all .25s ease;
+      cursor: pointer;
+    }
+    .chatbot-panel:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(79,166,149,.35); color: #fff; }
+    .chatbot-panel-icon {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(255,255,255,.2);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; overflow: hidden;
+    }
+    .chatbot-panel-icon img { width: 46px; height: 46px; object-fit: cover; }
+    .chatbot-panel strong { display: block; font-size: .95rem; font-weight: 600; }
+    .chatbot-panel span { font-size: .8rem; opacity: .85; }
+    .chatbot-panel .cp-arrow { margin-left: auto; transition: transform .2s; }
+    .chatbot-panel:hover .cp-arrow { transform: translateX(4px); }
+
+    /* Horaires */
+    .horaires-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,.07);
+    }
+    .horaires-card h5 {
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: #C1007A;
+      margin-bottom: .85rem;
+    }
+    .horaire-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: .85rem;
+      padding: .35rem 0;
+      border-bottom: 1px solid #f0f0f0;
+      color: #333;
+    }
+    .horaire-row:last-child { border-bottom: none; }
+    .horaire-row .day { color: #6b7280; }
+    .horaire-open { color: #4FA695; font-weight: 600; }
+
+    /* ── FORMULAIRE ── */
+    .contact-form-panel {
+      background: #fff;
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 4px 24px rgba(0,0,0,.1);
+    }
+
+    .form-panel-header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 2px solid #fce4f3;
+    }
+    .form-panel-header h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: .25rem;
+    }
+    .form-panel-header p { font-size: .88rem; color: #6b7280; margin: 0; }
+
+    /* Étapes visuelles */
+    .form-steps {
+      display: flex;
+      gap: 0;
+      margin-bottom: 2rem;
+    }
+    .form-step {
+      flex: 1;
+      text-align: center;
+      position: relative;
+    }
+    .form-step::after {
+      content: '';
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      width: 100%;
+      height: 2px;
+      background: #e5e7eb;
+      z-index: 0;
+    }
+    .form-step:last-child::after { display: none; }
+    .step-dot {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: #e5e7eb;
+      color: #9ca3af;
+      font-size: .72rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      transition: all .3s ease;
+    }
+    .form-step.active .step-dot { background: #C1007A; color: #fff; box-shadow: 0 0 0 4px rgba(193,0,122,.15); }
+    .form-step.done .step-dot { background: #4FA695; color: #fff; }
+    .step-label { font-size: .68rem; color: #9ca3af; margin-top: .3rem; display: block; }
+    .form-step.active .step-label { color: #C1007A; font-weight: 600; }
+    .form-step.done .step-label { color: #4FA695; }
+
+    /* Étapes du formulaire */
+    .form-page { display: none; animation: stepIn .35s ease; }
+    .form-page.active { display: block; }
+    @keyframes stepIn { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: translateX(0); } }
+
+    /* Groupes de champs */
+    .field-group { margin-bottom: 1.25rem; }
+    .field-group label {
+      font-size: .78rem;
+      font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      display: block;
+      margin-bottom: .45rem;
+    }
+    .field-group label span { color: #C1007A; }
+    .field-input {
+      width: 100%;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 10px;
+      padding: .75rem 1rem;
+      font-size: .93rem;
+      font-family: 'DM Sans', sans-serif;
+      color: #2d2d2d;
+      background: #f9fafb;
+      transition: all .2s ease;
+      outline: none;
+    }
+    .field-input:focus { border-color: #C1007A; background: #fff; box-shadow: 0 0 0 3px rgba(193,0,122,.1); }
+    .field-input.error { border-color: #ef4444; background: #fef2f2; }
+    .field-error { font-size: .75rem; color: #ef4444; margin-top: .35rem; display: none; }
+    .field-error.show { display: block; }
+
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    /* Select stylé */
+    select.field-input { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem; }
+
+    /* Chips service */
+    .service-chips { display: flex; flex-wrap: wrap; gap: .6rem; }
+    .service-chip {
+      padding: .45rem 1rem;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 30px;
+      font-size: .83rem;
+      font-weight: 500;
+      color: #6b7280;
+      cursor: pointer;
+      transition: all .2s;
+      background: transparent;
+      user-select: none;
+    }
+    .service-chip:hover { border-color: #C1007A; color: #C1007A; background: #fce4f3; }
+    .service-chip.selected { background: #C1007A; border-color: #C1007A; color: #fff; }
+
+    /* Disponibilités */
+    .slot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; }
+    .time-slot {
+      padding: .55rem;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: .82rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all .2s;
+      color: #333;
+      background: #f9fafb;
+    }
+    .time-slot:hover { border-color: #C1007A; background: #fce4f3; color: #C1007A; }
+    .time-slot.selected { background: #C1007A; border-color: #C1007A; color: #fff; }
+    .time-slot.unavailable { opacity: .4; pointer-events: none; text-decoration: line-through; }
+
+    /* Navigation entre étapes */
+    .form-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.75rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #f0f0f0;
+    }
+    .btn-prev {
+      display: flex; align-items: center; gap: .4rem;
+      padding: .6rem 1.25rem;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 8px;
+      background: transparent;
+      color: #6b7280;
+      font-size: .88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn-prev:hover { border-color: #C1007A; color: #C1007A; }
+    .btn-next {
+      display: flex; align-items: center; gap: .45rem;
+      padding: .7rem 1.75rem;
+      background: #C1007A;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: .92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn-next:hover { background: #9a0062; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(193,0,122,.35); }
+    .btn-next:disabled { opacity: .6; pointer-events: none; }
+
+    /* Récapitulatif étape 3 */
+    .recap-block {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .recap-block h5 { font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; color: #C1007A; font-weight: 700; margin-bottom: .75rem; }
+    .recap-row { display: flex; justify-content: space-between; font-size: .88rem; padding: .3rem 0; color: #333; }
+    .recap-row span:first-child { color: #6b7280; }
+    .recap-row span:last-child { font-weight: 500; }
+
+    /* Consentement */
+    .consent-check {
+      display: flex;
+      align-items: flex-start;
+      gap: .65rem;
+      margin-bottom: 1.25rem;
+      cursor: pointer;
+    }
+    .consent-check input { display: none; }
+    .check-visual {
+      width: 18px; height: 18px;
+      border: 2px solid #d1d5db;
+      border-radius: 5px;
+      flex-shrink: 0; margin-top: .1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .2s;
+    }
+    .consent-check input:checked ~ .check-visual { background: #4FA695; border-color: #4FA695; }
+    .consent-check input:checked ~ .check-visual::after { content: ''; width: 4px; height: 8px; border: 2px solid #fff; border-top: none; border-left: none; transform: rotate(45deg) translate(-1px,-1px); display: block; }
+    .consent-text-sm { font-size: .8rem; color: #6b7280; line-height: 1.5; }
+    .consent-text-sm a { color: #C1007A; font-weight: 600; }
+
+    /* ════ NOTIFICATION SUCCÈS ════ */
+    .success-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0,0,0,.45);
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .success-overlay.show { display: flex; animation: overlayIn .25s ease; }
+    @keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .success-card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 3rem 2.5rem;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      animation: cardPop .35s cubic-bezier(.34,1.56,.64,1);
+      position: relative;
+    }
+    @keyframes cardPop { from { opacity: 0; transform: scale(.85) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+    .success-icon {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4FA695, #3a7d70);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.5rem;
+      box-shadow: 0 8px 32px rgba(79,166,149,.4);
+      animation: iconBounce .5s .2s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    @keyframes iconBounce { from { transform: scale(0); } to { transform: scale(1); } }
+    .success-icon svg { width: 36px; height: 36px; stroke: #fff; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+    .success-checkmark {
+      stroke-dasharray: 60;
+      stroke-dashoffset: 60;
+      animation: drawCheck .5s .6s ease forwards;
+    }
+    @keyframes drawCheck { to { stroke-dashoffset: 0; } }
+
+    .success-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: .5rem;
+    }
+    .success-card p { font-size: .93rem; color: #6b7280; line-height: 1.65; margin-bottom: 1.5rem; }
+
+    .success-ref {
+      display: inline-block;
+      padding: .4rem 1rem;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 30px;
+      font-size: .82rem;
+      font-weight: 600;
+      color: #15803d;
+      margin-bottom: 1.75rem;
+    }
+
+    .success-steps {
+      display: flex;
+      flex-direction: column;
+      gap: .65rem;
+      text-align: left;
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 1.1rem 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .success-step { display: flex; align-items: center; gap: .7rem; font-size: .85rem; color: #333; }
+    .success-step-dot { width: 8px; height: 8px; border-radius: 50%; background: #C1007A; flex-shrink: 0; }
+
+    .btn-success-close {
+      width: 100%;
+      padding: .85rem;
+      background: #C1007A;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: .95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      font-family: 'DM Sans', sans-serif;
+      display: flex; align-items: center; justify-content: center; gap: .5rem;
+    }
+    .btn-success-close:hover { background: #9a0062; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(193,0,122,.35); }
+
+    /* Confettis */
+    .confetti-container { position: absolute; inset: 0; pointer-events: none; overflow: hidden; border-radius: 24px; }
+    .confetti-piece {
+      position: absolute;
+      width: 8px; height: 8px;
+      border-radius: 2px;
+      animation: confettiFall 2.5s ease-in forwards;
+      opacity: 0;
+    }
+    @keyframes confettiFall {
+      0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(400px) rotate(720deg); opacity: 0; }
+    }
+
+    /* Toast notification (alternative légère) */
+    .toast-notif {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #fff;
+      border-radius: 14px;
+      padding: 1rem 1.25rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,.18);
+      display: flex;
+      align-items: center;
+      gap: .85rem;
+      z-index: 9998;
+      max-width: 340px;
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all .4s cubic-bezier(.34,1.2,.64,1);
+      border-left: 4px solid #4FA695;
+    }
+    .toast-notif.show { transform: translateY(0); opacity: 1; }
+    .toast-icon { width: 38px; height: 38px; border-radius: 50%; background: #e1f5f0; color: #4FA695; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+    .toast-content strong { display: block; font-size: .9rem; color: #1f2937; }
+    .toast-content span { font-size: .8rem; color: #6b7280; }
+    .toast-close { margin-left: auto; background: none; border: none; color: #9ca3af; cursor: pointer; font-size: .9rem; padding: 0; flex-shrink: 0; }
+
+    /* Progress bar formulaire */
+    .form-progress {
+      height: 3px;
+      background: #e5e7eb;
+      border-radius: 2px;
+      margin-bottom: 1.75rem;
+      overflow: hidden;
+    }
+    .form-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #C1007A, #f472b6);
+      border-radius: 2px;
+      transition: width .4s ease;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .contact-layout { grid-template-columns: 1fr; }
+      .contact-info-panel { position: static; }
+      .field-row { grid-template-columns: 1fr; }
+      .slot-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 576px) {
+      .contact-form-panel { padding: 1.5rem; }
+      .contact-hero { padding: 3.5rem 0 3rem; }
+      .success-card { padding: 2rem 1.5rem; }
+    }
+  </style>
 </head>
 <body>
 
   {% include "header.html" %}
 
-  <!-- SECTION CONTACT -->
-  <div class="container my-5 contact-section fade-in">
-
-    <h2 class="contact-title text-center mb-4 slide-down">
-      Nous contacter
-    </h2>
-
-    <p class="contact-subtitle text-center mb-5 fade-in-delay">
-      Une question, un besoin, un projet ? Notre équipe ML2C CONSEIL vous répond rapidement.
-    </p>
-
-    <div class="row justify-content-center">
-
-      <!-- FORMULAIRE -->
-      <div class="col-md-8">
-        <div class="card contact-card shadow-sm scale-in">
-          <div class="card-body">
-
-            <form method="POST" id="contactForm">
-
-              <div class="form-group slide-left">
-                <label>Nom *</label>
-                <input type="text" class="form-control animated-field" id="nom" required>
-              </div>
-
-              <div class="form-group slide-left">
-                <label>Email *</label>
-                <input type="email" class="form-control animated-field" id="email" required>
-              </div>
-
-              <div class="form-group slide-left">
-                <label>Numéro de téléphone</label>
-                <input type="text" class="form-control animated-field" id="tel">
-              </div>
-
-              <div class="form-group slide-left">
-                <label>Votre message *</label>
-                <textarea class="form-control animated-field" rows="5" id="message" required></textarea>
-              </div>
-
-              <button type="submit" class="btn btn-ml2c-submit btn-block pulse">
-                Envoyer le message
-              </button>
-
-            </form>
-
-          </div>
-        </div>
+  <!-- ════ HERO ════ -->
+  <section class="contact-hero">
+    <div class="container" style="position:relative;z-index:1;">
+      <div class="contact-hero-tag">Parlons de votre projet</div>
+      <h1 class="contact-hero-title">Prendre <span>rendez-vous</span><br>avec nos experts</h1>
+      <p class="contact-hero-sub">
+        Comptabilité, fiscalité, conseil stratégique — notre équipe vous répond sous 24h et vous accompagne à chaque étape.
+      </p>
+      <div class="contact-badges">
+        <span class="contact-badge"><i class="fas fa-circle-check"></i> Expert-comptable certifié</span>
+        <span class="contact-badge"><i class="fas fa-circle-check"></i> Réponse sous 24h</span>
+        <span class="contact-badge"><i class="fas fa-circle-check"></i> +150 clients accompagnés</span>
       </div>
     </div>
+  </section>
 
-    <!-- COORDONNÉES -->
-    <div class="text-center mt-5 contact-infos fade-in-delay-2">
-      <h4 class="contact-infos-title mb-3">Nos coordonnées</h4>
+  <!-- ════ SECTION PRINCIPALE ════ -->
+  <section class="contact-main">
+    <div class="container">
+      <div class="contact-layout">
 
-      <p class="contact-infos-text">
-        📍 6, Rue de la vigne, 28360 Dammarie <br>
-        📧 contact@ml2cconseil.com <br>
-        📞 +33 (0)6 72 34 32 94
-      </p>
+        <!-- ── PANNEAU GAUCHE : infos ── -->
+        <div class="contact-info-panel">
+
+          <div class="contact-info-card">
+            <h4><i class="fas fa-location-dot" style="color:#C1007A;margin-right:.5rem;"></i>Nos coordonnées</h4>
+            <a href="tel:+33672343294" class="contact-detail">
+              <div class="contact-icon-sm"><i class="fas fa-phone"></i></div>
+              <div>
+                <span class="contact-detail-label">Téléphone</span>
+                <span class="contact-detail-value">+33 (0)6 72 34 32 94</span>
+              </div>
+            </a>
+            <a href="mailto:contact@ml2cconseil.com" class="contact-detail">
+              <div class="contact-icon-sm"><i class="fas fa-envelope"></i></div>
+              <div>
+                <span class="contact-detail-label">Email</span>
+                <span class="contact-detail-value">contact@ml2cconseil.com</span>
+              </div>
+            </a>
+            <div class="contact-detail">
+              <div class="contact-icon-sm"><i class="fas fa-map-pin"></i></div>
+              <div>
+                <span class="contact-detail-label">Adresse</span>
+                <span class="contact-detail-value">6 Rue de la Vigne, 28360 Dammarie</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="horaires-card">
+            <h5><i class="fas fa-clock" style="margin-right:.4rem;"></i>Horaires d'ouverture</h5>
+            <div class="horaire-row"><span class="day">Lundi – Vendredi</span><span class="horaire-open">9h – 18h</span></div>
+            <div class="horaire-row"><span class="day">Samedi</span><span style="color:#6b7280;">Sur RDV uniquement</span></div>
+            <div class="horaire-row"><span class="day">Dimanche</span><span style="color:#9ca3af;">Fermé</span></div>
+          </div>
+
+          <a href="#chatbot" class="chatbot-panel" onclick="openChatbot(event)">
+            <div class="chatbot-panel-icon">
+              <img src="{{ url_for('static', filename='images/chatbot_avatar.png') }}" alt="Conseiller ML2C" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'fas fa-robot\' style=\'color:#fff;font-size:1.2rem\'></i>'">
+            </div>
+            <div>
+              <strong>Parler à un conseiller</strong>
+              <span>Réponse instantanée 24h/24</span>
+            </div>
+            <i class="fas fa-arrow-right cp-arrow"></i>
+          </a>
+
+        </div>
+
+        <!-- ── FORMULAIRE MULTI-ÉTAPES ── -->
+        <div class="contact-form-panel">
+
+          <div class="form-panel-header">
+            <h3>Votre demande de rendez-vous</h3>
+            <p>Remplissez ce formulaire en 3 étapes — nous vous recontactons sous 24h.</p>
+          </div>
+
+          <!-- Étapes -->
+          <div class="form-steps" id="formSteps">
+            <div class="form-step active" data-step="1">
+              <div class="step-dot">1</div>
+              <span class="step-label">Vos infos</span>
+            </div>
+            <div class="form-step" data-step="2">
+              <div class="step-dot">2</div>
+              <span class="step-label">Votre besoin</span>
+            </div>
+            <div class="form-step" data-step="3">
+              <div class="step-dot">3</div>
+              <span class="step-label">Confirmation</span>
+            </div>
+          </div>
+
+          <!-- Progress bar -->
+          <div class="form-progress">
+            <div class="form-progress-bar" id="progressBar" style="width:33%"></div>
+          </div>
+
+          <form id="rdvForm" novalidate>
+
+            <!-- ── ÉTAPE 1 : Informations personnelles ── -->
+            <div class="form-page active" id="page1">
+              <div class="field-row">
+                <div class="field-group">
+                  <label>Prénom <span>*</span></label>
+                  <input type="text" class="field-input" id="prenom" placeholder="Marie" autocomplete="given-name">
+                  <div class="field-error" id="err-prenom">Veuillez saisir votre prénom.</div>
+                </div>
+                <div class="field-group">
+                  <label>Nom <span>*</span></label>
+                  <input type="text" class="field-input" id="nom" placeholder="Dupont" autocomplete="family-name">
+                  <div class="field-error" id="err-nom">Veuillez saisir votre nom.</div>
+                </div>
+              </div>
+              <div class="field-group">
+                <label>Email professionnel <span>*</span></label>
+                <input type="email" class="field-input" id="email" placeholder="marie.dupont@entreprise.fr" autocomplete="email">
+                <div class="field-error" id="err-email">Adresse email invalide.</div>
+              </div>
+              <div class="field-group">
+                <label>Téléphone</label>
+                <input type="tel" class="field-input" id="tel" placeholder="06 XX XX XX XX" autocomplete="tel">
+              </div>
+              <div class="field-group">
+                <label>Nom de l'entreprise</label>
+                <input type="text" class="field-input" id="entreprise" placeholder="Votre société (optionnel)" autocomplete="organization">
+              </div>
+              <div class="form-nav">
+                <div></div>
+                <button type="button" class="btn-next" onclick="nextStep(1)">
+                  Continuer <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- ── ÉTAPE 2 : Besoin & disponibilités ── -->
+            <div class="form-page" id="page2">
+              <div class="field-group">
+                <label>Votre besoin principal <span>*</span></label>
+                <div class="service-chips" id="serviceChips">
+                  <span class="service-chip" data-value="comptabilite" onclick="selectChip(this)">📊 Comptabilité</span>
+                  <span class="service-chip" data-value="fiscalite" onclick="selectChip(this)">📋 Fiscalité</span>
+                  <span class="service-chip" data-value="paie" onclick="selectChip(this)">💼 Paie & Social</span>
+                  <span class="service-chip" data-value="juridique" onclick="selectChip(this)">⚖️ Juridique</span>
+                  <span class="service-chip" data-value="conseil" onclick="selectChip(this)">💡 Conseil stratégique</span>
+                  <span class="service-chip" data-value="creation" onclick="selectChip(this)">🚀 Création d'entreprise</span>
+                  <span class="service-chip" data-value="autre" onclick="selectChip(this)">✦ Autre</span>
+                </div>
+                <div class="field-error" id="err-service">Veuillez sélectionner un service.</div>
+              </div>
+
+              <div class="field-group">
+                <label>Décrivez votre situation <span>*</span></label>
+                <textarea class="field-input" id="message" rows="4" placeholder="Partagez votre contexte, vos enjeux, vos questions... Cela nous permet de mieux préparer notre échange."></textarea>
+                <div class="field-error" id="err-message">Veuillez décrire votre besoin.</div>
+              </div>
+
+              <div class="field-group">
+                <label>Créneau préféré</label>
+                <div class="slot-grid">
+                  <div class="time-slot" onclick="selectSlot(this)">🌅 Matin (9h–12h)</div>
+                  <div class="time-slot" onclick="selectSlot(this)">☀️ Midi (12h–14h)</div>
+                  <div class="time-slot" onclick="selectSlot(this)">🌤 Après-midi (14h–17h)</div>
+                  <div class="time-slot" onclick="selectSlot(this)">🌆 Fin de journée (17h–18h)</div>
+                  <div class="time-slot" onclick="selectSlot(this)">📅 Sur RDV uniquement</div>
+                  <div class="time-slot" onclick="selectSlot(this)">🔄 Flexible</div>
+                </div>
+              </div>
+
+              <div class="form-nav">
+                <button type="button" class="btn-prev" onclick="prevStep(2)">
+                  <i class="fas fa-arrow-left"></i> Retour
+                </button>
+                <button type="button" class="btn-next" onclick="nextStep(2)">
+                  Vérifier <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- ── ÉTAPE 3 : Récapitulatif & envoi ── -->
+            <div class="form-page" id="page3">
+              <div class="recap-block">
+                <h5><i class="fas fa-user" style="margin-right:.4rem;"></i>Vos coordonnées</h5>
+                <div class="recap-row"><span>Nom complet</span><span id="recap-nom">—</span></div>
+                <div class="recap-row"><span>Email</span><span id="recap-email">—</span></div>
+                <div class="recap-row"><span>Téléphone</span><span id="recap-tel">—</span></div>
+                <div class="recap-row"><span>Entreprise</span><span id="recap-entreprise">—</span></div>
+              </div>
+              <div class="recap-block">
+                <h5><i class="fas fa-briefcase" style="margin-right:.4rem;"></i>Votre demande</h5>
+                <div class="recap-row"><span>Service</span><span id="recap-service">—</span></div>
+                <div class="recap-row"><span>Créneau</span><span id="recap-slot">—</span></div>
+                <div class="recap-row"><span>Message</span><span id="recap-message" style="max-width:200px;text-align:right;word-break:break-word;font-size:.82rem;">—</span></div>
+              </div>
+
+              <label class="consent-check">
+                <input type="checkbox" id="consentCheck">
+                <div class="check-visual"></div>
+                <span class="consent-text-sm">J'accepte que ML2C CONSEIL utilise ces informations pour me recontacter dans le cadre de ma demande. <a href="#">Politique de confidentialité</a></span>
+              </label>
+              <div class="field-error" id="err-consent">Veuillez accepter la politique de confidentialité.</div>
+
+              <div class="form-nav">
+                <button type="button" class="btn-prev" onclick="prevStep(3)">
+                  <i class="fas fa-arrow-left"></i> Modifier
+                </button>
+                <button type="button" class="btn-next" id="submitBtn" onclick="submitForm()">
+                  <i class="fas fa-paper-plane"></i> Envoyer ma demande
+                </button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
     </div>
-  </div>
+  </section>
 
   {% include "footer.html" %}
 
-  <!-- JS Bootstrap -->
+  <!-- ════ OVERLAY SUCCÈS ════ -->
+  <div class="success-overlay" id="successOverlay">
+    <div class="success-card">
+      <div class="confetti-container" id="confettiContainer"></div>
+
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24">
+          <polyline class="success-checkmark" points="4 13 9 18 20 7"/>
+        </svg>
+      </div>
+
+      <h3>Demande envoyée !</h3>
+      <p>Votre demande de rendez-vous a bien été reçue par l'équipe ML2C CONSEIL. Nous vous recontactons sous 24h ouvrées.</p>
+
+      <div class="success-ref" id="successRef">Réf. — ML2C-XXXX</div>
+
+      <div class="success-steps">
+        <div class="success-step">
+          <div class="success-step-dot"></div>
+          <span>Notre équipe analyse votre demande</span>
+        </div>
+        <div class="success-step">
+          <div class="success-step-dot"></div>
+          <span>Vous recevrez un email de confirmation sous peu</span>
+        </div>
+        <div class="success-step">
+          <div class="success-step-dot"></div>
+          <span>Nous vous proposons des créneaux adaptés à vos disponibilités</span>
+        </div>
+      </div>
+
+      <button class="btn-success-close" onclick="closeSuccess()">
+        <i class="fas fa-home"></i> Retour à l'accueil
+      </button>
+    </div>
+  </div>
+
+  <!-- ════ TOAST NOTIFICATION ════ -->
+  <div class="toast-notif" id="toastNotif">
+    <div class="toast-icon"><i class="fas fa-circle-check"></i></div>
+    <div class="toast-content">
+      <strong>Demande confirmée !</strong>
+      <span>Nous vous répondons sous 24h.</span>
+    </div>
+    <button class="toast-close" onclick="closeToast()"><i class="fas fa-times"></i></button>
+  </div>
+
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- JS DIRECTEMENT DANS LE HTML -->
   <script>
-    document.getElementById("contactForm").addEventListener("submit", function (e) {
-      e.preventDefault();
+    /* ══════════════════════════════════════
+       LOGIQUE FORMULAIRE MULTI-ÉTAPES
+    ══════════════════════════════════════ */
 
-      let nom = document.getElementById("nom").value.trim();
-      let email = document.getElementById("email").value.trim();
-      let message = document.getElementById("message").value.trim();
+    let currentStep = 1;
+    let selectedService = '';
+    let selectedSlot = '';
 
-      if (!nom || !email || !message) {
-        alert("Merci de remplir tous les champs obligatoires.");
+    const progressWidths = { 1: '33%', 2: '66%', 3: '100%' };
+
+    function updateSteps(step) {
+      document.querySelectorAll('.form-step').forEach((el, i) => {
+        el.classList.remove('active', 'done');
+        if (i + 1 < step) el.classList.add('done');
+        else if (i + 1 === step) el.classList.add('active');
+      });
+      document.getElementById('progressBar').style.width = progressWidths[step];
+    }
+
+    function showPage(step) {
+      document.querySelectorAll('.form-page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page' + step).classList.add('active');
+      updateSteps(step);
+      currentStep = step;
+      window.scrollTo({ top: document.querySelector('.contact-form-panel').offsetTop - 100, behavior: 'smooth' });
+    }
+
+    /* ── Validation étape 1 ── */
+    function validateStep1() {
+      let ok = true;
+      const prenom = document.getElementById('prenom').value.trim();
+      const nom = document.getElementById('nom').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      setError('prenom', !prenom);
+      setError('nom', !nom);
+      setError('email', !email || !emailRe.test(email));
+
+      if (!prenom || !nom || !email || !emailRe.test(email)) ok = false;
+      return ok;
+    }
+
+    /* ── Validation étape 2 ── */
+    function validateStep2() {
+      let ok = true;
+      const msg = document.getElementById('message').value.trim();
+      setError('service', !selectedService);
+      setError('message', !msg);
+      if (!selectedService || !msg) ok = false;
+      return ok;
+    }
+
+    function setError(id, hasError) {
+      const input = document.getElementById(id);
+      const err = document.getElementById('err-' + id);
+      if (!input && !err) return;
+      if (input) input.classList.toggle('error', hasError);
+      if (err) err.classList.toggle('show', hasError);
+    }
+
+    function nextStep(from) {
+      if (from === 1 && !validateStep1()) return;
+      if (from === 2 && !validateStep2()) return;
+      if (from === 2) buildRecap();
+      showPage(from + 1);
+    }
+
+    function prevStep(from) { showPage(from - 1); }
+
+    /* ── Chips services ── */
+    function selectChip(el) {
+      document.querySelectorAll('.service-chip').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedService = el.dataset.value;
+      setError('service', false);
+    }
+
+    /* ── Créneaux ── */
+    function selectSlot(el) {
+      document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedSlot = el.textContent.trim();
+    }
+
+    /* ── Récapitulatif ── */
+    function buildRecap() {
+      const prenom = document.getElementById('prenom').value.trim();
+      const nom = document.getElementById('nom').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const tel = document.getElementById('tel').value.trim();
+      const entreprise = document.getElementById('entreprise').value.trim();
+      const msg = document.getElementById('message').value.trim();
+
+      document.getElementById('recap-nom').textContent = prenom + ' ' + nom;
+      document.getElementById('recap-email').textContent = email;
+      document.getElementById('recap-tel').textContent = tel || '—';
+      document.getElementById('recap-entreprise').textContent = entreprise || '—';
+
+      const serviceLabels = {
+        comptabilite: '📊 Comptabilité', fiscalite: '📋 Fiscalité',
+        paie: '💼 Paie & Social', juridique: '⚖️ Juridique',
+        conseil: '💡 Conseil stratégique', creation: '🚀 Création d\'entreprise', autre: '✦ Autre'
+      };
+      document.getElementById('recap-service').textContent = serviceLabels[selectedService] || selectedService;
+      document.getElementById('recap-slot').textContent = selectedSlot || '—';
+      document.getElementById('recap-message').textContent = msg.length > 80 ? msg.substring(0, 80) + '...' : msg;
+    }
+
+    /* ── Soumission ── */
+    function submitForm() {
+      if (!document.getElementById('consentCheck').checked) {
+        setError('consent', true);
+        document.getElementById('err-consent').classList.add('show');
         return;
       }
+      document.getElementById('err-consent').classList.remove('show');
 
-      // Animation après envoi
-      const btn = document.querySelector(".btn-ml2c-submit");
-      btn.innerHTML = "Envoi...";
-      btn.style.opacity = "0.7";
-      btn.style.pointerEvents = "none";
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours…';
 
+      /* Ici vous ferez un fetch() vers votre route Flask */
       setTimeout(() => {
-        alert("Merci ! Votre message a bien été envoyé à ML2C CONSEIL.");
-        document.getElementById("contactForm").reset();
+        showSuccess();
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Envoyer ma demande';
+      }, 1200);
+    }
 
-        // Reset bouton
-        btn.innerHTML = "Envoyer le message";
-        btn.style.opacity = "1";
-        btn.style.pointerEvents = "auto";
-      }, 800);
+    /* ── Succès ── */
+    function showSuccess() {
+      /* Générer une référence */
+      const ref = 'ML2C-' + Math.floor(1000 + Math.random() * 9000);
+      document.getElementById('successRef').textContent = 'Réf. — ' + ref;
+
+      document.getElementById('successOverlay').classList.add('show');
+      document.body.style.overflow = 'hidden';
+
+      /* Confettis */
+      launchConfetti();
+
+      /* Toast secondaire (après 3.5s) */
+      setTimeout(showToast, 3500);
+    }
+
+    function closeSuccess() {
+      document.getElementById('successOverlay').classList.remove('show');
+      document.body.style.overflow = '';
+      /* Redirection accueil */
+      window.location.href = '/';
+    }
+
+    /* ── Confettis ── */
+    function launchConfetti() {
+      const container = document.getElementById('confettiContainer');
+      container.innerHTML = '';
+      const colors = ['#C1007A', '#f472b6', '#4FA695', '#5eead4', '#fce4f3', '#fff'];
+      for (let i = 0; i < 36; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.cssText = `
+          left: ${Math.random() * 100}%;
+          top: ${-10 - Math.random() * 30}px;
+          background: ${colors[Math.floor(Math.random() * colors.length)]};
+          animation-delay: ${Math.random() * 1.2}s;
+          animation-duration: ${2 + Math.random() * 1.5}s;
+          transform: rotate(${Math.random() * 360}deg);
+          width: ${6 + Math.random() * 8}px;
+          height: ${6 + Math.random() * 8}px;
+        `;
+        container.appendChild(piece);
+      }
+    }
+
+    /* ── Toast ── */
+    function showToast() {
+      const t = document.getElementById('toastNotif');
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 4500);
+    }
+    function closeToast() { document.getElementById('toastNotif').classList.remove('show'); }
+
+    /* ── Chatbot ── */
+    function openChatbot(e) {
+      e.preventDefault();
+      const fab = document.querySelector('.chatbot-fab');
+      if (fab) fab.click();
+    }
+
+    /* ── Validation temps réel ── */
+    ['prenom', 'nom', 'email'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', () => { if (el.value.trim()) setError(id, false); });
+    });
+    document.getElementById('message').addEventListener('input', function() {
+      if (this.value.trim()) setError('message', false);
     });
   </script>
 

@@ -2,202 +2,711 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Blog - ML2C CONSEIL</title>
-  <!-- Bootstrap CSS -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Actualités & Conseils — ML2C CONSEIL</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
-  <!-- Votre CSS personnalisé -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+  <style>
+    /* ═══════════════════════════════
+       BLOG ML2C — styles spécifiques
+    ═══════════════════════════════ */
+
+    /* Hero */
+    .blog-hero {
+      background: linear-gradient(135deg, #1a1a1a 0%, #3d4549 60%, #1a0d14 100%);
+      padding: 5rem 0 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .blog-hero::before {
+      content: '';
+      position: absolute;
+      top: -30%; right: -8%;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(193,0,122,.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .blog-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -20%; left: -5%;
+      width: 350px; height: 350px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(79,166,149,.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .blog-hero-inner { position: relative; z-index: 1; }
+    .blog-hero-tag {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .32rem .9rem;
+      background: rgba(193,0,122,.18);
+      border: 1px solid rgba(193,0,122,.4);
+      border-radius: 30px;
+      font-size: .78rem; font-weight: 600;
+      color: rgba(255,255,255,.9);
+      letter-spacing: .08em; text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+    .blog-hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 700; color: #fff;
+      line-height: 1.15; margin-bottom: .85rem;
+    }
+    .blog-hero-title span { color: #f472b6; }
+    .blog-hero-sub {
+      font-size: 1rem; color: rgba(255,255,255,.7);
+      max-width: 500px; line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    /* Barre de recherche + filtres */
+    .blog-search-bar {
+      display: flex; gap: .75rem; flex-wrap: wrap;
+      align-items: center;
+    }
+    .search-input-wrap {
+      display: flex; align-items: center; gap: .6rem;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 10px;
+      padding: .6rem 1rem;
+      flex: 1; min-width: 240px;
+      transition: all .2s;
+    }
+    .search-input-wrap:focus-within {
+      background: rgba(255,255,255,.16);
+      border-color: rgba(193,0,122,.5);
+    }
+    .search-input-wrap i { color: rgba(255,255,255,.5); flex-shrink: 0; }
+    .search-input-wrap input {
+      background: transparent; border: none; outline: none;
+      color: #fff; font-size: .9rem; font-family: 'DM Sans', sans-serif;
+      width: 100%;
+    }
+    .search-input-wrap input::placeholder { color: rgba(255,255,255,.4); }
+
+    /* Catégories pills */
+    .blog-cats {
+      display: flex; gap: .5rem; flex-wrap: wrap;
+      padding: 2.5rem 0 0;
+    }
+    .blog-cat {
+      padding: .4rem 1.1rem;
+      border-radius: 30px;
+      font-size: .82rem; font-weight: 500;
+      cursor: pointer; transition: all .2s;
+      border: 1.5px solid rgba(255,255,255,.2);
+      color: rgba(255,255,255,.75);
+      background: transparent;
+    }
+    .blog-cat:hover { border-color: rgba(193,0,122,.6); color: #f472b6; }
+    .blog-cat.active { background: #C1007A; border-color: #C1007A; color: #fff; }
+
+    /* ── LAYOUT PRINCIPAL ── */
+    .blog-main { background: #f5f6f7; padding: 4rem 0 5rem; }
+    .blog-layout {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    /* ── ARTICLE FEATURED (grand) ── */
+    .article-featured {
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,.09);
+      margin-bottom: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      transition: transform .25s ease, box-shadow .25s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+    .article-featured:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,.14); color: inherit; }
+
+    .article-featured-visual {
+      background: linear-gradient(135deg, #1a0d14 0%, #3d1030 50%, #C1007A 100%);
+      min-height: 320px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .article-featured-visual::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .article-featured-icon {
+      font-size: 4rem; color: rgba(255,255,255,.25);
+      position: relative; z-index: 1;
+    }
+    .article-featured-badge {
+      position: absolute; top: 1.25rem; left: 1.25rem;
+      background: #C1007A; color: #fff;
+      font-size: .7rem; font-weight: 700;
+      padding: .28rem .75rem; border-radius: 20px;
+      letter-spacing: .06em; text-transform: uppercase;
+    }
+
+    .article-featured-body { padding: 2.25rem; display: flex; flex-direction: column; justify-content: center; }
+    .article-meta { display: flex; align-items: center; gap: .75rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    .article-cat-tag {
+      font-size: .72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em;
+      color: #C1007A;
+    }
+    .article-date { font-size: .78rem; color: #9ca3af; }
+    .article-read { font-size: .78rem; color: #9ca3af; }
+    .article-featured-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.65rem; font-weight: 700;
+      color: #333; line-height: 1.25;
+      margin-bottom: .85rem;
+    }
+    .article-featured-excerpt {
+      font-size: .9rem; color: #6b7280;
+      line-height: 1.7; margin-bottom: 1.5rem;
+    }
+    .article-read-btn {
+      display: inline-flex; align-items: center; gap: .45rem;
+      font-size: .85rem; font-weight: 600; color: #C1007A;
+      transition: gap .2s;
+    }
+    .article-featured:hover .article-read-btn { gap: .7rem; }
+
+    /* ── GRILLE D'ARTICLES ── */
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+
+    .article-card {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,.07);
+      transition: transform .25s ease, box-shadow .25s ease;
+      text-decoration: none;
+      color: inherit;
+      display: flex; flex-direction: column;
+    }
+    .article-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,.12); color: inherit; }
+
+    .article-card-visual {
+      height: 140px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem; position: relative; overflow: hidden;
+    }
+    .ac-compta { background: linear-gradient(135deg, #1a0d14, #9a0062); }
+    .ac-fiscal { background: linear-gradient(135deg, #0d1a2e, #1e4d8c); }
+    .ac-social { background: linear-gradient(135deg, #0d1e1a, #3a7d70); }
+    .ac-juridique { background: linear-gradient(135deg, #1a1400, #7a5c00); }
+    .ac-conseil { background: linear-gradient(135deg, #1a0a1a, #6b21a8); }
+    .ac-digital { background: linear-gradient(135deg, #001a1a, #0e7490); }
+
+    .article-card-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; }
+    .article-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-weight: 700;
+      color: #333; line-height: 1.3;
+      margin-bottom: .5rem; flex: 1;
+    }
+    .article-card-excerpt { font-size: .82rem; color: #6b7280; line-height: 1.6; margin-bottom: 1rem; }
+    .article-card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: .85rem; border-top: 1px solid #f0f0f0;
+    }
+    .article-card-tag {
+      font-size: .68rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .07em; color: #C1007A;
+    }
+    .article-card-date { font-size: .72rem; color: #9ca3af; }
+
+    /* ── SIDEBAR ── */
+    .blog-sidebar { display: flex; flex-direction: column; gap: 1.5rem; position: sticky; top: 100px; }
+
+    .sidebar-widget {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,.07);
+    }
+    .sidebar-widget h4 {
+      font-size: .72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .1em;
+      color: #C1007A; margin-bottom: 1.1rem;
+    }
+
+    /* Articles populaires */
+    .popular-item {
+      display: flex; gap: .85rem; align-items: flex-start;
+      padding: .7rem 0; border-bottom: 1px solid #f5f5f5;
+      text-decoration: none; color: inherit; transition: color .2s;
+    }
+    .popular-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .popular-item:hover { color: #C1007A; }
+    .popular-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 700;
+      color: #e5e7eb; line-height: 1; flex-shrink: 0;
+      min-width: 28px;
+    }
+    .popular-item:hover .popular-num { color: #fce4f3; }
+    .popular-title { font-size: .83rem; font-weight: 500; line-height: 1.4; color: #333; }
+    .popular-item:hover .popular-title { color: #C1007A; }
+    .popular-date { font-size: .72rem; color: #9ca3af; margin-top: .2rem; }
+
+    /* Newsletter */
+    .newsletter-widget {
+      background: linear-gradient(135deg, #C1007A, #9a0062);
+      border-radius: 16px; padding: 1.5rem;
+      color: #fff;
+    }
+    .newsletter-widget h4 { color: rgba(255,255,255,.7); }
+    .newsletter-widget p { font-size: .85rem; color: rgba(255,255,255,.85); line-height: 1.55; margin-bottom: 1rem; }
+    .newsletter-input {
+      width: 100%; border: none; border-radius: 8px;
+      padding: .65rem 1rem; font-size: .88rem;
+      font-family: 'DM Sans', sans-serif; outline: none;
+      margin-bottom: .65rem;
+    }
+    .newsletter-btn {
+      width: 100%; padding: .65rem;
+      background: rgba(255,255,255,.2);
+      border: 1.5px solid rgba(255,255,255,.4);
+      border-radius: 8px; color: #fff;
+      font-size: .88rem; font-weight: 600;
+      cursor: pointer; transition: all .2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .newsletter-btn:hover { background: rgba(255,255,255,.3); }
+
+    /* Tags cloud */
+    .tags-cloud { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .tag-item {
+      padding: .3rem .75rem;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 20px;
+      font-size: .75rem; color: #6b7280;
+      cursor: pointer; transition: all .2s;
+    }
+    .tag-item:hover { border-color: #C1007A; color: #C1007A; background: #fce4f3; }
+
+    /* CTA sidebar */
+    .sidebar-cta {
+      background: linear-gradient(135deg, #3d4549, #2d2d2d);
+      border-radius: 16px; padding: 1.5rem;
+      color: #fff; text-align: center;
+    }
+    .sidebar-cta i { font-size: 2rem; color: #f472b6; margin-bottom: .75rem; display: block; }
+    .sidebar-cta p { font-size: .85rem; color: rgba(255,255,255,.75); line-height: 1.55; margin-bottom: 1rem; }
+    .sidebar-cta a {
+      display: block; padding: .7rem;
+      background: #C1007A; color: #fff;
+      border-radius: 8px; font-size: .88rem;
+      font-weight: 600; transition: all .2s; text-decoration: none;
+    }
+    .sidebar-cta a:hover { background: #9a0062; color: #fff; }
+
+    /* Pagination */
+    .blog-pagination {
+      display: flex; justify-content: center; gap: .5rem;
+      margin-top: 2.5rem;
+    }
+    .page-btn {
+      width: 38px; height: 38px; border-radius: 8px;
+      border: 1.5px solid #e5e7eb;
+      background: #fff; color: #6b7280;
+      font-size: .85rem; font-weight: 500;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all .2s;
+    }
+    .page-btn:hover, .page-btn.active { background: #C1007A; border-color: #C1007A; color: #fff; }
+
+    /* Bandeau stat */
+    .blog-stats-bar {
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      padding: .85rem 0;
+    }
+    .blog-stats-inner {
+      display: flex; align-items: center; gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .blog-stat {
+      display: flex; align-items: center; gap: .5rem;
+      font-size: .82rem; color: #6b7280;
+    }
+    .blog-stat i { color: #C1007A; }
+    .blog-stat strong { color: #333; }
+
+    /* Animations */
+    .fade-up {
+      opacity: 0; transform: translateY(20px);
+      animation: fadeUp .5s ease forwards;
+    }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .blog-layout { grid-template-columns: 1fr; }
+      .blog-sidebar { position: static; }
+      .article-featured { grid-template-columns: 1fr; }
+      .article-featured-visual { min-height: 200px; }
+    }
+    @media (max-width: 640px) {
+      .articles-grid { grid-template-columns: 1fr; }
+      .blog-hero { padding: 3.5rem 0 3rem; }
+    }
+  </style>
 </head>
 <body>
 
-  {% include "header.html" %}
+{% include "header.html" %}
 
-  <div class="container my-4">
-    <h2 class="mb-4">Blog - Actualités et Nouveautés</h2>
-    <p class="mb-4">
-      Découvrez les dernières actualités dans les domaines de la comptabilité, du juridique, du social et des nouveaux textes de loi.
-    </p>
+<!-- ════ HERO ════ -->
+<section class="blog-hero">
+  <div class="container blog-hero-inner">
+    <div class="blog-hero-tag"><i class="fas fa-newspaper"></i> Notre actualité</div>
+    <h1 class="blog-hero-title">Conseils & <span>Actualités</span><br>comptables</h1>
+    <p class="blog-hero-sub">Fiscalité, comptabilité, droit du travail, IA — nos experts partagent leurs analyses pour vous aider à prendre les meilleures décisions.</p>
 
-    <div class="row">
-      <!-- Article 1 : Comptabilité -->
-      <div class="col-md-4">
-        <div class="card mb-4">
-          <img src="https://via.placeholder.com/350x200?text=Comptabilit%C3%A9+1" class="card-img-top" alt="Actualités Comptabilité">
-          <div class="card-body">
-            <h5 class="card-title">Nouveautés en comptabilité 1</h5>
-            <p class="card-text">
-              Découvrez les dernières évolutions, normes et outils innovants dans le domaine de la comptabilité.
-            </p>
-            <a href="#" class="btn btn-primary">Lire plus</a>
-          </div>
-          <div class="card-footer text-muted">
-            Publié le 12/04/2025
-          </div>
-        </div>
+    <div class="blog-search-bar">
+      <div class="search-input-wrap">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Rechercher un article…" oninput="filterArticles()">
       </div>
-
-      <!-- Article 2 : Juridique -->
-      <div class="col-md-4">
-        <div class="card mb-4">
-          <img src="https://via.placeholder.com/350x200?text=Juridique+1" class="card-img-top" alt="Actualités Juridiques">
-          <div class="card-body">
-            <h5 class="card-title">Actualités juridiques 1</h5>
-            <p class="card-text">
-              Restez informé des dernières mises à jour législatives et des actualités marquantes dans le secteur juridique.
-            </p>
-            <a href="#" class="btn btn-primary">Lire plus</a>
-          </div>
-          <div class="card-footer text-muted">
-            Publié le 10/04/2025
-          </div>
-        </div>
-      </div>
-
-      <!-- Article 3 : Social -->
-      <div class="col-md-4">
-        <div class="card mb-4">
-          <img src="https://via.placeholder.com/350x200?text=Social+1" class="card-img-top" alt="Actualités Sociales">
-          <div class="card-body">
-            <h5 class="card-title">Actualités sociales 1</h5>
-            <p class="card-text">
-              Analyse des derniers changements et tendances dans le domaine social.
-            </p>
-            <a href="#" class="btn btn-primary">Lire plus</a>
-          </div>
-          <div class="card-footer text-muted">
-            Publié le 08/04/2025
-          </div>
-        </div>
-      </div>
-
-      <!-- Article 4 : Comptabilité -->
-      <div class="col-md-4">
-        <div class="card mb-4">
-          <img src="https://via.placeholder.com/350x200?text=Comptabilit%C3%A9+2" class="card-img-top" alt="Actualités Comptabilité">
-          <div class="card-body">
-            <h5 class="card-title">Nouveautés en comptabilité 2</h5>
-            <p class="card-text">
-              Découvrez les récentes évolutions dans les pratiques comptables et les nouvelles normes.
-            </p>
-            <a href="#" class="btn btn-primary">Lire plus</a>
-          </div>
-          <div class="card-footer text-muted">
-            Publié le 11/04/2025
-          </div>
-        </div>
-      </div>
-
-      <!-- Article 5 : Juridique -->
-      <div class="col-md-4">
-        <div class="card mb-4">
-          <img src="https://via.placeholder.com/350x200?text=Juridique+2" class="card-img-top" alt="Actualités Juridiques">
-          <div class="card-body">
-            <h5 class="card-title">Actualités juridiques 2</h5>
-            <p class="card-text">
-              Les mises à jour législatives importantes qui impactent le secteur juridique.
-            </p>
-            <a href="#" class="btn btn-primary">Lire plus</a>
-          </div>
-          <div class="card-footer text-muted">
-            Publié le 09/04/2025
-          </div>
-        </div>
-      </div>
-
-      <!-- Article 6 : Social -->
-      <div class="col-md-4">
-        <div class="card mb-4">
-          <img src="https://via.placeholder.com/350x200?text=Social+2" class="card-img-top" alt="Actualités Sociales">
-          <div class="card-body">
-            <h5 class="card-title">Actualités sociales 2</h5>
-            <p class="card-text">
-              Les dernières tendances et analyses dans le domaine social.
-            </p>
-            <a href="#" class="btn btn-primary">Lire plus</a>
-          </div>
-          <div class="card-footer text-muted">
-            Publié le 07/04/2025
-          </div>
-        </div>
-      </div>
-
-      <!-- Article 7 : Nouveaux textes de loi -->
-      <div class="col-md-4">
-        <div class="card mb-4">
-          <img src="https://via.placeholder.com/350x200?text=Lois+1" class="card-img-top" alt="Nouveaux textes de loi">
-          <div class="card-body">
-            <h5 class="card-title">Nouveaux textes de loi 1</h5>
-            <p class="card-text">
-              Analyse des récentes législations impactant votre secteur d'activité.
-            </p>
-            <a href="#" class="btn btn-primary">Lire plus</a>
-          </div>
-          <div class="card-footer text-muted">
-            Publié le 06/04/2025
-          </div>
-        </div>
-      </div>
-
-      <!-- Article 8 : Nouveaux textes de loi -->
-      <div class="col-md-4">
-        <div class="card mb-4">
-          <img src="https://via.placeholder.com/350x200?text=Lois+2" class="card-img-top" alt="Nouveaux textes de loi">
-          <div class="card-body">
-            <h5 class="card-title">Nouveaux textes de loi 2</h5>
-            <p class="card-text">
-              Les dernières mises à jour sur les textes législatifs récents.
-            </p>
-            <a href="#" class="btn btn-primary">Lire plus</a>
-          </div>
-          <div class="card-footer text-muted">
-            Publié le 05/04/2025
-          </div>
-        </div>
-      </div>
-
-      <!-- Article 9 : Comptabilité -->
-      <div class="col-md-4">
-        <div class="card mb-4">
-          <img src="https://via.placeholder.com/350x200?text=Comptabilit%C3%A9+3" class="card-img-top" alt="Actualités Comptabilité">
-          <div class="card-body">
-            <h5 class="card-title">Nouveautés en comptabilité 3</h5>
-            <p class="card-text">
-              Découvrez les innovations et réformes majeures dans le domaine comptable.
-            </p>
-            <a href="#" class="btn btn-primary">Lire plus</a>
-          </div>
-          <div class="card-footer text-muted">
-            Publié le 04/04/2025
-          </div>
-        </div>
-      </div>
-    </div> <!-- Fin de la row -->
-
-    <!-- SECTION NEWSLETTER -->
-    <div class="container my-5">
-      <h3 class="text-center mb-3">Newsletter ML2C CONSEIL</h3>
-      <p class="text-center">
-        Abonnez-vous à notre newsletter pour recevoir des articles exclusifs, des conseils pratiques et des actualités complètes sur la comptabilité, le juridique et le social. Ne manquez aucune information susceptible de transformer votre entreprise !
-      </p>
-      <form action="{{ url_for('newsletter') }}" method="POST" class="form-inline justify-content-center">
-        <div class="form-group mb-2">
-          <label for="newsletterEmail" class="sr-only">Adresse e-mail</label>
-          <input type="email" class="form-control" id="newsletterEmail" name="email" placeholder="Votre adresse e-mail" required>
-        </div>
-        <button type="submit" class="btn btn-primary mb-2 ml-2">S'abonner</button>
-      </form>
     </div>
 
-    <!-- Bouton Retour au menu -->
-    <div class="text-center mt-4">
-      <a href="{{ url_for('menu') }}" class="btn btn-secondary">Retour au menu</a>
+    <div class="blog-cats">
+      <button class="blog-cat active" data-cat="all" onclick="filterCat(this)">Tous les articles</button>
+      <button class="blog-cat" data-cat="fiscalite" onclick="filterCat(this)">Fiscalité</button>
+      <button class="blog-cat" data-cat="comptabilite" onclick="filterCat(this)">Comptabilité</button>
+      <button class="blog-cat" data-cat="social" onclick="filterCat(this)">Social & Paie</button>
+      <button class="blog-cat" data-cat="juridique" onclick="filterCat(this)">Juridique</button>
+      <button class="blog-cat" data-cat="conseil" onclick="filterCat(this)">Conseil & IA</button>
     </div>
   </div>
+</section>
 
-  {% include "footer.html" %}
+<!-- ════ BANDE STATS ════ -->
+<div class="blog-stats-bar">
+  <div class="container">
+    <div class="blog-stats-inner">
+      <div class="blog-stat"><i class="fas fa-file-alt"></i> <strong>24</strong> articles publiés</div>
+      <div class="blog-stat"><i class="fas fa-eye"></i> <strong>12 400</strong> lectures ce mois</div>
+      <div class="blog-stat"><i class="fas fa-calendar-check"></i> Mis à jour le <strong>Avril 2026</strong></div>
+      <div class="blog-stat" style="margin-left:auto;">
+        <a href="{{ url_for('nous_contacter') }}" class="btn-svc" style="padding:.5rem 1.1rem;font-size:.85rem;">
+          Prendre RDV <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
 
-  <!-- Scripts JS Bootstrap -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- ════ CONTENU PRINCIPAL ════ -->
+<section class="blog-main">
+  <div class="container">
+    <div class="blog-layout">
+
+      <!-- ── ARTICLES ── -->
+      <div id="articlesContainer">
+
+        <!-- Article featured -->
+        <a href="#" class="article-featured fade-up" data-cat="fiscalite" style="animation-delay:.05s">
+          <div class="article-featured-visual">
+            <div class="article-featured-badge">À la une</div>
+            <i class="article-featured-icon fas fa-percentage"></i>
+          </div>
+          <div class="article-featured-body">
+            <div class="article-meta">
+              <span class="article-cat-tag">Fiscalité</span>
+              <span class="article-date"><i class="fas fa-calendar" style="margin-right:.3rem;"></i>15 Avril 2026</span>
+              <span class="article-read"><i class="fas fa-clock" style="margin-right:.3rem;"></i>5 min</span>
+            </div>
+            <h2 class="article-featured-title">TVA 2026 : ce qui change pour les TPE et PME</h2>
+            <p class="article-featured-excerpt">Les nouvelles règles de déclaration TVA entrent en vigueur au 1er juillet 2026. Seuils modifiés, nouvelles obligations déclaratives, pénalités renforcées — notre guide complet pour ne rien manquer et anticiper sereinement.</p>
+            <span class="article-read-btn">Lire l'article <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </a>
+
+        <!-- Grille articles -->
+        <div class="articles-grid" id="articlesGrid">
+
+          <a href="#" class="article-card fade-up" data-cat="comptabilite" data-title="Clôture comptable 2025 : le calendrier à respecter" style="animation-delay:.1s">
+            <div class="article-card-visual ac-compta">
+              <span>📊</span>
+            </div>
+            <div class="article-card-body">
+              <div class="article-meta" style="margin-bottom:.6rem;">
+                <span class="article-cat-tag">Comptabilité</span>
+                <span class="article-date">28 Mars 2026</span>
+              </div>
+              <h3 class="article-card-title">Clôture comptable 2025 : le calendrier à respecter absolument</h3>
+              <p class="article-card-excerpt">Bilan, liasse fiscale, dépôt des comptes — retrouvez toutes les échéances clés et nos conseils pour une clôture sans stress.</p>
+              <div class="article-card-footer">
+                <span class="article-card-tag">Comptabilité</span>
+                <span class="article-card-date"><i class="fas fa-clock" style="margin-right:.25rem;"></i>4 min</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="article-card fade-up" data-cat="social" data-title="Revalorisation du SMIC 2026" style="animation-delay:.15s">
+            <div class="article-card-visual ac-social">
+              <span>👥</span>
+            </div>
+            <div class="article-card-body">
+              <div class="article-meta" style="margin-bottom:.6rem;">
+                <span class="article-cat-tag">Social & Paie</span>
+                <span class="article-date">12 Mars 2026</span>
+              </div>
+              <h3 class="article-card-title">Revalorisation du SMIC 2026 : impact sur vos bulletins de paie</h3>
+              <p class="article-card-excerpt">Le SMIC a été revalorisé de 2,2% au 1er janvier 2026. Voici ce que cela change concrètement pour votre masse salariale et vos cotisations.</p>
+              <div class="article-card-footer">
+                <span class="article-card-tag">Social & Paie</span>
+                <span class="article-card-date"><i class="fas fa-clock" style="margin-right:.25rem;"></i>3 min</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="article-card fade-up" data-cat="conseil" data-title="IA et comptabilité" style="animation-delay:.2s">
+            <div class="article-card-visual ac-conseil">
+              <span>🤖</span>
+            </div>
+            <div class="article-card-body">
+              <div class="article-meta" style="margin-bottom:.6rem;">
+                <span class="article-cat-tag">Conseil & IA</span>
+                <span class="article-date">5 Mars 2026</span>
+              </div>
+              <h3 class="article-card-title">IA et comptabilité : comment ML2C automatise vos analyses</h3>
+              <p class="article-card-excerpt">Découvrez comment l'intelligence artificielle transforme notre façon de traiter vos données et produit des analyses prédictives inédites.</p>
+              <div class="article-card-footer">
+                <span class="article-card-tag">Conseil & IA</span>
+                <span class="article-card-date"><i class="fas fa-clock" style="margin-right:.25rem;"></i>6 min</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="article-card fade-up" data-cat="juridique" data-title="SAS ou SARL en 2026" style="animation-delay:.25s">
+            <div class="article-card-visual ac-juridique">
+              <span>⚖️</span>
+            </div>
+            <div class="article-card-body">
+              <div class="article-meta" style="margin-bottom:.6rem;">
+                <span class="article-cat-tag">Juridique</span>
+                <span class="article-date">20 Fév 2026</span>
+              </div>
+              <h3 class="article-card-title">SAS ou SARL en 2026 : laquelle choisir pour votre projet ?</h3>
+              <p class="article-card-excerpt">Fiscalité, protection sociale, flexibilité — notre comparatif complet pour choisir la structure juridique la plus adaptée à votre situation.</p>
+              <div class="article-card-footer">
+                <span class="article-card-tag">Juridique</span>
+                <span class="article-card-date"><i class="fas fa-clock" style="margin-right:.25rem;"></i>7 min</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="article-card fade-up" data-cat="fiscalite" data-title="Optimisation IS 2026" style="animation-delay:.3s">
+            <div class="article-card-visual ac-fiscal">
+              <span>📋</span>
+            </div>
+            <div class="article-card-body">
+              <div class="article-meta" style="margin-bottom:.6rem;">
+                <span class="article-cat-tag">Fiscalité</span>
+                <span class="article-date">10 Fév 2026</span>
+              </div>
+              <h3 class="article-card-title">5 leviers pour optimiser votre impôt sur les sociétés en 2026</h3>
+              <p class="article-card-excerpt">Provisions, amortissements, crédits d'impôt — les stratégies légales et éprouvées pour réduire votre IS avant la clôture de l'exercice.</p>
+              <div class="article-card-footer">
+                <span class="article-card-tag">Fiscalité</span>
+                <span class="article-card-date"><i class="fas fa-clock" style="margin-right:.25rem;"></i>5 min</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="article-card fade-up" data-cat="conseil" data-title="Tableau de bord dirigeant" style="animation-delay:.35s">
+            <div class="article-card-visual ac-digital">
+              <span>📈</span>
+            </div>
+            <div class="article-card-body">
+              <div class="article-meta" style="margin-bottom:.6rem;">
+                <span class="article-cat-tag">Conseil & IA</span>
+                <span class="article-date">28 Jan 2026</span>
+              </div>
+              <h3 class="article-card-title">Les 7 indicateurs indispensables dans votre tableau de bord dirigeant</h3>
+              <p class="article-card-excerpt">Trésorerie, marge brute, BFR, DSO — les KPIs que tout chef d'entreprise doit surveiller chaque mois pour piloter sereinement.</p>
+              <div class="article-card-footer">
+                <span class="article-card-tag">Conseil & IA</span>
+                <span class="article-card-date"><i class="fas fa-clock" style="margin-right:.25rem;"></i>5 min</span>
+              </div>
+            </div>
+          </a>
+
+        </div>
+
+        <!-- Message no result -->
+        <div id="noResult" style="display:none; text-align:center; padding:3rem 1rem; color:#9ca3af;">
+          <i class="fas fa-search" style="font-size:2rem;margin-bottom:1rem;display:block;"></i>
+          <p>Aucun article trouvé pour cette recherche.</p>
+        </div>
+
+        <!-- Pagination -->
+        <div class="blog-pagination">
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+
+      </div>
+
+      <!-- ── SIDEBAR ── -->
+      <aside class="blog-sidebar">
+
+        <!-- Articles populaires -->
+        <div class="sidebar-widget">
+          <h4><i class="fas fa-fire" style="margin-right:.4rem;"></i>Les plus lus</h4>
+          <a href="#" class="popular-item">
+            <span class="popular-num">01</span>
+            <div><div class="popular-title">TVA 2026 : ce qui change pour les TPE et PME</div><div class="popular-date">15 Avril 2026</div></div>
+          </a>
+          <a href="#" class="popular-item">
+            <span class="popular-num">02</span>
+            <div><div class="popular-title">SAS ou SARL : laquelle choisir en 2026 ?</div><div class="popular-date">20 Fév 2026</div></div>
+          </a>
+          <a href="#" class="popular-item">
+            <span class="popular-num">03</span>
+            <div><div class="popular-title">5 leviers pour optimiser votre IS</div><div class="popular-date">10 Fév 2026</div></div>
+          </a>
+          <a href="#" class="popular-item">
+            <span class="popular-num">04</span>
+            <div><div class="popular-title">Les 7 KPIs du tableau de bord dirigeant</div><div class="popular-date">28 Jan 2026</div></div>
+          </a>
+        </div>
+
+        <!-- Newsletter -->
+        <div class="newsletter-widget">
+          <h4><i class="fas fa-envelope" style="margin-right:.4rem;"></i>Newsletter</h4>
+          <p>Recevez chaque mois nos conseils fiscaux et actualités réglementaires directement dans votre boîte mail.</p>
+          <input type="email" class="newsletter-input" placeholder="votre@email.com">
+          <button class="newsletter-btn" onclick="subscribeNewsletter(this)">
+            <i class="fas fa-paper-plane"></i> S'abonner gratuitement
+          </button>
+        </div>
+
+        <!-- Tags -->
+        <div class="sidebar-widget">
+          <h4><i class="fas fa-tags" style="margin-right:.4rem;"></i>Thèmes</h4>
+          <div class="tags-cloud">
+            <span class="tag-item" onclick="filterCatByTag('fiscalite')">TVA</span>
+            <span class="tag-item" onclick="filterCatByTag('fiscalite')">IS</span>
+            <span class="tag-item" onclick="filterCatByTag('social')">SMIC</span>
+            <span class="tag-item" onclick="filterCatByTag('social')">Paie</span>
+            <span class="tag-item" onclick="filterCatByTag('juridique')">SAS</span>
+            <span class="tag-item" onclick="filterCatByTag('juridique')">SARL</span>
+            <span class="tag-item" onclick="filterCatByTag('conseil')">IA</span>
+            <span class="tag-item" onclick="filterCatByTag('comptabilite')">Bilan</span>
+            <span class="tag-item" onclick="filterCatByTag('comptabilite')">Clôture</span>
+            <span class="tag-item" onclick="filterCatByTag('conseil')">Tableau de bord</span>
+            <span class="tag-item" onclick="filterCatByTag('fiscalite')">Optimisation</span>
+            <span class="tag-item" onclick="filterCatByTag('juridique')">Création</span>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="sidebar-cta">
+          <i class="fas fa-calendar-alt"></i>
+          <p>Une question suite à la lecture d'un article ? Nos experts sont disponibles pour en discuter.</p>
+          <a href="{{ url_for('nous_contacter') }}">Prendre rendez-vous</a>
+        </div>
+
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+{% include "footer.html" %}
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  /* ── Filtrage par catégorie ── */
+  let activeCat = 'all';
+
+  function filterCat(btn) {
+    document.querySelectorAll('.blog-cat').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeCat = btn.dataset.cat;
+    applyFilters();
+    window.scrollTo({ top: document.querySelector('.blog-main').offsetTop - 80, behavior: 'smooth' });
+  }
+
+  function filterCatByTag(cat) {
+    activeCat = cat;
+    document.querySelectorAll('.blog-cat').forEach(b => {
+      b.classList.toggle('active', b.dataset.cat === cat);
+    });
+    applyFilters();
+  }
+
+  /* ── Filtrage par recherche ── */
+  function filterArticles() { applyFilters(); }
+
+  function applyFilters() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const cards = document.querySelectorAll('.article-card');
+    const featured = document.querySelector('.article-featured');
+    let visible = 0;
+
+    /* Featured */
+    const featCat = featured.dataset.cat;
+    const featTitle = featured.querySelector('.article-featured-title').textContent.toLowerCase();
+    const featMatch = (activeCat === 'all' || featCat === activeCat) && featTitle.includes(query);
+    featured.style.display = featMatch ? '' : 'none';
+    if (featMatch) visible++;
+
+    /* Cards */
+    cards.forEach(card => {
+      const cat = card.dataset.cat;
+      const title = card.dataset.title.toLowerCase();
+      const match = (activeCat === 'all' || cat === activeCat) && title.includes(query);
+      card.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+
+    document.getElementById('noResult').style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  /* ── Newsletter ── */
+  function subscribeNewsletter(btn) {
+    const input = btn.previousElementSibling;
+    if (!input.value || !input.value.includes('@')) {
+      input.style.border = '2px solid rgba(255,255,255,.6)';
+      input.focus();
+      return;
+    }
+    btn.innerHTML = '<i class="fas fa-check"></i> Abonné !';
+    btn.style.background = 'rgba(255,255,255,.35)';
+    btn.disabled = true;
+    input.value = '';
+  }
+
+  /* ── Pagination (demo) ── */
+  document.querySelectorAll('.page-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+
 </body>
 </html>

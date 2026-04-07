@@ -245,68 +245,52 @@
 <!-- ══════════════════════════════════════════
      CONTACT
 ══════════════════════════════════════════ -->
-<section class="section-contact" id="contact">
+<section class="section-why" id="blog-apercu">
   <div class="container">
-    <div class="contact-grid">
+    <div class="sec-head text-center">
+      <span class="sec-tag">Notre actualité</span>
+      <h2 class="sec-title">Le Blog ML2C</h2>
+      <p class="sec-sub">Conseils comptables, fiscalité, actualités réglementaires — restez informé avec nos experts.</p>
+    </div>
 
-      <!-- Infos -->
-      <div class="contact-info">
-        <span class="sec-tag">Notre actualité</span>
-        <h2 class="sec-title">Le Blog ML2C</h2>
-        <p>Conseils comptables, fiscalité, actualités réglementaires — restez informé avec nos experts.</p>
-        <div class="contact-details">
-          <a href="tel:+33672343294" class="contact-item">
-            <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
-            <div><span class="c-label">Téléphone</span><span class="c-val">+33 (0)6 72 34 32 94</span></div>
-          </a>
-          <a href="mailto:contact@ml2cconseil.com" class="contact-item">
-            <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-            <div><span class="c-label">Email</span><span class="c-val">contact@ml2cconseil.com</span></div>
-          </a>
-          <div class="contact-item">
-            <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-            <div><span class="c-label">Adresse</span><span class="c-val">6 Rue de la Vigne, 28360 Dammarie</span></div>
-          </div>
-        </div>
-        <button class="chatbot-cta-btn" onclick="toggleChat()">
-          <div class="chatbot-cta-human">
-            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2" alt="Conseiller">
-          </div>
-          <div>
-            <strong>Parler à un conseiller</strong>
-            <span>Réponse instantanée 24h/24</span>
-          </div>
-          <i class="fas fa-arrow-right arr"></i>
-        </button>
-      </div>
+    <div class="why-grid">
 
-      <!-- Formulaire -->
-      <div class="contact-form-box">
-        <h3>Demande de devis gratuit</h3>
-        <form action="#" method="POST">
-          <div class="form-row-2">
-            <div class="form-group"><label>Prénom & Nom</label><input type="text" class="form-control" name="nom" placeholder="Jean Dupont" required></div>
-            <div class="form-group"><label>Téléphone</label><input type="tel" class="form-control" name="tel" placeholder="06 XX XX XX XX"></div>
-          </div>
-          <div class="form-group"><label>Email</label><input type="email" class="form-control" name="email" placeholder="votre@email.com" required></div>
-          <div class="form-group">
-            <label>Votre besoin</label>
-            <select class="form-control" name="service">
-              <option value="">— Sélectionnez un service —</option>
-              <option>Tenue comptable</option>
-              <option>Déclarations fiscales</option>
-              <option>Paie & gestion sociale</option>
-              <option>Création d'entreprise</option>
-              <option>Conseil & optimisation fiscale</option>
-              <option>Autre</option>
-            </select>
-          </div>
-          <div class="form-group"><label>Message (optionnel)</label><textarea class="form-control" name="message" rows="3" placeholder="Décrivez brièvement votre situation..."></textarea></div>
-          <button type="submit" class="btn-contact-submit"><i class="fas fa-paper-plane"></i> Envoyer ma demande</button>
-        </form>
-      </div>
+      <a href="{{ url_for('blog') }}" class="why-card" style="text-decoration:none;">
+        <div class="why-icon"><i class="fas fa-percentage"></i></div>
+        <span class="sec-tag" style="font-size:.7rem;">Fiscalité · 5 min</span>
+        <h3>TVA 2026 : ce qui change pour les TPE et PME</h3>
+        <p>Seuils modifiés, nouvelles obligations déclaratives — notre guide pour anticiper sereinement.</p>
+      </a>
+
+      <a href="{{ url_for('blog') }}" class="why-card why-card-featured" style="text-decoration:none;">
+        <div class="why-icon"><i class="fas fa-robot"></i></div>
+        <span class="sec-tag" style="font-size:.7rem;color:rgba(255,255,255,.7);">Conseil & IA · 6 min</span>
+        <h3>IA et comptabilité : comment ML2C automatise vos analyses</h3>
+        <p>Découvrez comment l'intelligence artificielle transforme notre façon de traiter vos données.</p>
+      </a>
+
+      <a href="{{ url_for('blog') }}" class="why-card" style="text-decoration:none;">
+        <div class="why-icon"><i class="fas fa-balance-scale"></i></div>
+        <span class="sec-tag" style="font-size:.7rem;">Juridique · 7 min</span>
+        <h3>SAS ou SARL en 2026 : laquelle choisir pour votre projet ?</h3>
+        <p>Fiscalité, protection sociale, flexibilité — notre comparatif complet pour faire le bon choix.</p>
+      </a>
+
+      <a href="{{ url_for('blog') }}" class="why-card" style="text-decoration:none;">
+        <div class="why-icon"><i class="fas fa-chart-bar"></i></div>
+        <span class="sec-tag" style="font-size:.7rem;">Comptabilité · 4 min</span>
+        <h3>Clôture comptable 2025 : le calendrier à respecter</h3>
+        <p>Bilan, liasse fiscale, dépôt des comptes — toutes les échéances clés pour une clôture sans stress.</p>
+      </a>
 
     </div>
+
+    <div class="text-center" style="margin-top:2.5rem;">
+      <a href="{{ url_for('blog') }}" class="btn-svc">
+        Voir tous les articles <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+
   </div>
 </section>
 

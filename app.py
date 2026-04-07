@@ -573,9 +573,9 @@ def envoyer_compte():
 
     return redirect(url_for("compte_client"))
 
-@app.route("/blog")
+@app.route('/actualites')
 def blog():
-    return render_template("blog.html")
+    return render_template('blog.html')
 
 
 @app.route("/notre-histoire")

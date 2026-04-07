@@ -347,7 +347,7 @@ img { max-width: 100%; display: block; }
 ════════════════════════════════════════════════ */
 .hero-section {
   position: relative;
-  min-height: 92vh;
+  min-height: 80vh;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -524,7 +524,7 @@ img { max-width: 100%; display: block; }
 
 .why-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.5rem;
 }
 
@@ -1011,7 +1011,7 @@ a.contact-detail-item:hover { color: var(--rose); }
 /* ════════════════════════════════════════════════
    UTILITAIRES
 ════════════════════════════════════════════════ */
-.container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+.container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
 
 .fade-in { animation: fadeIn .6s ease forwards; }
 
@@ -3508,7 +3508,7 @@ a.contact-item:hover { color: var(--rose); }
 
 /* ── Large desktop 1400px+ ── */
 @media (min-width: 1400px) {
-  .container { max-width: 1320px; }
+  .container { max-width: 1140px; }
   .footer-grid { grid-template-columns: 1.6fr 1fr 1fr 1.4fr; gap: 3rem; }
   .chatbot-widget { width: 400px; height: 560px; }
 }

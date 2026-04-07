@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Erreur 500 - Erreur serveur | ML2C Conseil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@400;500&display=swap">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+  <style>
+    /* ── Page 500 ML2C ── */
+    .error-500-page {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--gris-light);
+      padding: 3rem 1rem;
+    }
+
+    .err500-card {
+      background: var(--white);
+      border-radius: 24px;
+      max-width: 780px;
+      width: 100%;
+      padding: 3rem 2.5rem 2.5rem;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .err500-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--gris) 0%, var(--rose) 50%, var(--turquoise) 100%);
+      border-radius: 24px 24px 0 0;
+    }
+
+    .err500-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .32rem .95rem;
+      background: var(--rose-light);
+      border: 1px solid rgba(193,0,122,.2);
+      border-radius: 30px;
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--rose);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .err500-badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--rose);
+      animation: err500Blink 1s ease-in-out infinite;
+    }
+    @keyframes err500Blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.2;transform:scale(.7)} }
+
+    .err500-code {
+      font-family: var(--font-head);
+      font-size: clamp(5rem, 15vw, 7rem);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -.04em;
+      background: linear-gradient(135deg, var(--gris) 0%, var(--rose) 55%, #f472b6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      user-select: none;
+      margin-bottom: .75rem;
+    }
+
+    /* ── Illustration crash animée ── */
+    .err500-illus {
+      width: 100%;
+      max-width: 500px;
+      margin-bottom: 1.75rem;
+    }
+    .err500-illus svg { width: 100%; height: auto; display: block; }
+
+    /* ── Statuts système ── */
+    .err500-status-row {
+      display: flex;
+      gap: .75rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 2rem;
+      width: 100%;
+      max-width: 540px;
+    }
+
+    .err500-pill {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .45rem 1rem;
+      border-radius: 10px;
+      font-size: .8rem;
+      font-weight: 500;
+      flex: 1;
+      min-width: 140px;
+      justify-content: center;
+    }
+    .pill-ok   { background: #e1f5f0; color: var(--turq-dark); border: 1px solid #b2e0d8; }
+    .pill-warn { background: var(--rose-light); color: var(--rose-dark); border: 1px solid #f0b8dc; }
+    .pill-off  { background: var(--gris-light); color: var(--gris); border: 1px solid var(--border); }
+
+    .err500-pill-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .pdot-ok   { background: var(--turquoise); animation: err500Pulse 2s infinite; }
+    .pdot-warn { background: var(--rose); animation: err500Pulse 1s infinite; }
+    .pdot-off  { background: #9ca3af; }
+    @keyframes err500Pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    .err500-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      color: var(--gris-dark);
+      line-height: 1.2;
+      margin-bottom: .75rem;
+    }
+    .err500-title-accent { color: var(--rose); }
+
+    .err500-sub {
+      font-size: .97rem;
+      color: var(--text-muted);
+      max-width: 480px;
+      line-height: 1.65;
+      margin-bottom: 1.75rem;
+    }
+
+    /* ── Bouton réessayer ── */
+    .err500-retry {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .55rem 1.4rem;
+      background: var(--gris-light);
+      border: 1.5px solid var(--border);
+      border-radius: 30px;
+      font-size: .88rem;
+      font-weight: 500;
+      color: var(--gris);
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: var(--font-body);
+      margin-bottom: 2rem;
+    }
+    .err500-retry:hover {
+      border-color: var(--turquoise);
+      color: var(--turquoise);
+      background: #e1f5f0;
+    }
+    .err500-retry i { transition: transform .4s ease; }
+    .err500-retry:active i { transform: rotate(360deg); }
+
+    /* ── CTA ── */
+    .err500-ctas {
+      display: flex;
+      gap: .75rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 2.25rem;
+    }
+
+    .err500-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .6rem 1.4rem;
+      background: var(--rose);
+      color: var(--white);
+      font-weight: 600;
+      font-size: .88rem;
+      border-radius: 30px;
+      border: 1.5px solid var(--rose);
+      transition: var(--transition);
+      text-decoration: none;
+    }
+    .err500-btn-primary:hover {
+      background: var(--rose-dark);
+      border-color: var(--rose-dark);
+      color: var(--white);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(193,0,122,.32);
+    }
+
+    .err500-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .6rem 1.4rem;
+      background: transparent;
+      color: var(--gris);
+      font-weight: 500;
+      font-size: .88rem;
+      border-radius: 30px;
+      border: 1.5px solid var(--border);
+      transition: var(--transition);
+      text-decoration: none;
+    }
+    .err500-btn-secondary:hover {
+      border-color: var(--rose);
+      color: var(--rose);
+      background: var(--rose-light);
+    }
+
+    .err500-btn-turq {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .6rem 1.4rem;
+      background: transparent;
+      color: var(--turquoise);
+      font-weight: 500;
+      font-size: .88rem;
+      border-radius: 30px;
+      border: 1.5px solid var(--turquoise);
+      transition: var(--transition);
+      text-decoration: none;
+    }
+    .err500-btn-turq:hover { background: var(--turquoise); color: var(--white); }
+
+    /* ── Grille info ── */
+    .err500-divider {
+      width: 100%;
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 0 1.5rem;
+    }
+
+    .err500-info-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .75rem;
+      text-align: left;
+    }
+
+    .err500-info-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: .9rem 1rem;
+    }
+
+    .err500-info-icon {
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: .55rem;
+      font-size: .95rem;
+    }
+    .iico-rose { background: var(--rose-light); color: var(--rose); }
+    .iico-turq { background: #e1f5f0; color: var(--turquoise); }
+    .iico-gris { background: var(--gris-light); color: var(--gris); }
+
+    .err500-info-label { font-size: .8rem; font-weight: 500; color: var(--gris-dark); line-height: 1.3; }
+    .err500-info-sub   { font-size: .72rem; color: var(--text-muted); margin-top: .2rem; }
+
+    .err500-ticker {
+      margin-top: 1.75rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      font-size: .78rem;
+      color: var(--text-muted);
+    }
+    .err500-ticker-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--rose);
+      animation: err500Blink 1s infinite;
+    }
+
+    @media (max-width: 576px) {
+      .err500-card { padding: 2rem 1.25rem 1.75rem; }
+      .err500-info-grid { grid-template-columns: 1fr; }
+      .err500-ctas { flex-direction: column; align-items: center; }
+      .err500-status-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  {% include "header.html" %}
+
+  <div class="error-500-page">
+    <div class="err500-card">
+
+      <!-- Badge -->
+      <div class="err500-badge">
+        <span class="err500-badge-dot"></span>
+        Incident serveur détecté
+      </div>
+
+      <!-- Code erreur -->
+      <div class="err500-code">500</div>
+
+      <!-- Illustration crash -->
+      <div class="err500-illus">
+        <svg viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="sg1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#C1007A" stop-opacity=".9"/>
+              <stop offset="100%" stop-color="#9a0062"/>
+            </linearGradient>
+            <linearGradient id="sg2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4FA695"/>
+              <stop offset="100%" stop-color="#3a7d70"/>
+            </linearGradient>
+            <linearGradient id="sg3" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#5C666B" stop-opacity=".5"/>
+              <stop offset="100%" stop-color="#3d4549" stop-opacity=".3"/>
+            </linearGradient>
+          </defs>
+          <!-- Grille -->
+          <line x1="0" y1="30" x2="500" y2="30" stroke="#e5e7eb" stroke-width=".5"/>
+          <line x1="0" y1="60" x2="500" y2="60" stroke="#e5e7eb" stroke-width=".5"/>
+          <line x1="0" y1="90" x2="500" y2="90" stroke="#e5e7eb" stroke-width=".5"/>
+          <!-- Barres normales gauche -->
+          <rect x="10" y="30" width="28" height="80" rx="4" fill="url(#sg1)"/>
+          <rect x="50" y="15" width="28" height="95" rx="4" fill="url(#sg2)"/>
+          <rect x="90" y="45" width="28" height="65" rx="4" fill="url(#sg1)" opacity=".7"/>
+          <rect x="130" y="20" width="28" height="90" rx="4" fill="url(#sg2)" opacity=".8"/>
+          <!-- Barre en crash animée -->
+          <rect x="180" y="10" width="28" height="100" rx="4" fill="url(#sg1)" opacity=".9">
+            <animate attributeName="height" values="100;18;100" dur="2s" repeatCount="indefinite"/>
+            <animate attributeName="y" values="10;92;10" dur="2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values=".9;.25;.9" dur="2s" repeatCount="indefinite"/>
+          </rect>
+          <!-- Trait de chute -->
+          <polyline points="194,10 194,110 232,110" fill="none" stroke="#C1007A" stroke-width="1.5" stroke-dasharray="4 3" opacity=".5" stroke-linecap="round"/>
+          <!-- Barres fantômes droite -->
+          <rect x="232" y="40" width="28" height="70" rx="4" fill="url(#sg3)">
+            <animate attributeName="opacity" values=".4;.12;.4" dur="1.8s" repeatCount="indefinite"/>
+          </rect>
+          <rect x="272" y="25" width="28" height="85" rx="4" fill="url(#sg3)">
+            <animate attributeName="opacity" values=".3;.08;.3" dur="2.2s" repeatCount="indefinite"/>
+          </rect>
+          <rect x="312" y="50" width="28" height="60" rx="4" fill="url(#sg3)">
+            <animate attributeName="opacity" values=".35;.1;.35" dur="1.6s" repeatCount="indefinite"/>
+          </rect>
+          <rect x="352" y="20" width="28" height="90" rx="4" fill="url(#sg3)">
+            <animate attributeName="opacity" values=".25;.06;.25" dur="2s" repeatCount="indefinite"/>
+          </rect>
+          <rect x="392" y="38" width="28" height="72" rx="4" fill="url(#sg3)">
+            <animate attributeName="opacity" values=".3;.08;.3" dur="1.9s" repeatCount="indefinite"/>
+          </rect>
+          <rect x="432" y="55" width="28" height="55" rx="4" fill="url(#sg3)">
+            <animate attributeName="opacity" values=".2;.05;.2" dur="2.3s" repeatCount="indefinite"/>
+          </rect>
+          <!-- Alerte clignotante sur la barre crash -->
+          <circle cx="194" cy="7" r="6" fill="#C1007A" opacity=".15">
+            <animate attributeName="r" values="6;11;6" dur="1.5s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values=".15;.04;.15" dur="1.5s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="194" cy="7" r="4" fill="#C1007A">
+            <animate attributeName="opacity" values="1;.45;1" dur="1s" repeatCount="indefinite"/>
+          </circle>
+          <text x="194" y="10.5" font-size="6" font-weight="700" fill="#fff" text-anchor="middle" font-family="sans-serif">!</text>
+          <!-- Ligne de base -->
+          <line x1="0" y1="110" x2="500" y2="110" stroke="#e5e7eb" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- Curseur errant -->
+          <circle r="3.5" fill="#C1007A" opacity=".8">
+            <animateMotion dur="6s" repeatCount="indefinite"
+              path="M 232,80 L 292,50 L 352,75 L 472,40"/>
+          </circle>
+        </svg>
+      </div>
+
+      <!-- Statuts système -->
+      <div class="err500-status-row">
+        <div class="err500-pill pill-ok">
+          <span class="err500-pill-dot pdot-ok"></span>
+          Base de données opérationnelle
+        </div>
+        <div class="err500-pill pill-warn">
+          <span class="err500-pill-dot pdot-warn"></span>
+          Serveur applicatif en erreur
+        </div>
+        <div class="err500-pill pill-off">
+          <span class="err500-pill-dot pdot-off"></span>
+          Maintenance en cours
+        </div>
+      </div>
+
+      <!-- Titre & sous-titre -->
+      <h1 class="err500-title">
+        Une <span class="err500-title-accent">erreur interne</span> interrompt le service
+      </h1>
+      <p class="err500-sub">
+        Notre serveur a rencontré un problème inattendu. Nos équipes techniques ont été automatiquement
+        alertées et travaillent à la résolution. Veuillez réessayer dans quelques instants.
+      </p>
+
+      <!-- Bouton réessayer -->
+      <button class="err500-retry" onclick="window.location.reload()">
+        <i class="fas fa-sync-alt"></i>
+        Réessayer la connexion
+      </button>
+
+      <!-- CTA -->
+      <div class="err500-ctas">
+        <a href="{{ url_for('menu') }}" class="err500-btn-primary">
+          <i class="fas fa-home"></i> Retour à l'accueil
+        </a>
+        <a href="{{ url_for('contact') }}" class="err500-btn-secondary">
+          <i class="fas fa-phone-alt"></i> Nous contacter
+        </a>
+        <a href="#chatbot" class="err500-btn-turq">
+          <i class="far fa-comment-dots"></i> Chatbot ML2C
+        </a>
+      </div>
+
+      <!-- Séparateur -->
+      <hr class="err500-divider">
+
+      <!-- Cartes info rassurantes -->
+      <div class="err500-info-grid">
+        <div class="err500-info-card">
+          <div class="err500-info-icon iico-rose">
+            <i class="fas fa-bell"></i>
+          </div>
+          <div class="err500-info-label">Équipe alertée</div>
+          <div class="err500-info-sub">Notification automatique envoyée</div>
+        </div>
+        <div class="err500-info-card">
+          <div class="err500-info-icon iico-turq">
+            <i class="far fa-clock"></i>
+          </div>
+          <div class="err500-info-label">Résolution estimée</div>
+          <div class="err500-info-sub">Retour à la normale sous peu</div>
+        </div>
+        <div class="err500-info-card">
+          <div class="err500-info-icon iico-gris">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div class="err500-info-label">Données sécurisées</div>
+          <div class="err500-info-sub">Aucune perte de données</div>
+        </div>
+      </div>
+
+      <!-- Ticker -->
+      <div class="err500-ticker">
+        <span class="err500-ticker-dot"></span>
+        Code d'erreur : 500 — Internal Server Error · Référence : ML2C-SRV
+      </div>
+
+    </div>
+  </div>
+
+  {% include "footer.html" %}
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

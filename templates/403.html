@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Erreur 403 - Accès interdit | ML2C Conseil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    .error-403-page {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--gris-light);
+      padding: 3rem 1rem;
+    }
+    .err403-card {
+      background: var(--white);
+      border-radius: 24px;
+      max-width: 780px;
+      width: 100%;
+      padding: 3rem 2.5rem 2.5rem;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .err403-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #ef4444 0%, var(--rose) 50%, #ef4444 100%);
+      border-radius: 24px 24px 0 0;
+    }
+    .err403-badge {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .32rem .95rem;
+      background: #fef2f2;
+      border: 1px solid #fca5a5;
+      border-radius: 30px;
+      font-size: .78rem; font-weight: 600;
+      color: #991b1b;
+      letter-spacing: .06em; text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    .err403-badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #ef4444;
+      animation: err403Blink .8s ease-in-out infinite;
+    }
+    @keyframes err403Blink { 0%,100%{opacity:1} 50%{opacity:.15} }
+
+    .err403-code {
+      font-family: var(--font-head);
+      font-size: clamp(5rem, 15vw, 7rem);
+      font-weight: 700; line-height: 1;
+      letter-spacing: -.04em;
+      background: linear-gradient(135deg, #ef4444 0%, var(--rose) 55%, #f472b6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      user-select: none; margin-bottom: .75rem;
+    }
+
+    .err403-illus { width: 100%; max-width: 460px; margin-bottom: 1.75rem; }
+    .err403-illus svg { width: 100%; height: auto; display: block; }
+
+    .barrier-anim { animation: barrierSlide 3s ease-in-out infinite; }
+    @keyframes barrierSlide {
+      0%,100% { transform: scaleX(1); }
+      50% { transform: scaleX(1.03); }
+    }
+    .cross-anim {
+      animation: crossPulse 1.5s ease-in-out infinite;
+      transform-origin: center;
+    }
+    @keyframes crossPulse {
+      0%,100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.12); opacity: .8; }
+    }
+
+    .err403-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700; color: var(--gris-dark);
+      line-height: 1.2; margin-bottom: .75rem;
+    }
+    .err403-accent { color: #ef4444; }
+    .err403-sub {
+      font-size: .97rem; color: var(--text-muted);
+      max-width: 480px; line-height: 1.65; margin-bottom: 2rem;
+    }
+
+    /* Statuts de permission */
+    .err403-perms {
+      width: 100%; max-width: 500px;
+      display: flex; flex-direction: column; gap: .6rem;
+      margin-bottom: 2rem;
+    }
+    .err403-perm-row {
+      display: flex; align-items: center; justify-content: space-between;
+      background: #f9fafb;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: .65rem 1rem;
+      font-size: .85rem;
+    }
+    .err403-perm-label { display: flex; align-items: center; gap: .6rem; color: var(--gris-dark); }
+    .err403-perm-label i { width: 16px; color: var(--gris); }
+    .perm-ok { color: #4FA695; font-weight: 600; font-size: .8rem; }
+    .perm-no { color: #ef4444; font-weight: 600; font-size: .8rem; }
+    .perm-badge-ok { background: #e1f5f0; color: #3a7d70; padding: .2rem .6rem; border-radius: 20px; font-size: .72rem; font-weight: 600; }
+    .perm-badge-no { background: #fef2f2; color: #991b1b; padding: .2rem .6rem; border-radius: 20px; font-size: .72rem; font-weight: 600; }
+
+    /* Qui contacter */
+    .err403-contact-box {
+      width: 100%; max-width: 500px;
+      background: linear-gradient(135deg, var(--gris) 0%, #3d4549 100%);
+      border-radius: 14px; padding: 1.5rem;
+      display: flex; align-items: center; gap: 1.25rem;
+      margin-bottom: 2rem; text-align: left; color: #fff;
+    }
+    .err403-contact-icon {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: rgba(255,255,255,.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; flex-shrink: 0;
+    }
+    .err403-contact-box strong { display: block; font-size: .95rem; margin-bottom: .25rem; }
+    .err403-contact-box span { font-size: .82rem; opacity: .8; }
+    .err403-contact-box a {
+      margin-left: auto; display: flex; align-items: center; gap: .4rem;
+      padding: .5rem 1.1rem; background: var(--rose);
+      color: #fff; border-radius: 8px; font-size: .85rem;
+      font-weight: 600; text-decoration: none; transition: var(--transition);
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .err403-contact-box a:hover { background: var(--rose-dark); color: #fff; }
+
+    .err403-ctas {
+      display: flex; gap: .75rem; flex-wrap: wrap; justify-content: center;
+    }
+    .err403-btn-primary {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .6rem 1.4rem; background: var(--rose); color: var(--white);
+      font-weight: 600; font-size: .88rem; border-radius: 30px;
+      border: 1.5px solid var(--rose); transition: var(--transition); text-decoration: none;
+    }
+    .err403-btn-primary:hover { background: var(--rose-dark); border-color: var(--rose-dark); color: var(--white); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(193,0,122,.32); }
+    .err403-btn-secondary {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .6rem 1.4rem; background: transparent; color: var(--gris);
+      font-weight: 500; font-size: .88rem; border-radius: 30px;
+      border: 1.5px solid var(--border); transition: var(--transition); text-decoration: none;
+    }
+    .err403-btn-secondary:hover { border-color: var(--rose); color: var(--rose); background: var(--rose-light); }
+
+    .err403-ticker {
+      margin-top: 1.75rem;
+      display: flex; align-items: center; gap: .5rem;
+      font-size: .78rem; color: var(--text-muted);
+    }
+    .err403-ticker-dot { width: 5px; height: 5px; border-radius: 50%; background: #ef4444; animation: err403Blink .8s infinite; }
+
+    @media (max-width: 576px) {
+      .err403-card { padding: 2rem 1.25rem 1.75rem; }
+      .err403-ctas { flex-direction: column; align-items: center; }
+      .err403-contact-box { flex-direction: column; text-align: center; }
+      .err403-contact-box a { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+  {% include "header.html" %}
+
+  <div class="error-403-page">
+    <div class="err403-card">
+
+      <div class="err403-badge">
+        <span class="err403-badge-dot"></span>
+        Accès refusé
+      </div>
+
+      <div class="err403-code">403</div>
+
+      <!-- Illustration barrière SVG -->
+      <div class="err403-illus">
+        <svg viewBox="0 0 460 150" xmlns="http://www.w3.org/2000/svg">
+          <!-- Fond grille -->
+          <line x1="0" y1="120" x2="460" y2="120" stroke="#e5e7eb" stroke-width="1"/>
+
+          <!-- Barrière gauche -->
+          <g class="barrier-anim" style="transform-origin:0 100px;">
+            <rect x="10" y="95" width="160" height="12" rx="6" fill="#ef4444"/>
+            <rect x="10" y="95" width="40" height="12" rx="6" fill="#fff" opacity=".3"/>
+            <rect x="60" y="95" width="40" height="12" rx="6" fill="#fff" opacity=".3"/>
+            <rect x="110" y="95" width="40" height="12" rx="6" fill="#fff" opacity=".3"/>
+            <rect x="18" y="70" width="8" height="28" rx="4" fill="#5C666B"/>
+            <rect x="160" y="70" width="8" height="28" rx="4" fill="#5C666B"/>
+          </g>
+
+          <!-- Croix STOP au centre -->
+          <g class="cross-anim" style="transform-origin:230px 75px;">
+            <circle cx="230" cy="75" r="40" fill="#ef4444"/>
+            <circle cx="230" cy="75" r="35" fill="#ef4444" stroke="#fff" stroke-width="3"/>
+            <rect x="213" y="70" width="34" height="10" rx="5" fill="#fff"/>
+          </g>
+
+          <!-- Barrière droite -->
+          <g class="barrier-anim" style="transform-origin:460px 100px;">
+            <rect x="290" y="95" width="160" height="12" rx="6" fill="#ef4444"/>
+            <rect x="290" y="95" width="40" height="12" rx="6" fill="#fff" opacity=".3"/>
+            <rect x="340" y="95" width="40" height="12" rx="6" fill="#fff" opacity=".3"/>
+            <rect x="390" y="95" width="40" height="12" rx="6" fill="#fff" opacity=".3"/>
+            <rect x="290" y="70" width="8" height="28" rx="4" fill="#5C666B"/>
+            <rect x="442" y="70" width="8" height="28" rx="4" fill="#5C666B"/>
+          </g>
+
+          <!-- Icônes décoratives -->
+          <text x="60" y="65" font-size="20" text-anchor="middle" opacity=".5">🚫</text>
+          <text x="390" y="65" font-size="20" text-anchor="middle" opacity=".5">⛔</text>
+          <text x="100" y="140" font-size="13" text-anchor="middle" opacity=".4" fill="#6b7280">Accès refusé</text>
+          <text x="360" y="140" font-size="13" text-anchor="middle" opacity=".4" fill="#6b7280">Zone protégée</text>
+        </svg>
+      </div>
+
+      <h1 class="err403-title">
+        Zone <span class="err403-accent">interdite</span> — droits insuffisants
+      </h1>
+      <p class="err403-sub">
+        Vous êtes connecté mais votre compte ne dispose pas des permissions nécessaires pour accéder à cette ressource. Contactez notre équipe si vous pensez qu'il s'agit d'une erreur.
+      </p>
+
+      <!-- Tableau de permissions -->
+      <div class="err403-perms">
+        <div class="err403-perm-row">
+          <span class="err403-perm-label"><i class="fas fa-user-check"></i> Authentification</span>
+          <span class="perm-badge-ok">✓ Validée</span>
+        </div>
+        <div class="err403-perm-row">
+          <span class="err403-perm-label"><i class="fas fa-folder-open"></i> Accès aux documents</span>
+          <span class="perm-badge-ok">✓ Autorisé</span>
+        </div>
+        <div class="err403-perm-row">
+          <span class="err403-perm-label"><i class="fas fa-lock"></i> Page demandée</span>
+          <span class="perm-badge-no">✗ Accès refusé</span>
+        </div>
+        <div class="err403-perm-row">
+          <span class="err403-perm-label"><i class="fas fa-crown"></i> Niveau d'autorisation requis</span>
+          <span class="perm-badge-no">Administrateur</span>
+        </div>
+      </div>
+
+      <!-- Contact support -->
+      <div class="err403-contact-box">
+        <div class="err403-contact-icon"><i class="fas fa-headset"></i></div>
+        <div>
+          <strong>Besoin d'un accès ?</strong>
+          <span>Notre équipe peut vous attribuer les droits nécessaires.</span>
+        </div>
+        <a href="{{ url_for('nous_contacter') }}"><i class="fas fa-arrow-right"></i> Demander</a>
+      </div>
+
+      <div class="err403-ctas">
+        <a href="{{ url_for('menu') }}" class="err403-btn-secondary">
+          <i class="fas fa-home"></i> Accueil
+        </a>
+        <a href="javascript:history.back()" class="err403-btn-secondary">
+          <i class="fas fa-arrow-left"></i> Page précédente
+        </a>
+        <a href="{{ url_for('compte_client') }}" class="err403-btn-primary">
+          <i class="fas fa-user"></i> Mon espace client
+        </a>
+      </div>
+
+      <div class="err403-ticker">
+        <span class="err403-ticker-dot"></span>
+        Code d'erreur : 403 — Forbidden · Permissions insuffisantes pour cette ressource
+      </div>
+
+    </div>
+  </div>
+
+  {% include "footer.html" %}
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

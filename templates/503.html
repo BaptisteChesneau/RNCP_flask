@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Erreur 503 - Service indisponible | ML2C Conseil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    .error-503-page {
+      min-height: 80vh;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--gris-light); padding: 3rem 1rem;
+    }
+    .err503-card {
+      background: var(--white); border-radius: 24px;
+      max-width: 800px; width: 100%;
+      padding: 3rem 2.5rem 2.5rem;
+      box-shadow: var(--shadow-lg);
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .err503-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, #0ea5e9 0%, var(--turquoise) 50%, #0ea5e9 100%);
+      border-radius: 24px 24px 0 0;
+    }
+    .err503-badge {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .32rem .95rem;
+      background: #e0f2fe; border: 1px solid #7dd3fc;
+      border-radius: 30px;
+      font-size: .78rem; font-weight: 600; color: #0c4a6e;
+      letter-spacing: .06em; text-transform: uppercase; margin-bottom: 1.5rem;
+    }
+    .err503-badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #0ea5e9;
+      animation: err503Blink 1.5s ease-in-out infinite;
+    }
+    @keyframes err503Blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+
+    .err503-code {
+      font-family: var(--font-head);
+      font-size: clamp(5rem, 15vw, 7rem);
+      font-weight: 700; line-height: 1; letter-spacing: -.04em;
+      background: linear-gradient(135deg, #0ea5e9 0%, var(--turquoise) 55%, #4FA695 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; user-select: none; margin-bottom: .75rem;
+    }
+
+    .err503-illus { width: 100%; max-width: 500px; margin-bottom: 1.75rem; }
+    .err503-illus svg { width: 100%; height: auto; display: block; }
+
+    .gear-spin { animation: gearSpin 4s linear infinite; transform-origin: center; }
+    .gear-spin-rev { animation: gearSpin 4s linear infinite reverse; transform-origin: center; }
+    @keyframes gearSpin { to { transform: rotate(360deg); } }
+    .wrench-anim { animation: wrenchWiggle 2s ease-in-out infinite; transform-origin: bottom left; }
+    @keyframes wrenchWiggle {
+      0%,100% { transform: rotate(0deg); }
+      25% { transform: rotate(-15deg); }
+      75% { transform: rotate(10deg); }
+    }
+    .progress-fill {
+      animation: progressAnim 3s ease-in-out infinite;
+    }
+    @keyframes progressAnim {
+      0% { width: 0%; }
+      60% { width: 75%; }
+      80% { width: 75%; }
+      100% { width: 0%; }
+    }
+
+    .err503-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700; color: var(--gris-dark);
+      line-height: 1.2; margin-bottom: .75rem;
+    }
+    .err503-accent { color: #0ea5e9; }
+    .err503-sub {
+      font-size: .97rem; color: var(--text-muted);
+      max-width: 480px; line-height: 1.65; margin-bottom: 2rem;
+    }
+
+    /* Maintenance timeline */
+    .err503-timeline {
+      width: 100%; max-width: 520px;
+      margin-bottom: 2rem; text-align: left;
+    }
+    .err503-timeline h5 {
+      font-size: .78rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em;
+      color: #0ea5e9; margin-bottom: 1rem; text-align: center;
+    }
+    .timeline-item {
+      display: flex; align-items: flex-start; gap: 1rem;
+      padding: .65rem 0;
+      border-bottom: 1px solid #f0f0f0;
+      position: relative;
+    }
+    .timeline-item:last-child { border-bottom: none; }
+    .timeline-dot {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .75rem; flex-shrink: 0; margin-top: .1rem;
+    }
+    .tdot-done { background: #e1f5f0; color: #4FA695; }
+    .tdot-current { background: #e0f2fe; color: #0ea5e9; animation: err503Blink 1.5s infinite; }
+    .tdot-pending { background: #f3f4f6; color: #9ca3af; }
+    .timeline-content strong { display: block; font-size: .88rem; color: var(--gris-dark); }
+    .timeline-content span { font-size: .78rem; color: var(--text-muted); }
+
+    /* Barre de progression maintenance */
+    .err503-progress {
+      width: 100%; max-width: 520px;
+      background: #f0f2f5; border-radius: 12px;
+      padding: 1.25rem; margin-bottom: 2rem;
+    }
+    .err503-progress h5 {
+      font-size: .78rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em;
+      color: var(--turquoise); margin-bottom: .85rem;
+      display: flex; justify-content: space-between;
+    }
+    .progress-bar-wrap {
+      background: #e5e7eb; border-radius: 30px; height: 10px;
+      overflow: hidden; margin-bottom: .5rem;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #0ea5e9, #4FA695);
+      border-radius: 30px;
+      animation: progressAnim 3s ease-in-out infinite;
+      width: 0%;
+    }
+    .progress-labels {
+      display: flex; justify-content: space-between;
+      font-size: .72rem; color: var(--text-muted);
+    }
+
+    /* Status services */
+    .err503-services {
+      width: 100%; max-width: 520px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: .6rem; margin-bottom: 2rem;
+    }
+    .svc-status {
+      display: flex; align-items: center; justify-content: space-between;
+      background: #f9fafb; border: 1px solid var(--border);
+      border-radius: 10px; padding: .6rem .9rem;
+      font-size: .82rem;
+    }
+    .svc-status-label { display: flex; align-items: center; gap: .5rem; color: var(--gris-dark); }
+    .svc-status-label i { width: 14px; color: var(--gris); font-size: .8rem; }
+    .svc-ok { color: #4FA695; font-size: .75rem; font-weight: 600; }
+    .svc-maint { color: #0ea5e9; font-size: .75rem; font-weight: 600; animation: err503Blink 1.5s infinite; }
+    .svc-off { color: #9ca3af; font-size: .75rem; font-weight: 600; }
+
+    .err503-retry-btn {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .7rem 1.75rem;
+      background: linear-gradient(135deg, #0ea5e9, #4FA695);
+      color: #fff; font-weight: 600; font-size: .92rem;
+      border-radius: 30px; border: none;
+      cursor: pointer; transition: var(--transition);
+      font-family: var(--font-body);
+      margin-bottom: 1.25rem;
+    }
+    .err503-retry-btn:hover { opacity: .9; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(14,165,233,.35); }
+
+    .err503-ctas {
+      display: flex; gap: .75rem; flex-wrap: wrap; justify-content: center;
+    }
+    .err503-btn-secondary {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .6rem 1.4rem; background: transparent; color: var(--gris);
+      font-weight: 500; font-size: .88rem; border-radius: 30px;
+      border: 1.5px solid var(--border); transition: var(--transition); text-decoration: none;
+    }
+    .err503-btn-secondary:hover { border-color: #0ea5e9; color: #0ea5e9; background: #e0f2fe; }
+
+    .err503-ticker {
+      margin-top: 1.75rem;
+      display: flex; align-items: center; gap: .5rem;
+      font-size: .78rem; color: var(--text-muted);
+    }
+    .err503-ticker-dot { width: 5px; height: 5px; border-radius: 50%; background: #0ea5e9; animation: err503Blink 1.5s infinite; }
+
+    @media (max-width: 576px) {
+      .err503-card { padding: 2rem 1.25rem 1.75rem; }
+      .err503-services { grid-template-columns: 1fr; }
+      .err503-ctas { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+  {% include "header.html" %}
+
+  <div class="error-503-page">
+    <div class="err503-card">
+
+      <div class="err503-badge">
+        <span class="err503-badge-dot"></span>
+        Maintenance en cours
+      </div>
+
+      <div class="err503-code">503</div>
+
+      <!-- Illustration engrenages SVG -->
+      <div class="err503-illus">
+        <svg viewBox="0 0 500 150" xmlns="http://www.w3.org/2000/svg">
+          <!-- Grand engrenage gauche -->
+          <g class="gear-spin" style="transform-origin:120px 75px;">
+            <circle cx="120" cy="75" r="38" fill="none" stroke="#0ea5e9" stroke-width="8"/>
+            <circle cx="120" cy="75" r="15" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="4"/>
+            <!-- Dents -->
+            <rect x="115" y="30" width="10" height="15" rx="3" fill="#0ea5e9"/>
+            <rect x="115" y="110" width="10" height="15" rx="3" fill="#0ea5e9"/>
+            <rect x="75" y="70" width="15" height="10" rx="3" fill="#0ea5e9"/>
+            <rect x="155" y="70" width="15" height="10" rx="3" fill="#0ea5e9"/>
+            <rect x="85" y="41" width="15" height="10" rx="3" fill="#0ea5e9" transform="rotate(-45 92 46)"/>
+            <rect x="148" y="41" width="15" height="10" rx="3" fill="#0ea5e9" transform="rotate(45 155 46)"/>
+            <rect x="85" y="99" width="15" height="10" rx="3" fill="#0ea5e9" transform="rotate(45 92 104)"/>
+            <rect x="148" y="99" width="15" height="10" rx="3" fill="#0ea5e9" transform="rotate(-45 155 104)"/>
+          </g>
+
+          <!-- Petit engrenage haut droite -->
+          <g class="gear-spin-rev" style="transform-origin:215px 45px;">
+            <circle cx="215" cy="45" r="22" fill="none" stroke="#4FA695" stroke-width="6"/>
+            <circle cx="215" cy="45" r="8" fill="#e1f5f0" stroke="#4FA695" stroke-width="3"/>
+            <rect x="211" y="17" width="8" height="12" rx="2" fill="#4FA695"/>
+            <rect x="211" y="66" width="8" height="12" rx="2" fill="#4FA695"/>
+            <rect x="187" y="41" width="12" height="8" rx="2" fill="#4FA695"/>
+            <rect x="236" y="41" width="12" height="8" rx="2" fill="#4FA695"/>
+          </g>
+
+          <!-- Clé à molette -->
+          <g class="wrench-anim" style="transform-origin:290px 120px;">
+            <rect x="285" y="55" width="10" height="65" rx="5" fill="#5C666B"/>
+            <ellipse cx="290" cy="52" rx="16" ry="12" fill="none" stroke="#5C666B" stroke-width="6"/>
+            <rect x="282" y="116" width="16" height="8" rx="4" fill="#5C666B"/>
+          </g>
+
+          <!-- Barre de progression -->
+          <rect x="320" y="60" width="160" height="12" rx="6" fill="#e5e7eb"/>
+          <rect x="320" y="60" width="0" height="12" rx="6" fill="url(#pg503)" class="progress-bar-fill"/>
+          <defs>
+            <linearGradient id="pg503" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#0ea5e9"/>
+              <stop offset="100%" stop-color="#4FA695"/>
+            </linearGradient>
+          </defs>
+          <text x="320" y="50" font-size="9" fill="#6b7280" font-family="sans-serif">Maintenance en cours...</text>
+          <text x="320" y="86" font-size="8" fill="#9ca3af" font-family="sans-serif">Restauration des services</text>
+
+          <!-- Points clignotants -->
+          <circle cx="360" cy="110" r="4" fill="#0ea5e9">
+            <animate attributeName="opacity" values="1;.2;1" dur="1s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="380" cy="110" r="4" fill="#4FA695">
+            <animate attributeName="opacity" values="1;.2;1" dur="1s" begin=".3s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="400" cy="110" r="4" fill="#0ea5e9">
+            <animate attributeName="opacity" values="1;.2;1" dur="1s" begin=".6s" repeatCount="indefinite"/>
+          </circle>
+
+          <!-- Texte bas -->
+          <text x="250" y="140" font-size="9" fill="#9ca3af" font-family="sans-serif" text-anchor="middle">ML2C CONSEIL — Équipe technique au travail</text>
+        </svg>
+      </div>
+
+      <h1 class="err503-title">
+        Service temporairement <span class="err503-accent">indisponible</span>
+      </h1>
+      <p class="err503-sub">
+        Nous effectuons une maintenance planifiée pour améliorer nos services. Le cabinet ML2C CONSEIL sera de nouveau accessible très prochainement. Merci pour votre patience.
+      </p>
+
+      <!-- Barre de progression -->
+      <div class="err503-progress">
+        <h5>
+          <span>Progression de la maintenance</span>
+          <span style="color:#0ea5e9;">~75%</span>
+        </h5>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill"></div>
+        </div>
+        <div class="progress-labels">
+          <span>Démarrage</span>
+          <span>Migration BDD</span>
+          <span>Tests</span>
+          <span>Finalisation</span>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="err503-timeline">
+        <h5><i class="fas fa-tools" style="margin-right:.4rem;"></i>Étapes de maintenance</h5>
+        <div class="timeline-item">
+          <div class="timeline-dot tdot-done"><i class="fas fa-check"></i></div>
+          <div class="timeline-content">
+            <strong>Sauvegarde des données</strong>
+            <span>Complétée — toutes les données sont sécurisées</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot tdot-done"><i class="fas fa-check"></i></div>
+          <div class="timeline-content">
+            <strong>Migration de la base de données</strong>
+            <span>Complétée — nouvelles optimisations appliquées</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot tdot-current"><i class="fas fa-spinner"></i></div>
+          <div class="timeline-content">
+            <strong>Tests et validation</strong>
+            <span>En cours — vérification des fonctionnalités critiques</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot tdot-pending"><i class="fas fa-clock"></i></div>
+          <div class="timeline-content">
+            <strong>Remise en production</strong>
+            <span>En attente — déploiement final prévu sous peu</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Statuts services -->
+      <div class="err503-services">
+        <div class="svc-status">
+          <span class="svc-status-label"><i class="fas fa-database"></i> Base de données</span>
+          <span class="svc-ok">✓ OK</span>
+        </div>
+        <div class="svc-status">
+          <span class="svc-status-label"><i class="fas fa-envelope"></i> Emails</span>
+          <span class="svc-ok">✓ OK</span>
+        </div>
+        <div class="svc-status">
+          <span class="svc-status-label"><i class="fas fa-server"></i> Serveur web</span>
+          <span class="svc-maint">⟳ Maintenance</span>
+        </div>
+        <div class="svc-status">
+          <span class="svc-status-label"><i class="fas fa-user-lock"></i> Espace client</span>
+          <span class="svc-maint">⟳ Maintenance</span>
+        </div>
+        <div class="svc-status">
+          <span class="svc-status-label"><i class="fas fa-shield-alt"></i> Sécurité</span>
+          <span class="svc-ok">✓ OK</span>
+        </div>
+        <div class="svc-status">
+          <span class="svc-status-label"><i class="fas fa-phone-alt"></i> Support téléphonique</span>
+          <span class="svc-ok">✓ Disponible</span>
+        </div>
+      </div>
+
+      <button class="err503-retry-btn" onclick="window.location.reload()">
+        <i class="fas fa-sync-alt"></i> Vérifier la disponibilité
+      </button>
+
+      <div class="err503-ctas">
+        <a href="tel:+33672343294" class="err503-btn-secondary">
+          <i class="fas fa-phone-alt"></i> +33 (0)6 72 34 32 94
+        </a>
+        <a href="mailto:contact@ml2cconseil.com" class="err503-btn-secondary">
+          <i class="fas fa-envelope"></i> Nous écrire
+        </a>
+      </div>
+
+      <div class="err503-ticker">
+        <span class="err503-ticker-dot"></span>
+        Code d'erreur : 503 — Service Unavailable · Maintenance planifiée · ML2C-SRV
+      </div>
+
+    </div>
+  </div>
+
+  {% include "footer.html" %}
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    /* Auto-refresh toutes les 60s */
+    setTimeout(() => window.location.reload(), 60000);
+  </script>
+</body>
+</html>

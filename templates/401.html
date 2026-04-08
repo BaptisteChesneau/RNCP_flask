@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Erreur 401 - Accès non autorisé | ML2C Conseil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    .error-401-page {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--gris-light);
+      padding: 3rem 1rem;
+    }
+    .err401-card {
+      background: var(--white);
+      border-radius: 24px;
+      max-width: 780px;
+      width: 100%;
+      padding: 3rem 2.5rem 2.5rem;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .err401-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #f59e0b 0%, var(--rose) 50%, #f59e0b 100%);
+      border-radius: 24px 24px 0 0;
+    }
+    .err401-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .32rem .95rem;
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+      border-radius: 30px;
+      font-size: .78rem;
+      font-weight: 600;
+      color: #92400e;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    .err401-badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #f59e0b;
+      animation: err401Blink 1.2s ease-in-out infinite;
+    }
+    @keyframes err401Blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+
+    .err401-code {
+      font-family: var(--font-head);
+      font-size: clamp(5rem, 15vw, 7rem);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -.04em;
+      background: linear-gradient(135deg, #f59e0b 0%, var(--rose) 55%, #f472b6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      user-select: none;
+      margin-bottom: .75rem;
+    }
+
+    /* Illustration verrou animé */
+    .err401-illus {
+      width: 100%;
+      max-width: 420px;
+      margin-bottom: 1.75rem;
+    }
+    .err401-illus svg { width: 100%; height: auto; display: block; }
+
+    .lock-body {
+      animation: lockShake 4s ease-in-out infinite;
+    }
+    @keyframes lockShake {
+      0%,90%,100% { transform: translateX(0); }
+      92% { transform: translateX(-4px) rotate(-2deg); }
+      94% { transform: translateX(4px) rotate(2deg); }
+      96% { transform: translateX(-3px) rotate(-1deg); }
+      98% { transform: translateX(3px) rotate(1deg); }
+    }
+    .lock-keyhole {
+      animation: keyholeGlow 2s ease-in-out infinite;
+    }
+    @keyframes keyholeGlow {
+      0%,100% { opacity: .6; }
+      50% { opacity: 1; filter: drop-shadow(0 0 4px #f59e0b); }
+    }
+    .shield-pulse {
+      animation: shieldPulse 2.5s ease-in-out infinite;
+    }
+    @keyframes shieldPulse {
+      0%,100% { transform: scale(1); opacity: .15; }
+      50% { transform: scale(1.15); opacity: .05; }
+    }
+
+    .err401-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      color: var(--gris-dark);
+      line-height: 1.2;
+      margin-bottom: .75rem;
+    }
+    .err401-accent { color: #f59e0b; }
+    .err401-sub {
+      font-size: .97rem;
+      color: var(--text-muted);
+      max-width: 480px;
+      line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+
+    /* Info box */
+    .err401-info-box {
+      width: 100%;
+      max-width: 500px;
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+      text-align: left;
+    }
+    .err401-info-box h5 {
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #92400e;
+      margin-bottom: .75rem;
+    }
+    .err401-info-row {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      font-size: .85rem;
+      color: #78350f;
+      padding: .3rem 0;
+    }
+    .err401-info-row i { color: #f59e0b; width: 16px; flex-shrink: 0; }
+
+    /* Formulaire connexion rapide */
+    .err401-login-box {
+      width: 100%;
+      max-width: 400px;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+      text-align: left;
+    }
+    .err401-login-box h4 {
+      font-family: var(--font-head);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--gris-dark);
+      margin-bottom: 1.25rem;
+      text-align: center;
+    }
+    .err401-field { margin-bottom: 1rem; }
+    .err401-field label {
+      font-size: .75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: .4rem;
+    }
+    .err401-field input {
+      width: 100%;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: .65rem 1rem;
+      font-size: .9rem;
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--gris-light);
+      outline: none;
+      transition: var(--transition);
+    }
+    .err401-field input:focus {
+      border-color: var(--rose);
+      background: var(--white);
+      box-shadow: 0 0 0 3px rgba(193,0,122,.1);
+    }
+    .err401-login-btn {
+      width: 100%;
+      padding: .75rem;
+      background: var(--rose);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      font-size: .92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: var(--font-body);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      margin-top: .5rem;
+    }
+    .err401-login-btn:hover { background: var(--rose-dark); transform: translateY(-1px); box-shadow: 0 6px 16px rgba(193,0,122,.35); }
+    .err401-forgot {
+      display: block;
+      text-align: center;
+      font-size: .8rem;
+      color: var(--text-muted);
+      margin-top: .85rem;
+    }
+    .err401-forgot a { color: var(--rose); font-weight: 500; }
+
+    .err401-ctas {
+      display: flex;
+      gap: .75rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+    .err401-btn-primary {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .6rem 1.4rem;
+      background: var(--rose); color: var(--white);
+      font-weight: 600; font-size: .88rem;
+      border-radius: 30px; border: 1.5px solid var(--rose);
+      transition: var(--transition); text-decoration: none;
+    }
+    .err401-btn-primary:hover { background: var(--rose-dark); border-color: var(--rose-dark); color: var(--white); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(193,0,122,.32); }
+    .err401-btn-secondary {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .6rem 1.4rem;
+      background: transparent; color: var(--gris);
+      font-weight: 500; font-size: .88rem;
+      border-radius: 30px; border: 1.5px solid var(--border);
+      transition: var(--transition); text-decoration: none;
+    }
+    .err401-btn-secondary:hover { border-color: var(--rose); color: var(--rose); background: var(--rose-light); }
+
+    .err401-ticker {
+      margin-top: 1.5rem;
+      display: flex; align-items: center; gap: .5rem;
+      font-size: .78rem; color: var(--text-muted);
+    }
+    .err401-ticker-dot { width: 5px; height: 5px; border-radius: 50%; background: #f59e0b; animation: err401Blink 1.2s infinite; }
+
+    @media (max-width: 576px) {
+      .err401-card { padding: 2rem 1.25rem 1.75rem; }
+      .err401-ctas { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+  {% include "header.html" %}
+
+  <div class="error-401-page">
+    <div class="err401-card">
+
+      <div class="err401-badge">
+        <span class="err401-badge-dot"></span>
+        Authentification requise
+      </div>
+
+      <div class="err401-code">401</div>
+
+      <!-- Illustration verrou SVG -->
+      <div class="err401-illus">
+        <svg viewBox="0 0 420 160" xmlns="http://www.w3.org/2000/svg">
+          <!-- Halo de fond -->
+          <circle cx="210" cy="80" r="65" fill="#f59e0b" class="shield-pulse"/>
+          <circle cx="210" cy="80" r="50" fill="#fef3c7" opacity=".3"/>
+
+          <!-- Corps du verrou -->
+          <g class="lock-body" style="transform-origin:210px 80px;">
+            <!-- Arceau -->
+            <path d="M178 72 C178 50 242 50 242 72" fill="none" stroke="#f59e0b" stroke-width="10" stroke-linecap="round"/>
+            <!-- Corps principal -->
+            <rect x="168" y="72" width="84" height="64" rx="10" fill="#5C666B"/>
+            <!-- Reflet -->
+            <rect x="174" y="78" width="72" height="4" rx="2" fill="rgba(255,255,255,.15)"/>
+            <!-- Trou de serrure -->
+            <g class="lock-keyhole">
+              <circle cx="210" cy="100" r="10" fill="#f59e0b"/>
+              <rect x="206" y="100" width="8" height="14" rx="4" fill="#f59e0b"/>
+            </g>
+          </g>
+
+          <!-- Éclairs de sécurité -->
+          <text x="130" y="55" font-size="18" opacity=".6" style="animation:err401Blink 1.8s .2s infinite">🔒</text>
+          <text x="265" y="55" font-size="18" opacity=".6" style="animation:err401Blink 1.8s .6s infinite">⚠️</text>
+          <text x="148" y="140" font-size="14" opacity=".5" style="animation:err401Blink 2s 1s infinite">🛡️</text>
+          <text x="248" y="140" font-size="14" opacity=".5" style="animation:err401Blink 2s .4s infinite">🔑</text>
+
+          <!-- Barres de code côté gauche -->
+          <rect x="20" y="40" width="90" height="6" rx="3" fill="#e5e7eb"/>
+          <rect x="20" y="54" width="70" height="6" rx="3" fill="#e5e7eb"/>
+          <rect x="20" y="68" width="80" height="6" rx="3" fill="#fcd34d" opacity=".8"/>
+          <rect x="20" y="82" width="60" height="6" rx="3" fill="#e5e7eb"/>
+          <rect x="20" y="96" width="75" height="6" rx="3" fill="#e5e7eb"/>
+          <rect x="20" y="110" width="50" height="6" rx="3" fill="#fca5a5" opacity=".8"/>
+
+          <!-- Barres de code côté droit -->
+          <rect x="310" y="40" width="90" height="6" rx="3" fill="#e5e7eb"/>
+          <rect x="320" y="54" width="70" height="6" rx="3" fill="#e5e7eb"/>
+          <rect x="315" y="68" width="80" height="6" rx="3" fill="#e5e7eb"/>
+          <rect x="330" y="82" width="60" height="6" rx="3" fill="#fcd34d" opacity=".8"/>
+          <rect x="310" y="96" width="75" height="6" rx="3" fill="#e5e7eb"/>
+          <rect x="325" y="110" width="55" height="6" rx="3" fill="#fca5a5" opacity=".8"/>
+        </svg>
+      </div>
+
+      <h1 class="err401-title">
+        Accès <span class="err401-accent">non autorisé</span> — identifiez-vous
+      </h1>
+      <p class="err401-sub">
+        Cette page est réservée aux clients ML2C CONSEIL connectés. Veuillez vous identifier pour accéder à votre espace personnel et à vos documents.
+      </p>
+
+      <!-- Info box -->
+      <div class="err401-info-box">
+        <h5><i class="fas fa-info-circle" style="margin-right:.4rem;color:#f59e0b;"></i>Pourquoi ce message ?</h5>
+        <div class="err401-info-row"><i class="fas fa-clock"></i> Votre session a peut-être expiré après inactivité</div>
+        <div class="err401-info-row"><i class="fas fa-user-slash"></i> Vous n'êtes pas encore connecté à votre compte</div>
+        <div class="err401-info-row"><i class="fas fa-shield-alt"></i> La page requiert une authentification préalable</div>
+      </div>
+
+      <!-- Formulaire connexion rapide -->
+      <div class="err401-login-box">
+        <h4><i class="fas fa-sign-in-alt" style="color:var(--rose);margin-right:.5rem;"></i>Connexion rapide</h4>
+        <div class="err401-field">
+          <label>Email</label>
+          <input type="email" placeholder="votre@email.com" id="loginEmail" autocomplete="email">
+        </div>
+        <div class="err401-field">
+          <label>Mot de passe</label>
+          <input type="password" placeholder="••••••••" id="loginPwd">
+        </div>
+        <button class="err401-login-btn" onclick="tryLogin()">
+          <i class="fas fa-unlock-alt"></i> Se connecter
+        </button>
+        <span class="err401-forgot">Mot de passe oublié ? <a href="{{ url_for('signup') }}">Réinitialiser</a></span>
+      </div>
+
+      <div class="err401-ctas">
+        <a href="{{ url_for('menu') }}" class="err401-btn-secondary">
+          <i class="fas fa-home"></i> Retour à l'accueil
+        </a>
+        <a href="{{ url_for('nous_contacter') }}" class="err401-btn-primary">
+          <i class="fas fa-headset"></i> Contacter le support
+        </a>
+      </div>
+
+      <div class="err401-ticker">
+        <span class="err401-ticker-dot"></span>
+        Code d'erreur : 401 — Unauthorized · Session expirée ou absente
+      </div>
+
+    </div>
+  </div>
+
+  {% include "footer.html" %}
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function tryLogin() {
+      const email = document.getElementById('loginEmail').value.trim();
+      const pwd = document.getElementById('loginPwd').value.trim();
+      if (!email || !pwd) {
+        alert('Veuillez remplir tous les champs.');
+        return;
+      }
+      window.location.href = "{{ url_for('signup') }}";
+    }
+  </script>
+</body>
+</html>

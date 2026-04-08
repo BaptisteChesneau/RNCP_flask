@@ -1262,7 +1262,22 @@ def test_404():
 
 @app.route('/test-500')
 def test_500():
-    return render_template('500.html'), 500
+    return render_template('500.html'), 500@app.route('/test-401')
+
+def test_401():
+    return render_template('401.html'), 401
+
+@app.route('/test-403')
+def test_403():
+    return render_template('403.html'), 403
+
+@app.route('/test-429')
+def test_429():
+    return render_template('429.html'), 429
+
+@app.route('/test-503')
+def test_503():
+    return render_template('503.html'), 503
 
 @app.route("/ajouter-message", methods=["GET", "POST"])
 def ajouter_message():
@@ -1601,6 +1616,21 @@ def add_security_headers(response):
 def page_not_found(e):
     return render_template("404.html"), 404
 
+@app.errorhandler(401)
+def unauthorized(e):
+    return render_template('401.html'), 401
+
+@app.errorhandler(403)
+def forbidden(e):
+    return render_template('403.html'), 403
+
+@app.errorhandler(429)
+def too_many_requests(e):
+    return render_template('429.html'), 429
+
+@app.errorhandler(503)
+def service_unavailable(e):
+    return render_template('503.html'), 503
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

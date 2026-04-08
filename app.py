@@ -1264,6 +1264,7 @@ def test_404():
 def test_500():
     return render_template('500.html'), 500@app.route('/test-401')
 
+@app.route('/test-401')
 def test_401():
     return render_template('401.html'), 401
 

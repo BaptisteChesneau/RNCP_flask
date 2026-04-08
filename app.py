@@ -1262,7 +1262,7 @@ def test_404():
 
 @app.route('/test-500')
 def test_500():
-    return render_template('500.html'), 500@app.route('/test-401')
+    return render_template('500.html'), 500
 
 @app.route('/test-401')
 def test_401():
@@ -1632,6 +1632,10 @@ def too_many_requests(e):
 @app.errorhandler(503)
 def service_unavailable(e):
     return render_template('503.html'), 503
+
+@app.errorhandler(500)
+def internal_error(e):
+    return render_template('500.html'), 500
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

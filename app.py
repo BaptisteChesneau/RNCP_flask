@@ -1163,22 +1163,28 @@ def chatbot():
     )
 
 @app.route('/admin/statistiques')
-def admin_stats(): return render_template('admin_stats.html')
+def admin_stats():
+    return render_template('admin_stats.html')
 
 @app.route('/admin/configuration')
-def admin_stats(): return render_template('admin_config.html')
+def admin_configuration():
+    return render_template('admin_config.html')
 
 @app.route('/admin/log-de-sécurite')
-def admin_stats(): return render_template('admin_logs.html')
+def admin_logs():
+    return render_template('admin_logs.html')
 
 @app.route('/admin/emails-automatiques')
-def admin_stats(): return render_template('admin_emails.html')
+def admin_emails():
+    return render_template('admin_emails.html')
 
 @app.route('/admin/export-des-donnees')
-def admin_stats(): return render_template('admin_export.html')
+def admin_export():
+    return render_template('admin_export.html')
 
 @app.route('/admin/purger-les-logs')
-def admin_stats(): return render_template('admin_purge.html')
+def admin_purge():
+    return render_template('admin_purge.html')
 
 # ➡️ NEW protected admin route (to be added)
 @app.route("/admin-chatbot")

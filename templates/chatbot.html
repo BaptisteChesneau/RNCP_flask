@@ -1,263 +1,1472 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Ajouter une question - Chatbot ML2C CONSEIL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatbot ML2C — Dashboard IA</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0d0f14;
+      font-family: 'DM Sans', sans-serif;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ══ SHELL ══ */
+    .dash {
+      display: flex;
+      height: calc(100vh - 72px);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ══════════════════════════════
+       SIDEBAR
+    ══════════════════════════════ */
+    .sidebar {
+      width: 270px;
+      flex-shrink: 0;
+      background: #13151c;
+      border-right: 1px solid rgba(255,255,255,.06);
+      display: flex;
+      flex-direction: column;
+      transition: width .3s ease;
+      overflow: hidden;
+    }
+    .sidebar.collapsed { width: 0; }
+
+    .sb-head {
+      padding: 1.1rem 1rem;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+
+    .sb-brand {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin-bottom: 1rem;
+    }
+    .sb-bot-av {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #C1007A, #6b0045);
+      border: 2px solid rgba(193,0,122,.35);
+      overflow: hidden;
+      flex-shrink: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      box-shadow: 0 0 16px rgba(193,0,122,.25);
+    }
+    .sb-bot-av img { width: 40px; height: 40px; object-fit: cover; }
+    .sb-brand-info { flex: 1; min-width: 0; }
+    .sb-bot-name {
+      font-size: .88rem;
+      font-weight: 600;
+      color: #fff;
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sb-bot-status {
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+      font-size: .68rem;
+      color: rgba(255,255,255,.35);
+      margin-top: .1rem;
+    }
+    .online-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 6px rgba(34,197,94,.6);
+      animation: onlinePulse 2s infinite;
+    }
+    @keyframes onlinePulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    .btn-new-chat {
+      width: 100%;
+      padding: .6rem .9rem;
+      background: linear-gradient(135deg, #C1007A, #9a0062);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: .83rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      transition: all .2s;
+      font-family: 'DM Sans', sans-serif;
+      box-shadow: 0 4px 12px rgba(193,0,122,.3);
+    }
+    .btn-new-chat:hover {
+      background: linear-gradient(135deg, #d4008a, #C1007A);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(193,0,122,.4);
+    }
+
+    /* Sections sidebar */
+    .sb-section-label {
+      padding: .85rem 1rem .35rem;
+      font-size: .62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: rgba(255,255,255,.2);
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+
+    .sb-list {
+      overflow-y: auto;
+      flex: 1;
+      padding: .2rem .5rem;
+    }
+    .sb-list::-webkit-scrollbar { width: 3px; }
+    .sb-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,.08); border-radius: 2px; }
+
+    /* Conversation item */
+    .conv-item {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      padding: .55rem .7rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background .15s;
+      margin-bottom: .15rem;
+      border: 1px solid transparent;
+      position: relative;
+      group: true;
+    }
+    .conv-item:hover { background: rgba(255,255,255,.05); }
+    .conv-item.active {
+      background: rgba(193,0,122,.12);
+      border-color: rgba(193,0,122,.2);
+    }
+    .conv-item.fav-item {
+      border-left: 2px solid #f59e0b;
+      padding-left: .6rem;
+    }
+
+    .conv-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.07);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: .75rem;
+      color: rgba(255,255,255,.4);
+      transition: background .15s;
+    }
+    .conv-item.active .conv-icon { background: rgba(193,0,122,.25); color: #f472b6; }
+    .conv-item.fav-item .conv-icon { background: rgba(245,158,11,.15); color: #f59e0b; }
+
+    .conv-info { flex: 1; min-width: 0; }
+    .conv-title {
+      font-size: .8rem;
+      font-weight: 500;
+      color: rgba(255,255,255,.7);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+    }
+    .conv-item.active .conv-title { color: #fff; font-weight: 600; }
+    .conv-preview {
+      font-size: .68rem;
+      color: rgba(255,255,255,.28);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+      margin-top: .1rem;
+    }
+
+    .conv-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: .25rem;
+      flex-shrink: 0;
+    }
+    .conv-time {
+      font-size: .62rem;
+      color: rgba(255,255,255,.2);
+    }
+    .conv-fav-btn {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,.18);
+      cursor: pointer;
+      padding: 0;
+      font-size: .78rem;
+      transition: color .2s, transform .2s;
+      line-height: 1;
+    }
+    .conv-fav-btn:hover { color: #f59e0b; transform: scale(1.2); }
+    .conv-fav-btn.active { color: #f59e0b; }
+
+    /* Sidebar footer */
+    .sb-footer {
+      padding: .75rem .6rem;
+      border-top: 1px solid rgba(255,255,255,.06);
+      display: flex;
+      flex-direction: column;
+      gap: .2rem;
+    }
+    .sb-footer-link {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      padding: .45rem .75rem;
+      border-radius: 8px;
+      font-size: .78rem;
+      color: rgba(255,255,255,.4);
+      text-decoration: none;
+      transition: background .15s, color .15s;
+      border: none;
+      background: none;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+    }
+    .sb-footer-link:hover { background: rgba(255,255,255,.06); color: rgba(255,255,255,.75); }
+    .sb-footer-link i { width: 14px; font-size: .8rem; }
+    .sb-footer-link.danger { color: rgba(239,68,68,.5); }
+    .sb-footer-link.danger:hover { background: rgba(239,68,68,.08); color: rgba(239,68,68,.8); }
+
+    /* ══════════════════════════════
+       MAIN CHAT
+    ══════════════════════════════ */
+    .chat-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background: #0d0f14;
+      position: relative;
+    }
+
+    /* Ambient glow */
+    .chat-main::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(193,0,122,.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Topbar */
+    .chat-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .85rem 1.5rem;
+      background: rgba(19,21,28,.95);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      backdrop-filter: blur(12px);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 10;
+    }
+    .topbar-left { display: flex; align-items: center; gap: .85rem; }
+
+    .burger-sb {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.06);
+      border: none;
+      color: rgba(255,255,255,.45);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .8rem;
+      transition: background .15s, color .15s;
+    }
+    .burger-sb:hover { background: rgba(255,255,255,.1); color: #fff; }
+
+    .topbar-bot-av {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #C1007A, #6b0045);
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 0 12px rgba(193,0,122,.3);
+    }
+    .topbar-bot-av img { width: 34px; height: 34px; object-fit: cover; }
+
+    .topbar-bot-info { }
+    .topbar-bot-name {
+      font-size: .9rem;
+      font-weight: 600;
+      color: #fff;
+      display: block;
+    }
+    .topbar-bot-sub {
+      font-size: .68rem;
+      color: rgba(255,255,255,.35);
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+    }
+
+    .topbar-actions { display: flex; gap: .4rem; }
+    .topbar-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.07);
+      color: rgba(255,255,255,.4);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .8rem;
+      transition: all .15s;
+    }
+    .topbar-btn:hover { background: rgba(255,255,255,.1); color: #fff; border-color: rgba(255,255,255,.15); }
+    .topbar-btn.on { background: rgba(193,0,122,.15); border-color: rgba(193,0,122,.3); color: #f472b6; }
+
+    /* Messages area */
+    .chat-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.75rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      position: relative;
+      z-index: 1;
+    }
+    .chat-body::-webkit-scrollbar { width: 4px; }
+    .chat-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,.08); border-radius: 2px; }
+
+    /* Date separator */
+    .date-sep {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: .68rem;
+      color: rgba(255,255,255,.18);
+      font-weight: 500;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    .date-sep::before,
+    .date-sep::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,.06);
+    }
+
+    /* Welcome screen */
+    .chat-welcome {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      padding: 2rem;
+      text-align: center;
+    }
+    .welcome-orb {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #C1007A, #6b0045);
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      box-shadow: 0 0 0 8px rgba(193,0,122,.08), 0 0 40px rgba(193,0,122,.25);
+      animation: orbFloat 4s ease-in-out infinite;
+    }
+    @keyframes orbFloat {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .welcome-orb img { width: 84px; height: 84px; object-fit: cover; }
+    .welcome-h {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: .5rem;
+      background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,.6) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .welcome-sub {
+      font-size: .9rem;
+      color: rgba(255,255,255,.38);
+      max-width: 360px;
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+    .welcome-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .6rem;
+      justify-content: center;
+      max-width: 500px;
+    }
+    .welcome-chip {
+      padding: .5rem 1rem;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 30px;
+      font-size: .82rem;
+      color: rgba(255,255,255,.6);
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .welcome-chip:hover {
+      background: rgba(193,0,122,.12);
+      border-color: rgba(193,0,122,.35);
+      color: #f472b6;
+      transform: translateY(-2px);
+    }
+
+    /* Messages */
+    .msg-row {
+      display: flex;
+      align-items: flex-end;
+      gap: .65rem;
+      animation: msgIn .3s cubic-bezier(.34,1.2,.64,1);
+    }
+    .msg-row.user { flex-direction: row-reverse; }
+    @keyframes msgIn { from { opacity:0; transform:translateY(12px) scale(.97); } to { opacity:1; transform:translateY(0) scale(1); } }
+
+    .msg-av {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .msg-av.bot {
+      background: linear-gradient(135deg, #C1007A, #6b0045);
+      box-shadow: 0 0 8px rgba(193,0,122,.3);
+    }
+    .msg-av.bot img { width: 30px; height: 30px; object-fit: cover; }
+    .msg-av.user {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .msg-wrap { max-width: 65%; display: flex; flex-direction: column; gap: .25rem; }
+    .msg-row.user .msg-wrap { align-items: flex-end; }
+
+    .msg-name {
+      font-size: .65rem;
+      color: rgba(255,255,255,.25);
+      padding: 0 .5rem;
+      font-weight: 500;
+    }
+
+    .msg-bubble {
+      padding: .8rem 1.1rem;
+      border-radius: 18px;
+      font-size: .875rem;
+      line-height: 1.65;
+      word-break: break-word;
+      position: relative;
+    }
+    .msg-row.bot .msg-bubble {
+      background: #1a1d27;
+      color: rgba(255,255,255,.85);
+      border: 1px solid rgba(255,255,255,.07);
+      border-bottom-left-radius: 4px;
+    }
+    .msg-row.user .msg-bubble {
+      background: linear-gradient(135deg, #C1007A, #9a0062);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+      box-shadow: 0 4px 16px rgba(193,0,122,.25);
+    }
+    .msg-waiting .msg-bubble {
+      background: rgba(245,158,11,.06);
+      border: 1px dashed rgba(245,158,11,.25);
+      color: rgba(245,158,11,.75);
+    }
+
+    .msg-foot {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      padding: 0 .5rem;
+      font-size: .62rem;
+      color: rgba(255,255,255,.18);
+    }
+    .msg-row.user .msg-foot { justify-content: flex-end; }
+    .msg-foot-check { color: #C1007A; font-size: .65rem; }
+
+    /* Badge nouvelle réponse */
+    .new-reply-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+      font-size: .62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: #C1007A;
+      background: rgba(193,0,122,.1);
+      border: 1px solid rgba(193,0,122,.2);
+      border-radius: 20px;
+      padding: .12rem .5rem;
+      margin-left: .5rem;
+    }
+    .new-reply-dot { width: 4px; height: 4px; border-radius: 50%; background: #C1007A; }
+
+    /* Typing */
+    .typing-row {
+      display: flex;
+      align-items: flex-end;
+      gap: .65rem;
+      animation: msgIn .3s ease;
+    }
+    .typing-bubble {
+      background: #1a1d27;
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 18px;
+      border-bottom-left-radius: 4px;
+      padding: .8rem 1.1rem;
+      display: flex;
+      gap: .35rem;
+      align-items: center;
+    }
+    .t-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #C1007A;
+      opacity: .35;
+      animation: tDot 1.2s infinite;
+    }
+    .t-dot:nth-child(2) { animation-delay: .2s; }
+    .t-dot:nth-child(3) { animation-delay: .4s; }
+    @keyframes tDot { 0%,60%,100%{transform:scale(1);opacity:.35} 30%{transform:scale(1.5);opacity:1} }
+
+    /* Footer chat */
+    .chat-footer {
+      padding: 1rem 1.5rem 1.25rem;
+      background: rgba(13,15,20,.95);
+      border-top: 1px solid rgba(255,255,255,.06);
+      backdrop-filter: blur(12px);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 10;
+    }
+    .input-box {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      background: #1a1d27;
+      border: 1.5px solid rgba(255,255,255,.09);
+      border-radius: 14px;
+      padding: .55rem .55rem .55rem 1.1rem;
+      transition: border-color .25s, box-shadow .25s;
+    }
+    .input-box:focus-within {
+      border-color: rgba(193,0,122,.45);
+      box-shadow: 0 0 0 3px rgba(193,0,122,.08);
+    }
+    .chat-input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-size: .9rem;
+      font-family: 'DM Sans', sans-serif;
+      padding: .3rem 0;
+    }
+    .chat-input::placeholder { color: rgba(255,255,255,.2); }
+    .send-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #C1007A, #9a0062);
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .88rem;
+      transition: all .2s;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(193,0,122,.3);
+    }
+    .send-btn:hover { transform: scale(1.08); box-shadow: 0 6px 16px rgba(193,0,122,.45); }
+    .send-btn:disabled { opacity: .35; pointer-events: none; }
+    .input-hint {
+      text-align: center;
+      font-size: .65rem;
+      color: rgba(255,255,255,.14);
+      margin-top: .5rem;
+    }
+
+    /* ══════════════════════════════
+       PANEL DROIT
+    ══════════════════════════════ */
+    .right-panel {
+      width: 290px;
+      flex-shrink: 0;
+      background: #13151c;
+      border-left: 1px solid rgba(255,255,255,.06);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: width .3s ease;
+    }
+    .right-panel.closed { width: 0; }
+
+    .rp-head {
+      padding: 1rem 1.1rem;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: rgba(255,255,255,.22);
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .rp-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+    }
+    .rp-body::-webkit-scrollbar { width: 3px; }
+    .rp-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,.08); }
+
+    .rp-block { margin-bottom: 1.4rem; }
+    .rp-label {
+      font-size: .63rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: rgba(255,255,255,.2);
+      margin-bottom: .65rem;
+      display: block;
+    }
+
+    /* Stats */
+    .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+    .stat-card {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 10px;
+      padding: .75rem;
+      text-align: center;
+    }
+    .stat-val { font-size: 1.4rem; font-weight: 700; color: #fff; line-height: 1; }
+    .stat-lbl { font-size: .62rem; color: rgba(255,255,255,.25); margin-top: .2rem; text-transform: uppercase; letter-spacing: .06em; }
+
+    /* Avatar grid */
+    .av-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: .45rem; }
+    .av-opt {
+      aspect-ratio: 1;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all .2s;
+      background: rgba(255,255,255,.05);
+    }
+    .av-opt:hover { border-color: rgba(193,0,122,.4); transform: scale(1.05); }
+    .av-opt.on { border-color: #C1007A; box-shadow: 0 0 0 3px rgba(193,0,122,.15); }
+    .av-opt img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* Input param */
+    .rp-input {
+      width: 100%;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 8px;
+      padding: .55rem .85rem;
+      color: #fff;
+      font-size: .83rem;
+      font-family: 'DM Sans', sans-serif;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .rp-input:focus { border-color: rgba(193,0,122,.45); }
+    .rp-input::placeholder { color: rgba(255,255,255,.2); }
+
+    /* Tons */
+    .tone-list { display: flex; flex-direction: column; gap: .35rem; }
+    .tone-opt {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      padding: .5rem .75rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.07);
+      cursor: pointer;
+      transition: all .2s;
+      font-size: .8rem;
+      color: rgba(255,255,255,.45);
+    }
+    .tone-opt:hover { background: rgba(255,255,255,.05); color: rgba(255,255,255,.75); }
+    .tone-opt.on {
+      background: rgba(193,0,122,.1);
+      border-color: rgba(193,0,122,.3);
+      color: #f472b6;
+    }
+    .tone-ico { font-size: .95rem; width: 18px; text-align: center; flex-shrink: 0; }
+
+    /* Save btn */
+    .rp-save {
+      width: 100%;
+      padding: .65rem;
+      background: linear-gradient(135deg, #C1007A, #9a0062);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: .83rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .4rem;
+      box-shadow: 0 4px 12px rgba(193,0,122,.25);
+    }
+    .rp-save:hover { box-shadow: 0 6px 18px rgba(193,0,122,.4); transform: translateY(-1px); }
+
+    /* Divider */
+    .rp-divider {
+      height: 1px;
+      background: rgba(255,255,255,.06);
+      margin: 1rem 0;
+    }
+
+    /* ══ FLASH ══ */
+    .flash-zone {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: .4rem;
+      max-width: 300px;
+    }
+    .flash-item {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      padding: .7rem 1rem;
+      border-radius: 10px;
+      font-size: .82rem;
+      font-weight: 500;
+      animation: flashSlide .3s ease;
+      box-shadow: 0 4px 20px rgba(0,0,0,.4);
+    }
+    @keyframes flashSlide { from { opacity:0; transform:translateX(20px); } to { opacity:1; transform:translateX(0); } }
+    .flash-success { background: #0d2e23; color: #4ade80; border: 1px solid rgba(74,222,128,.2); }
+    .flash-danger  { background: #2e0d0d; color: #f87171; border: 1px solid rgba(248,113,113,.2); }
+    .flash-warning { background: #2e220d; color: #fbbf24; border: 1px solid rgba(251,191,36,.2); }
+    .flash-x { margin-left: auto; background: none; border: none; cursor: pointer; opacity: .4; color: inherit; font-size: .85rem; padding: 0; }
+    .flash-x:hover { opacity: 1; }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 1100px) { .right-panel { display: none; } }
+    @media (max-width: 768px) { .sidebar { width: 200px; } .chat-body { padding: 1.25rem 1rem; } }
+    @media (max-width: 580px) { .sidebar { display: none; } }
+  </style>
 </head>
 <body>
 
 {% include "header.html" %}
 
-<!-- 🔥 Messages Flash -->
-<div class="container mt-3">
-  {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      {% for category, message in messages %}
-        <div class="alert alert-{{ category }} alert-dismissible fade show d-flex align-items-center" role="alert">
-          {% if category == 'success' %}<span class="mr-2" style="font-size: 1.5rem;">✅</span>{% endif %}
-          {% if category == 'danger' %}<span class="mr-2" style="font-size: 1.5rem;">❌</span>{% endif %}
-          {% if category == 'warning' %}<span class="mr-2" style="font-size: 1.5rem;">⚠️</span>{% endif %}
-          <div>{{ message }}</div>
-          <button type="button" class="close ml-auto" data-dismiss="alert" aria-label="Fermer">
-            <span aria-hidden="true">&times;</span>
-          </button>
+<!-- Flash -->
+<div class="flash-zone" id="flashZone">
+  {% with fl = get_flashed_messages(with_categories=true) %}
+    {% if fl %}
+      {% for cat, msg in fl %}
+        <div class="flash-item flash-{{ cat }}">
+          <i class="fas {% if cat=='success' %}fa-circle-check{% elif cat=='danger' %}fa-circle-xmark{% else %}fa-triangle-exclamation{% endif %}"></i>
+          {{ msg }}
+          <button class="flash-x" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
         </div>
       {% endfor %}
     {% endif %}
   {% endwith %}
 </div>
 
-<div class="container my-5">
+<div class="dash">
 
-  <!-- 🔘 Boutons Historique + Questions Répondues -->
-  <div class="text-center mb-4 d-flex justify-content-center flex-wrap gap-3">
-    <button id="show-history-btn" class="btn btn-ml2c-green mr-2">
-      Afficher l'historique de conversation
-    </button>
+  <!-- ══════ SIDEBAR ══════ -->
+  <div class="sidebar" id="sidebar">
+    <div class="sb-head">
+      <div class="sb-brand">
+        <div class="sb-bot-av">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy" alt="Bot" id="sbBotImg" class="botImg">
+        </div>
+        <div class="sb-brand-info">
+          <span class="sb-bot-name botName">Conseiller ML2C</span>
+          <span class="sb-bot-status"><span class="online-dot"></span> En ligne</span>
+        </div>
+      </div>
+      <button class="btn-new-chat" onclick="newChat()">
+        <i class="fas fa-plus"></i> Nouvelle conversation
+      </button>
+    </div>
 
-    <button id="show-answered-btn" class="btn btn-ml2c-green ml-2 position-relative">
-      Afficher les questions déjà répondues
-      <span id="notif-badge" class="badge badge-danger position-absolute" style="top: -10px; right: -10px; display: none;">0</span>
-    </button>
-  </div>
+    <!-- Favoris (injecté dynamiquement) -->
+    <div id="favZone"></div>
 
-  <!-- 🎛️ Bouton Personnalisation séparé avec marge -->
-  <div class="text-center mb-5">
-    <button id="toggle-customization" class="btn btn-outline-ml2c-green mt-3">
-      Afficher la personnalisation du bot
-    </button>
-  </div>
+    <div class="sb-section-label">
+      <i class="fas fa-clock-rotate-left" style="font-size:.6rem;"></i>
+      Récentes
+    </div>
 
-  <!-- 🔄 Historique -->
-  <div id="history-container" class="mb-5 fade" style="display: none;">
-    <h3 class="text-center mb-3">Historique des Conversations</h3>
-    <ul class="list-group">
-      {% for hist in history %}
-        <li class="list-group-item pop-in-message">
-          <strong>Q :</strong> {{ hist.question }}<br>
-          <strong><span class="bot-name-display">Bot</span> :</strong> {{ hist.reponse }}
-        </li>
-      {% else %}
-        <li class="list-group-item">Aucun historique trouvé.</li>
-      {% endfor %}
-    </ul>
-    <div class="text-center mt-4">
-      <form action="{{ url_for('vider_historique') }}" method="POST" onsubmit="return confirm('Es-tu sûr de vouloir tout supprimer ?');">
-        <button type="submit" class="btn btn-danger">Vider l'historique</button>
+    <div class="sb-list" id="sbList">
+
+      <div class="conv-item active" data-id="current" onclick="selectConv(this)">
+        <div class="conv-icon"><i class="fas fa-comment-dots"></i></div>
+        <div class="conv-info">
+          <span class="conv-title">Conversation en cours</span>
+          <span class="conv-preview">Questions & réponses</span>
+        </div>
+        <div class="conv-meta">
+          <span class="conv-time">Maintenant</span>
+          <button class="conv-fav-btn" onclick="toggleFav(event,this)" title="Favoris">
+            <i class="far fa-star"></i>
+          </button>
+        </div>
+      </div>
+
+      {% if history %}
+        {% for h in history %}
+          <div class="conv-item" data-id="h{{ loop.index }}" onclick="selectConv(this)">
+            <div class="conv-icon"><i class="fas fa-message"></i></div>
+            <div class="conv-info">
+              <span class="conv-title">{{ h.question[:28] }}{% if h.question|length > 28 %}…{% endif %}</span>
+              <span class="conv-preview">{{ h.reponse[:38] }}{% if h.reponse|length > 38 %}…{% endif %}</span>
+            </div>
+            <div class="conv-meta">
+              <span class="conv-time">Avant</span>
+              <button class="conv-fav-btn" onclick="toggleFav(event,this)" title="Favoris">
+                <i class="far fa-star"></i>
+              </button>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+    </div>
+
+    <div class="sb-footer">
+      <a href="{{ url_for('menu') }}" class="sb-footer-link">
+        <i class="fas fa-home"></i> Accueil
+      </a>
+      <a href="{{ url_for('nous_contacter') }}" class="sb-footer-link">
+        <i class="fas fa-calendar-alt"></i> Prendre RDV
+      </a>
+      {% if session.get('utilisateur_id') %}
+      <a href="{{ url_for('compte_client') }}" class="sb-footer-link">
+        <i class="fas fa-user-circle"></i> Mon espace
+      </a>
+      {% endif %}
+      <div style="height:1px;background:rgba(255,255,255,.05);margin:.25rem 0;"></div>
+      <form action="{{ url_for('vider_historique') }}" method="POST" style="margin:0;"
+            onsubmit="return confirm('Supprimer tout l\'historique ?');">
+        <button type="submit" class="sb-footer-link danger">
+          <i class="fas fa-trash-alt"></i> Vider l'historique
+        </button>
       </form>
     </div>
   </div>
 
-  <!-- ✅ Réponses déjà posées -->
-  <div id="answered-container" class="mb-5 fade" style="display: none;">
-    <h3 class="text-center mb-3">Questions déjà répondues</h3>
-    <div class="chat-container">
-      {% for message in messages %}
-        <div class="message-row user">
-          <div class="avatar user"></div>
-          <div class="bubble">{{ message.question }}</div>
+  <!-- ══════ CHAT MAIN ══════ -->
+  <div class="chat-main">
+
+    <!-- Topbar -->
+    <div class="chat-topbar">
+      <div class="topbar-left">
+        <button class="burger-sb" onclick="toggleSidebar()" title="Menu">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="topbar-bot-av">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy" alt="Bot" id="topBotImg" class="botImg">
         </div>
-        <div class="message-row bot">
-          <div class="bubble {% if message.reponse != 'En attente de réponse...' %}nouvelle-reponse{% endif %}">
-            <strong><span class="bot-name-display">Bot</span> :</strong> {{ message.reponse }}
+        <div class="topbar-bot-info">
+          <span class="topbar-bot-name botName">Conseiller ML2C</span>
+          <span class="topbar-bot-sub">
+            <span class="online-dot"></span> Disponible · Répond sous 24h
+          </span>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="topbar-btn" title="Effacer l'affichage" onclick="clearDisplay()">
+          <i class="fas fa-eraser"></i>
+        </button>
+        <button class="topbar-btn on" id="rpToggleBtn" title="Paramètres" onclick="toggleRP()">
+          <i class="fas fa-sliders"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Messages -->
+    <div class="chat-body" id="chatBody">
+
+      <div class="date-sep">Aujourd'hui</div>
+
+      <!-- Message d'accueil -->
+      <div class="msg-row bot" id="welcomeRow">
+        <div class="msg-av bot">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy" alt="Bot" class="botImg">
+        </div>
+        <div class="msg-wrap">
+          <div class="msg-name botName">Conseiller ML2C</div>
+          <div class="msg-bubble">
+            Bonjour 👋 Je suis votre conseiller <strong>ML2C CONSEIL</strong>.<br>
+            Comment puis-je vous aider aujourd'hui ?
           </div>
-          <div class="avatar bot"></div>
+          <div class="msg-foot">Maintenant</div>
         </div>
-      {% endfor %}
+      </div>
+
+      {% if messages %}
+        {% for m in messages %}
+          <!-- Question -->
+          <div class="msg-row user">
+            <div class="msg-av user">
+              <i class="fas fa-user" style="font-size:.72rem;color:rgba(255,255,255,.4);"></i>
+            </div>
+            <div class="msg-wrap">
+              <div class="msg-name" style="text-align:right;">Vous</div>
+              <div class="msg-bubble">{{ m.question }}</div>
+              <div class="msg-foot" style="justify-content:flex-end;">Envoyé</div>
+            </div>
+          </div>
+
+          <!-- Réponse -->
+          <div class="msg-row bot {% if m.reponse == 'En attente de réponse...' %}msg-waiting{% endif %}">
+            <div class="msg-av bot">
+              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy" alt="Bot" class="botImg">
+            </div>
+            <div class="msg-wrap">
+              <div class="msg-name botName">
+                Conseiller ML2C
+                {% if m.reponse != 'En attente de réponse...' %}
+                  <span class="new-reply-badge"><span class="new-reply-dot"></span> Nouveau</span>
+                {% endif %}
+              </div>
+              <div class="msg-bubble">
+                {% if m.reponse == 'En attente de réponse...' %}
+                  <i class="fas fa-hourglass-half" style="margin-right:.4rem;opacity:.7;"></i>En attente de réponse…
+                {% else %}
+                  {{ m.reponse }}
+                {% endif %}
+              </div>
+              <div class="msg-foot">
+                {% if m.reponse != 'En attente de réponse...' %}
+                  <i class="fas fa-check-double msg-foot-check"></i>
+                {% endif %}
+                Reçu
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <!-- Typing -->
+      <div class="typing-row" id="typingRow" style="display:none;">
+        <div class="msg-av bot">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy" alt="Bot" class="botImg">
+        </div>
+        <div class="typing-bubble">
+          <span class="t-dot"></span>
+          <span class="t-dot"></span>
+          <span class="t-dot"></span>
+        </div>
+      </div>
+
     </div>
+
+    <!-- Footer -->
+    <div class="chat-footer">
+      <form action="{{ url_for('chatbot') }}" method="POST" id="chatForm">
+        <div class="input-box">
+          <input
+            type="text"
+            class="chat-input"
+            name="question"
+            id="chatInput"
+            placeholder="Posez votre question à ML2C…"
+            autocomplete="off"
+            required
+          >
+          <button type="submit" class="send-btn" id="sendBtn">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </form>
+      <div class="input-hint">
+        <i class="fas fa-lock" style="margin-right:.3rem;"></i>
+        Entrée pour envoyer · Conversation sécurisée · ML2C CONSEIL
+      </div>
+    </div>
+
   </div>
 
-  <!-- 💬 Loader réflexion -->
-  <div id="chatbot-loader" style="display: none; text-align: center; margin: 20px;">
-    <div class="spinner-border text-light" role="status">
-      <span class="sr-only">Chargement...</span>
+  <!-- ══════ PANEL DROIT ══════ -->
+  <div class="right-panel" id="rightPanel">
+    <div class="rp-head">
+      <i class="fas fa-sliders" style="color:#C1007A;"></i>
+      Personnalisation
     </div>
-    <div style="color:white; margin-top: 10px;">Le bot réfléchit...</div>
-  </div>
+    <div class="rp-body">
 
-  <!-- ✅ Indicateur "Le bot répond..." -->
-  <div id="typing-indicator" class="typing-indicator">
-    Le bot répond<span class="dot one">.</span><span class="dot two">.</span><span class="dot three">.</span>
-  </div>
+      <!-- Stats -->
+      <div class="rp-block">
+        <span class="rp-label">Statistiques de session</span>
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-val">{{ messages|length if messages else 0 }}</div>
+            <div class="stat-lbl">Questions</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val">{{ history|length if history else 0 }}</div>
+            <div class="stat-lbl">Historique</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val" style="color:#22c55e;">
+              {{ messages|selectattr('reponse','ne','En attente de réponse...')|list|length if messages else 0 }}
+            </div>
+            <div class="stat-lbl">Répondues</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val" style="color:#f59e0b;">
+              {{ messages|selectattr('reponse','equalto','En attente de réponse...')|list|length if messages else 0 }}
+            </div>
+            <div class="stat-lbl">En attente</div>
+          </div>
+        </div>
+      </div>
 
-  <!-- 🔄 Message si réponse en attente -->
-  <div id="attente-message" class="attente-message" style="display:none;">
-    ⏳ Le bot met un peu plus de temps à répondre...
-  </div>
+      <div class="rp-divider"></div>
 
-  <!-- 🎭 Galerie de personnalisation -->
-  <div id="customization-panel" class="mb-5" style="display: none;">
-    <h3 class="text-center mb-3">Choisissez un avatar</h3>
-    <div class="d-flex justify-content-center flex-wrap mb-3">
-      <img src="/static/avatars/bot1.png" class="select-avatar mx-2 mb-2" data-avatar="/static/avatars/bot1.png" style="width: 80px; cursor: pointer;">
-      <img src="/static/avatars/bot2.png" class="select-avatar mx-2 mb-2" data-avatar="/static/avatars/bot2.png" style="width: 80px; cursor: pointer;">
-      <img src="/static/avatars/bot3.png" class="select-avatar mx-2 mb-2" data-avatar="/static/avatars/bot3.png" style="width: 80px; cursor: pointer;">
+      <!-- Nom -->
+      <div class="rp-block">
+        <span class="rp-label">Nom du conseiller</span>
+        <input type="text" class="rp-input" id="rpName" placeholder="Ex: Conseiller ML2C">
+      </div>
+
+      <!-- Avatar -->
+      <div class="rp-block">
+        <span class="rp-label">Avatar</span>
+        <div class="av-grid">
+          <div class="av-opt on" data-av="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy" onclick="pickAv(this)">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy" alt="">
+          </div>
+          <div class="av-opt" data-av="https://api.dicebear.com/7.x/avataaars/svg?seed=conseil&backgroundColor=transparent&clothingColor=4FA695&hairColor=2d2d2d&skinColor=FDDBB4&mouth=smile&eyes=happy" onclick="pickAv(this)">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=conseil&backgroundColor=transparent&clothingColor=4FA695&hairColor=2d2d2d&skinColor=FDDBB4&mouth=smile&eyes=happy" alt="">
+          </div>
+          <div class="av-opt" data-av="https://api.dicebear.com/7.x/avataaars/svg?seed=expert&backgroundColor=transparent&clothingColor=5C666B&hairColor=724133&skinColor=F8D5C2&mouth=smile&eyes=wink" onclick="pickAv(this)">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=expert&backgroundColor=transparent&clothingColor=5C666B&hairColor=724133&skinColor=F8D5C2&mouth=smile&eyes=wink" alt="">
+          </div>
+          <div class="av-opt" data-av="https://api.dicebear.com/7.x/avataaars/svg?seed=femme&backgroundColor=transparent&clothingColor=C1007A&hairColor=B58143&skinColor=FDDBB4&mouth=smile&eyes=happy&top=longHair" onclick="pickAv(this)">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=femme&backgroundColor=transparent&clothingColor=C1007A&hairColor=B58143&skinColor=FDDBB4&mouth=smile&eyes=happy&top=longHair" alt="">
+          </div>
+          <div class="av-opt" data-av="https://api.dicebear.com/7.x/avataaars/svg?seed=pro&backgroundColor=transparent&clothingColor=0ea5e9&hairColor=2c1b18&skinColor=AE5D29&mouth=smile&eyes=default" onclick="pickAv(this)">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=pro&backgroundColor=transparent&clothingColor=0ea5e9&hairColor=2c1b18&skinColor=AE5D29&mouth=smile&eyes=default" alt="">
+          </div>
+          <div class="av-opt" data-av="https://api.dicebear.com/7.x/avataaars/svg?seed=robot&backgroundColor=transparent&clothingColor=8b5cf6&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=squint" onclick="pickAv(this)">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=robot&backgroundColor=transparent&clothingColor=8b5cf6&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=squint" alt="">
+          </div>
+        </div>
+      </div>
+
+      <!-- Ton -->
+      <div class="rp-block">
+        <span class="rp-label">Ton du conseiller</span>
+        <div class="tone-list">
+          <div class="tone-opt on" data-tone="professionnel" onclick="pickTone(this)">
+            <span class="tone-ico">👔</span> Professionnel
+          </div>
+          <div class="tone-opt" data-tone="amical" onclick="pickTone(this)">
+            <span class="tone-ico">😊</span> Amical & proche
+          </div>
+          <div class="tone-opt" data-tone="concis" onclick="pickTone(this)">
+            <span class="tone-ico">⚡</span> Concis & direct
+          </div>
+          <div class="tone-opt" data-tone="pedagogique" onclick="pickTone(this)">
+            <span class="tone-ico">📚</span> Pédagogique
+          </div>
+        </div>
+      </div>
+
+      <div class="rp-divider"></div>
+
+      <button class="rp-save" onclick="saveSettings()">
+        <i class="fas fa-save"></i> Appliquer les paramètres
+      </button>
+
     </div>
-    <div class="form-group text-center">
-      <label for="custom-bot-name">Nom du bot :</label>
-      <input type="text" id="custom-bot-name" class="form-control w-50 mx-auto" placeholder="Ex: ML2C Bot">
-    </div>
-    <div class="text-center">
-      <button id="save-bot-settings" class="btn btn-outline-primary">Valider</button>
-      <button id="reset-bot-settings" class="btn btn-outline-secondary ml-2">Réinitialiser</button>
-    </div>
-  </div>
-
-  <!-- ✅ Formulaire -->
-  <h1 class="text-center mb-4">Poser une nouvelle question</h1>
-  <form action="{{ url_for('chatbot') }}" method="POST" class="mb-5">
-    <div class="form-group">
-      <label for="question">Votre question :</label>
-      <input type="text" class="form-control" id="question" name="question" placeholder="Ex: Comment fonctionne la plateforme ?" required>
-    </div>
-    <button type="submit" class="btn btn-primary btn-block">Envoyer</button>
-  </form>
-
-  <div class="text-center mt-4">
-    <a href="{{ url_for('menu') }}" class="btn btn-secondary">Retour au menu</a>
   </div>
 
 </div>
 
-{% include "footer.html" %}
+<audio id="notifSound" src="{{ url_for('static', filename='sounds/notification.mp3') }}" preload="auto"></audio>
 
-<audio id="notif-sound" src="{{ url_for('static', filename='sounds/notification.mp3') }}" preload="auto"></audio>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const showHistoryBtn = document.getElementById("show-history-btn");
-    const showAnsweredBtn = document.getElementById("show-answered-btn");
-    const historyContainer = document.getElementById("history-container");
-    const answeredContainer = document.getElementById("answered-container");
-    const notifSound = document.getElementById("notif-sound");
-    const notifBadge = document.getElementById("notif-badge");
-    const typingIndicator = document.getElementById("typing-indicator");
-    const attenteMessage = document.getElementById("attente-message");
-    const form = document.querySelector("form");
+/* ═══════════════════════════════
+   ÉTAT
+═══════════════════════════════ */
+let rpOpen = true;
+let sbOpen = true;
+let selAv = null;
+let selTone = 'professionnel';
+let convCounter = 0;
 
-    showHistoryBtn.addEventListener("click", function () {
-      historyContainer.style.display = historyContainer.style.display === "none" ? "block" : "none";
-      historyContainer.classList.toggle("show");
-    });
+const chatBody   = document.getElementById('chatBody');
+const chatForm   = document.getElementById('chatForm');
+const chatInput  = document.getElementById('chatInput');
+const typingRow  = document.getElementById('typingRow');
+const sendBtn    = document.getElementById('sendBtn');
 
-    showAnsweredBtn.addEventListener("click", function () {
-      answeredContainer.style.display = answeredContainer.style.display === "none" ? "block" : "none";
-      answeredContainer.classList.toggle("show");
-      notifBadge.style.display = "none";
-      notifBadge.textContent = "0";
-    });
+/* ═══════════════════════════════
+   INIT
+═══════════════════════════════ */
+function init() {
+  scrollBottom();
+  restoreSettings();
+  restoreFavs();
+  autoFlash();
+  notifSound();
+}
 
-    const bubbles = document.querySelectorAll(".bubble.nouvelle-reponse");
-    const newCount = bubbles.length;
-    let attenteDetectee = false;
+function scrollBottom() {
+  if (chatBody) chatBody.scrollTop = chatBody.scrollHeight;
+}
 
-    bubbles.forEach(bubble => {
-      if (bubble.textContent.trim() === "En attente de réponse...") {
-        attenteDetectee = true;
-      }
-    });
+/* ═══════════════════════════════
+   FORM
+═══════════════════════════════ */
+if (chatForm) {
+  chatForm.addEventListener('submit', function(e) {
+    const val = chatInput.value.trim();
+    if (!val) { e.preventDefault(); return; }
+    typingRow.style.display = 'flex';
+    sendBtn.disabled = true;
+    scrollBottom();
+  });
+}
 
-    if (newCount > 0) {
-      if (!attenteDetectee) {
-        notifSound.play().catch(() => {});
-        notifBadge.style.display = "inline-block";
-        notifBadge.textContent = newCount;
-      }
-
-      setTimeout(() => {
-        typingIndicator.classList.remove("show");
-        attenteMessage.style.display = attenteDetectee ? "block" : "none";
-      }, 1500);
+if (chatInput) {
+  chatInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (chatForm) chatForm.requestSubmit();
     }
+  });
+}
 
-    form.addEventListener("submit", function () {
-      typingIndicator.classList.add("show");
-      attenteMessage.style.display = "none";
-    });
+/* ═══════════════════════════════
+   TOGGLE UI
+═══════════════════════════════ */
+function toggleSidebar() {
+  sbOpen = !sbOpen;
+  const sb = document.getElementById('sidebar');
+  sb.style.width = sbOpen ? '270px' : '0';
+}
 
-    // 🖼️ Gestion de la galerie d'avatars
-    const toggleCustomizationBtn = document.getElementById("toggle-customization");
-    const customizationPanel = document.getElementById("customization-panel");
-    const avatarImages = document.querySelectorAll(".select-avatar");
+function toggleRP() {
+  rpOpen = !rpOpen;
+  const rp = document.getElementById('rightPanel');
+  rp.style.width = rpOpen ? '290px' : '0';
+  document.getElementById('rpToggleBtn').classList.toggle('on', rpOpen);
+}
 
-    let selectedAvatar = null;
+/* ═══════════════════════════════
+   NOUVELLE CONVERSATION
+═══════════════════════════════ */
+function newChat() {
+  convCounter++;
+  const msgs = chatBody.querySelectorAll('.msg-row:not(#welcomeRow), .typing-row, .date-sep:not(:first-child)');
+  msgs.forEach(el => el.remove());
+  typingRow.style.display = 'none';
+  sendBtn.disabled = false;
+  chatInput.value = '';
+  chatInput.focus();
 
-  if (toggleCustomizationBtn && customizationPanel) {
-    toggleCustomizationBtn.addEventListener("click", () => {
-      customizationPanel.style.display = customizationPanel.style.display === "none" ? "block" : "none";
-    });
+  /* Ajouter dans la sidebar */
+  const list = document.getElementById('sbList');
+  const item = document.createElement('div');
+  item.className = 'conv-item';
+  item.dataset.id = 'new' + convCounter;
+  item.innerHTML = `
+    <div class="conv-icon"><i class="fas fa-comment"></i></div>
+    <div class="conv-info">
+      <span class="conv-title">Conversation #${convCounter}</span>
+      <span class="conv-preview">Démarrée à l'instant</span>
+    </div>
+    <div class="conv-meta">
+      <span class="conv-time">Maintenant</span>
+      <button class="conv-fav-btn" onclick="toggleFav(event,this)" title="Favoris">
+        <i class="far fa-star"></i>
+      </button>
+    </div>
+  `;
+  item.onclick = function() { selectConv(this); };
+  list.insertBefore(item, list.firstChild);
+  selectConv(item);
+}
+
+function selectConv(el) {
+  document.querySelectorAll('.conv-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function clearDisplay() {
+  if (!confirm('Effacer l\'affichage de la conversation ?')) return;
+  const rows = chatBody.querySelectorAll('.msg-row:not(#welcomeRow), .date-sep:not(:first-child)');
+  rows.forEach(el => el.remove());
+  typingRow.style.display = 'none';
+}
+
+/* ═══════════════════════════════
+   FAVORIS
+═══════════════════════════════ */
+function toggleFav(e, btn) {
+  e.stopPropagation();
+  const item = btn.closest('.conv-item');
+  const isFav = !btn.classList.contains('active');
+  btn.classList.toggle('active', isFav);
+  btn.querySelector('i').className = isFav ? 'fas fa-star' : 'far fa-star';
+
+  const title = item.querySelector('.conv-title').textContent.trim();
+  const preview = item.querySelector('.conv-preview').textContent.trim();
+
+  let favs = JSON.parse(localStorage.getItem('ml2cFavs') || '[]');
+  if (isFav) {
+    if (!favs.find(f => f.title === title)) {
+      favs.push({ title, preview });
+    }
+  } else {
+    favs = favs.filter(f => f.title !== title);
+  }
+  localStorage.setItem('ml2cFavs', JSON.stringify(favs));
+  renderFavs();
+}
+
+function renderFavs() {
+  const favs = JSON.parse(localStorage.getItem('ml2cFavs') || '[]');
+  const zone = document.getElementById('favZone');
+
+  if (favs.length === 0) {
+    zone.innerHTML = '';
+    return;
   }
 
+  zone.innerHTML = `
+    <div class="sb-section-label">
+      <i class="fas fa-star" style="color:#f59e0b;font-size:.6rem;"></i> Favoris
+    </div>
+    <div style="padding:.2rem .5rem;">
+      ${favs.map(f => `
+        <div class="conv-item fav-item" onclick="selectConv(this)">
+          <div class="conv-icon"><i class="fas fa-star"></i></div>
+          <div class="conv-info">
+            <span class="conv-title">${f.title}</span>
+            <span class="conv-preview">${f.preview}</span>
+          </div>
+          <div class="conv-meta">
+            <button class="conv-fav-btn active" onclick="removeFavByTitle(event,'${f.title.replace(/'/g,'\\\'')}')" title="Retirer des favoris">
+              <i class="fas fa-star"></i>
+            </button>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
 
-  avatarImages.forEach(img => {
-    img.addEventListener("click", () => {
-      // Désélectionner les autres
-      avatarImages.forEach(i => i.classList.remove("border", "border-primary"));
-      // Sélectionner le nouveau
-      img.classList.add("border", "border-primary");
-      selectedAvatar = img.getAttribute("data-avatar");
-      if (botAvatarField) botAvatarField.value = selectedAvatar;
+function removeFavByTitle(e, title) {
+  e.stopPropagation();
+  let favs = JSON.parse(localStorage.getItem('ml2cFavs') || '[]');
+  favs = favs.filter(f => f.title !== title);
+  localStorage.setItem('ml2cFavs', JSON.stringify(favs));
+
+  /* Désactiver l'étoile dans la liste principale */
+  document.querySelectorAll('.conv-item:not(.fav-item) .conv-title').forEach(el => {
+    if (el.textContent.trim() === title) {
+      const btn = el.closest('.conv-item').querySelector('.conv-fav-btn');
+      if (btn) {
+        btn.classList.remove('active');
+        btn.querySelector('i').className = 'far fa-star';
+      }
+    }
+  });
+
+  renderFavs();
+}
+
+function restoreFavs() {
+  const favs = JSON.parse(localStorage.getItem('ml2cFavs') || '[]');
+  favs.forEach(f => {
+    document.querySelectorAll('#sbList .conv-title').forEach(el => {
+      if (el.textContent.trim() === f.title) {
+        const btn = el.closest('.conv-item').querySelector('.conv-fav-btn');
+        if (btn) {
+          btn.classList.add('active');
+          btn.querySelector('i').className = 'fas fa-star';
+        }
+      }
     });
   });
+  renderFavs();
+}
 
-    // 🎨 Personnalisation du chatbot
-    const botNameField = document.getElementById("custom-bot-name");
-    const botAvatarField = document.getElementById("custom-bot-avatar");
-    const saveBtn = document.getElementById("save-bot-settings");
-    const resetBtn = document.getElementById("reset-bot-settings");
+/* ═══════════════════════════════
+   PERSONNALISATION
+═══════════════════════════════ */
+function pickAv(el) {
+  document.querySelectorAll('.av-opt').forEach(o => o.classList.remove('on'));
+  el.classList.add('on');
+  selAv = el.dataset.av;
+}
 
-    const botNameSpans = document.querySelectorAll(".bot-name-display");
-    const botAvatars = document.querySelectorAll(".avatar.bot");
+function pickTone(el) {
+  document.querySelectorAll('.tone-opt').forEach(o => o.classList.remove('on'));
+  el.classList.add('on');
+  selTone = el.dataset.tone;
+}
 
-    function applyBotSettings() {
-      const name = localStorage.getItem("botName") || "Bot";
-      const avatarUrl = localStorage.getItem("botAvatar") || "https://raw.githubusercontent.com/AUTOMATIC1111/stable-diffusion-webui/master/extensions-builtin/Lora/resources/avatar-bot.png";
-      botNameSpans.forEach(el => el.textContent = name);
-      botAvatars.forEach(el => el.style.backgroundImage = `url('${avatarUrl}')`);
-      if (botNameField) botNameField.value = name;
-      if (botAvatarField) botAvatarField.value = avatarUrl;
-    }
+function applySettings(name, av) {
+  document.querySelectorAll('.botName').forEach(el => el.textContent = name);
+  if (av) document.querySelectorAll('.botImg').forEach(img => img.src = av);
+}
 
-    if (saveBtn && resetBtn && botNameField && botAvatarField) {
-      saveBtn.addEventListener("click", () => {
-        localStorage.setItem("botName", botNameField.value.trim());
-        localStorage.setItem("botAvatar", botAvatarField.value.trim());
-        applyBotSettings();
-      });
+function saveSettings() {
+  const name = document.getElementById('rpName').value.trim() || 'Conseiller ML2C';
+  const av = selAv || localStorage.getItem('ml2cAv');
 
-      resetBtn.addEventListener("click", () => {
-        localStorage.removeItem("botName");
-        localStorage.removeItem("botAvatar");
-        applyBotSettings();
-      });
-    }
+  localStorage.setItem('ml2cName', name);
+  if (av) localStorage.setItem('ml2cAv', av);
+  localStorage.setItem('ml2cTone', selTone);
 
-    applyBotSettings();
+  applySettings(name, av);
+
+  const btn = document.querySelector('.rp-save');
+  btn.style.background = 'linear-gradient(135deg,#22c55e,#16a34a)';
+  btn.innerHTML = '<i class="fas fa-check"></i> Appliqué !';
+  setTimeout(() => {
+    btn.style.background = '';
+    btn.innerHTML = '<i class="fas fa-save"></i> Appliquer les paramètres';
+  }, 2200);
+}
+
+function restoreSettings() {
+  const name = localStorage.getItem('ml2cName') || 'Conseiller ML2C';
+  const av   = localStorage.getItem('ml2cAv');
+  const tone = localStorage.getItem('ml2cTone') || 'professionnel';
+
+  document.getElementById('rpName').value = name;
+  applySettings(name, av);
+
+  if (av) {
+    document.querySelectorAll('.av-opt').forEach(o => {
+      o.classList.toggle('on', o.dataset.av === av);
+    });
+    selAv = av;
+  }
+
+  document.querySelectorAll('.tone-opt').forEach(o => {
+    o.classList.toggle('on', o.dataset.tone === tone);
   });
+  selTone = tone;
+}
+
+/* ═══════════════════════════════
+   FLASH AUTO-DISMISS
+═══════════════════════════════ */
+function autoFlash() {
+  setTimeout(() => {
+    document.querySelectorAll('.flash-item').forEach(el => {
+      el.style.transition = 'opacity .4s';
+      el.style.opacity = '0';
+      setTimeout(() => el.remove(), 400);
+    });
+  }, 5000);
+}
+
+/* ═══════════════════════════════
+   SON NOTIF
+═══════════════════════════════ */
+function notifSound() {
+  const newReplies = document.querySelectorAll('.new-reply-badge');
+  if (newReplies.length > 0) {
+    const s = document.getElementById('notifSound');
+    if (s) s.play().catch(() => {});
+  }
+}
+
+/* ═══════════════════════════════
+   WELCOME CHIPS
+═══════════════════════════════ */
+document.querySelectorAll('.welcome-chip').forEach(chip => {
+  chip.addEventListener('click', function() {
+    if (chatInput) {
+      chatInput.value = this.textContent.trim();
+      chatInput.focus();
+    }
+  });
+});
+
+/* ═══ START ═══ */
+init();
 </script>
 
 </body>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purger les Logs — ML2C Admin</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    :root{--rose:#C1007A;--rose-d:#9a0062;--rose-l:#fce4f3;--turq:#4FA695;--turq-l:#d4f0ec;--gold:#f59e0b;--gold-l:#fffbeb;--ink:#080b12;--bg:#f2f4f8;--surface:#fff;--border:#e4e8ef;--text:#111827;--muted:#6b7280;--faint:#9ca3af;--success:#10b981;--danger:#ef4444;--ff-head:'Cormorant Garamond',serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'JetBrains Mono',monospace;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
+    .page-hero{background:var(--ink);position:relative;overflow:hidden;padding:2.5rem 0 4.5rem;}
+    .page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 70% at 85% 20%,rgba(239,68,68,.18) 0%,transparent 55%),radial-gradient(ellipse 30% 45% at 5% 80%,rgba(245,158,11,.1) 0%,transparent 50%);}
+    .page-hero-bar{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--danger),#f97316,var(--danger));background-size:300%;animation:barS 3s linear infinite;}
+    @keyframes barS{0%{background-position:0%}100%{background-position:300%}}
+    .page-wave{position:absolute;bottom:-1px;left:0;right:0;z-index:2;}
+    .hero-inner{position:relative;z-index:1;}
+    .hero-breadcrumb{display:flex;align-items:center;gap:.5rem;font-size:.7rem;color:rgba(255,255,255,.3);font-family:var(--ff-mono);margin-bottom:1rem;}
+    .hero-breadcrumb a{color:rgba(255,255,255,.35);text-decoration:none;}.hero-breadcrumb a:hover{color:var(--gold);}.hero-breadcrumb span{color:rgba(255,255,255,.2);}
+    .page-title{font-family:var(--ff-head);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;color:#fff;margin-bottom:.4rem;}
+    .page-title .t-danger{color:#fca5a5;font-style:italic;}
+    .page-sub{font-size:.83rem;color:rgba(255,255,255,.4);font-family:var(--ff-mono);display:flex;align-items:center;gap:.5rem;}
+    .danger-pip{width:6px;height:6px;border-radius:50%;background:var(--danger);box-shadow:0 0 8px rgba(239,68,68,.7);animation:pp 1s infinite;}
+    @keyframes pp{0%,100%{opacity:1}50%{opacity:.3}}
+    .main{padding:2.5rem 0 5rem;}
+
+    /* Warning banner */
+    .warn-banner{background:linear-gradient(135deg,#fef3c7,#fffbeb);border:1.5px solid rgba(245,158,11,.3);border-radius:16px;padding:1.25rem 1.5rem;display:flex;align-items:flex-start;gap:1rem;margin-bottom:2rem;animation:fadeUp .4s ease;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    .wb-ico{width:44px;height:44px;border-radius:12px;background:#fef3c7;color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;border:1.5px solid rgba(245,158,11,.3);}
+    .wb-title{font-size:.88rem;font-weight:700;color:#92400e;margin-bottom:.25rem;}
+    .wb-text{font-size:.78rem;color:#78350f;line-height:1.65;}
+
+    /* Espace disque */
+    .storage-panel{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.055);padding:1.5rem;margin-bottom:2rem;}
+    .sp-head{display:flex;align-items:center;gap:.65rem;margin-bottom:1.25rem;}
+    .sp-ico{width:36px;height:36px;border-radius:9px;background:#fee2e2;color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:.85rem;}
+    .sp-title{font-size:.88rem;font-weight:700;color:var(--text);}
+    .storage-bars{display:flex;flex-direction:column;gap:.9rem;}
+    .sb-item{display:flex;flex-direction:column;gap:.35rem;}
+    .sb-row{display:flex;align-items:center;justify-content:space-between;font-size:.78rem;color:var(--muted);}
+    .sb-row strong{color:var(--text);}
+    .sb-bar{height:8px;background:#f0f2f5;border-radius:4px;overflow:hidden;}
+    .sb-fill{height:100%;border-radius:4px;transition:width 1.4s cubic-bezier(.22,1,.36,1);}
+    .sb-fill.high{background:linear-gradient(90deg,var(--danger),#f97316);}
+    .sb-fill.med{background:linear-gradient(90deg,var(--gold),#fcd34d);}
+    .sb-fill.low{background:linear-gradient(90deg,var(--success),#34d399);}
+
+    /* Catégories de logs */
+    .purge-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;margin-bottom:2rem;}
+    .purge-card{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.055);padding:1.5rem;transition:all .22s;animation:fadeUp .4s both;}
+    .purge-card:nth-child(1){animation-delay:.05s}.purge-card:nth-child(2){animation-delay:.1s}.purge-card:nth-child(3){animation-delay:.15s}.purge-card:nth-child(4){animation-delay:.2s}
+    .purge-card.selected{border-color:var(--danger);background:#fef9f9;}
+    .pc-head{display:flex;align-items:center;gap:.85rem;margin-bottom:1rem;}
+    .pc-ico{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
+    .pci-red{background:#fee2e2;color:var(--danger);}
+    .pci-warn{background:#fef3c7;color:var(--gold);}
+    .pci-blue{background:#dbeafe;color:#2563eb;}
+    .pci-ink{background:#e8eaeb;color:#5C666B;}
+    .pc-title{font-size:.9rem;font-weight:700;color:var(--text);}
+    .pc-size{font-size:.68rem;font-family:var(--ff-mono);color:var(--faint);margin-top:.08rem;}
+    .pc-desc{font-size:.78rem;color:var(--muted);line-height:1.6;margin-bottom:1rem;}
+    .pc-detail{font-size:.72rem;font-family:var(--ff-mono);color:var(--faint);background:#f9fafb;border-radius:8px;padding:.6rem .85rem;margin-bottom:1rem;line-height:1.8;}
+    .pc-check-row{display:flex;align-items:center;gap:.65rem;cursor:pointer;}
+    .pc-checkbox{width:18px;height:18px;border:1.5px solid var(--border);border-radius:5px;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;}
+    .pc-check-row.checked .pc-checkbox{background:var(--danger);border-color:var(--danger);}
+    .pc-check-row.checked .pc-checkbox::after{content:'✓';font-size:.7rem;color:#fff;}
+    .pc-check-lbl{font-size:.78rem;color:var(--muted);transition:color .2s;}
+    .pc-check-row.checked .pc-check-lbl{color:var(--danger);font-weight:600;}
+
+    /* Action purge */
+    .purge-action{background:#fff;border-radius:18px;border:1.5px solid rgba(239,68,68,.2);box-shadow:0 2px 14px rgba(239,68,68,.05);padding:1.75rem;text-align:center;}
+    .pa-title{font-family:var(--ff-head);font-size:1.4rem;font-weight:700;color:var(--text);margin-bottom:.5rem;}
+    .pa-sub{font-size:.82rem;color:var(--muted);margin-bottom:1.5rem;}
+    .pa-selected{display:flex;flex-wrap:wrap;gap:.45rem;justify-content:center;margin-bottom:1.5rem;min-height:28px;}
+    .pa-tag{display:inline-flex;align-items:center;gap:.3rem;padding:.22rem .65rem;border-radius:20px;font-size:.7rem;font-weight:600;background:#fee2e2;color:var(--danger);border:1px solid rgba(239,68,68,.25);}
+    .pa-none{font-size:.78rem;color:var(--faint);font-style:italic;}
+    .btn-purge{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 2.5rem;border-radius:12px;background:linear-gradient(135deg,var(--danger),#dc2626);color:#fff;border:none;font-size:.92rem;font-weight:700;cursor:pointer;font-family:var(--ff-body);transition:all .2s;box-shadow:0 4px 16px rgba(239,68,68,.3);}
+    .btn-purge:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(239,68,68,.4);}
+    .btn-purge:disabled{opacity:.5;pointer-events:none;}
+
+    /* Confirm modal */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);z-index:9999;display:none;align-items:center;justify-content:center;}
+    .modal-overlay.show{display:flex;}
+    .modal-box{background:var(--surface);border-radius:24px;padding:2.5rem;width:100%;max-width:420px;box-shadow:0 32px 80px rgba(0,0,0,.3);border:1.5px solid rgba(239,68,68,.2);}
+    .modal-ico{width:64px;height:64px;border-radius:50%;background:#fee2e2;color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 1.25rem;animation:shake 2s ease-in-out infinite;}
+    @keyframes shake{0%,90%,100%{transform:translateX(0)}92%{transform:translateX(-5px)}94%{transform:translateX(5px)}96%{transform:translateX(-3px)}98%{transform:translateX(3px)}}
+    .modal-title{font-family:var(--ff-head);font-size:1.6rem;font-weight:700;color:var(--text);text-align:center;margin-bottom:.5rem;}
+    .modal-sub{font-size:.82rem;color:var(--muted);text-align:center;margin-bottom:1.5rem;}
+    .modal-confirm-input{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:.75rem 1rem;font-size:.88rem;font-family:var(--ff-mono);color:var(--text);background:#fafbfc;outline:none;margin-bottom:1rem;transition:border-color .2s;text-align:center;}
+    .modal-confirm-input:focus{border-color:var(--danger);}
+    .modal-hint{font-size:.72rem;color:var(--faint);text-align:center;margin-bottom:1.25rem;font-family:var(--ff-mono);}
+    .modal-actions{display:flex;gap:.75rem;}
+    .modal-cancel{flex:1;padding:.7rem;border-radius:10px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:.82rem;font-weight:600;cursor:pointer;font-family:var(--ff-body);transition:all .2s;}
+    .modal-cancel:hover{background:#f9fafb;}
+    .modal-confirm{flex:1;padding:.7rem;border-radius:10px;border:none;background:var(--danger);color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;font-family:var(--ff-body);transition:all .2s;opacity:.4;pointer-events:none;}
+    .modal-confirm.ready{opacity:1;pointer-events:auto;}
+    .modal-confirm.ready:hover{background:#dc2626;}
+
+    @media(max-width:768px){.purge-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+{% include "header.html" %}
+<div class="page-hero">
+  <div class="page-hero-bar"></div>
+  <div class="container hero-inner">
+    <div class="hero-breadcrumb"><a href="{{ url_for('admin_dashboard') }}">Dashboard</a><span>/</span> Purger les logs</div>
+    <h1 class="page-title">Purger les <span class="t-danger">logs</span></h1>
+    <div class="page-sub"><span class="danger-pip"></span> ACTION IRRÉVERSIBLE · SUPER ADMIN REQUIS · <span id="heroTime">--:--:--</span></div>
+  </div>
+  <svg class="page-wave" viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,0 C480,60 960,60 1440,0 L1440,60 L0,60 Z" fill="#f2f4f8"/></svg>
+</div>
+
+<div class="main">
+  <div class="container">
+
+    <!-- Warning -->
+    <div class="warn-banner">
+      <div class="wb-ico"><i class="fas fa-triangle-exclamation"></i></div>
+      <div>
+        <div class="wb-title">Action irréversible — Lisez attentivement</div>
+        <div class="wb-text">La purge des logs supprime définitivement les fichiers sélectionnés. Ces données ne pourront pas être récupérées. <strong>Effectuez un export avant toute purge.</strong> Toutes les actions de purge sont tracées dans le journal d'audit administrateur.</div>
+      </div>
+    </div>
+
+    <!-- Stockage -->
+    <div class="storage-panel">
+      <div class="sp-head"><div class="sp-ico"><i class="fas fa-hard-drive"></i></div><div class="sp-title">Utilisation du stockage</div></div>
+      <div class="storage-bars">
+        <div class="sb-item">
+          <div class="sb-row"><span><strong>Logs de sécurité</strong></span><span>28.4 MB / 50 MB</span></div>
+          <div class="sb-bar"><div class="sb-fill high" style="width:0" data-w="57%"></div></div>
+        </div>
+        <div class="sb-item">
+          <div class="sb-row"><span><strong>Logs système</strong></span><span>12.1 MB / 50 MB</span></div>
+          <div class="sb-bar"><div class="sb-fill med" style="width:0" data-w="24%"></div></div>
+        </div>
+        <div class="sb-item">
+          <div class="sb-row"><span><strong>Historique chatbot</strong></span><span>8.7 MB / 100 MB</span></div>
+          <div class="sb-bar"><div class="sb-fill low" style="width:0" data-w="9%"></div></div>
+        </div>
+        <div class="sb-item">
+          <div class="sb-row"><span><strong>Sessions expirées</strong></span><span>4.2 MB / 20 MB</span></div>
+          <div class="sb-bar"><div class="sb-fill low" style="width:0" data-w="21%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Catégories -->
+    <div class="purge-grid">
+      <div class="purge-card" id="pc-security">
+        <div class="pc-head"><div class="pc-ico pci-red"><i class="fas fa-shield-halved"></i></div><div><div class="pc-title">Logs de sécurité</div><div class="pc-size">28.4 MB · 14 238 entrées</div></div></div>
+        <div class="pc-desc">Tentatives de connexion, accès refusés, alertes de sécurité et incidents détectés.</div>
+        <div class="pc-detail">Dernière entrée : il y a 2 min<br>Période couverte : 90 jours<br>Format : .log (texte structuré)</div>
+        <div class="pc-check-row" onclick="toggleCheck(this,'security')"><div class="pc-checkbox"></div><span class="pc-check-lbl">Sélectionner pour purge</span></div>
+      </div>
+      <div class="purge-card" id="pc-system">
+        <div class="pc-head"><div class="pc-ico pci-warn"><i class="fas fa-server"></i></div><div><div class="pc-title">Logs système</div><div class="pc-size">12.1 MB · 6 812 entrées</div></div></div>
+        <div class="pc-desc">Démarrages, arrêts, erreurs applicatives et logs de débogage du serveur ML2C.</div>
+        <div class="pc-detail">Dernière entrée : il y a 30 sec<br>Période couverte : 60 jours<br>Format : .log (texte structuré)</div>
+        <div class="pc-check-row" onclick="toggleCheck(this,'system')"><div class="pc-checkbox"></div><span class="pc-check-lbl">Sélectionner pour purge</span></div>
+      </div>
+      <div class="purge-card" id="pc-chatbot">
+        <div class="pc-head"><div class="pc-ico pci-blue"><i class="fas fa-comments"></i></div><div><div class="pc-title">Historique chatbot</div><div class="pc-size">8.7 MB · 4 293 entrées</div></div></div>
+        <div class="pc-desc">Historique complet des questions/réponses du chatbot ML2C CONSEIL.</div>
+        <div class="pc-detail">Dernière entrée : il y a 1h<br>Période couverte : 180 jours<br>Format : SQLite (BDD)</div>
+        <div class="pc-check-row" onclick="toggleCheck(this,'chatbot')"><div class="pc-checkbox"></div><span class="pc-check-lbl">Sélectionner pour purge</span></div>
+      </div>
+      <div class="purge-card" id="pc-sessions">
+        <div class="pc-head"><div class="pc-ico pci-ink"><i class="fas fa-cookie"></i></div><div><div class="pc-title">Sessions expirées</div><div class="pc-size">4.2 MB · 2 104 entrées</div></div></div>
+        <div class="pc-desc">Tokens de session expirés, cookies révoqués et données de navigation temporaires.</div>
+        <div class="pc-detail">Dernière session : il y a 3h<br>Sessions expirées : 2 104<br>Format : JSON (cache)</div>
+        <div class="pc-check-row" onclick="toggleCheck(this,'sessions')"><div class="pc-checkbox"></div><span class="pc-check-lbl">Sélectionner pour purge</span></div>
+      </div>
+    </div>
+
+    <!-- Action -->
+    <div class="purge-action">
+      <div class="pa-title">Éléments à purger</div>
+      <div class="pa-sub">Sélectionnez les catégories ci-dessus puis confirmez la purge</div>
+      <div class="pa-selected" id="selectedTags"><span class="pa-none">Aucun élément sélectionné</span></div>
+      <button class="btn-purge" id="purgeBtn" disabled onclick="showConfirm()">
+        <i class="fas fa-trash-alt"></i> Lancer la purge
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Confirm modal -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-box">
+    <div class="modal-ico"><i class="fas fa-trash-alt"></i></div>
+    <div class="modal-title">Confirmer la purge</div>
+    <div class="modal-sub">Cette action est <strong>irréversible</strong>. Tapez <code style="background:#fee2e2;color:var(--danger);padding:.1rem .4rem;border-radius:4px;font-size:.82rem;">PURGER</code> pour confirmer.</div>
+    <input type="text" class="modal-confirm-input" id="confirmInput" placeholder="Tapez PURGER ici" oninput="checkConfirm(this.value)">
+    <div class="modal-hint">Sensible à la casse · Cette action sera enregistrée dans l'audit</div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="hideConfirm()">Annuler</button>
+      <button class="modal-confirm" id="confirmBtn" onclick="executePurge()"><i class="fas fa-trash-alt"></i> Confirmer</button>
+    </div>
+  </div>
+</div>
+
+{% include "footer.html" %}
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function tick(){const n=new Date();const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('heroTime');if(el)el.textContent=t;}
+tick();setInterval(tick,1000);
+
+/* Animate bars */
+document.querySelectorAll('.sb-fill').forEach(b=>{const w=b.dataset.w;b.style.width='0';setTimeout(()=>{b.style.width=w;},500);});
+
+const selected=new Set();
+const labels={'security':'Logs sécurité','system':'Logs système','chatbot':'Historique chatbot','sessions':'Sessions expirées'};
+
+function toggleCheck(row,id){
+  row.classList.toggle('checked');
+  const card=document.getElementById('pc-'+id);
+  card.classList.toggle('selected',row.classList.contains('checked'));
+  if(row.classList.contains('checked'))selected.add(id);else selected.delete(id);
+  updateSelected();
+}
+
+function updateSelected(){
+  const area=document.getElementById('selectedTags');
+  const btn=document.getElementById('purgeBtn');
+  if(selected.size===0){area.innerHTML='<span class="pa-none">Aucun élément sélectionné</span>';btn.disabled=true;return;}
+  area.innerHTML=Array.from(selected).map(id=>`<span class="pa-tag"><i class="fas fa-trash-alt"></i> ${labels[id]}</span>`).join('');
+  btn.disabled=false;
+}
+
+function showConfirm(){document.getElementById('confirmModal').classList.add('show');document.getElementById('confirmInput').focus();}
+function hideConfirm(){document.getElementById('confirmModal').classList.remove('show');document.getElementById('confirmInput').value='';document.getElementById('confirmBtn').classList.remove('ready');}
+function checkConfirm(v){document.getElementById('confirmBtn').classList.toggle('ready',v==='PURGER');}
+
+function executePurge(){
+  hideConfirm();
+  const items=Array.from(selected).map(id=>labels[id]).join(', ');
+  selected.clear();
+  document.querySelectorAll('.pc-check-row').forEach(r=>r.classList.remove('checked'));
+  document.querySelectorAll('.purge-card').forEach(c=>c.classList.remove('selected'));
+  updateSelected();
+  /* Reset barres */
+  document.querySelectorAll('.sb-fill').forEach(b=>{b.style.transition='width 1.4s';b.style.width='5%';});
+  alert('✓ Purge effectuée avec succès : '+items+'\n\nCette action a été enregistrée dans le journal d\'audit.');
+}
+</script>
+</body>
+</html>

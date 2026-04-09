@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emails Automatiques — ML2C Admin</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    :root{--rose:#C1007A;--rose-d:#9a0062;--rose-l:#fce4f3;--turq:#4FA695;--turq-l:#d4f0ec;--gold:#f59e0b;--gold-l:#fffbeb;--ink:#080b12;--bg:#f2f4f8;--surface:#fff;--border:#e4e8ef;--text:#111827;--muted:#6b7280;--faint:#9ca3af;--success:#10b981;--danger:#ef4444;--ff-head:'Cormorant Garamond',serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'JetBrains Mono',monospace;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
+    .page-hero{background:var(--ink);position:relative;overflow:hidden;padding:2.5rem 0 4.5rem;}
+    .page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 70% at 80% 25%,rgba(59,130,246,.15) 0%,transparent 55%),radial-gradient(ellipse 30% 45% at 5% 80%,rgba(193,0,122,.1) 0%,transparent 50%);}
+    .page-hero-bar{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#3b82f6,var(--rose),#3b82f6);background-size:300%;animation:barS 4s linear infinite;}
+    @keyframes barS{0%{background-position:0%}100%{background-position:300%}}
+    .page-wave{position:absolute;bottom:-1px;left:0;right:0;z-index:2;}
+    .hero-inner{position:relative;z-index:1;}
+    .hero-breadcrumb{display:flex;align-items:center;gap:.5rem;font-size:.7rem;color:rgba(255,255,255,.3);font-family:var(--ff-mono);margin-bottom:1rem;}
+    .hero-breadcrumb a{color:rgba(255,255,255,.35);text-decoration:none;}.hero-breadcrumb a:hover{color:var(--gold);}.hero-breadcrumb span{color:rgba(255,255,255,.2);}
+    .page-title{font-family:var(--ff-head);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;color:#fff;margin-bottom:.4rem;}
+    .page-title .t-blue{color:#93c5fd;font-style:italic;}
+    .page-sub{font-size:.83rem;color:rgba(255,255,255,.4);font-family:var(--ff-mono);display:flex;align-items:center;gap:.5rem;}
+    .live-pip{width:6px;height:6px;border-radius:50%;background:var(--success);box-shadow:0 0 8px rgba(16,185,129,.7);animation:pp 2s infinite;}
+    @keyframes pp{0%,100%{opacity:1}50%{opacity:.3}}
+    .main{padding:2.5rem 0 5rem;}
+
+    /* Stats email */
+    .email-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;}
+    .estat{background:var(--surface);border-radius:16px;border:1.5px solid var(--border);padding:1.1rem 1.25rem;box-shadow:0 2px 12px rgba(0,0,0,.05);display:flex;align-items:center;gap:.85rem;animation:fadeUp .4s both;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    .estat:nth-child(1){animation-delay:.05s}.estat:nth-child(2){animation-delay:.1s}.estat:nth-child(3){animation-delay:.15s}.estat:nth-child(4){animation-delay:.2s}
+    .estat-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
+    .ei-blue{background:#dbeafe;color:#2563eb;}.ei-ok{background:#d1fae5;color:var(--success);}.ei-gold{background:var(--gold-l);color:var(--gold);}.ei-rose{background:var(--rose-l);color:var(--rose);}
+    .estat-val{font-family:var(--ff-head);font-size:1.6rem;font-weight:700;line-height:1;color:var(--text);}
+    .estat-lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--faint);}
+
+    /* Layout */
+    .email-layout{display:grid;grid-template-columns:1fr 380px;gap:1.25rem;align-items:start;}
+
+    /* Liste templates */
+    .tpl-panel{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.05);overflow:hidden;}
+    .tpl-head{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.4rem;background:#fafbfc;border-bottom:1px solid var(--border);}
+    .tpl-head-title{font-size:.82rem;font-weight:700;color:var(--text);}
+    .btn-new-tpl{display:inline-flex;align-items:center;gap:.4rem;padding:.45rem .9rem;border-radius:8px;background:var(--rose);color:#fff;border:none;font-size:.78rem;font-weight:600;cursor:pointer;font-family:var(--ff-body);transition:all .2s;}
+    .btn-new-tpl:hover{background:var(--rose-d);}
+
+    .tpl-item{display:flex;align-items:center;gap:1rem;padding:1rem 1.4rem;border-bottom:1px solid #f5f6f8;transition:background .15s;cursor:pointer;}
+    .tpl-item:last-child{border-bottom:none;}
+    .tpl-item:hover{background:#fafbfc;}
+    .tpl-item.selected{background:var(--rose-l);border-left:3px solid var(--rose);}
+    .tpl-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;}
+    .ti-blue{background:#dbeafe;color:#2563eb;}.ti-rose{background:var(--rose-l);color:var(--rose);}.ti-gold{background:var(--gold-l);color:var(--gold);}.ti-ok{background:#d1fae5;color:var(--success);}.ti-ink{background:#e8eaeb;color:#5C666B;}
+    .tpl-info{flex:1;min-width:0;}
+    .tpl-name{font-size:.85rem;font-weight:600;color:var(--text);}
+    .tpl-desc{font-size:.72rem;color:var(--muted);margin-top:.1rem;}
+    .tpl-meta{display:flex;flex-direction:column;align-items:flex-end;gap:.3rem;flex-shrink:0;}
+    .tpl-toggle{display:flex;position:relative;width:36px;height:20px;}
+    .tpl-toggle input{opacity:0;width:0;height:0;position:absolute;}
+    .tpl-slider{position:absolute;inset:0;background:#e5e7eb;border-radius:20px;cursor:pointer;transition:.2s;}
+    .tpl-slider::before{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;left:3px;top:3px;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+    .tpl-toggle input:checked+.tpl-slider{background:var(--rose);}
+    .tpl-toggle input:checked+.tpl-slider::before{transform:translateX(16px);}
+    .tpl-sent{font-size:.65rem;color:var(--faint);font-family:var(--ff-mono);}
+
+    /* Preview */
+    .preview-panel{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.05);overflow:hidden;position:sticky;top:90px;}
+    .pp-head{padding:.9rem 1.4rem;background:#fafbfc;border-bottom:1px solid var(--border);}
+    .pp-title{font-size:.82rem;font-weight:700;color:var(--text);}
+    .pp-sub{font-size:.7rem;color:var(--muted);margin-top:.05rem;}
+    .pp-body{padding:1.25rem;}
+    .email-preview{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;}
+    .ep-topbar{background:#f3f4f6;padding:.6rem 1rem;display:flex;align-items:center;gap:.5rem;border-bottom:1px solid var(--border);}
+    .ep-dots{display:flex;gap:.3rem;}
+    .ep-dot{width:10px;height:10px;border-radius:50%;}
+    .ep-dot.r{background:#ff5f57;}.ep-dot.y{background:#ffbd2e;}.ep-dot.g{background:#28c840;}
+    .ep-title{font-size:.65rem;font-family:var(--ff-mono);color:var(--muted);margin-left:.5rem;}
+    .ep-content{padding:1.5rem 1.25rem;}
+    .ep-header{background:linear-gradient(135deg,var(--ink),#1e2a3a);border-radius:10px;padding:1.25rem;text-align:center;margin-bottom:1rem;}
+    .ep-logo{font-family:var(--ff-head);font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:.2rem;}
+    .ep-logo span{color:#f9a8d4;}
+    .ep-tagline{font-size:.65rem;color:rgba(255,255,255,.4);font-family:var(--ff-mono);}
+    .ep-body-text{font-size:.82rem;color:var(--text);line-height:1.7;margin-bottom:1rem;}
+    .ep-cta{display:block;text-align:center;padding:.65rem;background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff;border-radius:8px;font-size:.82rem;font-weight:600;text-decoration:none;margin-bottom:1rem;}
+    .ep-footer-txt{font-size:.65rem;color:var(--faint);text-align:center;line-height:1.8;}
+
+    .pp-actions{display:flex;gap:.65rem;padding:1rem 1.25rem;border-top:1px solid var(--border);}
+    .pp-btn{flex:1;padding:.6rem;border-radius:9px;font-size:.78rem;font-weight:600;cursor:pointer;border:1.5px solid;text-align:center;transition:all .2s;font-family:var(--ff-body);}
+    .pp-btn-outline{background:transparent;border-color:var(--border);color:var(--muted);}
+    .pp-btn-outline:hover{border-color:var(--rose);color:var(--rose);}
+    .pp-btn-rose{background:var(--rose);border-color:var(--rose);color:#fff;}
+    .pp-btn-rose:hover{background:var(--rose-d);}
+
+    @media(max-width:900px){.email-layout{grid-template-columns:1fr}.preview-panel{position:static}.email-stats{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:480px){.email-stats{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+{% include "header.html" %}
+<div class="page-hero">
+  <div class="page-hero-bar"></div>
+  <div class="container hero-inner">
+    <div class="hero-breadcrumb"><a href="{{ url_for('admin_dashboard') }}">Dashboard</a><span>/</span> Emails automatiques</div>
+    <h1 class="page-title">Emails <span class="t-blue">automatiques</span></h1>
+    <div class="page-sub"><span class="live-pip"></span> SMTP ACTIF · ML2C CONSEIL · <span id="heroTime">--:--:--</span></div>
+  </div>
+  <svg class="page-wave" viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,0 C480,60 960,60 1440,0 L1440,60 L0,60 Z" fill="#f2f4f8"/></svg>
+</div>
+
+<div class="main">
+  <div class="container">
+    <!-- Stats -->
+    <div class="email-stats">
+      <div class="estat"><div class="estat-ico ei-blue"><i class="fas fa-paper-plane"></i></div><div><div class="estat-lbl">Envoyés ce mois</div><div class="estat-val">247</div></div></div>
+      <div class="estat"><div class="estat-ico ei-ok"><i class="fas fa-check-circle"></i></div><div><div class="estat-lbl">Taux de délivrabilité</div><div class="estat-val">99.2%</div></div></div>
+      <div class="estat"><div class="estat-ico ei-gold"><i class="fas fa-mouse-pointer"></i></div><div><div class="estat-lbl">Taux d'ouverture</div><div class="estat-val">68%</div></div></div>
+      <div class="estat"><div class="estat-ico ei-rose"><i class="fas fa-envelope-open"></i></div><div><div class="estat-lbl">Templates actifs</div><div class="estat-val">5</div></div></div>
+    </div>
+
+    <div class="email-layout">
+      <!-- Templates -->
+      <div class="tpl-panel">
+        <div class="tpl-head">
+          <div class="tpl-head-title">Templates d'emails</div>
+          <button class="btn-new-tpl"><i class="fas fa-plus"></i> Nouveau</button>
+        </div>
+
+        <div class="tpl-item selected" onclick="selectTpl(this,'welcome')">
+          <div class="tpl-ico ti-blue"><i class="fas fa-hand-wave"></i></div>
+          <div class="tpl-info"><div class="tpl-name">Email de bienvenue</div><div class="tpl-desc">Envoyé à l'inscription d'un nouveau client</div></div>
+          <div class="tpl-meta"><label class="tpl-toggle"><input type="checkbox" checked><span class="tpl-slider"></span></label><span class="tpl-sent">142 envois</span></div>
+        </div>
+        <div class="tpl-item" onclick="selectTpl(this,'question')">
+          <div class="tpl-ico ti-rose"><i class="fas fa-comment-alt"></i></div>
+          <div class="tpl-info"><div class="tpl-name">Confirmation de question</div><div class="tpl-desc">Accusé de réception d'une question chatbot</div></div>
+          <div class="tpl-meta"><label class="tpl-toggle"><input type="checkbox" checked><span class="tpl-slider"></span></label><span class="tpl-sent">89 envois</span></div>
+        </div>
+        <div class="tpl-item" onclick="selectTpl(this,'reponse')">
+          <div class="tpl-ico ti-ok"><i class="fas fa-reply"></i></div>
+          <div class="tpl-info"><div class="tpl-name">Notification de réponse</div><div class="tpl-desc">Alerte quand une réponse est disponible</div></div>
+          <div class="tpl-meta"><label class="tpl-toggle"><input type="checkbox" checked><span class="tpl-slider"></span></label><span class="tpl-sent">76 envois</span></div>
+        </div>
+        <div class="tpl-item" onclick="selectTpl(this,'rdv')">
+          <div class="tpl-ico ti-gold"><i class="fas fa-calendar-check"></i></div>
+          <div class="tpl-info"><div class="tpl-name">Confirmation de RDV</div><div class="tpl-desc">Envoyé après la prise d'un rendez-vous</div></div>
+          <div class="tpl-meta"><label class="tpl-toggle"><input type="checkbox" checked><span class="tpl-slider"></span></label><span class="tpl-sent">31 envois</span></div>
+        </div>
+        <div class="tpl-item" onclick="selectTpl(this,'alert')">
+          <div class="tpl-ico ti-ink"><i class="fas fa-bell"></i></div>
+          <div class="tpl-info"><div class="tpl-name">Alerte admin</div><div class="tpl-desc">Notifications internes pour l'administrateur</div></div>
+          <div class="tpl-meta"><label class="tpl-toggle"><input type="checkbox" checked><span class="tpl-slider"></span></label><span class="tpl-sent">8 envois</span></div>
+        </div>
+      </div>
+
+      <!-- Preview -->
+      <div class="preview-panel">
+        <div class="pp-head">
+          <div class="pp-title">Aperçu — Email de bienvenue</div>
+          <div class="pp-sub">Template actif · 142 envois ce mois</div>
+        </div>
+        <div class="pp-body">
+          <div class="email-preview">
+            <div class="ep-topbar">
+              <div class="ep-dots"><div class="ep-dot r"></div><div class="ep-dot y"></div><div class="ep-dot g"></div></div>
+              <div class="ep-title">Bienvenue chez ML2C CONSEIL</div>
+            </div>
+            <div class="ep-content">
+              <div class="ep-header">
+                <div class="ep-logo">ML2C <span>CONSEIL</span></div>
+                <div class="ep-tagline">CABINET D'EXPERTISE COMPTABLE</div>
+              </div>
+              <div class="ep-body-text">
+                Bonjour <strong>{{prenom}}</strong>,<br><br>
+                Bienvenue chez <strong>ML2C CONSEIL</strong>. Votre compte a bien été créé et vous pouvez désormais accéder à votre espace client personnalisé.<br><br>
+                Notre équipe est à votre disposition pour répondre à toutes vos questions comptables, fiscales et juridiques.
+              </div>
+              <a class="ep-cta" href="#">Accéder à mon espace client →</a>
+              <div class="ep-footer-txt">
+                ML2C CONSEIL · 6 Rue de la Vigne, 28360 Dammarie<br>
+                +33 (0)6 72 34 32 94 · contact@ml2cconseil.com<br>
+                <span style="color:#e5e7eb;">Se désabonner</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pp-actions">
+          <button class="pp-btn pp-btn-outline" onclick="sendTest()"><i class="fas fa-flask"></i> Test</button>
+          <button class="pp-btn pp-btn-rose" onclick="editTpl()"><i class="fas fa-pencil"></i> Modifier</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;display:flex;align-items:center;gap:.65rem;padding:.8rem 1.25rem;border-radius:12px;font-size:.83rem;font-weight:500;background:#0d2e23;color:#4ade80;border:1px solid rgba(74,222,128,.2);box-shadow:0 8px 24px rgba(0,0,0,.15);transform:translateY(80px);opacity:0;transition:all .3s cubic-bezier(.34,1.2,.64,1);pointer-events:none;" id="toast"><i class="fas fa-circle-check"></i><span id="toastMsg">Email de test envoyé</span></div>
+
+{% include "footer.html" %}
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function tick(){const n=new Date();const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('heroTime');if(el)el.textContent=t;}
+tick();setInterval(tick,1000);
+function toast(msg){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;t.style.transform='translateY(0)';t.style.opacity='1';setTimeout(()=>{t.style.transform='translateY(80px)';t.style.opacity='0';},3000);}
+function sendTest(){toast('Email de test envoyé à contact@ml2cconseil.com');}
+function editTpl(){toast('Ouverture de l\'éditeur de template...');}
+function selectTpl(item,id){document.querySelectorAll('.tpl-item').forEach(t=>t.classList.remove('selected'));item.classList.add('selected');}
+</script>
+</body>
+</html>

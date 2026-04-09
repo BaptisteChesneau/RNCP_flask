@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logs de Sécurité — ML2C Admin</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    :root{--rose:#C1007A;--rose-l:#fce4f3;--turq:#4FA695;--turq-l:#d4f0ec;--gold:#f59e0b;--gold-l:#fffbeb;--ink:#080b12;--ink2:#0d1017;--ink3:#131720;--ink4:#1a1f2e;--bg:#f2f4f8;--surface:#fff;--border:#e4e8ef;--text:#111827;--muted:#6b7280;--faint:#9ca3af;--success:#10b981;--danger:#ef4444;--warn:#f59e0b;--ff-head:'Cormorant Garamond',serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'JetBrains Mono',monospace;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
+    .page-hero{background:var(--ink);position:relative;overflow:hidden;padding:2.5rem 0 4.5rem;}
+    .page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 70% at 80% 20%,rgba(239,68,68,.15) 0%,transparent 55%),radial-gradient(ellipse 30% 50% at 5% 85%,rgba(245,158,11,.1) 0%,transparent 50%);}
+    .page-hero-bar{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--danger),#f97316,var(--gold));background-size:300%;animation:barS 4s linear infinite;}
+    @keyframes barS{0%{background-position:0%}100%{background-position:300%}}
+    .page-wave{position:absolute;bottom:-1px;left:0;right:0;z-index:2;}
+    .hero-inner{position:relative;z-index:1;}
+    .hero-breadcrumb{display:flex;align-items:center;gap:.5rem;font-size:.7rem;color:rgba(255,255,255,.3);font-family:var(--ff-mono);margin-bottom:1rem;}
+    .hero-breadcrumb a{color:rgba(255,255,255,.35);text-decoration:none;}.hero-breadcrumb a:hover{color:var(--gold);}.hero-breadcrumb span{color:rgba(255,255,255,.2);}
+    .page-title{font-family:var(--ff-head);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;color:#fff;margin-bottom:.4rem;}
+    .page-title .t-danger{color:#fca5a5;font-style:italic;}
+    .page-sub{font-size:.83rem;color:rgba(255,255,255,.4);font-family:var(--ff-mono);display:flex;align-items:center;gap:.5rem;}
+    .live-pip{width:6px;height:6px;border-radius:50%;background:var(--danger);box-shadow:0 0 8px rgba(239,68,68,.7);animation:pp 1s infinite;}
+    @keyframes pp{0%,100%{opacity:1}50%{opacity:.3}}
+    .main{padding:2.5rem 0 5rem;}
+
+    /* KPI security */
+    .sec-krow{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;}
+    .sec-kbox{background:var(--surface);border-radius:16px;border:1.5px solid transparent;padding:1.25rem;box-shadow:0 2px 12px rgba(0,0,0,.05);transition:transform .2s;animation:fadeUp .4s both;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    .sec-kbox:nth-child(1){animation-delay:.05s}.sec-kbox:nth-child(2){animation-delay:.1s}.sec-kbox:nth-child(3){animation-delay:.15s}.sec-kbox:nth-child(4){animation-delay:.2s}
+    .sec-kbox:hover{transform:translateY(-3px);}
+    .skb-danger{border-color:rgba(239,68,68,.2);background:linear-gradient(135deg,#fff,#fef9f9);}
+    .skb-warn{border-color:rgba(245,158,11,.2);background:linear-gradient(135deg,#fff,#fffdf5);}
+    .skb-ok{border-color:rgba(16,185,129,.2);background:linear-gradient(135deg,#fff,#f0fdf8);}
+    .skb-blue{border-color:rgba(59,130,246,.2);background:linear-gradient(135deg,#fff,#eff6ff);}
+    .sk-head{display:flex;align-items:center;gap:.6rem;margin-bottom:.75rem;}
+    .sk-ico{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0;}
+    .ski-danger{background:#fee2e2;color:var(--danger);}
+    .ski-warn{background:#fef3c7;color:var(--gold);}
+    .ski-ok{background:#d1fae5;color:var(--success);}
+    .ski-blue{background:#dbeafe;color:#2563eb;}
+    .sk-val{font-family:var(--ff-head);font-size:2rem;font-weight:700;line-height:1;color:var(--text);}
+    .sk-lbl{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-bottom:.2rem;}
+    .sk-sub{font-size:.72rem;color:var(--muted);}
+
+    /* Toolbar */
+    .logs-toolbar{display:flex;align-items:center;gap:.65rem;margin-bottom:1.25rem;flex-wrap:wrap;}
+    .logs-search{display:flex;align-items:center;gap:.5rem;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.5rem .9rem;flex:1;min-width:200px;transition:border-color .2s;}
+    .logs-search:focus-within{border-color:var(--rose);}
+    .logs-search input{background:none;border:none;outline:none;font-size:.85rem;font-family:var(--ff-body);color:var(--text);width:100%;}
+    .logs-search input::placeholder{color:var(--faint);}
+    .filter-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem .9rem;border-radius:9px;font-size:.78rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);transition:all .2s;font-family:var(--ff-body);}
+    .filter-btn.on{background:var(--rose-l);border-color:rgba(193,0,122,.3);color:var(--rose);}
+    .filter-btn:hover:not(.on){background:#f9fafb;}
+    .filter-btn.danger-f.on{background:#fee2e2;border-color:rgba(239,68,68,.3);color:var(--danger);}
+    .filter-btn.warn-f.on{background:#fef3c7;border-color:rgba(245,158,11,.3);color:var(--gold);}
+    .filter-btn.ok-f.on{background:#d1fae5;border-color:rgba(16,185,129,.2);color:var(--success);}
+    .export-btn2{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem .9rem;border-radius:9px;font-size:.78rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);transition:all .2s;font-family:var(--ff-body);}
+    .export-btn2:hover{border-color:var(--rose);color:var(--rose);}
+
+    /* Terminal logs */
+    .terminal-panel{background:var(--ink2);border-radius:20px;border:1px solid rgba(255,255,255,.07);box-shadow:0 4px 24px rgba(0,0,0,.2);overflow:hidden;margin-bottom:2rem;}
+    .term-head{display:flex;align-items:center;gap:.5rem;padding:.75rem 1.2rem;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.06);}
+    .term-dot{width:12px;height:12px;border-radius:50%;}
+    .term-dot.r{background:#ff5f57;}
+    .term-dot.y{background:#ffbd2e;}
+    .term-dot.g{background:#28c840;}
+    .term-title{font-family:var(--ff-mono);font-size:.7rem;color:rgba(255,255,255,.3);margin-left:.5rem;}
+    .term-live{margin-left:auto;display:flex;align-items:center;gap:.35rem;font-size:.65rem;font-family:var(--ff-mono);color:rgba(239,68,68,.7);}
+    .term-live-dot{width:5px;height:5px;border-radius:50%;background:var(--danger);animation:pp 1s infinite;}
+
+    .term-body{padding:1.25rem 1.5rem;max-height:420px;overflow-y:auto;font-family:var(--ff-mono);font-size:.72rem;line-height:2;}
+    .term-body::-webkit-scrollbar{width:4px;}
+    .term-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);}
+
+    .log-entry{display:flex;gap:.75rem;padding:.15rem 0;border-bottom:1px solid rgba(255,255,255,.03);animation:logIn .3s ease;}
+    @keyframes logIn{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:translateX(0)}}
+    .log-entry:last-child{border-bottom:none;}
+    .log-time{color:rgba(255,255,255,.2);flex-shrink:0;min-width:80px;}
+    .log-level{flex-shrink:0;min-width:65px;font-weight:600;}
+    .log-level.INFO{color:#60a5fa;}
+    .log-level.SUCCESS{color:#34d399;}
+    .log-level.WARNING{color:#fbbf24;}
+    .log-level.ERROR{color:#f87171;}
+    .log-level.CRITICAL{color:#f43f5e;animation:logBlink .6s infinite;}
+    @keyframes logBlink{0%,100%{opacity:1}50%{opacity:.4}}
+    .log-src{color:rgba(255,255,255,.3);flex-shrink:0;min-width:100px;}
+    .log-msg{color:rgba(255,255,255,.7);flex:1;}
+    .log-msg .hl{color:#fff;font-weight:500;}
+    .log-ip{color:rgba(255,255,255,.2);font-size:.65rem;margin-left:.5rem;}
+
+    /* Pagination */
+    .pagi{display:flex;justify-content:center;align-items:center;gap:.4rem;margin-top:1.25rem;}
+    .pagi-btn{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);font-size:.82rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:var(--ff-body);}
+    .pagi-btn:hover,.pagi-btn.active{background:var(--rose);border-color:var(--rose);color:#fff;}
+
+    @media(max-width:900px){.sec-krow{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:480px){.sec-krow{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+{% include "header.html" %}
+
+<div class="page-hero">
+  <div class="page-hero-bar"></div>
+  <div class="container hero-inner">
+    <div class="hero-breadcrumb"><a href="{{ url_for('admin_dashboard') }}">Dashboard</a><span>/</span> Logs de sécurité</div>
+    <h1 class="page-title">Logs de <span class="t-danger">sécurité</span></h1>
+    <div class="page-sub"><span class="live-pip"></span> SURVEILLANCE EN TEMPS RÉEL · <span id="heroTime">--:--:--</span></div>
+  </div>
+  <svg class="page-wave" viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,0 C480,60 960,60 1440,0 L1440,60 L0,60 Z" fill="#f2f4f8"/></svg>
+</div>
+
+<div class="main">
+  <div class="container">
+
+    <!-- KPI sécurité -->
+    <div class="sec-krow">
+      <div class="sec-kbox skb-ok">
+        <div class="sk-head"><div class="sk-ico ski-ok"><i class="fas fa-shield-halved"></i></div></div>
+        <div class="sk-lbl">Statut global</div>
+        <div class="sk-val" style="color:var(--success);font-size:1.3rem;">Sécurisé</div>
+        <div class="sk-sub">Aucune menace critique active</div>
+      </div>
+      <div class="sec-kbox skb-danger">
+        <div class="sk-head"><div class="sk-ico ski-danger"><i class="fas fa-ban"></i></div></div>
+        <div class="sk-lbl">Accès refusés</div>
+        <div class="sk-val" id="kv-refused">—</div>
+        <div class="sk-sub">Dernières 24h</div>
+      </div>
+      <div class="sec-kbox skb-warn">
+        <div class="sk-head"><div class="sk-ico ski-warn"><i class="fas fa-triangle-exclamation"></i></div></div>
+        <div class="sk-lbl">Alertes</div>
+        <div class="sk-val" id="kv-alerts">—</div>
+        <div class="sk-sub">À traiter</div>
+      </div>
+      <div class="sec-kbox skb-blue">
+        <div class="sk-head"><div class="sk-ico ski-blue"><i class="fas fa-door-open"></i></div></div>
+        <div class="sk-lbl">Connexions admin</div>
+        <div class="sk-val" id="kv-logins">—</div>
+        <div class="sk-sub">Sessions aujourd'hui</div>
+      </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="logs-toolbar">
+      <div class="logs-search"><i class="fas fa-search" style="color:var(--faint);font-size:.8rem;"></i><input type="text" placeholder="Rechercher dans les logs…" id="logSearch" oninput="filterLogs(this.value)"></div>
+      <button class="filter-btn on" data-level="ALL" onclick="filterLevel(this)">Tous</button>
+      <button class="filter-btn ok-f" data-level="SUCCESS" onclick="filterLevel(this)"><i class="fas fa-check"></i> Succès</button>
+      <button class="filter-btn warn-f" data-level="WARNING" onclick="filterLevel(this)"><i class="fas fa-triangle-exclamation"></i> Alertes</button>
+      <button class="filter-btn danger-f" data-level="ERROR" onclick="filterLevel(this)"><i class="fas fa-times-circle"></i> Erreurs</button>
+      <button class="export-btn2" onclick="exportLogs()"><i class="fas fa-download"></i> Exporter</button>
+    </div>
+
+    <!-- Terminal -->
+    <div class="terminal-panel">
+      <div class="term-head">
+        <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+        <span class="term-title">security.log — ML2C CONSEIL Admin Console</span>
+        <div class="term-live"><div class="term-live-dot"></div> LIVE</div>
+      </div>
+      <div class="term-body" id="termBody"></div>
+    </div>
+
+    <div class="pagi">
+      <button class="pagi-btn"><i class="fas fa-chevron-left"></i></button>
+      <button class="pagi-btn active">1</button>
+      <button class="pagi-btn">2</button>
+      <button class="pagi-btn">3</button>
+      <button class="pagi-btn"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+  </div>
+</div>
+
+{% include "footer.html" %}
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function tick(){const n=new Date();const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('heroTime');if(el)el.textContent=t;}
+tick();setInterval(tick,1000);
+
+/* Log data */
+const LOG_DATA=[
+  {level:'SUCCESS',src:'auth.admin',msg:'Connexion administrateur réussie — <span class="hl">admin@ml2cconseil.com</span>',ip:'192.168.1.1'},
+  {level:'INFO',src:'system',msg:'Démarrage du service chatbot <span class="hl">ML2C v2.0</span>',ip:'—'},
+  {level:'SUCCESS',src:'database',msg:'Connexion BDD établie — latence <span class="hl">3ms</span>',ip:'—'},
+  {level:'INFO',src:'session',msg:'Session admin créée — durée <span class="hl">30min</span>',ip:'192.168.1.1'},
+  {level:'WARNING',src:'auth',msg:'Tentative de connexion échouée — <span class="hl">3 essais</span>',ip:'82.117.45.23'},
+  {level:'INFO',src:'chatbot',msg:'Nouvelle question enregistrée — utilisateur <span class="hl">#1042</span>',ip:'—'},
+  {level:'SUCCESS',src:'backup',msg:'Sauvegarde BDD réussie — <span class="hl">14.2 MB</span>',ip:'—'},
+  {level:'WARNING',src:'rate-limit',msg:'Limite de requêtes atteinte pour IP <span class="hl">91.134.22.10</span>',ip:'91.134.22.10'},
+  {level:'ERROR',src:'auth',msg:'Accès refusé — permissions insuffisantes pour <span class="hl">/admin/config</span>',ip:'192.168.1.45'},
+  {level:'INFO',src:'ssl',msg:'Certificat TLS renouvelé — valide jusqu\'au <span class="hl">2025-12-31</span>',ip:'—'},
+  {level:'SUCCESS',src:'email',msg:'Email de notification envoyé — <span class="hl">contact@ml2cconseil.com</span>',ip:'—'},
+  {level:'CRITICAL',src:'auth',msg:'5 tentatives échouées consécutives — IP bloquée : <span class="hl">45.92.1.123</span>',ip:'45.92.1.123'},
+  {level:'SUCCESS',src:'cleanup',msg:'Purge des sessions expirées — <span class="hl">12 sessions</span> supprimées',ip:'—'},
+  {level:'INFO',src:'config',msg:'Configuration système rechargée',ip:'192.168.1.1'},
+  {level:'WARNING',src:'storage',msg:'Espace disque à <span class="hl">78%</span> — surveillance activée',ip:'—'},
+];
+
+let activeLevel='ALL';
+let rendered=false;
+
+function renderLogs(data){
+  const body=document.getElementById('termBody');
+  body.innerHTML='';
+  const n=new Date();
+  data.forEach((log,i)=>{
+    const d=new Date(n-Math.random()*3600000);
+    const t=[d.getHours(),d.getMinutes(),d.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');
+    const div=document.createElement('div');
+    div.className='log-entry';
+    div.dataset.level=log.level;
+    div.dataset.msg=log.msg.replace(/<[^>]+>/g,'');
+    div.style.animationDelay=(i*30)+'ms';
+    div.innerHTML=`<span class="log-time">[${t}]</span><span class="log-level ${log.level}">${log.level.padEnd(8,' ')}</span><span class="log-src">${log.src}</span><span class="log-msg">${log.msg}<span class="log-ip">${log.ip!=='—'?'· '+log.ip:''}</span></span>`;
+    body.appendChild(div);
+  });
+  body.scrollTop=body.scrollHeight;
+  /* KPI */
+  document.getElementById('kv-refused').textContent=data.filter(l=>l.level==='ERROR'||l.level==='CRITICAL').length;
+  document.getElementById('kv-alerts').textContent=data.filter(l=>l.level==='WARNING').length;
+  document.getElementById('kv-logins').textContent=data.filter(l=>l.level==='SUCCESS'&&l.src==='auth.admin').length;
+}
+renderLogs(LOG_DATA);
+
+function filterLogs(q){
+  document.querySelectorAll('.log-entry').forEach(el=>{
+    const match=activeLevel==='ALL'||el.dataset.level===activeLevel;
+    const search=!q||el.dataset.msg.toLowerCase().includes(q.toLowerCase());
+    el.style.display=(match&&search)?'flex':'none';
+  });
+}
+
+function filterLevel(btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  activeLevel=btn.dataset.level;
+  filterLogs(document.getElementById('logSearch').value);
+}
+
+function exportLogs(){
+  const rows=Array.from(document.querySelectorAll('.log-entry:not([style*="none"])'));
+  const text=rows.map(r=>r.textContent.trim()).join('\n');
+  const blob=new Blob([text],{type:'text/plain'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ml2c-security-logs.txt';a.click();
+}
+
+/* Live logs */
+const liveMsg=[
+  {level:'INFO',src:'session',msg:'Heartbeat session admin — OK',ip:'192.168.1.1'},
+  {level:'SUCCESS',src:'database',msg:'Requête BDD — <span class="hl">2ms</span>',ip:'—'},
+  {level:'INFO',src:'chatbot',msg:'Chatbot actif — <span class="hl">0 erreurs</span>',ip:'—'},
+];
+let lIdx=0;
+setInterval(()=>{
+  const item=liveMsg[lIdx%liveMsg.length];lIdx++;
+  const body=document.getElementById('termBody');
+  const n=new Date();
+  const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');
+  const div=document.createElement('div');
+  div.className='log-entry';
+  div.dataset.level=item.level;
+  div.dataset.msg=item.msg.replace(/<[^>]+>/g,'');
+  div.innerHTML=`<span class="log-time">[${t}]</span><span class="log-level ${item.level}">${item.level.padEnd(8,' ')}</span><span class="log-src">${item.src}</span><span class="log-msg">${item.msg}</span>`;
+  body.insertBefore(div,body.firstChild);
+  while(body.children.length>25)body.removeChild(body.lastChild);
+},4000);
+
+document.querySelectorAll('.pagi-btn').forEach(b=>{b.addEventListener('click',function(){if(this.querySelector('i'))return;document.querySelectorAll('.pagi-btn').forEach(pb=>pb.classList.remove('active'));this.classList.add('active');});});
+</script>
+</body>
+</html>

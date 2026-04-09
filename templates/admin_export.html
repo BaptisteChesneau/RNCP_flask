@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Export des Données — ML2C Admin</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    :root{--rose:#C1007A;--rose-d:#9a0062;--rose-l:#fce4f3;--turq:#4FA695;--turq-l:#d4f0ec;--gold:#f59e0b;--gold-l:#fffbeb;--ink:#080b12;--bg:#f2f4f8;--surface:#fff;--border:#e4e8ef;--text:#111827;--muted:#6b7280;--faint:#9ca3af;--success:#10b981;--danger:#ef4444;--ff-head:'Cormorant Garamond',serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'JetBrains Mono',monospace;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
+    .page-hero{background:var(--ink);position:relative;overflow:hidden;padding:2.5rem 0 4.5rem;}
+    .page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 70% at 85% 25%,rgba(16,185,129,.15) 0%,transparent 55%),radial-gradient(ellipse 30% 45% at 5% 80%,rgba(79,166,149,.1) 0%,transparent 50%);}
+    .page-hero-bar{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--success),var(--turq),var(--success));background-size:300%;animation:barS 4s linear infinite;}
+    @keyframes barS{0%{background-position:0%}100%{background-position:300%}}
+    .page-wave{position:absolute;bottom:-1px;left:0;right:0;z-index:2;}
+    .hero-inner{position:relative;z-index:1;}
+    .hero-breadcrumb{display:flex;align-items:center;gap:.5rem;font-size:.7rem;color:rgba(255,255,255,.3);font-family:var(--ff-mono);margin-bottom:1rem;}
+    .hero-breadcrumb a{color:rgba(255,255,255,.35);text-decoration:none;}.hero-breadcrumb a:hover{color:var(--gold);}.hero-breadcrumb span{color:rgba(255,255,255,.2);}
+    .page-title{font-family:var(--ff-head);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;color:#fff;margin-bottom:.4rem;}
+    .page-title .t-green{color:#6ee7b7;font-style:italic;}
+    .page-sub{font-size:.83rem;color:rgba(255,255,255,.4);font-family:var(--ff-mono);display:flex;align-items:center;gap:.5rem;}
+    .live-pip{width:6px;height:6px;border-radius:50%;background:var(--success);box-shadow:0 0 8px rgba(16,185,129,.7);animation:pp 2s infinite;}
+    @keyframes pp{0%,100%{opacity:1}50%{opacity:.3}}
+    .main{padding:2.5rem 0 5rem;}
+
+    .export-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;margin-bottom:2rem;}
+    .export-card{background:var(--surface);border-radius:20px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.055);padding:1.75rem;transition:transform .25s,box-shadow .25s,border-color .25s;animation:fadeUp .45s both;position:relative;overflow:hidden;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+    .export-card:nth-child(1){animation-delay:.05s}.export-card:nth-child(2){animation-delay:.1s}.export-card:nth-child(3){animation-delay:.15s}.export-card:nth-child(4){animation-delay:.2s}
+    .export-card:hover{transform:translateY(-4px);box-shadow:0 10px 32px rgba(0,0,0,.09);}
+    .export-card.rose:hover{border-color:var(--rose-l);}
+    .export-card.turq:hover{border-color:var(--turq-l);}
+    .export-card.gold:hover{border-color:rgba(245,158,11,.2);}
+    .export-card.blue:hover{border-color:rgba(59,130,246,.2);}
+    .ec-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem;}
+    .ec-ico{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+    .eci-rose{background:var(--rose-l);color:var(--rose);}
+    .eci-turq{background:var(--turq-l);color:var(--turq);}
+    .eci-gold{background:var(--gold-l);color:var(--gold);}
+    .eci-blue{background:#dbeafe;color:#2563eb;}
+    .ec-size{font-size:.72rem;font-family:var(--ff-mono);color:var(--faint);background:#f0f2f5;padding:.2rem .6rem;border-radius:6px;}
+    .ec-title{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.35rem;}
+    .ec-desc{font-size:.78rem;color:var(--muted);line-height:1.6;margin-bottom:1.25rem;}
+    .ec-opts{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.25rem;}
+    .ec-opt-row{display:flex;align-items:center;gap:.65rem;}
+    .ec-opt-label{font-size:.75rem;color:var(--muted);flex:1;}
+    .ec-select{border:1.5px solid var(--border);border-radius:8px;padding:.4rem .75rem;font-size:.78rem;font-family:var(--ff-body);color:var(--text);background:#fafbfc;outline:none;cursor:pointer;transition:border-color .2s;}
+    .ec-select:focus{border-color:var(--rose);}
+    .ec-btn{width:100%;padding:.75rem;border-radius:10px;border:none;font-size:.85rem;font-weight:600;cursor:pointer;font-family:var(--ff-body);display:flex;align-items:center;justify-content:center;gap:.5rem;transition:all .2s;}
+    .ec-btn.rose{background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff;box-shadow:0 4px 12px rgba(193,0,122,.25);}
+    .ec-btn.turq{background:linear-gradient(135deg,var(--turq),#3a7d70);color:#fff;box-shadow:0 4px 12px rgba(79,166,149,.25);}
+    .ec-btn.gold{background:linear-gradient(135deg,var(--gold),#d97706);color:#fff;box-shadow:0 4px 12px rgba(245,158,11,.25);}
+    .ec-btn.blue{background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;box-shadow:0 4px 12px rgba(59,130,246,.25);}
+    .ec-btn:hover{transform:translateY(-1px);filter:brightness(1.08);}
+    .ec-btn:active{transform:translateY(0);}
+
+    /* Progress modal */
+    .progress-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);z-index:9999;display:none;align-items:center;justify-content:center;}
+    .progress-overlay.show{display:flex;}
+    .progress-modal{background:var(--surface);border-radius:20px;padding:2.5rem;width:100%;max-width:420px;box-shadow:0 24px 64px rgba(0,0,0,.3);text-align:center;}
+    .pm-ico{width:60px;height:60px;border-radius:50%;background:#d1fae5;color:var(--success);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 1.25rem;}
+    .pm-title{font-family:var(--ff-head);font-size:1.5rem;font-weight:700;color:var(--text);margin-bottom:.35rem;}
+    .pm-sub{font-size:.82rem;color:var(--muted);margin-bottom:1.5rem;}
+    .pm-bar{height:6px;background:#f0f2f5;border-radius:3px;overflow:hidden;margin-bottom:.65rem;}
+    .pm-fill{height:100%;background:linear-gradient(90deg,var(--success),var(--turq));border-radius:3px;transition:width .5s ease;}
+    .pm-pct{font-size:.75rem;font-family:var(--ff-mono);color:var(--muted);margin-bottom:1.5rem;}
+    .pm-close{padding:.65rem 1.75rem;border-radius:10px;background:var(--success);color:#fff;border:none;font-size:.85rem;font-weight:600;cursor:pointer;font-family:var(--ff-body);display:none;}
+
+    /* Historique exports */
+    .history-panel{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.05);overflow:hidden;}
+    .hp-head{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.4rem;background:#fafbfc;border-bottom:1px solid var(--border);}
+    .hp-title{font-size:.82rem;font-weight:700;color:var(--text);}
+    .hp-item{display:flex;align-items:center;gap:1rem;padding:.85rem 1.4rem;border-bottom:1px solid #f5f6f8;transition:background .15s;}
+    .hp-item:last-child{border-bottom:none;}
+    .hp-item:hover{background:#fafbfc;}
+    .hp-ico{width:36px;height:36px;border-radius:9px;background:#e8eaeb;color:#5C666B;display:flex;align-items:center;justify-content:center;font-size:.82rem;flex-shrink:0;}
+    .hp-name{font-size:.85rem;font-weight:600;color:var(--text);}
+    .hp-meta{font-size:.7rem;color:var(--muted);font-family:var(--ff-mono);}
+    .hp-dl{margin-left:auto;display:inline-flex;align-items:center;gap:.3rem;font-size:.75rem;font-weight:600;color:var(--rose);cursor:pointer;border:none;background:none;font-family:var(--ff-body);transition:color .2s;}
+    .hp-dl:hover{color:var(--rose-d);}
+
+    @media(max-width:768px){.export-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+{% include "header.html" %}
+<div class="page-hero">
+  <div class="page-hero-bar"></div>
+  <div class="container hero-inner">
+    <div class="hero-breadcrumb"><a href="{{ url_for('admin_dashboard') }}">Dashboard</a><span>/</span> Export des données</div>
+    <h1 class="page-title">Export des <span class="t-green">données</span></h1>
+    <div class="page-sub"><span class="live-pip"></span> ADMIN ONLY · CHIFFREMENT AES-256 · <span id="heroTime">--:--:--</span></div>
+  </div>
+  <svg class="page-wave" viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,0 C480,60 960,60 1440,0 L1440,60 L0,60 Z" fill="#f2f4f8"/></svg>
+</div>
+
+<div class="main">
+  <div class="container">
+    <div class="export-grid">
+      <div class="export-card rose">
+        <div class="ec-head"><div class="ec-ico eci-rose"><i class="fas fa-comments"></i></div><span class="ec-size">~12 KB</span></div>
+        <div class="ec-title">Questions chatbot</div>
+        <div class="ec-desc">Exportez l'intégralité des questions et réponses enregistrées dans le chatbot ML2C CONSEIL.</div>
+        <div class="ec-opts">
+          <div class="ec-opt-row"><div class="ec-opt-label">Format</div><select class="ec-select"><option>CSV</option><option>JSON</option><option>Excel</option></select></div>
+          <div class="ec-opt-row"><div class="ec-opt-label">Période</div><select class="ec-select"><option>Tout</option><option>30 derniers jours</option><option>90 derniers jours</option></select></div>
+        </div>
+        <button class="ec-btn rose" onclick="startExport('Questions chatbot')"><i class="fas fa-download"></i> Exporter</button>
+      </div>
+
+      <div class="export-card turq">
+        <div class="ec-head"><div class="ec-ico eci-turq"><i class="fas fa-users"></i></div><span class="ec-size">~8 KB</span></div>
+        <div class="ec-title">Utilisateurs inscrits</div>
+        <div class="ec-desc">Liste complète des comptes utilisateurs avec leurs informations de contact et dates d'inscription.</div>
+        <div class="ec-opts">
+          <div class="ec-opt-row"><div class="ec-opt-label">Format</div><select class="ec-select"><option>CSV</option><option>JSON</option><option>Excel</option></select></div>
+          <div class="ec-opt-row"><div class="ec-opt-label">Inclure</div><select class="ec-select"><option>Tous les champs</option><option>Contact uniquement</option><option>Sans emails</option></select></div>
+        </div>
+        <button class="ec-btn turq" onclick="startExport('Utilisateurs')"><i class="fas fa-download"></i> Exporter</button>
+      </div>
+
+      <div class="export-card gold">
+        <div class="ec-head"><div class="ec-ico eci-gold"><i class="fas fa-database"></i></div><span class="ec-size">~45 KB</span></div>
+        <div class="ec-title">Sauvegarde complète BDD</div>
+        <div class="ec-desc">Export complet de la base de données ML2C — toutes les tables, toutes les données, format SQL.</div>
+        <div class="ec-opts">
+          <div class="ec-opt-row"><div class="ec-opt-label">Format</div><select class="ec-select"><option>SQL</option><option>SQLite</option></select></div>
+          <div class="ec-opt-row"><div class="ec-opt-label">Compression</div><select class="ec-select"><option>ZIP</option><option>Aucune</option></select></div>
+        </div>
+        <button class="ec-btn gold" onclick="startExport('Sauvegarde BDD')"><i class="fas fa-download"></i> Exporter</button>
+      </div>
+
+      <div class="export-card blue">
+        <div class="ec-head"><div class="ec-ico eci-blue"><i class="fas fa-chart-bar"></i></div><span class="ec-size">~6 KB</span></div>
+        <div class="ec-title">Rapport statistiques</div>
+        <div class="ec-desc">Rapport PDF complet avec toutes les statistiques d'utilisation, graphiques et indicateurs de performance.</div>
+        <div class="ec-opts">
+          <div class="ec-opt-row"><div class="ec-opt-label">Format</div><select class="ec-select"><option>PDF</option><option>Excel</option></select></div>
+          <div class="ec-opt-row"><div class="ec-opt-label">Période</div><select class="ec-select"><option>Ce mois</option><option>Ce trimestre</option><option>Cette année</option></select></div>
+        </div>
+        <button class="ec-btn blue" onclick="startExport('Rapport statistiques')"><i class="fas fa-download"></i> Exporter</button>
+      </div>
+    </div>
+
+    <!-- Historique -->
+    <div class="history-panel">
+      <div class="hp-head"><div class="hp-title">Historique des exports récents</div></div>
+      <div class="hp-item"><div class="hp-ico"><i class="fas fa-comments"></i></div><div><div class="hp-name">questions-chatbot-2025-04.csv</div><div class="hp-meta">Hier · 14:32 · 12.4 KB</div></div><button class="hp-dl"><i class="fas fa-download"></i> Re-télécharger</button></div>
+      <div class="hp-item"><div class="hp-ico"><i class="fas fa-database"></i></div><div><div class="hp-name">backup-bdd-2025-04-08.sql.zip</div><div class="hp-meta">08/04/2025 · 02:00 · 44.8 KB</div></div><button class="hp-dl"><i class="fas fa-download"></i> Re-télécharger</button></div>
+      <div class="hp-item"><div class="hp-ico"><i class="fas fa-users"></i></div><div><div class="hp-name">utilisateurs-2025-03.csv</div><div class="hp-meta">31/03/2025 · 16:45 · 7.9 KB</div></div><button class="hp-dl"><i class="fas fa-download"></i> Re-télécharger</button></div>
+      <div class="hp-item"><div class="hp-ico"><i class="fas fa-chart-bar"></i></div><div><div class="hp-name">rapport-stats-T1-2025.pdf</div><div class="hp-meta">01/04/2025 · 09:15 · 5.6 KB</div></div><button class="hp-dl"><i class="fas fa-download"></i> Re-télécharger</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- Progress modal -->
+<div class="progress-overlay" id="progressOverlay">
+  <div class="progress-modal">
+    <div class="pm-ico"><i class="fas fa-download"></i></div>
+    <div class="pm-title">Export en cours</div>
+    <div class="pm-sub" id="pmSub">Préparation des données…</div>
+    <div class="pm-bar"><div class="pm-fill" id="pmFill" style="width:0%"></div></div>
+    <div class="pm-pct" id="pmPct">0%</div>
+    <button class="pm-close" id="pmClose" onclick="closeModal()">Télécharger le fichier</button>
+  </div>
+</div>
+
+{% include "footer.html" %}
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function tick(){const n=new Date();const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('heroTime');if(el)el.textContent=t;}
+tick();setInterval(tick,1000);
+
+const steps=['Connexion à la base de données…','Extraction des données…','Formatage et validation…','Compression du fichier…','Prêt au téléchargement'];
+function startExport(name){
+  document.getElementById('progressOverlay').classList.add('show');
+  document.getElementById('pmSub').textContent='Préparation de : '+name;
+  document.getElementById('pmFill').style.width='0%';
+  document.getElementById('pmPct').textContent='0%';
+  document.getElementById('pmClose').style.display='none';
+  let pct=0;let stepIdx=0;
+  const interval=setInterval(()=>{
+    pct+=Math.random()*18+5;
+    if(pct>100)pct=100;
+    document.getElementById('pmFill').style.width=pct+'%';
+    document.getElementById('pmPct').textContent=Math.round(pct)+'%';
+    if(pct>=100*(stepIdx+1)/5&&stepIdx<steps.length){document.getElementById('pmSub').textContent=steps[stepIdx];stepIdx++;}
+    if(pct>=100){clearInterval(interval);document.getElementById('pmSub').textContent='Export terminé — fichier prêt !';document.getElementById('pmClose').style.display='block';}
+  },300);
+}
+function closeModal(){document.getElementById('progressOverlay').classList.remove('show');}
+document.getElementById('progressOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+</script>
+</body>
+</html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Statistiques Avancées — ML2C Admin</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    :root{--rose:#C1007A;--rose-d:#9a0062;--rose-l:#fce4f3;--turq:#4FA695;--turq-l:#d4f0ec;--gold:#f59e0b;--gold-d:#b45309;--gold-l:#fffbeb;--ink:#080b12;--ink2:#0e1119;--ink3:#151820;--bg:#f2f4f8;--surface:#fff;--border:#e4e8ef;--text:#111827;--muted:#6b7280;--faint:#9ca3af;--success:#10b981;--danger:#ef4444;--ff-head:'Cormorant Garamond',serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'JetBrains Mono',monospace;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
+
+    .page-hero{background:var(--ink);position:relative;overflow:hidden;padding:2.5rem 0 4.5rem;}
+    .page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 80% at 80% 30%,rgba(193,0,122,.18) 0%,transparent 55%),radial-gradient(ellipse 35% 50% at 10% 80%,rgba(79,166,149,.1) 0%,transparent 50%);}
+    .page-hero-bar{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rose),var(--gold),var(--turq));background-size:300%;animation:barS 4s linear infinite;}
+    @keyframes barS{0%{background-position:0%}100%{background-position:300%}}
+    .page-wave{position:absolute;bottom:-1px;left:0;right:0;z-index:2;}
+    .hero-inner{position:relative;z-index:1;}
+    .hero-breadcrumb{display:flex;align-items:center;gap:.5rem;font-size:.7rem;color:rgba(255,255,255,.3);font-family:var(--ff-mono);margin-bottom:1rem;}
+    .hero-breadcrumb a{color:rgba(255,255,255,.35);text-decoration:none;}
+    .hero-breadcrumb a:hover{color:var(--gold);}
+    .hero-breadcrumb span{color:rgba(255,255,255,.2);}
+    .page-title{font-family:var(--ff-head);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;color:#fff;margin-bottom:.4rem;}
+    .page-title .t-gold{color:var(--gold);font-style:italic;}
+    .page-sub{font-size:.83rem;color:rgba(255,255,255,.4);font-family:var(--ff-mono);display:flex;align-items:center;gap:.5rem;}
+    .live-pip{width:6px;height:6px;border-radius:50%;background:var(--success);box-shadow:0 0 8px rgba(16,185,129,.7);animation:pp 2s infinite;}
+    @keyframes pp{0%,100%{opacity:1}50%{opacity:.3}}
+
+    .main{padding:2.5rem 0 5rem;}
+
+    /* Filtres de période */
+    .period-bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:2rem;}
+    .period-tabs{display:flex;gap:.35rem;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:.3rem;}
+    .ptab{padding:.45rem .95rem;border-radius:8px;font-size:.8rem;font-weight:600;cursor:pointer;border:none;background:none;color:var(--muted);font-family:var(--ff-body);transition:all .2s;}
+    .ptab.active{background:var(--rose);color:#fff;box-shadow:0 4px 12px rgba(193,0,122,.25);}
+    .ptab:hover:not(.active){background:#f0f2f5;color:var(--text);}
+    .period-right{display:flex;gap:.65rem;}
+    .export-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border-radius:9px;font-size:.78rem;font-weight:600;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;transition:all .2s;font-family:var(--ff-body);}
+    .export-btn:hover{border-color:var(--rose);color:var(--rose);background:var(--rose-l);}
+
+    /* KPI row */
+    .krow{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;}
+    .kbox{background:var(--surface);border-radius:18px;border:1.5px solid transparent;padding:1.4rem 1.5rem;box-shadow:0 2px 14px rgba(0,0,0,.055);position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s;animation:fadeUp .4s both;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+    .kbox:nth-child(1){animation-delay:.05s}.kbox:nth-child(2){animation-delay:.1s}.kbox:nth-child(3){animation-delay:.15s}.kbox:nth-child(4){animation-delay:.2s}
+    .kbox::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:18px 18px 0 0;}
+    .kb-rose::before{background:linear-gradient(90deg,var(--rose),#f472b6);}
+    .kb-turq::before{background:linear-gradient(90deg,var(--turq),#5eead4);}
+    .kb-gold::before{background:linear-gradient(90deg,var(--gold),#fcd34d);}
+    .kb-ink::before{background:linear-gradient(90deg,#5C666B,#94a3b8);}
+    .kbox:hover{transform:translateY(-4px);box-shadow:0 10px 32px rgba(0,0,0,.09);}
+    .kbox-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem;}
+    .kbox-ico{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+    .ki-rose{background:var(--rose-l);color:var(--rose);}
+    .ki-turq{background:var(--turq-l);color:var(--turq);}
+    .ki-gold{background:var(--gold-l);color:var(--gold-d);}
+    .ki-ink{background:#e8eaeb;color:#5C666B;}
+    .kbox-trend{font-size:.65rem;font-weight:700;padding:.18rem .55rem;border-radius:20px;display:flex;align-items:center;gap:.2rem;}
+    .tr-up{background:#d1fae5;color:#065f46;}
+    .tr-down{background:#fee2e2;color:#991b1b;}
+    .tr-flat{background:#f3f4f6;color:var(--muted);}
+    .kbox-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-bottom:.3rem;}
+    .kbox-val{font-family:var(--ff-head);font-size:2.4rem;font-weight:700;line-height:1;color:var(--text);margin-bottom:.25rem;}
+    .kbox-sub{font-size:.72rem;color:var(--muted);line-height:1.5;}
+    .kbox-bar{height:3px;background:#f0f2f5;border-radius:2px;overflow:hidden;margin:8px 0 6px;}
+    .kb-fill{height:100%;border-radius:2px;transition:width 1.4s cubic-bezier(.22,1,.36,1);}
+
+    /* Graphique principal */
+    .chart-panel{background:var(--surface);border-radius:20px;border:1.5px solid var(--border);box-shadow:0 2px 16px rgba(0,0,0,.05);overflow:hidden;margin-bottom:2rem;}
+    .cp-head{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 1.5rem;border-bottom:1px solid var(--border);background:#fafbfc;flex-wrap:wrap;gap:.75rem;}
+    .cp-title{font-size:.85rem;font-weight:700;color:var(--text);}
+    .cp-sub{font-size:.7rem;color:var(--muted);margin-top:.1rem;}
+    .cp-legend{display:flex;gap:1rem;flex-wrap:wrap;}
+    .leg-item{display:flex;align-items:center;gap:.4rem;font-size:.72rem;color:var(--muted);}
+    .leg-dot{width:8px;height:8px;border-radius:50%;}
+    .cp-body{padding:1.5rem;}
+    .chart-wrap{position:relative;height:260px;}
+    canvas.chart-canvas{width:100%!important;height:100%!important;}
+
+    /* Tableau + breakdown */
+    .two-col{display:grid;grid-template-columns:1fr 340px;gap:1.25rem;margin-bottom:2rem;}
+
+    .table-panel{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.05);overflow:hidden;}
+    .tp-head{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.4rem;background:#fafbfc;border-bottom:1px solid var(--border);}
+    .tp-title{font-size:.82rem;font-weight:700;color:var(--text);}
+    .tp-search{display:flex;align-items:center;gap:.5rem;background:#f0f2f5;border:1.5px solid var(--border);border-radius:8px;padding:.35rem .75rem;font-size:.8rem;color:var(--muted);}
+    .tp-search input{background:none;border:none;outline:none;font-size:.78rem;color:var(--text);width:120px;font-family:var(--ff-body);}
+    .tp-table{width:100%;border-collapse:collapse;}
+    .tp-table th{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);padding:.65rem 1.4rem;border-bottom:1px solid var(--border);text-align:left;background:#fafbfc;}
+    .tp-table td{font-size:.82rem;color:var(--text);padding:.75rem 1.4rem;border-bottom:1px solid #f5f6f8;}
+    .tp-table tr:last-child td{border-bottom:none;}
+    .tp-table tr:hover td{background:#fafbfc;}
+    .td-badge{display:inline-block;padding:.15rem .55rem;border-radius:20px;font-size:.65rem;font-weight:700;}
+    .td-rose{background:var(--rose-l);color:var(--rose);}
+    .td-turq{background:var(--turq-l);color:var(--turq);}
+    .td-gold{background:var(--gold-l);color:var(--gold-d);}
+    .td-bar-wrap{display:flex;align-items:center;gap:.65rem;}
+    .td-mini-bar{flex:1;height:4px;background:#f0f2f5;border-radius:2px;overflow:hidden;}
+    .td-mini-fill{height:100%;border-radius:2px;background:var(--rose);}
+    .td-pct{font-size:.72rem;color:var(--muted);font-family:var(--ff-mono);min-width:32px;text-align:right;}
+
+    /* Breakdown donut */
+    .breakdown-panel{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.05);overflow:hidden;}
+    .bp-head{padding:.9rem 1.4rem;background:#fafbfc;border-bottom:1px solid var(--border);}
+    .bp-title{font-size:.82rem;font-weight:700;color:var(--text);}
+    .bp-body{padding:1.25rem;}
+    .donut-wrap{position:relative;width:160px;height:160px;margin:0 auto 1.25rem;}
+    canvas.donut-canvas{width:160px!important;height:160px!important;}
+    .donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
+    .donut-val{font-family:var(--ff-head);font-size:1.5rem;font-weight:700;color:var(--text);line-height:1;}
+    .donut-lbl{font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+    .bp-list{display:flex;flex-direction:column;gap:.55rem;}
+    .bp-item{display:flex;align-items:center;gap:.65rem;}
+    .bp-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+    .bp-name{font-size:.8rem;color:var(--text);flex:1;}
+    .bp-pct{font-size:.75rem;font-weight:700;font-family:var(--ff-mono);color:var(--muted);}
+
+    @media(max-width:1024px){.krow{grid-template-columns:repeat(2,1fr)}.two-col{grid-template-columns:1fr}}
+    @media(max-width:576px){.krow{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+{% include "header.html" %}
+
+<div class="page-hero">
+  <div class="page-hero-bar"></div>
+  <div class="container hero-inner">
+    <div class="hero-breadcrumb">
+      <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+      <span>/</span> Statistiques avancées
+    </div>
+    <h1 class="page-title">Statistiques <span class="t-gold">avancées</span></h1>
+    <div class="page-sub">
+      <span class="live-pip"></span>
+      DONNÉES EN TEMPS RÉEL · ML2C ADMIN · <span id="heroTime">--:--:--</span>
+    </div>
+  </div>
+  <svg class="page-wave" viewBox="0 0 1440 60" preserveAspectRatio="none">
+    <path d="M0,0 C480,60 960,60 1440,0 L1440,60 L0,60 Z" fill="#f2f4f8"/>
+  </svg>
+</div>
+
+<div class="main">
+  <div class="container">
+
+    <!-- Filtres -->
+    <div class="period-bar">
+      <div class="period-tabs">
+        <button class="ptab" onclick="setPeriod(this,'7j')">7 jours</button>
+        <button class="ptab active" onclick="setPeriod(this,'30j')">30 jours</button>
+        <button class="ptab" onclick="setPeriod(this,'90j')">90 jours</button>
+        <button class="ptab" onclick="setPeriod(this,'1an')">1 an</button>
+      </div>
+      <div class="period-right">
+        <button class="export-btn"><i class="fas fa-download"></i> Exporter CSV</button>
+        <button class="export-btn"><i class="fas fa-print"></i> Imprimer</button>
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="krow">
+      <div class="kbox kb-rose">
+        <div class="kbox-head">
+          <div class="kbox-ico ki-rose"><i class="fas fa-comments"></i></div>
+          <span class="kbox-trend tr-up"><i class="fas fa-arrow-up"></i> +18%</span>
+        </div>
+        <div class="kbox-lbl">Questions totales</div>
+        <div class="kbox-val" id="kv1">—</div>
+        <div class="kbox-bar"><div class="kb-fill" style="background:var(--rose);width:0" data-w="78%"></div></div>
+        <div class="kbox-sub">vs période précédente</div>
+      </div>
+      <div class="kbox kb-turq">
+        <div class="kbox-head">
+          <div class="kbox-ico ki-turq"><i class="fas fa-clock"></i></div>
+          <span class="kbox-trend tr-up"><i class="fas fa-arrow-up"></i> +5%</span>
+        </div>
+        <div class="kbox-lbl">Taux de réponse</div>
+        <div class="kbox-val">94%</div>
+        <div class="kbox-bar"><div class="kb-fill" style="background:var(--turq);width:0" data-w="94%"></div></div>
+        <div class="kbox-sub">Questions répondues dans les 24h</div>
+      </div>
+      <div class="kbox kb-gold">
+        <div class="kbox-head">
+          <div class="kbox-ico ki-gold"><i class="fas fa-star"></i></div>
+          <span class="kbox-trend tr-up"><i class="fas fa-arrow-up"></i> +2%</span>
+        </div>
+        <div class="kbox-lbl">Satisfaction client</div>
+        <div class="kbox-val">4.8/5</div>
+        <div class="kbox-bar"><div class="kb-fill" style="background:var(--gold);width:0" data-w="96%"></div></div>
+        <div class="kbox-sub">Basé sur les retours utilisateurs</div>
+      </div>
+      <div class="kbox kb-ink">
+        <div class="kbox-head">
+          <div class="kbox-ico ki-ink"><i class="fas fa-users"></i></div>
+          <span class="kbox-trend tr-flat"><i class="fas fa-minus"></i> Stable</span>
+        </div>
+        <div class="kbox-lbl">Utilisateurs actifs</div>
+        <div class="kbox-val">—</div>
+        <div class="kbox-bar"><div class="kb-fill" style="background:#5C666B;width:0" data-w="55%"></div></div>
+        <div class="kbox-sub">Sur la période sélectionnée</div>
+      </div>
+    </div>
+
+    <!-- Graphique principal -->
+    <div class="chart-panel">
+      <div class="cp-head">
+        <div>
+          <div class="cp-title">Évolution des questions chatbot</div>
+          <div class="cp-sub">Volume journalier sur 30 jours — ML2C CONSEIL</div>
+        </div>
+        <div class="cp-legend">
+          <div class="leg-item"><div class="leg-dot" style="background:var(--rose)"></div> Questions</div>
+          <div class="leg-item"><div class="leg-dot" style="background:var(--turq)"></div> Réponses</div>
+          <div class="leg-item"><div class="leg-dot" style="background:var(--gold)"></div> En attente</div>
+        </div>
+      </div>
+      <div class="cp-body">
+        <div class="chart-wrap">
+          <canvas id="mainChart" class="chart-canvas"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tableau + donut -->
+    <div class="two-col">
+      <div class="table-panel">
+        <div class="tp-head">
+          <div class="tp-title">Catégories les plus demandées</div>
+          <div class="tp-search">
+            <i class="fas fa-search" style="font-size:.75rem;"></i>
+            <input type="text" placeholder="Rechercher..." oninput="filterTable(this.value)">
+          </div>
+        </div>
+        <table class="tp-table" id="catTable">
+          <thead>
+            <tr>
+              <th>Catégorie</th>
+              <th>Questions</th>
+              <th>Répartition</th>
+              <th>Tendance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="td-badge td-rose">Fiscalité</span></td><td>42</td><td><div class="td-bar-wrap"><div class="td-mini-bar"><div class="td-mini-fill" style="width:84%;background:var(--rose)"></div></div><span class="td-pct">84%</span></div></td><td><span class="kbox-trend tr-up" style="font-size:.65rem;display:inline-flex;"><i class="fas fa-arrow-up"></i> +12%</span></td></tr>
+            <tr><td><span class="td-badge td-turq">Comptabilité</span></td><td>35</td><td><div class="td-bar-wrap"><div class="td-mini-bar"><div class="td-mini-fill" style="width:70%;background:var(--turq)"></div></div><span class="td-pct">70%</span></div></td><td><span class="kbox-trend tr-up" style="font-size:.65rem;display:inline-flex;"><i class="fas fa-arrow-up"></i> +8%</span></td></tr>
+            <tr><td><span class="td-badge" style="background:#ede9fe;color:#7c3aed;">Juridique</span></td><td>28</td><td><div class="td-bar-wrap"><div class="td-mini-bar"><div class="td-mini-fill" style="width:56%;background:#8b5cf6"></div></div><span class="td-pct">56%</span></div></td><td><span class="kbox-trend tr-flat" style="font-size:.65rem;display:inline-flex;"><i class="fas fa-minus"></i> 0%</span></td></tr>
+            <tr><td><span class="td-badge td-gold">Social & Paie</span></td><td>21</td><td><div class="td-bar-wrap"><div class="td-mini-bar"><div class="td-mini-fill" style="width:42%;background:var(--gold)"></div></div><span class="td-pct">42%</span></div></td><td><span class="kbox-trend tr-down" style="font-size:.65rem;display:inline-flex;"><i class="fas fa-arrow-down"></i> -3%</span></td></tr>
+            <tr><td><span class="td-badge" style="background:#fce7f3;color:#be185d;">Conseil & IA</span></td><td>18</td><td><div class="td-bar-wrap"><div class="td-mini-bar"><div class="td-mini-fill" style="width:36%;background:#ec4899"></div></div><span class="td-pct">36%</span></div></td><td><span class="kbox-trend tr-up" style="font-size:.65rem;display:inline-flex;"><i class="fas fa-arrow-up"></i> +22%</span></td></tr>
+            <tr><td><span class="td-badge ki-ink" style="background:#e8eaeb;color:#5C666B;">Autre</span></td><td>8</td><td><div class="td-bar-wrap"><div class="td-mini-bar"><div class="td-mini-fill" style="width:16%;background:#5C666B"></div></div><span class="td-pct">16%</span></div></td><td><span class="kbox-trend tr-flat" style="font-size:.65rem;display:inline-flex;"><i class="fas fa-minus"></i> 0%</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="breakdown-panel">
+        <div class="bp-head"><div class="bp-title">Répartition par catégorie</div></div>
+        <div class="bp-body">
+          <div class="donut-wrap">
+            <canvas id="donutChart" class="donut-canvas"></canvas>
+            <div class="donut-center">
+              <div class="donut-val">152</div>
+              <div class="donut-lbl">Total</div>
+            </div>
+          </div>
+          <div class="bp-list">
+            <div class="bp-item"><div class="bp-dot" style="background:var(--rose)"></div><div class="bp-name">Fiscalité</div><div class="bp-pct">28%</div></div>
+            <div class="bp-item"><div class="bp-dot" style="background:var(--turq)"></div><div class="bp-name">Comptabilité</div><div class="bp-pct">23%</div></div>
+            <div class="bp-item"><div class="bp-dot" style="background:#8b5cf6"></div><div class="bp-name">Juridique</div><div class="bp-pct">18%</div></div>
+            <div class="bp-item"><div class="bp-dot" style="background:var(--gold)"></div><div class="bp-name">Social & Paie</div><div class="bp-pct">14%</div></div>
+            <div class="bp-item"><div class="bp-dot" style="background:#ec4899"></div><div class="bp-name">Conseil & IA</div><div class="bp-pct">12%</div></div>
+            <div class="bp-item"><div class="bp-dot" style="background:#5C666B"></div><div class="bp-name">Autre</div><div class="bp-pct">5%</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% include "footer.html" %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+/* Horloge */
+function tick(){const n=new Date();const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('heroTime');if(el)el.textContent=t;}
+tick();setInterval(tick,1000);
+
+/* Animate bars */
+document.querySelectorAll('.kb-fill,[data-w]').forEach(b=>{const w=b.dataset.w;b.style.width='0';setTimeout(()=>{b.style.width=w;},600);});
+
+/* Période */
+function setPeriod(btn,p){document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');}
+
+/* Search table */
+function filterTable(q){document.querySelectorAll('#catTable tbody tr').forEach(tr=>{tr.style.display=tr.textContent.toLowerCase().includes(q.toLowerCase())?'':'none';});}
+
+/* Graphique principal */
+const labels=Array.from({length:30},(_,i)=>{const d=new Date();d.setDate(d.getDate()-29+i);return d.getDate()+'/'+(d.getMonth()+1);});
+const gen=(n,min,max)=>Array.from({length:n},()=>Math.floor(Math.random()*(max-min)+min));
+const mainCtx=document.getElementById('mainChart').getContext('2d');
+new Chart(mainCtx,{
+  type:'line',
+  data:{
+    labels,
+    datasets:[
+      {label:'Questions',data:gen(30,2,15),borderColor:'#C1007A',backgroundColor:'rgba(193,0,122,.08)',fill:true,tension:.4,borderWidth:2,pointRadius:2,pointHoverRadius:5},
+      {label:'Réponses',data:gen(30,1,13),borderColor:'#4FA695',backgroundColor:'rgba(79,166,149,.06)',fill:true,tension:.4,borderWidth:2,pointRadius:2,pointHoverRadius:5},
+      {label:'En attente',data:gen(30,0,4),borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.05)',fill:true,tension:.4,borderWidth:2,pointRadius:2,pointHoverRadius:5},
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(10,12,20,.9)',titleColor:'#fff',bodyColor:'rgba(255,255,255,.7)',borderColor:'rgba(255,255,255,.1)',borderWidth:1,padding:10,cornerRadius:10}},scales:{x:{grid:{display:false},ticks:{color:'#9ca3af',font:{size:10}}},y:{grid:{color:'rgba(0,0,0,.04)'},ticks:{color:'#9ca3af',font:{size:10}},beginAtZero:true}}}
+});
+
+/* Donut */
+const dCtx=document.getElementById('donutChart').getContext('2d');
+new Chart(dCtx,{
+  type:'doughnut',
+  data:{labels:['Fiscalité','Comptabilité','Juridique','Social & Paie','Conseil & IA','Autre'],datasets:[{data:[28,23,18,14,12,5],backgroundColor:['#C1007A','#4FA695','#8b5cf6','#f59e0b','#ec4899','#5C666B'],borderWidth:0,hoverOffset:6}]},
+  options:{responsive:false,cutout:'72%',plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(10,12,20,.9)',titleColor:'#fff',bodyColor:'rgba(255,255,255,.7)',cornerRadius:10,padding:10}}}
+});
+</script>
+</body>
+</html>

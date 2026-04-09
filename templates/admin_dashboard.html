@@ -815,14 +815,39 @@
           </div>
           <div class="az-badge"><i class="fas fa-lock"></i> Restreint</div>
         </div>
+
         <div class="az-grid">
-          <a href="#" class="az-btn"><div class="az-btn-ico"><i class="fas fa-chart-line"></i></div><div class="az-btn-lbl">Statistiques avancées</div></a>
-          <a href="#" class="az-btn"><div class="az-btn-ico"><i class="fas fa-sliders"></i></div><div class="az-btn-lbl">Configuration système</div></a>
-          <a href="#" class="az-btn"><div class="az-btn-ico"><i class="fas fa-shield-halved"></i></div><div class="az-btn-lbl">Logs de sécurité</div></a>
-          <a href="#" class="az-btn"><div class="az-btn-ico"><i class="fas fa-envelope"></i></div><div class="az-btn-lbl">Emails automatiques</div></a>
-          <a href="#" class="az-btn"><div class="az-btn-ico"><i class="fas fa-file-export"></i></div><div class="az-btn-lbl">Export des données</div></a>
-          <a href="#" class="az-btn"><div class="az-btn-ico"><i class="fas fa-trash-alt"></i></div><div class="az-btn-lbl">Purger les logs</div></a>
+          <a href="{{ url_for('admin_stats') }}" class="az-btn">
+            <div class="az-btn-ico"><i class="fas fa-chart-line"></i></div>
+            <div class="az-btn-lbl">Statistiques avancées</div>
+          </a>
+
+          <a href="{{ url_for('admin_configuration') }}" class="az-btn">
+            <div class="az-btn-ico"><i class="fas fa-sliders"></i></div>
+            <div class="az-btn-lbl">Configuration système</div>
+          </a>
+
+          <a href="{{ url_for('admin_logs') }}" class="az-btn">
+            <div class="az-btn-ico"><i class="fas fa-shield-halved"></i></div>
+            <div class="az-btn-lbl">Logs de sécurité</div>
+          </a>
+
+          <a href="{{ url_for('admin_emails') }}" class="az-btn">
+            <div class="az-btn-ico"><i class="fas fa-envelope"></i></div>
+            <div class="az-btn-lbl">Emails automatiques</div>
+          </a>
+
+          <a href="{{ url_for('admin_export') }}" class="az-btn">
+            <div class="az-btn-ico"><i class="fas fa-file-export"></i></div>
+            <div class="az-btn-lbl">Export des données</div>
+          </a>
+
+          <a href="{{ url_for('admin_purge') }}" class="az-btn">
+            <div class="az-btn-ico"><i class="fas fa-trash-alt"></i></div>
+            <div class="az-btn-lbl">Purger les logs</div>
+          </a>
         </div>
+
       </div>
     </div>
 

@@ -3,216 +3,897 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Admin — ML2C CONSEIL</title>
+  <title>⚡ Super Admin — ML2C CONSEIL</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,700&family=DM+Sans:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --rose: #C1007A; --rose-dark: #9a0062; --rose-light: #fce4f3;
-      --turq: #4FA695; --turq-dark: #3a7d70; --turq-light: #d4f0ec;
-      --gris: #5C666B; --dark: #2d3436; --dark2: #3d4549;
-      --bg: #f0f2f5; --border: #e5e7eb; --text: #1a1a1a; --muted: #6b7280;
+      --rose: #C1007A; --rose-d: #9a0062; --rose-l: #fce4f3; --rose-xl: #fff0f8;
+      --turq: #4FA695; --turq-d: #3a7d70; --turq-l: #d4f0ec;
+      --gold: #f59e0b; --gold-d: #b45309; --gold-l: #fffbeb;
+      --ink: #080b12; --ink2: #0e1119; --ink3: #151820; --ink4: #1c2030;
+      --bg: #f2f4f8; --surface: #ffffff; --border: #e4e8ef;
+      --text: #111827; --muted: #6b7280; --faint: #9ca3af;
+      --success: #10b981; --danger: #ef4444; --warn: #f59e0b;
+      --ff-head: 'Cormorant Garamond', serif;
+      --ff-body: 'DM Sans', sans-serif;
+      --ff-mono: 'JetBrains Mono', monospace;
     }
-    body { background: var(--bg); font-family: 'DM Sans', sans-serif; }
 
-    /* HERO */
-    .admin-hero {
-      background: linear-gradient(135deg, var(--dark) 0%, var(--dark2) 60%, #1a2e2e 100%);
-      padding: 3.5rem 0 4rem; position: relative; overflow: hidden; margin-bottom: 0;
-    }
-    .admin-hero::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 85% 30%, rgba(193,0,122,.15) 0%, transparent 50%),
-                  radial-gradient(ellipse at 10% 80%, rgba(79,166,149,.12) 0%, transparent 45%);
-    }
-    .admin-hero::after {
-      content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 56px;
-      background: var(--bg); clip-path: ellipse(55% 100% at 50% 100%); height: 56px;
-    }
-    .hero-inner { position: relative; z-index: 1; }
-    .admin-tag { font-size: .7rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: .6rem; }
-    .admin-hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; color: #fff; margin-bottom: .3rem; line-height: 1.15; }
-    .admin-hero h1 em { color: #f9a8d4; font-style: italic; }
-    .admin-hero p { font-size: .88rem; color: rgba(255,255,255,.45); margin: 0; }
-    .admin-badge {
-      display: inline-flex; align-items: center; gap: .4rem;
-      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15);
-      border-radius: 20px; padding: .28rem .85rem; font-size: .72rem; font-weight: 600;
-      color: rgba(255,255,255,.75); margin-top: .85rem;
-    }
-    .admin-badge i { color: #4ade80; font-size: .6rem; }
+    body { background: var(--bg); font-family: var(--ff-body); color: var(--text); overflow-x: hidden; }
 
-    /* PAGE */
-    .admin-page { padding: 2.5rem 0 4rem; }
-
-    /* KPI CARDS */
-    .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; margin-bottom: 2rem; }
-    .kpi-card {
-      background: #fff; border-radius: 18px; padding: 1.5rem 1.75rem;
-      box-shadow: 0 2px 16px rgba(0,0,0,.06); border: 1.5px solid transparent;
-      transition: transform .25s, box-shadow .25s, border-color .25s; position: relative; overflow: hidden;
+    /* ═══════════════════════════════════════════
+       HERO — PLEIN ÉCRAN DRAMATIQUE
+    ═══════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      min-height: 340px;
+      background: var(--ink);
+      overflow: hidden;
+      display: flex; align-items: flex-end;
     }
-    .kpi-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,.1); }
-    .kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
-    .kpi-card.rose::before { background: linear-gradient(90deg, var(--rose), #f472b6); border-color: var(--rose-light); }
-    .kpi-card.turq::before { background: linear-gradient(90deg, var(--turq), #5eead4); }
-    .kpi-card.gris::before { background: linear-gradient(90deg, var(--gris), #94a3b8); }
-    .kpi-card:hover.rose { border-color: var(--rose-light); }
-    .kpi-card:hover.turq { border-color: var(--turq-light); }
-    .kpi-icon {
-      width: 44px; height: 44px; border-radius: 12px;
+
+    /* Canvas réseau neuronal */
+    #netCanvas { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+
+    /* Couches d'ambiance */
+    .hero-amb {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 70% at 85% 20%, rgba(193,0,122,.22) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 50% at 10% 90%, rgba(79,166,149,.12) 0%, transparent 55%),
+        radial-gradient(ellipse 30% 40% at 55% 60%, rgba(245,158,11,.07) 0%, transparent 50%);
+    }
+
+    /* Grille de fond */
+    .hero-grid {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* Scanlines subtiles */
+    .hero-scan {
+      position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,.04) 3px, rgba(0,0,0,.04) 4px);
+    }
+
+    /* Barre chromatique top */
+    .hero-bar {
+      position: absolute; top: 0; left: 0; right: 0; height: 3px; z-index: 10;
+      background: linear-gradient(90deg, var(--rose), var(--gold), var(--turq), var(--gold), var(--rose));
+      background-size: 400%;
+      animation: barShift 5s linear infinite;
+    }
+    @keyframes barShift { 0%{background-position:0%} 100%{background-position:400%} }
+
+    /* Vague bas */
+    .hero-wave {
+      position: absolute; bottom: -1px; left: 0; right: 0; z-index: 5; pointer-events: none;
+    }
+
+    /* Contenu hero */
+    .hero-content {
+      position: relative; z-index: 6;
+      width: 100%;
+      padding: 3rem 0 5.5rem;
+    }
+
+    .hero-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 3rem;
+      align-items: end;
+    }
+
+    /* Côté gauche hero */
+    .hero-left { min-width: 0; }
+
+    .pre-title {
+      display: flex; align-items: center; gap: .75rem;
+      margin-bottom: 1rem;
+    }
+    .pre-badge {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .3rem .9rem;
+      background: linear-gradient(135deg, rgba(245,158,11,.18), rgba(245,158,11,.08));
+      border: 1px solid rgba(245,158,11,.3);
+      border-radius: 30px;
+      font-size: .65rem; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--gold);
+      box-shadow: 0 0 20px rgba(245,158,11,.15), inset 0 1px 0 rgba(255,255,255,.08);
+    }
+    .pre-badge .crown { font-size: .8rem; animation: crownBob 3s ease-in-out infinite; }
+    @keyframes crownBob { 0%,100%{transform:translateY(0) rotate(0)} 40%{transform:translateY(-3px) rotate(-8deg)} 60%{transform:translateY(-2px) rotate(4deg)} }
+    .pre-badge .niv { background: rgba(245,158,11,.25); border-radius: 6px; padding: .08rem .4rem; font-size: .55rem; margin-left: .2rem; }
+
+    .pre-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(255,255,255,.12), transparent); }
+
+    .hero-h1 {
+      font-family: var(--ff-head);
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 700;
+      line-height: 1.05;
+      color: #fff;
+      margin-bottom: .75rem;
+      letter-spacing: -.01em;
+    }
+    .hero-h1 .accent-gold { color: var(--gold); font-style: italic; }
+    .hero-h1 .accent-rose { color: #f472b6; }
+
+    .hero-sub {
+      font-family: var(--ff-mono);
+      font-size: .72rem; font-weight: 400;
+      color: rgba(255,255,255,.35);
+      margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .online-pip { width: 7px; height: 7px; border-radius: 50%; background: var(--success); box-shadow: 0 0 10px rgba(16,185,129,.7); animation: pipPulse 2s infinite; }
+    @keyframes pipPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.8)} }
+
+    .hero-chips { display: flex; gap: .5rem; flex-wrap: wrap; }
+    .hchip {
+      display: inline-flex; align-items: center; gap: .3rem;
+      padding: .25rem .75rem; border-radius: 20px;
+      font-size: .65rem; font-weight: 600; letter-spacing: .04em;
+      backdrop-filter: blur(8px);
+    }
+    .hchip.gold  { background: rgba(245,158,11,.12); border: 1px solid rgba(245,158,11,.2); color: var(--gold); }
+    .hchip.green { background: rgba(16,185,129,.1);  border: 1px solid rgba(16,185,129,.18); color: #34d399; }
+    .hchip.rose  { background: rgba(193,0,122,.1);   border: 1px solid rgba(193,0,122,.2);  color: #f472b6; }
+    .hchip.blue  { background: rgba(96,165,250,.09); border: 1px solid rgba(96,165,250,.15);color: #93c5fd; }
+    .hchip.mono  { background: rgba(255,255,255,.06);border: 1px solid rgba(255,255,255,.09);color: rgba(255,255,255,.5); font-family: var(--ff-mono); }
+
+    /* Côté droit hero — Profile card */
+    .hero-profile {
+      display: flex; flex-direction: column; align-items: flex-end; gap: 1rem;
+      flex-shrink: 0;
+    }
+
+    .profile-card {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 20px;
+      padding: 1.25rem 1.5rem;
+      display: flex; align-items: center; gap: 1.25rem;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.07);
+      min-width: 240px;
+      animation: cardSlideIn .6s .2s cubic-bezier(.34,1.2,.64,1) both;
+    }
+    @keyframes cardSlideIn { from{opacity:0;transform:translateX(30px)} to{opacity:1;transform:translateX(0)} }
+
+    .p-av-wrap { position: relative; flex-shrink: 0; }
+    .p-ring {
+      width: 58px; height: 58px; border-radius: 50%;
+      background: conic-gradient(var(--rose), var(--gold), var(--turq), var(--gold), var(--rose));
+      padding: 2.5px;
+      animation: ringRot 5s linear infinite;
+      box-shadow: 0 0 20px rgba(193,0,122,.35);
+    }
+    @keyframes ringRot { to{transform:rotate(360deg)} }
+    .p-av-inner {
+      width: 100%; height: 100%; border-radius: 50%;
+      background: var(--ink3);
+      overflow: hidden;
+      display: flex; align-items: flex-end; justify-content: center;
+    }
+    .p-av-inner img { width: 52px; height: 52px; object-fit: cover; }
+    .p-crown {
+      position: absolute; top: -8px; right: -8px;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--gold-d));
+      border: 2px solid var(--ink);
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem; margin-bottom: 1rem;
+      font-size: .6rem; color: #fff;
+      box-shadow: 0 0 10px rgba(245,158,11,.6);
+      animation: crownGlow 2s infinite;
     }
-    .kpi-icon.rose { background: var(--rose-light); color: var(--rose); }
-    .kpi-icon.turq { background: var(--turq-light); color: var(--turq-dark); }
-    .kpi-icon.gris { background: #e8eaeb; color: var(--gris); }
-    .kpi-label { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: .35rem; }
-    .kpi-val { font-family: 'Cormorant Garamond', serif; font-size: 2.6rem; font-weight: 700; line-height: 1; color: var(--text); margin-bottom: .25rem; }
-    .kpi-sub { font-size: .8rem; color: var(--muted); line-height: 1.5; }
-    .kpi-sub strong { color: var(--text); font-weight: 600; }
+    @keyframes crownGlow { 0%,100%{box-shadow:0 0 10px rgba(245,158,11,.6)} 50%{box-shadow:0 0 18px rgba(245,158,11,.9)} }
 
-    /* SECTION TITLE */
-    .sec-title { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem; }
-    .sec-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-
-    /* ACTIONS GRID */
-    .actions-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .85rem; margin-bottom: 2rem; }
-    .action-card {
-      background: #fff; border-radius: 16px; padding: 1.25rem 1.5rem;
-      box-shadow: 0 2px 12px rgba(0,0,0,.05); border: 1.5px solid var(--border);
-      display: flex; align-items: center; gap: 1rem;
-      text-decoration: none; color: var(--text); transition: all .22s;
+    .p-info { flex: 1; }
+    .p-name { font-size: .95rem; font-weight: 700; color: #fff; margin-bottom: .2rem; }
+    .p-role {
+      font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
+      color: var(--gold); display: flex; align-items: center; gap: .3rem;
     }
-    .action-card:hover { border-color: var(--rose); box-shadow: 0 6px 24px rgba(193,0,122,.1); transform: translateY(-2px); text-decoration: none; color: var(--text); }
-    .action-card:hover .ac-icon { background: var(--rose-light); color: var(--rose); }
-    .ac-icon {
-      width: 42px; height: 42px; border-radius: 11px; flex-shrink: 0;
-      background: #f0f2f5; color: var(--gris);
+    .p-perms { font-size: .7rem; color: rgba(255,255,255,.3); margin-top: .3rem; font-family: var(--ff-mono); }
+
+    .session-box {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 12px;
+      padding: .6rem 1rem;
+      font-family: var(--ff-mono);
+      font-size: .68rem;
+      color: rgba(255,255,255,.3);
+      display: flex; align-items: center; gap: .75rem;
+      min-width: 240px;
+      animation: cardSlideIn .6s .35s cubic-bezier(.34,1.2,.64,1) both;
+    }
+    .session-val { color: rgba(255,255,255,.7); font-weight: 500; }
+    .session-val.warn { color: var(--danger); }
+
+    /* ═══════════════════════════════════════════
+       MAIN BODY
+    ═══════════════════════════════════════════ */
+    .main { padding: 2.5rem 0 6rem; }
+
+    /* Barre niveau admin */
+    .level-strip {
+      background: linear-gradient(135deg, #fff 0%, #fffbeb 100%);
+      border: 1.5px solid rgba(245,158,11,.25);
+      border-radius: 18px;
+      padding: 1.25rem 1.75rem;
+      display: flex; align-items: center; gap: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 20px rgba(245,158,11,.08), 0 2px 8px rgba(0,0,0,.05);
+      flex-wrap: wrap;
+    }
+    .ls-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-d));
       display: flex; align-items: center; justify-content: center;
-      font-size: .95rem; transition: all .22s;
+      font-size: 1.3rem; color: #fff; flex-shrink: 0;
+      box-shadow: 0 6px 18px rgba(245,158,11,.4);
+      animation: iconFloat 4s ease-in-out infinite;
     }
-    .ac-info { flex: 1; min-width: 0; }
-    .ac-title { font-size: .9rem; font-weight: 600; color: var(--text); margin-bottom: .1rem; }
-    .ac-desc { font-size: .76rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .ac-arrow { color: var(--border); font-size: .75rem; flex-shrink: 0; transition: color .2s, transform .2s; }
-    .action-card:hover .ac-arrow { color: var(--rose); transform: translateX(3px); }
+    @keyframes iconFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+    .ls-body { flex: 1; min-width: 0; }
+    .ls-title { font-size: .95rem; font-weight: 700; color: var(--text); margin-bottom: .25rem; }
+    .ls-sub { font-size: .75rem; color: var(--muted); }
+    .ls-perms { display: flex; gap: .4rem; flex-wrap: wrap; }
+    .ls-perm {
+      display: inline-flex; align-items: center; gap: .3rem;
+      padding: .2rem .65rem; border-radius: 20px;
+      font-size: .65rem; font-weight: 700;
+      background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.22); color: var(--gold-d);
+    }
 
-    /* LOGOUT */
-    .logout-wrap { text-align: center; padding: 1.5rem 0; }
-    .btn-logout {
-      display: inline-flex; align-items: center; gap: .5rem;
-      padding: .7rem 1.75rem; border-radius: 10px;
-      background: #fff; border: 1.5px solid var(--border);
-      color: var(--muted); font-size: .88rem; font-weight: 600;
-      text-decoration: none; transition: all .2s;
+    /* KPI row */
+    .kpi-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-bottom: 2rem; }
+    .kcard {
+      background: var(--surface); border-radius: 20px;
+      border: 1.5px solid transparent;
+      padding: 1.5rem 1.5rem 1.25rem;
+      box-shadow: 0 2px 16px rgba(0,0,0,.055);
+      position: relative; overflow: hidden;
+      transition: transform .25s, box-shadow .25s, border-color .25s;
+      animation: kcardIn .5s both;
     }
-    .btn-logout:hover { background: #fee2e2; border-color: #fca5a5; color: #dc2626; text-decoration: none; }
+    .kcard:nth-child(1){animation-delay:.05s}
+    .kcard:nth-child(2){animation-delay:.1s}
+    .kcard:nth-child(3){animation-delay:.15s}
+    .kcard:nth-child(4){animation-delay:.2s}
+    @keyframes kcardIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+    .kcard::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:20px 20px 0 0; }
+    .kcard.k-rose::before { background:linear-gradient(90deg,var(--rose),#f472b6); }
+    .kcard.k-turq::before { background:linear-gradient(90deg,var(--turq),#5eead4); }
+    .kcard.k-gold::before { background:linear-gradient(90deg,var(--gold),#fcd34d); }
+    .kcard.k-ink::before  { background:linear-gradient(90deg,var(--ink3),#5C666B); }
+    .kcard:hover { transform:translateY(-5px); box-shadow:0 12px 40px rgba(0,0,0,.1); }
+    .kcard.k-rose:hover { border-color:var(--rose-l); }
+    .kcard.k-turq:hover { border-color:var(--turq-l); }
+    .kcard.k-gold:hover { border-color:rgba(245,158,11,.2); }
 
-    /* LAST QUESTION */
-    .last-q-card {
-      background: #fff; border-radius: 16px; padding: 1.25rem 1.5rem;
-      box-shadow: 0 2px 12px rgba(0,0,0,.05); border: 1.5px solid var(--border);
-      margin-bottom: 2rem; display: flex; align-items: flex-start; gap: 1rem;
+    /* Halo décoratif derrière les kpi */
+    .kcard-glow {
+      position:absolute; bottom:-30px; right:-30px;
+      width:120px; height:120px; border-radius:50%;
+      opacity:.06; pointer-events:none;
     }
-    .lq-icon { width: 38px; height: 38px; border-radius: 10px; background: var(--turq-light); color: var(--turq-dark); display: flex; align-items: center; justify-content: center; font-size: .9rem; flex-shrink: 0; margin-top: .1rem; }
-    .lq-label { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: .3rem; }
-    .lq-text { font-size: .92rem; color: var(--text); line-height: 1.55; }
-    .lq-text.empty { color: var(--muted); font-style: italic; }
+    .k-rose .kcard-glow { background:var(--rose); }
+    .k-turq .kcard-glow { background:var(--turq); }
+    .k-gold .kcard-glow { background:var(--gold); }
 
-    @media(max-width: 768px) {
-      .kpi-grid { grid-template-columns: 1fr 1fr; }
-      .actions-grid { grid-template-columns: 1fr; }
+    .kcard-head { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:1rem; }
+    .kcard-ico {
+      width:44px; height:44px; border-radius:12px;
+      display:flex; align-items:center; justify-content:center; font-size:1rem;
     }
-    @media(max-width: 480px) {
-      .kpi-grid { grid-template-columns: 1fr; }
+    .kico-rose { background:var(--rose-l); color:var(--rose); }
+    .kico-turq { background:var(--turq-l); color:var(--turq-d); }
+    .kico-gold { background:var(--gold-l); color:var(--gold-d); }
+    .kico-ink  { background:#e8eaeb; color:#5C666B; }
+    .kcard-trend {
+      font-size:.65rem; font-weight:700; padding:.18rem .55rem;
+      border-radius:20px; display:flex; align-items:center; gap:.2rem;
     }
+    .t-up   { background:#d1fae5; color:#065f46; }
+    .t-flat { background:#f3f4f6; color:var(--muted); }
+    .t-ok   { background:#d1fae5; color:#065f46; }
+
+    .kcard-lbl { font-size:.62rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--faint); margin-bottom:.3rem; }
+    .kcard-val {
+      font-family: var(--ff-head);
+      font-size:2.6rem; font-weight:700; line-height:1; color:var(--text);
+    }
+    .kcard-val.sm { font-size:1.5rem; }
+    .kcard-val.ok { color:var(--success); }
+    .kcard-bar { height:3px; background:#f0f2f5; border-radius:2px; overflow:hidden; margin:10px 0 6px; }
+    .kbar-fill { height:100%; border-radius:2px; transition:width 1.4s cubic-bezier(.22,1,.36,1); }
+    .kcard-sub { font-size:.72rem; color:var(--muted); line-height:1.5; }
+
+    /* ── Section header ── */
+    .s-head {
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:1.1rem;
+    }
+    .s-label {
+      font-size:.62rem; font-weight:700; text-transform:uppercase;
+      letter-spacing:.14em; color:var(--faint);
+      display:flex; align-items:center; gap:.5rem;
+    }
+    .s-label i { color:var(--rose); }
+    .s-label::after { content:''; display:inline-block; width:48px; height:1px; background:var(--border); margin-left:.3rem; vertical-align:middle; }
+    .s-link {
+      font-size:.75rem; font-weight:600; color:var(--rose);
+      text-decoration:none; display:flex; align-items:center; gap:.3rem;
+      transition:gap .2s;
+    }
+    .s-link:hover { gap:.55rem; color:var(--rose-d); text-decoration:none; }
+
+    /* ── Dernière question ── */
+    .lq-card {
+      background:var(--surface); border-radius:18px;
+      border:1.5px solid var(--border);
+      box-shadow:0 2px 16px rgba(0,0,0,.05);
+      overflow:hidden; margin-bottom:2rem;
+    }
+    .lq-head {
+      display:flex; align-items:center; gap:.75rem;
+      padding:.9rem 1.5rem; background:#fafbfc;
+      border-bottom:1px solid var(--border);
+    }
+    .lq-head-ico {
+      width:34px; height:34px; border-radius:9px;
+      background:var(--turq-l); color:var(--turq-d);
+      display:flex; align-items:center; justify-content:center; font-size:.85rem;
+    }
+    .lq-head-txt { font-size:.82rem; font-weight:700; color:var(--text); }
+    .lq-head-sub { font-size:.68rem; color:var(--muted); margin-top:.08rem; }
+    .lq-body { padding:1.25rem 1.5rem; }
+    .lq-bubble {
+      background:#f8f9fb; border:1px solid var(--border);
+      border-radius:14px; padding:1.1rem 1.5rem;
+      font-size:.92rem; color:var(--text); line-height:1.7;
+      border-left:3px solid var(--turq);
+      position:relative;
+    }
+    .lq-quote {
+      font-family:var(--ff-head); font-size:3rem; line-height:1;
+      color:var(--turq); opacity:.18;
+      position:absolute; top:.3rem; left:.8rem;
+    }
+    .lq-text { padding-left:1.5rem; }
+
+    /* ── Grille actions ── */
+    .actions-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; margin-bottom:2rem; }
+    .acard {
+      background:var(--surface); border-radius:18px;
+      border:1.5px solid var(--border);
+      box-shadow:0 2px 12px rgba(0,0,0,.05);
+      padding:1.35rem 1.5rem;
+      display:flex; align-items:center; gap:1.1rem;
+      text-decoration:none; color:var(--text);
+      transition:all .22s; position:relative; overflow:hidden;
+    }
+    .acard::after {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(135deg, transparent 55%, rgba(193,0,122,.04));
+      opacity:0; transition:opacity .2s;
+    }
+    .acard:hover { transform:translateY(-4px); box-shadow:0 10px 32px rgba(193,0,122,.1); border-color:var(--rose-l); text-decoration:none; color:var(--text); }
+    .acard:hover::after { opacity:1; }
+    .acard.gold-ac:hover { box-shadow:0 10px 32px rgba(245,158,11,.1); border-color:rgba(245,158,11,.25); }
+    .acard.gold-ac::after { background:linear-gradient(135deg, transparent 55%, rgba(245,158,11,.04)); }
+
+    .acard-ico {
+      width:50px; height:50px; border-radius:14px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.1rem; flex-shrink:0; transition:all .22s;
+    }
+    .ai-rose { background:var(--rose-l); color:var(--rose); }
+    .ai-turq { background:var(--turq-l); color:var(--turq-d); }
+    .ai-gold { background:var(--gold-l); color:var(--gold-d); }
+    .ai-ink  { background:#e8eaeb; color:#5C666B; }
+    .acard:hover .ai-rose { background:var(--rose); color:#fff; }
+    .acard:hover .ai-turq { background:var(--turq); color:#fff; }
+    .acard:hover .ai-gold { background:var(--gold); color:#fff; }
+    .acard:hover .ai-ink  { background:var(--ink3); color:#fff; }
+
+    .acard-body { flex:1; min-width:0; }
+    .acard-title { font-size:.92rem; font-weight:700; color:var(--text); margin-bottom:.15rem; }
+    .acard-desc  { font-size:.74rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .acard-badge {
+      display:inline-block; font-size:.58rem; font-weight:700;
+      padding:.1rem .45rem; border-radius:6px; margin-left:.35rem; vertical-align:middle;
+    }
+    .ab-rose { background:var(--rose-l); color:var(--rose); }
+    .ab-gold { background:var(--gold-l); color:var(--gold-d); }
+    .acard-arr { color:var(--border); font-size:.78rem; flex-shrink:0; transition:color .2s, transform .2s; }
+    .acard:hover .acard-arr { color:var(--rose); transform:translateX(4px); }
+    .acard.gold-ac:hover .acard-arr { color:var(--gold); }
+
+    /* ── ZONE ADMIN ONLY ── */
+    .admin-zone {
+      position:relative; overflow:hidden;
+      background:var(--ink);
+      border-radius:24px;
+      border:1px solid rgba(245,158,11,.15);
+      padding:2rem;
+      margin-bottom:2rem;
+    }
+    .admin-zone::before {
+      content:''; position:absolute; inset:0;
+      background:
+        radial-gradient(ellipse 50% 80% at 90% 20%, rgba(245,158,11,.1) 0%, transparent 60%),
+        radial-gradient(ellipse 30% 50% at 10% 80%, rgba(193,0,122,.08) 0%, transparent 55%);
+      pointer-events:none;
+    }
+    .az-scan {
+      position:absolute; inset:0; pointer-events:none;
+      background:repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,.04) 3px, rgba(0,0,0,.04) 4px);
+    }
+    .az-content { position:relative; z-index:1; }
+    .az-head {
+      display:flex; align-items:center; gap:1rem; margin-bottom:1.5rem;
+    }
+    .az-ico {
+      width:46px; height:46px; border-radius:12px;
+      background:linear-gradient(135deg, var(--gold), var(--gold-d));
+      display:flex; align-items:center; justify-content:center;
+      font-size:1rem; color:#fff; flex-shrink:0;
+      box-shadow:0 6px 16px rgba(245,158,11,.4);
+    }
+    .az-title { font-size:.95rem; font-weight:700; color:#fff; margin-bottom:.15rem; }
+    .az-sub { font-size:.72rem; color:rgba(255,255,255,.3); }
+    .az-badge {
+      margin-left:auto;
+      display:inline-flex; align-items:center; gap:.35rem;
+      padding:.28rem .8rem;
+      background:rgba(245,158,11,.12); border:1px solid rgba(245,158,11,.25);
+      border-radius:20px; font-size:.65rem; font-weight:700;
+      color:var(--gold); text-transform:uppercase; letter-spacing:.08em;
+    }
+
+    .az-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.75rem; }
+    .az-btn {
+      display:flex; flex-direction:column; align-items:center; gap:.6rem;
+      padding:1rem .75rem;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:14px;
+      cursor:pointer; text-decoration:none;
+      color:rgba(255,255,255,.5); font-size:.75rem; font-weight:500;
+      text-align:center; transition:all .22s;
+    }
+    .az-btn:hover { background:rgba(245,158,11,.1); border-color:rgba(245,158,11,.25); color:var(--gold); text-decoration:none; transform:translateY(-2px); }
+    .az-btn:hover .az-btn-ico { color:var(--gold); transform:scale(1.1); }
+    .az-btn-ico { font-size:1.4rem; color:rgba(255,255,255,.22); transition:all .22s; }
+    .az-btn-lbl { line-height:1.3; }
+
+    /* ── LAYOUT 2 COL bas de page ── */
+    .bottom-grid { display:grid; grid-template-columns:1fr 360px; gap:1.25rem; margin-bottom:2rem; }
+
+    /* Activité */
+    .activity-card {
+      background:var(--surface); border-radius:18px;
+      border:1.5px solid var(--border);
+      box-shadow:0 2px 16px rgba(0,0,0,.05);
+      overflow:hidden;
+    }
+    .ac-head {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:.9rem 1.4rem; background:#fafbfc; border-bottom:1px solid var(--border);
+    }
+    .ac-head-l { display:flex; align-items:center; gap:.65rem; }
+    .ac-head-ico { width:30px; height:30px; border-radius:8px; background:#e8eaeb; color:#5C666B; display:flex; align-items:center; justify-content:center; font-size:.75rem; }
+    .ac-head-title { font-size:.8rem; font-weight:700; color:var(--text); }
+    .live-chip {
+      display:inline-flex; align-items:center; gap:.35rem;
+      padding:.2rem .6rem; border-radius:20px;
+      background:#d1fae5; color:#065f46; font-size:.65rem; font-weight:700;
+    }
+    .live-dot { width:6px; height:6px; border-radius:50%; background:#10b981; box-shadow:0 0 6px rgba(16,185,129,.6); animation:pipPulse 2s infinite; }
+
+    .activity-scroll { max-height:320px; overflow-y:auto; }
+    .activity-scroll::-webkit-scrollbar { width:3px; }
+    .activity-scroll::-webkit-scrollbar-thumb { background:var(--border); }
+
+    .aitem {
+      display:flex; align-items:flex-start; gap:.85rem;
+      padding:.85rem 1.4rem; border-bottom:1px solid #f5f6f8;
+      transition:background .15s;
+    }
+    .aitem:last-child { border-bottom:none; }
+    .aitem:hover { background:#fafbfc; }
+    .aitem-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:.35rem; }
+    .aitem-body { flex:1; }
+    .aitem-text { font-size:.82rem; color:var(--text); line-height:1.45; }
+    .aitem-time { font-size:.65rem; color:var(--faint); font-family:var(--ff-mono); margin-top:.18rem; }
+
+    /* Statut système */
+    .status-card {
+      background:var(--surface); border-radius:18px;
+      border:1.5px solid var(--border);
+      box-shadow:0 2px 16px rgba(0,0,0,.05);
+      overflow:hidden;
+    }
+    .sc-head {
+      display:flex; align-items:center; gap:.65rem;
+      padding:.9rem 1.4rem; background:#fafbfc; border-bottom:1px solid var(--border);
+    }
+    .sc-head-ico { width:30px; height:30px; border-radius:8px; background:#e8eaeb; color:#5C666B; display:flex; align-items:center; justify-content:center; font-size:.75rem; }
+    .sc-head-title { font-size:.8rem; font-weight:700; color:var(--text); }
+
+    .sc-list { padding:.5rem 1rem; }
+    .sc-item {
+      display:flex; align-items:center; gap:.85rem;
+      padding:.7rem .4rem; border-bottom:1px solid #f5f6f8;
+    }
+    .sc-item:last-child { border-bottom:none; }
+    .sc-pip-wrap { position:relative; flex-shrink:0; }
+    .sc-pip {
+      width:36px; height:36px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center; font-size:.82rem;
+    }
+    .sc-pip.ok   { background:#d1fae5; color:#065f46; }
+    .sc-pip.warn { background:#fef3c7; color:#92400e; }
+    .sc-pip.err  { background:#fee2e2; color:#991b1b; }
+    .sc-ping {
+      position:absolute; inset:-4px; border-radius:50%;
+      border:2px solid transparent; animation:scPing 2s ease-in-out infinite;
+    }
+    .sc-ping.ok   { border-color:rgba(16,185,129,.3); }
+    .sc-ping.warn { border-color:rgba(245,158,11,.3); }
+    @keyframes scPing { 0%{transform:scale(1);opacity:1} 100%{transform:scale(1.6);opacity:0} }
+
+    .sc-name { font-size:.82rem; font-weight:600; color:var(--text); }
+    .sc-val  { font-size:.67rem; color:var(--muted); font-family:var(--ff-mono); margin-top:.1rem; }
+
+    /* ── FOOTER ADMIN ── */
+    .admin-footer {
+      background:var(--surface); border-radius:20px;
+      border:1.5px solid var(--border);
+      box-shadow:0 2px 16px rgba(0,0,0,.05);
+      padding:1.4rem 1.75rem;
+      display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap;
+    }
+    .af-left { display:flex; align-items:center; gap:1rem; flex:1; min-width:0; }
+    .af-av {
+      width:46px; height:46px; border-radius:50%;
+      background:linear-gradient(135deg, var(--rose), var(--rose-d));
+      overflow:hidden; border:2px solid var(--rose-l);
+      display:flex; align-items:flex-end; justify-content:center; flex-shrink:0;
+    }
+    .af-av img { width:44px; height:44px; object-fit:cover; }
+    .af-name { font-size:.9rem; font-weight:700; color:var(--text); }
+    .af-role {
+      font-size:.65rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em;
+      color:var(--gold-d); display:flex; align-items:center; gap:.3rem; margin-top:.1rem;
+    }
+    .af-sid { font-size:.62rem; color:var(--faint); font-family:var(--ff-mono); margin-top:.1rem; }
+
+    .af-actions { display:flex; gap:.65rem; flex-wrap:wrap; }
+    .af-btn {
+      display:inline-flex; align-items:center; gap:.4rem;
+      padding:.6rem 1.1rem; border-radius:10px; font-size:.8rem; font-weight:600;
+      border:1.5px solid; cursor:pointer; text-decoration:none; transition:all .2s;
+      font-family:var(--ff-body);
+    }
+    .af-outline { background:transparent; border-color:var(--border); color:var(--muted); }
+    .af-outline:hover { background:#f9fafb; color:var(--text); text-decoration:none; }
+    .af-danger  { background:transparent; border-color:#fca5a5; color:var(--danger); }
+    .af-danger:hover  { background:#fee2e2; text-decoration:none; color:var(--danger); }
+
+    /* RESPONSIVE */
+    @media(max-width:1024px){ .kpi-row{grid-template-columns:repeat(2,1fr)} .az-grid{grid-template-columns:repeat(2,1fr)} .bottom-grid{grid-template-columns:1fr} }
+    @media(max-width:768px){ .hero-row{grid-template-columns:1fr} .hero-profile{align-items:flex-start} .actions-grid{grid-template-columns:1fr} .kpi-row{grid-template-columns:repeat(2,1fr)} }
+    @media(max-width:480px){ .kpi-row{grid-template-columns:1fr} .az-grid{grid-template-columns:1fr} }
   </style>
 </head>
 <body>
 
 {% include "header.html" %}
 
-<!-- HERO -->
-<div class="admin-hero">
-  <div class="container hero-inner">
-    <div class="admin-tag">Espace administrateur</div>
-    <h1>Dashboard <em>Admin</em></h1>
-    <p>ML2C CONSEIL — Vue d'ensemble et gestion</p>
-    <div class="admin-badge"><i class="fas fa-circle"></i> Session active</div>
+<!-- ══════════════════════ HERO ══════════════════════ -->
+<div class="hero">
+  <canvas id="netCanvas"></canvas>
+  <div class="hero-amb"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-scan"></div>
+  <div class="hero-bar"></div>
+
+  <div class="hero-content container">
+    <div class="hero-row">
+
+      <div class="hero-left">
+        <div class="pre-title">
+          <div class="pre-badge">
+            <span class="crown">👑</span>
+            Super Administrateur
+            <span class="niv">NIV.3</span>
+          </div>
+          <div class="pre-line"></div>
+        </div>
+
+        <h1 class="hero-h1">
+          Dashboard<br>
+          <span class="accent-gold">Admin</span>
+          <span class="accent-rose"> ML2C</span>
+        </h1>
+
+        <div class="hero-sub">
+          <span class="online-pip"></span>
+          SESSION·ACTIVE &nbsp;·&nbsp; ML2C-ADMIN &nbsp;·&nbsp;
+          <span id="heroTime">--:--:--</span>
+        </div>
+
+        <div class="hero-chips">
+          <span class="hchip gold"><i class="fas fa-crown"></i> Super Admin</span>
+          <span class="hchip green"><i class="fas fa-shield-halved"></i> Droits complets</span>
+          <span class="hchip rose"><i class="fas fa-robot"></i> Chatbot actif</span>
+          <span class="hchip blue"><i class="fas fa-database"></i> BDD connectée</span>
+          <span class="hchip mono">TLS·1.3 · AES-256</span>
+        </div>
+      </div>
+
+      <div class="hero-profile">
+        <div class="profile-card">
+          <div class="p-av-wrap">
+            <div class="p-ring">
+              <div class="p-av-inner">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy" alt="Admin">
+              </div>
+            </div>
+            <div class="p-crown"><i class="fas fa-crown"></i></div>
+          </div>
+          <div class="p-info">
+            <div class="p-name">Administrateur ML2C</div>
+            <div class="p-role"><i class="fas fa-star" style="font-size:.55rem;"></i> Super Admin · Niveau 3</div>
+            <div class="p-perms">FULL ACCESS · ALL MODULES</div>
+          </div>
+        </div>
+
+        <div class="session-box">
+          <i class="fas fa-hourglass-half" style="opacity:.4;"></i>
+          Session expire&nbsp;:&nbsp;<span class="session-val" id="sesCd">29:59</span>
+          &nbsp;·&nbsp;ID:&nbsp;<span class="session-val" id="sesId">----</span>
+        </div>
+      </div>
+
+    </div>
   </div>
+
+  <svg class="hero-wave" viewBox="0 0 1440 70" preserveAspectRatio="none">
+    <path d="M0,0 C480,70 960,70 1440,0 L1440,70 L0,70 Z" fill="#f2f4f8"/>
+  </svg>
 </div>
 
-<div class="admin-page">
+<!-- ══════════════════════ MAIN ══════════════════════ -->
+<div class="main">
   <div class="container">
 
+    <!-- Barre niveau -->
+    <div class="level-strip">
+      <div class="ls-icon"><i class="fas fa-crown"></i></div>
+      <div class="ls-body">
+        <div class="ls-title">Accès Super Administrateur — Niveau 3 · Droits globaux</div>
+        <div class="ls-sub">Cet espace est inaccessible aux utilisateurs standard. Toutes les actions sont enregistrées et auditées.</div>
+      </div>
+      <div class="ls-perms">
+        <span class="ls-perm"><i class="fas fa-check"></i> Chatbot</span>
+        <span class="ls-perm"><i class="fas fa-check"></i> Utilisateurs</span>
+        <span class="ls-perm"><i class="fas fa-check"></i> Système</span>
+        <span class="ls-perm"><i class="fas fa-check"></i> Logs</span>
+        <span class="ls-perm"><i class="fas fa-check"></i> Export</span>
+      </div>
+    </div>
+
     <!-- KPIs -->
-    <div class="kpi-grid">
-      <div class="kpi-card rose">
-        <div class="kpi-icon rose"><i class="fas fa-comments"></i></div>
-        <div class="kpi-label">Questions chatbot</div>
-        <div class="kpi-val">{{ total_questions }}</div>
-        <div class="kpi-sub">Entrées enregistrées en base</div>
+    <div class="s-head">
+      <div class="s-label"><i class="fas fa-chart-bar"></i> Indicateurs clés</div>
+    </div>
+    <div class="kpi-row">
+
+      <div class="kcard k-rose">
+        <div class="kcard-glow"></div>
+        <div class="kcard-head">
+          <div class="kcard-ico kico-rose"><i class="fas fa-comments"></i></div>
+          <span class="kcard-trend t-up"><i class="fas fa-arrow-up"></i> +12%</span>
+        </div>
+        <div class="kcard-lbl">Questions chatbot</div>
+        <div class="kcard-val">{{ total_questions }}</div>
+        <div class="kcard-bar"><div class="kbar-fill" style="background:var(--rose);width:0" data-w="72%"></div></div>
+        <div class="kcard-sub">Enregistrées en base de données</div>
       </div>
-      <div class="kpi-card turq">
-        <div class="kpi-icon turq"><i class="fas fa-users"></i></div>
-        <div class="kpi-label">Utilisateurs</div>
-        <div class="kpi-val">—</div>
-        <div class="kpi-sub">Comptes créés sur la plateforme</div>
+
+      <div class="kcard k-turq">
+        <div class="kcard-glow"></div>
+        <div class="kcard-head">
+          <div class="kcard-ico kico-turq"><i class="fas fa-users"></i></div>
+          <span class="kcard-trend t-flat"><i class="fas fa-minus"></i> Stable</span>
+        </div>
+        <div class="kcard-lbl">Utilisateurs inscrits</div>
+        <div class="kcard-val">—</div>
+        <div class="kcard-bar"><div class="kbar-fill" style="background:var(--turq);width:0" data-w="45%"></div></div>
+        <div class="kcard-sub">Comptes actifs sur la plateforme</div>
       </div>
-      <div class="kpi-card gris">
-        <div class="kpi-icon gris"><i class="fas fa-clock"></i></div>
-        <div class="kpi-label">Dernière activité</div>
-        <div class="kpi-val" style="font-size:1.4rem" id="last-time">—</div>
-        <div class="kpi-sub">Mise à jour en temps réel</div>
+
+      <div class="kcard k-gold">
+        <div class="kcard-glow"></div>
+        <div class="kcard-head">
+          <div class="kcard-ico kico-gold"><i class="fas fa-clock"></i></div>
+          <span class="kcard-trend t-ok"><i class="fas fa-check"></i> Live</span>
+        </div>
+        <div class="kcard-lbl">Heure système</div>
+        <div class="kcard-val sm" id="kpiTime">--:--:--</div>
+        <div class="kcard-bar"><div class="kbar-fill" style="background:var(--gold);width:0" data-w="100%"></div></div>
+        <div class="kcard-sub">Mise à jour en temps réel</div>
+      </div>
+
+      <div class="kcard k-ink">
+        <div class="kcard-head">
+          <div class="kcard-ico kico-ink"><i class="fas fa-server"></i></div>
+          <span class="kcard-trend t-ok"><i class="fas fa-check"></i> OK</span>
+        </div>
+        <div class="kcard-lbl">Statut serveur</div>
+        <div class="kcard-val sm ok">Opérationnel</div>
+        <div class="kcard-bar"><div class="kbar-fill" style="background:var(--success);width:0" data-w="98%"></div></div>
+        <div class="kcard-sub">Uptime 99.8% · BDD active</div>
+      </div>
+
+    </div>
+
+    <!-- Dernière question -->
+    <div class="s-head">
+      <div class="s-label"><i class="fas fa-comment-alt"></i> Dernière question chatbot</div>
+      <a href="{{ url_for('admin_chatbot') }}" class="s-link">Tout gérer <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="lq-card">
+      <div class="lq-head">
+        <div class="lq-head-ico"><i class="fas fa-quote-left"></i></div>
+        <div>
+          <div class="lq-head-txt">Question la plus récente</div>
+          <div class="lq-head-sub">Dernière entrée enregistrée dans le chatbot ML2C CONSEIL</div>
+        </div>
+      </div>
+      <div class="lq-body">
+        <div class="lq-bubble">
+          <div class="lq-quote">"</div>
+          <div class="lq-text">
+            {% if last_question %}{{ last_question }}
+            {% else %}<span style="color:var(--muted);font-style:italic;">Aucune question enregistrée pour le moment.</span>
+            {% endif %}
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- DERNIÈRE QUESTION -->
-    <div class="sec-title"><i class="fas fa-comment-alt"></i> Dernière question chatbot</div>
-    <div class="last-q-card">
-      <div class="lq-icon"><i class="fas fa-quote-left"></i></div>
-      <div>
-        <div class="lq-label">Question la plus récente</div>
-        {% if last_question %}
-          <div class="lq-text">{{ last_question }}</div>
-        {% else %}
-          <div class="lq-text empty">Aucune question enregistrée pour le moment.</div>
-        {% endif %}
-      </div>
+    <!-- Actions -->
+    <div class="s-head">
+      <div class="s-label"><i class="fas fa-bolt"></i> Actions rapides</div>
     </div>
-
-    <!-- ACTIONS -->
-    <div class="sec-title"><i class="fas fa-bolt"></i> Actions rapides</div>
     <div class="actions-grid">
-
-      <a href="{{ url_for('admin_chatbot') }}" class="action-card">
-        <div class="ac-icon"><i class="fas fa-comments"></i></div>
-        <div class="ac-info">
-          <div class="ac-title">Gérer les questions</div>
-          <div class="ac-desc">Chatbot — base de questions/réponses</div>
+      <a href="{{ url_for('admin_chatbot') }}" class="acard">
+        <div class="acard-ico ai-rose"><i class="fas fa-comments"></i></div>
+        <div class="acard-body">
+          <div class="acard-title">Gérer le chatbot <span class="acard-badge ab-rose">{{ total_questions }} Q</span></div>
+          <div class="acard-desc">Questions, réponses, historique, modération des échanges</div>
         </div>
-        <i class="fas fa-chevron-right ac-arrow"></i>
+        <i class="fas fa-chevron-right acard-arr"></i>
       </a>
-
-      <a href="{{ url_for('base_test') }}" class="action-card">
-        <div class="ac-icon"><i class="fas fa-database"></i></div>
-        <div class="ac-info">
-          <div class="ac-title">Base utilisateurs</div>
-          <div class="ac-desc">Consulter les comptes enregistrés</div>
+      <a href="{{ url_for('base_test') }}" class="acard gold-ac">
+        <div class="acard-ico ai-gold"><i class="fas fa-database"></i></div>
+        <div class="acard-body">
+          <div class="acard-title">Base utilisateurs <span class="acard-badge ab-gold">Admin</span></div>
+          <div class="acard-desc">Consulter, gérer et auditer tous les comptes inscrits</div>
         </div>
-        <i class="fas fa-chevron-right ac-arrow"></i>
+        <i class="fas fa-chevron-right acard-arr"></i>
       </a>
+    </div>
+
+    <!-- Zone admin only -->
+    <div class="s-head">
+      <div class="s-label"><i class="fas fa-crown"></i> Zone administrateur exclusif</div>
+    </div>
+    <div class="admin-zone">
+      <div class="az-scan"></div>
+      <div class="az-content">
+        <div class="az-head">
+          <div class="az-ico"><i class="fas fa-crown"></i></div>
+          <div>
+            <div class="az-title">Outils Super Admin — Accès Niveau 3</div>
+            <div class="az-sub">Ces modules sont strictement inaccessibles aux utilisateurs et clients</div>
+          </div>
+          <div class="az-badge"><i class="fas fa-lock"></i> Restreint</div>
+        </div>
+        <div class="az-grid">
+          <a href="#" class="az-btn"><div class="az-btn-ico"><i class="fas fa-chart-line"></i></div><div class="az-btn-lbl">Statistiques avancées</div></a>
+          <a href="#" class="az-btn"><div class="az-btn-ico"><i class="fas fa-sliders"></i></div><div class="az-btn-lbl">Configuration système</div></a>
+          <a href="#" class="az-btn"><div class="az-btn-ico"><i class="fas fa-shield-halved"></i></div><div class="az-btn-lbl">Logs de sécurité</div></a>
+          <a href="#" class="az-btn"><div class="az-btn-ico"><i class="fas fa-envelope"></i></div><div class="az-btn-lbl">Emails automatiques</div></a>
+          <a href="#" class="az-btn"><div class="az-btn-ico"><i class="fas fa-file-export"></i></div><div class="az-btn-lbl">Export des données</div></a>
+          <a href="#" class="az-btn"><div class="az-btn-ico"><i class="fas fa-trash-alt"></i></div><div class="az-btn-lbl">Purger les logs</div></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bas de page -->
+    <div class="bottom-grid">
+
+      <!-- Activité live -->
+      <div class="activity-card">
+        <div class="ac-head">
+          <div class="ac-head-l">
+            <div class="ac-head-ico"><i class="fas fa-list"></i></div>
+            <div class="ac-head-title">Journal d'activité — Admin</div>
+          </div>
+          <div class="live-chip"><div class="live-dot"></div> Live</div>
+        </div>
+        <div class="activity-scroll" id="actList">
+          <div class="aitem"><div class="aitem-dot" style="background:var(--gold)"></div><div class="aitem-body"><div class="aitem-text"><strong>Connexion administrateur</strong> — Session ouverte</div><div class="aitem-time" id="loginT">À l'instant</div></div></div>
+          <div class="aitem"><div class="aitem-dot" style="background:var(--rose)"></div><div class="aitem-body"><div class="aitem-text">Chatbot — <strong>{{ total_questions }} question(s)</strong> en base</div><div class="aitem-time">Synchronisé</div></div></div>
+          <div class="aitem"><div class="aitem-dot" style="background:var(--turq)"></div><div class="aitem-body"><div class="aitem-text"><strong>Base de données</strong> — Connexion active</div><div class="aitem-time">Statut vérifié</div></div></div>
+          <div class="aitem"><div class="aitem-dot" style="background:var(--muted)"></div><div class="aitem-body"><div class="aitem-text"><strong>Dashboard admin</strong> — Modules chargés</div><div class="aitem-time">Init. terminée</div></div></div>
+        </div>
+      </div>
+
+      <!-- Statuts système -->
+      <div class="status-card">
+        <div class="sc-head">
+          <div class="sc-head-ico"><i class="fas fa-server"></i></div>
+          <div class="sc-head-title">Statut des services</div>
+        </div>
+        <div class="sc-list">
+          <div class="sc-item">
+            <div class="sc-pip-wrap"><div class="sc-pip ok"><i class="fas fa-database"></i></div><div class="sc-ping ok"></div></div>
+            <div><div class="sc-name">Base de données</div><div class="sc-val">ONLINE · &lt;5ms</div></div>
+          </div>
+          <div class="sc-item">
+            <div class="sc-pip-wrap"><div class="sc-pip ok"><i class="fas fa-robot"></i></div><div class="sc-ping ok"></div></div>
+            <div><div class="sc-name">Chatbot ML2C v2.0</div><div class="sc-val">ACTIF · &lt;2s</div></div>
+          </div>
+          <div class="sc-item">
+            <div class="sc-pip-wrap"><div class="sc-pip ok"><i class="fas fa-shield-halved"></i></div><div class="sc-ping ok"></div></div>
+            <div><div class="sc-name">Sécurité · TLS 1.3</div><div class="sc-val">CHIFFRÉ · AES-256</div></div>
+          </div>
+          <div class="sc-item">
+            <div class="sc-pip-wrap"><div class="sc-pip ok"><i class="fas fa-envelope"></i></div><div class="sc-ping ok"></div></div>
+            <div><div class="sc-name">Service emails</div><div class="sc-val">OPÉRATIONNEL</div></div>
+          </div>
+          <div class="sc-item">
+            <div class="sc-pip-wrap"><div class="sc-pip warn"><i class="fas fa-cloud"></i></div><div class="sc-ping warn"></div></div>
+            <div><div class="sc-name">CDN / Assets</div><div class="sc-val">LATENCE · 120ms</div></div>
+          </div>
+        </div>
+      </div>
 
     </div>
 
-    <!-- LOGOUT -->
-    <div class="logout-wrap">
-      <a href="{{ url_for('logout_admin') }}" class="btn-logout">
-        <i class="fas fa-sign-out-alt"></i> Se déconnecter
-      </a>
+    <!-- Footer admin -->
+    <div class="admin-footer">
+      <div class="af-left">
+        <div class="af-av">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy" alt="Admin">
+        </div>
+        <div>
+          <div class="af-name">Administrateur ML2C CONSEIL</div>
+          <div class="af-role"><i class="fas fa-crown" style="color:var(--gold);font-size:.58rem;"></i> Super Admin · Droits complets · Niveau 3</div>
+          <div class="af-sid">SID: <span id="footSid">----</span> · Session <span id="footTimer">29:59</span></div>
+        </div>
+      </div>
+      <div class="af-actions">
+        <a href="{{ url_for('menu') }}" class="af-btn af-outline"><i class="fas fa-home"></i> Accueil</a>
+        <a href="{{ url_for('logout_admin') }}" class="af-btn af-danger"><i class="fas fa-sign-out-alt"></i> Déconnecter</a>
+      </div>
     </div>
 
   </div>
@@ -223,16 +904,136 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  function updateTime() {
-    const now = new Date();
-    const h = String(now.getHours()).padStart(2,'0');
-    const m = String(now.getMinutes()).padStart(2,'0');
-    const s = String(now.getSeconds()).padStart(2,'0');
-    document.getElementById('last-time').textContent = h + ':' + m + ':' + s;
-  }
+/* ════════ CANVAS RÉSEAU ════════ */
+const nc = document.getElementById('netCanvas');
+const nctx = nc.getContext('2d');
+let NW, NH, pts = [];
 
-  updateTime();
-  setInterval(updateTime, 1000);
+function resizeNet() {
+  NW = nc.width = nc.offsetWidth;
+  NH = nc.height = nc.offsetHeight;
+}
+resizeNet();
+window.addEventListener('resize', () => { resizeNet(); });
+
+const COLORS = [
+  [193,0,122], [79,166,149], [245,158,11]
+];
+class Pt {
+  constructor() { this.reset(); }
+  reset() {
+    this.x  = Math.random() * NW;
+    this.y  = Math.random() * NH;
+    this.r  = Math.random() * 1.4 + .3;
+    this.vx = (Math.random() - .5) * .28;
+    this.vy = (Math.random() - .5) * .28;
+    const c = COLORS[Math.floor(Math.random() * COLORS.length)];
+    this.a  = Math.random() * .35 + .08;
+    this.rgb = c;
+  }
+  tick() {
+    this.x += this.vx; this.y += this.vy;
+    if (this.x < 0 || this.x > NW || this.y < 0 || this.y > NH) this.reset();
+  }
+  draw() {
+    nctx.beginPath();
+    nctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+    nctx.fillStyle = `rgba(${this.rgb},${this.a})`;
+    nctx.fill();
+  }
+}
+for (let i=0;i<90;i++) pts.push(new Pt());
+
+function drawNet() {
+  nctx.clearRect(0,0,NW,NH);
+  for (let i=0;i<pts.length;i++) {
+    for (let j=i+1;j<pts.length;j++) {
+      const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      if(d<100){
+        nctx.beginPath();
+        nctx.moveTo(pts[i].x,pts[i].y);
+        nctx.lineTo(pts[j].x,pts[j].y);
+        nctx.strokeStyle=`rgba(193,0,122,${(1-d/100)*.06})`;
+        nctx.lineWidth=.5; nctx.stroke();
+      }
+    }
+    pts[i].tick(); pts[i].draw();
+  }
+  requestAnimationFrame(drawNet);
+}
+drawNet();
+
+/* ════════ HORLOGE ════════ */
+function tick() {
+  const n=new Date();
+  const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');
+  ['heroTime','kpiTime'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=t;});
+}
+tick(); setInterval(tick,1000);
+
+/* ════════ SESSION ID ════════ */
+function mkId() {
+  const chars='ABCDEF0123456789';
+  return Array.from({length:8},()=>chars[Math.floor(Math.random()*chars.length)]).join('');
+}
+const sid = mkId();
+['sesId','footSid'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=sid;});
+
+/* ════════ COUNTDOWN SESSION ════════ */
+let secs = 30*60;
+function cdTick() {
+  secs = Math.max(0, secs-1);
+  const m=String(Math.floor(secs/60)).padStart(2,'0');
+  const s=String(secs%60).padStart(2,'0');
+  const v=m+':'+s;
+  ['sesCd','footTimer'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    el.textContent=v;
+    el.classList.toggle('warn', secs<120);
+  });
+}
+setInterval(cdTick,1000);
+
+/* ════════ ANIMATE KPI BARS ════════ */
+document.querySelectorAll('.kbar-fill').forEach(b=>{
+  const w=b.dataset.w;
+  b.style.width='0';
+  setTimeout(()=>{ b.style.width=w; },500);
+});
+
+/* ════════ ACTIVITÉ LIVE ════════ */
+const LOGS = [
+  {c:'var(--rose)',    txt:'Chatbot — nouvelle <strong>question reçue</strong>'},
+  {c:'var(--turq)',    txt:'BDD — synchronisation <strong>réussie</strong>'},
+  {c:'var(--gold)',    txt:'Vérification des <strong>permissions admin</strong>'},
+  {c:'var(--muted)',   txt:'Cache applicatif — <strong>rafraîchissement</strong>'},
+  {c:'var(--success)', txt:'Surveillance sécurité — <strong>RAS</strong>'},
+  {c:'var(--turq)',    txt:'Session admin — <strong>heartbeat OK</strong>'},
+  {c:'var(--rose)',    txt:'Audit accès — <strong>journal mis à jour</strong>'},
+];
+let logIdx=0;
+function pushLog() {
+  const list=document.getElementById('actList');
+  if(!list) return;
+  const item=LOGS[logIdx%LOGS.length]; logIdx++;
+  const n=new Date();
+  const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');
+  const div=document.createElement('div');
+  div.className='aitem';
+  div.style.cssText='opacity:0;transition:opacity .4s';
+  div.innerHTML=`<div class="aitem-dot" style="background:${item.c}"></div><div class="aitem-body"><div class="aitem-text">${item.txt}</div><div class="aitem-time">${t}</div></div>`;
+  list.insertBefore(div,list.firstChild);
+  requestAnimationFrame(()=>{ div.style.opacity='1'; });
+  while(list.children.length>8) list.removeChild(list.lastChild);
+}
+setInterval(pushLog, 5500);
+
+/* ════════ INIT TIME ════════ */
+const now=new Date();
+const loginEl=document.getElementById('loginT');
+if(loginEl) loginEl.textContent=[now.getHours(),now.getMinutes(),now.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');
 </script>
 
 </body>

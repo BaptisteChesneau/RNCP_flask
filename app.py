@@ -1166,7 +1166,7 @@ def chatbot():
 def admin_stats():
     return render_template('admin_stats.html')
 
-@app.route('/admin/configuration')
+@app.route('/admin/admin-configuration', endpoint='admin_config')
 def admin_configuration():
     return render_template('admin_config.html')
 

@@ -1,264 +1,691 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Configuration Système — ML2C Admin</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-  <style>
-    :root{--rose:#C1007A;--rose-d:#9a0062;--rose-l:#fce4f3;--turq:#4FA695;--turq-l:#d4f0ec;--gold:#f59e0b;--gold-d:#b45309;--gold-l:#fffbeb;--ink:#080b12;--ink3:#151820;--bg:#f2f4f8;--surface:#fff;--border:#e4e8ef;--text:#111827;--muted:#6b7280;--faint:#9ca3af;--success:#10b981;--danger:#ef4444;--ff-head:'Cormorant Garamond',serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'JetBrains Mono',monospace;}
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
-    .page-hero{background:var(--ink);position:relative;overflow:hidden;padding:2.5rem 0 4.5rem;}
-    .page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 80% at 80% 30%,rgba(79,166,149,.15) 0%,transparent 55%),radial-gradient(ellipse 35% 50% at 10% 80%,rgba(193,0,122,.1) 0%,transparent 50%);}
-    .page-hero-bar{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--turq),var(--rose),var(--gold));background-size:300%;animation:barS 4s linear infinite;}
-    @keyframes barS{0%{background-position:0%}100%{background-position:300%}}
-    .page-wave{position:absolute;bottom:-1px;left:0;right:0;z-index:2;}
-    .hero-inner{position:relative;z-index:1;}
-    .hero-breadcrumb{display:flex;align-items:center;gap:.5rem;font-size:.7rem;color:rgba(255,255,255,.3);font-family:var(--ff-mono);margin-bottom:1rem;}
-    .hero-breadcrumb a{color:rgba(255,255,255,.35);text-decoration:none;}.hero-breadcrumb a:hover{color:var(--gold);}.hero-breadcrumb span{color:rgba(255,255,255,.2);}
-    .page-title{font-family:var(--ff-head);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;color:#fff;margin-bottom:.4rem;}
-    .page-title .t-turq{color:#5eead4;font-style:italic;}
-    .page-sub{font-size:.83rem;color:rgba(255,255,255,.4);font-family:var(--ff-mono);display:flex;align-items:center;gap:.5rem;}
-    .live-pip{width:6px;height:6px;border-radius:50%;background:var(--success);box-shadow:0 0 8px rgba(16,185,129,.7);animation:pp 2s infinite;}
-    @keyframes pp{0%,100%{opacity:1}50%{opacity:.3}}
-    .main{padding:2.5rem 0 5rem;}
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Configuration Système — ML2C Admin</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --rose:#C1007A;--rose-d:#9a0062;--rose-l:#fce4f3;--rose-xl:#fff5fb;
+  --turq:#4FA695;--turq-l:#d4f0ec;
+  --gold:#f59e0b;--gold-d:#b45309;--gold-l:#fffbeb;
+  --bg:#f2f4f8;--surface:#fff;--border:#e4e8ef;
+  --text:#111827;--muted:#6b7280;--faint:#9ca3af;
+  --success:#10b981;--danger:#ef4444;--blue:#3b82f6;
+  --ff-head:'Cormorant Garamond',serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'JetBrains Mono',monospace;
+}
+body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 
-    /* Layout sidebar */
-    .cfg-layout{display:grid;grid-template-columns:240px 1fr;gap:1.5rem;align-items:start;}
-    .cfg-nav{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.05);overflow:hidden;position:sticky;top:90px;}
-    .cfg-nav-head{padding:.9rem 1.2rem;border-bottom:1px solid var(--border);font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);}
-    .cfg-nav-item{display:flex;align-items:center;gap:.65rem;padding:.7rem 1.2rem;font-size:.82rem;color:var(--muted);cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:all .15s;font-family:var(--ff-body);border-left:3px solid transparent;}
-    .cfg-nav-item:hover{background:#f9fafb;color:var(--text);}
-    .cfg-nav-item.active{background:var(--rose-l);color:var(--rose);border-left-color:var(--rose);font-weight:600;}
-    .cfg-nav-item i{width:16px;font-size:.82rem;}
+/* ══════ SIDEBAR ══════ */
+.adm-shell{display:flex;height:100vh;overflow:hidden;}
+.adm-sidebar{width:220px;background:#0e1018;border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0;}
+.adm-sidebar::-webkit-scrollbar{width:3px;}.adm-sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);}
+.adm-sb-logo{display:flex;align-items:center;gap:.75rem;padding:1.25rem 1.1rem 1rem;border-bottom:1px solid rgba(255,255,255,.06);}
+.adm-sb-dot{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#C1007A,#9a0062);display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px rgba(193,0,122,.4);flex-shrink:0;}
+.adm-sb-brand{font-size:.88rem;font-weight:700;color:#fff;line-height:1.2;}
+.adm-sb-brand span{display:block;font-size:.65rem;font-weight:400;color:rgba(255,255,255,.35);}
+.adm-sb-sec{font-size:.57rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.22);padding:1.1rem 1.1rem .3rem;margin:0;}
+.adm-sb-item{display:flex;align-items:center;gap:.6rem;padding:.55rem 1.1rem;font-size:.78rem;color:rgba(255,255,255,.45);text-decoration:none;transition:all .15s;border-left:2px solid transparent;margin:.05rem 0;}
+.adm-sb-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.8);text-decoration:none;}
+.adm-sb-item--active{background:rgba(193,0,122,.12);border-left-color:#C1007A;color:#f472b6!important;font-weight:600;}
+.adm-sb-item svg{opacity:.6;flex-shrink:0;}.adm-sb-item:hover svg,.adm-sb-item--active svg{opacity:1;}
+.adm-sb-badge{margin-left:auto;min-width:19px;height:19px;background:#C1007A;color:#fff;border-radius:20px;font-size:.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 .4rem;flex-shrink:0;}
+.adm-sb-badge.gold{background:linear-gradient(135deg,#f59e0b,#d97706);}
+.adm-sb-badge.green{background:#10b981;}
+.adm-sb-badge.blue{background:#3b82f6;}
+.adm-sb-pip{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-left:auto;}
+.pip-green{background:#10b981;animation:pip 2s infinite;}
+.pip-red{background:#ef4444;animation:pip .8s infinite;}
+@keyframes pip{0%,100%{opacity:1}50%{opacity:.3}}
+.adm-sb-divider{height:1px;background:rgba(255,255,255,.06);margin:.5rem 1rem;}
+.adm-sb-footer{margin-top:auto;padding:.75rem 1rem;border-top:1px solid rgba(255,255,255,.06);}
+.adm-sb-user{display:flex;align-items:center;gap:.65rem;}
+.adm-sb-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#C1007A,#9a0062);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:#fff;flex-shrink:0;}
+.adm-sb-info{font-size:.75rem;font-weight:600;color:rgba(255,255,255,.7);line-height:1.2;flex:1;}
+.adm-sb-info span{display:block;font-size:.62rem;font-weight:400;color:rgba(255,255,255,.3);}
+.adm-sb-logout{width:26px;height:26px;border-radius:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);cursor:pointer;transition:all .2s;}
+.adm-sb-logout:hover{background:rgba(239,68,68,.12);color:#f87171;}
+.adm-sb-version{text-align:center;font-size:.58rem;color:rgba(255,255,255,.15);padding:.4rem 1rem;font-family:var(--ff-mono);}
 
-    /* Sections config */
-    .cfg-section{display:none;}
-    .cfg-section.active{display:block;}
+/* ══════ MAIN ══════ */
+.adm-main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.adm-topbar{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.5rem;background:#fff;border-bottom:1px solid var(--border);flex-shrink:0;gap:1rem;flex-wrap:wrap;}
+.adm-topbar-left h2{font-size:1rem;font-weight:700;margin:0;}
+.adm-topbar-left p{font-size:.72rem;color:var(--muted);margin:.05rem 0 0;}
+.adm-topbar-right{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
+.adm-content{flex:1;overflow-y:auto;padding:1.5rem;}
 
-    .cfg-panel{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.05);overflow:hidden;margin-bottom:1.5rem;animation:fadeUp .35s ease;}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-    .cfg-panel-head{padding:1rem 1.5rem;background:#fafbfc;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.65rem;}
-    .cfg-ph-ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.82rem;}
-    .phi-turq{background:var(--turq-l);color:var(--turq);}
-    .phi-rose{background:var(--rose-l);color:var(--rose);}
-    .phi-gold{background:var(--gold-l);color:var(--gold-d);}
-    .phi-ink{background:#e8eaeb;color:#5C666B;}
-    .cfg-ph-title{font-size:.85rem;font-weight:700;color:var(--text);}
-    .cfg-ph-sub{font-size:.7rem;color:var(--muted);margin-top:.05rem;}
-    .cfg-panel-body{padding:1.5rem;}
+/* ══════ BUTTONS ══════ */
+.btn-adm{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border-radius:9px;font-size:.78rem;font-weight:600;cursor:pointer;border:none;font-family:var(--ff-body);transition:all .2s;white-space:nowrap;}
+.btn-rose{background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff;box-shadow:0 4px 12px rgba(193,0,122,.25);}
+.btn-rose:hover{box-shadow:0 6px 18px rgba(193,0,122,.35);transform:translateY(-1px);}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
+.btn-ghost:hover{border-color:var(--rose);color:var(--rose);}
+.btn-turq{background:linear-gradient(135deg,var(--turq),#3d8578);color:#fff;}
+.btn-danger{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;}
 
-    /* Champs */
-    .cfg-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;}
-    .cfg-field{display:flex;flex-direction:column;gap:.4rem;}
-    .cfg-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);}
-    .cfg-label .req{color:var(--rose);}
-    .cfg-input{border:1.5px solid var(--border);border-radius:10px;padding:.7rem 1rem;font-size:.88rem;font-family:var(--ff-body);color:var(--text);background:#fafbfc;outline:none;transition:all .2s;width:100%;}
-    .cfg-input:focus{border-color:var(--rose);background:#fff;box-shadow:0 0 0 3px rgba(193,0,122,.08);}
-    .cfg-input.mono{font-family:var(--ff-mono);font-size:.82rem;}
-    .cfg-select{border:1.5px solid var(--border);border-radius:10px;padding:.7rem 1rem;font-size:.88rem;font-family:var(--ff-body);color:var(--text);background:#fafbfc;outline:none;width:100%;transition:all .2s;cursor:pointer;}
-    .cfg-select:focus{border-color:var(--rose);background:#fff;}
-    .cfg-textarea{border:1.5px solid var(--border);border-radius:10px;padding:.7rem 1rem;font-size:.85rem;font-family:var(--ff-mono);color:var(--text);background:#fafbfc;outline:none;resize:vertical;width:100%;transition:all .2s;min-height:90px;}
-    .cfg-textarea:focus{border-color:var(--rose);background:#fff;}
+/* ══════ STATUS PILL ══════ */
+.status-pill{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:600;padding:.3rem .75rem;border-radius:20px;}
+.sp-ok{background:#d1fae5;color:#065f46;}
+.sp-warn{background:#fef3c7;color:#b45309;}
 
-    /* Toggle switch */
-    .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:.85rem 0;border-bottom:1px solid #f5f6f8;}
-    .toggle-row:last-child{border-bottom:none;}
-    .toggle-info{flex:1;margin-right:1rem;}
-    .toggle-title{font-size:.85rem;font-weight:600;color:var(--text);}
-    .toggle-sub{font-size:.73rem;color:var(--muted);margin-top:.15rem;}
-    .toggle-switch{position:relative;width:44px;height:24px;flex-shrink:0;}
-    .toggle-switch input{opacity:0;width:0;height:0;position:absolute;}
-    .toggle-slider{position:absolute;inset:0;background:#e5e7eb;border-radius:24px;cursor:pointer;transition:.2s;}
-    .toggle-slider::before{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;left:3px;top:3px;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
-    .toggle-switch input:checked+.toggle-slider{background:var(--rose);}
-    .toggle-switch input:checked+.toggle-slider::before{transform:translateX(20px);}
+/* ══════ KPI ══════ */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
+.kbox{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:1rem;display:flex;align-items:center;gap:.75rem;box-shadow:0 2px 12px rgba(0,0,0,.05);transition:transform .2s;}
+.kbox:hover{transform:translateY(-2px);}
+.kbox-ico{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;}
+.ki-turq{background:var(--turq-l);color:var(--turq);}
+.ki-rose{background:var(--rose-l);color:var(--rose);}
+.ki-gold{background:var(--gold-l);color:var(--gold-d);}
+.ki-blue{background:#dbeafe;color:#2563eb;}
+.kbox-val{font-family:var(--ff-head);font-size:1.55rem;font-weight:700;line-height:1;}
+.kbox-lbl{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-top:.1rem;}
+.kbox-sub{font-size:.65rem;color:var(--turq);font-weight:600;margin-top:.15rem;}
 
-    /* Save bar */
-    .save-bar{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;background:var(--gold-l);border-top:1px solid rgba(245,158,11,.2);gap:1rem;flex-wrap:wrap;}
-    .save-info{font-size:.78rem;color:var(--gold-d);display:flex;align-items:center;gap:.5rem;}
-    .save-actions{display:flex;gap:.65rem;}
-    .btn-reset{padding:.55rem 1.1rem;border-radius:9px;border:1.5px solid var(--border);background:#fff;color:var(--muted);font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--ff-body);}
-    .btn-reset:hover{border-color:var(--danger);color:var(--danger);}
-    .btn-save{padding:.55rem 1.25rem;border-radius:9px;border:none;background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--ff-body);box-shadow:0 4px 12px rgba(193,0,122,.25);}
-    .btn-save:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(193,0,122,.35);}
+/* ══════ CONFIG LAYOUT ══════ */
+.cfg-layout{display:grid;grid-template-columns:210px 1fr;gap:1.5rem;align-items:start;}
 
-    /* Toast */
-    .toast-notif{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;display:flex;align-items:center;gap:.65rem;padding:.8rem 1.25rem;border-radius:12px;font-size:.83rem;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.15);transform:translateY(80px);opacity:0;transition:all .3s cubic-bezier(.34,1.2,.64,1);pointer-events:none;}
-    .toast-notif.show{transform:translateY(0);opacity:1;}
-    .toast-success{background:#0d2e23;color:#4ade80;border:1px solid rgba(74,222,128,.2);}
-    .toast-warn{background:#2e220d;color:#fbbf24;border:1px solid rgba(251,191,36,.2);}
+/* ══════ NAV CONFIG ══════ */
+.cfg-sidenav{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.05);overflow:hidden;position:sticky;top:0;}
+.cfg-sidenav-head{padding:.85rem 1.1rem;background:linear-gradient(135deg,#0e1018,#161c28);display:flex;align-items:center;gap:.6rem;}
+.cfg-sn-ico{width:28px;height:28px;border-radius:8px;background:rgba(193,0,122,.2);display:flex;align-items:center;justify-content:center;color:#f472b6;font-size:.72rem;}
+.cfg-sn-txt{font-size:.75rem;font-weight:700;color:#fff;}
+.cfg-sn-txt span{display:block;font-size:.6rem;font-weight:400;color:rgba(255,255,255,.35);}
+.cfg-nav-item{display:flex;align-items:center;gap:.6rem;padding:.7rem 1.1rem;font-size:.8rem;color:var(--muted);cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:all .15s;font-family:var(--ff-body);border-left:3px solid transparent;border-bottom:1px solid rgba(0,0,0,.04);}
+.cfg-nav-item:last-child{border-bottom:none;}
+.cfg-nav-item:hover{background:#f9fafb;color:var(--text);}
+.cfg-nav-item.active{background:var(--rose-xl);color:var(--rose);border-left-color:var(--rose);font-weight:600;}
+.cfg-nav-item i{width:15px;font-size:.8rem;text-align:center;}
+.cnb{margin-left:auto;font-size:.58rem;font-weight:700;padding:.1rem .45rem;border-radius:20px;}
+.cnb-ok{background:#d1fae5;color:#065f46;}
+.cnb-warn{background:#fef3c7;color:#b45309;}
 
-    @media(max-width:900px){.cfg-layout{grid-template-columns:1fr}.cfg-nav{position:static}.cfg-grid{grid-template-columns:1fr}}
-  </style>
-</head>
-<body>
-{% include "header.html" %}
+/* ══════ SECTIONS ══════ */
+.cfg-section{display:none;animation:fadeUp .3s ease;}
+.cfg-section.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-<div class="page-hero">
-  <div class="page-hero-bar"></div>
-  <div class="container hero-inner">
-    <div class="hero-breadcrumb"><a href="{{ url_for('admin_dashboard') }}">Dashboard</a><span>/</span> Configuration système</div>
-    <h1 class="page-title">Configuration <span class="t-turq">système</span></h1>
-    <div class="page-sub"><span class="live-pip"></span> ADMIN ONLY · ML2C CONSEIL · <span id="heroTime">--:--:--</span></div>
+/* ══════ PANEL ══════ */
+.panel{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.05);overflow:hidden;margin-bottom:1.25rem;}
+.panel-head{padding:1rem 1.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(90deg,#fafbfc,#fff);}
+.panel-head-left{display:flex;align-items:center;gap:.65rem;}
+.panel-ico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0;}
+.pi-turq{background:var(--turq-l);color:var(--turq);}
+.pi-rose{background:var(--rose-l);color:var(--rose);}
+.pi-gold{background:var(--gold-l);color:var(--gold-d);}
+.pi-ink{background:#e8eaeb;color:#5C666B;}
+.pi-red{background:#fee2e2;color:var(--danger);}
+.panel-title{font-size:.88rem;font-weight:700;color:var(--text);}
+.panel-sub{font-size:.7rem;color:var(--muted);margin-top:.08rem;}
+.panel-body{padding:1.4rem;}
+
+/* ══════ FORM ══════ */
+.cfg-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem;}
+.cfg-field{display:flex;flex-direction:column;gap:.35rem;}
+.cfg-label{font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);}
+.cfg-label .req{color:var(--rose);}
+.cfg-input,.cfg-select,.cfg-textarea{border:1.5px solid var(--border);border-radius:10px;padding:.68rem 1rem;font-size:.87rem;font-family:var(--ff-body);color:var(--text);background:#fafbfc;outline:none;transition:all .2s;width:100%;}
+.cfg-input:focus,.cfg-select:focus,.cfg-textarea:focus{border-color:var(--rose);background:#fff;box-shadow:0 0 0 3px rgba(193,0,122,.07);}
+.cfg-input.mono,.cfg-textarea.mono{font-family:var(--ff-mono);font-size:.82rem;}
+.cfg-textarea{resize:vertical;min-height:90px;}
+.cfg-select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .8rem center;}
+.cfg-hint{font-size:.68rem;color:var(--faint);margin-top:.2rem;line-height:1.4;}
+.cfg-input-group{display:flex;}
+.cfg-input-group .cfg-input{border-radius:10px 0 0 10px;border-right:none;}
+.cfg-input-group-btn{padding:.68rem .9rem;font-size:.78rem;font-weight:600;border:1.5px solid var(--border);border-left:none;border-radius:0 10px 10px 0;cursor:pointer;font-family:var(--ff-body);transition:all .2s;color:var(--muted);background:#f5f7f9;white-space:nowrap;}
+.cfg-input-group-btn:hover{background:var(--rose);color:#fff;border-color:var(--rose);}
+
+/* ══════ TOGGLE ══════ */
+.toggle-row{display:flex;align-items:flex-start;justify-content:space-between;padding:.88rem 0;border-bottom:1px solid #f3f4f6;}
+.toggle-row:last-child{border-bottom:none;padding-bottom:0;}
+.toggle-row:first-child{padding-top:0;}
+.toggle-info{flex:1;margin-right:1.25rem;}
+.toggle-title{font-size:.85rem;font-weight:600;color:var(--text);}
+.toggle-sub{font-size:.73rem;color:var(--muted);margin-top:.18rem;line-height:1.45;}
+.toggle-badge{display:inline-flex;font-size:.6rem;font-weight:700;padding:.1rem .45rem;border-radius:20px;margin-left:.45rem;vertical-align:middle;}
+.tb-new{background:#dbeafe;color:#1d4ed8;}
+.tb-pro{background:var(--rose-l);color:var(--rose);}
+.toggle-switch{position:relative;width:46px;height:25px;flex-shrink:0;margin-top:.1rem;}
+.toggle-switch input{opacity:0;width:0;height:0;position:absolute;}
+.toggle-slider{position:absolute;inset:0;background:#e5e7eb;border-radius:25px;cursor:pointer;transition:.25s;}
+.toggle-slider::before{content:'';position:absolute;width:19px;height:19px;border-radius:50%;background:#fff;left:3px;top:3px;transition:.25s;box-shadow:0 1px 4px rgba(0,0,0,.2);}
+.toggle-switch input:checked+.toggle-slider{background:var(--rose);}
+.toggle-switch input:checked+.toggle-slider::before{transform:translateX(21px);}
+.toggle-switch input:disabled+.toggle-slider{opacity:.45;cursor:not-allowed;}
+
+/* ══════ SAVE BAR ══════ */
+.save-bar{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.4rem;background:linear-gradient(90deg,var(--gold-l),#fffefc);border-top:1.5px solid rgba(245,158,11,.15);gap:1rem;flex-wrap:wrap;}
+.save-info{font-size:.75rem;color:var(--gold-d);display:flex;align-items:center;gap:.5rem;}
+.save-actions{display:flex;gap:.6rem;}
+
+/* ══════ SMTP TEST ══════ */
+.smtp-test-zone{background:#f8fafc;border:1.5px dashed var(--border);border-radius:12px;padding:1rem;margin-top:1.1rem;}
+.smtp-result{display:none;border-radius:9px;padding:.7rem 1rem;font-size:.8rem;margin-top:.65rem;align-items:center;gap:.5rem;}
+.smtp-result.show{display:flex;}
+.smr-ok{background:#d1fae5;color:#065f46;border:1px solid rgba(16,185,129,.2);}
+.smr-loading{background:#dbeafe;color:#1e40af;border:1px solid rgba(59,130,246,.2);}
+
+/* ══════ IP TABLE ══════ */
+.ip-table{width:100%;border-collapse:collapse;font-size:.82rem;}
+.ip-table th{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);padding:.55rem .8rem;border-bottom:1.5px solid var(--border);text-align:left;}
+.ip-table td{padding:.6rem .8rem;border-bottom:1px solid #f3f4f6;vertical-align:middle;}
+.ip-table tr:last-child td{border-bottom:none;}
+.ip-table tr:hover td{background:#fafbfc;}
+.ip-badge{display:inline-block;font-size:.6rem;font-weight:700;padding:.15rem .55rem;border-radius:20px;}
+.ipb-allow{background:#d1fae5;color:#065f46;}
+.ipb-block{background:#fee2e2;color:#b91c1c;}
+
+/* ══════ EMAIL PREVIEW ══════ */
+.email-preview{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.05);}
+.ep-chrome{background:#f3f4f6;padding:.5rem .9rem;display:flex;align-items:center;gap:.45rem;border-bottom:1px solid var(--border);}
+.ep-dot{width:9px;height:9px;border-radius:50%;}
+.ep-url{flex:1;background:#fff;border-radius:5px;padding:.2rem .6rem;font-size:.65rem;font-family:var(--ff-mono);color:var(--faint);border:1px solid var(--border);text-align:center;}
+.ep-body{padding:1.25rem 1.5rem;}
+.ep-from{font-size:.68rem;color:var(--faint);font-family:var(--ff-mono);margin-bottom:.5rem;}
+.ep-subject{font-size:.95rem;font-weight:700;margin-bottom:.75rem;padding-bottom:.75rem;border-bottom:1px solid var(--border);}
+.ep-logo{display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem;}
+.ep-logo-box{width:22px;height:22px;background:linear-gradient(135deg,var(--rose),var(--rose-d));border-radius:6px;display:flex;align-items:center;justify-content:center;}
+.ep-logo-name{font-family:var(--ff-head);font-size:.88rem;font-weight:700;}
+.ep-text{font-size:.82rem;color:var(--muted);line-height:1.65;}
+.ep-cta{display:inline-block;background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff!important;padding:.5rem 1.1rem;border-radius:8px;font-size:.78rem;font-weight:600;margin-top:.85rem;text-decoration:none;}
+
+/* ══════ DANGER CARD ══════ */
+.danger-card{background:linear-gradient(135deg,#fff8f8,#fff);border:1.5px solid rgba(239,68,68,.18);border-radius:14px;padding:1.1rem;display:flex;align-items:flex-start;gap:.85rem;margin-bottom:.85rem;}
+.danger-card:last-child{margin-bottom:0;}
+.dc-ico{width:34px;height:34px;border-radius:9px;background:#fee2e2;color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0;}
+.dc-body{flex:1;}
+.dc-title{font-size:.85rem;font-weight:700;color:#b91c1c;margin-bottom:.2rem;}
+.dc-desc{font-size:.76rem;color:var(--muted);line-height:1.5;}
+
+/* ══════ TOAST ══════ */
+.toast-box{position:fixed;bottom:1.25rem;right:1.25rem;z-index:9999;display:flex;align-items:center;gap:.65rem;padding:.8rem 1.2rem;border-radius:12px;font-size:.82rem;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.18);transform:translateY(80px);opacity:0;transition:all .35s cubic-bezier(.34,1.2,.64,1);pointer-events:none;max-width:320px;}
+.toast-box.show{transform:translateY(0);opacity:1;}
+.toast-ok{background:#0b2a1f;color:#4ade80;border:1px solid rgba(74,222,128,.2);}
+.toast-warn{background:#2a1f0b;color:#fbbf24;border:1px solid rgba(251,191,36,.2);}
+.toast-err{background:#2a0b0b;color:#f87171;border:1px solid rgba(248,113,113,.2);}
+.toast-info{background:#0b1a2a;color:#60a5fa;border:1px solid rgba(96,165,250,.2);}
+
+@media(max-width:960px){.cfg-layout{grid-template-columns:1fr;}.kpi-row{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head><body>
+
+<div class="adm-shell">
+
+<!-- ═══════════ SIDEBAR ═══════════ -->
+<aside class="adm-sidebar">
+  <div class="adm-sb-logo">
+    <div class="adm-sb-dot">
+      <svg width="15" height="15" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    </div>
+    <div class="adm-sb-brand">ML2C Conseil<span>Administration</span></div>
   </div>
-  <svg class="page-wave" viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,0 C480,60 960,60 1440,0 L1440,60 L0,60 Z" fill="#f2f4f8"/></svg>
-</div>
+  <p class="adm-sb-sec">Principal</p>
+  <a href="{{ url_for('admin_dashboard') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard<span class="adm-sb-pip pip-green"></span></a>
+  <a href="{{ url_for('admin_chatbot') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Questions / Réponses<span class="adm-sb-badge">19</span></a>
+  <a href="{{ url_for('admin_utilisateurs') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Utilisateurs</a>
+  <a href="{{ url_for('admin_stats') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Statistiques</a>
+  <a href="{{ url_for('admin_notifications') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Notifications<span class="adm-sb-badge green">3</span></a>
+  <a href="{{ url_for('admin_agenda') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Agenda / RDV<span class="adm-sb-badge blue">2</span></a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Contenu</p>
+  <a href="{{ url_for('admin_blog') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Blog / Articles</a>
+  <a href="{{ url_for('admin_formulaires') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>Formulaires / Devis<span class="adm-sb-badge gold">5</span></a>
+  <a href="{{ url_for('admin_emails') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Emails automatiques</a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Système</p>
+  <a href="{{ url_for('admin_config') }}" class="adm-sb-item adm-sb-item--active"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2M16.95 7.05l1.41-1.41M5.64 18.36l1.41-1.41M7.05 7.05L5.64 5.64M18.36 18.36l-1.41-1.41"/></svg>Configuration</a>
+  <a href="{{ url_for('admin_logs') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Logs sécurité<span class="adm-sb-pip pip-red"></span></a>
+  <a href="{{ url_for('admin_performances') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Performances<span class="adm-sb-pip pip-green"></span></a>
+  <a href="{{ url_for('admin_sauvegardes') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Sauvegardes<span class="adm-sb-badge green">OK</span></a>
+  <a href="{{ url_for('admin_export') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Export données</a>
+  <a href="{{ url_for('admin_purge') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>Purger les logs</a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Compte</p>
+  <a href="{{ url_for('admin_parametres') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Paramètres du compte</a>
+  <a href="{{ url_for('admin_audit') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>Journal d'audit</a>
+  <div class="adm-sb-footer">
+    <div class="adm-sb-user">
+      <div class="adm-sb-avatar">AD</div>
+      <div class="adm-sb-info">Administrateur<span>Super Admin · Niv. 3</span></div>
+      <div class="adm-sb-logout" title="Déconnexion"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></div>
+    </div>
+  </div>
+  <div class="adm-sb-version">ML2C Admin v2.0 · 2025</div>
+</aside>
 
-<div class="main">
-  <div class="container">
+<!-- ═══════════ MAIN ═══════════ -->
+<div class="adm-main">
+
+  <!-- TOPBAR -->
+  <div class="adm-topbar">
+    <div class="adm-topbar-left">
+      <h2><svg width="14" height="14" fill="none" stroke="var(--rose)" stroke-width="2" viewBox="0 0 24 24" style="margin-right:.4rem;vertical-align:-.1rem;"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>Configuration Système</h2>
+      <p>Paramètres globaux · Env. <span style="font-family:var(--ff-mono);color:var(--rose);font-size:.7rem;">production</span> · Scalingo osc-fr1 · <span id="topClock" style="font-family:var(--ff-mono);"></span></p>
+    </div>
+    <div class="adm-topbar-right">
+      <span class="status-pill sp-ok"><span style="width:6px;height:6px;border-radius:50%;background:var(--success);animation:pip 2s infinite;display:inline-block;"></span>Système OK</span>
+      <button class="btn-adm btn-ghost" onclick="toast('info','Export config_ml2c.json généré')"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Exporter config</button>
+      <button class="btn-adm btn-rose" onclick="saveAll()"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v14a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Tout enregistrer</button>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="adm-content">
+
+    <!-- KPI -->
+    <div class="kpi-row">
+      <div class="kbox">
+        <div class="kbox-ico ki-turq"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div><div class="kbox-val">99.9%</div><div class="kbox-lbl">Uptime 30j</div><div class="kbox-sub">↗ Stable</div></div>
+      </div>
+      <div class="kbox">
+        <div class="kbox-ico ki-rose"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2"/></svg></div>
+        <div><div class="kbox-val">47</div><div class="kbox-lbl">Paramètres</div><div class="kbox-sub">5 modules</div></div>
+      </div>
+      <div class="kbox">
+        <div class="kbox-ico ki-gold"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+        <div><div class="kbox-val">03:00</div><div class="kbox-lbl">Prochaine backup</div><div class="kbox-sub">Auto · nuit</div></div>
+      </div>
+      <div class="kbox">
+        <div class="kbox-ico ki-blue"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <div><div class="kbox-val">v2.0.4</div><div class="kbox-lbl">Version</div><div class="kbox-sub">↑ À jour</div></div>
+      </div>
+    </div>
+
+    <!-- CONFIG LAYOUT -->
     <div class="cfg-layout">
 
       <!-- NAV -->
-      <div class="cfg-nav">
-        <div class="cfg-nav-head">Modules</div>
-        <button class="cfg-nav-item active" onclick="showSection('general',this)"><i class="fas fa-cog"></i> Général</button>
-        <button class="cfg-nav-item" onclick="showSection('chatbot',this)"><i class="fas fa-robot"></i> Chatbot</button>
-        <button class="cfg-nav-item" onclick="showSection('securite',this)"><i class="fas fa-shield-halved"></i> Sécurité</button>
-        <button class="cfg-nav-item" onclick="showSection('emails',this)"><i class="fas fa-envelope"></i> Emails</button>
-        <button class="cfg-nav-item" onclick="showSection('maintenance',this)"><i class="fas fa-tools"></i> Maintenance</button>
+      <div class="cfg-sidenav">
+        <div class="cfg-sidenav-head">
+          <div class="cfg-sn-ico"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2"/></svg></div>
+          <div class="cfg-sn-txt">Configuration<span>5 modules · 47 params</span></div>
+        </div>
+        <button class="cfg-nav-item active" onclick="showSec('general',this)"><i class="fas fa-building"></i>Général<span class="cnb cnb-ok" style="margin-left:auto;">✓</span></button>
+        <button class="cfg-nav-item" onclick="showSec('chatbot',this)"><i class="fas fa-robot"></i>Chatbot IA<span class="cnb cnb-ok" style="margin-left:auto;">✓</span></button>
+        <button class="cfg-nav-item" onclick="showSec('securite',this)"><i class="fas fa-shield-halved"></i>Sécurité<span class="cnb cnb-warn" style="margin-left:auto;">2FA off</span></button>
+        <button class="cfg-nav-item" onclick="showSec('emails',this)"><i class="fas fa-envelope"></i>Emails SMTP<span class="cnb cnb-ok" style="margin-left:auto;">Actif</span></button>
+        <button class="cfg-nav-item" onclick="showSec('maintenance',this)"><i class="fas fa-tools"></i>Maintenance<span class="cnb cnb-ok" style="margin-left:auto;">Off</span></button>
       </div>
 
       <!-- SECTIONS -->
       <div>
 
-        <!-- Général -->
+        <!-- ══ GÉNÉRAL ══ -->
         <div class="cfg-section active" id="sec-general">
-          <div class="cfg-panel">
-            <div class="cfg-panel-head">
-              <div class="cfg-ph-ico phi-turq"><i class="fas fa-building"></i></div>
-              <div><div class="cfg-ph-title">Informations du cabinet</div><div class="cfg-ph-sub">Données affichées sur le site ML2C CONSEIL</div></div>
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-head-left">
+                <div class="panel-ico pi-turq"><i class="fas fa-building"></i></div>
+                <div><div class="panel-title">Informations du cabinet</div><div class="panel-sub">Données affichées sur le site public ML2C CONSEIL</div></div>
+              </div>
+              <span class="status-pill sp-ok"><i class="fas fa-check-circle"></i>Complet</span>
             </div>
-            <div class="cfg-panel-body">
+            <div class="panel-body">
               <div class="cfg-grid">
-                <div class="cfg-field"><div class="cfg-label">Nom du cabinet <span class="req">*</span></div><input class="cfg-input" value="ML2C CONSEIL"></div>
-                <div class="cfg-field"><div class="cfg-label">Ville</div><input class="cfg-input" value="Dammarie"></div>
-                <div class="cfg-field"><div class="cfg-label">Téléphone</div><input class="cfg-input" value="+33 (0)6 72 34 32 94"></div>
-                <div class="cfg-field"><div class="cfg-label">Email de contact</div><input class="cfg-input" value="contact@ml2cconseil.com"></div>
-                <div class="cfg-field" style="grid-column:1/-1"><div class="cfg-label">Adresse</div><input class="cfg-input" value="6 Rue de la Vigne, 28360 Dammarie"></div>
-                <div class="cfg-field" style="grid-column:1/-1"><div class="cfg-label">Description courte</div><textarea class="cfg-textarea">Cabinet d'expertise comptable digitalisé — Expertise, proximité et intelligence artificielle au service de votre réussite.</textarea></div>
+                <div class="cfg-field"><label class="cfg-label">Nom du cabinet <span class="req">*</span></label><input class="cfg-input" value="ML2C CONSEIL"></div>
+                <div class="cfg-field"><label class="cfg-label">Forme juridique</label><select class="cfg-select"><option selected>SARL</option><option>SAS</option><option>SA</option><option>SCP</option></select></div>
+                <div class="cfg-field"><label class="cfg-label">Téléphone <span class="req">*</span></label><input class="cfg-input" value="+33 (0)6 72 34 32 94"></div>
+                <div class="cfg-field"><label class="cfg-label">Email de contact <span class="req">*</span></label><input class="cfg-input" value="contact@ml2cconseil.com"></div>
+                <div class="cfg-field"><label class="cfg-label">Ville</label><input class="cfg-input" value="Dammarie"></div>
+                <div class="cfg-field"><label class="cfg-label">Code postal</label><input class="cfg-input mono" value="28360"></div>
+                <div class="cfg-field" style="grid-column:1/-1;"><label class="cfg-label">Adresse complète</label><input class="cfg-input" value="6 Rue de la Vigne, 28360 Dammarie"></div>
+                <div class="cfg-field" style="grid-column:1/-1;"><label class="cfg-label">Description courte (pied de site)</label><textarea class="cfg-textarea">Cabinet d'expertise comptable digitalisé — Expertise, proximité et intelligence artificielle au service de votre réussite.</textarea></div>
+                <div class="cfg-field"><label class="cfg-label">URL du site</label><input class="cfg-input mono" value="https://ml2cco.osc-fr1.scalingo.io"></div>
+                <div class="cfg-field"><label class="cfg-label">Fuseau horaire</label><select class="cfg-select"><option selected>Europe/Paris (UTC+2)</option><option>UTC</option></select></div>
               </div>
             </div>
             <div class="save-bar">
-              <div class="save-info"><i class="fas fa-triangle-exclamation"></i> Les modifications s'appliquent immédiatement sur le site.</div>
-              <div class="save-actions"><button class="btn-reset">Annuler</button><button class="btn-save" onclick="saveToast()"><i class="fas fa-save"></i> Enregistrer</button></div>
+              <div class="save-info"><i class="fas fa-triangle-exclamation"></i>Les modifications s'appliquent immédiatement sur le site.</div>
+              <div class="save-actions">
+                <button class="btn-adm btn-ghost">Annuler</button>
+                <button class="btn-adm btn-rose" onclick="toast('ok','Informations cabinet enregistrées')"><i class="fas fa-save"></i>Enregistrer</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-head-left">
+                <div class="panel-ico pi-rose"><i class="fas fa-palette"></i></div>
+                <div><div class="panel-title">Apparence & Branding</div><div class="panel-sub">Charte graphique et personnalisation visuelle</div></div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="cfg-grid" style="margin-bottom:1.1rem;">
+                <div class="cfg-field"><label class="cfg-label">Couleur principale</label><div style="display:flex;gap:.55rem;align-items:center;"><input type="color" value="#C1007A" style="width:42px;height:38px;border-radius:8px;border:1.5px solid var(--border);cursor:pointer;padding:2px;"><input class="cfg-input mono" value="#C1007A" style="flex:1;"></div></div>
+                <div class="cfg-field"><label class="cfg-label">Couleur secondaire</label><div style="display:flex;gap:.55rem;align-items:center;"><input type="color" value="#4FA695" style="width:42px;height:38px;border-radius:8px;border:1.5px solid var(--border);cursor:pointer;padding:2px;"><input class="cfg-input mono" value="#4FA695" style="flex:1;"></div></div>
+                <div class="cfg-field"><label class="cfg-label">Police de titre</label><select class="cfg-select"><option selected>Cormorant Garamond</option><option>Playfair Display</option><option>Libre Baskerville</option></select></div>
+                <div class="cfg-field"><label class="cfg-label">Police de corps</label><select class="cfg-select"><option selected>DM Sans</option><option>Inter</option><option>Nunito</option></select></div>
+              </div>
+              <div>
+                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Bandeau "nouveau client"</div><div class="toggle-sub">Affiche un bandeau promotionnel en haut du site pour les nouveaux visiteurs</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Animations hero page d'accueil</div><div class="toggle-sub">Effets de particules et transitions CSS sur le carousel principal</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Bannière cookie RGPD</div><div class="toggle-sub">Afficher le bandeau de consentement aux cookies au premier chargement</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+              </div>
+            </div>
+            <div class="save-bar">
+              <div class="save-info"><i class="fas fa-eye"></i>Un vidage de cache peut être nécessaire.</div>
+              <div class="save-actions">
+                <button class="btn-adm btn-ghost" onclick="toast('info','Cache statique vidé avec succès')"><i class="fas fa-broom"></i>Vider cache</button>
+                <button class="btn-adm btn-rose" onclick="toast('ok','Apparence enregistrée')"><i class="fas fa-save"></i>Enregistrer</button>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Chatbot -->
+        <!-- ══ CHATBOT ══ -->
         <div class="cfg-section" id="sec-chatbot">
-          <div class="cfg-panel">
-            <div class="cfg-panel-head">
-              <div class="cfg-ph-ico phi-rose"><i class="fas fa-robot"></i></div>
-              <div><div class="cfg-ph-title">Paramètres du chatbot</div><div class="cfg-ph-sub">Configuration du comportement du conseiller IA</div></div>
-            </div>
-            <div class="cfg-panel-body">
-              <div class="cfg-grid">
-                <div class="cfg-field"><div class="cfg-label">Nom du conseiller</div><input class="cfg-input" value="Conseiller ML2C"></div>
-                <div class="cfg-field"><div class="cfg-label">Délai de réponse (heures)</div><input class="cfg-input" type="number" value="24"></div>
-                <div class="cfg-field"><div class="cfg-label">Ton par défaut</div><select class="cfg-select"><option selected>Professionnel</option><option>Amical</option><option>Concis</option><option>Pédagogique</option></select></div>
-                <div class="cfg-field"><div class="cfg-label">Questions max / session</div><input class="cfg-input" type="number" value="20"></div>
-                <div class="cfg-field" style="grid-column:1/-1"><div class="cfg-label">Message d'accueil</div><textarea class="cfg-textarea">Bonjour 👋 Je suis votre conseiller ML2C CONSEIL. Comment puis-je vous aider aujourd'hui ?</textarea></div>
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-head-left">
+                <div class="panel-ico pi-rose"><i class="fas fa-robot"></i></div>
+                <div><div class="panel-title">Paramètres du chatbot IA</div><div class="panel-sub">Comportement et personnalité du conseiller virtuel</div></div>
               </div>
-              <div style="margin-top:1.25rem;">
-                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Mode IA actif</div><div class="toggle-sub">Utiliser l'intelligence artificielle pour les réponses automatiques</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
-                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Notification admin</div><div class="toggle-sub">Recevoir un email à chaque nouvelle question</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
-                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Historique public</div><div class="toggle-sub">Permettre aux utilisateurs de voir leur historique</div></div><label class="toggle-switch"><input type="checkbox"><span class="toggle-slider"></span></label></div>
+              <span class="status-pill sp-ok"><span style="width:6px;height:6px;border-radius:50%;background:var(--success);animation:pip 2s infinite;display:inline-block;"></span>En ligne</span>
+            </div>
+            <div class="panel-body">
+              <div class="cfg-grid" style="margin-bottom:1.1rem;">
+                <div class="cfg-field"><label class="cfg-label">Nom du conseiller</label><input class="cfg-input" value="Conseiller ML2C"></div>
+                <div class="cfg-field"><label class="cfg-label">Ton par défaut</label><select class="cfg-select"><option selected>Professionnel</option><option>Amical</option><option>Concis</option><option>Pédagogique</option></select></div>
+                <div class="cfg-field"><label class="cfg-label">Délai de réponse affiché (h)</label><input class="cfg-input mono" type="number" value="24"><div class="cfg-hint">Affiché au client — n'affecte pas la vitesse réelle</div></div>
+                <div class="cfg-field"><label class="cfg-label">Questions max / session</label><input class="cfg-input mono" type="number" value="20"></div>
+                <div class="cfg-field"><label class="cfg-label">Modèle IA</label><select class="cfg-select"><option selected>GPT-4o (OpenAI)</option><option>Claude 3.5 Sonnet</option><option>Gemini 1.5 Pro</option></select></div>
+                <div class="cfg-field"><label class="cfg-label">Langue de réponse</label><select class="cfg-select"><option selected>Français</option><option>Bilingue (auto)</option><option>Anglais</option></select></div>
+                <div class="cfg-field" style="grid-column:1/-1;"><label class="cfg-label">Message d'accueil</label><textarea class="cfg-textarea">Bonjour 👋 Je suis votre conseiller ML2C CONSEIL. Comment puis-je vous aider aujourd'hui ? Je peux répondre à vos questions sur la comptabilité, la fiscalité et nos services.</textarea></div>
+                <div class="cfg-field" style="grid-column:1/-1;"><label class="cfg-label">Clé API OpenAI</label><div class="cfg-input-group"><input class="cfg-input mono" type="password" value="sk-proj-ml2c-openai-key..." id="openaiKey"><button class="cfg-input-group-btn" onclick="toggleField('openaiKey','openaiEye')"><i class="fas fa-eye" id="openaiEye"></i> Afficher</button></div></div>
+              </div>
+              <div>
+                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Mode IA actif</div><div class="toggle-sub">Utiliser l'intelligence artificielle pour les réponses automatiques en temps réel</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Notification admin par email</div><div class="toggle-sub">Recevoir un email à chaque nouvelle question posée via le chatbot</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Historique visible par l'utilisateur</div><div class="toggle-sub">Permettre aux utilisateurs de voir et télécharger leur historique de conversation</div></div><label class="toggle-switch"><input type="checkbox"><span class="toggle-slider"></span></label></div>
+                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Collecte de leads <span class="toggle-badge tb-new">Nouveau</span></div><div class="toggle-sub">Proposer de renseigner email et téléphone en fin de conversation pour suivi commercial</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Transfert vers humain si sans réponse</div><div class="toggle-sub">Si le chatbot ne peut pas répondre, proposer automatiquement un RDV téléphonique</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
               </div>
             </div>
-            <div class="save-bar"><div class="save-info"><i class="fas fa-robot"></i> Les changements s'appliquent au prochain démarrage du chatbot.</div><div class="save-actions"><button class="btn-reset">Annuler</button><button class="btn-save" onclick="saveToast()"><i class="fas fa-save"></i> Enregistrer</button></div></div>
+            <div class="save-bar">
+              <div class="save-info"><i class="fas fa-robot"></i>Les changements s'appliquent au prochain démarrage du chatbot.</div>
+              <div class="save-actions">
+                <button class="btn-adm btn-ghost" onclick="toast('info','Prompt réinitialisé aux valeurs par défaut')"><i class="fas fa-undo"></i>Réinitialiser</button>
+                <button class="btn-adm btn-rose" onclick="toast('ok','Configuration chatbot enregistrée')"><i class="fas fa-save"></i>Enregistrer</button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Sécurité -->
+        <!-- ══ SÉCURITÉ ══ -->
         <div class="cfg-section" id="sec-securite">
-          <div class="cfg-panel">
-            <div class="cfg-panel-head">
-              <div class="cfg-ph-ico phi-gold"><i class="fas fa-shield-halved"></i></div>
-              <div><div class="cfg-ph-title">Paramètres de sécurité</div><div class="cfg-ph-sub">Authentification, sessions et restrictions d'accès</div></div>
-            </div>
-            <div class="cfg-panel-body">
-              <div class="cfg-grid">
-                <div class="cfg-field"><div class="cfg-label">Durée de session (min)</div><input class="cfg-input" type="number" value="30"></div>
-                <div class="cfg-field"><div class="cfg-label">Tentatives max avant blocage</div><input class="cfg-input" type="number" value="5"></div>
-                <div class="cfg-field"><div class="cfg-label">Durée de blocage (min)</div><input class="cfg-input" type="number" value="15"></div>
-                <div class="cfg-field"><div class="cfg-label">Longueur min mot de passe</div><input class="cfg-input" type="number" value="8"></div>
-                <div class="cfg-field" style="grid-column:1/-1"><div class="cfg-label">IPs autorisées (une par ligne)</div><textarea class="cfg-textarea mono" style="min-height:80px;">0.0.0.0/0</textarea></div>
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-head-left">
+                <div class="panel-ico pi-gold"><i class="fas fa-shield-halved"></i></div>
+                <div><div class="panel-title">Authentification & Sessions</div><div class="panel-sub">Règles d'accès admin, sessions et restrictions</div></div>
               </div>
-              <div style="margin-top:1.25rem;">
-                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Double authentification (2FA)</div><div class="toggle-sub">Exiger un code OTP à chaque connexion admin</div></div><label class="toggle-switch"><input type="checkbox"><span class="toggle-slider"></span></label></div>
-                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">HTTPS forcé</div><div class="toggle-sub">Rediriger automatiquement le trafic HTTP vers HTTPS</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
-                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Audit des connexions</div><div class="toggle-sub">Enregistrer chaque tentative de connexion dans les logs</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+              <span class="status-pill sp-warn"><i class="fas fa-triangle-exclamation"></i>2FA désactivé</span>
+            </div>
+            <div class="panel-body">
+              <div class="cfg-grid" style="margin-bottom:1.1rem;">
+                <div class="cfg-field"><label class="cfg-label">Durée de session (minutes)</label><input class="cfg-input mono" type="number" value="30"><div class="cfg-hint">La session expire après cette durée d'inactivité</div></div>
+                <div class="cfg-field"><label class="cfg-label">Tentatives max avant blocage</label><input class="cfg-input mono" type="number" value="5"></div>
+                <div class="cfg-field"><label class="cfg-label">Durée de blocage IP (minutes)</label><input class="cfg-input mono" type="number" value="15"></div>
+                <div class="cfg-field"><label class="cfg-label">Longueur min. mot de passe</label><input class="cfg-input mono" type="number" value="8"></div>
+                <div class="cfg-field" style="grid-column:1/-1;"><label class="cfg-label">Clé secrète Flask (SECRET_KEY)</label><div class="cfg-input-group"><input class="cfg-input mono" type="password" value="sk_prod_ml2c_a8f2e1d9c4b3..." id="secretKey"><button class="cfg-input-group-btn" onclick="toggleField('secretKey','secretEye')"><i class="fas fa-eye" id="secretEye"></i> Afficher</button></div><div class="cfg-hint">⚠️ Ne jamais exposer cette clé — elle signe les sessions utilisateurs</div></div>
+              </div>
+              <div>
+                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Double authentification (2FA) <span class="toggle-badge tb-pro">Recommandé</span></div><div class="toggle-sub">Exiger un code OTP (Google Authenticator) à chaque connexion admin</div></div><label class="toggle-switch"><input type="checkbox" id="twofaToggle" onchange="twofaAlert(this)"><span class="toggle-slider"></span></label></div>
+                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">HTTPS forcé</div><div class="toggle-sub">Rediriger automatiquement tout trafic HTTP vers HTTPS</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Audit des connexions</div><div class="toggle-sub">Enregistrer chaque tentative de connexion dans le journal d'audit</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Protection CSRF (toujours actif)</div><div class="toggle-sub">Vérification du token CSRF sur tous les formulaires POST</div></div><label class="toggle-switch"><input type="checkbox" checked disabled><span class="toggle-slider"></span></label></div>
               </div>
             </div>
-            <div class="save-bar"><div class="save-info"><i class="fas fa-shield-halved"></i> Certains changements nécessitent un redémarrage du serveur.</div><div class="save-actions"><button class="btn-reset">Annuler</button><button class="btn-save" onclick="saveToast()"><i class="fas fa-save"></i> Enregistrer</button></div></div>
+            <div class="save-bar">
+              <div class="save-info"><i class="fas fa-shield-halved"></i>Certains changements nécessitent un redémarrage du serveur.</div>
+              <div class="save-actions">
+                <button class="btn-adm btn-ghost">Annuler</button>
+                <button class="btn-adm btn-rose" onclick="toast('ok','Paramètres de sécurité enregistrés')"><i class="fas fa-save"></i>Enregistrer</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-head-left">
+                <div class="panel-ico pi-ink"><i class="fas fa-network-wired"></i></div>
+                <div><div class="panel-title">Liste blanche IP</div><div class="panel-sub">Restreindre l'accès admin à ces adresses uniquement</div></div>
+              </div>
+              <button class="btn-adm btn-ghost" style="font-size:.72rem;" onclick="addIp()"><i class="fas fa-plus"></i>Ajouter</button>
+            </div>
+            <div class="panel-body">
+              <table class="ip-table">
+                <thead><tr><th>IP / Plage CIDR</th><th>Label</th><th>Règle</th><th>Date</th><th></th></tr></thead>
+                <tbody id="ipBody">
+                  <tr><td style="font-family:var(--ff-mono);">0.0.0.0/0</td><td>Tout le monde</td><td><span class="ip-badge ipb-allow">Autoriser</span></td><td style="font-size:.75rem;color:var(--faint);">12 jan. 2025</td><td><button class="btn-adm btn-ghost" style="font-size:.68rem;padding:.28rem .55rem;" onclick="removeRow(this)"><i class="fas fa-trash"></i></button></td></tr>
+                  <tr><td style="font-family:var(--ff-mono);">192.168.1.0/24</td><td>Réseau bureau</td><td><span class="ip-badge ipb-allow">Autoriser</span></td><td style="font-size:.75rem;color:var(--faint);">08 fév. 2025</td><td><button class="btn-adm btn-ghost" style="font-size:.68rem;padding:.28rem .55rem;" onclick="removeRow(this)"><i class="fas fa-trash"></i></button></td></tr>
+                  <tr><td style="font-family:var(--ff-mono);">185.234.xx.xx</td><td>Scanner suspect</td><td><span class="ip-badge ipb-block">Bloquer</span></td><td style="font-size:.75rem;color:var(--faint);">03 avr. 2025</td><td><button class="btn-adm btn-ghost" style="font-size:.68rem;padding:.28rem .55rem;" onclick="removeRow(this)"><i class="fas fa-trash"></i></button></td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
-        <!-- Emails -->
+        <!-- ══ EMAILS ══ -->
         <div class="cfg-section" id="sec-emails">
-          <div class="cfg-panel">
-            <div class="cfg-panel-head">
-              <div class="cfg-ph-ico phi-rose"><i class="fas fa-envelope"></i></div>
-              <div><div class="cfg-ph-title">Configuration SMTP</div><div class="cfg-ph-sub">Serveur d'envoi des emails automatiques</div></div>
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-head-left">
+                <div class="panel-ico pi-rose"><i class="fas fa-envelope"></i></div>
+                <div><div class="panel-title">Configuration SMTP</div><div class="panel-sub">Serveur d'envoi des emails automatiques (devis, RDV, confirmations…)</div></div>
+              </div>
+              <span class="status-pill sp-ok"><i class="fas fa-circle" style="font-size:.45rem;"></i>Connecté</span>
             </div>
-            <div class="cfg-panel-body">
-              <div class="cfg-grid">
-                <div class="cfg-field"><div class="cfg-label">Serveur SMTP</div><input class="cfg-input mono" value="smtp.ml2cconseil.com"></div>
-                <div class="cfg-field"><div class="cfg-label">Port</div><input class="cfg-input mono" value="587"></div>
-                <div class="cfg-field"><div class="cfg-label">Utilisateur</div><input class="cfg-input mono" value="noreply@ml2cconseil.com"></div>
-                <div class="cfg-field"><div class="cfg-label">Mot de passe</div><input class="cfg-input mono" type="password" value="••••••••••"></div>
-                <div class="cfg-field"><div class="cfg-label">Email expéditeur</div><input class="cfg-input" value="ML2C CONSEIL <noreply@ml2cconseil.com>"></div>
-                <div class="cfg-field"><div class="cfg-label">Chiffrement</div><select class="cfg-select"><option selected>STARTTLS</option><option>SSL/TLS</option><option>Aucun</option></select></div>
+            <div class="panel-body">
+              <div class="cfg-grid" style="margin-bottom:1.1rem;">
+                <div class="cfg-field"><label class="cfg-label">Serveur SMTP <span class="req">*</span></label><input class="cfg-input mono" value="smtp.ml2cconseil.com"></div>
+                <div class="cfg-field"><label class="cfg-label">Port <span class="req">*</span></label><select class="cfg-select"><option>25</option><option selected>587 (STARTTLS)</option><option>465 (SSL/TLS)</option></select></div>
+                <div class="cfg-field"><label class="cfg-label">Utilisateur SMTP</label><input class="cfg-input mono" value="noreply@ml2cconseil.com"></div>
+                <div class="cfg-field"><label class="cfg-label">Mot de passe SMTP</label><div class="cfg-input-group"><input class="cfg-input mono" type="password" value="smtp_secret_2025" id="smtpPwd"><button class="cfg-input-group-btn" onclick="toggleField('smtpPwd','smtpEye')"><i class="fas fa-eye" id="smtpEye"></i></button></div></div>
+                <div class="cfg-field"><label class="cfg-label">Email expéditeur</label><input class="cfg-input" value="ML2C CONSEIL &lt;noreply@ml2cconseil.com&gt;"></div>
+                <div class="cfg-field"><label class="cfg-label">Chiffrement</label><select class="cfg-select"><option selected>STARTTLS</option><option>SSL/TLS</option><option>Aucun</option></select></div>
+              </div>
+              <div class="smtp-test-zone">
+                <div style="font-size:.8rem;font-weight:600;color:var(--text);margin-bottom:.6rem;"><i class="fas fa-flask" style="color:var(--turq);margin-right:.35rem;"></i>Test de connexion SMTP</div>
+                <div style="display:flex;gap:.65rem;align-items:center;flex-wrap:wrap;">
+                  <input class="cfg-input" placeholder="Email destinataire du test" value="contact@ml2cconseil.com" style="max-width:270px;">
+                  <button class="btn-adm btn-turq" onclick="testSmtp()"><i class="fas fa-paper-plane"></i>Envoyer un test</button>
+                </div>
+                <div class="smtp-result smr-loading" id="smtpResult"><i id="smtpIco" class="fas fa-spinner fa-spin"></i><span id="smtpMsg">Test en cours…</span></div>
               </div>
             </div>
-            <div class="save-bar"><div class="save-info"><i class="fas fa-envelope"></i> Testez la configuration avant d'enregistrer.</div><div class="save-actions"><button class="btn-reset" onclick="testSmtp()"><i class="fas fa-flask"></i> Tester SMTP</button><button class="btn-save" onclick="saveToast()"><i class="fas fa-save"></i> Enregistrer</button></div></div>
+            <div class="save-bar">
+              <div class="save-info"><i class="fas fa-envelope-circle-check"></i>Testez la configuration avant d'enregistrer.</div>
+              <div class="save-actions">
+                <button class="btn-adm btn-ghost">Annuler</button>
+                <button class="btn-adm btn-rose" onclick="toast('ok','Configuration SMTP enregistrée')"><i class="fas fa-save"></i>Enregistrer</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-head-left">
+                <div class="panel-ico pi-turq"><i class="fas fa-eye"></i></div>
+                <div><div class="panel-title">Aperçu email type</div><div class="panel-sub">Rendu des emails envoyés aux clients</div></div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="email-preview">
+                <div class="ep-chrome">
+                  <div class="ep-dot" style="background:#ef4444;"></div>
+                  <div class="ep-dot" style="background:#f59e0b;"></div>
+                  <div class="ep-dot" style="background:#10b981;"></div>
+                  <div class="ep-url">noreply@ml2cconseil.com → client@exemple.fr</div>
+                </div>
+                <div class="ep-body">
+                  <div class="ep-from">De : ML2C CONSEIL &lt;noreply@ml2cconseil.com&gt;</div>
+                  <div class="ep-subject">✅ Votre demande de rendez-vous est confirmée</div>
+                  <div class="ep-logo">
+                    <div class="ep-logo-box"><svg width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+                    <div class="ep-logo-name">ML2C CONSEIL</div>
+                  </div>
+                  <div class="ep-text">Bonjour,<br><br>Nous avons bien enregistré votre demande de rendez-vous pour le <strong>jeudi 15 mai 2025 à 14h00</strong> au cabinet de Dammarie.<br><br>Un rappel vous sera envoyé 24h avant votre rendez-vous.</div>
+                  <a href="#" class="ep-cta" onclick="return false;">Voir mon espace client</a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Maintenance -->
+        <!-- ══ MAINTENANCE ══ -->
         <div class="cfg-section" id="sec-maintenance">
-          <div class="cfg-panel">
-            <div class="cfg-panel-head">
-              <div class="cfg-ph-ico phi-ink"><i class="fas fa-tools"></i></div>
-              <div><div class="cfg-ph-title">Mode maintenance</div><div class="cfg-ph-sub">Contrôle de la disponibilité du site</div></div>
-            </div>
-            <div class="cfg-panel-body">
-              <div style="margin-bottom:1.25rem;">
-                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Activer le mode maintenance</div><div class="toggle-sub">Afficher la page 503 à tous les visiteurs (sauf admins)</div></div><label class="toggle-switch"><input type="checkbox" id="maintToggle" onchange="toggleMaint(this)"><span class="toggle-slider"></span></label></div>
-                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Sauvegardes automatiques</div><div class="toggle-sub">Effectuer une sauvegarde BDD chaque nuit à 02h00</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-head-left">
+                <div class="panel-ico pi-ink"><i class="fas fa-tools"></i></div>
+                <div><div class="panel-title">Mode Maintenance</div><div class="panel-sub">Contrôle de la disponibilité publique du site</div></div>
               </div>
-              <div class="cfg-grid">
-                <div class="cfg-field" style="grid-column:1/-1"><div class="cfg-label">Message de maintenance</div><textarea class="cfg-textarea">Nous effectuons une maintenance planifiée pour améliorer nos services. Retour prévu sous peu.</textarea></div>
-                <div class="cfg-field"><div class="cfg-label">Durée estimée</div><select class="cfg-select"><option>15 minutes</option><option>30 minutes</option><option selected>1 heure</option><option>2 heures</option></select></div>
-                <div class="cfg-field"><div class="cfg-label">Email de notification</div><input class="cfg-input" value="contact@ml2cconseil.com"></div>
+              <span class="status-pill sp-ok" id="maintPill"><span style="width:6px;height:6px;border-radius:50%;background:var(--success);animation:pip 2s infinite;display:inline-block;"></span>Site en ligne</span>
+            </div>
+            <div class="panel-body">
+              <div style="background:linear-gradient(135deg,#fafbfc,#fff);border:1.5px solid var(--border);border-radius:13px;padding:1.1rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;">
+                <div><div style="font-size:.9rem;font-weight:700;">Activer le mode maintenance</div><div style="font-size:.75rem;color:var(--muted);margin-top:.2rem;">Affiche la page 503 à tous les visiteurs (sauf admins connectés)</div></div>
+                <label class="toggle-switch" style="width:50px;height:26px;"><input type="checkbox" id="maintToggle" onchange="toggleMaint(this)"><span class="toggle-slider"></span></label>
+              </div>
+              <div class="cfg-grid" style="margin-bottom:1.1rem;">
+                <div class="cfg-field" style="grid-column:1/-1;"><label class="cfg-label">Message affiché aux visiteurs</label><textarea class="cfg-textarea">Nous effectuons une maintenance planifiée pour améliorer nos services. Retour prévu sous peu. Merci de votre compréhension.</textarea></div>
+                <div class="cfg-field"><label class="cfg-label">Durée estimée</label><select class="cfg-select"><option>15 minutes</option><option>30 minutes</option><option selected>1 heure</option><option>2 heures</option><option>Indéfinie</option></select></div>
+                <div class="cfg-field"><label class="cfg-label">Email de notification</label><input class="cfg-input" value="contact@ml2cconseil.com"></div>
+                <div class="cfg-field"><label class="cfg-label">Retour en ligne prévu</label><input class="cfg-input" type="datetime-local" value="2025-05-15T03:00"></div>
+                <div class="cfg-field"><label class="cfg-label">IPs autorisées pendant la maintenance</label><input class="cfg-input mono" placeholder="Ex : 192.168.1.1"></div>
+              </div>
+              <div>
+                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Sauvegardes automatiques nightly</div><div class="toggle-sub">Effectuer une sauvegarde BDD chaque nuit à 03h00 (heure Paris)</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Notifier les clients par email</div><div class="toggle-sub">Envoyer un email automatique lors de l'activation de la maintenance</div></div><label class="toggle-switch"><input type="checkbox"><span class="toggle-slider"></span></label></div>
+                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Retour automatique en ligne</div><div class="toggle-sub">Désactiver automatiquement la maintenance à la date/heure définie ci-dessus</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
               </div>
             </div>
-            <div class="save-bar"><div class="save-info"><i class="fas fa-triangle-exclamation"></i> Le mode maintenance bloque l'accès à tous les utilisateurs.</div><div class="save-actions"><button class="btn-reset">Annuler</button><button class="btn-save" onclick="saveToast()"><i class="fas fa-save"></i> Enregistrer</button></div></div>
+            <div class="save-bar">
+              <div class="save-info"><i class="fas fa-triangle-exclamation"></i>Le mode maintenance bloque l'accès public immédiatement.</div>
+              <div class="save-actions">
+                <button class="btn-adm btn-ghost">Annuler</button>
+                <button class="btn-adm btn-rose" onclick="toast('ok','Paramètres de maintenance enregistrés')"><i class="fas fa-save"></i>Enregistrer</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-head-left">
+                <div class="panel-ico pi-red"><i class="fas fa-triangle-exclamation"></i></div>
+                <div><div class="panel-title">Zone Danger</div><div class="panel-sub">Actions irréversibles — procédez avec prudence</div></div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="danger-card">
+                <div class="dc-ico"><i class="fas fa-rotate-right"></i></div>
+                <div class="dc-body"><div class="dc-title">Redémarrer le serveur applicatif</div><div class="dc-desc">Redémarre le processus Gunicorn. Une interruption de ~15 secondes est à prévoir.</div></div>
+                <button class="btn-adm btn-danger" style="flex-shrink:0;" onclick="if(confirm('Confirmer le redémarrage ?'))toast('warn','Redémarrage en cours — reconnexion dans ~15s')"><i class="fas fa-rotate-right"></i>Redémarrer</button>
+              </div>
+              <div class="danger-card">
+                <div class="dc-ico"><i class="fas fa-trash-can"></i></div>
+                <div class="dc-body"><div class="dc-title">Vider le cache Redis</div><div class="dc-desc">Supprime toutes les données en cache. Les utilisateurs seront déconnectés.</div></div>
+                <button class="btn-adm btn-danger" style="flex-shrink:0;" onclick="toast('warn','Cache Redis vidé — 0 clés restantes')"><i class="fas fa-trash-can"></i>Vider</button>
+              </div>
+            </div>
           </div>
         </div>
 
-      </div>
-    </div>
-  </div>
-</div>
+      </div><!-- /sections -->
+    </div><!-- /cfg-layout -->
+  </div><!-- /adm-content -->
+</div><!-- /adm-main -->
+</div><!-- /adm-shell -->
 
-<div class="toast-notif toast-success" id="toast"><i class="fas fa-circle-check"></i> Configuration enregistrée avec succès</div>
+<div class="toast-box" id="toastBox"><i id="toastIco" class="fas fa-circle-check"></i><span id="toastMsg">Enregistré</span></div>
 
-{% include "footer.html" %}
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-function tick(){const n=new Date();const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('heroTime');if(el)el.textContent=t;}
+/* Clock */
+function tick(){const n=new Date();const s=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('topClock');if(el)el.textContent=s;}
 tick();setInterval(tick,1000);
-function showSection(id,btn){document.querySelectorAll('.cfg-section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.cfg-nav-item').forEach(b=>b.classList.remove('active'));document.getElementById('sec-'+id).classList.add('active');btn.classList.add('active');}
-function saveToast(){const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
-function testSmtp(){const t=document.getElementById('toast');t.className='toast-notif toast-success';t.innerHTML='<i class="fas fa-circle-check"></i> Test SMTP réussi — Email envoyé';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
-function toggleMaint(cb){if(cb.checked){const t=document.getElementById('toast');t.className='toast-notif toast-warn';t.innerHTML='<i class="fas fa-triangle-exclamation"></i> Mode maintenance activé';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}}
+
+/* Toast */
+function toast(type,msg){
+  const box=document.getElementById('toastBox'),ico=document.getElementById('toastIco'),m=document.getElementById('toastMsg');
+  box.className='toast-box';
+  const map={ok:['toast-ok','fas fa-circle-check'],warn:['toast-warn','fas fa-triangle-exclamation'],err:['toast-err','fas fa-circle-xmark'],info:['toast-info','fas fa-circle-info']};
+  const[cls,i]=map[type]||map.ok;
+  box.classList.add(cls);ico.className=i;m.textContent=msg;
+  box.classList.add('show');clearTimeout(window._tt);
+  window._tt=setTimeout(()=>box.classList.remove('show'),3500);
+}
+
+/* Nav sections */
+function showSec(id,btn){
+  document.querySelectorAll('.cfg-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.cfg-nav-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* Save all */
+function saveAll(){toast('ok','Toutes les configurations ont été enregistrées');}
+
+/* Toggle password */
+function toggleField(inputId,iconId){
+  const el=document.getElementById(inputId),ico=document.getElementById(iconId);
+  if(!el||!ico)return;
+  el.type=el.type==='password'?'text':'password';
+  ico.className=el.type==='password'?'fas fa-eye':'fas fa-eye-slash';
+}
+
+/* Test SMTP */
+function testSmtp(){
+  const r=document.getElementById('smtpResult'),m=document.getElementById('smtpMsg'),ico=document.getElementById('smtpIco');
+  r.className='smtp-result smr-loading show';
+  ico.className='fas fa-spinner fa-spin';
+  m.textContent='Connexion au serveur SMTP en cours…';
+  setTimeout(()=>{
+    r.className='smtp-result smr-ok show';
+    ico.className='fas fa-circle-check';
+    m.textContent='Test réussi — Email envoyé à contact@ml2cconseil.com (0.38s)';
+    toast('ok','Test SMTP réussi — connexion établie en 0.38s');
+  },2000);
+}
+
+/* 2FA */
+function twofaAlert(cb){
+  if(cb.checked)toast('info','2FA activé — configurez votre app OTP avant de quitter cette page');
+  else toast('warn','2FA désactivé — votre compte est moins protégé');
+}
+
+/* Maintenance */
+function toggleMaint(cb){
+  const pill=document.getElementById('maintPill');
+  if(cb.checked){
+    pill.innerHTML='<i class="fas fa-wrench" style="color:#b45309;margin-right:.3rem;"></i>Maintenance activée';
+    pill.className='status-pill sp-warn';
+    toast('warn','⚠️ Mode maintenance activé — site inaccessible aux visiteurs');
+  } else {
+    pill.innerHTML='<span style="width:6px;height:6px;border-radius:50%;background:var(--success);animation:pip 2s infinite;display:inline-block;margin-right:.3rem;"></span>Site en ligne';
+    pill.className='status-pill sp-ok';
+    toast('ok','Mode maintenance désactivé — site de nouveau accessible');
+  }
+}
+
+/* IP table */
+function addIp(){
+  const ip=prompt('Adresse IP ou plage CIDR :','0.0.0.0/0');if(!ip)return;
+  const lbl=prompt('Label :','Nouveau poste');if(!lbl)return;
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td style="font-family:var(--ff-mono);">${ip}</td><td>${lbl}</td><td><span class="ip-badge ipb-allow">Autoriser</span></td><td style="font-size:.75rem;color:var(--faint);">Aujourd'hui</td><td><button class="btn-adm btn-ghost" style="font-size:.68rem;padding:.28rem .55rem;" onclick="removeRow(this)"><i class="fas fa-trash"></i></button></td>`;
+  document.getElementById('ipBody').appendChild(tr);
+  toast('ok',`IP ${ip} ajoutée à la liste blanche`);
+}
+function removeRow(btn){
+  const r=btn.closest('tr');
+  r.style.transition='all .3s';r.style.opacity='0';r.style.transform='translateX(12px)';
+  setTimeout(()=>r.remove(),300);
+  toast('warn','IP supprimée de la liste');
+}
 </script>
-</body>
-</html>
+</body></html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Catégories Blog — ML2C Admin</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--rose:#C1007A;--rose-d:#9a0062;--rose-l:#fce4f3;--rose-xl:#fff5fb;--turq:#4FA695;--turq-l:#d4f0ec;--gold:#f59e0b;--gold-d:#b45309;--gold-l:#fffbeb;--bg:#f2f4f8;--surface:#fff;--border:#e4e8ef;--text:#111827;--muted:#6b7280;--faint:#9ca3af;--success:#10b981;--danger:#ef4444;--ff-head:'Cormorant Garamond',serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'JetBrains Mono',monospace;}
+body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
+.adm-shell{display:flex;height:100vh;overflow:hidden;}
+.adm-sidebar{width:220px;background:#0e1018;border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0;}
+.adm-sidebar::-webkit-scrollbar{width:3px;}.adm-sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);}
+.adm-sb-logo{display:flex;align-items:center;gap:.75rem;padding:1.25rem 1.1rem 1rem;border-bottom:1px solid rgba(255,255,255,.06);}
+.adm-sb-dot{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#C1007A,#9a0062);display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px rgba(193,0,122,.4);flex-shrink:0;}
+.adm-sb-brand{font-size:.88rem;font-weight:700;color:#fff;line-height:1.2;}.adm-sb-brand span{display:block;font-size:.65rem;font-weight:400;color:rgba(255,255,255,.35);}
+.adm-sb-sec{font-size:.57rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.22);padding:1.1rem 1.1rem .3rem;margin:0;}
+.adm-sb-item{display:flex;align-items:center;gap:.6rem;padding:.55rem 1.1rem;font-size:.78rem;color:rgba(255,255,255,.45);text-decoration:none;transition:all .15s;border-left:2px solid transparent;margin:.05rem 0;}
+.adm-sb-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.8);text-decoration:none;}
+.adm-sb-item--active{background:rgba(193,0,122,.12);border-left-color:#C1007A;color:#f472b6!important;font-weight:600;}
+.adm-sb-item svg{opacity:.6;flex-shrink:0;}.adm-sb-item:hover svg,.adm-sb-item--active svg{opacity:1;}
+.adm-sb-badge{margin-left:auto;min-width:19px;height:19px;background:#C1007A;color:#fff;border-radius:20px;font-size:.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 .4rem;flex-shrink:0;}
+.adm-sb-badge.gold{background:linear-gradient(135deg,#f59e0b,#d97706);}.adm-sb-badge.green{background:#10b981;}.adm-sb-badge.blue{background:#3b82f6;}
+.adm-sb-pip{width:6px;height:6px;border-radius:50%;flex-shrink:0;}.pip-green{background:#10b981;animation:pip 2s infinite;}.pip-red{background:#ef4444;animation:pip .8s infinite;}@keyframes pip{0%,100%{opacity:1}50%{opacity:.3}}
+.adm-sb-divider{height:1px;background:rgba(255,255,255,.06);margin:.5rem 1rem;}
+.adm-sb-footer{margin-top:auto;padding:.75rem 1rem;border-top:1px solid rgba(255,255,255,.06);}
+.adm-sb-user{display:flex;align-items:center;gap:.65rem;}
+.adm-sb-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#C1007A,#9a0062);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:#fff;flex-shrink:0;}
+.adm-sb-info{font-size:.75rem;font-weight:600;color:rgba(255,255,255,.7);line-height:1.2;flex:1;}.adm-sb-info span{display:block;font-size:.62rem;font-weight:400;color:rgba(255,255,255,.3);}
+.adm-sb-logout{width:26px;height:26px;border-radius:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);transition:all .2s;}.adm-sb-logout:hover{background:rgba(239,68,68,.12);color:#f87171;}
+.adm-sb-version{text-align:center;font-size:.58rem;color:rgba(255,255,255,.15);padding:.4rem 1rem;font-family:var(--ff-mono);}
+.adm-main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.adm-topbar{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.5rem;background:#fff;border-bottom:1px solid var(--border);flex-shrink:0;gap:1rem;flex-wrap:wrap;}
+.adm-topbar h2{font-size:1rem;font-weight:700;margin:0;}.adm-topbar p{font-size:.75rem;color:var(--muted);margin:0;}
+.adm-topbar-right{display:flex;align-items:center;gap:.5rem;}
+.adm-content{flex:1;overflow-y:auto;padding:1.5rem;}
+.btn-adm{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border-radius:9px;font-size:.78rem;font-weight:600;cursor:pointer;border:none;font-family:var(--ff-body);transition:all .2s;}
+.btn-rose{background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff;box-shadow:0 4px 12px rgba(193,0,122,.25);}.btn-rose:hover{transform:translateY(-1px);}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted);}.btn-ghost:hover{border-color:var(--rose);color:var(--rose);}
+/* LAYOUT */
+.cat-layout{display:grid;grid-template-columns:1fr 360px;gap:1.5rem;align-items:start;}
+/* GRILLE CATÉGORIES */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-bottom:1.5rem;}
+.cat-card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:1.1rem;display:flex;flex-direction:column;gap:.75rem;box-shadow:0 2px 14px rgba(0,0,0,.055);transition:all .25s;animation:fadeUp .35s both;position:relative;overflow:hidden;cursor:pointer;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.cat-card:nth-child(2){animation-delay:.06s}.cat-card:nth-child(3){animation-delay:.12s}.cat-card:nth-child(4){animation-delay:.18s}.cat-card:nth-child(5){animation-delay:.24s}.cat-card:nth-child(6){animation-delay:.3s}
+.cat-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.1);}
+.cat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:0;}
+.cat-top{display:flex;align-items:flex-start;justify-content:space-between;}
+.cat-ico-wrap{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.cat-actions{display:flex;gap:.3rem;}
+.ca-btn{width:26px;height:26px;border-radius:6px;border:1.5px solid var(--border);background:transparent;color:var(--faint);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.65rem;transition:all .18s;}
+.ca-btn:hover{border-color:var(--rose);color:var(--rose);background:var(--rose-l);}
+.ca-btn.del:hover{border-color:var(--danger);color:var(--danger);background:#fee2e2;}
+.cat-name{font-size:.92rem;font-weight:700;color:var(--text);}
+.cat-slug{font-size:.68rem;font-family:var(--ff-mono);color:var(--faint);margin-top:.1rem;}
+.cat-stats{display:flex;align-items:center;gap:.75rem;}
+.cs-art{display:flex;align-items:center;gap:.3rem;font-size:.72rem;color:var(--muted);}
+.cs-views{display:flex;align-items:center;gap:.3rem;font-size:.72rem;color:var(--muted);}
+.cat-desc{font-size:.75rem;color:var(--muted);line-height:1.5;border-top:1px solid #f5f6f8;padding-top:.6rem;}
+/* FORM AJOUT */
+.add-card{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.055);}
+.add-head{padding:.9rem 1.25rem;border-bottom:1px solid var(--border);background:#fafbfc;display:flex;align-items:center;gap:.6rem;}
+.add-head-ico{width:30px;height:30px;border-radius:8px;background:var(--rose-l);color:var(--rose);display:flex;align-items:center;justify-content:center;font-size:.8rem;}
+.add-title{font-size:.85rem;font-weight:700;color:var(--text);}
+.add-body{padding:1.25rem;}
+.f-group{display:flex;flex-direction:column;gap:.35rem;margin-bottom:.85rem;}
+.f-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);}
+.f-input{border:1.5px solid var(--border);border-radius:9px;padding:.6rem .85rem;font-size:.84rem;font-family:var(--ff-body);color:var(--text);background:#fafbfc;outline:none;width:100%;transition:all .2s;}
+.f-input:focus{border-color:var(--rose);background:#fff;box-shadow:0 0 0 3px rgba(193,0,122,.08);}
+/* Sélecteur couleur */
+.color-picker{display:flex;gap:.5rem;flex-wrap:wrap;}
+.cp-opt{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .18s;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:#fff;}
+.cp-opt.active{border-color:#111;transform:scale(1.15);}
+/* Sélecteur icône */
+.ico-picker{display:flex;gap:.4rem;flex-wrap:wrap;}
+.ico-opt{width:32px;height:32px;border-radius:8px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.78rem;cursor:pointer;transition:all .18s;color:var(--muted);}
+.ico-opt.active{border-color:var(--rose);color:var(--rose);background:var(--rose-l);}
+.ico-opt:hover{border-color:var(--rose);color:var(--rose);}
+/* TOAST */
+.toast-box{position:fixed;bottom:1.25rem;right:1.25rem;z-index:9999;display:flex;align-items:center;gap:.65rem;padding:.75rem 1.1rem;border-radius:10px;font-size:.8rem;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.15);transform:translateY(80px);opacity:0;transition:all .3s cubic-bezier(.34,1.2,.64,1);pointer-events:none;}
+.toast-box.show{transform:translateY(0);opacity:1;}.toast-ok{background:#0d2e23;color:#4ade80;border:1px solid rgba(74,222,128,.2);}
+@media(max-width:1100px){.cat-layout{grid-template-columns:1fr}}
+</style>
+</head><body>
+{% include "header.html" %}
+<div class="adm-shell">
+<aside class="adm-sidebar">
+  <div class="adm-sb-logo"><div class="adm-sb-dot"><svg width="15" height="15" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><div class="adm-sb-brand">ML2C Conseil<span>Administration</span></div></div>
+  <p class="adm-sb-sec">Principal</p>
+  <a href="{{ url_for('admin_dashboard') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard<span class="adm-sb-pip pip-green" style="margin-left:auto;"></span></a>
+  <a href="{{ url_for('admin_chatbot') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Questions / Réponses<span class="adm-sb-badge">19</span></a>
+  <a href="{{ url_for('admin_utilisateurs') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Utilisateurs</a>
+  <a href="{{ url_for('admin_stats') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Statistiques</a>
+  <a href="{{ url_for('admin_notifications') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Notifications<span class="adm-sb-badge green">3</span></a>
+  <a href="{{ url_for('admin_agenda') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Agenda / RDV<span class="adm-sb-badge blue">2</span></a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Contenu</p>
+  <a href="{{ url_for('admin_blog') }}" class="adm-sb-item adm-sb-item--active"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Blog / Articles</a>
+  <a href="{{ url_for('admin_formulaires') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>Formulaires / Devis<span class="adm-sb-badge gold">5</span></a>
+  <a href="{{ url_for('admin_emails') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Emails automatiques</a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Système</p>
+  <a href="{{ url_for('admin_config') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>Configuration</a>
+  <a href="{{ url_for('admin_logs') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Logs sécurité<span class="adm-sb-pip pip-red" style="margin-left:auto;"></span></a>
+  <a href="{{ url_for('admin_performances') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Performances<span class="adm-sb-pip pip-green" style="margin-left:auto;"></span></a>
+  <a href="{{ url_for('admin_sauvegardes') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Sauvegardes<span class="adm-sb-badge green">OK</span></a>
+  <a href="{{ url_for('admin_export') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Export données</a>
+  <a href="{{ url_for('admin_purge') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>Purger les logs</a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Compte</p>
+  <a href="{{ url_for('admin_parametres') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Paramètres du compte</a>
+  <a href="{{ url_for('admin_audit') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>Journal d'audit</a>
+  <div class="adm-sb-divider"></div>
+  <div class="adm-sb-footer"><div class="adm-sb-user"><div class="adm-sb-avatar">AD</div><div class="adm-sb-info">Administrateur<span>Super Admin · Niv. 3</span></div><a href="{{ url_for('logout_admin') }}" class="adm-sb-logout"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></a></div></div>
+  <div class="adm-sb-version">ML2C Admin v2.0 · 2025</div>
+</aside>
+
+<div class="adm-main">
+  <div class="adm-topbar">
+    <div>
+      <h2>Catégories du Blog</h2>
+      <p>Organisation et gestion des catégories d'articles</p>
+    </div>
+    <div class="adm-topbar-right">
+      <a href="{{ url_for('admin_blog') }}" class="btn-adm btn-ghost"><i class="fas fa-arrow-left"></i> Retour aux articles</a>
+    </div>
+  </div>
+  <div class="adm-content">
+    <div class="cat-layout">
+
+      <!-- Grille catégories -->
+      <div>
+        <p style="font-size:.78rem;color:var(--muted);margin-bottom:1rem;"><strong>6 catégories</strong> · Glissez-déposez pour réorganiser</p>
+        <div class="cat-grid" id="catGrid">
+
+          <div class="cat-card" style="--cc:#C1007A;" data-id="1">
+            <div style="position:absolute;top:0;left:0;right:0;height:4px;background:#C1007A;border-radius:16px 16px 0 0;"></div>
+            <div class="cat-top">
+              <div class="cat-ico-wrap" style="background:var(--rose-l);color:var(--rose);"><i class="fas fa-file-invoice-dollar"></i></div>
+              <div class="cat-actions">
+                <button class="ca-btn" title="Éditer" onclick="editCat(this)"><i class="fas fa-pencil"></i></button>
+                <button class="ca-btn del" title="Supprimer" onclick="deleteCat(this)"><i class="fas fa-times"></i></button>
+              </div>
+            </div>
+            <div><div class="cat-name">Fiscalité</div><div class="cat-slug">/actualites/fiscalite</div></div>
+            <div class="cat-stats"><span class="cs-art"><i class="fas fa-file-alt"></i> 4 articles</span><span class="cs-views"><i class="fas fa-eye"></i> 1.8k vues</span></div>
+            <div class="cat-desc">Actualités fiscales, déclarations, TVA, IS, IR et optimisation pour entreprises et particuliers.</div>
+          </div>
+
+          <div class="cat-card" data-id="2">
+            <div style="position:absolute;top:0;left:0;right:0;height:4px;background:#4FA695;border-radius:16px 16px 0 0;"></div>
+            <div class="cat-top">
+              <div class="cat-ico-wrap" style="background:var(--turq-l);color:var(--turq);"><i class="fas fa-calculator"></i></div>
+              <div class="cat-actions">
+                <button class="ca-btn" onclick="editCat(this)"><i class="fas fa-pencil"></i></button>
+                <button class="ca-btn del" onclick="deleteCat(this)"><i class="fas fa-times"></i></button>
+              </div>
+            </div>
+            <div><div class="cat-name">Comptabilité</div><div class="cat-slug">/actualites/comptabilite</div></div>
+            <div class="cat-stats"><span class="cs-art"><i class="fas fa-file-alt"></i> 3 articles</span><span class="cs-views"><i class="fas fa-eye"></i> 920 vues</span></div>
+            <div class="cat-desc">Tenue de comptabilité, bilans annuels, liasses fiscales, normes comptables françaises.</div>
+          </div>
+
+          <div class="cat-card" data-id="3">
+            <div style="position:absolute;top:0;left:0;right:0;height:4px;background:#f59e0b;border-radius:16px 16px 0 0;"></div>
+            <div class="cat-top">
+              <div class="cat-ico-wrap" style="background:var(--gold-l);color:var(--gold-d);"><i class="fas fa-building"></i></div>
+              <div class="cat-actions">
+                <button class="ca-btn" onclick="editCat(this)"><i class="fas fa-pencil"></i></button>
+                <button class="ca-btn del" onclick="deleteCat(this)"><i class="fas fa-times"></i></button>
+              </div>
+            </div>
+            <div><div class="cat-name">Création d'entreprise</div><div class="cat-slug">/actualites/creation-entreprise</div></div>
+            <div class="cat-stats"><span class="cs-art"><i class="fas fa-file-alt"></i> 2 articles</span><span class="cs-views"><i class="fas fa-eye"></i> 710 vues</span></div>
+            <div class="cat-desc">SASU, SARL, SAS, auto-entrepreneur — guides complets pour créer sa structure juridique.</div>
+          </div>
+
+          <div class="cat-card" data-id="4">
+            <div style="position:absolute;top:0;left:0;right:0;height:4px;background:#3b82f6;border-radius:16px 16px 0 0;"></div>
+            <div class="cat-top">
+              <div class="cat-ico-wrap" style="background:#dbeafe;color:#2563eb;"><i class="fas fa-users"></i></div>
+              <div class="cat-actions">
+                <button class="ca-btn" onclick="editCat(this)"><i class="fas fa-pencil"></i></button>
+                <button class="ca-btn del" onclick="deleteCat(this)"><i class="fas fa-times"></i></button>
+              </div>
+            </div>
+            <div><div class="cat-name">Social & RH</div><div class="cat-slug">/actualites/social-rh</div></div>
+            <div class="cat-stats"><span class="cs-art"><i class="fas fa-file-alt"></i> 2 articles</span><span class="cs-views"><i class="fas fa-eye"></i> 440 vues</span></div>
+            <div class="cat-desc">Droit du travail, paie, cotisations sociales, protection du dirigeant, embauche.</div>
+          </div>
+
+          <div class="cat-card" data-id="5">
+            <div style="position:absolute;top:0;left:0;right:0;height:4px;background:#8b5cf6;border-radius:16px 16px 0 0;"></div>
+            <div class="cat-top">
+              <div class="cat-ico-wrap" style="background:#ede9fe;color:#7c3aed;"><i class="fas fa-gavel"></i></div>
+              <div class="cat-actions">
+                <button class="ca-btn" onclick="editCat(this)"><i class="fas fa-pencil"></i></button>
+                <button class="ca-btn del" onclick="deleteCat(this)"><i class="fas fa-times"></i></button>
+              </div>
+            </div>
+            <div><div class="cat-name">Actualité juridique</div><div class="cat-slug">/actualites/juridique</div></div>
+            <div class="cat-stats"><span class="cs-art"><i class="fas fa-file-alt"></i> 1 article</span><span class="cs-views"><i class="fas fa-eye"></i> 280 vues</span></div>
+            <div class="cat-desc">Évolutions législatives, réformes, nouvelles lois impactant les entreprises françaises.</div>
+          </div>
+
+          <div class="cat-card" data-id="6">
+            <div style="position:absolute;top:0;left:0;right:0;height:4px;background:#10b981;border-radius:16px 16px 0 0;"></div>
+            <div class="cat-top">
+              <div class="cat-ico-wrap" style="background:#d1fae5;color:#065f46;"><i class="fas fa-leaf"></i></div>
+              <div class="cat-actions">
+                <button class="ca-btn" onclick="editCat(this)"><i class="fas fa-pencil"></i></button>
+                <button class="ca-btn del" onclick="deleteCat(this)"><i class="fas fa-times"></i></button>
+              </div>
+            </div>
+            <div><div class="cat-name">RSE & Développement durable</div><div class="cat-slug">/actualites/rse</div></div>
+            <div class="cat-stats"><span class="cs-art"><i class="fas fa-file-alt"></i> 1 article</span><span class="cs-views"><i class="fas fa-eye"></i> 95 vues</span></div>
+            <div class="cat-desc">Responsabilité sociale, bilan carbone, reporting ESG, comptabilité verte.</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Formulaire ajout -->
+      <div>
+        <div class="add-card">
+          <div class="add-head"><div class="add-head-ico"><i class="fas fa-plus"></i></div><div class="add-title">Ajouter une catégorie</div></div>
+          <div class="add-body">
+            <div class="f-group">
+              <div class="f-label">Nom de la catégorie</div>
+              <input class="f-input" id="catName" placeholder="Ex : Audit & Conseil" oninput="updateCatSlug()">
+            </div>
+            <div class="f-group">
+              <div class="f-label">Slug (URL)</div>
+              <input class="f-input" id="catSlug" placeholder="audit-conseil" style="font-family:var(--ff-mono);font-size:.8rem;">
+            </div>
+            <div class="f-group">
+              <div class="f-label">Description</div>
+              <textarea class="f-input" id="catDesc" rows="3" placeholder="Description courte de la catégorie…" style="resize:vertical;"></textarea>
+            </div>
+            <div class="f-group">
+              <div class="f-label">Couleur</div>
+              <div class="color-picker" id="colorPicker">
+                <div class="cp-opt active" style="background:#C1007A;" data-color="#C1007A" onclick="selectColor(this)"><i class="fas fa-check" style="font-size:.55rem;opacity:.6;"></i></div>
+                <div class="cp-opt" style="background:#4FA695;" data-color="#4FA695" onclick="selectColor(this)"></div>
+                <div class="cp-opt" style="background:#f59e0b;" data-color="#f59e0b" onclick="selectColor(this)"></div>
+                <div class="cp-opt" style="background:#3b82f6;" data-color="#3b82f6" onclick="selectColor(this)"></div>
+                <div class="cp-opt" style="background:#8b5cf6;" data-color="#8b5cf6" onclick="selectColor(this)"></div>
+                <div class="cp-opt" style="background:#10b981;" data-color="#10b981" onclick="selectColor(this)"></div>
+                <div class="cp-opt" style="background:#ef4444;" data-color="#ef4444" onclick="selectColor(this)"></div>
+                <div class="cp-opt" style="background:#0e1018;" data-color="#0e1018" onclick="selectColor(this)"></div>
+              </div>
+            </div>
+            <div class="f-group">
+              <div class="f-label">Icône</div>
+              <div class="ico-picker">
+                <div class="ico-opt active" data-ico="fa-tag" onclick="selectIco(this)"><i class="fas fa-tag"></i></div>
+                <div class="ico-opt" data-ico="fa-file-invoice-dollar" onclick="selectIco(this)"><i class="fas fa-file-invoice-dollar"></i></div>
+                <div class="ico-opt" data-ico="fa-calculator" onclick="selectIco(this)"><i class="fas fa-calculator"></i></div>
+                <div class="ico-opt" data-ico="fa-building" onclick="selectIco(this)"><i class="fas fa-building"></i></div>
+                <div class="ico-opt" data-ico="fa-users" onclick="selectIco(this)"><i class="fas fa-users"></i></div>
+                <div class="ico-opt" data-ico="fa-gavel" onclick="selectIco(this)"><i class="fas fa-gavel"></i></div>
+                <div class="ico-opt" data-ico="fa-leaf" onclick="selectIco(this)"><i class="fas fa-leaf"></i></div>
+                <div class="ico-opt" data-ico="fa-chart-line" onclick="selectIco(this)"><i class="fas fa-chart-line"></i></div>
+                <div class="ico-opt" data-ico="fa-lightbulb" onclick="selectIco(this)"><i class="fas fa-lightbulb"></i></div>
+              </div>
+            </div>
+            <button class="btn-adm btn-rose" style="width:100%;justify-content:center;margin-top:.5rem;" onclick="addCategory()"><i class="fas fa-plus"></i> Créer la catégorie</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+<div class="toast-box toast-ok" id="toastBox"><i class="fas fa-circle-check"></i><span id="toastMsg">Action effectuée</span></div>
+{% include "footer.html" %}
+<script>
+function updateCatSlug(){
+  const n=document.getElementById('catName').value;
+  const s=n.toLowerCase().replace(/[àáâ]/g,'a').replace(/[éèêë]/g,'e').replace(/[îï]/g,'i').replace(/[ôö]/g,'o').replace(/[ùûü]/g,'u').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  document.getElementById('catSlug').value=s;
+}
+function selectColor(el){document.querySelectorAll('.cp-opt').forEach(o=>{o.innerHTML='';o.classList.remove('active');});el.classList.add('active');el.innerHTML='<i class="fas fa-check" style="font-size:.55rem;opacity:.8;"></i>';}
+function selectIco(el){document.querySelectorAll('.ico-opt').forEach(o=>o.classList.remove('active'));el.classList.add('active');}
+function addCategory(){
+  const name=document.getElementById('catName').value.trim();
+  if(!name){toast('Remplissez le nom de la catégorie');return;}
+  toast('Catégorie "'+name+'" créée avec succès');
+  document.getElementById('catName').value='';
+  document.getElementById('catSlug').value='';
+  document.getElementById('catDesc').value='';
+}
+function editCat(btn){toast('Édition catégorie — fonctionnalité en cours');}
+function deleteCat(btn){
+  const card=btn.closest('.cat-card');
+  card.style.transition='opacity .3s,transform .3s';
+  card.style.opacity='0';card.style.transform='scale(.9)';
+  setTimeout(()=>card.remove(),300);
+  toast('Catégorie supprimée');
+}
+function toast(msg){const b=document.getElementById('toastBox');document.getElementById('toastMsg').textContent=msg;b.classList.add('show');setTimeout(()=>b.classList.remove('show'),2800);}
+</script>
+</body></html>

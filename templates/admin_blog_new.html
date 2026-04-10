@@ -1,0 +1,308 @@
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Nouvel Article — ML2C Admin</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--rose:#C1007A;--rose-d:#9a0062;--rose-l:#fce4f3;--rose-xl:#fff5fb;--turq:#4FA695;--turq-l:#d4f0ec;--gold:#f59e0b;--gold-d:#b45309;--gold-l:#fffbeb;--bg:#f2f4f8;--surface:#fff;--border:#e4e8ef;--text:#111827;--muted:#6b7280;--faint:#9ca3af;--success:#10b981;--danger:#ef4444;--ff-head:'Cormorant Garamond',serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'JetBrains Mono',monospace;}
+body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
+.adm-shell{display:flex;height:100vh;overflow:hidden;}
+.adm-sidebar{width:220px;background:#0e1018;border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0;}
+.adm-sidebar::-webkit-scrollbar{width:3px;}.adm-sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);}
+.adm-sb-logo{display:flex;align-items:center;gap:.75rem;padding:1.25rem 1.1rem 1rem;border-bottom:1px solid rgba(255,255,255,.06);}
+.adm-sb-dot{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#C1007A,#9a0062);display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px rgba(193,0,122,.4);flex-shrink:0;}
+.adm-sb-brand{font-size:.88rem;font-weight:700;color:#fff;line-height:1.2;}.adm-sb-brand span{display:block;font-size:.65rem;font-weight:400;color:rgba(255,255,255,.35);}
+.adm-sb-sec{font-size:.57rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.22);padding:1.1rem 1.1rem .3rem;margin:0;}
+.adm-sb-item{display:flex;align-items:center;gap:.6rem;padding:.55rem 1.1rem;font-size:.78rem;color:rgba(255,255,255,.45);text-decoration:none;transition:all .15s;border-left:2px solid transparent;margin:.05rem 0;}
+.adm-sb-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.8);text-decoration:none;}
+.adm-sb-item--active{background:rgba(193,0,122,.12);border-left-color:#C1007A;color:#f472b6!important;font-weight:600;}
+.adm-sb-item svg{opacity:.6;flex-shrink:0;}.adm-sb-item:hover svg,.adm-sb-item--active svg{opacity:1;}
+.adm-sb-badge{margin-left:auto;min-width:19px;height:19px;background:#C1007A;color:#fff;border-radius:20px;font-size:.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 .4rem;flex-shrink:0;}
+.adm-sb-badge.gold{background:linear-gradient(135deg,#f59e0b,#d97706);}.adm-sb-badge.green{background:#10b981;}.adm-sb-badge.blue{background:#3b82f6;}
+.adm-sb-pip{width:6px;height:6px;border-radius:50%;flex-shrink:0;}.pip-green{background:#10b981;animation:pip 2s infinite;}.pip-red{background:#ef4444;animation:pip .8s infinite;}@keyframes pip{0%,100%{opacity:1}50%{opacity:.3}}
+.adm-sb-divider{height:1px;background:rgba(255,255,255,.06);margin:.5rem 1rem;}
+.adm-sb-footer{margin-top:auto;padding:.75rem 1rem;border-top:1px solid rgba(255,255,255,.06);}
+.adm-sb-user{display:flex;align-items:center;gap:.65rem;}
+.adm-sb-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#C1007A,#9a0062);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:#fff;flex-shrink:0;}
+.adm-sb-info{font-size:.75rem;font-weight:600;color:rgba(255,255,255,.7);line-height:1.2;flex:1;}.adm-sb-info span{display:block;font-size:.62rem;font-weight:400;color:rgba(255,255,255,.3);}
+.adm-sb-logout{width:26px;height:26px;border-radius:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);transition:all .2s;}.adm-sb-logout:hover{background:rgba(239,68,68,.12);color:#f87171;}
+.adm-sb-version{text-align:center;font-size:.58rem;color:rgba(255,255,255,.15);padding:.4rem 1rem;font-family:var(--ff-mono);}
+.adm-main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.adm-topbar{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.5rem;background:#fff;border-bottom:1px solid var(--border);flex-shrink:0;gap:1rem;flex-wrap:wrap;}
+.adm-topbar h2{font-size:1rem;font-weight:700;margin:0;}.adm-topbar p{font-size:.75rem;color:var(--muted);margin:0;}
+.adm-topbar-right{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
+.adm-content{flex:1;overflow-y:auto;padding:1.5rem;}
+.btn-adm{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border-radius:9px;font-size:.78rem;font-weight:600;cursor:pointer;border:none;font-family:var(--ff-body);transition:all .2s;}
+.btn-rose{background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff;box-shadow:0 4px 12px rgba(193,0,122,.25);}.btn-rose:hover{transform:translateY(-1px);}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted);}.btn-ghost:hover{border-color:var(--rose);color:var(--rose);}
+/* EDITOR LAYOUT */
+.editor-layout{display:grid;grid-template-columns:1fr 300px;gap:1.5rem;align-items:start;}
+/* MAIN EDITOR */
+.editor-card{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.055);}
+.editor-toolbar{display:flex;align-items:center;gap:.25rem;padding:.65rem 1rem;border-bottom:1px solid var(--border);background:#fafbfc;flex-wrap:wrap;}
+.tb-btn{width:30px;height:30px;border-radius:7px;border:1.5px solid transparent;background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.75rem;transition:all .18s;}
+.tb-btn:hover{background:var(--rose-l);color:var(--rose);border-color:rgba(193,0,122,.2);}
+.tb-sep{width:1px;height:20px;background:var(--border);margin:0 .25rem;flex-shrink:0;}
+.title-input{width:100%;border:none;outline:none;font-family:var(--ff-head);font-size:1.8rem;font-weight:700;color:var(--text);padding:1.25rem 1.25rem .5rem;background:transparent;resize:none;}
+.title-input::placeholder{color:var(--faint);}
+.slug-row{padding:.25rem 1.25rem .75rem;display:flex;align-items:center;gap:.5rem;border-bottom:1px solid var(--border);}
+.slug-lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--faint);}
+.slug-val{font-family:var(--ff-mono);font-size:.75rem;color:var(--turq);}
+.excerpt-box{padding:.75rem 1.25rem;border-bottom:1px solid var(--border);}
+.excerpt-lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.4rem;}
+.excerpt-input{width:100%;border:1.5px solid var(--border);border-radius:9px;padding:.65rem .85rem;font-size:.84rem;font-family:var(--ff-body);color:var(--text);resize:vertical;min-height:70px;outline:none;transition:border-color .2s;background:#fafbfc;}
+.excerpt-input:focus{border-color:var(--rose);background:#fff;box-shadow:0 0 0 3px rgba(193,0,122,.08);}
+.content-area{width:100%;border:none;outline:none;font-size:.95rem;font-family:var(--ff-body);color:var(--text);padding:1.25rem;resize:none;min-height:380px;line-height:1.7;}
+.editor-footer{padding:.85rem 1.25rem;border-top:1px solid var(--border);background:#fafbfc;display:flex;align-items:center;justify-content:space-between;font-size:.72rem;color:var(--faint);}
+/* SIDEBAR PANEL */
+.side-panels{display:flex;flex-direction:column;gap:1rem;}
+.sp-card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.055);}
+.sp-head{display:flex;align-items:center;gap:.5rem;padding:.8rem 1rem;border-bottom:1px solid var(--border);background:#fafbfc;}
+.sp-title{font-size:.8rem;font-weight:700;color:var(--text);}
+.sp-body{padding:1rem;}
+.f-group{display:flex;flex-direction:column;gap:.35rem;margin-bottom:.85rem;}
+.f-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);}
+.f-input{border:1.5px solid var(--border);border-radius:9px;padding:.6rem .85rem;font-size:.84rem;font-family:var(--ff-body);color:var(--text);background:#fafbfc;outline:none;width:100%;transition:all .2s;}
+.f-input:focus{border-color:var(--rose);background:#fff;box-shadow:0 0 0 3px rgba(193,0,122,.08);}
+/* Status toggle */
+.status-toggle{display:flex;gap:.4rem;}
+.st-opt{flex:1;padding:.5rem;border-radius:8px;border:1.5px solid var(--border);font-size:.75rem;font-weight:600;color:var(--muted);cursor:pointer;text-align:center;transition:all .18s;}
+.st-opt.active{border-color:var(--rose);background:var(--rose-l);color:var(--rose);}
+.st-opt.pub.active{border-color:var(--success);background:#d1fae5;color:#065f46;}
+/* Tags */
+.tags-wrap{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.5rem;}
+.tag-chip{display:inline-flex;align-items:center;gap:.3rem;background:var(--rose-l);color:var(--rose);font-size:.7rem;font-weight:600;padding:.2rem .55rem;border-radius:20px;}
+.tag-chip button{background:none;border:none;color:var(--rose);cursor:pointer;font-size:.65rem;padding:0;line-height:1;}
+/* Image drop */
+.img-drop{border:2px dashed var(--border);border-radius:12px;padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s;background:#fafbfc;}
+.img-drop:hover{border-color:var(--rose);background:var(--rose-xl);}
+.img-drop-ico{font-size:1.5rem;color:var(--faint);margin-bottom:.5rem;}
+.img-drop-txt{font-size:.78rem;color:var(--muted);}
+.img-drop-sub{font-size:.68rem;color:var(--faint);margin-top:.25rem;}
+/* SEO score */
+.seo-score{display:flex;align-items:center;gap:.75rem;padding:.75rem;background:#f9fafb;border-radius:10px;border:1px solid var(--border);}
+.seo-ring{width:44px;height:44px;border-radius:50%;background:conic-gradient(var(--success) 0deg 252deg,#f3f4f6 252deg 360deg);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.72rem;font-weight:700;color:var(--success);box-shadow:inset 0 0 0 6px #fff;}
+.seo-items{flex:1;display:flex;flex-direction:column;gap:.3rem;}
+.seo-item{display:flex;align-items:center;gap:.4rem;font-size:.72rem;color:var(--muted);}
+.seo-ok{color:var(--success);}.seo-warn{color:var(--gold-d);}
+/* TOAST */
+.toast-box{position:fixed;bottom:1.25rem;right:1.25rem;z-index:9999;display:flex;align-items:center;gap:.65rem;padding:.75rem 1.1rem;border-radius:10px;font-size:.8rem;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.15);transform:translateY(80px);opacity:0;transition:all .3s cubic-bezier(.34,1.2,.64,1);pointer-events:none;}
+.toast-box.show{transform:translateY(0);opacity:1;}.toast-ok{background:#0d2e23;color:#4ade80;border:1px solid rgba(74,222,128,.2);}
+@media(max-width:1100px){.editor-layout{grid-template-columns:1fr}}
+</style>
+</head><body>
+{% include "header.html" %}
+<div class="adm-shell">
+<aside class="adm-sidebar">
+  <div class="adm-sb-logo"><div class="adm-sb-dot"><svg width="15" height="15" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><div class="adm-sb-brand">ML2C Conseil<span>Administration</span></div></div>
+  <p class="adm-sb-sec">Principal</p>
+  <a href="{{ url_for('admin_dashboard') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard<span class="adm-sb-pip pip-green" style="margin-left:auto;"></span></a>
+  <a href="{{ url_for('admin_chatbot') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Questions / Réponses<span class="adm-sb-badge">19</span></a>
+  <a href="{{ url_for('admin_utilisateurs') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Utilisateurs</a>
+  <a href="{{ url_for('admin_stats') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Statistiques</a>
+  <a href="{{ url_for('admin_notifications') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Notifications<span class="adm-sb-badge green">3</span></a>
+  <a href="{{ url_for('admin_agenda') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Agenda / RDV<span class="adm-sb-badge blue">2</span></a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Contenu</p>
+  <a href="{{ url_for('admin_blog') }}" class="adm-sb-item adm-sb-item--active"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Blog / Articles</a>
+  <a href="{{ url_for('admin_formulaires') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>Formulaires / Devis<span class="adm-sb-badge gold">5</span></a>
+  <a href="{{ url_for('admin_emails') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Emails automatiques</a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Système</p>
+  <a href="{{ url_for('admin_config') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>Configuration</a>
+  <a href="{{ url_for('admin_logs') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Logs sécurité<span class="adm-sb-pip pip-red" style="margin-left:auto;"></span></a>
+  <a href="{{ url_for('admin_performances') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Performances<span class="adm-sb-pip pip-green" style="margin-left:auto;"></span></a>
+  <a href="{{ url_for('admin_sauvegardes') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Sauvegardes<span class="adm-sb-badge green">OK</span></a>
+  <a href="{{ url_for('admin_export') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Export données</a>
+  <a href="{{ url_for('admin_purge') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>Purger les logs</a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Compte</p>
+  <a href="{{ url_for('admin_parametres') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Paramètres du compte</a>
+  <a href="{{ url_for('admin_audit') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>Journal d'audit</a>
+  <div class="adm-sb-divider"></div>
+  <div class="adm-sb-footer"><div class="adm-sb-user"><div class="adm-sb-avatar">AD</div><div class="adm-sb-info">Administrateur<span>Super Admin · Niv. 3</span></div><a href="{{ url_for('logout_admin') }}" class="adm-sb-logout"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></a></div></div>
+  <div class="adm-sb-version">ML2C Admin v2.0 · 2025</div>
+</aside>
+
+<div class="adm-main">
+  <div class="adm-topbar">
+    <div>
+      <h2>Nouvel article</h2>
+      <p>Rédaction et publication d'un article blog ML2C Conseil</p>
+    </div>
+    <div class="adm-topbar-right">
+      <button class="btn-adm btn-ghost" onclick="saveDraft()"><i class="fas fa-floppy-disk"></i> Brouillon</button>
+      <button class="btn-adm btn-ghost" onclick="preview()"><i class="fas fa-eye"></i> Aperçu</button>
+      <button class="btn-adm btn-rose" onclick="publish()"><i class="fas fa-paper-plane"></i> Publier</button>
+    </div>
+  </div>
+  <div class="adm-content">
+    <div class="editor-layout">
+
+      <!-- Zone édition principale -->
+      <div>
+        <div class="editor-card">
+          <!-- Toolbar formatage -->
+          <div class="editor-toolbar">
+            <button class="tb-btn" title="Gras" onclick="fmt('bold')"><i class="fas fa-bold"></i></button>
+            <button class="tb-btn" title="Italique" onclick="fmt('italic')"><i class="fas fa-italic"></i></button>
+            <button class="tb-btn" title="Souligné" onclick="fmt('underline')"><i class="fas fa-underline"></i></button>
+            <div class="tb-sep"></div>
+            <button class="tb-btn" title="Titre H2" onclick="fmt('h2')"><i class="fas fa-heading"></i></button>
+            <button class="tb-btn" title="Titre H3" onclick="fmt('h3')"><span style="font-size:.6rem;font-weight:700;">H3</span></button>
+            <div class="tb-sep"></div>
+            <button class="tb-btn" title="Liste à puces" onclick="fmt('ul')"><i class="fas fa-list-ul"></i></button>
+            <button class="tb-btn" title="Liste numérotée" onclick="fmt('ol')"><i class="fas fa-list-ol"></i></button>
+            <div class="tb-sep"></div>
+            <button class="tb-btn" title="Citation" onclick="fmt('quote')"><i class="fas fa-quote-left"></i></button>
+            <button class="tb-btn" title="Code" onclick="fmt('code')"><i class="fas fa-code"></i></button>
+            <button class="tb-btn" title="Lien" onclick="fmt('link')"><i class="fas fa-link"></i></button>
+            <div class="tb-sep"></div>
+            <button class="tb-btn" title="Image" onclick="fmt('img')"><i class="fas fa-image"></i></button>
+            <button class="tb-btn" title="Tableau" onclick="fmt('table')"><i class="fas fa-table"></i></button>
+            <div class="tb-sep"></div>
+            <button class="tb-btn" title="Alignement gauche"><i class="fas fa-align-left"></i></button>
+            <button class="tb-btn" title="Centré"><i class="fas fa-align-center"></i></button>
+            <button class="tb-btn" title="Alignement droit"><i class="fas fa-align-right"></i></button>
+            <div class="tb-sep"></div>
+            <button class="tb-btn" title="Annuler"><i class="fas fa-rotate-left"></i></button>
+            <button class="tb-btn" title="Refaire"><i class="fas fa-rotate-right"></i></button>
+          </div>
+          <!-- Titre -->
+          <textarea class="title-input" id="articleTitle" rows="2" placeholder="Titre de l'article…" oninput="updateSlug()" maxlength="120"></textarea>
+          <!-- Slug -->
+          <div class="slug-row">
+            <span class="slug-lbl">URL</span>
+            <span class="slug-val">ml2cco.fr/actualites/<span id="slugVal">titre-de-larticle</span></span>
+          </div>
+          <!-- Extrait -->
+          <div class="excerpt-box">
+            <div class="excerpt-lbl">Extrait / résumé</div>
+            <textarea class="excerpt-input" id="articleExcerpt" placeholder="Rédigez un court résumé de l'article (160 caractères max pour le SEO)…" maxlength="200" oninput="updateSEO()"></textarea>
+          </div>
+          <!-- Zone de contenu principal -->
+          <textarea class="content-area" id="articleContent" placeholder="Rédigez le contenu de l'article ici…&#10;&#10;Utilisez la barre d'outils pour formater votre texte en Markdown ou HTML." oninput="updateWordCount()"></textarea>
+          <div class="editor-footer">
+            <span id="wordCount">0 mots</span>
+            <span>Sauvegarde automatique il y a <span id="lastSave">jamais</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panneau latéral -->
+      <div class="side-panels">
+
+        <!-- Publication -->
+        <div class="sp-card">
+          <div class="sp-head"><i class="fas fa-paper-plane" style="color:var(--rose);font-size:.82rem;"></i><div class="sp-title">Publication</div></div>
+          <div class="sp-body">
+            <div class="f-group">
+              <div class="f-label">Statut</div>
+              <div class="status-toggle">
+                <div class="st-opt active" onclick="setStatus(this,'brouillon')">Brouillon</div>
+                <div class="st-opt pub" onclick="setStatus(this,'publie')">Publié</div>
+              </div>
+            </div>
+            <div class="f-group">
+              <div class="f-label">Date de publication</div>
+              <input class="f-input" type="datetime-local" value="2025-04-10T10:00">
+            </div>
+            <button class="btn-adm btn-rose" style="width:100%;justify-content:center;margin-top:.25rem;" onclick="publish()"><i class="fas fa-paper-plane"></i> Publier maintenant</button>
+            <button class="btn-adm btn-ghost" style="width:100%;justify-content:center;margin-top:.5rem;" onclick="saveDraft()"><i class="fas fa-floppy-disk"></i> Enregistrer brouillon</button>
+          </div>
+        </div>
+
+        <!-- Catégorie -->
+        <div class="sp-card">
+          <div class="sp-head"><i class="fas fa-folder" style="color:var(--gold-d);font-size:.82rem;"></i><div class="sp-title">Catégorie</div></div>
+          <div class="sp-body">
+            <div class="f-group">
+              <select class="f-input" style="cursor:pointer;">
+                <option>Fiscalité</option>
+                <option>Comptabilité</option>
+                <option>Création d'entreprise</option>
+                <option>Social & RH</option>
+                <option>Actualité juridique</option>
+                <option>RSE & Développement durable</option>
+              </select>
+            </div>
+            <div class="f-group">
+              <div class="f-label">Tags</div>
+              <div class="tags-wrap" id="tagsWrap">
+                <span class="tag-chip">TVA<button onclick="removeTag(this)">×</button></span>
+                <span class="tag-chip">2025<button onclick="removeTag(this)">×</button></span>
+              </div>
+              <div style="display:flex;gap:.4rem;">
+                <input class="f-input" id="tagInput" placeholder="Nouveau tag…" style="flex:1;" onkeydown="if(event.key==='Enter'){addTag();event.preventDefault()}">
+                <button class="btn-adm btn-ghost" style="padding:.5rem .75rem;" onclick="addTag()"><i class="fas fa-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Image à la une -->
+        <div class="sp-card">
+          <div class="sp-head"><i class="fas fa-image" style="color:var(--turq);font-size:.82rem;"></i><div class="sp-title">Image à la une</div></div>
+          <div class="sp-body">
+            <div class="img-drop" onclick="toast('Sélection d\'image…')">
+              <div class="img-drop-ico"><i class="fas fa-cloud-arrow-up"></i></div>
+              <div class="img-drop-txt">Glissez une image ici</div>
+              <div class="img-drop-sub">JPG, PNG, WebP · Max 2 MB</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEO -->
+        <div class="sp-card">
+          <div class="sp-head"><i class="fas fa-magnifying-glass-chart" style="color:var(--rose);font-size:.82rem;"></i><div class="sp-title">Analyse SEO</div></div>
+          <div class="sp-body">
+            <div class="seo-score">
+              <div class="seo-ring" id="seoRing">70</div>
+              <div class="seo-items">
+                <div class="seo-item seo-ok"><i class="fas fa-check-circle"></i> Titre optimisé (< 60 car.)</div>
+                <div class="seo-item seo-warn" id="seoExcerpt"><i class="fas fa-exclamation-triangle"></i> Métadescription vide</div>
+                <div class="seo-item seo-warn" id="seoContent"><i class="fas fa-exclamation-triangle"></i> Contenu insuffisant</div>
+                <div class="seo-item seo-ok"><i class="fas fa-check-circle"></i> Slug lisible</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="toast-box toast-ok" id="toastBox"><i class="fas fa-circle-check"></i><span id="toastMsg">Action effectuée</span></div>
+{% include "footer.html" %}
+<script>
+function updateSlug(){
+  const title=document.getElementById('articleTitle').value;
+  const slug=title.toLowerCase().replace(/[àáâ]/g,'a').replace(/[éèêë]/g,'e').replace(/[îï]/g,'i').replace(/[ôö]/g,'o').replace(/[ùûü]/g,'u').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  document.getElementById('slugVal').textContent=slug||'titre-de-larticle';
+}
+function updateWordCount(){
+  const txt=document.getElementById('articleContent').value;
+  const count=txt.trim()?txt.trim().split(/\s+/).length:0;
+  document.getElementById('wordCount').textContent=count+' mot'+(count>1?'s':'');
+  document.getElementById('lastSave').textContent='à l\'instant';
+  if(count>300){document.getElementById('seoContent').innerHTML='<i class="fas fa-check-circle"></i> Contenu suffisant';document.getElementById('seoContent').className='seo-item seo-ok';}
+}
+function updateSEO(){
+  const ex=document.getElementById('articleExcerpt').value;
+  if(ex.length>50){document.getElementById('seoExcerpt').innerHTML='<i class="fas fa-check-circle"></i> Métadescription OK';document.getElementById('seoExcerpt').className='seo-item seo-ok';}
+}
+function fmt(t){toast('Formatage: '+t);}
+function setStatus(el,s){document.querySelectorAll('.st-opt').forEach(o=>o.classList.remove('active'));el.classList.add('active');}
+function addTag(){const inp=document.getElementById('tagInput');if(!inp.value.trim())return;const wrap=document.getElementById('tagsWrap');const chip=document.createElement('span');chip.className='tag-chip';chip.innerHTML=inp.value+'<button onclick="removeTag(this)">×</button>';wrap.appendChild(chip);inp.value='';}
+function removeTag(btn){btn.closest('.tag-chip').remove();}
+function saveDraft(){toast('Brouillon enregistré — '+new Date().toLocaleTimeString('fr-FR'));}
+function preview(){toast('Aperçu de l\'article ouvert');}
+function publish(){const t=document.getElementById('articleTitle').value;if(!t){toast('Ajoutez un titre avant de publier');return;}toast('Article publié avec succès !');}
+function toast(msg){const b=document.getElementById('toastBox');document.getElementById('toastMsg').textContent=msg;b.classList.add('show');setTimeout(()=>b.classList.remove('show'),2800);}
+// Autosave
+setInterval(()=>{const t=document.getElementById('articleContent').value;if(t)document.getElementById('lastSave').textContent='il y a quelques secondes';},30000);
+</script>
+</body></html>

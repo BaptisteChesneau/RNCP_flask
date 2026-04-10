@@ -1,0 +1,291 @@
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Journal d'audit — ML2C Admin</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--rose:#C1007A;--rose-d:#9a0062;--rose-l:#fce4f3;--turq:#4FA695;--turq-l:#d4f0ec;--gold:#f59e0b;--gold-d:#b45309;--gold-l:#fffbeb;--bg:#f2f4f8;--surface:#fff;--border:#e4e8ef;--text:#111827;--muted:#6b7280;--faint:#9ca3af;--success:#10b981;--danger:#ef4444;--ff-head:'Cormorant Garamond',serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'JetBrains Mono',monospace;}
+body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
+.adm-shell{display:flex;height:100vh;overflow:hidden;}
+.adm-sidebar{width:220px;background:#0e1018;border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0;}
+.adm-sidebar::-webkit-scrollbar{width:3px;}.adm-sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);}
+.adm-sb-logo{display:flex;align-items:center;gap:.75rem;padding:1.25rem 1.1rem 1rem;border-bottom:1px solid rgba(255,255,255,.06);}
+.adm-sb-dot{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#C1007A,#9a0062);display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px rgba(193,0,122,.4);flex-shrink:0;}
+.adm-sb-brand{font-size:.88rem;font-weight:700;color:#fff;line-height:1.2;}.adm-sb-brand span{display:block;font-size:.65rem;font-weight:400;color:rgba(255,255,255,.35);}
+.adm-sb-sec{font-size:.57rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.22);padding:1.1rem 1.1rem .3rem;margin:0;}
+.adm-sb-item{display:flex;align-items:center;gap:.6rem;padding:.55rem 1.1rem;font-size:.78rem;color:rgba(255,255,255,.45);text-decoration:none;transition:all .15s;border-left:2px solid transparent;margin:.05rem 0;}
+.adm-sb-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.8);text-decoration:none;}
+.adm-sb-item--active{background:rgba(193,0,122,.12);border-left-color:#C1007A;color:#f472b6!important;font-weight:600;}
+.adm-sb-item svg{opacity:.6;flex-shrink:0;}.adm-sb-item:hover svg,.adm-sb-item--active svg{opacity:1;}
+.adm-sb-badge{margin-left:auto;min-width:19px;height:19px;background:#C1007A;color:#fff;border-radius:20px;font-size:.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 .4rem;flex-shrink:0;}
+.adm-sb-badge.gold{background:linear-gradient(135deg,#f59e0b,#d97706);}.adm-sb-badge.green{background:#10b981;}.adm-sb-badge.blue{background:#3b82f6;}
+.adm-sb-pip{width:6px;height:6px;border-radius:50%;flex-shrink:0;}.pip-green{background:#10b981;animation:pip 2s infinite;}.pip-red{background:#ef4444;animation:pip .8s infinite;}@keyframes pip{0%,100%{opacity:1}50%{opacity:.3}}
+.adm-sb-divider{height:1px;background:rgba(255,255,255,.06);margin:.5rem 1rem;}
+.adm-sb-footer{margin-top:auto;padding:.75rem 1rem;border-top:1px solid rgba(255,255,255,.06);}
+.adm-sb-user{display:flex;align-items:center;gap:.65rem;}
+.adm-sb-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#C1007A,#9a0062);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:#fff;flex-shrink:0;}
+.adm-sb-info{font-size:.75rem;font-weight:600;color:rgba(255,255,255,.7);line-height:1.2;flex:1;}.adm-sb-info span{display:block;font-size:.62rem;font-weight:400;color:rgba(255,255,255,.3);}
+.adm-sb-logout{width:26px;height:26px;border-radius:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);transition:all .2s;}.adm-sb-logout:hover{background:rgba(239,68,68,.12);color:#f87171;}
+.adm-sb-version{text-align:center;font-size:.58rem;color:rgba(255,255,255,.15);padding:.4rem 1rem;font-family:var(--ff-mono);}
+.adm-main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.adm-topbar{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.5rem;background:#fff;border-bottom:1px solid var(--border);flex-shrink:0;gap:1rem;flex-wrap:wrap;}
+.adm-topbar h2{font-size:1rem;font-weight:700;margin:0;}.adm-topbar p{font-size:.75rem;color:var(--muted);margin:0;}
+.adm-topbar-right{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
+.adm-content{flex:1;overflow-y:auto;padding:1.5rem;}
+.btn-adm{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border-radius:9px;font-size:.78rem;font-weight:600;cursor:pointer;border:none;font-family:var(--ff-body);transition:all .2s;}
+.btn-rose{background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff;box-shadow:0 4px 12px rgba(193,0,122,.25);}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted);}.btn-ghost:hover{border-color:var(--rose);color:var(--rose);}
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
+.kbox{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:1.1rem;display:flex;align-items:center;gap:.85rem;box-shadow:0 2px 12px rgba(0,0,0,.055);transition:transform .2s;}.kbox:hover{transform:translateY(-2px);}
+.kbox-ico{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
+.ki-rose{background:var(--rose-l);color:var(--rose);}.ki-turq{background:var(--turq-l);color:var(--turq);}.ki-gold{background:var(--gold-l);color:var(--gold-d);}.ki-blue{background:#dbeafe;color:#2563eb;}.ki-red{background:#fee2e2;color:var(--danger);}
+.kbox-val{font-family:var(--ff-head);font-size:1.7rem;font-weight:700;line-height:1;}.kbox-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-top:.1rem;}
+/* FILTERS */
+.audit-toolbar{display:flex;gap:.75rem;margin-bottom:1.25rem;flex-wrap:wrap;align-items:center;}
+.search-box{display:flex;align-items:center;gap:.5rem;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.5rem .9rem;flex:1;min-width:220px;transition:border-color .2s;}
+.search-box:focus-within{border-color:var(--rose);}
+.search-box input{background:none;border:none;outline:none;font-size:.85rem;font-family:var(--ff-body);width:100%;color:var(--text);}
+.f-sel{border:1.5px solid var(--border);border-radius:9px;padding:.48rem .8rem;font-size:.8rem;font-family:var(--ff-body);color:var(--muted);background:var(--surface);outline:none;cursor:pointer;transition:border-color .2s;}
+.f-sel:focus{border-color:var(--rose);}
+/* TIMELINE */
+.audit-timeline{display:flex;flex-direction:column;gap:0;}
+.audit-day{margin-bottom:1.75rem;}
+.audit-day-label{display:flex;align-items:center;gap:.75rem;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-bottom:1rem;}
+.audit-day-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.audit-entry{display:flex;gap:1rem;align-items:flex-start;padding:.85rem 1rem;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;margin-bottom:.6rem;transition:all .2s;position:relative;animation:fadeUp .35s both;overflow:hidden;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.audit-entry:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-1px);}
+.audit-entry.critical{border-color:rgba(239,68,68,.25);background:#fff8f8;}
+.audit-entry.critical::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--danger);}
+.audit-entry.warning{border-color:rgba(245,158,11,.2);background:#fffdf5;}
+.audit-entry.warning::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold);}
+.audit-entry.success::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--success);}
+.ae-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.82rem;flex-shrink:0;}
+.aei-rose{background:var(--rose-l);color:var(--rose);}
+.aei-turq{background:var(--turq-l);color:var(--turq);}
+.aei-gold{background:var(--gold-l);color:var(--gold-d);}
+.aei-red{background:#fee2e2;color:var(--danger);}
+.aei-blue{background:#dbeafe;color:#2563eb;}
+.aei-gray{background:#f3f4f6;color:var(--muted);}
+.aei-green{background:#d1fae5;color:var(--success);}
+.ae-body{flex:1;min-width:0;}
+.ae-top{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:.25rem;}
+.ae-title{font-size:.87rem;font-weight:600;color:var(--text);}
+.ae-time{font-size:.68rem;font-family:var(--ff-mono);color:var(--faint);margin-left:auto;}
+.ae-tag{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:.1rem .5rem;border-radius:20px;}
+.tag-auth{background:#e0e7ff;color:#3730a3;}
+.tag-data{background:var(--turq-l);color:var(--turq);}
+.tag-system{background:#f3f4f6;color:var(--muted);}
+.tag-security{background:#fee2e2;color:var(--danger);}
+.tag-content{background:var(--gold-l);color:var(--gold-d);}
+.ae-desc{font-size:.78rem;color:var(--muted);line-height:1.5;}
+.ae-meta{display:flex;gap:1rem;margin-top:.4rem;font-size:.7rem;color:var(--faint);font-family:var(--ff-mono);}
+/* TOAST */
+.toast-box{position:fixed;bottom:1.25rem;right:1.25rem;z-index:9999;display:flex;align-items:center;gap:.65rem;padding:.75rem 1.1rem;border-radius:10px;font-size:.8rem;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.15);transform:translateY(80px);opacity:0;transition:all .3s cubic-bezier(.34,1.2,.64,1);pointer-events:none;}
+.toast-box.show{transform:translateY(0);opacity:1;}.toast-ok{background:#0d2e23;color:#4ade80;border:1px solid rgba(74,222,128,.2);}
+.fadeUp{animation:fadeUp .4s both;}
+@media(max-width:900px){.kpi-row{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head><body>
+{% include "header.html" %}
+<div class="adm-shell">
+<aside class="adm-sidebar">
+  <div class="adm-sb-logo"><div class="adm-sb-dot"><svg width="15" height="15" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><div class="adm-sb-brand">ML2C Conseil<span>Administration</span></div></div>
+  <p class="adm-sb-sec">Principal</p>
+  <a href="{{ url_for('admin_dashboard') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard<span class="adm-sb-pip pip-green" style="margin-left:auto;"></span></a>
+  <a href="{{ url_for('admin_chatbot') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Questions / Réponses<span class="adm-sb-badge">19</span></a>
+  <a href="{{ url_for('admin_utilisateurs') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Utilisateurs</a>
+  <a href="{{ url_for('admin_stats') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Statistiques</a>
+  <a href="{{ url_for('admin_notifications') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Notifications<span class="adm-sb-badge green">3</span></a>
+  <a href="{{ url_for('admin_agenda') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Agenda / RDV<span class="adm-sb-badge blue">2</span></a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Contenu</p>
+  <a href="{{ url_for('admin_blog') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Blog / Articles</a>
+  <a href="{{ url_for('admin_formulaires') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>Formulaires / Devis<span class="adm-sb-badge gold">5</span></a>
+  <a href="{{ url_for('admin_emails') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Emails automatiques</a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Système</p>
+  <a href="{{ url_for('admin_config') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>Configuration</a>
+  <a href="{{ url_for('admin_logs') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Logs sécurité<span class="adm-sb-pip pip-red" style="margin-left:auto;"></span></a>
+  <a href="{{ url_for('admin_performances') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Performances<span class="adm-sb-pip pip-green" style="margin-left:auto;"></span></a>
+  <a href="{{ url_for('admin_sauvegardes') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Sauvegardes<span class="adm-sb-badge green">OK</span></a>
+  <a href="{{ url_for('admin_export') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Export données</a>
+  <a href="{{ url_for('admin_purge') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>Purger les logs</a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Compte</p>
+  <a href="{{ url_for('admin_parametres') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Paramètres du compte</a>
+  <a href="{{ url_for('admin_audit') }}" class="adm-sb-item adm-sb-item--active"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>Journal d'audit</a>
+  <div class="adm-sb-divider"></div>
+  <div class="adm-sb-footer"><div class="adm-sb-user"><div class="adm-sb-avatar">AD</div><div class="adm-sb-info">Administrateur<span>Super Admin · Niv. 3</span></div><a href="{{ url_for('logout_admin') }}" class="adm-sb-logout"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></a></div></div>
+  <div class="adm-sb-version">ML2C Admin v2.0 · 2025</div>
+</aside>
+
+<div class="adm-main">
+  <div class="adm-topbar">
+    <div><h2>Journal d'audit</h2><p>Traçabilité complète de toutes les actions administratives</p></div>
+    <div class="adm-topbar-right">
+      <button class="btn-adm btn-ghost" onclick="toast('Export audit CSV en cours…')"><i class="fas fa-file-export"></i> Exporter</button>
+      <button class="btn-adm btn-ghost" onclick="toast('Rapport d\'audit généré')"><i class="fas fa-file-pdf"></i> PDF</button>
+    </div>
+  </div>
+  <div class="adm-content">
+
+    <!-- KPI -->
+    <div class="kpi-row fadeUp">
+      <div class="kbox"><div class="kbox-ico ki-blue"><i class="fas fa-list-check"></i></div><div><div class="kbox-lbl">Événements (30j)</div><div class="kbox-val">384</div></div></div>
+      <div class="kbox"><div class="kbox-ico ki-rose"><i class="fas fa-user-shield"></i></div><div><div class="kbox-lbl">Connexions admin</div><div class="kbox-val">28</div></div></div>
+      <div class="kbox"><div class="kbox-ico ki-red"><i class="fas fa-triangle-exclamation"></i></div><div><div class="kbox-lbl">Alertes critiques</div><div class="kbox-val">2</div></div></div>
+      <div class="kbox"><div class="kbox-ico ki-turq"><i class="fas fa-pen-to-square"></i></div><div><div class="kbox-lbl">Modifications</div><div class="kbox-val">156</div></div></div>
+    </div>
+
+    <!-- Filtres -->
+    <div class="audit-toolbar fadeUp" style="animation-delay:.08s">
+      <div class="search-box"><i class="fas fa-search" style="color:var(--faint);font-size:.78rem;"></i><input type="text" placeholder="Rechercher dans les logs…" id="auditSearch" oninput="filterAudit()"></div>
+      <select class="f-sel" id="auditCat" onchange="filterAudit()">
+        <option value="">Toutes les catégories</option>
+        <option value="auth">Authentification</option>
+        <option value="data">Données</option>
+        <option value="system">Système</option>
+        <option value="security">Sécurité</option>
+        <option value="content">Contenu</option>
+      </select>
+      <select class="f-sel" id="auditSev" onchange="filterAudit()">
+        <option value="">Toute sévérité</option>
+        <option value="critical">Critique</option>
+        <option value="warning">Avertissement</option>
+        <option value="success">Succès</option>
+      </select>
+      <input type="date" class="f-sel" value="2025-04-10">
+    </div>
+
+    <!-- Timeline -->
+    <div class="audit-timeline">
+      <!-- 10 Avril -->
+      <div class="audit-day">
+        <div class="audit-day-label">10 Avril 2025 — Aujourd'hui</div>
+
+        <div class="audit-entry critical" data-cat="security" data-sev="critical">
+          <div class="ae-ico aei-red"><i class="fas fa-shield-halved"></i></div>
+          <div class="ae-body">
+            <div class="ae-top"><span class="ae-tag tag-security">Sécurité</span><strong class="ae-title">Tentative d'accès bloquée — Tor Exit Node</strong><span class="ae-time">10:59:27</span></div>
+            <div class="ae-desc">3 tentatives de connexion consécutives échouées depuis <code style="font-family:var(--ff-mono);font-size:.75rem;background:#fee2e2;padding:.1rem .35rem;border-radius:4px;">185.220.101.45</code>. IP bloquée automatiquement pour 24h.</div>
+            <div class="ae-meta"><span><i class="fas fa-map-marker-alt"></i> Tor Exit Node · DE</span><span><i class="fas fa-user"></i> Anonyme</span><span><i class="fas fa-server"></i> web-1</span></div>
+          </div>
+        </div>
+
+        <div class="audit-entry success" data-cat="auth" data-sev="success">
+          <div class="ae-ico aei-rose"><i class="fas fa-right-to-bracket"></i></div>
+          <div class="ae-body">
+            <div class="ae-top"><span class="ae-tag tag-auth">Auth</span><strong class="ae-title">Connexion administrateur réussie</strong><span class="ae-time">08:34:12</span></div>
+            <div class="ae-desc">L'administrateur principal s'est connecté au panneau d'administration depuis une adresse IP française.</div>
+            <div class="ae-meta"><span><i class="fas fa-map-marker-alt"></i> Chartres, FR</span><span><i class="fas fa-user"></i> Administrateur</span><span><i class="fas fa-desktop"></i> Chrome 146 · Windows</span></div>
+          </div>
+        </div>
+
+        <div class="audit-entry" data-cat="content" data-sev="success">
+          <div class="ae-ico aei-gold"><i class="fas fa-file-pen"></i></div>
+          <div class="ae-body">
+            <div class="ae-top"><span class="ae-tag tag-content">Contenu</span><strong class="ae-title">Article publié automatiquement</strong><span class="ae-time">08:00:00</span></div>
+            <div class="ae-desc">L'article <em>"TVA 2025 : ce qui change pour les auto-entrepreneurs"</em> a été publié selon la programmation définie.</div>
+            <div class="ae-meta"><span><i class="fas fa-robot"></i> Système automatique</span><span><i class="fas fa-calendar"></i> Programmé le 07/04</span></div>
+          </div>
+        </div>
+
+        <div class="audit-entry" data-cat="system" data-sev="success">
+          <div class="ae-ico aei-green"><i class="fas fa-database"></i></div>
+          <div class="ae-body">
+            <div class="ae-top"><span class="ae-tag tag-system">Système</span><strong class="ae-title">Sauvegarde automatique BK-047 réussie</strong><span class="ae-time">03:01:40</span></div>
+            <div class="ae-desc">Sauvegarde quotidienne complétée avec succès. 142.3 MB exportés vers le stockage distant. Durée : 1m 28s.</div>
+            <div class="ae-meta"><span><i class="fas fa-hard-drive"></i> 142.3 MB</span><span><i class="fas fa-clock"></i> 1m 28s</span><span><i class="fas fa-lock"></i> AES-256</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 09 Avril -->
+      <div class="audit-day">
+        <div class="audit-day-label">9 Avril 2025</div>
+
+        <div class="audit-entry" data-cat="data" data-sev="success">
+          <div class="ae-ico aei-turq"><i class="fas fa-user-plus"></i></div>
+          <div class="ae-body">
+            <div class="ae-top"><span class="ae-tag tag-data">Données</span><strong class="ae-title">Nouvel utilisateur enregistré</strong><span class="ae-time">18:42:33</span></div>
+            <div class="ae-desc">Compte client créé pour <strong>Inès Roux</strong> (ines.roux@outlook.com) via le formulaire de contact.</div>
+            <div class="ae-meta"><span><i class="fas fa-id-card"></i> ID: USR-089</span><span><i class="fas fa-envelope"></i> Email vérifié</span></div>
+          </div>
+        </div>
+
+        <div class="audit-entry warning" data-cat="security" data-sev="warning">
+          <div class="ae-ico aei-gold"><i class="fas fa-key"></i></div>
+          <div class="ae-body">
+            <div class="ae-top"><span class="ae-tag tag-security">Sécurité</span><strong class="ae-title">Réinitialisation de mot de passe admin</strong><span class="ae-time">15:12:08</span></div>
+            <div class="ae-desc">Réinitialisation du mot de passe de l'administrateur principal depuis l'interface de paramètres.</div>
+            <div class="ae-meta"><span><i class="fas fa-user"></i> Administrateur</span><span><i class="fas fa-map-marker-alt"></i> Chartres, FR</span></div>
+          </div>
+        </div>
+
+        <div class="audit-entry" data-cat="data" data-sev="success">
+          <div class="ae-ico aei-rose"><i class="fas fa-trash-alt"></i></div>
+          <div class="ae-body">
+            <div class="ae-top"><span class="ae-tag tag-data">Données</span><strong class="ae-title">Purge des logs de sécurité</strong><span class="ae-time">11:30:00</span></div>
+            <div class="ae-desc">Purge manuelle des logs de sécurité antérieurs à 90 jours. 1 248 entrées supprimées.</div>
+            <div class="ae-meta"><span><i class="fas fa-user"></i> Administrateur</span><span><i class="fas fa-trash"></i> 1 248 entrées</span></div>
+          </div>
+        </div>
+
+        <div class="audit-entry" data-cat="system" data-sev="success">
+          <div class="ae-ico aei-blue"><i class="fas fa-gear"></i></div>
+          <div class="ae-body">
+            <div class="ae-top"><span class="ae-tag tag-system">Système</span><strong class="ae-title">Modification de la configuration SMTP</strong><span class="ae-time">09:45:22</span></div>
+            <div class="ae-desc">Mise à jour des paramètres d'envoi d'email — nouveau serveur SMTP Brevo configuré.</div>
+            <div class="ae-meta"><span><i class="fas fa-user"></i> Administrateur</span><span><i class="fas fa-cog"></i> admin_config</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 08 Avril -->
+      <div class="audit-day">
+        <div class="audit-day-label">8 Avril 2025</div>
+
+        <div class="audit-entry" data-cat="content" data-sev="success">
+          <div class="ae-ico aei-gold"><i class="fas fa-tags"></i></div>
+          <div class="ae-body">
+            <div class="ae-top"><span class="ae-tag tag-content">Contenu</span><strong class="ae-title">Nouvelle catégorie blog créée</strong><span class="ae-time">14:20:11</span></div>
+            <div class="ae-desc">Catégorie <strong>"RSE & Développement durable"</strong> ajoutée au blog avec couleur verte.</div>
+            <div class="ae-meta"><span><i class="fas fa-user"></i> Administrateur</span><span><i class="fas fa-link"></i> /blog/rse-developpement-durable</span></div>
+          </div>
+        </div>
+
+        <div class="audit-entry" data-cat="auth" data-sev="success">
+          <div class="ae-ico aei-rose"><i class="fas fa-right-from-bracket"></i></div>
+          <div class="ae-body">
+            <div class="ae-top"><span class="ae-tag tag-auth">Auth</span><strong class="ae-title">Déconnexion administrateur</strong><span class="ae-time">18:02:55</span></div>
+            <div class="ae-desc">Session administrateur terminée après 3h 28min d'activité. Déconnexion manuelle.</div>
+            <div class="ae-meta"><span><i class="fas fa-clock"></i> Session: 3h 28m</span><span><i class="fas fa-desktop"></i> Chrome 146</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="toast-box toast-ok" id="toastBox"><i class="fas fa-circle-check"></i><span id="toastMsg">Action effectuée</span></div>
+{% include "footer.html" %}
+<script>
+function filterAudit(){
+  const q=document.getElementById('auditSearch').value.toLowerCase();
+  const cat=document.getElementById('auditCat').value;
+  const sev=document.getElementById('auditSev').value;
+  document.querySelectorAll('.audit-entry').forEach(e=>{
+    const txt=e.textContent.toLowerCase();
+    const eCat=e.dataset.cat||'';
+    const eSev=e.dataset.sev||'';
+    const ok=(q?txt.includes(q):true)&&(cat?eCat===cat:true)&&(sev?eSev===sev:true);
+    e.style.display=ok?'':'none';
+  });
+}
+function toast(msg){const b=document.getElementById('toastBox');document.getElementById('toastMsg').textContent=msg;b.classList.add('show');setTimeout(()=>b.classList.remove('show'),2800);}
+</script>
+</body></html>

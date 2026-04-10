@@ -24,6 +24,7 @@ from wtforms.validators import DataRequired, Length, Email
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from cryptography.fernet import Fernet
+from functools import wraps
 
 fernet = Fernet(os.environ.get("FERNET_KEY").encode())
 from flask import jsonify
@@ -1169,6 +1170,14 @@ def admin_stats():
 @app.route('/admin/admin-configuration', endpoint='admin_config')
 def admin_configuration():
     return render_template('admin_config.html')
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "admin" not in session:
+            return redirect(url_for("login_admin"))
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.route('/admin/view-source')
 @login_required

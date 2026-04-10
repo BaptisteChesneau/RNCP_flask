@@ -1170,6 +1170,11 @@ def admin_stats():
 def admin_configuration():
     return render_template('admin_config.html')
 
+@app.route('/admin/view-source')
+@login_required
+def admin_view_source():
+    return render_template('admin_view_source.html')
+
 @app.route('/admin/log-de-sécurite')
 def admin_logs():
     return render_template('admin_logs.html')

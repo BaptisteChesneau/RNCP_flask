@@ -1,0 +1,785 @@
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Source Viewer — ML2C Admin</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --rose:#C1007A;--rose-d:#9a0062;--rose-l:#fce4f3;
+  --turq:#4FA695;--turq-l:#d4f0ec;
+  --gold:#f59e0b;--gold-d:#b45309;--gold-l:#fffbeb;
+  --bg:#f2f4f8;--surface:#fff;--border:#e4e8ef;
+  --text:#111827;--muted:#6b7280;--faint:#9ca3af;
+  --success:#10b981;--danger:#ef4444;--blue:#3b82f6;
+  --ink:#0e1018;--ink2:#161c28;--ink3:#1e2535;
+  --ff-head:'Cormorant Garamond',serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'JetBrains Mono',monospace;
+  /* syntax colors */
+  --syn-kw:#f472b6;--syn-fn:#fbbf24;--syn-str:#86efac;--syn-num:#7dd3fc;
+  --syn-cm:#4b5563;--syn-dec:#c084fc;--syn-op:#94a3b8;--syn-self:#fb923c;
+  --syn-tag:#60a5fa;--syn-attr:#34d399;--syn-val:#fca5a5;--syn-css-prop:#a78bfa;
+}
+body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
+
+/* ══════ SIDEBAR ══════ */
+.adm-shell{display:flex;height:100vh;overflow:hidden;}
+.adm-sidebar{width:220px;background:var(--ink);border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0;}
+.adm-sidebar::-webkit-scrollbar{width:3px;}.adm-sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);}
+.adm-sb-logo{display:flex;align-items:center;gap:.75rem;padding:1.25rem 1.1rem 1rem;border-bottom:1px solid rgba(255,255,255,.06);}
+.adm-sb-dot{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#C1007A,#9a0062);display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px rgba(193,0,122,.4);flex-shrink:0;}
+.adm-sb-brand{font-size:.88rem;font-weight:700;color:#fff;line-height:1.2;}
+.adm-sb-brand span{display:block;font-size:.65rem;font-weight:400;color:rgba(255,255,255,.35);}
+.adm-sb-sec{font-size:.57rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.22);padding:1.1rem 1.1rem .3rem;margin:0;}
+.adm-sb-item{display:flex;align-items:center;gap:.6rem;padding:.55rem 1.1rem;font-size:.78rem;color:rgba(255,255,255,.45);text-decoration:none;transition:all .15s;border-left:2px solid transparent;margin:.05rem 0;}
+.adm-sb-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.8);text-decoration:none;}
+.adm-sb-item--active{background:rgba(193,0,122,.12);border-left-color:#C1007A;color:#f472b6!important;font-weight:600;}
+.adm-sb-item svg{opacity:.6;flex-shrink:0;}.adm-sb-item:hover svg,.adm-sb-item--active svg{opacity:1;}
+.adm-sb-badge{margin-left:auto;min-width:19px;height:19px;background:#C1007A;color:#fff;border-radius:20px;font-size:.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 .4rem;flex-shrink:0;}
+.adm-sb-badge.gold{background:linear-gradient(135deg,#f59e0b,#d97706);}
+.adm-sb-badge.green{background:#10b981;}
+.adm-sb-badge.blue{background:#3b82f6;}
+.adm-sb-pip{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-left:auto;}
+.pip-green{background:#10b981;animation:pip 2s infinite;}
+.pip-red{background:#ef4444;animation:pip .8s infinite;}
+@keyframes pip{0%,100%{opacity:1}50%{opacity:.3}}
+.adm-sb-divider{height:1px;background:rgba(255,255,255,.06);margin:.5rem 1rem;}
+.adm-sb-footer{margin-top:auto;padding:.75rem 1rem;border-top:1px solid rgba(255,255,255,.06);}
+.adm-sb-user{display:flex;align-items:center;gap:.65rem;}
+.adm-sb-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#C1007A,#9a0062);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:#fff;flex-shrink:0;}
+.adm-sb-info{font-size:.75rem;font-weight:600;color:rgba(255,255,255,.7);line-height:1.2;flex:1;}
+.adm-sb-info span{display:block;font-size:.62rem;font-weight:400;color:rgba(255,255,255,.3);}
+.adm-sb-logout{width:26px;height:26px;border-radius:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);cursor:pointer;transition:all .2s;}
+.adm-sb-logout:hover{background:rgba(239,68,68,.12);color:#f87171;}
+.adm-sb-version{text-align:center;font-size:.58rem;color:rgba(255,255,255,.15);padding:.4rem 1rem;font-family:var(--ff-mono);}
+
+/* ══════ MAIN ══════ */
+.adm-main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.adm-topbar{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.5rem;background:#fff;border-bottom:1px solid var(--border);flex-shrink:0;gap:1rem;flex-wrap:wrap;}
+.adm-topbar-left h2{font-size:1rem;font-weight:700;margin:0;}
+.adm-topbar-left p{font-size:.72rem;color:var(--muted);margin:.05rem 0 0;}
+.adm-topbar-right{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
+.btn-adm{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border-radius:9px;font-size:.78rem;font-weight:600;cursor:pointer;border:none;font-family:var(--ff-body);transition:all .2s;white-space:nowrap;}
+.btn-rose{background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff;box-shadow:0 4px 12px rgba(193,0,122,.25);}
+.btn-rose:hover{box-shadow:0 6px 18px rgba(193,0,122,.35);transform:translateY(-1px);}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
+.btn-ghost:hover{border-color:var(--rose);color:var(--rose);}
+.btn-dark{background:var(--ink2);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1);}
+.btn-dark:hover{background:var(--ink3);color:#fff;}
+
+/* ══════ VIEWER LAYOUT : 3 colonnes ══════ */
+.adm-content{flex:1;overflow:hidden;display:flex;flex-direction:column;}
+.viewer-shell{flex:1;display:grid;grid-template-columns:240px 1fr;overflow:hidden;}
+
+/* ══════ FILE TREE ══════ */
+.file-tree{background:var(--ink2);border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;overflow:hidden;}
+.ft-header{padding:.9rem 1rem;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.ft-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);font-family:var(--ff-mono);}
+.ft-search{padding:.5rem .85rem;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0;}
+.ft-search-input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:7px;padding:.4rem .7rem;font-size:.75rem;font-family:var(--ff-mono);color:rgba(255,255,255,.7);outline:none;transition:all .2s;}
+.ft-search-input:focus{border-color:rgba(193,0,122,.4);background:rgba(255,255,255,.08);}
+.ft-search-input::placeholder{color:rgba(255,255,255,.2);}
+.ft-body{flex:1;overflow-y:auto;padding:.5rem 0;}
+.ft-body::-webkit-scrollbar{width:3px;}.ft-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);}
+.ft-group{margin-bottom:.25rem;}
+.ft-group-label{display:flex;align-items:center;gap:.5rem;padding:.45rem 1rem .3rem;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.2);cursor:pointer;user-select:none;}
+.ft-group-label:hover{color:rgba(255,255,255,.4);}
+.ft-group-label svg{transition:transform .2s;opacity:.5;}
+.ft-group-label.collapsed svg{transform:rotate(-90deg);}
+.ft-group-items{overflow:hidden;transition:max-height .25s ease;}
+.ft-item{display:flex;align-items:center;gap:.5rem;padding:.38rem 1rem .38rem 1.4rem;font-size:.75rem;font-family:var(--ff-mono);color:rgba(255,255,255,.4);cursor:pointer;transition:all .15s;border-left:2px solid transparent;user-select:none;}
+.ft-item:hover{background:rgba(255,255,255,.04);color:rgba(255,255,255,.75);}
+.ft-item.active{background:rgba(193,0,122,.1);border-left-color:var(--rose);color:#f472b6;}
+.ft-item-ico{font-size:.7rem;width:12px;text-align:center;flex-shrink:0;}
+.ft-item-ext{margin-left:auto;font-size:.58rem;padding:.05rem .35rem;border-radius:4px;font-weight:700;}
+.ext-py{background:rgba(59,130,246,.15);color:#60a5fa;}
+.ext-html{background:rgba(249,115,22,.15);color:#fb923c;}
+.ext-css{background:rgba(167,139,250,.15);color:#a78bfa;}
+.ext-js{background:rgba(251,191,36,.15);color:#fbbf24;}
+.ext-txt{background:rgba(255,255,255,.08);color:rgba(255,255,255,.3);}
+.ext-md{background:rgba(52,211,153,.15);color:#34d399;}
+.ft-stats{padding:.6rem 1rem;border-top:1px solid rgba(255,255,255,.06);font-size:.62rem;color:rgba(255,255,255,.2);font-family:var(--ff-mono);display:flex;justify-content:space-between;flex-shrink:0;}
+
+/* ══════ CODE PANEL ══════ */
+.code-panel{display:flex;flex-direction:column;overflow:hidden;background:var(--ink);}
+.code-tabs{display:flex;align-items:stretch;background:var(--ink2);border-bottom:1px solid rgba(255,255,255,.07);overflow-x:auto;flex-shrink:0;}
+.code-tabs::-webkit-scrollbar{height:2px;}.code-tabs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);}
+.code-tab{display:flex;align-items:center;gap:.5rem;padding:.6rem 1rem;font-size:.72rem;font-family:var(--ff-mono);color:rgba(255,255,255,.35);cursor:pointer;border-right:1px solid rgba(255,255,255,.06);border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;flex-shrink:0;}
+.code-tab:hover{background:rgba(255,255,255,.03);color:rgba(255,255,255,.6);}
+.code-tab.active{background:var(--ink);color:rgba(255,255,255,.9);border-bottom-color:var(--rose);}
+.code-tab-close{width:14px;height:14px;border-radius:3px;display:flex;align-items:center;justify-content:center;opacity:0;transition:all .15s;font-size:.6rem;}
+.code-tab:hover .code-tab-close{opacity:.5;}.code-tab-close:hover{opacity:1!important;background:rgba(239,68,68,.2);color:#f87171;}
+.code-toolbar{display:flex;align-items:center;justify-content:space-between;padding:.55rem 1rem;background:var(--ink2);border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0;gap:.75rem;flex-wrap:wrap;}
+.code-file-path{font-family:var(--ff-mono);font-size:.7rem;color:rgba(255,255,255,.3);display:flex;align-items:center;gap:.35rem;flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.code-file-path span{color:rgba(255,255,255,.55);}
+.code-actions{display:flex;align-items:center;gap:.4rem;}
+.code-btn{display:inline-flex;align-items:center;gap:.35rem;padding:.35rem .7rem;border-radius:6px;font-size:.7rem;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:rgba(255,255,255,.5);font-family:var(--ff-body);transition:all .2s;white-space:nowrap;}
+.code-btn:hover{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.2);}
+.code-btn.rose{background:rgba(193,0,122,.15);border-color:rgba(193,0,122,.3);color:#f472b6;}
+.code-btn.rose:hover{background:rgba(193,0,122,.25);}
+.search-bar{display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:.35rem .7rem;flex:0 0 auto;}
+.search-bar input{background:none;border:none;outline:none;font-size:.72rem;font-family:var(--ff-mono);color:rgba(255,255,255,.7);width:160px;}
+.search-bar input::placeholder{color:rgba(255,255,255,.2);}
+.search-bar svg{opacity:.3;}
+.search-count{font-size:.65rem;color:rgba(255,255,255,.3);font-family:var(--ff-mono);white-space:nowrap;}
+
+/* ══════ CODE AREA ══════ */
+.code-area{flex:1;overflow:auto;display:flex;}
+.code-area::-webkit-scrollbar{width:8px;height:8px;}
+.code-area::-webkit-scrollbar-track{background:rgba(255,255,255,.02);}
+.code-area::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px;}
+.code-area::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.2);}
+.line-numbers{background:rgba(255,255,255,.02);padding:1rem 0;text-align:right;border-right:1px solid rgba(255,255,255,.05);flex-shrink:0;user-select:none;}
+.line-num{display:block;padding:0 .75rem;font-size:.75rem;font-family:var(--ff-mono);line-height:1.65rem;color:rgba(255,255,255,.15);min-width:44px;}
+.line-num.active{color:var(--rose);background:rgba(193,0,122,.08);}
+.code-content{flex:1;padding:1rem 0;overflow-x:auto;}
+.code-line{display:block;padding:0 1.25rem;font-size:.78rem;font-family:var(--ff-mono);line-height:1.65rem;color:rgba(255,255,255,.75);white-space:pre;cursor:pointer;transition:background .1s;}
+.code-line:hover{background:rgba(255,255,255,.02);}
+.code-line.highlighted{background:rgba(193,0,122,.08)!important;border-left:2px solid var(--rose);}
+.code-line.search-match{background:rgba(251,191,36,.1);}
+.code-line.search-current{background:rgba(251,191,36,.25);border-left:2px solid var(--gold);}
+
+/* ══════ SYNTAX HIGHLIGHTING ══════ */
+.kw{color:var(--syn-kw);font-weight:500;}
+.fn{color:var(--syn-fn);}
+.str{color:var(--syn-str);}
+.num{color:var(--syn-num);}
+.cm{color:var(--syn-cm);font-style:italic;}
+.dec{color:var(--syn-dec);}
+.op{color:var(--syn-op);}
+.slf{color:var(--syn-self);}
+.tag{color:var(--syn-tag);}
+.attr{color:var(--syn-attr);}
+.val{color:var(--syn-val);}
+.css-p{color:var(--syn-css-prop);}
+.punc{color:rgba(255,255,255,.35);}
+
+/* ══════ STATUS BAR ══════ */
+.status-bar{display:flex;align-items:center;justify-content:space-between;padding:.35rem 1rem;background:rgba(193,0,122,.12);border-top:1px solid rgba(193,0,122,.2);flex-shrink:0;gap:.5rem;flex-wrap:wrap;}
+.sb-left{display:flex;align-items:center;gap:1rem;}
+.sb-item{font-size:.65rem;font-family:var(--ff-mono);color:rgba(255,255,255,.35);display:flex;align-items:center;gap:.3rem;}
+.sb-item strong{color:rgba(255,255,255,.6);}
+.sb-lang{background:rgba(193,0,122,.2);color:#f472b6;font-size:.62rem;font-weight:700;padding:.15rem .5rem;border-radius:4px;font-family:var(--ff-mono);}
+
+/* ══════ EMPTY STATE ══════ */
+.code-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:2rem;}
+.ce-ico{width:64px;height:64px;border-radius:20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;}
+.ce-title{font-family:var(--ff-mono);font-size:.9rem;color:rgba(255,255,255,.25);}
+.ce-sub{font-size:.75rem;color:rgba(255,255,255,.15);text-align:center;max-width:280px;line-height:1.6;}
+
+/* ══════ MINIMAP ══════ */
+.minimap{width:80px;border-left:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.01);overflow:hidden;flex-shrink:0;position:relative;cursor:pointer;}
+.minimap-viewport{position:absolute;left:0;right:0;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);pointer-events:none;}
+.minimap-lines{padding:.5rem .25rem;display:flex;flex-direction:column;gap:1px;}
+.mm-line{height:2px;border-radius:1px;background:rgba(255,255,255,.06);}
+.mm-line.mm-kw{background:rgba(244,114,182,.3);}
+.mm-line.mm-fn{background:rgba(251,191,36,.25);}
+.mm-line.mm-str{background:rgba(134,239,172,.25);}
+.mm-line.mm-cm{background:rgba(75,85,99,.4);}
+
+/* ══════ TOAST ══════ */
+.toast-box{position:fixed;bottom:1.25rem;right:1.25rem;z-index:9999;display:flex;align-items:center;gap:.65rem;padding:.8rem 1.2rem;border-radius:12px;font-size:.82rem;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.4);transform:translateY(80px);opacity:0;transition:all .35s cubic-bezier(.34,1.2,.64,1);pointer-events:none;max-width:320px;}
+.toast-box.show{transform:translateY(0);opacity:1;}
+.toast-ok{background:#0b2a1f;color:#4ade80;border:1px solid rgba(74,222,128,.2);}
+.toast-info{background:#0b1a2a;color:#60a5fa;border:1px solid rgba(96,165,250,.2);}
+.toast-warn{background:#2a1f0b;color:#fbbf24;border:1px solid rgba(251,191,36,.2);}
+
+@media(max-width:900px){.viewer-shell{grid-template-columns:1fr;}.file-tree{display:none;}}
+</style>
+</head><body>
+
+<div class="adm-shell">
+
+<!-- ═══════════ SIDEBAR ═══════════ -->
+<aside class="adm-sidebar">
+  <div class="adm-sb-logo">
+    <div class="adm-sb-dot">
+      <svg width="15" height="15" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    </div>
+    <div class="adm-sb-brand">ML2C Conseil<span>Administration</span></div>
+  </div>
+  <p class="adm-sb-sec">Principal</p>
+  <a href="{{ url_for('admin_dashboard') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard<span class="adm-sb-pip pip-green"></span></a>
+  <a href="{{ url_for('admin_chatbot') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Questions / Réponses<span class="adm-sb-badge">19</span></a>
+  <a href="{{ url_for('admin_utilisateurs') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Utilisateurs</a>
+  <a href="{{ url_for('admin_stats') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Statistiques</a>
+  <a href="{{ url_for('admin_notifications') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Notifications<span class="adm-sb-badge green">3</span></a>
+  <a href="{{ url_for('admin_agenda') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Agenda / RDV<span class="adm-sb-badge blue">2</span></a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Contenu</p>
+  <a href="{{ url_for('admin_blog') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Blog / Articles</a>
+  <a href="{{ url_for('admin_formulaires') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>Formulaires / Devis<span class="adm-sb-badge gold">5</span></a>
+  <a href="{{ url_for('admin_emails') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Emails automatiques</a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Système</p>
+  <a href="{{ url_for('admin_config') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>Configuration</a>
+  <a href="{{ url_for('admin_logs') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Logs sécurité<span class="adm-sb-pip pip-red"></span></a>
+  <a href="{{ url_for('admin_performances') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Performances<span class="adm-sb-pip pip-green"></span></a>
+  <a href="{{ url_for('admin_sauvegardes') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Sauvegardes<span class="adm-sb-badge green">OK</span></a>
+  <a href="{{ url_for('admin_export') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Export données</a>
+  <a href="{{ url_for('admin_purge') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>Purger les logs</a>
+  <a href="{{ url_for('admin_view_source') }}" class="adm-sb-item adm-sb-item--active"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Source Viewer</a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Compte</p>
+  <a href="{{ url_for('admin_parametres') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Paramètres du compte</a>
+  <a href="{{ url_for('admin_audit') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>Journal d'audit</a>
+  <div class="adm-sb-footer">
+    <div class="adm-sb-user">
+      <div class="adm-sb-avatar">AD</div>
+      <div class="adm-sb-info">Administrateur<span>Super Admin · Niv. 3</span></div>
+      <div class="adm-sb-logout" title="Déconnexion"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></div>
+    </div>
+  </div>
+  <div class="adm-sb-version">ML2C Admin v2.0 · 2025</div>
+</aside>
+
+<!-- ═══════════ MAIN ═══════════ -->
+<div class="adm-main">
+
+  <!-- TOPBAR -->
+  <div class="adm-topbar">
+    <div class="adm-topbar-left">
+      <h2><svg width="14" height="14" fill="none" stroke="var(--rose)" stroke-width="2" viewBox="0 0 24 24" style="margin-right:.4rem;vertical-align:-.1rem;"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Source Viewer</h2>
+      <p>Exploration du code source · Lecture seule · <span id="topClock" style="font-family:var(--ff-mono);"></span></p>
+    </div>
+    <div class="adm-topbar-right">
+      <span style="display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:600;padding:.3rem .75rem;border-radius:20px;background:#dbeafe;color:#1e40af;"><i class="fas fa-lock" style="font-size:.55rem;"></i>Lecture seule</span>
+      <button class="btn-adm btn-ghost" onclick="collapseAll()"><i class="fas fa-compress-alt"></i>Tout replier</button>
+      <button class="btn-adm btn-rose" onclick="copyCurrentFile()"><i class="fas fa-copy"></i>Copier le fichier</button>
+    </div>
+  </div>
+
+  <!-- VIEWER -->
+  <div class="adm-content">
+    <div class="viewer-shell">
+
+      <!-- ARBRE DE FICHIERS -->
+      <div class="file-tree">
+        <div class="ft-header">
+          <span class="ft-title">/ projet</span>
+          <svg width="12" height="12" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2" viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+        </div>
+        <div class="ft-search">
+          <input class="ft-search-input" placeholder="Filtrer les fichiers…" oninput="filterFiles(this.value)" id="ftSearch">
+        </div>
+        <div class="ft-body" id="ftBody">
+
+          <!-- Groupe : Racine -->
+          <div class="ft-group">
+            <div class="ft-group-label" onclick="toggleGroup(this)">
+              <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+              Racine
+            </div>
+            <div class="ft-group-items">
+              <div class="ft-item active" onclick="openFile('app','app.py','python')" data-name="app.py"><span class="ft-item-ico">🐍</span>app.py<span class="ft-item-ext ext-py">PY</span></div>
+              <div class="ft-item" onclick="openFile('procfile','Procfile','txt')" data-name="Procfile"><span class="ft-item-ico">⚙️</span>Procfile<span class="ft-item-ext ext-txt">TXT</span></div>
+              <div class="ft-item" onclick="openFile('requirements','requirements.txt','txt')" data-name="requirements.txt"><span class="ft-item-ico">📦</span>requirements.txt<span class="ft-item-ext ext-txt">TXT</span></div>
+              <div class="ft-item" onclick="openFile('readme','README.md','md')" data-name="README.md"><span class="ft-item-ico">📄</span>README.md<span class="ft-item-ext ext-md">MD</span></div>
+            </div>
+          </div>
+
+          <!-- Groupe : Templates -->
+          <div class="ft-group">
+            <div class="ft-group-label" onclick="toggleGroup(this)">
+              <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+              templates/
+            </div>
+            <div class="ft-group-items">
+              <div class="ft-item" onclick="openFile('admin_dashboard','admin_dashboard.html','html')" data-name="admin_dashboard.html"><span class="ft-item-ico">🖥️</span>admin_dashboard.html<span class="ft-item-ext ext-html">HTML</span></div>
+              <div class="ft-item" onclick="openFile('admin_chatbot','admin_chatbot.html','html')" data-name="admin_chatbot.html"><span class="ft-item-ico">🤖</span>admin_chatbot.html<span class="ft-item-ext ext-html">HTML</span></div>
+              <div class="ft-item" onclick="openFile('admin_config','admin_config.html','html')" data-name="admin_config.html"><span class="ft-item-ico">⚙️</span>admin_config.html<span class="ft-item-ext ext-html">HTML</span></div>
+              <div class="ft-item" onclick="openFile('admin_logs','admin_logs.html','html')" data-name="admin_logs.html"><span class="ft-item-ico">🛡️</span>admin_logs.html<span class="ft-item-ext ext-html">HTML</span></div>
+              <div class="ft-item" onclick="openFile('admin_stats','admin_stats.html','html')" data-name="admin_stats.html"><span class="ft-item-ico">📊</span>admin_stats.html<span class="ft-item-ext ext-html">HTML</span></div>
+              <div class="ft-item" onclick="openFile('admin_utilisateurs','admin_utilisateurs.html','html')" data-name="admin_utilisateurs.html"><span class="ft-item-ico">👥</span>admin_utilisateurs.html<span class="ft-item-ext ext-html">HTML</span></div>
+              <div class="ft-item" onclick="openFile('admin_performances','admin_performances.html','html')" data-name="admin_performances.html"><span class="ft-item-ico">⚡</span>admin_performances.html<span class="ft-item-ext ext-html">HTML</span></div>
+              <div class="ft-item" onclick="openFile('admin_sauvegardes','admin_sauvegardes.html','html')" data-name="admin_sauvegardes.html"><span class="ft-item-ico">💾</span>admin_sauvegardes.html<span class="ft-item-ext ext-html">HTML</span></div>
+              <div class="ft-item" onclick="openFile('admin_audit','admin_audit.html','html')" data-name="admin_audit.html"><span class="ft-item-ico">📋</span>admin_audit.html<span class="ft-item-ext ext-html">HTML</span></div>
+              <div class="ft-item" onclick="openFile('admin_view_source','admin_view_source.html','html')" data-name="admin_view_source.html"><span class="ft-item-ico">🔍</span>admin_view_source.html<span class="ft-item-ext ext-html">HTML</span></div>
+              <div class="ft-item" onclick="openFile('menu','menu.html','html')" data-name="menu.html"><span class="ft-item-ico">🏠</span>menu.html<span class="ft-item-ext ext-html">HTML</span></div>
+              <div class="ft-item" onclick="openFile('blog','blog.html','html')" data-name="blog.html"><span class="ft-item-ico">📝</span>blog.html<span class="ft-item-ext ext-html">HTML</span></div>
+              <div class="ft-item" onclick="openFile('login_admin','login_admin.html','html')" data-name="login_admin.html"><span class="ft-item-ico">🔐</span>login_admin.html<span class="ft-item-ext ext-html">HTML</span></div>
+            </div>
+          </div>
+
+          <!-- Groupe : Static -->
+          <div class="ft-group">
+            <div class="ft-group-label" onclick="toggleGroup(this)">
+              <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+              static/css/
+            </div>
+            <div class="ft-group-items">
+              <div class="ft-item" onclick="openFile('styles','styles.css','css')" data-name="styles.css"><span class="ft-item-ico">🎨</span>styles.css<span class="ft-item-ext ext-css">CSS</span></div>
+              <div class="ft-item" onclick="openFile('admin','admin.css','css')" data-name="admin.css"><span class="ft-item-ico">🎨</span>admin.css<span class="ft-item-ext ext-css">CSS</span></div>
+              <div class="ft-item" onclick="openFile('chatbot_css','chatbot.css','css')" data-name="chatbot.css"><span class="ft-item-ico">🎨</span>chatbot.css<span class="ft-item-ext ext-css">CSS</span></div>
+            </div>
+          </div>
+
+        </div>
+        <div class="ft-stats">
+          <span id="ftCount">20 fichiers</span>
+          <span>Flask · Python 3.12</span>
+        </div>
+      </div>
+
+      <!-- CODE PANEL -->
+      <div class="code-panel">
+
+        <!-- TABS -->
+        <div class="code-tabs" id="codeTabs">
+          <div class="code-tab active" data-file="app">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--rose)" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            app.py
+            <span class="code-tab-close" onclick="closeTab(event,'app')">✕</span>
+          </div>
+        </div>
+
+        <!-- TOOLBAR -->
+        <div class="code-toolbar">
+          <div class="code-file-path" id="codeFilePath">
+            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="opacity:.3;"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            <span id="codePathSpan">/app/<strong>app.py</strong></span>
+          </div>
+          <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;">
+            <div class="search-bar">
+              <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input placeholder="Rechercher dans le fichier…" id="codeSearch" oninput="searchInCode(this.value)" onkeydown="searchNav(event)">
+              <span class="search-count" id="searchCount" style="display:none;"></span>
+            </div>
+            <button class="code-btn" onclick="toggleWrap()" id="wrapBtn"><i class="fas fa-align-left"></i>Wrap</button>
+            <button class="code-btn" onclick="toggleMinimap()" id="minimapBtn"><i class="fas fa-map"></i>Minimap</button>
+            <button class="code-btn rose" onclick="copyCurrentFile()"><i class="fas fa-copy"></i>Copier</button>
+            <button class="code-btn" onclick="downloadFile()"><i class="fas fa-download"></i>DL</button>
+          </div>
+        </div>
+
+        <!-- CODE AREA + MINIMAP -->
+        <div style="flex:1;display:flex;overflow:hidden;">
+          <div class="code-area" id="codeArea">
+            <div class="line-numbers" id="lineNumbers"></div>
+            <div class="code-content" id="codeContent"></div>
+          </div>
+          <div class="minimap" id="minimap">
+            <div class="minimap-viewport" id="minimapViewport" style="top:0;height:60px;"></div>
+            <div class="minimap-lines" id="minimapLines"></div>
+          </div>
+        </div>
+
+        <!-- STATUS BAR -->
+        <div class="status-bar">
+          <div class="sb-left">
+            <span class="sb-item"><strong id="sbLines">0</strong> lignes</span>
+            <span class="sb-item"><strong id="sbChars">0</strong> caractères</span>
+            <span class="sb-item">Ligne <strong id="sbCursor">1</strong>, Col <strong id="sbCol">1</strong></span>
+            <span class="sb-item" id="sbEncoding">UTF-8 · LF</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:.75rem;">
+            <span class="sb-lang" id="sbLang">PYTHON</span>
+            <span class="sb-item"><i class="fas fa-lock" style="color:rgba(255,255,255,.2);font-size:.55rem;margin-right:.2rem;"></i>Lecture seule</span>
+          </div>
+        </div>
+
+      </div><!-- /code-panel -->
+    </div><!-- /viewer-shell -->
+  </div><!-- /adm-content -->
+</div><!-- /adm-main -->
+</div><!-- /adm-shell -->
+
+<div class="toast-box" id="toastBox"><i id="toastIco" class="fas fa-circle-check"></i><span id="toastMsg">OK</span></div>
+
+<script>
+/* ════════════════════════════════════════
+   DONNÉES FICHIERS — Code source simulé
+════════════════════════════════════════ */
+const FILES = {
+  app: {
+    name:'app.py', lang:'python', path:'/app/app.py',
+    lines:[
+      {t:'cm', c:'# ═══════════════════════════════════════════'},
+      {t:'cm', c:'# ML2C CONSEIL — Application Flask'},
+      {t:'cm', c:'# Version 2.0.4 · Scalingo osc-fr1'},
+      {t:'cm', c:'# ═══════════════════════════════════════════'},
+      {t:'', c:''},
+      {t:'kw', c:'from <span class="fn">flask</span> <span class="kw">import</span> Flask, render_template, request, redirect, url_for, session, jsonify'},
+      {t:'kw', c:'from <span class="fn">flask_pymongo</span> <span class="kw">import</span> PyMongo'},
+      {t:'kw', c:'from <span class="fn">bson.objectid</span> <span class="kw">import</span> ObjectId'},
+      {t:'kw', c:'from <span class="fn">datetime</span> <span class="kw">import</span> datetime'},
+      {t:'kw', c:'from <span class="fn">functools</span> <span class="kw">import</span> wraps'},
+      {t:'kw', c:'<span class="kw">import</span> <span class="fn">os</span>, <span class="fn">openai</span>, <span class="fn">hashlib</span>'},
+      {t:'', c:''},
+      {t:'cm', c:'# ── Initialisation Flask ──'},
+      {t:'', c:'<span class="fn">app</span> <span class="op">=</span> <span class="dec">Flask</span>(<span class="slf">__name__</span>)'},
+      {t:'', c:'<span class="fn">app</span>.config[<span class="str">"SECRET_KEY"</span>] <span class="op">=</span> os.<span class="fn">environ</span>.get(<span class="str">"SECRET_KEY"</span>, <span class="str">"dev_key"</span>)'},
+      {t:'', c:'<span class="fn">app</span>.config[<span class="str">"MONGO_URI"</span>] <span class="op">=</span> os.<span class="fn">environ</span>.get(<span class="str">"DATABASE_URL"</span>)'},
+      {t:'', c:'<span class="fn">mongo</span> <span class="op">=</span> <span class="dec">PyMongo</span>(app)'},
+      {t:'', c:''},
+      {t:'cm', c:'# ── Décorateur login requis ──'},
+      {t:'kw', c:'<span class="kw">def</span> <span class="fn">login_required</span>(f)<span class="punc">:</span>'},
+      {t:'', c:'    <span class="dec">@wraps</span>(f)'},
+      {t:'kw', c:'    <span class="kw">def</span> <span class="fn">decorated_function</span>(<span class="op">*</span>args, <span class="op">**</span>kwargs)<span class="punc">:</span>'},
+      {t:'kw', c:'        <span class="kw">if</span> <span class="str">"admin"</span> <span class="kw">not in</span> session<span class="punc">:</span>'},
+      {t:'kw', c:'            <span class="kw">return</span> <span class="fn">redirect</span>(url_for(<span class="str">"login_admin"</span>))'},
+      {t:'kw', c:'        <span class="kw">return</span> f(<span class="op">*</span>args, <span class="op">**</span>kwargs)'},
+      {t:'kw', c:'    <span class="kw">return</span> decorated_function'},
+      {t:'', c:''},
+      {t:'cm', c:'# ═══════════════════════════════════════════'},
+      {t:'cm', c:'# ROUTES ADMIN'},
+      {t:'cm', c:'# ═══════════════════════════════════════════'},
+      {t:'', c:''},
+      {t:'dec', c:'<span class="dec">@app.route</span>(<span class="str">"/admin-dashboard"</span>)'},
+      {t:'dec', c:'<span class="dec">@login_required</span>'},
+      {t:'kw', c:'<span class="kw">def</span> <span class="fn">admin_dashboard</span>()<span class="punc">:</span>'},
+      {t:'kw', c:'    <span class="kw">return</span> <span class="fn">render_template</span>(<span class="str">"admin_dashboard.html"</span>)'},
+      {t:'', c:''},
+      {t:'dec', c:'<span class="dec">@app.route</span>(<span class="str">"/admin-chatbot"</span>)'},
+      {t:'dec', c:'<span class="dec">@login_required</span>'},
+      {t:'kw', c:'<span class="kw">def</span> <span class="fn">admin_chatbot</span>()<span class="punc">:</span>'},
+      {t:'', c:'    messages <span class="op">=</span> list(mongo.db.messages.<span class="fn">find</span>().<span class="fn">sort</span>(<span class="str">"date"</span>, <span class="op">-</span><span class="num">1</span>))'},
+      {t:'kw', c:'    <span class="kw">return</span> <span class="fn">render_template</span>(<span class="str">"admin_chatbot.html"</span>, messages<span class="op">=</span>messages)'},
+      {t:'', c:''},
+      {t:'dec', c:'<span class="dec">@app.route</span>(<span class="str">"/admin-config"</span>)'},
+      {t:'dec', c:'<span class="dec">@login_required</span>'},
+      {t:'kw', c:'<span class="kw">def</span> <span class="fn">admin_config</span>()<span class="punc">:</span>'},
+      {t:'kw', c:'    <span class="kw">return</span> <span class="fn">render_template</span>(<span class="str">"admin_config.html"</span>)'},
+      {t:'', c:''},
+      {t:'dec', c:'<span class="dec">@app.route</span>(<span class="str">"/admin-stats"</span>)'},
+      {t:'dec', c:'<span class="dec">@login_required</span>'},
+      {t:'kw', c:'<span class="kw">def</span> <span class="fn">admin_stats</span>()<span class="punc">:</span>'},
+      {t:'kw', c:'    <span class="kw">return</span> <span class="fn">render_template</span>(<span class="str">"admin_stats.html"</span>)'},
+      {t:'', c:''},
+      {t:'dec', c:'<span class="dec">@app.route</span>(<span class="str">"/admin-logs"</span>)'},
+      {t:'dec', c:'<span class="dec">@login_required</span>'},
+      {t:'kw', c:'<span class="kw">def</span> <span class="fn">admin_logs</span>()<span class="punc">:</span>'},
+      {t:'kw', c:'    <span class="kw">return</span> <span class="fn">render_template</span>(<span class="str">"admin_logs.html"</span>)'},
+      {t:'', c:''},
+      {t:'cm', c:'# ── Nouvelles routes v2.0 ──'},
+      {t:'', c:''},
+      {t:'dec', c:'<span class="dec">@app.route</span>(<span class="str">"/admin/notifications"</span>)'},
+      {t:'dec', c:'<span class="dec">@login_required</span>'},
+      {t:'kw', c:'<span class="kw">def</span> <span class="fn">admin_notifications</span>()<span class="punc">:</span>'},
+      {t:'kw', c:'    <span class="kw">return</span> <span class="fn">render_template</span>(<span class="str">"admin_notifications.html"</span>)'},
+      {t:'', c:''},
+      {t:'dec', c:'<span class="dec">@app.route</span>(<span class="str">"/admin/agenda"</span>)'},
+      {t:'dec', c:'<span class="dec">@login_required</span>'},
+      {t:'kw', c:'<span class="kw">def</span> <span class="fn">admin_agenda</span>()<span class="punc">:</span>'},
+      {t:'kw', c:'    <span class="kw">return</span> <span class="fn">render_template</span>(<span class="str">"admin_agenda.html"</span>)'},
+      {t:'', c:''},
+      {t:'dec', c:'<span class="dec">@app.route</span>(<span class="str">"/admin/performances"</span>)'},
+      {t:'dec', c:'<span class="dec">@login_required</span>'},
+      {t:'kw', c:'<span class="kw">def</span> <span class="fn">admin_performances</span>()<span class="punc">:</span>'},
+      {t:'kw', c:'    <span class="kw">return</span> <span class="fn">render_template</span>(<span class="str">"admin_performances.html"</span>)'},
+      {t:'', c:''},
+      {t:'dec', c:'<span class="dec">@app.route</span>(<span class="str">"/admin/sauvegardes"</span>)'},
+      {t:'dec', c:'<span class="dec">@login_required</span>'},
+      {t:'kw', c:'<span class="kw">def</span> <span class="fn">admin_sauvegardes</span>()<span class="punc">:</span>'},
+      {t:'kw', c:'    <span class="kw">return</span> <span class="fn">render_template</span>(<span class="str">"admin_sauvegardes.html"</span>)'},
+      {t:'', c:''},
+      {t:'dec', c:'<span class="dec">@app.route</span>(<span class="str">"/admin/audit"</span>)'},
+      {t:'dec', c:'<span class="dec">@login_required</span>'},
+      {t:'kw', c:'<span class="kw">def</span> <span class="fn">admin_audit</span>()<span class="punc">:</span>'},
+      {t:'kw', c:'    <span class="kw">return</span> <span class="fn">render_template</span>(<span class="str">"admin_audit.html"</span>)'},
+      {t:'', c:''},
+      {t:'dec', c:'<span class="dec">@app.route</span>(<span class="str">"/admin/view-source"</span>)'},
+      {t:'dec', c:'<span class="dec">@login_required</span>'},
+      {t:'kw', c:'<span class="kw">def</span> <span class="fn">admin_view_source</span>()<span class="punc">:</span>'},
+      {t:'kw', c:'    <span class="kw">return</span> <span class="fn">render_template</span>(<span class="str">"admin_view_source.html"</span>)'},
+      {t:'', c:''},
+      {t:'cm', c:'# ── Lancement ──'},
+      {t:'kw', c:'<span class="kw">if</span> <span class="slf">__name__</span> <span class="op">==</span> <span class="str">"__main__"</span><span class="punc">:</span>'},
+      {t:'', c:'    <span class="fn">app</span>.<span class="fn">run</span>(debug<span class="op">=</span><span class="kw">False</span>)'},
+    ]
+  },
+  requirements: {
+    name:'requirements.txt', lang:'txt', path:'/app/requirements.txt',
+    lines:[
+      {t:'fn',c:'Flask<span class="op">==</span><span class="num">3.0.3</span>'},
+      {t:'fn',c:'Flask-PyMongo<span class="op">==</span><span class="num">2.3.0</span>'},
+      {t:'fn',c:'pymongo<span class="op">==</span><span class="num">4.7.1</span>'},
+      {t:'fn',c:'openai<span class="op">==</span><span class="num">1.30.1</span>'},
+      {t:'fn',c:'Werkzeug<span class="op">==</span><span class="num">3.0.3</span>'},
+      {t:'fn',c:'gunicorn<span class="op">==</span><span class="num">22.0.0</span>'},
+      {t:'fn',c:'python-dotenv<span class="op">==</span><span class="num">1.0.1</span>'},
+      {t:'fn',c:'bson<span class="op">==</span><span class="num">0.5.10</span>'},
+    ]
+  },
+  procfile: {
+    name:'Procfile', lang:'txt', path:'/app/Procfile',
+    lines:[
+      {t:'fn',c:'web<span class="op">:</span> gunicorn app<span class="op">:</span>app <span class="op">--</span>workers <span class="num">2</span> <span class="op">--</span>timeout <span class="num">30</span>'},
+    ]
+  },
+  readme: {
+    name:'README.md', lang:'md', path:'/app/README.md',
+    lines:[
+      {t:'dec',c:'<span class="dec"># ML2C CONSEIL — Application Web Flask</span>'},
+      {t:'',c:''},
+      {t:'str',c:'Cabinet d\'expertise comptable digitalisé.'},
+      {t:'',c:''},
+      {t:'dec',c:'<span class="dec">## Stack technique</span>'},
+      {t:'',c:'- Python 3.12 / Flask 3.0'},
+      {t:'',c:'- MongoDB (PyMongo)'},
+      {t:'',c:'- Scalingo osc-fr1 (Paris)'},
+      {t:'',c:'- Bootstrap 4.5.2 + DM Sans + Cormorant Garamond'},
+      {t:'',c:''},
+      {t:'dec',c:'<span class="dec">## Déploiement</span>'},
+      {t:'fn',c:'git push scalingo main'},
+    ]
+  },
+  styles: {
+    name:'styles.css', lang:'css', path:'/app/static/css/styles.css',
+    lines:[
+      {t:'cm',c:'<span class="cm">/* ═══ ML2C CONSEIL — Styles globaux ═══ */</span>'},
+      {t:'',c:'<span class="punc">:root</span> <span class="punc">{</span>'},
+      {t:'css-p',c:'  <span class="css-p">--rose</span><span class="punc">:</span> <span class="str">#C1007A</span><span class="punc">;</span>'},
+      {t:'css-p',c:'  <span class="css-p">--turq</span><span class="punc">:</span> <span class="str">#4FA695</span><span class="punc">;</span>'},
+      {t:'css-p',c:'  <span class="css-p">--gold</span><span class="punc">:</span> <span class="str">#f59e0b</span><span class="punc">;</span>'},
+      {t:'css-p',c:'  <span class="css-p">--ff-head</span><span class="punc">:</span> <span class="str">\'Cormorant Garamond\'</span><span class="punc">, serif;</span>'},
+      {t:'css-p',c:'  <span class="css-p">--ff-body</span><span class="punc">:</span> <span class="str">\'DM Sans\'</span><span class="punc">, sans-serif;</span>'},
+      {t:'',c:'<span class="punc">}</span>'},
+    ]
+  },
+};
+
+/* ── Tabs ouverts ── */
+let openTabs = ['app'];
+let currentFile = 'app';
+let searchMatches = [], searchIdx = 0;
+let wrapEnabled = false;
+let minimapEnabled = true;
+
+/* ── Clock ── */
+function tick(){const n=new Date();const s=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('topClock');if(el)el.textContent=s;}
+tick();setInterval(tick,1000);
+
+/* ── Toast ── */
+function toast(type,msg){
+  const box=document.getElementById('toastBox'),ico=document.getElementById('toastIco'),m=document.getElementById('toastMsg');
+  box.className='toast-box';
+  const map={ok:['toast-ok','fas fa-circle-check'],info:['toast-info','fas fa-circle-info'],warn:['toast-warn','fas fa-triangle-exclamation']};
+  const[cls,i]=map[type]||map.ok;
+  box.classList.add(cls);ico.className=i;m.textContent=msg;
+  box.classList.add('show');clearTimeout(window._tt);
+  window._tt=setTimeout(()=>box.classList.remove('show'),3000);
+}
+
+/* ── Render code ── */
+function renderFile(key){
+  const f=FILES[key];if(!f)return;
+  currentFile=key;
+
+  // Update path
+  const parts=f.path.split('/');
+  const fname=parts.pop();
+  document.getElementById('codePathSpan').innerHTML=parts.join('/')+'/<strong>'+fname+'</strong>';
+
+  // Language badge
+  const langMap={python:'PYTHON',html:'HTML',css:'CSS',js:'JS',txt:'TEXT',md:'MARKDOWN'};
+  document.getElementById('sbLang').textContent=langMap[f.lang]||f.lang.toUpperCase();
+
+  // Lines
+  const lineNums=document.getElementById('lineNumbers');
+  const codeContent=document.getElementById('codeContent');
+  lineNums.innerHTML='';
+  codeContent.innerHTML='';
+
+  f.lines.forEach((line,i)=>{
+    const num=document.createElement('span');
+    num.className='line-num';num.id='ln'+(i+1);num.textContent=i+1;
+    lineNums.appendChild(num);
+
+    const ln=document.createElement('span');
+    ln.className='code-line';
+    ln.id='line'+(i+1);
+    ln.innerHTML=line.c||'&nbsp;';
+    ln.onclick=()=>selectLine(i+1);
+    codeContent.appendChild(ln);
+  });
+
+  // Status bar
+  document.getElementById('sbLines').textContent=f.lines.length;
+  document.getElementById('sbChars').textContent=f.lines.reduce((a,l)=>a+(l.c||'').replace(/<[^>]*>/g,'').length,0);
+
+  // Minimap
+  renderMinimap(f);
+
+  // Update file tree active
+  document.querySelectorAll('.ft-item').forEach(el=>{
+    el.classList.toggle('active', el.getAttribute('onclick')?.includes("'"+key+"'"));
+  });
+}
+
+/* ── Minimap ── */
+function renderMinimap(f){
+  const ml=document.getElementById('minimapLines');
+  ml.innerHTML='';
+  f.lines.forEach(line=>{
+    const d=document.createElement('div');
+    d.className='mm-line';
+    if(line.t==='kw'||line.t==='dec')d.classList.add('mm-kw');
+    else if(line.t==='fn')d.classList.add('mm-fn');
+    else if(line.t==='str')d.classList.add('mm-str');
+    else if(line.t==='cm')d.classList.add('mm-cm');
+    ml.appendChild(d);
+  });
+}
+
+/* ── Select line ── */
+function selectLine(n){
+  document.querySelectorAll('.code-line').forEach(l=>l.classList.remove('highlighted'));
+  document.querySelectorAll('.line-num').forEach(l=>l.classList.remove('active'));
+  const ln=document.getElementById('line'+n);
+  const num=document.getElementById('ln'+n);
+  if(ln){ln.classList.add('highlighted');}
+  if(num){num.classList.add('active');}
+  document.getElementById('sbCursor').textContent=n;
+}
+
+/* ── Open file ── */
+function openFile(key, name, lang){
+  if(!FILES[key]){
+    // Fichier non chargé — simuler
+    FILES[key]={name,lang,path:'/app/'+name,lines:[
+      {t:'cm',c:'<span class="cm"># '+name+' — Fichier non chargé en démo</span>'},
+      {t:'cm',c:'<span class="cm"># Connectez le backend Flask pour afficher le contenu réel.</span>'},
+      {t:'',c:''},
+      {t:'str',c:'<span class="str">"Ce fichier sera chargé dynamiquement via la route /admin/view-source"</span>'},
+    ]};
+  }
+  if(!openTabs.includes(key)){
+    openTabs.push(key);
+    addTab(key,name);
+  }
+  setActiveTab(key);
+  renderFile(key);
+}
+
+/* ── Tabs ── */
+function addTab(key,name){
+  const tabs=document.getElementById('codeTabs');
+  const t=document.createElement('div');
+  t.className='code-tab';t.id='tab-'+key;t.setAttribute('data-file',key);
+  t.innerHTML=`<svg width="10" height="10" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>${name}<span class="code-tab-close" onclick="closeTab(event,'${key}')">✕</span>`;
+  t.onclick=(e)=>{if(!e.target.classList.contains('code-tab-close')){setActiveTab(key);renderFile(key);}};
+  tabs.appendChild(t);
+}
+function setActiveTab(key){
+  document.querySelectorAll('.code-tab').forEach(t=>t.classList.remove('active'));
+  const t=document.getElementById('tab-'+key)||document.querySelector(`[data-file="${key}"]`);
+  if(t)t.classList.add('active');
+}
+function closeTab(e,key){
+  e.stopPropagation();
+  const idx=openTabs.indexOf(key);
+  if(idx===-1)return;
+  openTabs.splice(idx,1);
+  const t=document.getElementById('tab-'+key)||document.querySelector(`[data-file="${key}"]`);
+  if(t)t.remove();
+  if(openTabs.length>0){
+    const next=openTabs[Math.min(idx,openTabs.length-1)];
+    setActiveTab(next);renderFile(next);
+  } else {
+    document.getElementById('codeContent').innerHTML='';
+    document.getElementById('lineNumbers').innerHTML='';
+  }
+}
+
+/* ── Search ── */
+function searchInCode(q){
+  const lines=document.querySelectorAll('.code-line');
+  lines.forEach(l=>{l.classList.remove('search-match','search-current');});
+  searchMatches=[];searchIdx=0;
+  const cnt=document.getElementById('searchCount');
+  if(!q){cnt.style.display='none';return;}
+  lines.forEach((l,i)=>{
+    if(l.textContent.toLowerCase().includes(q.toLowerCase())){
+      l.classList.add('search-match');
+      searchMatches.push(i);
+    }
+  });
+  cnt.style.display=searchMatches.length?'':'none';
+  if(searchMatches.length){cnt.textContent=searchMatches.length+' résultat'+(searchMatches.length>1?'s':'');highlightCurrent();}
+}
+function searchNav(e){
+  if(e.key==='Enter'){searchIdx=(searchIdx+1)%Math.max(1,searchMatches.length);highlightCurrent();}
+  if(e.key==='Escape'){document.getElementById('codeSearch').value='';searchInCode('');}
+}
+function highlightCurrent(){
+  document.querySelectorAll('.code-line').forEach(l=>l.classList.remove('search-current'));
+  if(!searchMatches.length)return;
+  const idx=searchMatches[searchIdx%searchMatches.length];
+  const lines=document.querySelectorAll('.code-line');
+  if(lines[idx]){lines[idx].classList.add('search-current');lines[idx].scrollIntoView({behavior:'smooth',block:'center'});}
+}
+
+/* ── Toggle wrap ── */
+function toggleWrap(){
+  wrapEnabled=!wrapEnabled;
+  document.querySelectorAll('.code-line').forEach(l=>l.style.whiteSpace=wrapEnabled?'pre-wrap':'pre');
+  document.getElementById('wrapBtn').style.color=wrapEnabled?'var(--rose)':'';
+}
+
+/* ── Toggle minimap ── */
+function toggleMinimap(){
+  minimapEnabled=!minimapEnabled;
+  document.getElementById('minimap').style.display=minimapEnabled?'':'none';
+  document.getElementById('minimapBtn').style.color=minimapEnabled?'var(--rose)':'';
+}
+
+/* ── Copy ── */
+function copyCurrentFile(){
+  const f=FILES[currentFile];if(!f)return;
+  const txt=f.lines.map(l=>(l.c||'').replace(/<[^>]*>/g,'')).join('\n');
+  navigator.clipboard.writeText(txt).then(()=>toast('ok','Code copié dans le presse-papiers'));
+}
+
+/* ── Download ── */
+function downloadFile(){
+  const f=FILES[currentFile];if(!f)return;
+  const txt=f.lines.map(l=>(l.c||'').replace(/<[^>]*>/g,'')).join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(txt);
+  a.download=f.name;a.click();
+  toast('ok',f.name+' téléchargé');
+}
+
+/* ── Collapse all ── */
+function collapseAll(){
+  document.querySelectorAll('.ft-group-label').forEach(g=>{
+    if(!g.classList.contains('collapsed')){g.click();}
+  });
+}
+
+/* ── Group toggle ── */
+function toggleGroup(el){
+  el.classList.toggle('collapsed');
+  const items=el.nextElementSibling;
+  if(items){items.style.maxHeight=el.classList.contains('collapsed')?'0':'500px';}
+}
+// Init max-height
+document.querySelectorAll('.ft-group-items').forEach(el=>el.style.maxHeight='500px');
+
+/* ── Filter files ── */
+function filterFiles(q){
+  const items=document.querySelectorAll('.ft-item');
+  let visible=0;
+  items.forEach(item=>{
+    const name=(item.dataset.name||item.textContent).toLowerCase();
+    const show=!q||name.includes(q.toLowerCase());
+    item.style.display=show?'':'none';
+    if(show)visible++;
+  });
+  document.getElementById('ftCount').textContent=visible+' fichier'+(visible>1?'s':'');
+}
+
+/* ── Minimap scroll sync ── */
+document.getElementById('codeArea').addEventListener('scroll',function(){
+  const pct=this.scrollTop/(this.scrollHeight-this.clientHeight||1);
+  const mm=document.getElementById('minimap');
+  const vp=document.getElementById('minimapViewport');
+  const mmH=mm.clientHeight;
+  vp.style.top=Math.floor(pct*(mmH-60))+'px';
+});
+
+/* ── Init ── */
+renderFile('app');
+</script>
+</body></html>

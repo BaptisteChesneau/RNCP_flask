@@ -1186,6 +1186,12 @@ def admin_export():
 def admin_purge():
     return render_template('admin_purge.html')
 
+@app.route('/admin/parametres')
+def admin_parametres(): return render_template('admin_parametres.html')
+
+@app.route('/admin/utilisateurs')
+def admin_utilisateurs(): return render_template('admin_utilisateurs.html')
+
 # ➡️ NEW protected admin route (to be added)
 @app.route("/admin-chatbot")
 def admin_chatbot():

@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paramètres du Compte — ML2C Admin</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rose: #C1007A; --rose-d: #9a0062; --rose-l: #fce4f3; --rose-xl: #fff5fb;
+      --turq: #4FA695; --turq-l: #d4f0ec;
+      --gold: #f59e0b; --gold-d: #b45309; --gold-l: #fffbeb;
+      --ink: #080b12; --ink2: #0d1017; --ink3: #151820; --ink4: #1c2130;
+      --bg: #f2f4f8; --surface: #fff; --border: #e4e8ef;
+      --text: #111827; --muted: #6b7280; --faint: #9ca3af;
+      --success: #10b981; --danger: #ef4444;
+      --ff-head: 'Cormorant Garamond', serif;
+      --ff-body: 'DM Sans', sans-serif;
+      --ff-mono: 'JetBrains Mono', monospace;
+    }
+    body { background: var(--bg); font-family: var(--ff-body); color: var(--text); }
+
+    /* ── HERO ── */
+    .page-hero {
+      background: var(--ink);
+      position: relative; overflow: hidden;
+      padding: 2.5rem 0 4.5rem;
+    }
+    .page-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 55% 70% at 85% 25%, rgba(193,0,122,.18) 0%, transparent 55%),
+        radial-gradient(ellipse 30% 45% at 5% 80%, rgba(79,166,149,.1) 0%, transparent 50%);
+    }
+    .hero-bar {
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--rose), var(--gold), var(--turq), var(--rose));
+      background-size: 300%; animation: barShift 4s linear infinite;
+    }
+    @keyframes barShift { 0%{background-position:0%} 100%{background-position:300%} }
+    .hero-wave { position: absolute; bottom: -1px; left: 0; right: 0; z-index: 2; }
+    .hero-inner { position: relative; z-index: 1; }
+    .hero-bc {
+      display: flex; align-items: center; gap: .5rem;
+      font-size: .7rem; color: rgba(255,255,255,.3);
+      font-family: var(--ff-mono); margin-bottom: 1rem;
+    }
+    .hero-bc a { color: rgba(255,255,255,.35); text-decoration: none; }
+    .hero-bc a:hover { color: var(--gold); }
+    .hero-bc span { color: rgba(255,255,255,.2); }
+    .hero-title {
+      font-family: var(--ff-head); font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700; color: #fff; margin-bottom: .4rem; line-height: 1.1;
+    }
+    .hero-title .t-gold { color: var(--gold); font-style: italic; }
+    .hero-sub {
+      font-size: .83rem; color: rgba(255,255,255,.4);
+      font-family: var(--ff-mono); display: flex; align-items: center; gap: .5rem;
+    }
+    .online-pip {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--success); box-shadow: 0 0 8px rgba(16,185,129,.7);
+      animation: pip 2s infinite;
+    }
+    @keyframes pip { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    /* ── PROFIL HERO CARD ── */
+    .hero-profile {
+      position: relative; z-index: 1;
+      display: flex; align-items: center; gap: 1.5rem;
+      margin-top: 1.5rem;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 18px; padding: 1.25rem 1.5rem;
+      backdrop-filter: blur(12px);
+      max-width: 520px;
+    }
+    .hp-av-wrap { position: relative; flex-shrink: 0; }
+    .hp-ring {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: conic-gradient(var(--rose), var(--gold), var(--turq), var(--rose));
+      padding: 3px; animation: ringRot 5s linear infinite;
+      box-shadow: 0 0 20px rgba(193,0,122,.35);
+    }
+    @keyframes ringRot { to{transform:rotate(360deg)} }
+    .hp-av-inner {
+      width: 100%; height: 100%; border-radius: 50%;
+      background: var(--ink3); overflow: hidden;
+      display: flex; align-items: flex-end; justify-content: center;
+    }
+    .hp-av-inner img { width: 58px; height: 58px; object-fit: cover; }
+    .hp-crown {
+      position: absolute; top: -6px; right: -6px;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--gold-d));
+      border: 2px solid var(--ink);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .55rem; color: #fff;
+      box-shadow: 0 0 8px rgba(245,158,11,.6);
+    }
+    .hp-info { flex: 1; }
+    .hp-name { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: .2rem; }
+    .hp-role {
+      font-size: .68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .08em; color: var(--gold);
+      display: flex; align-items: center; gap: .35rem;
+    }
+    .hp-email { font-size: .75rem; color: rgba(255,255,255,.35); margin-top: .2rem; font-family: var(--ff-mono); }
+    .hp-edit-av {
+      display: inline-flex; align-items: center; gap: .35rem;
+      padding: .4rem .85rem; border-radius: 8px;
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.65); font-size: .75rem; font-weight: 500;
+      cursor: pointer; transition: all .2s; border: none; font-family: var(--ff-body);
+    }
+    .hp-edit-av:hover { background: rgba(193,0,122,.2); color: #f472b6; }
+
+    /* ── MAIN ── */
+    .main { padding: 2.5rem 0 5rem; }
+
+    /* Layout */
+    .param-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    /* NAV */
+    .param-nav {
+      background: var(--surface); border-radius: 18px;
+      border: 1.5px solid var(--border);
+      box-shadow: 0 2px 14px rgba(0,0,0,.05);
+      overflow: hidden; position: sticky; top: 90px;
+    }
+    .pn-head {
+      padding: .8rem 1.1rem; border-bottom: 1px solid var(--border);
+      font-size: .62rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .12em; color: var(--faint);
+    }
+    .pn-item {
+      display: flex; align-items: center; gap: .6rem;
+      padding: .7rem 1.1rem; font-size: .82rem; color: var(--muted);
+      cursor: pointer; border: none; background: none; width: 100%;
+      text-align: left; transition: all .15s; font-family: var(--ff-body);
+      border-left: 3px solid transparent;
+    }
+    .pn-item:hover { background: #f9fafb; color: var(--text); }
+    .pn-item.active { background: var(--rose-l); color: var(--rose); border-left-color: var(--rose); font-weight: 600; }
+    .pn-item i { width: 15px; font-size: .8rem; }
+    .pn-divider { height: 1px; background: var(--border); margin: .3rem 0; }
+
+    /* SECTIONS */
+    .param-section { display: none; }
+    .param-section.active { display: block; }
+
+    /* PANEL */
+    .param-panel {
+      background: var(--surface); border-radius: 18px;
+      border: 1.5px solid var(--border);
+      box-shadow: 0 2px 14px rgba(0,0,0,.055);
+      overflow: hidden; margin-bottom: 1.5rem;
+      animation: panIn .35s ease;
+    }
+    @keyframes panIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+    .pp-head {
+      display: flex; align-items: center; gap: .65rem;
+      padding: 1rem 1.5rem; background: #fafbfc;
+      border-bottom: 1px solid var(--border);
+    }
+    .pp-ico {
+      width: 32px; height: 32px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; font-size: .82rem;
+    }
+    .pi-rose { background: var(--rose-l); color: var(--rose); }
+    .pi-turq { background: var(--turq-l); color: var(--turq); }
+    .pi-gold { background: var(--gold-l); color: var(--gold-d); }
+    .pi-ink  { background: #e8eaeb; color: #5C666B; }
+    .pi-blue { background: #dbeafe; color: #2563eb; }
+    .pp-title { font-size: .85rem; font-weight: 700; color: var(--text); }
+    .pp-sub   { font-size: .7rem; color: var(--muted); margin-top: .05rem; }
+    .pp-body  { padding: 1.5rem; }
+
+    /* Fields */
+    .f-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.1rem; }
+    .f-group { display: flex; flex-direction: column; gap: .4rem; }
+    .f-label {
+      font-size: .68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .07em; color: var(--muted);
+    }
+    .f-label .req { color: var(--rose); }
+    .f-input {
+      border: 1.5px solid var(--border); border-radius: 10px;
+      padding: .72rem 1rem; font-size: .88rem;
+      font-family: var(--ff-body); color: var(--text);
+      background: #fafbfc; outline: none; width: 100%;
+      transition: all .2s;
+    }
+    .f-input:focus { border-color: var(--rose); background: #fff; box-shadow: 0 0 0 3px rgba(193,0,122,.08); }
+    .f-input.mono { font-family: var(--ff-mono); font-size: .83rem; }
+    .f-hint { font-size: .68rem; color: var(--faint); margin-top: .2rem; }
+
+    /* Password strength */
+    .pwd-wrap { position: relative; }
+    .pwd-eye {
+      position: absolute; right: .9rem; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: var(--faint); cursor: pointer; font-size: .82rem; padding: 0;
+      transition: color .2s;
+    }
+    .pwd-eye:hover { color: var(--text); }
+    .strength-row { display: flex; align-items: center; gap: .5rem; margin-top: .5rem; }
+    .strength-bars { display: flex; gap: .3rem; flex: 1; }
+    .s-bar { flex: 1; height: 3px; border-radius: 2px; background: rgba(0,0,0,.06); transition: background .3s; }
+    .s-bar.w { background: var(--danger); }
+    .s-bar.m { background: var(--gold); }
+    .s-bar.s { background: var(--success); }
+    .strength-lbl { font-size: .62rem; color: var(--muted); min-width: 40px; }
+
+    /* Toggles */
+    .toggle-list { display: flex; flex-direction: column; }
+    .toggle-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .9rem 0; border-bottom: 1px solid #f5f6f8;
+    }
+    .toggle-row:last-child { border-bottom: none; }
+    .toggle-info { flex: 1; margin-right: 1rem; }
+    .toggle-title { font-size: .85rem; font-weight: 600; color: var(--text); }
+    .toggle-sub   { font-size: .73rem; color: var(--muted); margin-top: .12rem; }
+    .toggle-sw { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+    .toggle-sw input { opacity: 0; width: 0; height: 0; position: absolute; }
+    .sw-slider {
+      position: absolute; inset: 0; background: #e5e7eb; border-radius: 24px;
+      cursor: pointer; transition: .2s;
+    }
+    .sw-slider::before {
+      content: ''; position: absolute; width: 18px; height: 18px; border-radius: 50%;
+      background: #fff; left: 3px; top: 3px; transition: .2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,.2);
+    }
+    .toggle-sw input:checked + .sw-slider { background: var(--rose); }
+    .toggle-sw input:checked + .sw-slider::before { transform: translateX(20px); }
+
+    /* Save bar */
+    .save-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.5rem; background: var(--gold-l);
+      border-top: 1px solid rgba(245,158,11,.2); gap: 1rem; flex-wrap: wrap;
+    }
+    .save-info {
+      font-size: .78rem; color: var(--gold-d);
+      display: flex; align-items: center; gap: .45rem;
+    }
+    .save-btns { display: flex; gap: .6rem; }
+    .btn-cancel {
+      padding: .55rem 1.1rem; border-radius: 9px; border: 1.5px solid var(--border);
+      background: #fff; color: var(--muted); font-size: .8rem; font-weight: 600;
+      cursor: pointer; transition: all .2s; font-family: var(--ff-body);
+    }
+    .btn-cancel:hover { border-color: var(--danger); color: var(--danger); }
+    .btn-save {
+      padding: .55rem 1.25rem; border-radius: 9px; border: none;
+      background: linear-gradient(135deg, var(--rose), var(--rose-d));
+      color: #fff; font-size: .8rem; font-weight: 600; cursor: pointer;
+      transition: all .2s; font-family: var(--ff-body);
+      box-shadow: 0 4px 12px rgba(193,0,122,.25);
+      display: flex; align-items: center; gap: .4rem;
+    }
+    .btn-save:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(193,0,122,.35); }
+
+    /* Avatar gallery */
+    .av-gallery { display: grid; grid-template-columns: repeat(6,1fr); gap: .75rem; }
+    .av-opt {
+      aspect-ratio: 1; border-radius: 12px; overflow: hidden;
+      border: 2.5px solid transparent; cursor: pointer;
+      transition: all .2s; background: rgba(0,0,0,.04);
+    }
+    .av-opt:hover { border-color: rgba(193,0,122,.4); transform: scale(1.06); }
+    .av-opt.on { border-color: var(--rose); box-shadow: 0 0 0 3px rgba(193,0,122,.15); }
+    .av-opt img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* Sessions actives */
+    .session-item {
+      display: flex; align-items: center; gap: 1rem;
+      padding: .9rem 0; border-bottom: 1px solid #f5f6f8;
+    }
+    .session-item:last-child { border-bottom: none; }
+    .session-ico {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: #f0f2f5; color: var(--muted);
+      display: flex; align-items: center; justify-content: center; font-size: .9rem; flex-shrink: 0;
+    }
+    .session-device { font-size: .85rem; font-weight: 600; color: var(--text); }
+    .session-meta { font-size: .72rem; color: var(--muted); font-family: var(--ff-mono); margin-top: .1rem; }
+    .session-current {
+      font-size: .62rem; font-weight: 700; padding: .12rem .5rem; border-radius: 20px;
+      background: #d1fae5; color: #065f46; margin-left: .5rem;
+    }
+    .session-revoke {
+      margin-left: auto; font-size: .75rem; font-weight: 600; color: var(--danger);
+      background: none; border: none; cursor: pointer; font-family: var(--ff-body);
+      transition: color .2s; display: flex; align-items: center; gap: .3rem;
+    }
+    .session-revoke:hover { color: #dc2626; }
+
+    /* Danger zone */
+    .danger-zone {
+      background: #fff; border-radius: 18px;
+      border: 1.5px solid rgba(239,68,68,.2);
+      box-shadow: 0 2px 14px rgba(239,68,68,.04);
+      overflow: hidden; margin-bottom: 1.5rem;
+    }
+    .dz-head {
+      display: flex; align-items: center; gap: .65rem;
+      padding: 1rem 1.5rem; background: #fef9f9; border-bottom: 1px solid rgba(239,68,68,.12);
+    }
+    .dz-ico { width: 32px; height: 32px; border-radius: 8px; background: #fee2e2; color: var(--danger); display: flex; align-items: center; justify-content: center; font-size: .82rem; }
+    .dz-title { font-size: .85rem; font-weight: 700; color: var(--danger); }
+    .dz-body { padding: 1.5rem; }
+    .dz-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .85rem 0; border-bottom: 1px solid #fef2f2; gap: 1rem; flex-wrap: wrap;
+    }
+    .dz-item:last-child { border-bottom: none; }
+    .dz-item-title { font-size: .85rem; font-weight: 600; color: var(--text); }
+    .dz-item-sub   { font-size: .73rem; color: var(--muted); margin-top: .1rem; }
+    .btn-dz {
+      padding: .5rem 1rem; border-radius: 8px; font-size: .78rem; font-weight: 600;
+      cursor: pointer; border: 1.5px solid rgba(239,68,68,.4);
+      background: transparent; color: var(--danger);
+      transition: all .2s; font-family: var(--ff-body); flex-shrink: 0;
+    }
+    .btn-dz:hover { background: #fee2e2; }
+
+    /* Toast */
+    .toast-box {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
+      display: flex; align-items: center; gap: .65rem;
+      padding: .8rem 1.25rem; border-radius: 12px;
+      font-size: .83rem; font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0,0,0,.15);
+      transform: translateY(80px); opacity: 0;
+      transition: all .3s cubic-bezier(.34,1.2,.64,1); pointer-events: none;
+    }
+    .toast-box.show { transform: translateY(0); opacity: 1; }
+    .toast-ok  { background: #0d2e23; color: #4ade80; border: 1px solid rgba(74,222,128,.2); }
+    .toast-err { background: #2e0d0d; color: #f87171; border: 1px solid rgba(248,113,113,.2); }
+
+    @media(max-width:900px){ .param-layout{grid-template-columns:1fr} .param-nav{position:static} .f-grid{grid-template-columns:1fr} .av-gallery{grid-template-columns:repeat(3,1fr)} }
+  </style>
+</head>
+<body>
+{% include "header.html" %}
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="hero-bar"></div>
+  <div class="container hero-inner">
+    <div class="hero-bc">
+      <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+      <span>/</span> Paramètres du compte
+    </div>
+    <h1 class="hero-title">Paramètres du <span class="t-gold">compte</span></h1>
+    <div class="hero-sub">
+      <span class="online-pip"></span>
+      SUPER ADMIN · ML2C CONSEIL · <span id="heroTime">--:--:--</span>
+    </div>
+
+    <!-- Profil card -->
+    <div class="hero-profile">
+      <div class="hp-av-wrap">
+        <div class="hp-ring">
+          <div class="hp-av-inner">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy" alt="Admin" id="mainAvatar">
+          </div>
+        </div>
+        <div class="hp-crown"><i class="fas fa-crown"></i></div>
+      </div>
+      <div class="hp-info">
+        <div class="hp-name" id="displayName">Administrateur ML2C</div>
+        <div class="hp-role"><i class="fas fa-crown" style="font-size:.55rem;"></i> Super Admin · Niveau 3</div>
+        <div class="hp-email" id="displayEmail">admin@ml2cconseil.com</div>
+      </div>
+      <button class="hp-edit-av" onclick="showSection('avatar', document.querySelector('[data-sec=avatar]'))">
+        <i class="fas fa-camera"></i> Modifier
+      </button>
+    </div>
+  </div>
+  <svg class="hero-wave" viewBox="0 0 1440 60" preserveAspectRatio="none">
+    <path d="M0,0 C480,60 960,60 1440,0 L1440,60 L0,60 Z" fill="#f2f4f8"/>
+  </svg>
+</div>
+
+<div class="main">
+  <div class="container">
+    <div class="param-layout">
+
+      <!-- NAV -->
+      <div class="param-nav">
+        <div class="pn-head">Compte</div>
+        <button class="pn-item active" data-sec="profil" onclick="showSection('profil',this)">
+          <i class="fas fa-user"></i> Profil
+        </button>
+        <button class="pn-item" data-sec="securite" onclick="showSection('securite',this)">
+          <i class="fas fa-lock"></i> Sécurité
+        </button>
+        <button class="pn-item" data-sec="avatar" onclick="showSection('avatar',this)">
+          <i class="fas fa-image"></i> Avatar
+        </button>
+        <button class="pn-item" data-sec="notifications" onclick="showSection('notifications',this)">
+          <i class="fas fa-bell"></i> Notifications
+        </button>
+        <div class="pn-divider"></div>
+        <div class="pn-head" style="padding-top:.6rem;">Session</div>
+        <button class="pn-item" data-sec="sessions" onclick="showSection('sessions',this)">
+          <i class="fas fa-desktop"></i> Sessions actives
+        </button>
+        <div class="pn-divider"></div>
+        <button class="pn-item" data-sec="danger" onclick="showSection('danger',this)" style="color:var(--danger);">
+          <i class="fas fa-triangle-exclamation"></i> Zone de danger
+        </button>
+      </div>
+
+      <!-- CONTENU -->
+      <div>
+
+        <!-- PROFIL -->
+        <div class="param-section active" id="sec-profil">
+          <div class="param-panel">
+            <div class="pp-head">
+              <div class="pp-ico pi-rose"><i class="fas fa-user"></i></div>
+              <div>
+                <div class="pp-title">Informations personnelles</div>
+                <div class="pp-sub">Votre identité sur la plateforme ML2C CONSEIL</div>
+              </div>
+            </div>
+            <div class="pp-body">
+              <div class="f-grid">
+                <div class="f-group">
+                  <div class="f-label">Prénom <span class="req">*</span></div>
+                  <input class="f-input" value="Administrateur" id="f-prenom">
+                </div>
+                <div class="f-group">
+                  <div class="f-label">Nom</div>
+                  <input class="f-input" value="ML2C" id="f-nom">
+                </div>
+                <div class="f-group" style="grid-column:1/-1;">
+                  <div class="f-label">Email de connexion <span class="req">*</span></div>
+                  <input class="f-input mono" value="admin@ml2cconseil.com" id="f-email">
+                  <div class="f-hint"><i class="fas fa-info-circle"></i> Cet email est utilisé pour la connexion admin</div>
+                </div>
+                <div class="f-group">
+                  <div class="f-label">Téléphone</div>
+                  <input class="f-input" value="+33 (0)6 72 34 32 94">
+                </div>
+                <div class="f-group">
+                  <div class="f-label">Fuseau horaire</div>
+                  <select class="f-input" style="cursor:pointer;">
+                    <option selected>Europe/Paris (UTC+1)</option>
+                    <option>Europe/London (UTC+0)</option>
+                    <option>America/New_York (UTC-5)</option>
+                  </select>
+                </div>
+                <div class="f-group" style="grid-column:1/-1;">
+                  <div class="f-label">Biographie courte</div>
+                  <textarea class="f-input" rows="3" style="resize:none;">Expert-comptable certifié · Cabinet ML2C CONSEIL · Dammarie</textarea>
+                </div>
+              </div>
+            </div>
+            <div class="save-bar">
+              <div class="save-info"><i class="fas fa-info-circle"></i> Les modifications sont appliquées immédiatement.</div>
+              <div class="save-btns">
+                <button class="btn-cancel">Annuler</button>
+                <button class="btn-save" onclick="saveProfil()"><i class="fas fa-save"></i> Enregistrer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SÉCURITÉ -->
+        <div class="param-section" id="sec-securite">
+          <div class="param-panel">
+            <div class="pp-head">
+              <div class="pp-ico pi-gold"><i class="fas fa-lock"></i></div>
+              <div>
+                <div class="pp-title">Changer le mot de passe</div>
+                <div class="pp-sub">Utilisez un mot de passe fort d'au moins 12 caractères</div>
+              </div>
+            </div>
+            <div class="pp-body">
+              <div class="f-grid" style="grid-template-columns:1fr;">
+                <div class="f-group">
+                  <div class="f-label">Mot de passe actuel <span class="req">*</span></div>
+                  <div class="pwd-wrap">
+                    <input class="f-input" type="password" id="pwdCurrent" placeholder="••••••••••••" style="padding-right:2.5rem;">
+                    <button class="pwd-eye" type="button" onclick="toggleEye('pwdCurrent',this)"><i class="fas fa-eye"></i></button>
+                  </div>
+                </div>
+                <div class="f-group">
+                  <div class="f-label">Nouveau mot de passe <span class="req">*</span></div>
+                  <div class="pwd-wrap">
+                    <input class="f-input" type="password" id="pwdNew" placeholder="••••••••••••" style="padding-right:2.5rem;" oninput="checkStr(this.value)">
+                    <button class="pwd-eye" type="button" onclick="toggleEye('pwdNew',this)"><i class="fas fa-eye"></i></button>
+                  </div>
+                  <div class="strength-row">
+                    <div class="strength-bars">
+                      <div class="s-bar" id="sb1"></div>
+                      <div class="s-bar" id="sb2"></div>
+                      <div class="s-bar" id="sb3"></div>
+                      <div class="s-bar" id="sb4"></div>
+                    </div>
+                    <div class="strength-lbl" id="strLbl"></div>
+                  </div>
+                </div>
+                <div class="f-group">
+                  <div class="f-label">Confirmer le nouveau mot de passe <span class="req">*</span></div>
+                  <div class="pwd-wrap">
+                    <input class="f-input" type="password" id="pwdConfirm" placeholder="••••••••••••" style="padding-right:2.5rem;">
+                    <button class="pwd-eye" type="button" onclick="toggleEye('pwdConfirm',this)"><i class="fas fa-eye"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="save-bar">
+              <div class="save-info"><i class="fas fa-shield-halved"></i> Le changement invalide toutes les autres sessions.</div>
+              <div class="save-btns">
+                <button class="btn-cancel">Annuler</button>
+                <button class="btn-save" onclick="savePwd()"><i class="fas fa-key"></i> Changer le mot de passe</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="param-panel">
+            <div class="pp-head">
+              <div class="pp-ico pi-blue"><i class="fas fa-shield-halved"></i></div>
+              <div>
+                <div class="pp-title">Authentification & sécurité avancée</div>
+                <div class="pp-sub">Paramètres de protection du compte administrateur</div>
+              </div>
+            </div>
+            <div class="pp-body">
+              <div class="toggle-list">
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <div class="toggle-title">Double authentification (2FA)</div>
+                    <div class="toggle-sub">Exiger un code OTP à chaque connexion</div>
+                  </div>
+                  <label class="toggle-sw"><input type="checkbox"><span class="sw-slider"></span></label>
+                </div>
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <div class="toggle-title">Alertes de connexion par email</div>
+                    <div class="toggle-sub">Recevoir un email à chaque nouvelle session</div>
+                  </div>
+                  <label class="toggle-sw"><input type="checkbox" checked><span class="sw-slider"></span></label>
+                </div>
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <div class="toggle-title">Déconnexion automatique</div>
+                    <div class="toggle-sub">Se déconnecter après 30 min d'inactivité</div>
+                  </div>
+                  <label class="toggle-sw"><input type="checkbox" checked><span class="sw-slider"></span></label>
+                </div>
+              </div>
+            </div>
+            <div class="save-bar">
+              <div class="save-info"><i class="fas fa-info-circle"></i> La 2FA nécessite une application authentificateur.</div>
+              <div class="save-btns">
+                <button class="btn-save" onclick="toast('Paramètres de sécurité enregistrés','ok')"><i class="fas fa-save"></i> Enregistrer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AVATAR -->
+        <div class="param-section" id="sec-avatar">
+          <div class="param-panel">
+            <div class="pp-head">
+              <div class="pp-ico pi-rose"><i class="fas fa-image"></i></div>
+              <div>
+                <div class="pp-title">Choisir un avatar</div>
+                <div class="pp-sub">Sélectionnez l'avatar affiché dans la plateforme</div>
+              </div>
+            </div>
+            <div class="pp-body">
+              <div class="av-gallery" id="avGallery">
+                <div class="av-opt on" data-av="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy" onclick="pickAv(this)">
+                  <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy" alt="">
+                </div>
+                <div class="av-opt" data-av="https://api.dicebear.com/7.x/avataaars/svg?seed=conseil&backgroundColor=transparent&clothingColor=4FA695&hairColor=2d2d2d&skinColor=FDDBB4&mouth=smile&eyes=happy" onclick="pickAv(this)">
+                  <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=conseil&backgroundColor=transparent&clothingColor=4FA695&hairColor=2d2d2d&skinColor=FDDBB4&mouth=smile&eyes=happy" alt="">
+                </div>
+                <div class="av-opt" data-av="https://api.dicebear.com/7.x/avataaars/svg?seed=expert&backgroundColor=transparent&clothingColor=5C666B&hairColor=724133&skinColor=F8D5C2&mouth=smile&eyes=wink" onclick="pickAv(this)">
+                  <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=expert&backgroundColor=transparent&clothingColor=5C666B&hairColor=724133&skinColor=F8D5C2&mouth=smile&eyes=wink" alt="">
+                </div>
+                <div class="av-opt" data-av="https://api.dicebear.com/7.x/avataaars/svg?seed=femme&backgroundColor=transparent&clothingColor=C1007A&hairColor=B58143&skinColor=FDDBB4&mouth=smile&eyes=happy&top=longHair" onclick="pickAv(this)">
+                  <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=femme&backgroundColor=transparent&clothingColor=C1007A&hairColor=B58143&skinColor=FDDBB4&mouth=smile&eyes=happy&top=longHair" alt="">
+                </div>
+                <div class="av-opt" data-av="https://api.dicebear.com/7.x/avataaars/svg?seed=pro&backgroundColor=transparent&clothingColor=0ea5e9&hairColor=2c1b18&skinColor=AE5D29&mouth=smile&eyes=default" onclick="pickAv(this)">
+                  <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=pro&backgroundColor=transparent&clothingColor=0ea5e9&hairColor=2c1b18&skinColor=AE5D29&mouth=smile&eyes=default" alt="">
+                </div>
+                <div class="av-opt" data-av="https://api.dicebear.com/7.x/avataaars/svg?seed=robot&backgroundColor=transparent&clothingColor=8b5cf6&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=squint" onclick="pickAv(this)">
+                  <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=robot&backgroundColor=transparent&clothingColor=8b5cf6&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=squint" alt="">
+                </div>
+              </div>
+            </div>
+            <div class="save-bar">
+              <div class="save-info"><i class="fas fa-check"></i> L'avatar est mis à jour sur toute la plateforme.</div>
+              <div class="save-btns">
+                <button class="btn-save" onclick="applyAvatar()"><i class="fas fa-check"></i> Appliquer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NOTIFICATIONS -->
+        <div class="param-section" id="sec-notifications">
+          <div class="param-panel">
+            <div class="pp-head">
+              <div class="pp-ico pi-turq"><i class="fas fa-bell"></i></div>
+              <div>
+                <div class="pp-title">Préférences de notifications</div>
+                <div class="pp-sub">Choisissez ce que vous souhaitez recevoir</div>
+              </div>
+            </div>
+            <div class="pp-body">
+              <div class="toggle-list">
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <div class="toggle-title">Nouvelle question chatbot</div>
+                    <div class="toggle-sub">Notification dès qu'un utilisateur pose une question</div>
+                  </div>
+                  <label class="toggle-sw"><input type="checkbox" checked><span class="sw-slider"></span></label>
+                </div>
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <div class="toggle-title">Nouvel utilisateur inscrit</div>
+                    <div class="toggle-sub">Alerte à chaque création de compte client</div>
+                  </div>
+                  <label class="toggle-sw"><input type="checkbox" checked><span class="sw-slider"></span></label>
+                </div>
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <div class="toggle-title">Rapport hebdomadaire</div>
+                    <div class="toggle-sub">Résumé d'activité chaque lundi à 08h00</div>
+                  </div>
+                  <label class="toggle-sw"><input type="checkbox" checked><span class="sw-slider"></span></label>
+                </div>
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <div class="toggle-title">Alertes de sécurité</div>
+                    <div class="toggle-sub">Tentatives de connexion suspectes, accès refusés</div>
+                  </div>
+                  <label class="toggle-sw"><input type="checkbox" checked><span class="sw-slider"></span></label>
+                </div>
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <div class="toggle-title">Mises à jour système</div>
+                    <div class="toggle-sub">Maintenances planifiées et déploiements</div>
+                  </div>
+                  <label class="toggle-sw"><input type="checkbox"><span class="sw-slider"></span></label>
+                </div>
+              </div>
+            </div>
+            <div class="save-bar">
+              <div class="save-info"><i class="fas fa-bell"></i> Les notifications sont envoyées par email.</div>
+              <div class="save-btns">
+                <button class="btn-save" onclick="toast('Préférences enregistrées','ok')"><i class="fas fa-save"></i> Enregistrer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SESSIONS -->
+        <div class="param-section" id="sec-sessions">
+          <div class="param-panel">
+            <div class="pp-head">
+              <div class="pp-ico pi-ink"><i class="fas fa-desktop"></i></div>
+              <div>
+                <div class="pp-title">Sessions actives</div>
+                <div class="pp-sub">Appareils et navigateurs connectés à votre compte</div>
+              </div>
+            </div>
+            <div class="pp-body">
+              <div class="session-item">
+                <div class="session-ico"><i class="fas fa-laptop"></i></div>
+                <div>
+                  <div class="session-device">Chrome — Windows 11<span class="session-current">Session actuelle</span></div>
+                  <div class="session-meta">192.168.1.1 · Dammarie, France · il y a 5 min</div>
+                </div>
+              </div>
+              <div class="session-item">
+                <div class="session-ico"><i class="fas fa-mobile-alt"></i></div>
+                <div>
+                  <div class="session-device">Safari — iPhone 15</div>
+                  <div class="session-meta">82.117.45.23 · Paris, France · il y a 2h</div>
+                </div>
+                <button class="session-revoke" onclick="revokeSession(this)"><i class="fas fa-times"></i> Révoquer</button>
+              </div>
+              <div class="session-item">
+                <div class="session-ico"><i class="fas fa-desktop"></i></div>
+                <div>
+                  <div class="session-device">Firefox — macOS Sonoma</div>
+                  <div class="session-meta">91.134.22.10 · Lyon, France · il y a 1j</div>
+                </div>
+                <button class="session-revoke" onclick="revokeSession(this)"><i class="fas fa-times"></i> Révoquer</button>
+              </div>
+            </div>
+            <div class="save-bar">
+              <div class="save-info"><i class="fas fa-shield-halved"></i> La révocation déconnecte immédiatement l'appareil.</div>
+              <div class="save-btns">
+                <button class="btn-cancel" onclick="revokeAll()"><i class="fas fa-times"></i> Tout révoquer sauf ici</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DANGER -->
+        <div class="param-section" id="sec-danger">
+          <div class="danger-zone">
+            <div class="dz-head">
+              <div class="dz-ico"><i class="fas fa-triangle-exclamation"></i></div>
+              <div class="dz-title">Zone de danger — Actions irréversibles</div>
+            </div>
+            <div class="dz-body">
+              <div class="dz-item">
+                <div>
+                  <div class="dz-item-title">Réinitialiser les paramètres</div>
+                  <div class="dz-item-sub">Remet tous les paramètres aux valeurs par défaut</div>
+                </div>
+                <button class="btn-dz" onclick="toast('Réinitialisation effectuée','ok')">Réinitialiser</button>
+              </div>
+              <div class="dz-item">
+                <div>
+                  <div class="dz-item-title">Révoquer toutes les sessions</div>
+                  <div class="dz-item-sub">Déconnecte tous les appareils sauf celui-ci</div>
+                </div>
+                <button class="btn-dz" onclick="revokeAll()">Révoquer tout</button>
+              </div>
+              <div class="dz-item">
+                <div>
+                  <div class="dz-item-title">Supprimer le compte administrateur</div>
+                  <div class="dz-item-sub">Action définitive — impossible à annuler</div>
+                </div>
+                <button class="btn-dz" style="border-color:var(--danger);background:#fee2e2;font-weight:700;">Supprimer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-box" id="toastBox"><i class="fas fa-circle-check" id="toastIco"></i><span id="toastMsg"></span></div>
+
+{% include "footer.html" %}
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+/* Horloge */
+function tick(){const n=new Date();const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('heroTime');if(el)el.textContent=t;}
+tick();setInterval(tick,1000);
+
+/* Nav */
+function showSection(id,btn){
+  document.querySelectorAll('.param-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.pn-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  if(btn&&btn.classList) btn.classList.add('active');
+}
+
+/* Toast */
+function toast(msg,type){
+  const box=document.getElementById('toastBox');
+  const ico=document.getElementById('toastIco');
+  document.getElementById('toastMsg').textContent=msg;
+  box.className='toast-box '+(type==='ok'?'toast-ok':'toast-err');
+  ico.className='fas '+(type==='ok'?'fa-circle-check':'fa-circle-xmark');
+  box.classList.add('show');
+  setTimeout(()=>box.classList.remove('show'),3200);
+}
+
+/* Profil */
+function saveProfil(){
+  const name=document.getElementById('f-prenom').value+' '+document.getElementById('f-nom').value;
+  const email=document.getElementById('f-email').value;
+  document.getElementById('displayName').textContent=name.trim();
+  document.getElementById('displayEmail').textContent=email;
+  toast('Profil enregistré avec succès','ok');
+}
+
+/* Password */
+function toggleEye(id,btn){
+  const inp=document.getElementById(id);
+  const ico=btn.querySelector('i');
+  if(inp.type==='password'){inp.type='text';ico.className='fas fa-eye-slash';}
+  else{inp.type='password';ico.className='fas fa-eye';}
+}
+function checkStr(v){
+  const bars=['sb1','sb2','sb3','sb4'].map(id=>document.getElementById(id));
+  const lbl=document.getElementById('strLbl');
+  bars.forEach(b=>{b.className='s-bar';});
+  if(!v){lbl.textContent='';return;}
+  let score=0;
+  if(v.length>=6)score++;if(v.length>=12)score++;
+  if(/[A-Z]/.test(v)&&/[0-9]/.test(v))score++;
+  if(/[^A-Za-z0-9]/.test(v))score++;
+  const cls=score<=1?'w':score<=2?'m':'s';
+  const lbls=['','Faible','Moyen','Fort','Très fort'];
+  for(let i=0;i<score;i++)bars[i].classList.add(cls);
+  lbl.textContent=lbls[score]||'';
+  lbl.style.color=cls==='w'?'#ef4444':cls==='m'?'#f59e0b':'#10b981';
+}
+function savePwd(){
+  const c=document.getElementById('pwdCurrent').value;
+  const n=document.getElementById('pwdNew').value;
+  const cf=document.getElementById('pwdConfirm').value;
+  if(!c||!n||!cf){toast('Remplissez tous les champs','err');return;}
+  if(n!==cf){toast('Les mots de passe ne correspondent pas','err');return;}
+  toast('Mot de passe modifié avec succès','ok');
+}
+
+/* Avatar */
+let selectedAv=null;
+function pickAv(el){
+  document.querySelectorAll('.av-opt').forEach(o=>o.classList.remove('on'));
+  el.classList.add('on');
+  selectedAv=el.dataset.av;
+}
+function applyAvatar(){
+  const av=selectedAv||document.querySelector('.av-opt.on')?.dataset.av;
+  if(!av)return;
+  document.getElementById('mainAvatar').src=av;
+  localStorage.setItem('ml2cAdminAv',av);
+  toast('Avatar mis à jour sur toute la plateforme','ok');
+}
+
+/* Sessions */
+function revokeSession(btn){
+  const item=btn.closest('.session-item');
+  item.style.transition='opacity .3s';
+  item.style.opacity='0';
+  setTimeout(()=>item.remove(),300);
+  toast('Session révoquée','ok');
+}
+function revokeAll(){
+  document.querySelectorAll('.session-item:not(:first-child)').forEach(item=>{
+    item.style.transition='opacity .3s';
+    item.style.opacity='0';
+    setTimeout(()=>item.remove(),300);
+  });
+  toast('Toutes les autres sessions révoquées','ok');
+}
+
+/* Restore avatar */
+const savedAv=localStorage.getItem('ml2cAdminAv');
+if(savedAv){
+  document.getElementById('mainAvatar').src=savedAv;
+  document.querySelectorAll('.av-opt').forEach(o=>o.classList.toggle('on',o.dataset.av===savedAv));
+}
+</script>
+</body>
+</html>

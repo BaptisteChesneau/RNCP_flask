@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestion des Utilisateurs — ML2C Admin</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rose: #C1007A; --rose-d: #9a0062; --rose-l: #fce4f3;
+      --turq: #4FA695; --turq-l: #d4f0ec;
+      --gold: #f59e0b; --gold-d: #b45309; --gold-l: #fffbeb;
+      --ink: #080b12; --ink3: #151820;
+      --bg: #f2f4f8; --surface: #fff; --border: #e4e8ef;
+      --text: #111827; --muted: #6b7280; --faint: #9ca3af;
+      --success: #10b981; --danger: #ef4444;
+      --ff-head: 'Cormorant Garamond', serif;
+      --ff-body: 'DM Sans', sans-serif;
+      --ff-mono: 'JetBrains Mono', monospace;
+    }
+    body { background: var(--bg); font-family: var(--ff-body); color: var(--text); }
+
+    /* HERO */
+    .page-hero { background: var(--ink); position: relative; overflow: hidden; padding: 2.5rem 0 4.5rem; }
+    .page-hero::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse 55% 70% at 85% 25%, rgba(79,166,149,.18) 0%, transparent 55%), radial-gradient(ellipse 30% 45% at 5% 80%, rgba(193,0,122,.1) 0%, transparent 50%); }
+    .hero-bar { position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--turq),var(--rose),var(--gold),var(--turq)); background-size:300%; animation:barS 4s linear infinite; }
+    @keyframes barS{0%{background-position:0%}100%{background-position:300%}}
+    .hero-wave { position:absolute; bottom:-1px; left:0; right:0; z-index:2; }
+    .hero-inner { position:relative; z-index:1; }
+    .hero-bc { display:flex; align-items:center; gap:.5rem; font-size:.7rem; color:rgba(255,255,255,.3); font-family:var(--ff-mono); margin-bottom:1rem; }
+    .hero-bc a { color:rgba(255,255,255,.35); text-decoration:none; } .hero-bc a:hover{color:var(--gold);} .hero-bc span{color:rgba(255,255,255,.2);}
+    .hero-title { font-family:var(--ff-head); font-size:clamp(1.8rem,4vw,2.8rem); font-weight:700; color:#fff; margin-bottom:.4rem; }
+    .hero-title .t-turq { color:#5eead4; font-style:italic; }
+    .hero-sub { font-size:.83rem; color:rgba(255,255,255,.4); font-family:var(--ff-mono); display:flex; align-items:center; gap:.5rem; }
+    .online-pip { width:6px; height:6px; border-radius:50%; background:var(--success); box-shadow:0 0 8px rgba(16,185,129,.7); animation:pip 2s infinite; }
+    @keyframes pip{0%,100%{opacity:1}50%{opacity:.3}}
+
+    /* KPI */
+    .kpi-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:2rem; }
+    .kbox { background:var(--surface); border-radius:16px; border:1.5px solid transparent; padding:1.25rem; box-shadow:0 2px 12px rgba(0,0,0,.055); display:flex; align-items:center; gap:.85rem; transition:transform .2s; animation:fadeUp .4s both; }
+    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    .kbox:nth-child(1){animation-delay:.05s}.kbox:nth-child(2){animation-delay:.1s}.kbox:nth-child(3){animation-delay:.15s}.kbox:nth-child(4){animation-delay:.2s}
+    .kbox:hover{transform:translateY(-3px);}
+    .kb-rose:hover{border-color:var(--rose-l);}.kb-turq:hover{border-color:var(--turq-l);}.kb-gold:hover{border-color:rgba(245,158,11,.2);}
+    .kbox-ico{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+    .ki-rose{background:var(--rose-l);color:var(--rose);}.ki-turq{background:var(--turq-l);color:var(--turq);}.ki-gold{background:var(--gold-l);color:var(--gold-d);}.ki-ink{background:#e8eaeb;color:#5C666B;}
+    .kbox-val{font-family:var(--ff-head);font-size:1.8rem;font-weight:700;line-height:1;color:var(--text);}
+    .kbox-lbl{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);}
+
+    /* MAIN */
+    .main { padding: 2.5rem 0 5rem; }
+
+    /* Toolbar */
+    .toolbar { display:flex; align-items:center; gap:.75rem; margin-bottom:1.25rem; flex-wrap:wrap; }
+    .search-box { display:flex; align-items:center; gap:.5rem; background:var(--surface); border:1.5px solid var(--border); border-radius:10px; padding:.55rem 1rem; flex:1; min-width:220px; transition:border-color .2s; }
+    .search-box:focus-within{border-color:var(--rose);}
+    .search-box input{background:none;border:none;outline:none;font-size:.88rem;font-family:var(--ff-body);color:var(--text);width:100%;}
+    .search-box input::placeholder{color:var(--faint);}
+    .filter-sel { border:1.5px solid var(--border); border-radius:10px; padding:.55rem .9rem; font-size:.82rem; font-family:var(--ff-body); color:var(--muted); background:var(--surface); outline:none; cursor:pointer; transition:border-color .2s; }
+    .filter-sel:focus{border-color:var(--rose);}
+    .btn-add { display:inline-flex; align-items:center; gap:.4rem; padding:.55rem 1.1rem; border-radius:10px; background:linear-gradient(135deg,var(--rose),var(--rose-d)); color:#fff; border:none; font-size:.82rem; font-weight:600; cursor:pointer; transition:all .2s; font-family:var(--ff-body); box-shadow:0 4px 12px rgba(193,0,122,.25); }
+    .btn-add:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(193,0,122,.35);}
+
+    /* Table */
+    .users-table-wrap { background:var(--surface); border-radius:20px; border:1.5px solid var(--border); box-shadow:0 2px 16px rgba(0,0,0,.055); overflow:hidden; }
+    .ut-head { display:flex; align-items:center; justify-content:space-between; padding:1rem 1.5rem; background:#fafbfc; border-bottom:1px solid var(--border); }
+    .ut-title { font-size:.82rem; font-weight:700; color:var(--text); }
+    .ut-count { font-size:.72rem; color:var(--muted); font-family:var(--ff-mono); }
+
+    table.users-table { width:100%; border-collapse:collapse; }
+    .users-table th { font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--faint); padding:.7rem 1.5rem; border-bottom:1px solid var(--border); text-align:left; background:#fafbfc; white-space:nowrap; cursor:pointer; user-select:none; }
+    .users-table th:hover { color:var(--rose); }
+    .users-table th .sort-ico { margin-left:.3rem; opacity:.4; font-size:.65rem; }
+    .users-table td { font-size:.84rem; color:var(--text); padding:.9rem 1.5rem; border-bottom:1px solid #f5f6f8; vertical-align:middle; }
+    .users-table tr:last-child td { border-bottom:none; }
+    .users-table tr:hover td { background:#fafbfc; }
+    .users-table tr.selected td { background:var(--rose-l); }
+
+    /* User cell */
+    .user-cell { display:flex; align-items:center; gap:.75rem; }
+    .user-av {
+      width: 36px; height: 36px; border-radius: 50%;
+      overflow: hidden; flex-shrink: 0;
+      display: flex; align-items: flex-end; justify-content: center;
+      background: linear-gradient(135deg, var(--rose), var(--rose-d));
+      font-size: .75rem; font-weight: 700; color: #fff;
+      align-items: center; justify-content: center;
+    }
+    .user-av img { width: 100%; height: 100%; object-fit: cover; }
+    .user-av.admin-av { background: linear-gradient(135deg, var(--gold), var(--gold-d)); }
+    .user-name { font-weight: 600; color: var(--text); font-size: .85rem; }
+    .user-email { font-size: .72rem; color: var(--muted); font-family: var(--ff-mono); margin-top: .08rem; }
+
+    /* Role badge */
+    .role-badge { display:inline-flex; align-items:center; gap:.3rem; padding:.22rem .65rem; border-radius:20px; font-size:.68rem; font-weight:700; }
+    .rb-admin { background: linear-gradient(135deg,rgba(245,158,11,.12),rgba(245,158,11,.06)); border:1px solid rgba(245,158,11,.25); color:var(--gold-d); }
+    .rb-user  { background: var(--turq-l); border:1px solid rgba(79,166,149,.2); color:var(--turq); }
+    .rb-client{ background: var(--rose-l); border:1px solid rgba(193,0,122,.18); color:var(--rose); }
+    .rb-inactif { background: #f3f4f6; border:1px solid var(--border); color:var(--muted); }
+
+    /* Status */
+    .status-pill { display:inline-flex; align-items:center; gap:.3rem; font-size:.72rem; font-weight:600; }
+    .sp-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+    .status-active .sp-dot { background:var(--success); box-shadow:0 0 5px rgba(16,185,129,.5); animation:pip 2s infinite; }
+    .status-inactive .sp-dot { background:var(--faint); }
+    .status-suspended .sp-dot { background:var(--danger); }
+    .status-active   { color:var(--success); }
+    .status-inactive { color:var(--faint); }
+    .status-suspended{ color:var(--danger); }
+
+    /* Actions */
+    .row-actions { display:flex; gap:.4rem; }
+    .act-btn { width:30px; height:30px; border-radius:7px; border:1.5px solid var(--border); background:transparent; color:var(--muted); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:.75rem; transition:all .18s; }
+    .act-btn:hover { border-color:var(--rose); color:var(--rose); background:var(--rose-l); }
+    .act-btn.danger:hover { border-color:var(--danger); color:var(--danger); background:#fee2e2; }
+
+    /* Checkbox */
+    .cb-wrap { width:16px; height:16px; border:1.5px solid var(--border); border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; flex-shrink:0; }
+    .cb-wrap.checked { background:var(--rose); border-color:var(--rose); }
+    .cb-wrap.checked::after { content:'✓'; font-size:.7rem; color:#fff; font-weight:700; }
+
+    /* Pagination */
+    .pagi-row { display:flex; align-items:center; justify-content:space-between; padding:1rem 1.5rem; border-top:1px solid var(--border); background:#fafbfc; flex-wrap:wrap; gap:.75rem; }
+    .pagi-info { font-size:.75rem; color:var(--muted); }
+    .pagi { display:flex; gap:.35rem; }
+    .pb { width:32px; height:32px; border-radius:7px; border:1.5px solid var(--border); background:var(--surface); color:var(--muted); font-size:.8rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+    .pb:hover,.pb.active { background:var(--rose); border-color:var(--rose); color:#fff; }
+
+    /* Modal utilisateur */
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); backdrop-filter:blur(6px); z-index:9999; display:none; align-items:center; justify-content:center; padding:1rem; }
+    .modal-overlay.show { display:flex; }
+    .modal-box { background:var(--surface); border-radius:24px; width:100%; max-width:520px; box-shadow:0 32px 80px rgba(0,0,0,.3); overflow:hidden; animation:modalIn .35s cubic-bezier(.34,1.2,.64,1); }
+    @keyframes modalIn{from{opacity:0;transform:scale(.95)translateY(20px)}to{opacity:1;transform:scale(1)translateY(0)}}
+    .modal-head { display:flex; align-items:center; gap:.75rem; padding:1.25rem 1.5rem; background:#fafbfc; border-bottom:1px solid var(--border); }
+    .modal-head-ico { width:36px; height:36px; border-radius:9px; background:var(--rose-l); color:var(--rose); display:flex; align-items:center; justify-content:center; font-size:.9rem; }
+    .modal-head-title { font-size:.9rem; font-weight:700; color:var(--text); }
+    .modal-close { margin-left:auto; background:none; border:none; font-size:1rem; color:var(--muted); cursor:pointer; }
+    .modal-body { padding:1.5rem; }
+    .modal-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; }
+    .m-field { display:flex; flex-direction:column; gap:.4rem; }
+    .m-label { font-size:.65rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); }
+    .m-input { border:1.5px solid var(--border); border-radius:9px; padding:.65rem .9rem; font-size:.86rem; font-family:var(--ff-body); color:var(--text); background:#fafbfc; outline:none; transition:all .2s; }
+    .m-input:focus { border-color:var(--rose); background:#fff; box-shadow:0 0 0 3px rgba(193,0,122,.08); }
+    .m-select { border:1.5px solid var(--border); border-radius:9px; padding:.65rem .9rem; font-size:.86rem; font-family:var(--ff-body); color:var(--text); background:#fafbfc; outline:none; cursor:pointer; }
+    .m-select:focus { border-color:var(--rose); }
+    .modal-foot { display:flex; gap:.65rem; padding:1.25rem 1.5rem; border-top:1px solid var(--border); background:#fafbfc; justify-content:flex-end; }
+    .m-btn-cancel { padding:.6rem 1.1rem; border-radius:9px; border:1.5px solid var(--border); background:transparent; color:var(--muted); font-size:.82rem; font-weight:600; cursor:pointer; font-family:var(--ff-body); transition:all .2s; }
+    .m-btn-cancel:hover { background:#f9fafb; }
+    .m-btn-save { padding:.6rem 1.25rem; border-radius:9px; border:none; background:linear-gradient(135deg,var(--rose),var(--rose-d)); color:#fff; font-size:.82rem; font-weight:600; cursor:pointer; font-family:var(--ff-body); transition:all .2s; box-shadow:0 4px 12px rgba(193,0,122,.25); display:flex; align-items:center; gap:.4rem; }
+    .m-btn-save:hover { transform:translateY(-1px); }
+
+    /* Toast */
+    .toast-box { position:fixed; bottom:1.5rem; right:1.5rem; z-index:9999; display:flex; align-items:center; gap:.65rem; padding:.8rem 1.25rem; border-radius:12px; font-size:.83rem; font-weight:500; box-shadow:0 8px 24px rgba(0,0,0,.15); transform:translateY(80px); opacity:0; transition:all .3s cubic-bezier(.34,1.2,.64,1); pointer-events:none; }
+    .toast-box.show{transform:translateY(0);opacity:1;}
+    .toast-ok{background:#0d2e23;color:#4ade80;border:1px solid rgba(74,222,128,.2);}
+    .toast-err{background:#2e0d0d;color:#f87171;border:1px solid rgba(248,113,113,.2);}
+    .toast-warn{background:#2e220d;color:#fbbf24;border:1px solid rgba(251,191,36,.2);}
+
+    @media(max-width:900px){ .kpi-strip{grid-template-columns:repeat(2,1fr)} }
+    @media(max-width:600px){ .kpi-strip{grid-template-columns:1fr} .modal-grid{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+{% include "header.html" %}
+
+<div class="page-hero">
+  <div class="hero-bar"></div>
+  <div class="container hero-inner">
+    <div class="hero-bc">
+      <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+      <span>/</span> Utilisateurs
+    </div>
+    <h1 class="hero-title">Gestion des <span class="t-turq">utilisateurs</span></h1>
+    <div class="hero-sub">
+      <span class="online-pip"></span>
+      ADMIN ONLY · BASE UTILISATEURS · <span id="heroTime">--:--:--</span>
+    </div>
+  </div>
+  <svg class="hero-wave" viewBox="0 0 1440 60" preserveAspectRatio="none">
+    <path d="M0,0 C480,60 960,60 1440,0 L1440,60 L0,60 Z" fill="#f2f4f8"/>
+  </svg>
+</div>
+
+<div class="main">
+  <div class="container">
+
+    <!-- KPI -->
+    <div class="kpi-strip">
+      <div class="kbox kb-turq">
+        <div class="kbox-ico ki-turq"><i class="fas fa-users"></i></div>
+        <div><div class="kbox-lbl">Total utilisateurs</div><div class="kbox-val" id="kv-total">12</div></div>
+      </div>
+      <div class="kbox kb-rose">
+        <div class="kbox-ico ki-rose"><i class="fas fa-user-check"></i></div>
+        <div><div class="kbox-lbl">Actifs</div><div class="kbox-val">9</div></div>
+      </div>
+      <div class="kbox kb-gold">
+        <div class="kbox-ico ki-gold"><i class="fas fa-user-plus"></i></div>
+        <div><div class="kbox-lbl">Nouveaux ce mois</div><div class="kbox-val">3</div></div>
+      </div>
+      <div class="kbox">
+        <div class="kbox-ico ki-ink"><i class="fas fa-user-slash"></i></div>
+        <div><div class="kbox-lbl">Suspendus</div><div class="kbox-val">1</div></div>
+      </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="search-box">
+        <i class="fas fa-search" style="color:var(--faint);font-size:.82rem;flex-shrink:0;"></i>
+        <input type="text" placeholder="Rechercher un utilisateur…" id="searchInput" oninput="filterUsers(this.value)">
+      </div>
+      <select class="filter-sel" id="roleFilter" onchange="filterUsers(document.getElementById('searchInput').value)">
+        <option value="">Tous les rôles</option>
+        <option value="admin">Admin</option>
+        <option value="client">Client</option>
+        <option value="utilisateur">Utilisateur</option>
+      </select>
+      <select class="filter-sel" id="statusFilter" onchange="filterUsers(document.getElementById('searchInput').value)">
+        <option value="">Tous les statuts</option>
+        <option value="Actif">Actif</option>
+        <option value="Inactif">Inactif</option>
+        <option value="Suspendu">Suspendu</option>
+      </select>
+      <button class="btn-add" onclick="openModal()">
+        <i class="fas fa-plus"></i> Nouvel utilisateur
+      </button>
+    </div>
+
+    <!-- Table -->
+    <div class="users-table-wrap">
+      <div class="ut-head">
+        <div class="ut-title">Liste des utilisateurs</div>
+        <div class="ut-count" id="countDisplay">12 utilisateurs</div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="users-table" id="usersTable">
+          <thead>
+            <tr>
+              <th style="width:40px;"><div class="cb-wrap" id="cbAll" onclick="toggleAll(this)"></div></th>
+              <th>Utilisateur <i class="fas fa-sort sort-ico"></i></th>
+              <th>Rôle</th>
+              <th>Statut</th>
+              <th>Inscription <i class="fas fa-sort sort-ico"></i></th>
+              <th>Dernière connexion</th>
+              <th>Questions</th>
+              <th style="text-align:right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="usersBody"></tbody>
+        </table>
+      </div>
+      <div class="pagi-row">
+        <div class="pagi-info" id="pagiInfo">Affichage de 1 à 10 sur 12 utilisateurs</div>
+        <div class="pagi">
+          <button class="pb"><i class="fas fa-chevron-left"></i></button>
+          <button class="pb active">1</button>
+          <button class="pb">2</button>
+          <button class="pb"><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal nouvel utilisateur -->
+<div class="modal-overlay" id="userModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-ico"><i class="fas fa-user-plus"></i></div>
+      <div class="modal-head-title" id="modalTitle">Ajouter un utilisateur</div>
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-grid">
+        <div class="m-field">
+          <div class="m-label">Prénom <span style="color:var(--rose)">*</span></div>
+          <input class="m-input" id="mPrenom" placeholder="Jean">
+        </div>
+        <div class="m-field">
+          <div class="m-label">Nom <span style="color:var(--rose)">*</span></div>
+          <input class="m-input" id="mNom" placeholder="Dupont">
+        </div>
+        <div class="m-field" style="grid-column:1/-1;">
+          <div class="m-label">Email <span style="color:var(--rose)">*</span></div>
+          <input class="m-input" id="mEmail" placeholder="jean.dupont@email.com" type="email">
+        </div>
+        <div class="m-field">
+          <div class="m-label">Rôle</div>
+          <select class="m-select" id="mRole">
+            <option value="client">Client</option>
+            <option value="utilisateur">Utilisateur</option>
+            <option value="admin">Administrateur</option>
+          </select>
+        </div>
+        <div class="m-field">
+          <div class="m-label">Statut</div>
+          <select class="m-select" id="mStatus">
+            <option value="Actif">Actif</option>
+            <option value="Inactif">Inactif</option>
+            <option value="Suspendu">Suspendu</option>
+          </select>
+        </div>
+        <div class="m-field" style="grid-column:1/-1;">
+          <div class="m-label">Téléphone</div>
+          <input class="m-input" id="mTel" placeholder="06 XX XX XX XX">
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="m-btn-cancel" onclick="closeModal()">Annuler</button>
+      <button class="m-btn-save" onclick="saveUser()"><i class="fas fa-save"></i> Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-box" id="toastBox"><i class="fas fa-circle-check" id="toastIco"></i><span id="toastMsg"></span></div>
+
+{% include "footer.html" %}
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+/* ── Données ── */
+const USERS = [
+  {id:1, prenom:'Admin', nom:'ML2C', email:'admin@ml2cconseil.com', role:'admin', status:'Actif', date:'01/01/2024', last:'il y a 5 min', questions:0},
+  {id:2, prenom:'Sophie', nom:'Martin', email:'sophie.martin@gmail.com', role:'client', status:'Actif', date:'15/03/2025', last:'il y a 2h', questions:8},
+  {id:3, prenom:'Thomas', nom:'Bernard', email:'t.bernard@entreprise.fr', role:'client', status:'Actif', date:'22/03/2025', last:'il y a 1j', questions:5},
+  {id:4, prenom:'Marie', nom:'Lefebvre', email:'m.lefebvre@mail.com', role:'utilisateur', status:'Actif', date:'05/04/2025', last:'il y a 3j', questions:2},
+  {id:5, prenom:'Pierre', nom:'Dubois', email:'pierre.dubois@pro.fr', role:'client', status:'Actif', date:'08/04/2025', last:'il y a 1h', questions:12},
+  {id:6, prenom:'Julie', nom:'Moreau', email:'julie.moreau@outlook.com', role:'client', status:'Inactif', date:'10/02/2025', last:'il y a 15j', questions:3},
+  {id:7, prenom:'Nicolas', nom:'Simon', email:'n.simon@societe.com', role:'client', status:'Actif', date:'18/03/2025', last:'il y a 4h', questions:7},
+  {id:8, prenom:'Emma', nom:'Laurent', email:'emma.l@webmail.fr', role:'utilisateur', status:'Actif', date:'25/03/2025', last:'il y a 6h', questions:1},
+  {id:9, prenom:'Luc', nom:'Michel', email:'luc.michel@gmail.com', role:'client', status:'Suspendu', date:'12/01/2025', last:'il y a 30j', questions:0},
+  {id:10, prenom:'Clara', nom:'Petit', email:'clara.petit@pro.fr', role:'client', status:'Actif', date:'01/04/2025', last:'il y a 2j', questions:4},
+  {id:11, prenom:'Antoine', nom:'Garcia', email:'a.garcia@mail.com', role:'utilisateur', status:'Actif', date:'03/04/2025', last:'il y a 1j', questions:6},
+  {id:12, prenom:'Inès', nom:'Roux', email:'ines.roux@outlook.com', role:'client', status:'Actif', date:'09/04/2025', last:'il y a 30 min', questions:9},
+];
+
+const COLORS = ['#C1007A','#4FA695','#f59e0b','#8b5cf6','#3b82f6','#ec4899','#10b981','#f97316'];
+
+function getInitials(p,n){return (p[0]||'')+(n[0]||'');}
+function getColor(id){return COLORS[id%COLORS.length];}
+
+function roleHtml(role){
+  const map={admin:'<span class="role-badge rb-admin"><i class="fas fa-crown"></i> Admin</span>',client:'<span class="role-badge rb-client"><i class="fas fa-user-tie"></i> Client</span>',utilisateur:'<span class="role-badge rb-user"><i class="fas fa-user"></i> Utilisateur</span>'};
+  return map[role]||role;
+}
+function statusHtml(s){
+  const map={Actif:`<span class="status-pill status-active"><span class="sp-dot"></span> Actif</span>`,Inactif:`<span class="status-pill status-inactive"><span class="sp-dot"></span> Inactif</span>`,Suspendu:`<span class="status-pill status-suspended"><span class="sp-dot"></span> Suspendu</span>`};
+  return map[s]||s;
+}
+
+let currentUsers=[...USERS];
+
+function renderTable(data){
+  const body=document.getElementById('usersBody');
+  body.innerHTML='';
+  data.forEach(u=>{
+    const tr=document.createElement('tr');
+    tr.dataset.id=u.id;
+    tr.innerHTML=`
+      <td><div class="cb-wrap" onclick="toggleRow(this,event)"></div></td>
+      <td>
+        <div class="user-cell">
+          <div class="user-av ${u.role==='admin'?'admin-av':''}" style="background:${getColor(u.id)};font-family:var(--ff-body);">${getInitials(u.prenom,u.nom)}</div>
+          <div><div class="user-name">${u.prenom} ${u.nom}</div><div class="user-email">${u.email}</div></div>
+        </div>
+      </td>
+      <td>${roleHtml(u.role)}</td>
+      <td>${statusHtml(u.status)}</td>
+      <td style="font-family:var(--ff-mono);font-size:.78rem;color:var(--muted);">${u.date}</td>
+      <td style="font-size:.78rem;color:var(--muted);">${u.last}</td>
+      <td>
+        <span style="font-family:var(--ff-mono);font-size:.82rem;font-weight:600;color:var(--text);">${u.questions}</span>
+        <span style="font-size:.7rem;color:var(--faint);"> Q</span>
+      </td>
+      <td>
+        <div class="row-actions" style="justify-content:flex-end;">
+          <button class="act-btn" title="Voir" onclick="viewUser(${u.id})"><i class="fas fa-eye"></i></button>
+          <button class="act-btn" title="Modifier" onclick="editUser(${u.id})"><i class="fas fa-pencil"></i></button>
+          <button class="act-btn danger" title="Supprimer" onclick="deleteUser(${u.id},this)"><i class="fas fa-trash-alt"></i></button>
+        </div>
+      </td>
+    `;
+    body.appendChild(tr);
+  });
+  document.getElementById('countDisplay').textContent=data.length+' utilisateur'+(data.length>1?'s':'');
+  document.getElementById('kv-total').textContent=data.length;
+}
+
+function filterUsers(q){
+  const role=document.getElementById('roleFilter').value;
+  const status=document.getElementById('statusFilter').value;
+  const filtered=USERS.filter(u=>{
+    const matchQ=!q||(u.prenom+' '+u.nom+' '+u.email).toLowerCase().includes(q.toLowerCase());
+    const matchR=!role||u.role===role;
+    const matchS=!status||u.status===status;
+    return matchQ&&matchR&&matchS;
+  });
+  currentUsers=filtered;
+  renderTable(filtered);
+}
+
+/* Sélection */
+function toggleRow(cb,e){
+  e.stopPropagation();
+  cb.classList.toggle('checked');
+  cb.closest('tr').classList.toggle('selected',cb.classList.contains('checked'));
+}
+function toggleAll(cb){
+  cb.classList.toggle('checked');
+  document.querySelectorAll('#usersBody .cb-wrap').forEach(c=>{
+    c.classList.toggle('checked',cb.classList.contains('checked'));
+    c.closest('tr').classList.toggle('selected',cb.classList.contains('checked'));
+  });
+}
+
+/* Modal */
+let editingId=null;
+function openModal(user){
+  editingId=null;
+  document.getElementById('modalTitle').textContent='Ajouter un utilisateur';
+  ['mPrenom','mNom','mEmail','mTel'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('mRole').value='client';
+  document.getElementById('mStatus').value='Actif';
+  document.getElementById('userModal').classList.add('show');
+}
+function editUser(id){
+  const u=USERS.find(x=>x.id===id);
+  if(!u)return;
+  editingId=id;
+  document.getElementById('modalTitle').textContent='Modifier — '+u.prenom+' '+u.nom;
+  document.getElementById('mPrenom').value=u.prenom;
+  document.getElementById('mNom').value=u.nom;
+  document.getElementById('mEmail').value=u.email;
+  document.getElementById('mRole').value=u.role;
+  document.getElementById('mStatus').value=u.status;
+  document.getElementById('userModal').classList.add('show');
+}
+function closeModal(){document.getElementById('userModal').classList.remove('show');}
+function viewUser(id){const u=USERS.find(x=>x.id===id);if(u)toast('Profil de '+u.prenom+' '+u.nom+' — '+u.email,'ok');}
+
+function saveUser(){
+  const p=document.getElementById('mPrenom').value.trim();
+  const n=document.getElementById('mNom').value.trim();
+  const e=document.getElementById('mEmail').value.trim();
+  if(!p||!n||!e){toast('Remplissez les champs obligatoires','err');return;}
+  if(editingId){
+    const u=USERS.find(x=>x.id===editingId);
+    if(u){u.prenom=p;u.nom=n;u.email=e;u.role=document.getElementById('mRole').value;u.status=document.getElementById('mStatus').value;}
+    toast('Utilisateur modifié avec succès','ok');
+  } else {
+    const newU={id:USERS.length+1,prenom:p,nom:n,email:e,role:document.getElementById('mRole').value,status:document.getElementById('mStatus').value,date:new Date().toLocaleDateString('fr'),last:'À l\'instant',questions:0};
+    USERS.push(newU);
+    toast('Utilisateur créé avec succès','ok');
+  }
+  closeModal();
+  filterUsers(document.getElementById('searchInput').value);
+}
+
+function deleteUser(id,btn){
+  if(!confirm('Supprimer cet utilisateur ?'))return;
+  const tr=btn.closest('tr');
+  tr.style.transition='opacity .3s';tr.style.opacity='0';
+  setTimeout(()=>{
+    const idx=USERS.findIndex(x=>x.id===id);
+    if(idx>-1)USERS.splice(idx,1);
+    filterUsers(document.getElementById('searchInput').value);
+    toast('Utilisateur supprimé','warn');
+  },300);
+}
+
+/* Toast */
+function toast(msg,type){
+  const box=document.getElementById('toastBox');
+  const ico=document.getElementById('toastIco');
+  document.getElementById('toastMsg').textContent=msg;
+  box.className='toast-box '+(type==='ok'?'toast-ok':type==='warn'?'toast-warn':'toast-err');
+  ico.className='fas '+(type==='ok'?'fa-circle-check':type==='warn'?'fa-triangle-exclamation':'fa-circle-xmark');
+  box.classList.add('show');
+  setTimeout(()=>box.classList.remove('show'),3200);
+}
+
+/* Pagination */
+document.querySelectorAll('.pb').forEach(b=>{b.addEventListener('click',function(){if(this.querySelector('i'))return;document.querySelectorAll('.pb').forEach(pb=>pb.classList.remove('active'));this.classList.add('active');});});
+
+/* Horloge */
+function tick(){const n=new Date();const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('heroTime');if(el)el.textContent=t;}
+tick();setInterval(tick,1000);
+
+/* Close modal on outside click */
+document.getElementById('userModal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+/* Init */
+renderTable(USERS);
+</script>
+</body>
+</html>

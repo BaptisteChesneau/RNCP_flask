@@ -7,14 +7,198 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  <style>
+    /* ════ SIDEBAR ENRICHIE ════ */
+    .adm-sidebar {
+      width: 220px;
+      background: #0e1018;
+      border-right: 1px solid rgba(255,255,255,.07);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      flex-shrink: 0;
+    }
+    .adm-sidebar::-webkit-scrollbar { width: 3px; }
+    .adm-sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,.08); }
+
+    /* Logo */
+    .adm-sb-logo {
+      display: flex; align-items: center; gap: .75rem;
+      padding: 1.25rem 1.1rem 1rem;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      flex-shrink: 0;
+    }
+    .adm-sb-dot {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: linear-gradient(135deg, #C1007A, #9a0062);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 14px rgba(193,0,122,.4); flex-shrink: 0;
+    }
+    .adm-sb-brand {
+      font-size: .88rem; font-weight: 700; color: #fff; line-height: 1.2;
+    }
+    .adm-sb-brand span {
+      display: block; font-size: .65rem; font-weight: 400;
+      color: rgba(255,255,255,.35); margin-top: .08rem;
+    }
+
+    /* Section labels */
+    .adm-sb-sec {
+      font-size: .57rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .14em; color: rgba(255,255,255,.22);
+      padding: 1.1rem 1.1rem .3rem; margin: 0; flex-shrink: 0;
+    }
+
+    /* Items */
+    .adm-sb-item {
+      display: flex; align-items: center; gap: .6rem;
+      padding: .55rem 1.1rem; border-radius: 0;
+      font-size: .78rem; color: rgba(255,255,255,.45);
+      text-decoration: none; cursor: pointer;
+      transition: all .15s; position: relative;
+      border-left: 2px solid transparent;
+      margin: .05rem 0;
+    }
+    .adm-sb-item:hover {
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.8);
+      text-decoration: none;
+    }
+    .adm-sb-item--active {
+      background: rgba(193,0,122,.12);
+      border-left-color: #C1007A;
+      color: #f472b6 !important;
+      font-weight: 600;
+    }
+    .adm-sb-item--active svg { opacity: 1; }
+    .adm-sb-item svg { opacity: .6; flex-shrink: 0; }
+    .adm-sb-item:hover svg { opacity: 1; }
+
+    /* Badge */
+    .adm-sb-badge {
+      margin-left: auto; min-width: 19px; height: 19px;
+      background: #C1007A; color: #fff;
+      border-radius: 20px; font-size: .6rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 .4rem; flex-shrink: 0;
+      box-shadow: 0 0 8px rgba(193,0,122,.4);
+    }
+    .adm-sb-badge.gold {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      box-shadow: 0 0 8px rgba(245,158,11,.4);
+    }
+    .adm-sb-badge.green {
+      background: #10b981;
+      box-shadow: 0 0 8px rgba(16,185,129,.4);
+    }
+    .adm-sb-badge.blue {
+      background: #3b82f6;
+      box-shadow: 0 0 8px rgba(59,130,246,.4);
+    }
+
+    /* Status pip */
+    .adm-sb-pip {
+      width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+      margin-left: auto;
+    }
+    .pip-green { background: #10b981; box-shadow: 0 0 5px rgba(16,185,129,.6); animation: pip 2s infinite; }
+    .pip-yellow { background: #f59e0b; box-shadow: 0 0 5px rgba(245,158,11,.5); }
+    .pip-red { background: #ef4444; box-shadow: 0 0 5px rgba(239,68,68,.6); animation: pip .8s infinite; }
+    @keyframes pip { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    /* Sous-items (collapse) */
+    .adm-sb-sub {
+      display: none;
+      padding-left: 2rem;
+    }
+    .adm-sb-sub.open { display: block; }
+    .adm-sb-sub .adm-sb-item {
+      font-size: .74rem;
+      padding: .42rem 1rem;
+      color: rgba(255,255,255,.35);
+    }
+    .adm-sb-sub .adm-sb-item:hover { color: rgba(255,255,255,.7); }
+
+    /* Collapse toggle */
+    .adm-sb-toggle {
+      margin-left: auto; display: flex; align-items: center;
+      color: rgba(255,255,255,.25); font-size: .6rem; gap: .35rem;
+    }
+    .adm-sb-toggle .arr {
+      transition: transform .2s;
+      font-size: .55rem;
+    }
+    .adm-sb-item.open-group .arr { transform: rotate(90deg); }
+
+    /* Divider */
+    .adm-sb-divider {
+      height: 1px; background: rgba(255,255,255,.06);
+      margin: .5rem 1rem;
+    }
+
+    /* Footer user */
+    .adm-sb-footer {
+      margin-top: auto; padding: .75rem 1rem;
+      border-top: 1px solid rgba(255,255,255,.06);
+      flex-shrink: 0;
+    }
+    .adm-sb-user {
+      display: flex; align-items: center; gap: .65rem;
+    }
+    .adm-sb-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: linear-gradient(135deg, #C1007A, #9a0062);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .62rem; font-weight: 700; color: #fff;
+      border: 1.5px solid rgba(255,255,255,.15); flex-shrink: 0;
+    }
+    .adm-sb-info {
+      font-size: .75rem; font-weight: 600; color: rgba(255,255,255,.7);
+      line-height: 1.2; flex: 1; min-width: 0;
+    }
+    .adm-sb-info span {
+      display: block; font-size: .62rem; font-weight: 400;
+      color: rgba(255,255,255,.3);
+    }
+    .adm-sb-logout {
+      width: 26px; height: 26px; border-radius: 6px;
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,.3); transition: all .2s; flex-shrink: 0;
+    }
+    .adm-sb-logout:hover {
+      background: rgba(239,68,68,.12); border-color: rgba(239,68,68,.2);
+      color: #f87171;
+    }
+
+    /* Tooltip au survol */
+    .adm-sb-item[data-tip] { position: relative; }
+    .adm-sb-item[data-tip]::after {
+      content: attr(data-tip);
+      position: absolute; left: 100%; top: 50%; transform: translateY(-50%);
+      background: #1c2235; color: rgba(255,255,255,.85);
+      font-size: .68rem; padding: .3rem .7rem;
+      border-radius: 6px; white-space: nowrap;
+      pointer-events: none; opacity: 0; transition: opacity .2s;
+      border: 1px solid rgba(255,255,255,.1);
+      z-index: 100; margin-left: .5rem;
+    }
+
+    /* Version tag */
+    .adm-sb-version {
+      text-align: center; font-size: .58rem;
+      color: rgba(255,255,255,.15); padding: .4rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
 </head>
 <body>
 
 {% include "header.html" %}
 
-<!-- ════════════════════════════════════════
-     TOASTS (messages flash)
-════════════════════════════════════════ -->
+<!-- TOASTS -->
 <div class="adm-toasts" id="admToasts">
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
@@ -35,9 +219,7 @@
   {% endwith %}
 </div>
 
-<!-- ════════════════════════════════════════
-     MODALE SUPPRESSION
-════════════════════════════════════════ -->
+<!-- MODALE SUPPRESSION -->
 <div class="adm-modal-veil" id="delModal">
   <div class="adm-modal-box">
     <h3>Confirmer la suppression</h3>
@@ -52,13 +234,13 @@
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     SHELL PRINCIPAL
-════════════════════════════════════════ -->
+<!-- SHELL -->
 <div class="adm-shell">
 
-  <!-- ── Sidebar ── -->
+  <!-- ════ SIDEBAR ════ -->
   <aside class="adm-sidebar">
+
+    <!-- Logo -->
     <div class="adm-sb-logo">
       <div class="adm-sb-dot">
         <svg width="15" height="15" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
@@ -66,46 +248,156 @@
       <div class="adm-sb-brand">ML2C Conseil<span>Administration</span></div>
     </div>
 
+    <!-- ── PRINCIPAL ── -->
     <p class="adm-sb-sec">Principal</p>
+
     <a href="{{ url_for('admin_dashboard') }}" class="adm-sb-item">
       <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
       Dashboard
+      <span class="adm-sb-pip pip-green" style="margin-left:auto;"></span>
     </a>
+
     <a href="{{ url_for('admin_chatbot') }}" class="adm-sb-item adm-sb-item--active">
       <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
       Questions / Réponses
       <span class="adm-sb-badge">{{ messages|length }}</span>
     </a>
-    <a href="#" class="adm-sb-item">
+
+    <a href="{{ url_for('admin_utilisateurs') }}" class="adm-sb-item">
       <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
       Utilisateurs
     </a>
-    <a href="#" class="adm-sb-item">
+
+    <a href="{{ url_for('admin_stats') }}" class="adm-sb-item">
       <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
       Statistiques
     </a>
 
-    <p class="adm-sb-sec">Compte</p>
-    <a href="{{ url_for('menu') }}" class="adm-sb-item">
-      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
-      Paramètres
+    <a href="{{ url_for('admin_notifications') }}" class="adm-sb-item">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+      Notifications
+      <span class="adm-sb-badge green">3</span>
     </a>
 
+    <a href="{{ url_for('admin_agenda') }}" class="adm-sb-item">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Agenda / RDV
+      <span class="adm-sb-badge blue">2</span>
+    </a>
+
+    <!-- ── CONTENU ── -->
+    <div class="adm-sb-divider"></div>
+    <p class="adm-sb-sec">Contenu</p>
+
+    <!-- Blog avec sous-menu -->
+    <a href="{{ url_for('admin_blog') }}" class="adm-sb-item" onclick="toggleSub(this,'subBlog')">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Blog / Articles
+      <span class="adm-sb-toggle"><span class="arr">›</span></span>
+    </a>
+    <div class="adm-sb-sub" id="subBlog">
+      <a href="{{ url_for('admin_blog') }}" class="adm-sb-item">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        Tous les articles
+      </a>
+      <a href="{{ url_for('admin_blog_new') }}" class="adm-sb-item">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Nouvel article
+      </a>
+      <a href="{{ url_for('admin_blog_categories') }}" class="adm-sb-item">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        Catégories
+      </a>
+    </div>
+
+    <a href="{{ url_for('admin_formulaires') }}" class="adm-sb-item">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+      Formulaires / Devis
+      <span class="adm-sb-badge gold">5</span>
+    </a>
+
+    <a href="{{ url_for('admin_emails') }}" class="adm-sb-item">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Emails automatiques
+    </a>
+
+    <!-- ── SYSTÈME ── -->
+    <div class="adm-sb-divider"></div>
+    <p class="adm-sb-sec">Système</p>
+
+    <a href="{{ url_for('admin_config') }}" class="adm-sb-item">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2M17.66 17.66l-1.41-1.41M6.34 17.66l-1.41-1.41"/></svg>
+      Configuration
+    </a>
+
+    <a href="{{ url_for('admin_logs') }}" class="adm-sb-item">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Logs de sécurité
+      <span class="adm-sb-pip pip-red" style="margin-left:auto;"></span>
+    </a>
+
+    <a href="{{ url_for('admin_performances') }}" class="adm-sb-item">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Performances
+      <span class="adm-sb-pip pip-green" style="margin-left:auto;"></span>
+    </a>
+
+    <a href="{{ url_for('admin_sauvegardes') }}" class="adm-sb-item">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Sauvegardes
+      <span class="adm-sb-badge green">OK</span>
+    </a>
+
+    <a href="{{ url_for('admin_export') }}" class="adm-sb-item">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Export données
+    </a>
+
+    <a href="{{ url_for('admin_purge') }}" class="adm-sb-item">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+      Purger les logs
+    </a>
+
+    <a href="{{ url_for('admin_view') }}" class="adm-sb-item">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      Source Viewer
+    </a>
+
+    <!-- ── COMPTE ── -->
+    <div class="adm-sb-divider"></div>
+    <p class="adm-sb-sec">Compte</p>
+
+    <a href="{{ url_for('admin_parametres') }}" class="adm-sb-item">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Paramètres du compte
+    </a>
+
+    <a href="{{ url_for('admin_audit') }}" class="adm-sb-item">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      Journal d'audit
+    </a>
+
+    <div class="adm-sb-divider"></div>
+
+    <!-- Footer user -->
     <div class="adm-sb-footer">
       <div class="adm-sb-user">
         <div class="adm-sb-avatar">AD</div>
         <div class="adm-sb-info">
           Administrateur
-          <span>ML2C Conseil</span>
+          <span>Super Admin · Niv. 3</span>
         </div>
         <a href="{{ url_for('logout_admin') }}" class="adm-sb-logout" title="Déconnexion">
-          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         </a>
       </div>
     </div>
+
+    <div class="adm-sb-version">ML2C Admin v2.0 · 2025</div>
+
   </aside>
 
-  <!-- ── Zone principale ── -->
+  <!-- ════ ZONE PRINCIPALE ════ -->
   <div class="adm-main">
 
     <!-- Topbar -->
@@ -179,15 +471,12 @@
 
       <!-- Panel tableau -->
       <div class="adm-panel">
-
-        <!-- En-tête panel -->
         <div class="adm-panel-head">
           <div class="adm-ph-left">
             <span class="adm-panel-title">Base de connaissance</span>
             <span class="adm-entry-count">{{ messages|length }} entrée{{ 's' if messages|length > 1 }}</span>
           </div>
           <div class="adm-ph-right">
-            <!-- Filtres -->
             <div class="adm-chips" id="filterChips">
               <button class="adm-chip adm-chip--on" onclick="filterTable(this,'all')">
                 <span class="adm-cdot"></span>Toutes
@@ -199,7 +488,6 @@
                 <span class="adm-cdot" style="color:#185FA5"></span>Auto
               </button>
             </div>
-            <!-- Recherche -->
             <div class="adm-search-wrap">
               <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
               <input type="text" id="searchInput" placeholder="Rechercher…" oninput="searchTable()">
@@ -207,7 +495,6 @@
           </div>
         </div>
 
-        <!-- Tableau -->
         <div class="adm-table-head">
           <div class="adm-th adm-th--idx">#</div>
           <div class="adm-th">Question</div>
@@ -219,9 +506,7 @@
           {% for message in messages %}
           <div class="adm-qa-row" data-tag="{{ message.tag if message.tag else 'auto' }}"
                data-q="{{ message.question|lower }}" data-r="{{ message.reponse|lower }}">
-
             <div class="adm-idx-c">{{ loop.index }}</div>
-
             <div class="adm-q-c">
               <div class="adm-q-txt">{{ message.question }}</div>
               <span class="adm-tag adm-tag--{{ message.tag if message.tag else 'auto' }}">
@@ -229,36 +514,28 @@
                 {{ 'Récent' if message.tag == 'new' else 'Modifié' if message.tag == 'manual' else 'Auto' }}
               </span>
             </div>
-
             <div class="adm-r-c">
-              <!-- Affichage statique -->
               <div class="adm-r-txt" id="rStatic-{{ message._id }}">{{ message.reponse }}</div>
-              <!-- Zone édition inline -->
               <div class="adm-edit-area" id="rEdit-{{ message._id }}">
                 <form action="{{ url_for('modifier_reponse', message_id=message._id) }}" method="POST">
                   <textarea name="reponse" rows="3" id="rInput-{{ message._id }}">{{ message.reponse }}</textarea>
                   <div class="adm-ebtns">
                     <button type="submit" class="adm-eb adm-eb-save">Enregistrer</button>
-                    <button type="button" class="adm-eb adm-eb-cancel js-cancel-btn"
-                            data-id="{{ message._id }}">Annuler</button>
+                    <button type="button" class="adm-eb adm-eb-cancel js-cancel-btn" data-id="{{ message._id }}">Annuler</button>
                   </div>
                 </form>
               </div>
             </div>
-
             <div class="adm-act-c">
-              <button class="adm-ico adm-ico--edit js-edit-btn" title="Modifier"
-                      data-id="{{ message._id }}">
+              <button class="adm-ico adm-ico--edit js-edit-btn" title="Modifier" data-id="{{ message._id }}">
                 <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4z"/></svg>
               </button>
               <button class="adm-ico adm-ico--del js-del-btn" title="Supprimer"
-                      data-id="{{ message._id }}"
-                      data-question="{{ message.question | e }}"
+                      data-id="{{ message._id }}" data-question="{{ message.question | e }}"
                       data-url="{{ url_for('supprimer_message', message_id=message._id) }}">
                 <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
               </button>
             </div>
-
           </div>
           {% else %}
           <div class="adm-empty">
@@ -273,7 +550,6 @@
           {% endfor %}
         </div>
 
-        <!-- Pied de panel -->
         <div class="adm-panel-foot">
           <span class="adm-pfi" id="paginInfo">{{ messages|length }} entrée{{ 's' if messages|length > 1 }}</span>
           <div class="adm-pg-grp">
@@ -282,115 +558,51 @@
             <button class="adm-pg">›</button>
           </div>
         </div>
+      </div>
 
-      </div><!-- /.adm-panel -->
-    </div><!-- /.adm-content -->
-  </div><!-- /.adm-main -->
-</div><!-- /.adm-shell -->
+    </div>
+  </div>
+</div>
 
 {% include "footer.html" %}
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-/* ════════════════════════════════════════
-   ÉDITION INLINE
-════════════════════════════════════════ */
-function startEdit(id) {
-  var rs = document.getElementById('rStatic-' + id);
-  var ea = document.getElementById('rEdit-' + id);
-  var row = ea ? ea.closest('.adm-qa-row') : null;
-  if (rs) rs.style.display = 'none';
-  if (ea) ea.classList.add('adm-edit-area--show');
-  if (row) row.classList.add('adm-qa-row--editing');
-  var ta = document.getElementById('rInput-' + id);
-  if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
+/* Édition inline */
+function startEdit(id){var rs=document.getElementById('rStatic-'+id),ea=document.getElementById('rEdit-'+id),row=ea?ea.closest('.adm-qa-row'):null;if(rs)rs.style.display='none';if(ea)ea.classList.add('adm-edit-area--show');if(row)row.classList.add('adm-qa-row--editing');var ta=document.getElementById('rInput-'+id);if(ta){ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length);}}
+function cancelEdit(id){var rs=document.getElementById('rStatic-'+id),ea=document.getElementById('rEdit-'+id),row=ea?ea.closest('.adm-qa-row'):null;if(rs)rs.style.display='block';if(ea)ea.classList.remove('adm-edit-area--show');if(row)row.classList.remove('adm-qa-row--editing');}
+document.addEventListener('click',function(e){
+  var editBtn=e.target.closest('.js-edit-btn');if(editBtn){startEdit(editBtn.getAttribute('data-id'));return;}
+  var cancelBtn=e.target.closest('.js-cancel-btn');if(cancelBtn){cancelEdit(cancelBtn.getAttribute('data-id'));return;}
+  var delBtn=e.target.closest('.js-del-btn');if(delBtn){var q=delBtn.getAttribute('data-question')||'',url=delBtn.getAttribute('data-url')||'';document.getElementById('delModalQ').textContent=q;document.getElementById('delForm').action=url;document.getElementById('delModal').classList.add('adm-modal-veil--show');return;}
+});
+function closeDelModal(){document.getElementById('delModal').classList.remove('adm-modal-veil--show');}
+
+/* Filtres & recherche */
+function filterTable(btn,mode){document.querySelectorAll('.adm-chip').forEach(function(c){c.classList.remove('adm-chip--on');});btn.classList.add('adm-chip--on');document.querySelectorAll('.adm-qa-row').forEach(function(row){var tag=row.getAttribute('data-tag')||'auto';row.style.display=(mode==='all'||tag===mode)?'':' none';});updateCount();}
+function searchTable(){var q=document.getElementById('searchInput').value.toLowerCase();document.querySelectorAll('.adm-qa-row').forEach(function(row){var inQ=(row.getAttribute('data-q')||'').indexOf(q)!==-1,inR=(row.getAttribute('data-r')||'').indexOf(q)!==-1;row.style.display=(inQ||inR)?'':'none';});updateCount();}
+function updateCount(){var rows=document.querySelectorAll('.adm-qa-row'),visible=0;rows.forEach(function(r){if(r.style.display!=='none')visible++;});var el=document.getElementById('paginInfo');if(el)el.textContent=visible+' / '+rows.length+' entrée'+(rows.length>1?'s':'');}
+
+/* Sous-menus sidebar */
+function toggleSub(btn, subId) {
+  var sub = document.getElementById(subId);
+  if (!sub) return;
+  var isOpen = sub.classList.toggle('open');
+  btn.classList.toggle('open-group', isOpen);
 }
 
-function cancelEdit(id) {
-  var rs = document.getElementById('rStatic-' + id);
-  var ea = document.getElementById('rEdit-' + id);
-  var row = ea ? ea.closest('.adm-qa-row') : null;
-  if (rs) rs.style.display = 'block';
-  if (ea) ea.classList.remove('adm-edit-area--show');
-  if (row) row.classList.remove('adm-qa-row--editing');
-}
+/* Auto-dismiss toasts */
+document.querySelectorAll('[data-auto-dismiss]').forEach(function(t){setTimeout(function(){t.style.transition='opacity .4s';t.style.opacity='0';setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},420);},3500);});
 
-/* Délégation — boutons édition */
-document.addEventListener('click', function(e) {
-  var editBtn = e.target.closest('.js-edit-btn');
-  if (editBtn) { startEdit(editBtn.getAttribute('data-id')); return; }
-
-  var cancelBtn = e.target.closest('.js-cancel-btn');
-  if (cancelBtn) { cancelEdit(cancelBtn.getAttribute('data-id')); return; }
-
-  var delBtn = e.target.closest('.js-del-btn');
-  if (delBtn) {
-    var q   = delBtn.getAttribute('data-question') || '';
-    var url = delBtn.getAttribute('data-url') || '';
-    document.getElementById('delModalQ').textContent = q;
-    document.getElementById('delForm').action = url;
-    document.getElementById('delModal').classList.add('adm-modal-veil--show');
-    return;
+/* Active item auto-detection */
+var path = window.location.pathname;
+document.querySelectorAll('.adm-sb-item').forEach(function(item) {
+  var href = item.getAttribute('href');
+  if (href && href !== '#' && path.includes(href.split('/').pop())) {
+    item.classList.add('adm-sb-item--active');
   }
 });
-
-/* ════════════════════════════════════════
-   MODALE SUPPRESSION
-════════════════════════════════════════ */
-function closeDelModal() {
-  document.getElementById('delModal').classList.remove('adm-modal-veil--show');
-}
-
-/* ════════════════════════════════════════
-   FILTRES
-════════════════════════════════════════ */
-function filterTable(btn, mode) {
-  document.querySelectorAll('.adm-chip').forEach(function(c) {
-    c.classList.remove('adm-chip--on');
-  });
-  btn.classList.add('adm-chip--on');
-  document.querySelectorAll('.adm-qa-row').forEach(function(row) {
-    var tag = row.getAttribute('data-tag') || 'auto';
-    row.style.display = (mode === 'all' || tag === mode) ? '' : 'none';
-  });
-  updateCount();
-}
-
-/* ════════════════════════════════════════
-   RECHERCHE
-════════════════════════════════════════ */
-function searchTable() {
-  var q = document.getElementById('searchInput').value.toLowerCase();
-  document.querySelectorAll('.adm-qa-row').forEach(function(row) {
-    var inQ = (row.getAttribute('data-q') || '').indexOf(q) !== -1;
-    var inR = (row.getAttribute('data-r') || '').indexOf(q) !== -1;
-    row.style.display = (inQ || inR) ? '' : 'none';
-  });
-  updateCount();
-}
-
-function updateCount() {
-  var rows    = document.querySelectorAll('.adm-qa-row');
-  var visible = 0;
-  rows.forEach(function(r) {
-    if (r.style.display !== 'none') visible++;
-  });
-  var el = document.getElementById('paginInfo');
-  if (el) el.textContent = visible + ' / ' + rows.length + ' entrée' + (rows.length > 1 ? 's' : '');
-}
-
-/* ════════════════════════════════════════
-   AUTO-DISMISS TOASTS
-════════════════════════════════════════ */
-document.querySelectorAll('[data-auto-dismiss]').forEach(function(t) {
-  setTimeout(function() {
-    t.style.transition = 'opacity .4s';
-    t.style.opacity    = '0';
-    setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 420);
-  }, 3500);
-});
 </script>
-
 </body>
 </html>

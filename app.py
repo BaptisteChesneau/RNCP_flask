@@ -1192,6 +1192,42 @@ def admin_parametres(): return render_template('admin_parametres.html')
 @app.route('/admin/utilisateurs')
 def admin_utilisateurs(): return render_template('admin_utilisateurs.html')
 
+@app.route('/admin/notifications')
+def admin_notifications():
+    return render_template('admin_notifications.html')
+
+@app.route('/admin/agenda')
+def admin_agenda():
+    return render_template('admin_agenda.html')
+
+@app.route('/admin/blog')
+def admin_blog():
+    return render_template('admin_blog.html')
+
+@app.route('/admin/blog/nouveau')
+def admin_blog_new():
+    return render_template('admin_blog_new.html')
+
+@app.route('/admin/blog/categories')
+def admin_blog_categories():
+    return render_template('admin_blog_categories.html')
+
+@app.route('/admin/formulaires')
+def admin_formulaires():
+    return render_template('admin_formulaires.html')
+
+@app.route('/admin/performances')
+def admin_performances():
+    return render_template('admin_performances.html')
+
+@app.route('/admin/sauvegardes')
+def admin_sauvegardes():
+    return render_template('admin_sauvegardes.html')
+
+@app.route('/admin/audit')
+def admin_audit():
+    return render_template('admin_audit.html')
+
 # ➡️ NEW protected admin route (to be added)
 @app.route("/admin-chatbot")
 def admin_chatbot():

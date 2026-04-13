@@ -1179,6 +1179,21 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+@app.route('/admin/agenda')
+@login_required
+def admin_agenda():
+    return render_template('admin_agenda.html')
+
+@app.route('/admin/blog')
+@login_required
+def admin_blog():
+    return render_template('admin_blog.html')
+
+@app.route('/admin/formulaires')
+@login_required
+def admin_formulaires():
+    return render_template('admin_formulaires.html')
+
 @app.route('/admin/view-source')
 @login_required
 def admin_view_source():

@@ -1,0 +1,606 @@
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Agenda & RDV — ML2C Admin</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--rose:#C1007A;--rose-d:#9a0062;--rose-l:#fce4f3;--rose-xl:#fff5fb;--turq:#4FA695;--turq-l:#d4f0ec;--gold:#f59e0b;--gold-d:#b45309;--gold-l:#fffbeb;--bg:#f2f4f8;--surface:#fff;--border:#e4e8ef;--text:#111827;--muted:#6b7280;--faint:#9ca3af;--success:#10b981;--danger:#ef4444;--blue:#3b82f6;--ff-head:'Cormorant Garamond',serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'JetBrains Mono',monospace;}
+body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
+/* SIDEBAR */
+.adm-shell{display:flex;height:100vh;overflow:hidden;}
+.adm-sidebar{width:220px;background:#0e1018;border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0;}
+.adm-sidebar::-webkit-scrollbar{width:3px;}.adm-sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);}
+.adm-sb-logo{display:flex;align-items:center;gap:.75rem;padding:1.25rem 1.1rem 1rem;border-bottom:1px solid rgba(255,255,255,.06);}
+.adm-sb-dot{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#C1007A,#9a0062);display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px rgba(193,0,122,.4);flex-shrink:0;}
+.adm-sb-brand{font-size:.88rem;font-weight:700;color:#fff;line-height:1.2;}.adm-sb-brand span{display:block;font-size:.65rem;font-weight:400;color:rgba(255,255,255,.35);}
+.adm-sb-sec{font-size:.57rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.22);padding:1.1rem 1.1rem .3rem;margin:0;}
+.adm-sb-item{display:flex;align-items:center;gap:.6rem;padding:.55rem 1.1rem;font-size:.78rem;color:rgba(255,255,255,.45);text-decoration:none;transition:all .15s;border-left:2px solid transparent;margin:.05rem 0;}
+.adm-sb-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.8);text-decoration:none;}
+.adm-sb-item--active{background:rgba(193,0,122,.12);border-left-color:#C1007A;color:#f472b6!important;font-weight:600;}
+.adm-sb-item svg{opacity:.6;flex-shrink:0;}.adm-sb-item:hover svg,.adm-sb-item--active svg{opacity:1;}
+.adm-sb-badge{margin-left:auto;min-width:19px;height:19px;background:#C1007A;color:#fff;border-radius:20px;font-size:.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 .4rem;flex-shrink:0;}
+.adm-sb-badge.gold{background:linear-gradient(135deg,#f59e0b,#d97706);}.adm-sb-badge.green{background:#10b981;}.adm-sb-badge.blue{background:#3b82f6;}
+.adm-sb-pip{width:6px;height:6px;border-radius:50%;flex-shrink:0;}.pip-green{background:#10b981;animation:pip 2s infinite;}.pip-red{background:#ef4444;animation:pip .8s infinite;}@keyframes pip{0%,100%{opacity:1}50%{opacity:.3}}
+.adm-sb-divider{height:1px;background:rgba(255,255,255,.06);margin:.5rem 1rem;}
+.adm-sb-footer{margin-top:auto;padding:.75rem 1rem;border-top:1px solid rgba(255,255,255,.06);}
+.adm-sb-user{display:flex;align-items:center;gap:.65rem;}
+.adm-sb-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#C1007A,#9a0062);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:#fff;flex-shrink:0;}
+.adm-sb-info{font-size:.75rem;font-weight:600;color:rgba(255,255,255,.7);line-height:1.2;flex:1;}.adm-sb-info span{display:block;font-size:.62rem;font-weight:400;color:rgba(255,255,255,.3);}
+.adm-sb-logout{width:26px;height:26px;border-radius:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);transition:all .2s;cursor:pointer;}.adm-sb-logout:hover{background:rgba(239,68,68,.12);color:#f87171;}
+.adm-sb-version{text-align:center;font-size:.58rem;color:rgba(255,255,255,.15);padding:.4rem 1rem;font-family:var(--ff-mono);}
+/* MAIN */
+.adm-main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.adm-topbar{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.5rem;background:#fff;border-bottom:1px solid var(--border);flex-shrink:0;gap:1rem;flex-wrap:wrap;}
+.adm-topbar-left h2{font-size:1rem;font-weight:700;margin:0;}.adm-topbar-left p{font-size:.72rem;color:var(--muted);margin:.05rem 0 0;}
+.adm-topbar-right{display:flex;align-items:center;gap:.5rem;}
+.adm-content{flex:1;overflow-y:auto;padding:1.5rem;}
+.btn-adm{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border-radius:9px;font-size:.78rem;font-weight:600;cursor:pointer;border:none;font-family:var(--ff-body);transition:all .2s;white-space:nowrap;}
+.btn-rose{background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff;box-shadow:0 4px 12px rgba(193,0,122,.25);}.btn-rose:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(193,0,122,.35);}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted);}.btn-ghost:hover{border-color:var(--rose);color:var(--rose);}
+.btn-turq{background:linear-gradient(135deg,var(--turq),#3d8578);color:#fff;}
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
+.kbox{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:1.1rem;display:flex;align-items:center;gap:.85rem;box-shadow:0 2px 12px rgba(0,0,0,.05);transition:transform .2s;animation:fadeUp .4s both;}
+.kbox:hover{transform:translateY(-2px);}
+.kbox-ico{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
+.ki-rose{background:var(--rose-l);color:var(--rose);}.ki-turq{background:var(--turq-l);color:var(--turq);}.ki-gold{background:var(--gold-l);color:var(--gold-d);}.ki-blue{background:#dbeafe;color:#2563eb;}.ki-green{background:#d1fae5;color:var(--success);}
+.kbox-val{font-family:var(--ff-head);font-size:1.7rem;font-weight:700;line-height:1;}.kbox-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-top:.1rem;}
+.kbox-sub{font-size:.65rem;color:var(--turq);font-weight:600;margin-top:.15rem;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+/* LAYOUT */
+.agenda-layout{display:grid;grid-template-columns:1fr 340px;gap:1.5rem;}
+/* COUNTDOWN */
+.countdown-banner{background:linear-gradient(135deg,#0e1018,#1a1f2e);border-radius:18px;padding:1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;animation:fadeUp .3s both;}
+.cd-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.3);margin-bottom:.4rem;}
+.cd-name{font-family:var(--ff-head);font-size:1.3rem;color:#fff;font-weight:700;margin-bottom:.3rem;}
+.cd-meta{font-size:.75rem;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:.75rem;}
+.cd-meta span{display:flex;align-items:center;gap:.3rem;}
+.cd-units{display:flex;align-items:center;gap:.75rem;}
+.cd-unit{text-align:center;}
+.cd-num{font-family:var(--ff-mono);font-size:2rem;font-weight:700;color:#fff;line-height:1;min-width:52px;background:rgba(255,255,255,.06);border-radius:10px;padding:.3rem .5rem;display:block;}
+.cd-lbl{font-size:.55rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-top:.3rem;display:block;}
+.cd-sep{font-family:var(--ff-mono);font-size:1.5rem;color:rgba(255,255,255,.2);align-self:flex-start;padding-top:.25rem;}
+.cd-badge{background:rgba(193,0,122,.2);border:1px solid rgba(193,0,122,.3);color:#f472b6;font-size:.72rem;font-weight:700;padding:.3rem .75rem;border-radius:20px;display:inline-flex;align-items:center;gap:.35rem;}
+/* CALENDRIER */
+.panel{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.05);overflow:hidden;margin-bottom:1.25rem;animation:fadeUp .35s both;}
+.panel-head{padding:1rem 1.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(90deg,#fafbfc,#fff);}
+.panel-head-left{display:flex;align-items:center;gap:.65rem;}
+.panel-ico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0;}
+.pi-blue{background:#dbeafe;color:#2563eb;}.pi-rose{background:var(--rose-l);color:var(--rose);}.pi-turq{background:var(--turq-l);color:var(--turq);}.pi-gold{background:var(--gold-l);color:var(--gold-d);}.pi-green{background:#d1fae5;color:var(--success);}
+.panel-title{font-size:.88rem;font-weight:700;color:var(--text);}
+.panel-sub{font-size:.7rem;color:var(--muted);margin-top:.08rem;}
+.panel-body{padding:1.4rem;}
+/* CALENDRIER GRID */
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+.cal-month{font-family:var(--ff-head);font-size:1.25rem;font-weight:700;color:var(--text);}
+.cal-nav-btn{width:30px;height:30px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-size:.75rem;}
+.cal-nav-btn:hover{border-color:var(--rose);color:var(--rose);}
+.cal-grid-header{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:.5rem;}
+.cal-dh{text-align:center;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);padding:.4rem 0;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.cal-day{aspect-ratio:1;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.8rem;font-weight:500;cursor:pointer;transition:all .18s;position:relative;border:1.5px solid transparent;}
+.cal-day:hover{background:#f3f4f6;}
+.cal-day.other-month{color:var(--faint);}
+.cal-day.today{background:var(--rose-l);border-color:var(--rose);color:var(--rose);font-weight:700;}
+.cal-day.has-rdv::after{content:'';position:absolute;bottom:4px;width:4px;height:4px;border-radius:50%;background:var(--rose);}
+.cal-day.has-rdv.today::after{background:var(--rose-d);}
+.cal-day.selected{background:var(--rose);color:#fff;border-color:var(--rose);}
+.cal-day.selected::after{background:#fff;}
+.cal-day.multiple-rdv::after{background:var(--gold);}
+/* RDV LIST */
+.rdv-item{display:flex;align-items:flex-start;gap:.9rem;padding:.9rem;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;margin-bottom:.7rem;transition:all .2s;cursor:pointer;position:relative;overflow:hidden;}
+.rdv-item:hover{border-color:var(--rose);box-shadow:0 4px 16px rgba(193,0,122,.1);transform:translateX(3px);}
+.rdv-item.rdv-urgent{border-color:rgba(239,68,68,.3);background:linear-gradient(90deg,#fff8f8,#fff);}
+.rdv-item.rdv-urgent::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--danger);}
+.rdv-item.rdv-today{border-color:rgba(193,0,122,.25);background:var(--rose-xl);}
+.rdv-item.rdv-today::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--rose);}
+.rdv-time-block{display:flex;flex-direction:column;align-items:center;min-width:52px;padding:.3rem;background:#f8fafc;border-radius:9px;flex-shrink:0;}
+.rdv-hour{font-family:var(--ff-mono);font-size:.88rem;font-weight:700;color:var(--text);}
+.rdv-duration{font-size:.6rem;color:var(--faint);margin-top:.15rem;}
+.rdv-body{flex:1;min-width:0;}
+.rdv-client{font-size:.87rem;font-weight:700;color:var(--text);margin-bottom:.2rem;}
+.rdv-type{font-size:.72rem;color:var(--muted);margin-bottom:.3rem;}
+.rdv-tags{display:flex;gap:.4rem;flex-wrap:wrap;}
+.rdv-tag{font-size:.6rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;}
+.rt-compta{background:#dbeafe;color:#1d4ed8;}.rt-fiscal{background:var(--gold-l);color:var(--gold-d);}.rt-audit{background:var(--turq-l);color:var(--turq);}.rt-conseil{background:var(--rose-l);color:var(--rose);}.rt-juridique{background:#ede9fe;color:#6d28d9;}
+.rdv-actions{display:flex;flex-direction:column;gap:.35rem;flex-shrink:0;}
+.rdv-action-btn{width:28px;height:28px;border-radius:7px;border:1.5px solid var(--border);background:#fff;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;font-size:.72rem;}
+.rdv-action-btn:hover{border-color:var(--rose);color:var(--rose);}
+/* FORMULAIRE */
+.form-field{display:flex;flex-direction:column;gap:.35rem;margin-bottom:1rem;}
+.form-label{font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);}
+.form-input,.form-select,.form-textarea{border:1.5px solid var(--border);border-radius:10px;padding:.65rem 1rem;font-size:.87rem;font-family:var(--ff-body);color:var(--text);background:#fafbfc;outline:none;transition:all .2s;width:100%;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--rose);background:#fff;box-shadow:0 0 0 3px rgba(193,0,122,.07);}
+.form-select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .8rem center;}
+.form-textarea{resize:vertical;min-height:80px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+/* MINI AGENDA STATS */
+.stat-ring{display:flex;align-items:center;gap:.65rem;padding:.7rem;background:#f8fafc;border-radius:11px;margin-bottom:.65rem;}
+.ring-chart{width:36px;height:36px;flex-shrink:0;}
+.ring-label{font-size:.78rem;font-weight:600;color:var(--text);}
+.ring-sub{font-size:.68rem;color:var(--muted);}
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.modal-overlay.open{display:flex;}
+.modal-box{background:#fff;border-radius:20px;width:100%;max-width:500px;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:fadeUp .3s ease;overflow:hidden;}
+.modal-head{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.modal-title{font-size:.95rem;font-weight:700;display:flex;align-items:center;gap:.5rem;}
+.modal-close{width:28px;height:28px;border-radius:8px;border:1.5px solid var(--border);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .2s;font-size:.75rem;}
+.modal-close:hover{border-color:var(--danger);color:var(--danger);}
+.modal-body{padding:1.5rem;}
+.modal-footer{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:.65rem;}
+/* TOAST */
+.toast-box{position:fixed;bottom:1.25rem;right:1.25rem;z-index:9999;display:flex;align-items:center;gap:.65rem;padding:.8rem 1.2rem;border-radius:12px;font-size:.82rem;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.18);transform:translateY(80px);opacity:0;transition:all .35s cubic-bezier(.34,1.2,.64,1);pointer-events:none;max-width:320px;}
+.toast-box.show{transform:translateY(0);opacity:1;}
+.toast-ok{background:#0b2a1f;color:#4ade80;border:1px solid rgba(74,222,128,.2);}
+.toast-info{background:#0b1a2a;color:#60a5fa;border:1px solid rgba(96,165,250,.2);}
+.toast-warn{background:#2a1f0b;color:#fbbf24;border:1px solid rgba(251,191,36,.2);}
+@media(max-width:1100px){.agenda-layout{grid-template-columns:1fr;}.kpi-row{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head><body>
+<div class="adm-shell">
+<aside class="adm-sidebar">
+  <div class="adm-sb-logo"><div class="adm-sb-dot"><svg width="15" height="15" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><div class="adm-sb-brand">ML2C Conseil<span>Administration</span></div></div>
+  <p class="adm-sb-sec">Principal</p>
+  <a href="{{ url_for('admin_dashboard') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard<span class="adm-sb-pip pip-green" style="margin-left:auto;"></span></a>
+  <a href="{{ url_for('admin_chatbot') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Questions / Réponses<span class="adm-sb-badge">19</span></a>
+  <a href="{{ url_for('admin_utilisateurs') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Utilisateurs</a>
+  <a href="{{ url_for('admin_stats') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Statistiques</a>
+  <a href="{{ url_for('admin_notifications') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Notifications<span class="adm-sb-badge green">3</span></a>
+  <a href="{{ url_for('admin_agenda') }}" class="adm-sb-item adm-sb-item--active"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Agenda / RDV<span class="adm-sb-badge blue">2</span></a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Contenu</p>
+  <a href="{{ url_for('admin_blog') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Blog / Articles</a>
+  <a href="{{ url_for('admin_formulaires') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>Formulaires / Devis<span class="adm-sb-badge gold">5</span></a>
+  <a href="{{ url_for('admin_emails') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Emails automatiques</a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Système</p>
+  <a href="{{ url_for('admin_config') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>Configuration</a>
+  <a href="{{ url_for('admin_logs') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Logs sécurité<span class="adm-sb-pip pip-red" style="margin-left:auto;"></span></a>
+  <a href="{{ url_for('admin_performances') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Performances<span class="adm-sb-pip pip-green" style="margin-left:auto;"></span></a>
+  <a href="{{ url_for('admin_sauvegardes') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Sauvegardes<span class="adm-sb-badge green">OK</span></a>
+  <a href="{{ url_for('admin_export') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Export données</a>
+  <a href="{{ url_for('admin_purge') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>Purger les logs</a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Compte</p>
+  <a href="{{ url_for('admin_parametres') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Paramètres du compte</a>
+  <a href="{{ url_for('admin_audit') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>Journal d'audit</a>
+  <div class="adm-sb-footer"><div class="adm-sb-user"><div class="adm-sb-avatar">AD</div><div class="adm-sb-info">Administrateur<span>Super Admin · Niv. 3</span></div><a href="{{ url_for('logout_admin') }}" class="adm-sb-logout"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></a></div></div>
+  <div class="adm-sb-version">ML2C Admin v2.0 · 2025</div>
+</aside>
+
+<div class="adm-main">
+  <div class="adm-topbar">
+    <div class="adm-topbar-left">
+      <h2><i class="fas fa-calendar-alt" style="color:var(--rose);margin-right:.4rem;font-size:.9rem;"></i>Agenda & Rendez-vous</h2>
+      <p>Gestion des RDV clients · <span id="topClock" style="font-family:var(--ff-mono);color:var(--rose);"></span></p>
+    </div>
+    <div class="adm-topbar-right">
+      <button class="btn-adm btn-ghost" onclick="toast('info','Export iCal en cours…')"><i class="fas fa-file-export"></i>Exporter iCal</button>
+      <button class="btn-adm btn-ghost" onclick="toast('info','Envoi rappels SMS en cours…')"><i class="fas fa-bell"></i>Rappels SMS</button>
+      <button class="btn-adm btn-rose" onclick="openModal()"><i class="fas fa-plus"></i>Nouveau RDV</button>
+    </div>
+  </div>
+
+  <div class="adm-content">
+
+    <!-- KPI -->
+    <div class="kpi-row">
+      <div class="kbox" style="animation-delay:.05s"><div class="kbox-ico ki-blue"><i class="fas fa-calendar-check"></i></div><div><div class="kbox-val">12</div><div class="kbox-lbl">RDV ce mois</div><div class="kbox-sub">+3 vs mois dernier</div></div></div>
+      <div class="kbox" style="animation-delay:.1s"><div class="kbox-ico ki-rose"><i class="fas fa-calendar-day"></i></div><div><div class="kbox-val" id="kpiAujourd">2</div><div class="kbox-lbl">Aujourd'hui</div><div class="kbox-sub">Prochain à 14h00</div></div></div>
+      <div class="kbox" style="animation-delay:.15s"><div class="kbox-ico ki-gold"><i class="fas fa-clock"></i></div><div><div class="kbox-val">48min</div><div class="kbox-lbl">Durée moy.</div><div class="kbox-sub">Par rendez-vous</div></div></div>
+      <div class="kbox" style="animation-delay:.2s"><div class="kbox-ico ki-green"><i class="fas fa-check-circle"></i></div><div><div class="kbox-val">94%</div><div class="kbox-lbl">Taux présence</div><div class="kbox-sub">↑ +2% ce mois</div></div></div>
+    </div>
+
+    <!-- COUNTDOWN PROCHAIN RDV -->
+    <div class="countdown-banner">
+      <div class="cd-left">
+        <div class="cd-label">⚡ Prochain rendez-vous</div>
+        <div class="cd-name">Mme Sophie Lemaire — Bilan comptable annuel</div>
+        <div class="cd-meta">
+          <span><i class="fas fa-calendar"></i>Aujourd'hui à 14h00</span>
+          <span><i class="fas fa-clock"></i>60 minutes</span>
+          <span><i class="fas fa-map-marker-alt"></i>Cabinet Dammarie</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap;">
+        <div class="cd-units">
+          <div class="cd-unit"><span class="cd-num" id="cdH">00</span><span class="cd-lbl">heures</span></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-unit"><span class="cd-num" id="cdM">00</span><span class="cd-lbl">minutes</span></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-unit"><span class="cd-num" id="cdS">00</span><span class="cd-lbl">secondes</span></div>
+        </div>
+        <div>
+          <div class="cd-badge"><i class="fas fa-circle" style="font-size:.45rem;animation:pip 1s infinite;"></i>En cours de compte</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LAYOUT -->
+    <div class="agenda-layout">
+
+      <!-- COLONNE GAUCHE : Calendrier + RDV du jour -->
+      <div>
+
+        <!-- CALENDRIER -->
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-head-left">
+              <div class="panel-ico pi-blue"><i class="fas fa-calendar-alt"></i></div>
+              <div><div class="panel-title">Calendrier</div><div class="panel-sub">Vue mensuelle — cliquez un jour pour voir ses RDV</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:.5rem;">
+              <button class="cal-nav-btn" onclick="changeMonth(-1)"><i class="fas fa-chevron-left"></i></button>
+              <span class="cal-month" id="calMonthLabel"></span>
+              <button class="cal-nav-btn" onclick="changeMonth(1)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="cal-grid-header">
+              <div class="cal-dh">Lun</div><div class="cal-dh">Mar</div><div class="cal-dh">Mer</div>
+              <div class="cal-dh">Jeu</div><div class="cal-dh">Ven</div><div class="cal-dh">Sam</div><div class="cal-dh">Dim</div>
+            </div>
+            <div class="cal-grid" id="calGrid"></div>
+            <div style="display:flex;align-items:center;gap:1.25rem;margin-top:1rem;flex-wrap:wrap;">
+              <div style="display:flex;align-items:center;gap:.4rem;font-size:.72rem;color:var(--muted);"><div style="width:10px;height:10px;border-radius:50%;background:var(--rose);"></div>Aujourd'hui</div>
+              <div style="display:flex;align-items:center;gap:.4rem;font-size:.72rem;color:var(--muted);"><div style="width:6px;height:6px;border-radius:50%;background:var(--rose);"></div>RDV planifié</div>
+              <div style="display:flex;align-items:center;gap:.4rem;font-size:.72rem;color:var(--muted);"><div style="width:6px;height:6px;border-radius:50%;background:var(--gold);"></div>Plusieurs RDV</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RDV DU JOUR -->
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-head-left">
+              <div class="panel-ico pi-rose"><i class="fas fa-list-ul"></i></div>
+              <div><div class="panel-title" id="rdvDayTitle">RDV d'aujourd'hui</div><div class="panel-sub" id="rdvDayCount">2 rendez-vous planifiés</div></div>
+            </div>
+            <button class="btn-adm btn-ghost" style="font-size:.72rem;" onclick="openModal()"><i class="fas fa-plus"></i>Ajouter</button>
+          </div>
+          <div class="panel-body" id="rdvList">
+
+            <div class="rdv-item rdv-today">
+              <div class="rdv-time-block"><span class="rdv-hour">14h00</span><span class="rdv-duration">60 min</span></div>
+              <div class="rdv-body">
+                <div class="rdv-client">Mme Sophie Lemaire</div>
+                <div class="rdv-type"><i class="fas fa-briefcase" style="margin-right:.3rem;opacity:.5;"></i>Bilan comptable annuel · Cabinet Dammarie</div>
+                <div class="rdv-tags"><span class="rdv-tag rt-compta">Comptabilité</span><span class="rdv-tag rt-fiscal">Fiscal</span></div>
+              </div>
+              <div class="rdv-actions">
+                <div class="rdv-action-btn" title="Confirmer" onclick="confirmRdv(this)"><i class="fas fa-check"></i></div>
+                <div class="rdv-action-btn" title="Modifier" onclick="toast('info','Modification du RDV…')"><i class="fas fa-pen"></i></div>
+                <div class="rdv-action-btn" title="Annuler" onclick="cancelRdv(this)" style="color:var(--danger);border-color:rgba(239,68,68,.2);"><i class="fas fa-times"></i></div>
+              </div>
+            </div>
+
+            <div class="rdv-item">
+              <div class="rdv-time-block"><span class="rdv-hour">16h30</span><span class="rdv-duration">45 min</span></div>
+              <div class="rdv-body">
+                <div class="rdv-client">M. Thomas Durand</div>
+                <div class="rdv-type"><i class="fas fa-phone" style="margin-right:.3rem;opacity:.5;"></i>Consultation fiscale · Visio Zoom</div>
+                <div class="rdv-tags"><span class="rdv-tag rt-fiscal">Fiscal</span><span class="rdv-tag rt-conseil">Conseil</span></div>
+              </div>
+              <div class="rdv-actions">
+                <div class="rdv-action-btn" title="Confirmer" onclick="confirmRdv(this)"><i class="fas fa-check"></i></div>
+                <div class="rdv-action-btn" title="Modifier" onclick="toast('info','Modification du RDV…')"><i class="fas fa-pen"></i></div>
+                <div class="rdv-action-btn" title="Annuler" onclick="cancelRdv(this)" style="color:var(--danger);border-color:rgba(239,68,68,.2);"><i class="fas fa-times"></i></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- RDV A VENIR -->
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-head-left">
+              <div class="panel-ico pi-turq"><i class="fas fa-calendar-week"></i></div>
+              <div><div class="panel-title">Prochains rendez-vous</div><div class="panel-sub">7 jours à venir</div></div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="rdv-item">
+              <div class="rdv-time-block" style="background:var(--turq-l);"><span class="rdv-hour" style="color:var(--turq);">Mer</span><span class="rdv-duration" style="color:var(--turq);">15 avr.</span></div>
+              <div class="rdv-body">
+                <div class="rdv-client">SCI Les Oliviers — M. Bernardo</div>
+                <div class="rdv-type"><i class="fas fa-building" style="margin-right:.3rem;opacity:.5;"></i>Audit comptes 2024 · 10h00 · 90 min</div>
+                <div class="rdv-tags"><span class="rdv-tag rt-audit">Audit</span><span class="rdv-tag rt-juridique">Juridique</span></div>
+              </div>
+              <div class="rdv-actions">
+                <div class="rdv-action-btn" onclick="toast('info','Rappel envoyé à M. Bernardo')"><i class="fas fa-bell"></i></div>
+                <div class="rdv-action-btn" onclick="toast('info','Modification…')"><i class="fas fa-pen"></i></div>
+              </div>
+            </div>
+            <div class="rdv-item">
+              <div class="rdv-time-block" style="background:#f3f4f6;"><span class="rdv-hour">Jeu</span><span class="rdv-duration">16 avr.</span></div>
+              <div class="rdv-body">
+                <div class="rdv-client">Auto-Entrepreneur Mme Petit</div>
+                <div class="rdv-type"><i class="fas fa-video" style="margin-right:.3rem;opacity:.5;"></i>Création micro-entreprise · 11h00 · 30 min</div>
+                <div class="rdv-tags"><span class="rdv-tag rt-conseil">Conseil</span></div>
+              </div>
+              <div class="rdv-actions">
+                <div class="rdv-action-btn" onclick="toast('info','Rappel envoyé')"><i class="fas fa-bell"></i></div>
+                <div class="rdv-action-btn" onclick="toast('info','Modification…')"><i class="fas fa-pen"></i></div>
+              </div>
+            </div>
+            <div class="rdv-item rdv-urgent">
+              <div class="rdv-time-block" style="background:#fee2e2;"><span class="rdv-hour" style="color:var(--danger);">Ven</span><span class="rdv-duration" style="color:var(--danger);">17 avr.</span></div>
+              <div class="rdv-body">
+                <div class="rdv-client">SARL Dupont & Fils <span style="font-size:.65rem;background:#fee2e2;color:var(--danger);padding:.1rem .4rem;border-radius:20px;font-weight:700;margin-left:.4rem;">URGENT</span></div>
+                <div class="rdv-type"><i class="fas fa-exclamation-triangle" style="margin-right:.3rem;color:var(--danger);opacity:.7;"></i>Contrôle fiscal imprévu · 09h00 · 2h</div>
+                <div class="rdv-tags"><span class="rdv-tag rt-fiscal">Fiscal</span><span class="rdv-tag rt-audit">Audit</span></div>
+              </div>
+              <div class="rdv-actions">
+                <div class="rdv-action-btn" style="color:var(--danger);border-color:rgba(239,68,68,.2);" onclick="toast('warn','Rappel urgent envoyé')"><i class="fas fa-bell"></i></div>
+                <div class="rdv-action-btn" onclick="toast('info','Modification…')"><i class="fas fa-pen"></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- COLONNE DROITE -->
+      <div>
+
+        <!-- STATS RAPIDES -->
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-head-left">
+              <div class="panel-ico pi-gold"><i class="fas fa-chart-pie"></i></div>
+              <div><div class="panel-title">Répartition par type</div><div class="panel-sub">Ce mois · 12 RDV</div></div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="stat-ring">
+              <svg class="ring-chart" viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f3f4f6" stroke-width="3"/>
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#C1007A" stroke-width="3" stroke-dasharray="40 60" stroke-linecap="round" transform="rotate(-90 18 18)"/>
+              </svg>
+              <div><div class="ring-label">Comptabilité</div><div class="ring-sub">5 RDV · 40%</div></div>
+              <div style="margin-left:auto;font-family:var(--ff-mono);font-size:.85rem;font-weight:700;color:var(--rose);">5</div>
+            </div>
+            <div class="stat-ring">
+              <svg class="ring-chart" viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f3f4f6" stroke-width="3"/>
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f59e0b" stroke-width="3" stroke-dasharray="25 75" stroke-linecap="round" transform="rotate(-90 18 18)"/>
+              </svg>
+              <div><div class="ring-label">Fiscal</div><div class="ring-sub">3 RDV · 25%</div></div>
+              <div style="margin-left:auto;font-family:var(--ff-mono);font-size:.85rem;font-weight:700;color:var(--gold-d);">3</div>
+            </div>
+            <div class="stat-ring">
+              <svg class="ring-chart" viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f3f4f6" stroke-width="3"/>
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#4FA695" stroke-width="3" stroke-dasharray="17 83" stroke-linecap="round" transform="rotate(-90 18 18)"/>
+              </svg>
+              <div><div class="ring-label">Conseil</div><div class="ring-sub">2 RDV · 17%</div></div>
+              <div style="margin-left:auto;font-family:var(--ff-mono);font-size:.85rem;font-weight:700;color:var(--turq);">2</div>
+            </div>
+            <div class="stat-ring">
+              <svg class="ring-chart" viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f3f4f6" stroke-width="3"/>
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#3b82f6" stroke-width="3" stroke-dasharray="18 82" stroke-linecap="round" transform="rotate(-90 18 18)"/>
+              </svg>
+              <div><div class="ring-label">Audit</div><div class="ring-sub">2 RDV · 18%</div></div>
+              <div style="margin-left:auto;font-family:var(--ff-mono);font-size:.85rem;font-weight:700;color:#2563eb;">2</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DISPONIBILITÉS -->
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-head-left">
+              <div class="panel-ico pi-green"><i class="fas fa-business-time"></i></div>
+              <div><div class="panel-title">Disponibilités semaine</div><div class="panel-sub">Créneaux libres disponibles</div></div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div style="display:flex;flex-direction:column;gap:.5rem;">
+              <div style="display:flex;align-items:center;gap:.75rem;">
+                <span style="font-size:.72rem;font-weight:700;color:var(--muted);min-width:28px;">Lun</span>
+                <div style="flex:1;height:10px;background:#f3f4f6;border-radius:20px;overflow:hidden;position:relative;">
+                  <div style="position:absolute;left:40%;right:0;top:0;bottom:0;background:var(--turq-l);border-radius:20px;"></div>
+                  <div style="position:absolute;left:0;width:40%;top:0;bottom:0;background:var(--rose-l);border-radius:20px;"></div>
+                </div>
+                <span style="font-size:.68rem;color:var(--faint);">Libre 14h-18h</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:.75rem;">
+                <span style="font-size:.72rem;font-weight:700;color:var(--muted);min-width:28px;">Mar</span>
+                <div style="flex:1;height:10px;background:#f3f4f6;border-radius:20px;overflow:hidden;position:relative;">
+                  <div style="position:absolute;left:0;right:0;top:0;bottom:0;background:var(--rose-l);border-radius:20px;"></div>
+                </div>
+                <span style="font-size:.68rem;color:var(--danger);">Complet</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:.75rem;">
+                <span style="font-size:.72rem;font-weight:700;color:var(--muted);min-width:28px;">Mer</span>
+                <div style="flex:1;height:10px;background:#f3f4f6;border-radius:20px;overflow:hidden;position:relative;">
+                  <div style="position:absolute;left:0;width:25%;top:0;bottom:0;background:var(--rose-l);border-radius:20px;"></div>
+                  <div style="position:absolute;left:60%;right:0;top:0;bottom:0;background:var(--turq-l);border-radius:20px;"></div>
+                </div>
+                <span style="font-size:.68rem;color:var(--faint);">Libre 13h-18h</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:.75rem;">
+                <span style="font-size:.72rem;font-weight:700;color:var(--muted);min-width:28px;">Jeu</span>
+                <div style="flex:1;height:10px;background:#f3f4f6;border-radius:20px;overflow:hidden;position:relative;">
+                  <div style="position:absolute;left:0;width:60%;top:0;bottom:0;background:var(--turq-l);border-radius:20px;"></div>
+                </div>
+                <span style="font-size:.68rem;color:var(--faint);">Libre 9h-15h</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:.75rem;">
+                <span style="font-size:.72rem;font-weight:700;color:var(--muted);min-width:28px;">Ven</span>
+                <div style="flex:1;height:10px;background:#f3f4f6;border-radius:20px;overflow:hidden;position:relative;">
+                  <div style="position:absolute;left:0;width:80%;top:0;bottom:0;background:var(--rose-l);border-radius:20px;"></div>
+                </div>
+                <span style="font-size:.68rem;color:var(--danger);">Chargé</span>
+              </div>
+            </div>
+            <div style="margin-top:1rem;padding:.75rem;background:var(--turq-l);border-radius:10px;display:flex;align-items:center;gap:.5rem;">
+              <i class="fas fa-info-circle" style="color:var(--turq);"></i>
+              <span style="font-size:.75rem;color:var(--turq);">3 créneaux libres cette semaine</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FORMULAIRE RAPIDE -->
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-head-left">
+              <div class="panel-ico pi-rose"><i class="fas fa-plus-circle"></i></div>
+              <div><div class="panel-title">Ajout rapide</div><div class="panel-sub">Créer un RDV en quelques secondes</div></div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="form-field">
+              <label class="form-label">Client <span style="color:var(--rose);">*</span></label>
+              <input class="form-input" placeholder="Nom du client ou de l'entreprise">
+            </div>
+            <div class="form-row">
+              <div class="form-field">
+                <label class="form-label">Date</label>
+                <input class="form-input" type="date">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Heure</label>
+                <input class="form-input" type="time" value="09:00">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-field">
+                <label class="form-label">Durée</label>
+                <select class="form-select"><option>30 min</option><option selected>60 min</option><option>90 min</option><option>2h</option></select>
+              </div>
+              <div class="form-field">
+                <label class="form-label">Type</label>
+                <select class="form-select"><option>Comptabilité</option><option>Fiscal</option><option>Conseil</option><option>Audit</option><option>Juridique</option></select>
+              </div>
+            </div>
+            <button class="btn-adm btn-rose" style="width:100%;justify-content:center;margin-top:.25rem;" onclick="addRdvQuick()"><i class="fas fa-calendar-plus"></i>Créer le rendez-vous</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- MODAL NOUVEAU RDV -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title"><i class="fas fa-calendar-plus" style="color:var(--rose);"></i>Nouveau rendez-vous</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-field"><label class="form-label">Client / Entreprise <span style="color:var(--rose);">*</span></label><input class="form-input" id="mClient" placeholder="Nom complet ou raison sociale"></div>
+      <div class="form-field"><label class="form-label">Email</label><input class="form-input" id="mEmail" type="email" placeholder="client@exemple.fr"></div>
+      <div class="form-row">
+        <div class="form-field"><label class="form-label">Date <span style="color:var(--rose);">*</span></label><input class="form-input" id="mDate" type="date"></div>
+        <div class="form-field"><label class="form-label">Heure <span style="color:var(--rose);">*</span></label><input class="form-input" id="mHeure" type="time" value="09:00"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-field"><label class="form-label">Durée</label><select class="form-select" id="mDuree"><option>30 min</option><option selected>60 min</option><option>90 min</option><option>2h</option></select></div>
+        <div class="form-field"><label class="form-label">Type de RDV</label><select class="form-select" id="mType"><option>Comptabilité</option><option>Fiscal</option><option>Conseil</option><option>Audit</option><option>Juridique</option></select></div>
+      </div>
+      <div class="form-row">
+        <div class="form-field"><label class="form-label">Lieu</label><select class="form-select" id="mLieu"><option>Cabinet Dammarie</option><option>Visio Zoom</option><option>Chez le client</option><option>Téléphone</option></select></div>
+        <div class="form-field"><label class="form-label">Rappel SMS</label><select class="form-select"><option>Aucun</option><option>1h avant</option><option selected>24h avant</option><option>48h avant</option></select></div>
+      </div>
+      <div class="form-field"><label class="form-label">Notes</label><textarea class="form-textarea" placeholder="Documents à préparer, informations particulières…"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-adm btn-ghost" onclick="closeModal()">Annuler</button>
+      <button class="btn-adm btn-rose" onclick="saveRdv()"><i class="fas fa-calendar-check"></i>Confirmer le RDV</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-box" id="toastBox"><i id="toastIco" class="fas fa-circle-check"></i><span id="toastMsg">OK</span></div>
+
+<script>
+/* Clock */
+function tick(){const n=new Date();const s=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('topClock');if(el)el.textContent=s;}
+tick();setInterval(tick,1000);
+
+/* Toast */
+function toast(type,msg){
+  const box=document.getElementById('toastBox'),ico=document.getElementById('toastIco'),m=document.getElementById('toastMsg');
+  box.className='toast-box';
+  const map={ok:['toast-ok','fas fa-circle-check'],info:['toast-info','fas fa-circle-info'],warn:['toast-warn','fas fa-triangle-exclamation']};
+  const[cls,i]=map[type]||map.ok;box.classList.add(cls);ico.className=i;m.textContent=msg;
+  box.classList.add('show');clearTimeout(window._tt);window._tt=setTimeout(()=>box.classList.remove('show'),3200);
+}
+
+/* Countdown vers 14h00 */
+function updateCountdown(){
+  const now=new Date();
+  const target=new Date(now);target.setHours(14,0,0,0);
+  if(now>target)target.setDate(target.getDate()+1);
+  const diff=Math.max(0,Math.floor((target-now)/1000));
+  const h=Math.floor(diff/3600),m=Math.floor((diff%3600)/60),s=diff%60;
+  document.getElementById('cdH').textContent=String(h).padStart(2,'0');
+  document.getElementById('cdM').textContent=String(m).padStart(2,'0');
+  document.getElementById('cdS').textContent=String(s).padStart(2,'0');
+}
+updateCountdown();setInterval(updateCountdown,1000);
+
+/* Calendrier */
+const RDV_DAYS={4:[1],8:[2],13:[2],15:[1],17:[3],22:[1],28:[1]};
+let curDate=new Date();
+function renderCal(){
+  const year=curDate.getFullYear(),month=curDate.getMonth();
+  const months=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  document.getElementById('calMonthLabel').textContent=months[month]+' '+year;
+  const grid=document.getElementById('calGrid');grid.innerHTML='';
+  const first=new Date(year,month,1);
+  const startDay=(first.getDay()+6)%7;
+  const daysInMonth=new Date(year,month+1,0).getDate();
+  const today=new Date();
+  // Jours mois précédent
+  const prevDays=new Date(year,month,0).getDate();
+  for(let i=startDay-1;i>=0;i--){const d=document.createElement('div');d.className='cal-day other-month';d.textContent=prevDays-i;grid.appendChild(d);}
+  // Jours du mois
+  for(let d=1;d<=daysInMonth;d++){
+    const el=document.createElement('div');el.className='cal-day';el.textContent=d;
+    const isToday=d===today.getDate()&&month===today.getMonth()&&year===today.getFullYear();
+    if(isToday)el.classList.add('today');
+    if(RDV_DAYS[d]){el.classList.add(RDV_DAYS[d][0]>1?'multiple-rdv':'has-rdv');}
+    el.onclick=()=>selectDay(d,el);
+    grid.appendChild(el);
+  }
+  // Jours mois suivant
+  const total=startDay+daysInMonth;const remaining=(7-total%7)%7;
+  for(let d=1;d<=remaining;d++){const el=document.createElement('div');el.className='cal-day other-month';el.textContent=d;grid.appendChild(el);}
+}
+function changeMonth(dir){curDate=new Date(curDate.getFullYear(),curDate.getMonth()+dir,1);renderCal();}
+function selectDay(d,el){
+  document.querySelectorAll('.cal-day').forEach(x=>x.classList.remove('selected'));
+  el.classList.add('selected');
+  const rdvCount=RDV_DAYS[d]?RDV_DAYS[d][0]:0;
+  document.getElementById('rdvDayTitle').textContent=`RDV du ${d} ${document.getElementById('calMonthLabel').textContent}`;
+  document.getElementById('rdvDayCount').textContent=rdvCount?`${rdvCount} rendez-vous planifié${rdvCount>1?'s':''}`:'Aucun rendez-vous ce jour';
+}
+renderCal();
+
+/* Modal */
+function openModal(){document.getElementById('modalOverlay').classList.add('open');const d=new Date();document.getElementById('mDate').value=d.toISOString().split('T')[0];}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
+function closeModalOutside(e){if(e.target===document.getElementById('modalOverlay'))closeModal();}
+function saveRdv(){
+  const client=document.getElementById('mClient').value.trim();
+  if(!client){toast('warn','Veuillez saisir le nom du client');return;}
+  closeModal();
+  toast('ok',`RDV avec ${client} créé · Confirmation email envoyée`);
+}
+function addRdvQuick(){toast('ok','Rendez-vous créé et ajouté au calendrier');}
+
+/* RDV actions */
+function confirmRdv(btn){const item=btn.closest('.rdv-item');item.style.borderColor='var(--success)';item.style.background='#f0fdf4';btn.innerHTML='<i class="fas fa-check" style="color:var(--success);"></i>';toast('ok','Rendez-vous confirmé · Email envoyé au client');}
+function cancelRdv(btn){const item=btn.closest('.rdv-item');item.style.opacity='0';item.style.transform='translateX(20px)';item.style.transition='all .3s';setTimeout(()=>item.remove(),300);toast('warn','Rendez-vous annulé · Client notifié');}
+</script>
+</body></html>

@@ -1,0 +1,541 @@
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Blog & Articles — ML2C Admin</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--rose:#C1007A;--rose-d:#9a0062;--rose-l:#fce4f3;--rose-xl:#fff5fb;--turq:#4FA695;--turq-l:#d4f0ec;--gold:#f59e0b;--gold-d:#b45309;--gold-l:#fffbeb;--bg:#f2f4f8;--surface:#fff;--border:#e4e8ef;--text:#111827;--muted:#6b7280;--faint:#9ca3af;--success:#10b981;--danger:#ef4444;--blue:#3b82f6;--ff-head:'Cormorant Garamond',serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'JetBrains Mono',monospace;}
+body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
+.adm-shell{display:flex;height:100vh;overflow:hidden;}
+.adm-sidebar{width:220px;background:#0e1018;border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0;}
+.adm-sidebar::-webkit-scrollbar{width:3px;}.adm-sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);}
+.adm-sb-logo{display:flex;align-items:center;gap:.75rem;padding:1.25rem 1.1rem 1rem;border-bottom:1px solid rgba(255,255,255,.06);}
+.adm-sb-dot{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#C1007A,#9a0062);display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px rgba(193,0,122,.4);flex-shrink:0;}
+.adm-sb-brand{font-size:.88rem;font-weight:700;color:#fff;line-height:1.2;}.adm-sb-brand span{display:block;font-size:.65rem;font-weight:400;color:rgba(255,255,255,.35);}
+.adm-sb-sec{font-size:.57rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.22);padding:1.1rem 1.1rem .3rem;margin:0;}
+.adm-sb-item{display:flex;align-items:center;gap:.6rem;padding:.55rem 1.1rem;font-size:.78rem;color:rgba(255,255,255,.45);text-decoration:none;transition:all .15s;border-left:2px solid transparent;margin:.05rem 0;}
+.adm-sb-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.8);text-decoration:none;}
+.adm-sb-item--active{background:rgba(193,0,122,.12);border-left-color:#C1007A;color:#f472b6!important;font-weight:600;}
+.adm-sb-item svg{opacity:.6;flex-shrink:0;}.adm-sb-item:hover svg,.adm-sb-item--active svg{opacity:1;}
+.adm-sb-badge{margin-left:auto;min-width:19px;height:19px;background:#C1007A;color:#fff;border-radius:20px;font-size:.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 .4rem;flex-shrink:0;}
+.adm-sb-badge.gold{background:linear-gradient(135deg,#f59e0b,#d97706);}.adm-sb-badge.green{background:#10b981;}.adm-sb-badge.blue{background:#3b82f6;}
+.adm-sb-pip{width:6px;height:6px;border-radius:50%;flex-shrink:0;}.pip-green{background:#10b981;animation:pip 2s infinite;}.pip-red{background:#ef4444;animation:pip .8s infinite;}@keyframes pip{0%,100%{opacity:1}50%{opacity:.3}}
+.adm-sb-divider{height:1px;background:rgba(255,255,255,.06);margin:.5rem 1rem;}
+.adm-sb-footer{margin-top:auto;padding:.75rem 1rem;border-top:1px solid rgba(255,255,255,.06);}
+.adm-sb-user{display:flex;align-items:center;gap:.65rem;}
+.adm-sb-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#C1007A,#9a0062);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:#fff;flex-shrink:0;}
+.adm-sb-info{font-size:.75rem;font-weight:600;color:rgba(255,255,255,.7);line-height:1.2;flex:1;}.adm-sb-info span{display:block;font-size:.62rem;font-weight:400;color:rgba(255,255,255,.3);}
+.adm-sb-logout{width:26px;height:26px;border-radius:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);transition:all .2s;cursor:pointer;}.adm-sb-logout:hover{background:rgba(239,68,68,.12);color:#f87171;}
+.adm-sb-version{text-align:center;font-size:.58rem;color:rgba(255,255,255,.15);padding:.4rem 1rem;font-family:var(--ff-mono);}
+.adm-main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.adm-topbar{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.5rem;background:#fff;border-bottom:1px solid var(--border);flex-shrink:0;gap:1rem;flex-wrap:wrap;}
+.adm-topbar-left h2{font-size:1rem;font-weight:700;margin:0;}.adm-topbar-left p{font-size:.72rem;color:var(--muted);margin:.05rem 0 0;}
+.adm-topbar-right{display:flex;align-items:center;gap:.5rem;}
+.adm-content{flex:1;overflow-y:auto;padding:1.5rem;}
+.btn-adm{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border-radius:9px;font-size:.78rem;font-weight:600;cursor:pointer;border:none;font-family:var(--ff-body);transition:all .2s;white-space:nowrap;}
+.btn-rose{background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff;box-shadow:0 4px 12px rgba(193,0,122,.25);}.btn-rose:hover{transform:translateY(-1px);}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted);}.btn-ghost:hover{border-color:var(--rose);color:var(--rose);}
+.btn-turq{background:linear-gradient(135deg,var(--turq),#3d8578);color:#fff;}
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
+.kbox{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:1.1rem;display:flex;align-items:center;gap:.85rem;box-shadow:0 2px 12px rgba(0,0,0,.05);transition:transform .2s;animation:fadeUp .4s both;}
+.kbox:hover{transform:translateY(-2px);}
+.kbox-ico{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
+.ki-rose{background:var(--rose-l);color:var(--rose);}.ki-turq{background:var(--turq-l);color:var(--turq);}.ki-gold{background:var(--gold-l);color:var(--gold-d);}.ki-blue{background:#dbeafe;color:#2563eb;}.ki-green{background:#d1fae5;color:var(--success);}
+.kbox-val{font-family:var(--ff-head);font-size:1.7rem;font-weight:700;line-height:1;}.kbox-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-top:.1rem;}
+.kbox-sub{font-size:.65rem;color:var(--turq);font-weight:600;margin-top:.15rem;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+/* TABS */
+.blog-tabs{display:flex;align-items:center;gap:0;background:var(--surface);border-radius:12px;border:1.5px solid var(--border);overflow:hidden;margin-bottom:1.25rem;width:fit-content;}
+.blog-tab{padding:.6rem 1.1rem;font-size:.8rem;font-weight:600;cursor:pointer;color:var(--muted);border:none;background:none;font-family:var(--ff-body);transition:all .2s;border-right:1px solid var(--border);}
+.blog-tab:last-child{border-right:none;}
+.blog-tab.active{background:var(--rose);color:#fff;}
+.blog-tab:hover:not(.active){background:#f3f4f6;color:var(--text);}
+.blog-tab .tab-count{margin-left:.4rem;font-size:.6rem;font-weight:700;padding:.1rem .4rem;border-radius:20px;background:rgba(0,0,0,.08);}
+.blog-tab.active .tab-count{background:rgba(255,255,255,.25);}
+/* TOOLBAR */
+.blog-toolbar{display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem;flex-wrap:wrap;}
+.search-box{display:flex;align-items:center;gap:.5rem;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.5rem .9rem;flex:1;min-width:220px;transition:border-color .2s;}
+.search-box:focus-within{border-color:var(--rose);}
+.search-box input{background:none;border:none;outline:none;font-size:.85rem;font-family:var(--ff-body);width:100%;color:var(--text);}
+.f-sel{border:1.5px solid var(--border);border-radius:9px;padding:.48rem .8rem;font-size:.8rem;font-family:var(--ff-body);color:var(--muted);background:var(--surface);outline:none;cursor:pointer;}
+.f-sel:focus{border-color:var(--rose);}
+.view-btns{display:flex;gap:0;border:1.5px solid var(--border);border-radius:9px;overflow:hidden;}
+.view-btn{padding:.45rem .65rem;font-size:.8rem;cursor:pointer;border:none;background:var(--surface);color:var(--muted);transition:all .15s;}
+.view-btn.active{background:var(--rose);color:#fff;}
+/* GRILLE ARTICLES */
+.articles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;}
+.articles-grid.list-view{grid-template-columns:1fr;}
+.article-card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;transition:all .25s;animation:fadeUp .4s both;cursor:pointer;}
+.article-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1);border-color:var(--rose);}
+.article-card.removing{opacity:0;transform:scale(.95);transition:all .3s;}
+.article-img{height:140px;background:linear-gradient(135deg,#0e1018,#1a2035);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.article-img-gradient{position:absolute;inset:0;}
+.article-img-icon{font-size:2.5rem;opacity:.15;z-index:1;}
+.article-img-cat{position:absolute;top:.65rem;left:.65rem;font-size:.6rem;font-weight:700;padding:.2rem .6rem;border-radius:20px;z-index:2;}
+.article-img-status{position:absolute;top:.65rem;right:.65rem;font-size:.6rem;font-weight:700;padding:.2rem .6rem;border-radius:20px;z-index:2;}
+.st-published{background:#d1fae5;color:#065f46;}.st-draft{background:#f3f4f6;color:var(--muted);}.st-archived{background:#fee2e2;color:#b91c1c;}.st-review{background:var(--gold-l);color:var(--gold-d);}
+.cat-compta{background:rgba(59,130,246,.15);color:#1d4ed8;border:1px solid rgba(59,130,246,.2);}
+.cat-fiscal{background:rgba(245,158,11,.15);color:#b45309;border:1px solid rgba(245,158,11,.2);}
+.cat-conseil{background:rgba(193,0,122,.15);color:var(--rose-d);border:1px solid rgba(193,0,122,.2);}
+.cat-juridique{background:rgba(109,40,217,.15);color:#6d28d9;border:1px solid rgba(109,40,217,.2);}
+.cat-actualite{background:rgba(79,166,149,.15);color:var(--turq);border:1px solid rgba(79,166,149,.2);}
+.article-body{padding:1rem;}
+.article-title{font-size:.9rem;font-weight:700;color:var(--text);line-height:1.4;margin-bottom:.4rem;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.article-excerpt{font-size:.75rem;color:var(--muted);line-height:1.5;margin-bottom:.75rem;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.article-meta{display:flex;align-items:center;gap:.65rem;font-size:.68rem;color:var(--faint);margin-bottom:.75rem;flex-wrap:wrap;}
+.article-meta span{display:flex;align-items:center;gap:.25rem;}
+.article-footer{display:flex;align-items:center;justify-content:space-between;padding-top:.75rem;border-top:1px solid #f3f4f6;}
+.article-stats{display:flex;gap:.75rem;}
+.article-stat{font-size:.68rem;color:var(--faint);display:flex;align-items:center;gap:.25rem;}
+.article-actions{display:flex;gap:.4rem;}
+.art-btn{width:28px;height:28px;border-radius:7px;border:1.5px solid var(--border);background:#fff;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;font-size:.72rem;}
+.art-btn:hover{border-color:var(--rose);color:var(--rose);}
+.art-btn.danger:hover{border-color:var(--danger);color:var(--danger);}
+/* LIST VIEW */
+.articles-grid.list-view .article-card{display:flex;flex-direction:row;}
+.articles-grid.list-view .article-img{width:120px;height:auto;min-height:90px;flex-shrink:0;}
+.articles-grid.list-view .article-body{flex:1;padding:.85rem;}
+.articles-grid.list-view .article-excerpt{display:none;}
+/* PANEL */
+.panel{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.05);overflow:hidden;margin-bottom:1.25rem;}
+.panel-head{padding:1rem 1.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(90deg,#fafbfc,#fff);}
+.panel-head-left{display:flex;align-items:center;gap:.65rem;}
+.panel-ico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0;}
+.pi-rose{background:var(--rose-l);color:var(--rose);}.pi-turq{background:var(--turq-l);color:var(--turq);}.pi-gold{background:var(--gold-l);color:var(--gold-d);}
+.panel-title{font-size:.88rem;font-weight:700;color:var(--text);}
+.panel-sub{font-size:.7rem;color:var(--muted);margin-top:.08rem;}
+.panel-body{padding:1.4rem;}
+/* TOAST */
+.toast-box{position:fixed;bottom:1.25rem;right:1.25rem;z-index:9999;display:flex;align-items:center;gap:.65rem;padding:.8rem 1.2rem;border-radius:12px;font-size:.82rem;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.18);transform:translateY(80px);opacity:0;transition:all .35s cubic-bezier(.34,1.2,.64,1);pointer-events:none;max-width:320px;}
+.toast-box.show{transform:translateY(0);opacity:1;}
+.toast-ok{background:#0b2a1f;color:#4ade80;border:1px solid rgba(74,222,128,.2);}
+.toast-info{background:#0b1a2a;color:#60a5fa;border:1px solid rgba(96,165,250,.2);}
+.toast-warn{background:#2a1f0b;color:#fbbf24;border:1px solid rgba(251,191,36,.2);}
+@media(max-width:1100px){.articles-grid{grid-template-columns:repeat(2,1fr);}.kpi-row{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:700px){.articles-grid{grid-template-columns:1fr;}}
+</style>
+</head><body>
+<div class="adm-shell">
+<aside class="adm-sidebar">
+  <div class="adm-sb-logo"><div class="adm-sb-dot"><svg width="15" height="15" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><div class="adm-sb-brand">ML2C Conseil<span>Administration</span></div></div>
+  <p class="adm-sb-sec">Principal</p>
+  <a href="{{ url_for('admin_dashboard') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard<span class="adm-sb-pip pip-green" style="margin-left:auto;"></span></a>
+  <a href="{{ url_for('admin_chatbot') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Questions / Réponses<span class="adm-sb-badge">19</span></a>
+  <a href="{{ url_for('admin_utilisateurs') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Utilisateurs</a>
+  <a href="{{ url_for('admin_stats') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Statistiques</a>
+  <a href="{{ url_for('admin_notifications') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Notifications<span class="adm-sb-badge green">3</span></a>
+  <a href="{{ url_for('admin_agenda') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Agenda / RDV<span class="adm-sb-badge blue">2</span></a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Contenu</p>
+  <a href="{{ url_for('admin_blog') }}" class="adm-sb-item adm-sb-item--active"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Blog / Articles</a>
+  <a href="{{ url_for('admin_formulaires') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>Formulaires / Devis<span class="adm-sb-badge gold">5</span></a>
+  <a href="{{ url_for('admin_emails') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Emails automatiques</a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Système</p>
+  <a href="{{ url_for('admin_config') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>Configuration</a>
+  <a href="{{ url_for('admin_logs') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Logs sécurité<span class="adm-sb-pip pip-red" style="margin-left:auto;"></span></a>
+  <a href="{{ url_for('admin_performances') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Performances<span class="adm-sb-pip pip-green" style="margin-left:auto;"></span></a>
+  <a href="{{ url_for('admin_sauvegardes') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Sauvegardes<span class="adm-sb-badge green">OK</span></a>
+  <a href="{{ url_for('admin_export') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Export données</a>
+  <a href="{{ url_for('admin_purge') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>Purger les logs</a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Compte</p>
+  <a href="{{ url_for('admin_parametres') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Paramètres du compte</a>
+  <a href="{{ url_for('admin_audit') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>Journal d'audit</a>
+  <div class="adm-sb-footer"><div class="adm-sb-user"><div class="adm-sb-avatar">AD</div><div class="adm-sb-info">Administrateur<span>Super Admin · Niv. 3</span></div><a href="{{ url_for('logout_admin') }}" class="adm-sb-logout"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></a></div></div>
+  <div class="adm-sb-version">ML2C Admin v2.0 · 2025</div>
+</aside>
+
+<div class="adm-main">
+  <div class="adm-topbar">
+    <div class="adm-topbar-left">
+      <h2><i class="fas fa-newspaper" style="color:var(--rose);margin-right:.4rem;font-size:.9rem;"></i>Blog & Articles</h2>
+      <p>Gestion éditoriale · <span id="topClock" style="font-family:var(--ff-mono);color:var(--rose);"></span></p>
+    </div>
+    <div class="adm-topbar-right">
+      <a href="{{ url_for('admin_blog_categories') }}" class="btn-adm btn-ghost"><i class="fas fa-tags"></i>Catégories</a>
+      <a href="{{ url_for('admin_blog_new') }}" class="btn-adm btn-rose"><i class="fas fa-plus"></i>Nouvel article</a>
+    </div>
+  </div>
+
+  <div class="adm-content">
+
+    <!-- KPI -->
+    <div class="kpi-row">
+      <div class="kbox" style="animation-delay:.05s"><div class="kbox-ico ki-rose"><i class="fas fa-newspaper"></i></div><div><div class="kbox-val" id="kpiTotal">8</div><div class="kbox-lbl">Total articles</div><div class="kbox-sub">Toutes catégories</div></div></div>
+      <div class="kbox" style="animation-delay:.1s"><div class="kbox-ico ki-green"><i class="fas fa-check-circle"></i></div><div><div class="kbox-val" id="kpiPub">5</div><div class="kbox-lbl">Publiés</div><div class="kbox-sub">En ligne</div></div></div>
+      <div class="kbox" style="animation-delay:.15s"><div class="kbox-ico ki-gold"><i class="fas fa-edit"></i></div><div><div class="kbox-val" id="kpiDraft">2</div><div class="kbox-lbl">Brouillons</div><div class="kbox-sub">En cours</div></div></div>
+      <div class="kbox" style="animation-delay:.2s"><div class="kbox-ico ki-turq"><i class="fas fa-eye"></i></div><div><div class="kbox-val">4.2k</div><div class="kbox-lbl">Vues ce mois</div><div class="kbox-sub">↑ +18%</div></div></div>
+    </div>
+
+    <!-- TABS -->
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;margin-bottom:1.25rem;">
+      <div class="blog-tabs">
+        <button class="blog-tab active" onclick="filterTab('all',this)">Tous<span class="tab-count" id="tc-all">8</span></button>
+        <button class="blog-tab" onclick="filterTab('published',this)">Publiés<span class="tab-count" id="tc-published">5</span></button>
+        <button class="blog-tab" onclick="filterTab('draft',this)">Brouillons<span class="tab-count" id="tc-draft">2</span></button>
+        <button class="blog-tab" onclick="filterTab('archived',this)">Archivés<span class="tab-count" id="tc-archived">1</span></button>
+      </div>
+      <div style="display:flex;gap:.5rem;align-items:center;">
+        <div class="view-btns">
+          <button class="view-btn active" id="viewGrid" onclick="setView('grid')"><i class="fas fa-th-large"></i></button>
+          <button class="view-btn" id="viewList" onclick="setView('list')"><i class="fas fa-list"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOOLBAR -->
+    <div class="blog-toolbar">
+      <div class="search-box"><i class="fas fa-search" style="color:var(--faint);font-size:.78rem;"></i><input type="text" placeholder="Rechercher un article…" id="blogSearch" oninput="filterArticles()"></div>
+      <select class="f-sel" id="filterCat" onchange="filterArticles()">
+        <option value="">Toutes les catégories</option>
+        <option value="Comptabilité">Comptabilité</option>
+        <option value="Fiscal">Fiscal</option>
+        <option value="Conseil">Conseil</option>
+        <option value="Juridique">Juridique</option>
+        <option value="Actualité">Actualité</option>
+      </select>
+      <select class="f-sel" id="filterSort" onchange="filterArticles()">
+        <option value="recent">Plus récent</option>
+        <option value="views">Plus vus</option>
+        <option value="alpha">Alphabétique</option>
+      </select>
+      <button class="btn-adm btn-ghost" onclick="toast('info','Export CSV des articles…')"><i class="fas fa-file-export"></i>Exporter</button>
+    </div>
+
+    <!-- GRILLE -->
+    <div class="articles-grid" id="articlesGrid">
+
+      <div class="article-card" data-status="published" data-cat="Comptabilité" data-title="TVA 2025 : Ce qui change pour les TPE et indépendants">
+        <div class="article-img" style="background:linear-gradient(135deg,#1a1f3a,#2d3561);">
+          <i class="fas fa-receipt article-img-icon"></i>
+          <span class="article-img-cat cat-compta">Comptabilité</span>
+          <span class="article-img-status st-published">● Publié</span>
+        </div>
+        <div class="article-body">
+          <div class="article-title">TVA 2025 : Ce qui change pour les TPE et indépendants</div>
+          <div class="article-excerpt">Découvrez les nouveaux seuils de franchise en base, les modifications de déclaration et comment adapter votre comptabilité dès janvier 2025.</div>
+          <div class="article-meta">
+            <span><i class="fas fa-user"></i>Admin ML2C</span>
+            <span><i class="fas fa-calendar"></i>08 avr. 2025</span>
+            <span><i class="fas fa-clock"></i>6 min</span>
+          </div>
+          <div class="article-footer">
+            <div class="article-stats">
+              <div class="article-stat"><i class="fas fa-eye"></i>842</div>
+              <div class="article-stat"><i class="fas fa-heart"></i>34</div>
+              <div class="article-stat"><i class="fas fa-comment"></i>7</div>
+            </div>
+            <div class="article-actions">
+              <div class="art-btn" title="Prévisualiser" onclick="toast('info','Ouverture prévisualisation…')"><i class="fas fa-eye"></i></div>
+              <div class="art-btn" title="Modifier" onclick="toast('info','Ouverture éditeur…')"><i class="fas fa-pen"></i></div>
+              <div class="art-btn danger" title="Supprimer" onclick="deleteArticle(this)"><i class="fas fa-trash"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-status="published" data-cat="Fiscal" data-title="Impôt sur le revenu 2025 : Guide complet de la déclaration">
+        <div class="article-img" style="background:linear-gradient(135deg,#2a1a0a,#4a2e0f);">
+          <i class="fas fa-file-invoice-dollar article-img-icon"></i>
+          <span class="article-img-cat cat-fiscal">Fiscal</span>
+          <span class="article-img-status st-published">● Publié</span>
+        </div>
+        <div class="article-body">
+          <div class="article-title">Impôt sur le revenu 2025 : Guide complet de la déclaration</div>
+          <div class="article-excerpt">Toutes les dates, cases et nouveautés du formulaire 2042 pour optimiser votre déclaration et éviter les erreurs fréquentes.</div>
+          <div class="article-meta">
+            <span><i class="fas fa-user"></i>Admin ML2C</span>
+            <span><i class="fas fa-calendar"></i>02 avr. 2025</span>
+            <span><i class="fas fa-clock"></i>9 min</span>
+          </div>
+          <div class="article-footer">
+            <div class="article-stats">
+              <div class="article-stat"><i class="fas fa-eye"></i>1 204</div>
+              <div class="article-stat"><i class="fas fa-heart"></i>67</div>
+              <div class="article-stat"><i class="fas fa-comment"></i>12</div>
+            </div>
+            <div class="article-actions">
+              <div class="art-btn" title="Prévisualiser" onclick="toast('info','Ouverture prévisualisation…')"><i class="fas fa-eye"></i></div>
+              <div class="art-btn" title="Modifier" onclick="toast('info','Ouverture éditeur…')"><i class="fas fa-pen"></i></div>
+              <div class="art-btn danger" title="Supprimer" onclick="deleteArticle(this)"><i class="fas fa-trash"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-status="published" data-cat="Conseil" data-title="Choisir son statut juridique en 2025 : SAS, SARL ou micro-entreprise ?">
+        <div class="article-img" style="background:linear-gradient(135deg,#0a1f1a,#0f3028);">
+          <i class="fas fa-balance-scale article-img-icon"></i>
+          <span class="article-img-cat cat-conseil">Conseil</span>
+          <span class="article-img-status st-published">● Publié</span>
+        </div>
+        <div class="article-body">
+          <div class="article-title">Choisir son statut juridique en 2025 : SAS, SARL ou micro-entreprise ?</div>
+          <div class="article-excerpt">Comparatif complet des statuts juridiques, avantages fiscaux et protection sociale pour chaque forme d'entreprise.</div>
+          <div class="article-meta">
+            <span><i class="fas fa-user"></i>Admin ML2C</span>
+            <span><i class="fas fa-calendar"></i>28 mars 2025</span>
+            <span><i class="fas fa-clock"></i>11 min</span>
+          </div>
+          <div class="article-footer">
+            <div class="article-stats">
+              <div class="article-stat"><i class="fas fa-eye"></i>976</div>
+              <div class="article-stat"><i class="fas fa-heart"></i>51</div>
+              <div class="article-stat"><i class="fas fa-comment"></i>9</div>
+            </div>
+            <div class="article-actions">
+              <div class="art-btn" title="Prévisualiser" onclick="toast('info','Ouverture prévisualisation…')"><i class="fas fa-eye"></i></div>
+              <div class="art-btn" title="Modifier" onclick="toast('info','Ouverture éditeur…')"><i class="fas fa-pen"></i></div>
+              <div class="art-btn danger" title="Supprimer" onclick="deleteArticle(this)"><i class="fas fa-trash"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-status="draft" data-cat="Comptabilité" data-title="Les bases de la comptabilité pour auto-entrepreneurs">
+        <div class="article-img" style="background:linear-gradient(135deg,#1a1a1a,#2d2d2d);">
+          <i class="fas fa-book-open article-img-icon"></i>
+          <span class="article-img-cat cat-compta">Comptabilité</span>
+          <span class="article-img-status st-draft">✎ Brouillon</span>
+        </div>
+        <div class="article-body">
+          <div class="article-title">Les bases de la comptabilité pour auto-entrepreneurs</div>
+          <div class="article-excerpt">Guide pratique pour tenir sa comptabilité seul : livre de recettes, TVA, charges déductibles et logiciels recommandés.</div>
+          <div class="article-meta">
+            <span><i class="fas fa-user"></i>Admin ML2C</span>
+            <span><i class="fas fa-calendar"></i>En cours</span>
+            <span><i class="fas fa-percent"></i>65% rédigé</span>
+          </div>
+          <div class="article-footer">
+            <div class="article-stats">
+              <div class="article-stat"><i class="fas fa-eye"></i>—</div>
+              <div class="article-stat" style="color:var(--gold-d);"><i class="fas fa-edit"></i>Brouillon</div>
+            </div>
+            <div class="article-actions">
+              <div class="art-btn" title="Continuer à rédiger" onclick="toast('info','Ouverture éditeur…')"><i class="fas fa-pen"></i></div>
+              <div class="art-btn" title="Publier" onclick="publishArticle(this)" style="color:var(--success);border-color:rgba(16,185,129,.3);"><i class="fas fa-paper-plane"></i></div>
+              <div class="art-btn danger" title="Supprimer" onclick="deleteArticle(this)"><i class="fas fa-trash"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-status="published" data-cat="Juridique" data-title="Nouveautés droit des sociétés 2025 : ce qu'il faut savoir">
+        <div class="article-img" style="background:linear-gradient(135deg,#1a0a2a,#2d1447);">
+          <i class="fas fa-gavel article-img-icon"></i>
+          <span class="article-img-cat cat-juridique">Juridique</span>
+          <span class="article-img-status st-published">● Publié</span>
+        </div>
+        <div class="article-body">
+          <div class="article-title">Nouveautés droit des sociétés 2025 : ce qu'il faut savoir</div>
+          <div class="article-excerpt">Loi de simplification des entreprises, responsabilités des dirigeants, capital social et immatriculation en ligne.</div>
+          <div class="article-meta">
+            <span><i class="fas fa-user"></i>Admin ML2C</span>
+            <span><i class="fas fa-calendar"></i>15 mars 2025</span>
+            <span><i class="fas fa-clock"></i>8 min</span>
+          </div>
+          <div class="article-footer">
+            <div class="article-stats">
+              <div class="article-stat"><i class="fas fa-eye"></i>634</div>
+              <div class="article-stat"><i class="fas fa-heart"></i>28</div>
+              <div class="article-stat"><i class="fas fa-comment"></i>4</div>
+            </div>
+            <div class="article-actions">
+              <div class="art-btn" title="Prévisualiser" onclick="toast('info','Ouverture prévisualisation…')"><i class="fas fa-eye"></i></div>
+              <div class="art-btn" title="Modifier" onclick="toast('info','Ouverture éditeur…')"><i class="fas fa-pen"></i></div>
+              <div class="art-btn danger" title="Supprimer" onclick="deleteArticle(this)"><i class="fas fa-trash"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-status="draft" data-cat="Actualité" data-title="Budget 2026 : impact sur les petites entreprises">
+        <div class="article-img" style="background:linear-gradient(135deg,#0a1a1a,#0d2f2f);">
+          <i class="fas fa-chart-line article-img-icon"></i>
+          <span class="article-img-cat cat-actualite">Actualité</span>
+          <span class="article-img-status st-draft">✎ Brouillon</span>
+        </div>
+        <div class="article-body">
+          <div class="article-title">Budget 2026 : impact sur les petites entreprises</div>
+          <div class="article-excerpt">Analyse des mesures fiscales et sociales du projet de loi de finances 2026 et leurs conséquences pour les TPE/PME.</div>
+          <div class="article-meta">
+            <span><i class="fas fa-user"></i>Admin ML2C</span>
+            <span><i class="fas fa-calendar"></i>En cours</span>
+            <span><i class="fas fa-percent"></i>30% rédigé</span>
+          </div>
+          <div class="article-footer">
+            <div class="article-stats">
+              <div class="article-stat"><i class="fas fa-eye"></i>—</div>
+              <div class="article-stat" style="color:var(--gold-d);"><i class="fas fa-edit"></i>Brouillon</div>
+            </div>
+            <div class="article-actions">
+              <div class="art-btn" title="Continuer à rédiger" onclick="toast('info','Ouverture éditeur…')"><i class="fas fa-pen"></i></div>
+              <div class="art-btn" title="Publier" onclick="publishArticle(this)" style="color:var(--success);border-color:rgba(16,185,129,.3);"><i class="fas fa-paper-plane"></i></div>
+              <div class="art-btn danger" title="Supprimer" onclick="deleteArticle(this)"><i class="fas fa-trash"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-status="published" data-cat="Fiscal" data-title="Cotisations sociales des indépendants : simulez votre budget 2025">
+        <div class="article-img" style="background:linear-gradient(135deg,#1f1a0a,#3d320f);">
+          <i class="fas fa-calculator article-img-icon"></i>
+          <span class="article-img-cat cat-fiscal">Fiscal</span>
+          <span class="article-img-status st-published">● Publié</span>
+        </div>
+        <div class="article-body">
+          <div class="article-title">Cotisations sociales des indépendants : simulez votre budget 2025</div>
+          <div class="article-excerpt">Taux de cotisation, plafonds, complémentaire santé TNS : tout pour anticiper vos charges sociales cette année.</div>
+          <div class="article-meta">
+            <span><i class="fas fa-user"></i>Admin ML2C</span>
+            <span><i class="fas fa-calendar"></i>05 mars 2025</span>
+            <span><i class="fas fa-clock"></i>7 min</span>
+          </div>
+          <div class="article-footer">
+            <div class="article-stats">
+              <div class="article-stat"><i class="fas fa-eye"></i>518</div>
+              <div class="article-stat"><i class="fas fa-heart"></i>22</div>
+              <div class="article-stat"><i class="fas fa-comment"></i>3</div>
+            </div>
+            <div class="article-actions">
+              <div class="art-btn" title="Prévisualiser" onclick="toast('info','Ouverture prévisualisation…')"><i class="fas fa-eye"></i></div>
+              <div class="art-btn" title="Modifier" onclick="toast('info','Ouverture éditeur…')"><i class="fas fa-pen"></i></div>
+              <div class="art-btn danger" title="Supprimer" onclick="deleteArticle(this)"><i class="fas fa-trash"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-status="archived" data-cat="Comptabilité" data-title="Bilan 2023 : récapitulatif des changements comptables">
+        <div class="article-img" style="background:linear-gradient(135deg,#111,#222);">
+          <i class="fas fa-archive article-img-icon"></i>
+          <span class="article-img-cat cat-compta">Comptabilité</span>
+          <span class="article-img-status st-archived">✕ Archivé</span>
+        </div>
+        <div class="article-body">
+          <div class="article-title">Bilan 2023 : récapitulatif des changements comptables</div>
+          <div class="article-excerpt">Article archivé — les informations ne sont plus d'actualité pour l'exercice en cours.</div>
+          <div class="article-meta">
+            <span><i class="fas fa-user"></i>Admin ML2C</span>
+            <span><i class="fas fa-calendar"></i>10 jan. 2024</span>
+            <span><i class="fas fa-clock"></i>5 min</span>
+          </div>
+          <div class="article-footer">
+            <div class="article-stats">
+              <div class="article-stat"><i class="fas fa-eye"></i>289</div>
+              <div class="article-stat" style="color:var(--muted);"><i class="fas fa-archive"></i>Archivé</div>
+            </div>
+            <div class="article-actions">
+              <div class="art-btn" title="Restaurer" onclick="restoreArticle(this)" style="color:var(--turq);border-color:rgba(79,166,149,.3);"><i class="fas fa-undo"></i></div>
+              <div class="art-btn danger" title="Supprimer définitivement" onclick="deleteArticle(this)"><i class="fas fa-trash"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /articles-grid -->
+
+    <!-- EMPTY STATE -->
+    <div id="emptyState" style="display:none;text-align:center;padding:3rem;color:var(--faint);">
+      <i class="fas fa-search" style="font-size:2rem;margin-bottom:1rem;display:block;"></i>
+      <div style="font-size:.9rem;font-weight:600;margin-bottom:.35rem;">Aucun article trouvé</div>
+      <div style="font-size:.78rem;">Modifiez vos filtres ou créez un nouvel article</div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<div class="toast-box" id="toastBox"><i id="toastIco" class="fas fa-circle-check"></i><span id="toastMsg">OK</span></div>
+
+<script>
+function tick(){const n=new Date();const s=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('topClock');if(el)el.textContent=s;}
+tick();setInterval(tick,1000);
+
+function toast(type,msg){
+  const box=document.getElementById('toastBox'),ico=document.getElementById('toastIco'),m=document.getElementById('toastMsg');
+  box.className='toast-box';
+  const map={ok:['toast-ok','fas fa-circle-check'],info:['toast-info','fas fa-circle-info'],warn:['toast-warn','fas fa-triangle-exclamation']};
+  const[cls,i]=map[type]||map.ok;box.classList.add(cls);ico.className=i;m.textContent=msg;
+  box.classList.add('show');clearTimeout(window._tt);window._tt=setTimeout(()=>box.classList.remove('show'),3200);
+}
+
+let currentTab='all';
+function filterTab(tab,btn){
+  currentTab=tab;
+  document.querySelectorAll('.blog-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  filterArticles();
+}
+
+function filterArticles(){
+  const q=document.getElementById('blogSearch').value.toLowerCase();
+  const cat=document.getElementById('filterCat').value;
+  const cards=document.querySelectorAll('.article-card');
+  let visible=0;
+  cards.forEach(card=>{
+    const status=card.dataset.status;
+    const cardCat=card.dataset.cat;
+    const title=card.dataset.title.toLowerCase();
+    const matchTab=currentTab==='all'||status===currentTab;
+    const matchSearch=!q||title.includes(q);
+    const matchCat=!cat||cardCat===cat;
+    const show=matchTab&&matchSearch&&matchCat;
+    card.style.display=show?'':'none';
+    if(show)visible++;
+  });
+  document.getElementById('emptyState').style.display=visible===0?'block':'none';
+}
+
+function setView(v){
+  const grid=document.getElementById('articlesGrid');
+  document.getElementById('viewGrid').classList.toggle('active',v==='grid');
+  document.getElementById('viewList').classList.toggle('active',v==='list');
+  grid.classList.toggle('list-view',v==='list');
+}
+
+function deleteArticle(btn){
+  const card=btn.closest('.article-card');
+  card.classList.add('removing');
+  setTimeout(()=>{card.remove();updateCounts();},300);
+  toast('warn','Article supprimé définitivement');
+}
+
+function publishArticle(btn){
+  const card=btn.closest('.article-card');
+  card.dataset.status='published';
+  const statusBadge=card.querySelector('.article-img-status');
+  if(statusBadge){statusBadge.className='article-img-status st-published';statusBadge.textContent='● Publié';}
+  filterArticles();updateCounts();
+  toast('ok','Article publié et visible en ligne');
+}
+
+function restoreArticle(btn){
+  const card=btn.closest('.article-card');
+  card.dataset.status='draft';
+  const statusBadge=card.querySelector('.article-img-status');
+  if(statusBadge){statusBadge.className='article-img-status st-draft';statusBadge.textContent='✎ Brouillon';}
+  filterArticles();
+  toast('ok','Article restauré en brouillon');
+}
+
+function updateCounts(){
+  const cards=[...document.querySelectorAll('.article-card')];
+  const total=cards.length;
+  const pub=cards.filter(c=>c.dataset.status==='published').length;
+  const draft=cards.filter(c=>c.dataset.status==='draft').length;
+  const arch=cards.filter(c=>c.dataset.status==='archived').length;
+  document.getElementById('kpiTotal').textContent=total;
+  document.getElementById('kpiPub').textContent=pub;
+  document.getElementById('kpiDraft').textContent=draft;
+  document.getElementById('tc-all').textContent=total;
+  document.getElementById('tc-published').textContent=pub;
+  document.getElementById('tc-draft').textContent=draft;
+  document.getElementById('tc-archived').textContent=arch;
+}
+</script>
+</body></html>

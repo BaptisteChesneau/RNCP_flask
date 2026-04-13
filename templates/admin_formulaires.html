@@ -1,0 +1,529 @@
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Formulaires & Devis — ML2C Admin</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--rose:#C1007A;--rose-d:#9a0062;--rose-l:#fce4f3;--rose-xl:#fff5fb;--turq:#4FA695;--turq-l:#d4f0ec;--gold:#f59e0b;--gold-d:#b45309;--gold-l:#fffbeb;--bg:#f2f4f8;--surface:#fff;--border:#e4e8ef;--text:#111827;--muted:#6b7280;--faint:#9ca3af;--success:#10b981;--danger:#ef4444;--blue:#3b82f6;--ff-head:'Cormorant Garamond',serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'JetBrains Mono',monospace;}
+body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
+.adm-shell{display:flex;height:100vh;overflow:hidden;}
+.adm-sidebar{width:220px;background:#0e1018;border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0;}
+.adm-sidebar::-webkit-scrollbar{width:3px;}.adm-sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);}
+.adm-sb-logo{display:flex;align-items:center;gap:.75rem;padding:1.25rem 1.1rem 1rem;border-bottom:1px solid rgba(255,255,255,.06);}
+.adm-sb-dot{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#C1007A,#9a0062);display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px rgba(193,0,122,.4);flex-shrink:0;}
+.adm-sb-brand{font-size:.88rem;font-weight:700;color:#fff;line-height:1.2;}.adm-sb-brand span{display:block;font-size:.65rem;font-weight:400;color:rgba(255,255,255,.35);}
+.adm-sb-sec{font-size:.57rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.22);padding:1.1rem 1.1rem .3rem;margin:0;}
+.adm-sb-item{display:flex;align-items:center;gap:.6rem;padding:.55rem 1.1rem;font-size:.78rem;color:rgba(255,255,255,.45);text-decoration:none;transition:all .15s;border-left:2px solid transparent;margin:.05rem 0;}
+.adm-sb-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.8);text-decoration:none;}
+.adm-sb-item--active{background:rgba(193,0,122,.12);border-left-color:#C1007A;color:#f472b6!important;font-weight:600;}
+.adm-sb-item svg{opacity:.6;flex-shrink:0;}.adm-sb-item:hover svg,.adm-sb-item--active svg{opacity:1;}
+.adm-sb-badge{margin-left:auto;min-width:19px;height:19px;background:#C1007A;color:#fff;border-radius:20px;font-size:.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 .4rem;flex-shrink:0;}
+.adm-sb-badge.gold{background:linear-gradient(135deg,#f59e0b,#d97706);}.adm-sb-badge.green{background:#10b981;}.adm-sb-badge.blue{background:#3b82f6;}
+.adm-sb-pip{width:6px;height:6px;border-radius:50%;flex-shrink:0;}.pip-green{background:#10b981;animation:pip 2s infinite;}.pip-red{background:#ef4444;animation:pip .8s infinite;}@keyframes pip{0%,100%{opacity:1}50%{opacity:.3}}
+.adm-sb-divider{height:1px;background:rgba(255,255,255,.06);margin:.5rem 1rem;}
+.adm-sb-footer{margin-top:auto;padding:.75rem 1rem;border-top:1px solid rgba(255,255,255,.06);}
+.adm-sb-user{display:flex;align-items:center;gap:.65rem;}
+.adm-sb-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#C1007A,#9a0062);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:#fff;flex-shrink:0;}
+.adm-sb-info{font-size:.75rem;font-weight:600;color:rgba(255,255,255,.7);line-height:1.2;flex:1;}.adm-sb-info span{display:block;font-size:.62rem;font-weight:400;color:rgba(255,255,255,.3);}
+.adm-sb-logout{width:26px;height:26px;border-radius:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);transition:all .2s;cursor:pointer;}.adm-sb-logout:hover{background:rgba(239,68,68,.12);color:#f87171;}
+.adm-sb-version{text-align:center;font-size:.58rem;color:rgba(255,255,255,.15);padding:.4rem 1rem;font-family:var(--ff-mono);}
+.adm-main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.adm-topbar{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.5rem;background:#fff;border-bottom:1px solid var(--border);flex-shrink:0;gap:1rem;flex-wrap:wrap;}
+.adm-topbar-left h2{font-size:1rem;font-weight:700;margin:0;}.adm-topbar-left p{font-size:.72rem;color:var(--muted);margin:.05rem 0 0;}
+.adm-topbar-right{display:flex;align-items:center;gap:.5rem;}
+.adm-content{flex:1;overflow-y:auto;padding:1.5rem;}
+.btn-adm{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border-radius:9px;font-size:.78rem;font-weight:600;cursor:pointer;border:none;font-family:var(--ff-body);transition:all .2s;white-space:nowrap;}
+.btn-rose{background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff;box-shadow:0 4px 12px rgba(193,0,122,.25);}.btn-rose:hover{transform:translateY(-1px);}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted);}.btn-ghost:hover{border-color:var(--rose);color:var(--rose);}
+.btn-turq{background:linear-gradient(135deg,var(--turq),#3d8578);color:#fff;}
+.btn-success{background:linear-gradient(135deg,var(--success),#059669);color:#fff;}
+.btn-danger{background:linear-gradient(135deg,var(--danger),#dc2626);color:#fff;}
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
+.kbox{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:1.1rem;display:flex;align-items:center;gap:.85rem;box-shadow:0 2px 12px rgba(0,0,0,.05);transition:transform .2s;animation:fadeUp .4s both;}
+.kbox:hover{transform:translateY(-2px);}
+.kbox-ico{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
+.ki-rose{background:var(--rose-l);color:var(--rose);}.ki-turq{background:var(--turq-l);color:var(--turq);}.ki-gold{background:var(--gold-l);color:var(--gold-d);}.ki-blue{background:#dbeafe;color:#2563eb;}.ki-green{background:#d1fae5;color:var(--success);}
+.kbox-val{font-family:var(--ff-head);font-size:1.7rem;font-weight:700;line-height:1;}.kbox-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-top:.1rem;}
+.kbox-sub{font-size:.65rem;color:var(--turq);font-weight:600;margin-top:.15rem;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+/* PANEL */
+.panel{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.05);overflow:hidden;margin-bottom:1.25rem;animation:fadeUp .4s both;}
+.panel-head{padding:1rem 1.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(90deg,#fafbfc,#fff);}
+.panel-head-left{display:flex;align-items:center;gap:.65rem;}
+.panel-ico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0;}
+.pi-rose{background:var(--rose-l);color:var(--rose);}.pi-turq{background:var(--turq-l);color:var(--turq);}.pi-gold{background:var(--gold-l);color:var(--gold-d);}.pi-blue{background:#dbeafe;color:#2563eb;}
+.panel-title{font-size:.88rem;font-weight:700;color:var(--text);}
+.panel-sub{font-size:.7rem;color:var(--muted);margin-top:.08rem;}
+.panel-body{padding:1.4rem;}
+/* TOOLBAR */
+.toolbar{display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem;flex-wrap:wrap;}
+.search-box{display:flex;align-items:center;gap:.5rem;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.5rem .9rem;flex:1;min-width:220px;transition:border-color .2s;}
+.search-box:focus-within{border-color:var(--rose);}
+.search-box input{background:none;border:none;outline:none;font-size:.85rem;font-family:var(--ff-body);width:100%;color:var(--text);}
+.f-sel{border:1.5px solid var(--border);border-radius:9px;padding:.48rem .8rem;font-size:.8rem;font-family:var(--ff-body);color:var(--muted);background:var(--surface);outline:none;cursor:pointer;}
+.f-sel:focus{border-color:var(--rose);}
+/* TABLE */
+.table-wrap{overflow-x:auto;}
+.devis-table{width:100%;border-collapse:collapse;font-size:.82rem;}
+.devis-table th{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);padding:.65rem 1rem;border-bottom:1.5px solid var(--border);text-align:left;white-space:nowrap;}
+.devis-table th.sortable{cursor:pointer;user-select:none;}
+.devis-table th.sortable:hover{color:var(--rose);}
+.devis-table td{padding:.75rem 1rem;border-bottom:1px solid #f3f4f6;vertical-align:middle;}
+.devis-table tr:last-child td{border-bottom:none;}
+.devis-table tbody tr{transition:background .15s;cursor:pointer;}
+.devis-table tbody tr:hover td{background:#fafbfc;}
+.devis-table tbody tr.removing{opacity:0;transform:translateX(20px);transition:all .3s;}
+/* STATUS BADGES */
+.badge{display:inline-flex;align-items:center;gap:.3rem;font-size:.65rem;font-weight:700;padding:.22rem .65rem;border-radius:20px;white-space:nowrap;}
+.badge-new{background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1d4ed8;}
+.badge-processing{background:linear-gradient(135deg,var(--gold-l),#fde68a);color:#92400e;}
+.badge-done{background:linear-gradient(135deg,#d1fae5,#a7f3d0);color:#065f46;}
+.badge-rejected{background:linear-gradient(135deg,#fee2e2,#fecaca);color:#b91c1c;}
+.badge-waiting{background:linear-gradient(135deg,#ede9fe,#ddd6fe);color:#5b21b6;}
+/* PRIORITÉ */
+.prio{display:inline-flex;align-items:center;gap:.25rem;font-size:.65rem;font-weight:700;padding:.15rem .5rem;border-radius:20px;}
+.prio-high{background:#fee2e2;color:#b91c1c;}.prio-med{background:var(--gold-l);color:var(--gold-d);}.prio-low{background:#d1fae5;color:#065f46;}
+/* CLIENT CELL */
+.client-cell{display:flex;align-items:center;gap:.65rem;}
+.client-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:#fff;flex-shrink:0;}
+.client-name{font-weight:600;color:var(--text);font-size:.85rem;}
+.client-email{font-size:.68rem;color:var(--faint);}
+/* ACTIONS */
+.row-actions{display:flex;gap:.35rem;justify-content:flex-end;}
+.act-btn{width:28px;height:28px;border-radius:7px;border:1.5px solid var(--border);background:#fff;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;font-size:.72rem;}
+.act-btn:hover{border-color:var(--rose);color:var(--rose);}
+.act-btn.danger:hover{border-color:var(--danger);color:var(--danger);}
+.act-btn.success:hover{border-color:var(--success);color:var(--success);}
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.modal-overlay.open{display:flex;}
+.modal-box{background:#fff;border-radius:20px;width:100%;max-width:580px;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:fadeUp .3s ease;max-height:90vh;overflow-y:auto;}
+.modal-head{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1;}
+.modal-title{font-size:.95rem;font-weight:700;display:flex;align-items:center;gap:.5rem;}
+.modal-close{width:28px;height:28px;border-radius:8px;border:1.5px solid var(--border);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.75rem;transition:all .2s;}
+.modal-close:hover{border-color:var(--danger);color:var(--danger);}
+.modal-body{padding:1.5rem;}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;}
+.detail-field{display:flex;flex-direction:column;gap:.25rem;}
+.detail-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);}
+.detail-value{font-size:.87rem;color:var(--text);font-weight:500;}
+.detail-message{background:#f8fafc;border-radius:10px;padding:1rem;border:1px solid var(--border);font-size:.83rem;color:var(--muted);line-height:1.6;}
+.response-area{border:1.5px solid var(--border);border-radius:10px;padding:.65rem 1rem;font-size:.85rem;font-family:var(--ff-body);color:var(--text);background:#fafbfc;outline:none;resize:vertical;width:100%;min-height:100px;transition:all .2s;}
+.response-area:focus{border-color:var(--rose);background:#fff;}
+.modal-footer{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:.65rem;flex-wrap:wrap;position:sticky;bottom:0;background:#fff;}
+/* MINI STATS */
+.mini-stat-row{display:flex;gap:.75rem;margin-bottom:.75rem;}
+.mini-stat{flex:1;background:#f8fafc;border-radius:10px;padding:.75rem;text-align:center;border:1px solid var(--border);}
+.mini-stat-val{font-family:var(--ff-head);font-size:1.4rem;font-weight:700;}
+.mini-stat-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--faint);margin-top:.1rem;}
+/* TIMELINE */
+.timeline{display:flex;flex-direction:column;gap:.5rem;}
+.tl-item{display:flex;gap:.75rem;align-items:flex-start;}
+.tl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:.2rem;}
+.tl-body{flex:1;}
+.tl-action{font-size:.8rem;font-weight:600;color:var(--text);}
+.tl-time{font-size:.68rem;color:var(--faint);font-family:var(--ff-mono);}
+/* TOAST */
+.toast-box{position:fixed;bottom:1.25rem;right:1.25rem;z-index:9999;display:flex;align-items:center;gap:.65rem;padding:.8rem 1.2rem;border-radius:12px;font-size:.82rem;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.18);transform:translateY(80px);opacity:0;transition:all .35s cubic-bezier(.34,1.2,.64,1);pointer-events:none;max-width:320px;}
+.toast-box.show{transform:translateY(0);opacity:1;}
+.toast-ok{background:#0b2a1f;color:#4ade80;border:1px solid rgba(74,222,128,.2);}
+.toast-info{background:#0b1a2a;color:#60a5fa;border:1px solid rgba(96,165,250,.2);}
+.toast-warn{background:#2a1f0b;color:#fbbf24;border:1px solid rgba(251,191,36,.2);}
+@media(max-width:900px){.kpi-row{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head><body>
+<div class="adm-shell">
+<aside class="adm-sidebar">
+  <div class="adm-sb-logo"><div class="adm-sb-dot"><svg width="15" height="15" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><div class="adm-sb-brand">ML2C Conseil<span>Administration</span></div></div>
+  <p class="adm-sb-sec">Principal</p>
+  <a href="{{ url_for('admin_dashboard') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard<span class="adm-sb-pip pip-green" style="margin-left:auto;"></span></a>
+  <a href="{{ url_for('admin_chatbot') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Questions / Réponses<span class="adm-sb-badge">19</span></a>
+  <a href="{{ url_for('admin_utilisateurs') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Utilisateurs</a>
+  <a href="{{ url_for('admin_stats') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Statistiques</a>
+  <a href="{{ url_for('admin_notifications') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Notifications<span class="adm-sb-badge green">3</span></a>
+  <a href="{{ url_for('admin_agenda') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Agenda / RDV<span class="adm-sb-badge blue">2</span></a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Contenu</p>
+  <a href="{{ url_for('admin_blog') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Blog / Articles</a>
+  <a href="{{ url_for('admin_formulaires') }}" class="adm-sb-item adm-sb-item--active"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>Formulaires / Devis<span class="adm-sb-badge gold">5</span></a>
+  <a href="{{ url_for('admin_emails') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Emails automatiques</a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Système</p>
+  <a href="{{ url_for('admin_config') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>Configuration</a>
+  <a href="{{ url_for('admin_logs') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Logs sécurité<span class="adm-sb-pip pip-red" style="margin-left:auto;"></span></a>
+  <a href="{{ url_for('admin_performances') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Performances<span class="adm-sb-pip pip-green" style="margin-left:auto;"></span></a>
+  <a href="{{ url_for('admin_sauvegardes') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Sauvegardes<span class="adm-sb-badge green">OK</span></a>
+  <a href="{{ url_for('admin_export') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Export données</a>
+  <a href="{{ url_for('admin_purge') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>Purger les logs</a>
+  <div class="adm-sb-divider"></div>
+  <p class="adm-sb-sec">Compte</p>
+  <a href="{{ url_for('admin_parametres') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Paramètres du compte</a>
+  <a href="{{ url_for('admin_audit') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>Journal d'audit</a>
+  <div class="adm-sb-footer"><div class="adm-sb-user"><div class="adm-sb-avatar">AD</div><div class="adm-sb-info">Administrateur<span>Super Admin · Niv. 3</span></div><a href="{{ url_for('logout_admin') }}" class="adm-sb-logout"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></a></div></div>
+  <div class="adm-sb-version">ML2C Admin v2.0 · 2025</div>
+</aside>
+
+<div class="adm-main">
+  <div class="adm-topbar">
+    <div class="adm-topbar-left">
+      <h2><i class="fas fa-file-alt" style="color:var(--rose);margin-right:.4rem;font-size:.9rem;"></i>Formulaires & Devis</h2>
+      <p>Demandes clients · <span style="font-family:var(--ff-mono);color:var(--rose);font-size:.7rem;" id="newCount">5 nouvelles</span> non traitées · <span id="topClock" style="font-family:var(--ff-mono);"></span></p>
+    </div>
+    <div class="adm-topbar-right">
+      <button class="btn-adm btn-ghost" onclick="exportCSV()"><i class="fas fa-file-csv"></i>Exporter CSV</button>
+      <button class="btn-adm btn-ghost" onclick="markAllRead()"><i class="fas fa-check-double"></i>Tout marquer lu</button>
+    </div>
+  </div>
+
+  <div class="adm-content">
+
+    <!-- KPI -->
+    <div class="kpi-row">
+      <div class="kbox" style="animation-delay:.05s"><div class="kbox-ico ki-rose"><i class="fas fa-inbox"></i></div><div><div class="kbox-val" id="kpiNew">5</div><div class="kbox-lbl">Nouvelles demandes</div><div class="kbox-sub">Non traitées</div></div></div>
+      <div class="kbox" style="animation-delay:.1s"><div class="kbox-ico ki-gold"><i class="fas fa-spinner"></i></div><div><div class="kbox-val" id="kpiProc">3</div><div class="kbox-lbl">En traitement</div><div class="kbox-sub">En cours</div></div></div>
+      <div class="kbox" style="animation-delay:.15s"><div class="kbox-ico ki-green"><i class="fas fa-check-circle"></i></div><div><div class="kbox-val" id="kpiDone">18</div><div class="kbox-lbl">Traitées ce mois</div><div class="kbox-sub">↑ +6 vs N-1</div></div></div>
+      <div class="kbox" style="animation-delay:.2s"><div class="kbox-ico ki-turq"><i class="fas fa-clock"></i></div><div><div class="kbox-val">3.2h</div><div class="kbox-lbl">Temps moy. réponse</div><div class="kbox-sub">↓ -40min</div></div></div>
+    </div>
+
+    <!-- MINI STATS -->
+    <div class="panel" style="animation-delay:.1s;">
+      <div class="panel-head">
+        <div class="panel-head-left">
+          <div class="panel-ico pi-blue"><i class="fas fa-chart-bar"></i></div>
+          <div><div class="panel-title">Répartition des demandes</div><div class="panel-sub">Ce mois · 26 formulaires reçus</div></div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="mini-stat-row">
+          <div class="mini-stat"><div class="mini-stat-val" style="color:var(--rose);">5</div><div class="mini-stat-lbl">Nouvelles</div></div>
+          <div class="mini-stat"><div class="mini-stat-val" style="color:var(--gold-d);">3</div><div class="mini-stat-lbl">En cours</div></div>
+          <div class="mini-stat"><div class="mini-stat-val" style="color:var(--success);">18</div><div class="mini-stat-lbl">Traitées</div></div>
+          <div class="mini-stat"><div class="mini-stat-val" style="color:var(--danger);">0</div><div class="mini-stat-lbl">Refusées</div></div>
+        </div>
+        <div style="background:#f3f4f6;border-radius:20px;height:8px;overflow:hidden;display:flex;">
+          <div style="background:var(--rose);width:19%;border-radius:20px 0 0 20px;"></div>
+          <div style="background:var(--gold);width:12%;"></div>
+          <div style="background:var(--success);width:69%;border-radius:0 20px 20px 0;"></div>
+        </div>
+        <div style="display:flex;gap:1.5rem;margin-top:.6rem;font-size:.7rem;color:var(--muted);">
+          <span style="display:flex;align-items:center;gap:.3rem;"><span style="width:8px;height:8px;border-radius:50%;background:var(--rose);display:inline-block;"></span>Nouvelles 19%</span>
+          <span style="display:flex;align-items:center;gap:.3rem;"><span style="width:8px;height:8px;border-radius:50%;background:var(--gold);display:inline-block;"></span>En cours 12%</span>
+          <span style="display:flex;align-items:center;gap:.3rem;"><span style="width:8px;height:8px;border-radius:50%;background:var(--success);display:inline-block;"></span>Traitées 69%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLEAU DEMANDES -->
+    <div class="panel" style="animation-delay:.15s;">
+      <div class="panel-head">
+        <div class="panel-head-left">
+          <div class="panel-ico pi-rose"><i class="fas fa-list-alt"></i></div>
+          <div><div class="panel-title">Demandes de devis</div><div class="panel-sub" id="tableCount">26 demandes · triées par date</div></div>
+        </div>
+        <div class="toolbar" style="margin:0;flex-wrap:nowrap;">
+          <div class="search-box" style="min-width:180px;"><i class="fas fa-search" style="color:var(--faint);font-size:.75rem;"></i><input type="text" placeholder="Rechercher…" id="devisSearch" oninput="filterTable()"></div>
+          <select class="f-sel" id="filterStatus" onchange="filterTable()">
+            <option value="">Tous les statuts</option>
+            <option value="new">Nouvelles</option>
+            <option value="processing">En cours</option>
+            <option value="done">Traitées</option>
+            <option value="rejected">Refusées</option>
+          </select>
+          <select class="f-sel" id="filterService" onchange="filterTable()">
+            <option value="">Tous les services</option>
+            <option value="Comptabilité">Comptabilité</option>
+            <option value="Fiscal">Fiscal</option>
+            <option value="Conseil">Conseil</option>
+            <option value="Audit">Audit</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="devis-table">
+          <thead>
+            <tr>
+              <th class="sortable" onclick="sortTable('id')">#ID <i class="fas fa-sort" style="font-size:.55rem;opacity:.4;"></i></th>
+              <th>Client</th>
+              <th>Service</th>
+              <th>Priorité</th>
+              <th class="sortable" onclick="sortTable('date')">Date <i class="fas fa-sort" style="font-size:.55rem;opacity:.4;"></i></th>
+              <th>Statut</th>
+              <th style="text-align:right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="devisBody">
+
+            <tr data-status="new" data-service="Comptabilité" onclick="openDetail(this)" data-id="DEV-0042" data-client="Mme Claire Martin" data-email="c.martin@exemple.fr" data-tel="06 12 34 56 78" data-service-val="Comptabilité" data-date="13 avr. 2025" data-msg="Bonjour, je souhaite un devis pour la tenue de ma comptabilité en tant qu'auto-entrepreneuse dans le domaine du conseil RH. Mon chiffre d'affaires annuel est d'environ 45 000€. Merci de me contacter au plus vite.">
+              <td style="font-family:var(--ff-mono);color:var(--muted);font-size:.72rem;">DEV-0042</td>
+              <td><div class="client-cell"><div class="client-avatar" style="background:linear-gradient(135deg,#C1007A,#9a0062);">CM</div><div><div class="client-name">Mme Claire Martin</div><div class="client-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5a3974373b282e33341a3f223f372a363f743c28">[email&#160;protected]</a></div></div></div></td>
+              <td><span style="font-size:.78rem;font-weight:600;">Comptabilité</span></td>
+              <td><span class="prio prio-high"><i class="fas fa-arrow-up" style="font-size:.5rem;"></i>Haute</span></td>
+              <td style="font-size:.75rem;color:var(--muted);white-space:nowrap;">13 avr. 2025<br><span style="font-size:.68rem;font-family:var(--ff-mono);">09:14</span></td>
+              <td><span class="badge badge-new"><i class="fas fa-circle" style="font-size:.45rem;"></i>Nouvelle</span></td>
+              <td><div class="row-actions">
+                <div class="act-btn success" title="Valider" onclick="event.stopPropagation();changeStatus(this,'done')"><i class="fas fa-check"></i></div>
+                <div class="act-btn" title="En traitement" onclick="event.stopPropagation();changeStatus(this,'processing')"><i class="fas fa-spinner"></i></div>
+                <div class="act-btn danger" title="Supprimer" onclick="event.stopPropagation();deleteRow(this)"><i class="fas fa-trash"></i></div>
+              </div></td>
+            </tr>
+
+            <tr data-status="new" data-service="Fiscal" onclick="openDetail(this)" data-id="DEV-0041" data-client="SARL Dupont & Fils" data-email="contact@dupont-fils.fr" data-tel="01 45 67 89 10" data-service-val="Fiscal" data-date="12 avr. 2025" data-msg="Nous sommes une SARL de 12 salariés dans le BTP. Nous cherchons un cabinet pour optimiser notre fiscalité et vérifier notre conformité TVA sur marchés publics. Budget annuel cabinet ~3 500€.">
+              <td style="font-family:var(--ff-mono);color:var(--muted);font-size:.72rem;">DEV-0041</td>
+              <td><div class="client-cell"><div class="client-avatar" style="background:linear-gradient(135deg,#b45309,#92400e);">DF</div><div><div class="client-name">SARL Dupont & Fils</div><div class="client-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="92f1fdfce6f3f1e6d2f6e7e2fdfce6bff4fbfee1bcf4e0">[email&#160;protected]</a></div></div></div></td>
+              <td><span style="font-size:.78rem;font-weight:600;">Fiscal</span></td>
+              <td><span class="prio prio-high"><i class="fas fa-arrow-up" style="font-size:.5rem;"></i>Haute</span></td>
+              <td style="font-size:.75rem;color:var(--muted);white-space:nowrap;">12 avr. 2025<br><span style="font-size:.68rem;font-family:var(--ff-mono);">14:32</span></td>
+              <td><span class="badge badge-new"><i class="fas fa-circle" style="font-size:.45rem;"></i>Nouvelle</span></td>
+              <td><div class="row-actions">
+                <div class="act-btn success" title="Valider" onclick="event.stopPropagation();changeStatus(this,'done')"><i class="fas fa-check"></i></div>
+                <div class="act-btn" title="En traitement" onclick="event.stopPropagation();changeStatus(this,'processing')"><i class="fas fa-spinner"></i></div>
+                <div class="act-btn danger" title="Supprimer" onclick="event.stopPropagation();deleteRow(this)"><i class="fas fa-trash"></i></div>
+              </div></td>
+            </tr>
+
+            <tr data-status="processing" data-service="Conseil" onclick="openDetail(this)" data-id="DEV-0040" data-client="M. Alexandre Petit" data-email="a.petit@gmail.com" data-tel="06 98 76 54 32" data-service-val="Conseil" data-date="11 avr. 2025" data-msg="Je souhaite créer une SAS pour mon activité de consulting IT. J'ai besoin de conseils sur la rémunération dirigeant, les dividendes et la protection sociale. Je suis disponible en visio la semaine prochaine.">
+              <td style="font-family:var(--ff-mono);color:var(--muted);font-size:.72rem;">DEV-0040</td>
+              <td><div class="client-cell"><div class="client-avatar" style="background:linear-gradient(135deg,#4FA695,#3d8578);">AP</div><div><div class="client-name">M. Alexandre Petit</div><div class="client-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4d2c633d283924390d2a202c2421632e2220">[email&#160;protected]</a></div></div></div></td>
+              <td><span style="font-size:.78rem;font-weight:600;">Conseil</span></td>
+              <td><span class="prio prio-med"><i class="fas fa-minus" style="font-size:.5rem;"></i>Moyenne</span></td>
+              <td style="font-size:.75rem;color:var(--muted);white-space:nowrap;">11 avr. 2025<br><span style="font-size:.68rem;font-family:var(--ff-mono);">10:05</span></td>
+              <td><span class="badge badge-processing"><i class="fas fa-circle" style="font-size:.45rem;"></i>En cours</span></td>
+              <td><div class="row-actions">
+                <div class="act-btn success" title="Marquer traité" onclick="event.stopPropagation();changeStatus(this,'done')"><i class="fas fa-check"></i></div>
+                <div class="act-btn" title="Envoyer email" onclick="event.stopPropagation();toast('info','Email envoyé à M. Petit')"><i class="fas fa-envelope"></i></div>
+                <div class="act-btn danger" title="Supprimer" onclick="event.stopPropagation();deleteRow(this)"><i class="fas fa-trash"></i></div>
+              </div></td>
+            </tr>
+
+            <tr data-status="new" data-service="Audit" onclick="openDetail(this)" data-id="DEV-0039" data-client="Association Horizon Vert" data-email="tresorier@horizonvert.org" data-tel="03 22 11 44 55" data-service-val="Audit" data-date="10 avr. 2025" data-msg="Notre association loi 1901 de protection de l'environnement (budget ~150k€/an) doit faire auditer ses comptes pour notre prochain AG. Délai souhaité : avant le 15 juin 2025.">
+              <td style="font-family:var(--ff-mono);color:var(--muted);font-size:.72rem;">DEV-0039</td>
+              <td><div class="client-cell"><div class="client-avatar" style="background:linear-gradient(135deg,#10b981,#059669);">AH</div><div><div class="client-name">Association Horizon Vert</div><div class="client-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c2b6b0a7b1adb0aba7b082aaadb0abb8adacb4a7b0b6ecadb0a5">[email&#160;protected]</a></div></div></div></td>
+              <td><span style="font-size:.78rem;font-weight:600;">Audit</span></td>
+              <td><span class="prio prio-med"><i class="fas fa-minus" style="font-size:.5rem;"></i>Moyenne</span></td>
+              <td style="font-size:.75rem;color:var(--muted);white-space:nowrap;">10 avr. 2025<br><span style="font-size:.68rem;font-family:var(--ff-mono);">16:48</span></td>
+              <td><span class="badge badge-new"><i class="fas fa-circle" style="font-size:.45rem;"></i>Nouvelle</span></td>
+              <td><div class="row-actions">
+                <div class="act-btn success" title="Valider" onclick="event.stopPropagation();changeStatus(this,'done')"><i class="fas fa-check"></i></div>
+                <div class="act-btn" title="En traitement" onclick="event.stopPropagation();changeStatus(this,'processing')"><i class="fas fa-spinner"></i></div>
+                <div class="act-btn danger" title="Supprimer" onclick="event.stopPropagation();deleteRow(this)"><i class="fas fa-trash"></i></div>
+              </div></td>
+            </tr>
+
+            <tr data-status="processing" data-service="Comptabilité" onclick="openDetail(this)" data-id="DEV-0038" data-client="Mme Laure Bonnet" data-email="laure.bonnet@free.fr" data-tel="06 55 44 33 22" data-service-val="Comptabilité" data-date="09 avr. 2025" data-msg="Je suis infirmière libérale depuis 3 ans. Je cherche un expert-comptable pour prendre en charge ma comptabilité (BNC), mes déclarations fiscales et m'aider à optimiser ma retraite complémentaire.">
+              <td style="font-family:var(--ff-mono);color:var(--muted);font-size:.72rem;">DEV-0038</td>
+              <td><div class="client-cell"><div class="client-avatar" style="background:linear-gradient(135deg,#3b82f6,#2563eb);">LB</div><div><div class="client-name">Mme Laure Bonnet</div><div class="client-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="204c415552450e424f4e4e455460465245450e4652">[email&#160;protected]</a></div></div></div></td>
+              <td><span style="font-size:.78rem;font-weight:600;">Comptabilité</span></td>
+              <td><span class="prio prio-low"><i class="fas fa-arrow-down" style="font-size:.5rem;"></i>Faible</span></td>
+              <td style="font-size:.75rem;color:var(--muted);white-space:nowrap;">09 avr. 2025<br><span style="font-size:.68rem;font-family:var(--ff-mono);">08:22</span></td>
+              <td><span class="badge badge-processing"><i class="fas fa-circle" style="font-size:.45rem;"></i>En cours</span></td>
+              <td><div class="row-actions">
+                <div class="act-btn success" title="Marquer traité" onclick="event.stopPropagation();changeStatus(this,'done')"><i class="fas fa-check"></i></div>
+                <div class="act-btn" title="Envoyer email" onclick="event.stopPropagation();toast('info','Email envoyé à Mme Bonnet')"><i class="fas fa-envelope"></i></div>
+                <div class="act-btn danger" title="Supprimer" onclick="event.stopPropagation();deleteRow(this)"><i class="fas fa-trash"></i></div>
+              </div></td>
+            </tr>
+
+            <tr data-status="new" data-service="Fiscal" onclick="openDetail(this)" data-id="DEV-0037" data-client="M. Karim Benali" data-email="k.benali@outlook.com" data-tel="07 11 22 33 44" data-service-val="Fiscal" data-date="08 avr. 2025" data-msg="Je viens de recevoir un avis de vérification de comptabilité pour mon activité d'e-commerce. J'ai besoin d'une assistance urgente pour préparer les documents et vous autoriser à me représenter auprès de l'administration.">
+              <td style="font-family:var(--ff-mono);color:var(--muted);font-size:.72rem;">DEV-0037</td>
+              <td><div class="client-cell"><div class="client-avatar" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);">KB</div><div><div class="client-name">M. Karim Benali</div><div class="client-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5833763a3d3639343118372d2c34373733763b3735">[email&#160;protected]</a></div></div></div></td>
+              <td><span style="font-size:.78rem;font-weight:600;">Fiscal</span></td>
+              <td><span class="prio prio-high"><i class="fas fa-arrow-up" style="font-size:.5rem;"></i>Haute</span></td>
+              <td style="font-size:.75rem;color:var(--muted);white-space:nowrap;">08 avr. 2025<br><span style="font-size:.68rem;font-family:var(--ff-mono);">17:55</span></td>
+              <td><span class="badge badge-new"><i class="fas fa-circle" style="font-size:.45rem;"></i>Nouvelle</span></td>
+              <td><div class="row-actions">
+                <div class="act-btn success" title="Valider" onclick="event.stopPropagation();changeStatus(this,'done')"><i class="fas fa-check"></i></div>
+                <div class="act-btn" title="En traitement" onclick="event.stopPropagation();changeStatus(this,'processing')"><i class="fas fa-spinner"></i></div>
+                <div class="act-btn danger" title="Supprimer" onclick="event.stopPropagation();deleteRow(this)"><i class="fas fa-trash"></i></div>
+              </div></td>
+            </tr>
+
+            <tr data-status="done" data-service="Conseil" onclick="openDetail(this)" data-id="DEV-0036" data-client="SCI Les Palmiers" data-email="sci.palmiers@gmail.com" data-tel="01 23 45 67 89" data-service-val="Conseil" data-date="05 avr. 2025" data-msg="Demande de conseil pour la dissolution d'une SCI familiale suite à vente d'un bien immobilier. Traitement terminé.">
+              <td style="font-family:var(--ff-mono);color:var(--muted);font-size:.72rem;">DEV-0036</td>
+              <td><div class="client-cell"><div class="client-avatar" style="background:linear-gradient(135deg,#10b981,#065f46);">SP</div><div><div class="client-name">SCI Les Palmiers</div><div class="client-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="97e4f4feb9e7f6fbfafef2e5e4d7f0faf6fefbb9f4f8fa">[email&#160;protected]</a></div></div></div></td>
+              <td><span style="font-size:.78rem;font-weight:600;">Conseil</span></td>
+              <td><span class="prio prio-low"><i class="fas fa-arrow-down" style="font-size:.5rem;"></i>Faible</span></td>
+              <td style="font-size:.75rem;color:var(--muted);white-space:nowrap;">05 avr. 2025<br><span style="font-size:.68rem;font-family:var(--ff-mono);">11:10</span></td>
+              <td><span class="badge badge-done"><i class="fas fa-check" style="font-size:.55rem;"></i>Traitée</span></td>
+              <td><div class="row-actions">
+                <div class="act-btn" title="Réouvrir" onclick="event.stopPropagation();changeStatus(this,'processing')"><i class="fas fa-undo"></i></div>
+                <div class="act-btn" title="Télécharger dossier" onclick="event.stopPropagation();toast('info','Téléchargement dossier…')"><i class="fas fa-download"></i></div>
+                <div class="act-btn danger" title="Supprimer" onclick="event.stopPropagation();deleteRow(this)"><i class="fas fa-trash"></i></div>
+              </div></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- MODAL DÉTAIL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title"><i class="fas fa-file-alt" style="color:var(--rose);"></i><span id="modalId">DEV-0042</span> · Détail de la demande</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="detail-grid">
+        <div class="detail-field"><div class="detail-label">Client</div><div class="detail-value" id="dClient">—</div></div>
+        <div class="detail-field"><div class="detail-label">Email</div><div class="detail-value" id="dEmail" style="color:var(--blue);">—</div></div>
+        <div class="detail-field"><div class="detail-label">Téléphone</div><div class="detail-value" id="dTel">—</div></div>
+        <div class="detail-field"><div class="detail-label">Service demandé</div><div class="detail-value" id="dService">—</div></div>
+        <div class="detail-field"><div class="detail-label">Date de réception</div><div class="detail-value" id="dDate">—</div></div>
+        <div class="detail-field"><div class="detail-label">Statut actuel</div><div class="detail-value" id="dStatus">—</div></div>
+      </div>
+      <div style="margin-bottom:1rem;">
+        <div class="detail-label" style="margin-bottom:.5rem;">Message du client</div>
+        <div class="detail-message" id="dMsg">—</div>
+      </div>
+      <!-- Timeline -->
+      <div style="margin-bottom:1rem;">
+        <div class="detail-label" style="margin-bottom:.65rem;">Historique</div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-dot" style="background:var(--rose);"></div><div class="tl-body"><div class="tl-action">Demande reçue via le formulaire site</div><div class="tl-time" id="dTimeline1">—</div></div></div>
+          <div class="tl-item"><div class="tl-dot" style="background:var(--gold);"></div><div class="tl-body"><div class="tl-action">Email de confirmation envoyé automatiquement</div><div class="tl-time" id="dTimeline2">—</div></div></div>
+          <div class="tl-item"><div class="tl-dot" style="background:#e5e7eb;"></div><div class="tl-body"><div class="tl-action" style="color:var(--faint);">En attente de traitement admin</div><div class="tl-time">—</div></div></div>
+        </div>
+      </div>
+      <!-- Réponse -->
+      <div>
+        <div class="detail-label" style="margin-bottom:.5rem;">Répondre au client</div>
+        <textarea class="response-area" id="responseText" placeholder="Rédigez votre réponse personnalisée… Le nom du client sera ajouté automatiquement."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-adm btn-ghost" onclick="rejectModal()"><i class="fas fa-times-circle"></i>Refuser</button>
+      <div style="display:flex;gap:.5rem;">
+        <button class="btn-adm btn-ghost" onclick="closeModal()">Fermer</button>
+        <button class="btn-adm btn-turq" onclick="sendResponse()"><i class="fas fa-paper-plane"></i>Envoyer réponse</button>
+        <button class="btn-adm btn-rose" onclick="markDoneModal()"><i class="fas fa-check-circle"></i>Marquer traitée</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-box" id="toastBox"><i id="toastIco" class="fas fa-circle-check"></i><span id="toastMsg">OK</span></div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+function tick(){const n=new Date();const s=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('topClock');if(el)el.textContent=s;}
+tick();setInterval(tick,1000);
+
+function toast(type,msg){
+  const box=document.getElementById('toastBox'),ico=document.getElementById('toastIco'),m=document.getElementById('toastMsg');
+  box.className='toast-box';
+  const map={ok:['toast-ok','fas fa-circle-check'],info:['toast-info','fas fa-circle-info'],warn:['toast-warn','fas fa-triangle-exclamation']};
+  const[cls,i]=map[type]||map.ok;box.classList.add(cls);ico.className=i;m.textContent=msg;
+  box.classList.add('show');clearTimeout(window._tt);window._tt=setTimeout(()=>box.classList.remove('show'),3200);
+}
+
+let currentRow=null;
+
+function openDetail(row){
+  currentRow=row;
+  document.getElementById('modalId').textContent=row.dataset.id;
+  document.getElementById('dClient').textContent=row.dataset.client;
+  document.getElementById('dEmail').textContent=row.dataset.email;
+  document.getElementById('dTel').textContent=row.dataset.tel;
+  document.getElementById('dService').textContent=row.dataset.serviceVal||row.dataset.service;
+  document.getElementById('dDate').textContent=row.dataset.date;
+  const statusMap={new:'🔵 Nouvelle',processing:'🟡 En traitement',done:'🟢 Traitée',rejected:'🔴 Refusée'};
+  document.getElementById('dStatus').textContent=statusMap[row.dataset.status]||row.dataset.status;
+  document.getElementById('dMsg').textContent=row.dataset.msg;
+  document.getElementById('dTimeline1').textContent=row.dataset.date+' · Réception automatique';
+  document.getElementById('dTimeline2').textContent=row.dataset.date+' · +2 min · Auto-répondeur';
+  document.getElementById('responseText').value='';
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');currentRow=null;}
+function closeModalOutside(e){if(e.target===document.getElementById('modalOverlay'))closeModal();}
+
+function sendResponse(){
+  const txt=document.getElementById('responseText').value.trim();
+  if(!txt){toast('warn','Veuillez rédiger une réponse avant d\'envoyer');return;}
+  if(currentRow)changeStatus(currentRow.querySelector('.act-btn'),'processing');
+  closeModal();
+  toast('ok','Réponse envoyée · Statut passé en traitement');
+}
+function markDoneModal(){
+  if(currentRow){
+    currentRow.dataset.status='done';
+    const badge=currentRow.querySelector('.badge');
+    if(badge){badge.className='badge badge-done';badge.innerHTML='<i class="fas fa-check" style="font-size:.55rem;"></i>Traitée';}
+    updateKpis();
+  }
+  closeModal();
+  toast('ok','Demande marquée comme traitée');
+}
+function rejectModal(){
+  if(currentRow){
+    currentRow.dataset.status='rejected';
+    const badge=currentRow.querySelector('.badge');
+    if(badge){badge.className='badge badge-rejected';badge.innerHTML='✕ Refusée';}
+    updateKpis();
+  }
+  closeModal();
+  toast('warn','Demande refusée · Client notifié par email');
+}
+
+function changeStatus(btn,status){
+  const row=btn.closest('tr');
+  if(!row)return;
+  row.dataset.status=status;
+  const badge=row.querySelector('.badge');
+  const map={
+    done:['badge badge-done','<i class="fas fa-check" style="font-size:.55rem;"></i>Traitée'],
+    processing:['badge badge-processing','<i class="fas fa-circle" style="font-size:.45rem;"></i>En cours'],
+    new:['badge badge-new','<i class="fas fa-circle" style="font-size:.45rem;"></i>Nouvelle'],
+    rejected:['badge badge-rejected','✕ Refusée'],
+  };
+  if(badge&&map[status]){badge.className=map[status][0];badge.innerHTML=map[status][1];}
+  updateKpis();
+  const msgs={done:'Demande traitée avec succès',processing:'Demande mise en traitement',rejected:'Demande refusée'};
+  toast('ok',msgs[status]||'Statut mis à jour');
+}
+
+function deleteRow(btn){
+  const row=btn.closest('tr');
+  row.classList.add('removing');
+  setTimeout(()=>{row.remove();updateKpis();},300);
+  toast('warn','Demande supprimée');
+}
+
+function updateKpis(){
+  const rows=[...document.querySelectorAll('#devisBody tr')];
+  const nw=rows.filter(r=>r.dataset.status==='new').length;
+  const pr=rows.filter(r=>r.dataset.status==='processing').length;
+  const dn=rows.filter(r=>r.dataset.status==='done').length;
+  document.getElementById('kpiNew').textContent=nw;
+  document.getElementById('kpiProc').textContent=pr;
+  document.getElementById('kpiDone').textContent=dn;
+  document.getElementById('newCount').textContent=nw+' nouvelles';
+  document.querySelector('.adm-sb-badge.gold').textContent=nw;
+}
+
+function filterTable(){
+  const q=document.getElementById('devisSearch').value.toLowerCase();
+  const st=document.getElementById('filterStatus').value;
+  const sv=document.getElementById('filterService').value;
+  const rows=document.querySelectorAll('#devisBody tr');
+  let visible=0;
+  rows.forEach(row=>{
+    const client=(row.dataset.client||'').toLowerCase();
+    const id=(row.dataset.id||'').toLowerCase();
+    const matchQ=!q||client.includes(q)||id.includes(q);
+    const matchSt=!st||row.dataset.status===st;
+    const matchSv=!sv||row.dataset.service===sv;
+    row.style.display=matchQ&&matchSt&&matchSv?'':'none';
+    if(matchQ&&matchSt&&matchSv)visible++;
+  });
+  document.getElementById('tableCount').textContent=visible+' demande'+(visible>1?'s':'')+ ' affichée'+(visible>1?'s':'');
+}
+
+function sortTable(col){toast('info','Tri par '+col+'…');}

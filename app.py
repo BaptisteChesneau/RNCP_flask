@@ -1225,10 +1225,6 @@ def admin_utilisateurs(): return render_template('admin_utilisateurs.html')
 def admin_notifications():
     return render_template('admin_notifications.html')
 
-@app.route('/admin/agenda')
-def admin_agenda():
-    return render_template('admin_agenda.html')
-
 @app.route('/admin/blog')
 def admin_blog():
     return render_template('admin_blog.html')

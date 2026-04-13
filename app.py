@@ -1174,7 +1174,7 @@ def admin_configuration():
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if "admin" not in session:
+        if not session.get("admin_logged_in"):
             return redirect(url_for("login_admin"))
         return f(*args, **kwargs)
     return decorated_function
@@ -1225,10 +1225,6 @@ def admin_utilisateurs(): return render_template('admin_utilisateurs.html')
 def admin_notifications():
     return render_template('admin_notifications.html')
 
-@app.route('/admin/blog')
-def admin_blog():
-    return render_template('admin_blog.html')
-
 @app.route('/admin/blog/nouveau')
 def admin_blog_new():
     return render_template('admin_blog_new.html')
@@ -1236,10 +1232,6 @@ def admin_blog_new():
 @app.route('/admin/blog/categories')
 def admin_blog_categories():
     return render_template('admin_blog_categories.html')
-
-@app.route('/admin/formulaires')
-def admin_formulaires():
-    return render_template('admin_formulaires.html')
 
 @app.route('/admin/performances')
 def admin_performances():
@@ -1441,7 +1433,7 @@ def save_inline_edits():
     # username_1, email_1, active_1, etc.
     print("✅ Inline edits received:", dict(request.form))
     flash("Changes saved (simulation)", "success")
-    return redirect(url_for("admin_view"))
+    return redirect(url_for("admin_view_source"))
 
 
 @app.route("/edit")
@@ -1485,7 +1477,7 @@ def view_php():
 def refresh_page():
     # Redirects to the same page or reloads the data
     return redirect(
-        url_for("admin_view")
+        url_for("admin_view_source")
     )  # Replace ‘admin_view’ with the actual name of your admin view
 
 

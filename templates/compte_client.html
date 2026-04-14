@@ -3,415 +3,725 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Espace Client - ML2C CONSEIL</title>
+  <title>Espace Client — ML2C CONSEIL</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <style>
-    :root {
-      --rose:#C1007A; --rose-dark:#9a0062; --rose-light:#fce4f3;
-      --turq:#4FA695; --turq-dark:#3a7d70; --turq-light:#d4f0ec;
-      --gris:#5C666B; --gris-dark:#2d3436; --border:#e5e7eb;
-      --text:#2d2d2d; --muted:#6b7280;
+    :root{
+      --rose:#C1007A;--rose-d:#9a0062;--rose-l:#fce4f3;--rose-xl:#fff5fb;
+      --turq:#4FA695;--turq-d:#3a7d70;--turq-l:#d4f0ec;--turq-xl:#edfaf7;
+      --gold:#b08d57;--gold-l:#f5eedf;--gold-ll:#fdfaf5;
+      --ink:#1a1a2e;--ink2:#2d2d3d;
+      --bg:#faf8f4;--bg2:#f5f2ec;--bg3:#ede9e0;
+      --surface:#fff;--surface2:#fdfcfa;
+      --border:#e8e2d9;--border2:#d4cdc0;
+      --text:#1a1a1a;--text2:#3d3d3d;--muted:#8a8278;--faint:#b5aea5;
+      --ff-head:'Cormorant Garamond',serif;
+      --ff-body:'DM Sans',sans-serif;
+      --ff-mono:'Share Tech Mono',monospace;
+      --shadow-sm:0 2px 8px rgba(26,20,10,.06);
+      --shadow-md:0 8px 32px rgba(26,20,10,.08);
+      --shadow-lg:0 20px 60px rgba(26,20,10,.1);
     }
-    body { background:#f0f2f5; font-family:'DM Sans',sans-serif; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);font-family:var(--ff-body);color:var(--text);min-height:100vh;overflow-x:hidden;}
 
-    /* ── HERO ── */
-    .ec-hero {
-      background: linear-gradient(135deg, #1e2729 0%, #2d3436 55%, #1a3333 100%);
-      padding: 2.5rem 0 3.5rem; position: relative; overflow: hidden; margin-bottom: -2rem;
+    /* ══ TEXTURE FOND ══ */
+    body::before{
+      content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:
+        radial-gradient(ellipse 80% 60% at 95% 10%,rgba(193,0,122,.05) 0%,transparent 55%),
+        radial-gradient(ellipse 60% 50% at 5% 90%,rgba(79,166,149,.06) 0%,transparent 50%),
+        radial-gradient(ellipse 50% 40% at 50% 50%,rgba(176,141,87,.04) 0%,transparent 60%);
     }
-    .ec-hero::before {
-      content:''; position:absolute; inset:0;
-      background: radial-gradient(ellipse at 80% 50%, rgba(79,166,149,.18) 0%, transparent 55%),
-                  radial-gradient(ellipse at 5% 90%, rgba(193,0,122,.14) 0%, transparent 45%);
+    body::after{
+      content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231a1a1a' fill-opacity='0.018'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
-    .ec-hero-inner { position:relative; z-index:1; }
-    .ec-breadcrumb { font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:.6rem; }
-    .ec-breadcrumb span { color:var(--turq); }
-    .ec-status { display:inline-flex; align-items:center; gap:.45rem; padding:.3rem .8rem; background:rgba(79,166,149,.15); border:1px solid rgba(79,166,149,.35); border-radius:20px; font-size:.72rem; font-weight:700; color:#5eead4; margin-bottom:.85rem; }
-    .ec-dot { width:7px; height:7px; border-radius:50%; background:#4ade80; animation:pulse-dot 2s infinite; }
-    @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.3} }
-    .ec-welcome { font-family:'Cormorant Garamond',serif; font-size:clamp(1.9rem,4vw,2.9rem); font-weight:700; color:#fff; line-height:1.1; margin-bottom:.45rem; }
-    .ec-welcome em { color:#5eead4; font-style:italic; }
-    .ec-sub { font-size:.87rem; color:rgba(255,255,255,.45); margin:0; }
 
-    /* ── LAYOUT ── */
-    .ec-page { padding:2.5rem 0 4rem; }
-    .ec-main { position:relative; z-index:2; }
+    /* ══ WRAPPER ══ */
+    .ec-wrapper{position:relative;z-index:1;min-height:100vh;padding-bottom:5rem;}
 
-    /* ── ONGLETS ── */
-    .ec-tabs-wrap { background:#fff; border-radius:20px 20px 0 0; padding:1.5rem 1.75rem 0; box-shadow:0 -4px 24px rgba(0,0,0,.06); }
-    .ec-tabs { display:flex; gap:.2rem; border-bottom:2px solid var(--border); margin:0; padding:0; list-style:none; overflow-x:auto; }
-    .ec-tab-btn {
-      display:flex; align-items:center; gap:.5rem;
-      padding:.72rem 1.15rem; font-size:.86rem; font-weight:600; color:var(--muted);
-      background:none; border:none; cursor:pointer; white-space:nowrap;
-      border-bottom:2.5px solid transparent; margin-bottom:-2px;
-      border-radius:8px 8px 0 0; transition:all .2s ease;
+    /* ══ HERO LUXE ══ */
+    .ec-hero{
+      padding:4rem 0 6rem;position:relative;overflow:hidden;
+      background:linear-gradient(160deg,var(--bg) 0%,var(--bg2) 50%,var(--bg3) 100%);
+      border-bottom:1px solid var(--border);
     }
-    .ec-tab-btn:hover { color:var(--rose); background:var(--rose-light); }
-    .ec-tab-btn.active { color:var(--rose); border-bottom-color:var(--rose); background:transparent; }
-    .tab-ico { width:28px; height:28px; border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:.78rem; transition:.2s; }
-    .ec-tab-btn.active .tab-ico, .ec-tab-btn:hover .tab-ico { background:var(--rose-light); color:var(--rose); }
-    .ec-tab-btn:not(.active):not(:hover) .tab-ico { background:#f0f2f5; color:var(--muted); }
-    .tab-badge { min-width:17px; height:17px; padding:0 4px; background:var(--rose); color:#fff; border-radius:9px; font-size:.65rem; font-weight:700; display:flex; align-items:center; justify-content:center; }
-
-    /* ── PANNEAUX ── */
-    .ec-panels { background:#fff; border-radius:0 0 20px 20px; padding:2rem 1.75rem 2.5rem; box-shadow:0 8px 32px rgba(0,0,0,.07); min-height:340px; }
-    .ec-panel { display:none; animation:panelIn .28s ease; }
-    .ec-panel.active { display:block; }
-    @keyframes panelIn { from{opacity:0;transform:translateY(7px)} to{opacity:1;transform:translateY(0)} }
-
-    /* ── DEVIS CARD ── */
-    .devis-card { background:linear-gradient(135deg,#1e2729 0%,#2d3436 100%); border-radius:14px; padding:1.6rem 1.75rem; color:#fff; margin-bottom:1.25rem; }
-    .devis-card-label { font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:rgba(255,255,255,.35); margin-bottom:1.1rem; display:flex; align-items:center; gap:.5rem; }
-    .devis-card-label::after { content:''; flex:1; height:1px; background:rgba(255,255,255,.08); }
-    .devis-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:.9rem; }
-    .devis-field-label { font-size:.67rem; color:rgba(255,255,255,.38); font-weight:600; text-transform:uppercase; letter-spacing:.07em; margin-bottom:.18rem; }
-    .devis-field-val { font-size:.92rem; font-weight:500; color:#fff; }
-    .devis-field-val.accent { color:#5eead4; }
-    .rdv-pill { display:inline-flex; align-items:center; gap:.45rem; padding:.45rem .95rem; border-radius:9px; background:rgba(79,166,149,.2); border:1px solid rgba(79,166,149,.35); color:#5eead4; font-size:.82rem; font-weight:600; margin-top:1.1rem; }
-
-    /* ── CTA CRÉER ── */
-    .panel-cta {
-      display:flex; align-items:center; gap:1.25rem;
-      padding:1.25rem 1.5rem; border-radius:14px;
-      border:2px dashed var(--border); background:#fafbfc;
-      transition:.2s; text-decoration:none; color:var(--text);
-      margin-top:1.25rem;
+    .ec-hero::before{
+      content:'';position:absolute;inset:0;pointer-events:none;
+      background:
+        radial-gradient(ellipse 40% 60% at 100% 0%,rgba(193,0,122,.07) 0%,transparent 60%),
+        radial-gradient(ellipse 30% 40% at 0% 100%,rgba(176,141,87,.08) 0%,transparent 50%);
     }
-    .panel-cta:hover { border-color:var(--rose); background:var(--rose-light); color:var(--rose); text-decoration:none; }
-    .panel-cta:hover .cta-arrow { transform:translateX(4px); }
-    .panel-cta:hover .cta-ico { background:var(--rose); color:#fff; }
-    .cta-ico { width:46px; height:46px; border-radius:12px; background:#f0f2f5; color:var(--muted); display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; transition:.2s; }
-    .cta-ico.turq { background:var(--turq-light); color:var(--turq); }
-    .panel-cta:hover .cta-ico.turq { background:var(--turq); color:#fff; }
-    .panel-cta.turq:hover { border-color:var(--turq); background:var(--turq-light); color:var(--turq-dark); }
-    .cta-text strong { display:block; font-size:.93rem; font-weight:700; }
-    .cta-text span { font-size:.8rem; color:var(--muted); }
-    .panel-cta:hover .cta-text span { color:inherit; opacity:.75; }
-    .cta-arrow { margin-left:auto; font-size:.85rem; transition:.2s; }
 
-    /* ── FICHE CLIENT ── */
-    .fiche-header { display:flex; align-items:center; gap:1rem; padding-bottom:1.1rem; margin-bottom:1.35rem; border-bottom:2px solid var(--border); }
-    .fiche-avatar { width:50px; height:50px; border-radius:50%; background:linear-gradient(135deg,var(--rose),var(--rose-dark)); display:flex; align-items:center; justify-content:center; color:#fff; font-family:'Cormorant Garamond',serif; font-size:1.35rem; font-weight:700; flex-shrink:0; }
-    .fiche-id { font-size:.72rem; color:var(--muted); }
-    .fiche-name { font-size:1.08rem; font-weight:700; color:var(--text); }
-    .fiche-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(195px,1fr)); gap:.7rem; }
-    .fiche-item { background:#f8f9fb; border-radius:10px; padding:.7rem .95rem; border-left:3px solid var(--border); transition:.2s; }
-    .fiche-item:hover { border-left-color:var(--turq); background:var(--turq-light); }
-    .fiche-item-label { font-size:.67rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:.18rem; }
-    .fiche-item-val { font-size:.88rem; font-weight:500; color:var(--text); }
+    /* Ligne déco hero */
+    .ec-hero-deco{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--rose) 30%,var(--gold) 60%,transparent);}
 
-    /* ── CARTE BANCAIRE ── */
-    .carte-wrap { max-width:400px; margin:0 auto; }
-    .credit-card {
-      width:100%; aspect-ratio:1.586; border-radius:18px; padding:1.6rem 1.75rem;
-      position:relative; overflow:hidden;
-      background:linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
-      box-shadow:0 24px 60px rgba(0,0,0,.4), 0 4px 16px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.08);
-      color:#fff; cursor:default; transition:transform .3s ease, box-shadow .3s ease; margin-bottom:1.5rem;
+    /* Monogramme flottant */
+    .ec-hero-mono{
+      position:absolute;right:-40px;top:50%;transform:translateY(-50%);
+      font-family:var(--ff-head);font-size:clamp(120px,18vw,220px);font-weight:700;
+      color:rgba(193,0,122,.04);line-height:1;pointer-events:none;user-select:none;
+      letter-spacing:-.02em;
     }
-    .credit-card:hover { transform:translateY(-4px) rotateX(2deg); box-shadow:0 32px 80px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.1); }
-    .card-circle-1 { position:absolute; top:-60px; right:-40px; width:220px; height:220px; border-radius:50%; background:rgba(255,255,255,.04); pointer-events:none; }
-    .card-circle-2 { position:absolute; bottom:-70px; left:-30px; width:200px; height:200px; border-radius:50%; background:rgba(193,0,122,.1); pointer-events:none; }
-    .card-circle-3 { position:absolute; top:30px; right:60px; width:120px; height:120px; border-radius:50%; background:rgba(79,166,149,.06); pointer-events:none; }
-    .card-shine { position:absolute; inset:0; background:linear-gradient(105deg, rgba(255,255,255,.06) 0%, transparent 40%, rgba(255,255,255,.03) 60%, transparent 100%); pointer-events:none; }
-    .card-inner { position:relative; z-index:1; height:100%; display:flex; flex-direction:column; justify-content:space-between; }
-    .card-top { display:flex; justify-content:space-between; align-items:center; }
-    .card-bank-name { font-family:'Cormorant Garamond',serif; font-size:1rem; font-weight:700; color:rgba(255,255,255,.85); letter-spacing:.04em; }
-    .card-network { display:flex; }
-    .card-network-circle { width:28px; height:28px; border-radius:50%; opacity:.85; }
-    .card-network-circle:first-child { background:#eb001b; margin-right:-10px; }
-    .card-network-circle:last-child { background:#f79e1b; }
-    .card-chip-row { display:flex; align-items:center; gap:.75rem; }
-    .card-chip { width:42px; height:32px; border-radius:6px; background:linear-gradient(135deg,#c9a227 0%,#f0d060 40%,#c9a227 70%,#e8c340 100%); position:relative; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,.3); }
-    .card-chip::before { content:''; position:absolute; top:50%; left:0; right:0; height:1px; background:rgba(0,0,0,.15); transform:translateY(-50%); }
-    .card-chip::after { content:''; position:absolute; left:50%; top:0; bottom:0; width:1px; background:rgba(0,0,0,.12); transform:translateX(-50%); }
-    .card-chip-inner { position:absolute; inset:4px; border-radius:3px; border:1px solid rgba(0,0,0,.12); background:linear-gradient(135deg,#d4a843 0%,#f0c96e 50%,#d4a843 100%); }
-    .card-nfc { color:rgba(255,255,255,.35); font-size:.85rem; }
-    .card-number { font-family:'Share Tech Mono','Courier New',monospace; font-size:1.1rem; letter-spacing:.22em; color:rgba(255,255,255,.9); text-shadow:0 1px 3px rgba(0,0,0,.4); }
-    .card-number-censored { color:rgba(255,255,255,.5); letter-spacing:.28em; }
-    .card-bottom { display:flex; justify-content:space-between; align-items:flex-end; }
-    .card-field-label { font-size:.55rem; text-transform:uppercase; letter-spacing:.12em; color:rgba(255,255,255,.35); margin-bottom:.2rem; }
-    .card-field-val { font-family:'Share Tech Mono','Courier New',monospace; font-size:.85rem; color:rgba(255,255,255,.88); letter-spacing:.06em; }
-    .card-field-val.censored { color:rgba(255,255,255,.35); letter-spacing:.2em; }
-    .card-secure-badge { display:inline-flex; align-items:center; gap:.4rem; font-size:.72rem; color:rgba(255,255,255,.35); background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:6px; padding:.25rem .6rem; margin-bottom:1rem; }
-    .card-secure-badge i { color:rgba(79,166,149,.8); }
-    .btn-delete-card { width:100%; padding:.68rem; border-radius:10px; background:#fef2f2; border:1.5px solid #fecaca; color:#dc2626; font-weight:600; font-size:.86rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:.5rem; transition:.2s; }
-    .btn-delete-card:hover { background:#dc2626; color:#fff; border-color:#dc2626; }
 
-    /* ── EMPTY STATE ── */
-    .empty-state { text-align:center; padding:2.5rem 1rem; color:var(--muted); }
-    .empty-ico { width:60px; height:60px; border-radius:50%; background:#f0f2f5; margin:0 auto .9rem; display:flex; align-items:center; justify-content:center; font-size:1.4rem; color:#c4cbd0; }
-    .empty-state h5 { font-size:.98rem; color:var(--text); margin-bottom:.35rem; }
-    .empty-state p { font-size:.83rem; margin:0; }
+    /* Badge session */
+    .ec-session-badge{
+      display:inline-flex;align-items:center;gap:.5rem;
+      padding:.35rem 1rem;border-radius:30px;
+      background:rgba(79,166,149,.08);border:1px solid rgba(79,166,149,.2);
+      font-size:.7rem;font-weight:700;color:var(--turq-d);letter-spacing:.06em;
+      text-transform:uppercase;margin-bottom:1.25rem;
+    }
+    .ec-dot{width:6px;height:6px;border-radius:50%;background:var(--turq);animation:dotPulse 2s infinite;}
+    @keyframes dotPulse{0%,100%{opacity:1;}50%{opacity:.35;}}
 
-    /* ── ACTIONS BAS ── */
-    .ec-actions { display:flex; gap:.65rem; flex-wrap:wrap; margin-top:1.75rem; padding-top:1.6rem; border-top:1px solid var(--border); }
-    .btn-ec-primary { display:inline-flex; align-items:center; gap:.45rem; padding:.65rem 1.4rem; border-radius:9px; background:var(--rose); color:#fff; font-weight:600; font-size:.88rem; border:none; cursor:pointer; transition:.2s; text-decoration:none; }
-    .btn-ec-primary:hover { background:var(--rose-dark); color:#fff; transform:translateY(-1px); box-shadow:0 4px 14px rgba(193,0,122,.3); }
-    .btn-ec-secondary { display:inline-flex; align-items:center; gap:.45rem; padding:.65rem 1.4rem; border-radius:9px; background:#f0f2f5; color:var(--gris); font-weight:600; font-size:.88rem; border:none; cursor:pointer; transition:.2s; text-decoration:none; }
-    .btn-ec-secondary:hover { background:var(--border); color:var(--text); }
+    /* Welcome */
+    .ec-welcome{
+      font-family:var(--ff-head);
+      font-size:clamp(2.4rem,5.5vw,4.2rem);
+      font-weight:300;color:var(--ink);line-height:1.05;
+      margin-bottom:.6rem;letter-spacing:-.02em;
+    }
+    .ec-welcome strong{font-weight:700;}
+    .ec-welcome em{
+      color:var(--rose);font-style:italic;font-weight:600;
+      position:relative;
+    }
+    .ec-welcome em::after{
+      content:'';position:absolute;bottom:0;left:0;right:0;height:1.5px;
+      background:linear-gradient(90deg,var(--rose),transparent);
+      transform:scaleX(0);transform-origin:left;
+      animation:lineIn 1s .7s ease forwards;
+    }
+    @keyframes lineIn{to{transform:scaleX(1);}}
+    .ec-sub{font-size:.9rem;color:var(--muted);max-width:440px;line-height:1.7;margin:.2rem 0 0;}
 
-    @media(max-width:640px) {
-      .ec-hero { padding:1.75rem 0 2.5rem; }
-      .ec-tabs-wrap { padding:1rem 1rem 0; border-radius:16px 16px 0 0; }
-      .ec-panels { padding:1.25rem 1rem 1.75rem; border-radius:0 0 16px 16px; }
-      .ec-tab-btn .tab-ico { display:none; }
-      .devis-grid { grid-template-columns:1fr 1fr; }
-      .credit-card { padding:1.1rem 1.25rem; }
-      .card-number { font-size:.92rem; letter-spacing:.16em; }
+    /* Stats hero */
+    .ec-hero-stats{display:flex;gap:.85rem;margin-top:2.25rem;flex-wrap:wrap;}
+    .ec-hero-stat{
+      display:flex;align-items:center;gap:.75rem;
+      padding:.7rem 1.15rem;border-radius:14px;
+      background:var(--surface);border:1px solid var(--border);
+      box-shadow:var(--shadow-sm);
+      animation:statRise .5s both;
+    }
+    @keyframes statRise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+    .ec-hero-stat-ico{
+      width:34px;height:34px;border-radius:9px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:.8rem;flex-shrink:0;
+    }
+    .esi-rose{background:var(--rose-xl);color:var(--rose);}
+    .esi-turq{background:var(--turq-xl);color:var(--turq);}
+    .esi-gold{background:var(--gold-ll);color:var(--gold);}
+    .esi-ink{background:#f0f0f5;color:var(--ink2);}
+    .ec-hero-stat-val{font-family:var(--ff-head);font-size:1.4rem;font-weight:700;color:var(--ink);line-height:1;}
+    .ec-hero-stat-lbl{font-size:.62rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--faint);margin-top:.1rem;}
+
+    /* ══ CONTENU ══ */
+    .ec-content{margin-top:-2.5rem;position:relative;z-index:2;}
+
+    /* ══ NAVIGATION ══ */
+    .ec-nav-wrap{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:18px;padding:.4rem;box-shadow:var(--shadow-md);
+      display:inline-flex;gap:.3rem;margin-bottom:1.75rem;
+    }
+    .ec-nav-btn{
+      display:flex;align-items:center;gap:.55rem;
+      padding:.62rem 1.25rem;border:none;background:transparent;
+      color:var(--muted);font-family:var(--ff-body);font-size:.84rem;font-weight:600;
+      border-radius:12px;cursor:pointer;transition:all .22s;white-space:nowrap;
+    }
+    .ec-nav-btn:hover:not(.active){background:var(--bg2);color:var(--text2);}
+    .ec-nav-btn.active{background:var(--ink);color:#fff;box-shadow:0 4px 16px rgba(26,26,46,.2);}
+    .ec-nav-btn i{font-size:.78rem;}
+    .nav-chip{
+      min-width:18px;height:18px;padding:0 4px;
+      background:var(--rose);color:#fff;
+      border-radius:20px;font-size:.58rem;font-weight:700;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .ec-nav-btn.active .nav-chip{background:rgba(255,255,255,.25);}
+
+    /* ══ PANNEAUX ══ */
+    .ec-panel{display:none;}
+    .ec-panel.active{display:block;animation:panelIn .3s ease;}
+    @keyframes panelIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+    /* ══ CARD PREMIUM ══ */
+    .prem-card{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:22px;padding:2rem;margin-bottom:1.25rem;
+      box-shadow:var(--shadow-md);position:relative;overflow:hidden;
+      transition:box-shadow .3s,transform .3s;
+    }
+    .prem-card::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:2px;
+      background:linear-gradient(90deg,transparent,rgba(193,0,122,.15) 30%,rgba(176,141,87,.2) 70%,transparent);
+    }
+    .prem-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);}
+    .prem-card-head{display:flex;align-items:center;gap:.85rem;margin-bottom:1.5rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border);}
+    .prem-card-ico{width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;}
+    .pci-rose{background:var(--rose-xl);color:var(--rose);}
+    .pci-turq{background:var(--turq-xl);color:var(--turq);}
+    .pci-gold{background:var(--gold-ll);color:var(--gold);}
+    .pci-ink{background:#f0f0f5;color:var(--ink);}
+    .prem-card-title{font-family:var(--ff-head);font-size:1.15rem;font-weight:700;color:var(--ink);line-height:1.2;}
+    .prem-card-sub{font-size:.73rem;color:var(--muted);margin-top:.1rem;}
+
+    /* ══ STATUT DEVIS ══ */
+    .status-ribbon{
+      display:inline-flex;align-items:center;gap:.4rem;
+      font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+      padding:.25rem .75rem;border-radius:20px;
+    }
+    .sr-en-cours{background:rgba(193,0,122,.08);color:var(--rose);border:1px solid rgba(193,0,122,.15);}
+    .sr-valide{background:var(--turq-xl);color:var(--turq-d);border:1px solid rgba(79,166,149,.2);}
+
+    /* Timeline devis */
+    .devis-timeline{display:flex;align-items:center;margin:1.5rem 0;}
+    .dt-step{display:flex;flex-direction:column;align-items:center;gap:.4rem;flex:1;}
+    .dt-circle{
+      width:36px;height:36px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-size:.75rem;font-weight:700;border:2px solid var(--border);
+      color:var(--faint);background:var(--bg2);transition:all .3s;
+    }
+    .dt-step.done .dt-circle{background:var(--turq-xl);border-color:var(--turq);color:var(--turq-d);}
+    .dt-step.active .dt-circle{background:var(--rose-xl);border-color:var(--rose);color:var(--rose);box-shadow:0 0 0 4px rgba(193,0,122,.1);}
+    .dt-label{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);text-align:center;}
+    .dt-step.done .dt-label,.dt-step.active .dt-label{color:var(--text2);}
+    .dt-bar{flex:1;height:2px;background:var(--border);margin:0 -1px;margin-bottom:1.85rem;}
+    .dt-bar.done{background:linear-gradient(90deg,var(--turq),rgba(79,166,149,.3));}
+
+    /* Grid devis data */
+    .devis-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:1rem;}
+    .dg-field{background:var(--bg2);border-radius:12px;padding:.85rem 1.1rem;border:1px solid var(--border);transition:all .2s;}
+    .dg-field:hover{background:var(--rose-xl);border-color:rgba(193,0,122,.15);}
+    .dg-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-bottom:.3rem;}
+    .dg-val{font-size:.92rem;font-weight:600;color:var(--ink);}
+    .dg-val.accent{color:var(--rose);}
+
+    /* Pill RDV */
+    .rdv-pill{
+      display:inline-flex;align-items:center;gap:.5rem;
+      padding:.5rem 1.1rem;border-radius:10px;
+      background:var(--turq-xl);border:1px solid rgba(79,166,149,.2);
+      color:var(--turq-d);font-size:.83rem;font-weight:600;margin-top:1.1rem;
+    }
+
+    /* ══ FICHE CLIENT ══ */
+    .fiche-header{display:flex;align-items:center;gap:1.1rem;margin-bottom:1.5rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border);}
+    .fiche-avatar{
+      width:60px;height:60px;border-radius:50%;
+      background:linear-gradient(135deg,var(--rose),var(--rose-d));
+      display:flex;align-items:center;justify-content:center;
+      font-family:var(--ff-head);font-size:1.55rem;font-weight:700;color:#fff;
+      flex-shrink:0;box-shadow:0 4px 16px rgba(193,0,122,.25);
+      position:relative;
+    }
+    .fiche-online{position:absolute;bottom:1px;right:1px;width:12px;height:12px;border-radius:50%;background:#22c55e;border:2px solid #fff;}
+    .fiche-name{font-family:var(--ff-head);font-size:1.35rem;font-weight:700;color:var(--ink);}
+    .fiche-id{font-size:.7rem;color:var(--muted);margin-top:.1rem;}
+    .fiche-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.85rem;}
+    .fiche-item{
+      background:var(--bg2);border:1px solid var(--border);
+      border-radius:14px;padding:.9rem 1.1rem;
+      display:flex;align-items:flex-start;gap:.7rem;
+      transition:all .22s;
+    }
+    .fiche-item:hover{background:var(--turq-xl);border-color:rgba(79,166,149,.2);}
+    .fi-ico{
+      width:30px;height:30px;border-radius:9px;
+      background:rgba(79,166,149,.1);color:var(--turq-d);
+      display:flex;align-items:center;justify-content:center;
+      font-size:.72rem;flex-shrink:0;
+    }
+    .fi-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.22rem;}
+    .fi-val{font-size:.88rem;font-weight:500;color:var(--ink);}
+
+    /* ══ CARTE BANCAIRE LUXE ══ */
+    .card-scene{perspective:1400px;max-width:420px;margin:0 auto 1.5rem;}
+    .credit-card{
+      width:100%;aspect-ratio:1.586;border-radius:22px;
+      position:relative;overflow:hidden;cursor:pointer;
+      background:linear-gradient(135deg,#1c1c2e 0%,#2d1b4e 35%,#1a2a3a 70%,#0f1f2e 100%);
+      box-shadow:0 32px 80px rgba(0,0,0,.35),0 4px 20px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.12);
+      transform-style:preserve-3d;transition:transform .4s cubic-bezier(.4,0,.2,1);
+    }
+    .credit-card:hover{transform:rotateY(-10deg) rotateX(5deg) scale(1.02);}
+
+    /* Effets holographiques */
+    .cc-holo{position:absolute;inset:0;background:linear-gradient(125deg,rgba(193,0,122,.15) 0%,rgba(79,166,149,.12) 25%,rgba(176,141,87,.1) 50%,rgba(59,130,246,.12) 75%,rgba(193,0,122,.15) 100%);background-size:400% 400%;animation:holoShift 6s ease infinite;}
+    @keyframes holoShift{0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
+    .cc-shine{position:absolute;top:-60%;left:-60%;width:220%;height:220%;background:conic-gradient(from 0deg,transparent 0%,rgba(255,255,255,.04) 20%,transparent 40%,rgba(255,255,255,.02) 60%,transparent 80%);animation:ccRot 10s linear infinite;}
+    @keyframes ccRot{to{transform:rotate(360deg);}}
+    .cc-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");background-size:200px;opacity:.3;}
+    .cc-lines{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(255,255,255,.012) 3px,rgba(255,255,255,.012) 4px);}
+
+    /* Contenu carte */
+    .cc-inner{position:relative;z-index:2;height:100%;padding:1.6rem 1.8rem;display:flex;flex-direction:column;justify-content:space-between;}
+    .cc-top{display:flex;justify-content:space-between;align-items:center;}
+    .cc-brand{font-family:var(--ff-head);font-size:1.1rem;font-weight:700;color:rgba(255,255,255,.9);letter-spacing:.06em;}
+    .cc-brand-em{color:#5eead4;}
+    .cc-network{display:flex;}
+    .cc-c1{width:30px;height:30px;border-radius:50%;background:rgba(235,0,27,.8);margin-right:-10px;}
+    .cc-c2{width:30px;height:30px;border-radius:50%;background:rgba(247,158,27,.8);}
+    .cc-mid{display:flex;align-items:center;gap:.85rem;}
+    .cc-chip{width:44px;height:34px;border-radius:7px;background:linear-gradient(135deg,#c9a227,#f0d060 35%,#c9a227 65%,#e8c340);position:relative;box-shadow:0 2px 8px rgba(0,0,0,.4);}
+    .cc-chip::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(0,0,0,.2);}
+    .cc-chip::after{content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(0,0,0,.18);}
+    .cc-nfc{color:rgba(255,255,255,.3);font-size:.9rem;}
+    .cc-number{font-family:var(--ff-mono);font-size:1.12rem;letter-spacing:.22em;color:rgba(255,255,255,.88);text-shadow:0 2px 6px rgba(0,0,0,.4);}
+    .cc-number .cens{color:rgba(255,255,255,.35);letter-spacing:.3em;}
+    .cc-bottom{display:flex;justify-content:space-between;align-items:flex-end;}
+    .cc-fl{font-size:.5rem;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.3);margin-bottom:.2rem;}
+    .cc-fv{font-family:var(--ff-mono);font-size:.88rem;color:rgba(255,255,255,.88);letter-spacing:.06em;}
+    .cc-fv.cens{color:rgba(255,255,255,.3);letter-spacing:.28em;}
+
+    /* Sécurité + bouton suppr */
+    .card-secure-note{display:flex;align-items:center;justify-content:center;gap:.5rem;font-size:.73rem;color:var(--muted);margin-bottom:1rem;}
+    .card-secure-note i{color:var(--turq);}
+    .btn-del-card{
+      width:100%;padding:.72rem;border-radius:12px;
+      background:rgba(220,38,38,.06);border:1.5px solid rgba(220,38,38,.15);
+      color:#dc2626;font-weight:600;font-size:.85rem;
+      cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;
+      transition:all .25s;font-family:var(--ff-body);
+    }
+    .btn-del-card:hover{background:#dc2626;color:#fff;border-color:#dc2626;box-shadow:0 8px 20px rgba(220,38,38,.25);}
+
+    /* ══ CTA AJOUTER ══ */
+    .cta-add{
+      display:flex;align-items:center;gap:1.1rem;
+      padding:1.25rem 1.5rem;border-radius:18px;
+      border:1.5px dashed var(--border2);background:var(--surface2);
+      transition:all .25s;text-decoration:none;color:var(--text);
+      margin-top:1rem;
+    }
+    .cta-add:hover{border-color:var(--rose);background:var(--rose-xl);color:var(--rose);text-decoration:none;transform:translateX(4px);}
+    .cta-add:hover .cta-ico{background:var(--rose);color:#fff;}
+    .cta-add:hover .cta-arrow{transform:translateX(5px);}
+    .cta-add.turq:hover{border-color:var(--turq);background:var(--turq-xl);color:var(--turq-d);}
+    .cta-add.turq:hover .cta-ico{background:var(--turq);color:#fff;}
+    .cta-ico{width:46px;height:46px;border-radius:13px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:1.05rem;color:var(--muted);flex-shrink:0;transition:all .25s;}
+    .cta-title{font-size:.93rem;font-weight:700;color:var(--ink);}
+    .cta-sub{font-size:.78rem;color:var(--muted);margin-top:.1rem;}
+    .cta-arrow{margin-left:auto;font-size:.85rem;color:var(--faint);transition:transform .25s;}
+
+    /* ══ EMPTY STATE ══ */
+    .ec-empty{text-align:center;padding:3rem 1.5rem;}
+    .ec-empty-ico{width:70px;height:70px;border-radius:50%;background:var(--bg2);border:1px solid var(--border);margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:var(--faint);}
+    .ec-empty h5{font-family:var(--ff-head);font-size:1.25rem;font-weight:700;color:var(--ink);margin-bottom:.4rem;}
+    .ec-empty p{font-size:.84rem;color:var(--muted);}
+
+    /* ══ BARRE D'ACTIONS ══ */
+    .ec-action-bar{display:flex;gap:.65rem;flex-wrap:wrap;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);}
+    .btn-act{display:inline-flex;align-items:center;gap:.45rem;padding:.65rem 1.35rem;border-radius:11px;font-family:var(--ff-body);font-weight:600;font-size:.85rem;cursor:pointer;border:none;transition:all .25s;text-decoration:none;}
+    .btn-act-rose{background:var(--rose);color:#fff;box-shadow:0 4px 14px rgba(193,0,122,.2);}
+    .btn-act-rose:hover{background:var(--rose-d);color:#fff;box-shadow:0 8px 20px rgba(193,0,122,.3);transform:translateY(-2px);}
+    .btn-act-turq{background:var(--turq);color:#fff;box-shadow:0 4px 14px rgba(79,166,149,.2);}
+    .btn-act-turq:hover{background:var(--turq-d);color:#fff;box-shadow:0 8px 20px rgba(79,166,149,.3);transform:translateY(-2px);}
+    .btn-act-ghost{background:var(--surface);border:1.5px solid var(--border);color:var(--text2);}
+    .btn-act-ghost:hover{border-color:var(--border2);background:var(--bg2);color:var(--ink);}
+    .btn-act-danger{background:rgba(220,38,38,.07);border:1.5px solid rgba(220,38,38,.15);color:#dc2626;}
+    .btn-act-danger:hover{background:#dc2626;color:#fff;border-color:#dc2626;}
+
+    /* ══ ORNEMENT DÉCORATIF ══ */
+    .ec-ornement{position:absolute;right:0;top:50%;transform:translateY(-50%);pointer-events:none;opacity:.04;}
+
+    /* ══ TOAST ══ */
+    .ec-toast{
+      position:fixed;bottom:2rem;right:2rem;z-index:9999;
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:16px;padding:.9rem 1.35rem;
+      display:flex;align-items:center;gap:.75rem;
+      font-size:.83rem;font-weight:500;color:var(--text);
+      box-shadow:var(--shadow-lg);
+      transform:translateY(80px);opacity:0;
+      transition:all .4s cubic-bezier(.34,1.2,.64,1);pointer-events:none;
+    }
+    .ec-toast.show{transform:translateY(0);opacity:1;}
+    .ec-toast i{color:var(--turq);}
+
+    /* ══ SCROLLBAR ══ */
+    ::-webkit-scrollbar{width:5px;}
+    ::-webkit-scrollbar-track{background:var(--bg2);}
+    ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+    ::-webkit-scrollbar-thumb:hover{background:var(--muted);}
+
+    /* ══ STAGGER ANIMS ══ */
+    .s1{animation-delay:.05s;}.s2{animation-delay:.1s;}.s3{animation-delay:.15s;}.s4{animation-delay:.2s;}
+
+    @media(max-width:640px){
+      .ec-hero{padding:2.75rem 0 5rem;}
+      .ec-nav-wrap{flex-wrap:wrap;}
+      .ec-nav-btn .tab-text{display:none;}
+      .ec-hero-mono{display:none;}
+      .cc-number{font-size:.88rem;letter-spacing:.14em;}
     }
   </style>
 </head>
 <body>
+
 {% include "header.html" %}
 
-<div class="ec-hero">
-  <div class="container ec-hero-inner">
-    <div class="ec-breadcrumb">ML2C CONSEIL &rsaquo; <span>Espace client</span></div>
-    <div class="ec-status"><span class="ec-dot"></span> Session active</div>
-    <h1 class="ec-welcome" id="welcomeTitle">Bonjour, <em>Utilisateur</em></h1>
-    <p class="ec-sub">Retrouvez ici votre devis, votre fiche client et vos informations bancaires.</p>
-  </div>
-</div>
+<div class="ec-wrapper">
 
-<div class="ec-page">
-  <div class="container ec-main">
+  <!-- ══ HERO ══ -->
+  <div class="ec-hero">
+    <div class="ec-hero-deco"></div>
+    <div class="ec-hero-mono">ML2C</div>
+    <div class="container" style="position:relative;z-index:1;">
 
-    <div class="ec-tabs-wrap">
-      <ul class="ec-tabs">
-        <li>
-          <button class="ec-tab-btn active" data-panel="devis">
-            <span class="tab-ico"><i class="fas fa-file-invoice"></i></span>
-            Devis rempli
-            {% if devis_list %}<span class="tab-badge">{{ devis_list|length }}</span>{% endif %}
-          </button>
-        </li>
-        <li>
-          <button class="ec-tab-btn" data-panel="formulaire">
-            <span class="tab-ico"><i class="fas fa-id-card"></i></span>
-            Fiche client
-            {% if clients %}<span class="tab-badge">{{ clients|length }}</span>{% endif %}
-          </button>
-        </li>
-        <li>
-          <button class="ec-tab-btn" data-panel="carte">
-            <span class="tab-ico"><i class="fas fa-credit-card"></i></span>
-            Carte bancaire
-          </button>
-        </li>
-      </ul>
+      <div class="ec-session-badge">
+        <span class="ec-dot"></span>
+        Session active &nbsp;·&nbsp;
+        <span style="font-family:var(--ff-mono);font-size:.68rem;" id="heroTime">--:--:--</span>
+      </div>
+
+      <h1 class="ec-welcome">
+        Bonjour,&nbsp;<em id="welcomeName">Utilisateur</em>
+      </h1>
+      <p class="ec-sub">Bienvenue dans votre espace client. Gérez vos devis, votre fiche et vos informations de paiement.</p>
+
+      <div class="ec-hero-stats">
+        <div class="ec-hero-stat s1">
+          <div class="ec-hero-stat-ico esi-rose"><i class="fas fa-file-invoice"></i></div>
+          <div>
+            <div class="ec-hero-stat-val" id="statDevis">{% if devis_list %}{{ devis_list|length }}{% else %}0{% endif %}</div>
+            <div class="ec-hero-stat-lbl">Devis</div>
+          </div>
+        </div>
+        <div class="ec-hero-stat s2">
+          <div class="ec-hero-stat-ico esi-turq"><i class="fas fa-id-card"></i></div>
+          <div>
+            <div class="ec-hero-stat-val" id="statFiches">{% if clients %}{{ clients|length }}{% else %}0{% endif %}</div>
+            <div class="ec-hero-stat-lbl">Fiches</div>
+          </div>
+        </div>
+        <div class="ec-hero-stat s3">
+          <div class="ec-hero-stat-ico esi-gold"><i class="fas fa-shield-alt"></i></div>
+          <div>
+            <div class="ec-hero-stat-val">100%</div>
+            <div class="ec-hero-stat-lbl">Sécurisé</div>
+          </div>
+        </div>
+        <div class="ec-hero-stat s4">
+          <div class="ec-hero-stat-ico esi-ink"><i class="fas fa-calendar"></i></div>
+          <div>
+            <div class="ec-hero-stat-val" id="statDate">--/--</div>
+            <div class="ec-hero-stat-lbl">Aujourd'hui</div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <div class="ec-panels">
+  <!-- ══ CONTENU ══ -->
+  <div class="ec-content">
+    <div class="container">
 
-      <!-- PANNEAU DEVIS -->
-      <div class="ec-panel active" id="panel-devis">
-        {% if session.devis_data %}
-        <div class="devis-card">
-          <div class="devis-card-label"><i class="fas fa-file-alt"></i> Devis en cours</div>
-          <div class="devis-grid">
-            <div><div class="devis-field-label">Secteur</div><div class="devis-field-val">{{ session.devis_data.secteur }}</div></div>
-            <div><div class="devis-field-label">Nom / Raison sociale</div><div class="devis-field-val">{{ session.devis_data.nom }}</div></div>
-            <div><div class="devis-field-label">Service</div><div class="devis-field-val accent">{{ session.devis_data.type_service }}</div></div>
-            <div><div class="devis-field-label">Email</div><div class="devis-field-val">{{ session.devis_data.email }}</div></div>
-          </div>
-          {% if session.devis_data.date_rdv %}
-          <div><span class="rdv-pill"><i class="fas fa-calendar-check"></i> RDV le {{ session.devis_data.date_rdv }} à {{ session.devis_data.heure_rdv }}</span></div>
-          {% endif %}
-        </div>
-        {% endif %}
-
-        {% if devis_list %}
-          {% for devis in devis_list %}
-          <div class="devis-card">
-            <div class="devis-card-label"><i class="fas fa-folder-open"></i> Fiche résumé devis</div>
-            <div class="devis-grid">
-              <div><div class="devis-field-label">Nom</div><div class="devis-field-val">{{ devis.nom }}</div></div>
-              <div><div class="devis-field-label">Secteur</div><div class="devis-field-val">{{ devis.secteur }}</div></div>
-              <div><div class="devis-field-label">Service</div><div class="devis-field-val accent">{{ devis.type_service }}</div></div>
-              <div><div class="devis-field-label">Rendez-vous</div><div class="devis-field-val">{{ devis.date_rdv | replace('-', '/') if devis.date_rdv else '—' }} — {{ devis.heure_rdv }}</div></div>
-            </div>
-          </div>
-          {% endfor %}
-        {% endif %}
-
-        {% if not session.devis_data and not devis_list %}
-        <div class="empty-state">
-          <div class="empty-ico"><i class="fas fa-file-invoice"></i></div>
-          <h5>Aucun devis soumis</h5>
-          <p>Vous n'avez pas encore soumis de demande de devis.</p>
-        </div>
-        {% endif %}
-
-        <a href="{{ url_for('devis') }}" class="panel-cta">
-          <div class="cta-ico"><i class="fas fa-plus-circle"></i></div>
-          <div class="cta-text">
-            <strong>Créer un nouveau devis</strong>
-            <span>Remplir une demande de devis personnalisée</span>
-          </div>
-          <i class="fas fa-arrow-right cta-arrow"></i>
-        </a>
+      <!-- Navigation -->
+      <div class="ec-nav-wrap">
+        <button class="ec-nav-btn active" data-panel="devis">
+          <i class="fas fa-file-invoice"></i>
+          <span class="tab-text">Mes devis</span>
+          {% if devis_list %}<span class="nav-chip">{{ devis_list|length }}</span>{% endif %}
+        </button>
+        <button class="ec-nav-btn" data-panel="fiche">
+          <i class="fas fa-id-card"></i>
+          <span class="tab-text">Fiche client</span>
+          {% if clients %}<span class="nav-chip">{{ clients|length }}</span>{% endif %}
+        </button>
+        <button class="ec-nav-btn" data-panel="carte">
+          <i class="fas fa-credit-card"></i>
+          <span class="tab-text">Carte bancaire</span>
+        </button>
       </div>
 
-      <!-- PANNEAU FICHE CLIENT -->
-      <div class="ec-panel" id="panel-formulaire">
-        {% if clients %}
-          {% for client in clients %}
-          <div class="mb-4">
-            <div class="fiche-header">
-              <div class="fiche-avatar">{{ client.prenom[0] if client.prenom else '?' }}</div>
+      <!-- Panneaux -->
+      <div class="ec-panels">
+
+        <!-- ════ DEVIS ════ -->
+        <div class="ec-panel active" id="panel-devis">
+
+          {% if session.devis_data or devis_list %}
+
+          <!-- Timeline statut -->
+          <div class="prem-card">
+            <div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-bottom:1.1rem;">Statut de la demande</div>
+            <div class="devis-timeline">
+              <div class="dt-step done">
+                <div class="dt-circle"><i class="fas fa-check"></i></div>
+                <div class="dt-label">Soumis</div>
+              </div>
+              <div class="dt-bar done"></div>
+              <div class="dt-step active">
+                <div class="dt-circle"><i class="fas fa-search"></i></div>
+                <div class="dt-label">En analyse</div>
+              </div>
+              <div class="dt-bar"></div>
+              <div class="dt-step">
+                <div class="dt-circle">3</div>
+                <div class="dt-label">Devis envoyé</div>
+              </div>
+              <div class="dt-bar"></div>
+              <div class="dt-step">
+                <div class="dt-circle">4</div>
+                <div class="dt-label">Accepté</div>
+              </div>
+            </div>
+          </div>
+
+          {% if session.devis_data %}
+          <div class="prem-card">
+            <div class="prem-card-head">
+              <div class="prem-card-ico pci-rose"><i class="fas fa-file-alt"></i></div>
               <div>
-                <div class="fiche-id">Fiche client n°{{ client.id }}</div>
-                <div class="fiche-name">{{ client.prenom }} {{ client.nom }}</div>
+                <div class="prem-card-title">Devis en cours</div>
+                <div class="prem-card-sub">Soumis via le formulaire en ligne</div>
+              </div>
+              <span class="status-ribbon sr-en-cours" style="margin-left:auto;"><i class="fas fa-circle" style="font-size:.45rem;"></i>En traitement</span>
+            </div>
+            <div class="devis-grid">
+              <div class="dg-field"><div class="dg-label">Secteur</div><div class="dg-val">{{ session.devis_data.secteur }}</div></div>
+              <div class="dg-field"><div class="dg-label">Nom / Raison sociale</div><div class="dg-val">{{ session.devis_data.nom }}</div></div>
+              <div class="dg-field"><div class="dg-label">Service demandé</div><div class="dg-val accent">{{ session.devis_data.type_service }}</div></div>
+              <div class="dg-field"><div class="dg-label">Email</div><div class="dg-val">{{ session.devis_data.email }}</div></div>
+            </div>
+            {% if session.devis_data.date_rdv %}
+            <div><span class="rdv-pill"><i class="fas fa-calendar-check"></i>RDV confirmé · {{ session.devis_data.date_rdv }} à {{ session.devis_data.heure_rdv }}</span></div>
+            {% endif %}
+          </div>
+          {% endif %}
+
+          {% for devis in devis_list %}
+          <div class="prem-card">
+            <div class="prem-card-head">
+              <div class="prem-card-ico pci-turq"><i class="fas fa-folder-open"></i></div>
+              <div>
+                <div class="prem-card-title">{{ devis.nom }}</div>
+                <div class="prem-card-sub">Demande de devis</div>
               </div>
             </div>
-            <div class="fiche-grid">
-              <div class="fiche-item"><div class="fiche-item-label">Activité</div><div class="fiche-item-val">{{ client.activite }}</div></div>
-              <div class="fiche-item"><div class="fiche-item-label">Type d'entreprise</div><div class="fiche-item-val">{{ client.type_entreprise }}</div></div>
-              <div class="fiche-item"><div class="fiche-item-label">Cabinet</div><div class="fiche-item-val">{{ client.cabinet }}</div></div>
-              <div class="fiche-item"><div class="fiche-item-label">Civilité</div><div class="fiche-item-val">{{ client.civilite }}</div></div>
-              <div class="fiche-item"><div class="fiche-item-label">Email</div><div class="fiche-item-val">{{ client.email }}</div></div>
-              <div class="fiche-item"><div class="fiche-item-label">Adresse du siège</div><div class="fiche-item-val">{{ client.adresse_siege }}</div></div>
+            <div class="devis-grid">
+              <div class="dg-field"><div class="dg-label">Secteur</div><div class="dg-val">{{ devis.secteur }}</div></div>
+              <div class="dg-field"><div class="dg-label">Service</div><div class="dg-val accent">{{ devis.type_service }}</div></div>
+              <div class="dg-field"><div class="dg-label">Date RDV</div><div class="dg-val">{{ devis.date_rdv | replace('-', '/') if devis.date_rdv else '—' }}</div></div>
+              <div class="dg-field"><div class="dg-label">Heure</div><div class="dg-val">{{ devis.heure_rdv or '—' }}</div></div>
             </div>
           </div>
           {% endfor %}
-        {% else %}
-        <div class="empty-state">
-          <div class="empty-ico"><i class="fas fa-id-card"></i></div>
-          <h5>Aucune fiche client</h5>
-          <p>Votre fiche client n'a pas encore été renseignée.</p>
-        </div>
-        {% endif %}
-
-        <a href="{{ url_for('formulaire_client') }}" class="panel-cta turq">
-          <div class="cta-ico turq"><i class="fas fa-user-edit"></i></div>
-          <div class="cta-text">
-            <strong>Remplir ma fiche client</strong>
-            <span>Compléter ou mettre à jour vos informations</span>
-          </div>
-          <i class="fas fa-arrow-right cta-arrow"></i>
-        </a>
-      </div>
-
-      <!-- PANNEAU CARTE BANCAIRE -->
-      <div class="ec-panel" id="panel-carte">
-        <div class="carte-wrap">
-
-          {% if session.get('carte_bancaire') %}
-          <div class="card-secure-badge">
-            <i class="fas fa-lock"></i> Données chiffrées &amp; sécurisées
-          </div>
-          <div class="credit-card">
-            <div class="card-circle-1"></div>
-            <div class="card-circle-2"></div>
-            <div class="card-circle-3"></div>
-            <div class="card-shine"></div>
-            <div class="card-inner">
-              <div class="card-top">
-                <div class="card-bank-name">ML2C PAY</div>
-                <div class="card-network">
-                  <div class="card-network-circle"></div>
-                  <div class="card-network-circle"></div>
-                </div>
-              </div>
-              <div class="card-chip-row">
-                <div class="card-chip"><div class="card-chip-inner"></div></div>
-                <div class="card-nfc"><i class="fas fa-wifi fa-rotate-90"></i></div>
-              </div>
-              <div class="card-number">
-                <span class="card-number-censored">•••• •••• ••••</span>
-                &nbsp;{{ session.carte_bancaire.numero[-4:] }}
-              </div>
-              <div class="card-bottom">
-                <div>
-                  <div class="card-field-label">Titulaire</div>
-                  <div class="card-field-val">{{ session.carte_bancaire.nom | upper }}</div>
-                </div>
-                <div>
-                  <div class="card-field-label">Expire</div>
-                  <div class="card-field-val">{{ session.carte_bancaire.expiration }}</div>
-                </div>
-                <div>
-                  <div class="card-field-label">CVV</div>
-                  <div class="card-field-val censored">•••</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <form method="POST" action="{{ url_for('supprimer_carte') }}"
-                onsubmit="return confirm('Souhaitez-vous vraiment supprimer cette carte ?')">
-            <button type="submit" class="btn-delete-card">
-              <i class="fas fa-trash-alt"></i> Supprimer la carte
-            </button>
-          </form>
-          <p class="text-center mt-3" style="font-size:.77rem;color:var(--muted);">
-            <i class="fas fa-shield-alt" style="color:var(--turq)"></i>
-            Détails complets accessibles dans les paramètres de facturation.
-          </p>
 
           {% else %}
-          <div class="empty-state">
-            <div class="empty-ico"><i class="fas fa-credit-card"></i></div>
-            <h5>Aucune carte enregistrée</h5>
-            <p>Ajoutez une carte de paiement pour simplifier vos règlements.</p>
+          <div class="prem-card">
+            <div class="ec-empty">
+              <div class="ec-empty-ico"><i class="fas fa-file-invoice"></i></div>
+              <h5>Aucun devis soumis</h5>
+              <p>Vous n'avez pas encore soumis de demande de devis.</p>
+            </div>
           </div>
-          <!-- ✅ LIEN CORRIGÉ → paiement -->
-          <a href="{{ url_for('paiement') }}" class="panel-cta" style="margin-top:.5rem;">
+          {% endif %}
+
+          <a href="{{ url_for('devis') }}" class="cta-add">
             <div class="cta-ico"><i class="fas fa-plus-circle"></i></div>
-            <div class="cta-text">
-              <strong>Ajouter une carte bancaire</strong>
-              <span>Visa, Mastercard ou American Express</span>
+            <div>
+              <div class="cta-title">Créer un nouveau devis</div>
+              <div class="cta-sub">Remplir une demande de devis personnalisée</div>
+            </div>
+            <i class="fas fa-arrow-right cta-arrow"></i>
+          </a>
+        </div>
+
+        <!-- ════ FICHE ════ -->
+        <div class="ec-panel" id="panel-fiche">
+          {% if clients %}
+            {% for client in clients %}
+            <div class="prem-card">
+              <div class="fiche-header">
+                <div class="fiche-avatar">
+                  {{ client.prenom[0] if client.prenom else '?' }}
+                  <span class="fiche-online"></span>
+                </div>
+                <div>
+                  <div class="fiche-name">{{ client.prenom }} {{ client.nom }}</div>
+                  <div class="fiche-id">Fiche client n°{{ client.id }} · Compte actif</div>
+                </div>
+                <span class="status-ribbon sr-valide" style="margin-left:auto;"><i class="fas fa-check" style="font-size:.55rem;"></i>Vérifié</span>
+              </div>
+              <div class="fiche-grid">
+                <div class="fiche-item"><div class="fi-ico"><i class="fas fa-briefcase"></i></div><div><div class="fi-label">Activité</div><div class="fi-val">{{ client.activite }}</div></div></div>
+                <div class="fiche-item"><div class="fi-ico"><i class="fas fa-building"></i></div><div><div class="fi-label">Type d'entreprise</div><div class="fi-val">{{ client.type_entreprise }}</div></div></div>
+                <div class="fiche-item"><div class="fi-ico"><i class="fas fa-landmark"></i></div><div><div class="fi-label">Cabinet</div><div class="fi-val">{{ client.cabinet }}</div></div></div>
+                <div class="fiche-item"><div class="fi-ico"><i class="fas fa-user"></i></div><div><div class="fi-label">Civilité</div><div class="fi-val">{{ client.civilite }}</div></div></div>
+                <div class="fiche-item"><div class="fi-ico"><i class="fas fa-envelope"></i></div><div><div class="fi-label">Email</div><div class="fi-val">{{ client.email }}</div></div></div>
+                <div class="fiche-item"><div class="fi-ico"><i class="fas fa-map-marker-alt"></i></div><div><div class="fi-label">Siège social</div><div class="fi-val">{{ client.adresse_siege }}</div></div></div>
+              </div>
+            </div>
+            {% endfor %}
+          {% else %}
+          <div class="prem-card">
+            <div class="ec-empty">
+              <div class="ec-empty-ico"><i class="fas fa-id-card"></i></div>
+              <h5>Aucune fiche client</h5>
+              <p>Votre fiche client n'a pas encore été renseignée.</p>
+            </div>
+          </div>
+          {% endif %}
+          <a href="{{ url_for('formulaire_client') }}" class="cta-add turq">
+            <div class="cta-ico"><i class="fas fa-user-edit"></i></div>
+            <div>
+              <div class="cta-title">Remplir ma fiche client</div>
+              <div class="cta-sub">Compléter ou mettre à jour vos informations</div>
+            </div>
+            <i class="fas fa-arrow-right cta-arrow"></i>
+          </a>
+        </div>
+
+        <!-- ════ CARTE ════ -->
+        <div class="ec-panel" id="panel-carte">
+          {% if session.get('carte_bancaire') %}
+
+          <div class="card-secure-note">
+            <i class="fas fa-lock"></i>
+            <span>Données chiffrées AES-256 · Conforme PCI-DSS</span>
+          </div>
+
+          <div class="card-scene">
+            <div class="credit-card" id="creditCard">
+              <div class="cc-holo"></div>
+              <div class="cc-shine"></div>
+              <div class="cc-noise"></div>
+              <div class="cc-lines"></div>
+              <div class="cc-inner">
+                <div class="cc-top">
+                  <div class="cc-brand">ML2C <span class="cc-brand-em">PAY</span></div>
+                  <div class="cc-network"><div class="cc-c1"></div><div class="cc-c2"></div></div>
+                </div>
+                <div class="cc-mid">
+                  <div class="cc-chip"></div>
+                  <div class="cc-nfc"><i class="fas fa-wifi fa-rotate-90"></i></div>
+                </div>
+                <div class="cc-number">
+                  <span class="cens">•••• •••• ••••</span>&nbsp;{{ session.carte_bancaire.numero[-4:] }}
+                </div>
+                <div class="cc-bottom">
+                  <div><div class="cc-fl">Titulaire</div><div class="cc-fv">{{ session.carte_bancaire.nom | upper }}</div></div>
+                  <div><div class="cc-fl">Expire</div><div class="cc-fv">{{ session.carte_bancaire.expiration }}</div></div>
+                  <div><div class="cc-fl">CVV</div><div class="cc-fv cens">•••</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <form method="POST" action="{{ url_for('supprimer_carte') }}" onsubmit="return confirm('Confirmer la suppression ?')">
+            <button type="submit" class="btn-del-card"><i class="fas fa-trash-alt"></i>Supprimer la carte</button>
+          </form>
+          <p style="text-align:center;font-size:.74rem;color:var(--muted);margin-top:.85rem;"><i class="fas fa-info-circle" style="color:var(--turq);"></i> Détails complets dans vos paramètres de facturation.</p>
+
+          {% else %}
+          <div class="prem-card">
+            <div class="ec-empty">
+              <div class="ec-empty-ico"><i class="fas fa-credit-card"></i></div>
+              <h5>Aucune carte enregistrée</h5>
+              <p>Ajoutez une carte de paiement pour simplifier vos règlements.</p>
+            </div>
+          </div>
+          <a href="{{ url_for('paiement') }}" class="cta-add">
+            <div class="cta-ico"><i class="fas fa-plus-circle"></i></div>
+            <div>
+              <div class="cta-title">Ajouter une carte bancaire</div>
+              <div class="cta-sub">Visa, Mastercard ou American Express</div>
             </div>
             <i class="fas fa-arrow-right cta-arrow"></i>
           </a>
           {% endif %}
-
         </div>
+
+        <!-- ACTIONS -->
+        <div class="ec-action-bar">
+          <a href="{{ url_for('parametres') }}" class="btn-act btn-act-rose"><i class="fas fa-cog"></i>Paramètres</a>
+          <a href="{{ url_for('gerer_devis') }}" class="btn-act btn-act-turq"><i class="fas fa-folder-open"></i>Gérer mes devis</a>
+          <a href="{{ url_for('menu') }}" class="btn-act btn-act-ghost"><i class="fas fa-arrow-left"></i>Retour au menu</a>
+          <a href="{{ url_for('logout') }}" class="btn-act btn-act-danger" onclick="return confirm('Confirmer la déconnexion ?')"><i class="fas fa-sign-out-alt"></i>Déconnexion</a>
+        </div>
+
       </div>
-
-
-      <!-- ACTIONS BAS -->
-      <div class="ec-actions">
-        <a href="{{ url_for('parametres') }}" class="btn-ec-primary">
-          <i class="fas fa-cog"></i> Paramètres du compte
-        </a>
-        <a href="{{ url_for('gerer_devis') }}" class="btn-ec-primary" style="background:var(--turq);">
-          <i class="fas fa-folder-open"></i> Gérer mes devis
-        </a>
-        <a href="{{ url_for('logout') }}" class="btn-ec-secondary" style="color:#dc2626;" onclick="return confirm('Confirmer la déconnexion ?')">
-          <i class="fas fa-sign-out-alt"></i> Déconnexion
-        </a>
-        <a href="{{ url_for('menu') }}" class="btn-ec-secondary">
-          <i class="fas fa-arrow-left"></i> Retour au menu
-        </a>
-    </div>
-
     </div>
   </div>
 </div>
 
-{% include "footer.html" %}
+<!-- TOAST -->
+<div class="ec-toast" id="ecToast"><i class="fas fa-check-circle"></i><span>Bienvenue dans votre espace client</span></div>
 
+{% include "footer.html" %}
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const prenom = "{{ session.get('prenom', 'Utilisateur') }}";
-    document.getElementById('welcomeTitle').innerHTML = 'Bonjour,&nbsp;<em>' + prenom + '</em>';
+/* Prénom */
+(function(){
+  const p="{{ session.get('prenom','Utilisateur') }}";
+  const el=document.getElementById('welcomeName');
+  if(el)el.textContent=p;
+})();
+
+/* Horloge */
+function tick(){
+  const n=new Date();
+  const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');
+  const el=document.getElementById('heroTime');if(el)el.textContent=t;
+  const d=document.getElementById('statDate');
+  if(d){const now=new Date();d.textContent=(now.getDate()+'').padStart(2,'0')+'/'+(now.getMonth()+1+'').padStart(2,'0');}
+}
+tick();setInterval(tick,1000);
+
+/* Tabs */
+document.querySelectorAll('.ec-nav-btn').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.ec-nav-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.ec-panel').forEach(p=>p.classList.remove('active'));
+    this.classList.add('active');
+    const t=document.getElementById('panel-'+this.dataset.panel);
+    if(t)t.classList.add('active');
   });
-  document.querySelectorAll('.ec-tab-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.ec-tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.ec-panel').forEach(p => p.classList.remove('active'));
-      this.classList.add('active');
-      document.getElementById('panel-' + this.dataset.panel).classList.add('active');
-    });
+});
+
+/* Carte 3D souris */
+const card=document.getElementById('creditCard');
+if(card){
+  card.addEventListener('mousemove',function(e){
+    const r=this.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-.5;
+    const y=(e.clientY-r.top)/r.height-.5;
+    this.style.transform=`rotateY(${x*20}deg) rotateX(${-y*12}deg) scale(1.03)`;
   });
+  card.addEventListener('mouseleave',function(){
+    this.style.transform='rotateY(0) rotateX(0) scale(1)';
+  });
+}
+
+/* Compteurs animés */
+function animCount(el,target){
+  let v=0;const step=Math.ceil(target/18);
+  const t=setInterval(()=>{v=Math.min(v+step,target);el.textContent=v;if(v>=target)clearInterval(t);},55);
+}
+document.querySelectorAll('.ec-hero-stat-val').forEach(el=>{
+  const n=parseInt(el.textContent);
+  if(!isNaN(n)&&n>0){el.textContent='0';setTimeout(()=>animCount(el,n),500);}
+});
+
+/* Toast bienvenue */
+setTimeout(()=>{
+  const t=document.getElementById('ecToast');
+  if(t){t.classList.add('show');setTimeout(()=>t.classList.remove('show'),4000);}
+},900);
 </script>
 </body>
 </html>

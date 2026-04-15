@@ -3,64 +3,247 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Connexion - ML2C CONSEIL</title>
+  <title>Connexion — ML2C CONSEIL</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <style>
-    :root {
-      --rose: #C1007A; --rose-lt: #fce4f3;
-      --turq: #4FA695; --turq-lt: #d4f0ec;
-      --dark: #2d3436; --bg: #f4f5f7;
+    :root{
+      --rose:#C1007A;--rose-d:#9a0062;--rose-l:#fce4f3;--rose-xl:#fff5fb;
+      --turq:#4FA695;--turq-d:#3a7d70;--turq-l:#d4f0ec;--turq-xl:#edfaf7;
+      --gold:#b08d57;--gold-l:#f5eedf;--gold-ll:#fdfaf5;
+      --ink:#1a1a2e;--ink2:#2d2d3d;
+      --bg:#faf8f4;--bg2:#f5f2ec;--bg3:#ede9e0;
+      --surface:#fff;--surface2:#fdfcfa;
+      --border:#e8e2d9;--border2:#d4cdc0;
+      --text:#1a1a1a;--text2:#3d3d3d;--muted:#8a8278;--faint:#b5aea5;
+      --ff-head:'Cormorant Garamond',serif;
+      --ff-body:'DM Sans',sans-serif;
+      --shadow-sm:0 2px 8px rgba(26,20,10,.06);
+      --shadow-md:0 8px 32px rgba(26,20,10,.09);
+      --shadow-lg:0 24px 64px rgba(26,20,10,.12);
     }
-    body { background: var(--bg); font-family: 'DM Sans', sans-serif; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--bg);font-family:var(--ff-body);color:var(--text);min-height:100vh;}
 
-    .login-wrap { min-height: calc(100vh - 160px); display: flex; align-items: center; justify-content: center; padding: 3rem 1rem; }
+    /* ══ TEXTURE FOND ══ */
+    body::before{
+      content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+      background:
+        radial-gradient(ellipse 60% 70% at 100% 0%,rgba(193,0,122,.05) 0%,transparent 55%),
+        radial-gradient(ellipse 50% 50% at 0% 100%,rgba(79,166,149,.06) 0%,transparent 50%),
+        radial-gradient(ellipse 40% 40% at 50% 50%,rgba(176,141,87,.04) 0%,transparent 60%);
+    }
+    body::after{
+      content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231a1a1a' fill-opacity='0.018'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
 
-    .login-card { background: #fff; border-radius: 24px; box-shadow: 0 4px 40px rgba(0,0,0,.10); width: 100%; max-width: 460px; overflow: hidden; animation: cardIn .4s ease both; }
-    @keyframes cardIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    /* ══ LAYOUT ══ */
+    .login-wrap{
+      position:relative;z-index:1;
+      min-height:calc(100vh - 140px);
+      display:flex;align-items:center;justify-content:center;
+      padding:3rem 1rem;
+    }
 
-    .card-top { background: linear-gradient(135deg, var(--dark) 0%, #1e3a3a 100%); padding: 2.5rem 2.5rem 2rem; position: relative; overflow: hidden; }
-    .card-top::before { content: ''; position: absolute; top: -40px; right: -40px; width: 160px; height: 160px; border-radius: 50%; background: rgba(79,166,149,.12); }
-    .card-top::after { content: ''; position: absolute; bottom: -30px; left: -30px; width: 120px; height: 120px; border-radius: 50%; background: rgba(193,0,122,.10); }
-    .ct-inner { position: relative; z-index: 2; }
-    .ct-logo { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 700; color: rgba(255,255,255,.5); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 1rem; }
-    .ct-title { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 700; color: #fff; line-height: 1.1; margin-bottom: .4rem; }
-    .ct-title em { color: #5eead4; font-style: italic; }
-    .ct-sub { font-size: .83rem; color: rgba(255,255,255,.5); margin: 0; }
+    /* ══ CARTE ══ */
+    .login-card{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:28px;
+      box-shadow:var(--shadow-lg);
+      width:100%;max-width:460px;
+      overflow:hidden;
+      animation:cardReveal .5s cubic-bezier(.4,0,.2,1) both;
+      position:relative;
+    }
+    @keyframes cardReveal{
+      from{opacity:0;transform:translateY(24px) scale(.98);}
+      to{opacity:1;transform:translateY(0) scale(1);}
+    }
+    /* Ligne dégradée haut */
+    .login-card::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:2.5px;z-index:10;
+      background:linear-gradient(90deg,transparent,var(--rose) 30%,var(--gold) 70%,transparent);
+    }
 
-    .card-body-form { padding: 2.25rem 2.5rem 2.5rem; }
+    /* ══ EN-TÊTE ══ */
+    .card-header-luxe{
+      padding:2.5rem 2.75rem 2.25rem;
+      background:linear-gradient(160deg,var(--bg) 0%,var(--bg2) 60%,var(--bg3) 100%);
+      border-bottom:1px solid var(--border);
+      position:relative;overflow:hidden;
+    }
+    /* Monogramme watermark */
+    .card-header-luxe::after{
+      content:'ML2C';
+      position:absolute;right:-20px;top:50%;transform:translateY(-50%);
+      font-family:var(--ff-head);font-size:5.5rem;font-weight:700;
+      color:rgba(193,0,122,.04);line-height:1;pointer-events:none;
+      letter-spacing:-.02em;
+    }
+    .ch-label{
+      font-size:.65rem;font-weight:700;text-transform:uppercase;
+      letter-spacing:.15em;color:var(--faint);margin-bottom:.9rem;
+      display:flex;align-items:center;gap:.5rem;
+    }
+    .ch-label::before{content:'';width:18px;height:1px;background:var(--faint);}
+    .ch-title{
+      font-family:var(--ff-head);font-size:2.5rem;font-weight:300;
+      color:var(--ink);line-height:1.05;margin-bottom:.45rem;
+      letter-spacing:-.02em;
+    }
+    .ch-title strong{font-weight:700;}
+    .ch-title em{color:var(--rose);font-style:italic;font-weight:600;position:relative;}
+    .ch-title em::after{
+      content:'';position:absolute;bottom:0;left:0;right:0;height:1.5px;
+      background:linear-gradient(90deg,var(--rose),transparent);
+      transform:scaleX(0);transform-origin:left;
+      animation:lineIn 1s .6s ease forwards;
+    }
+    @keyframes lineIn{to{transform:scaleX(1);}}
+    .ch-sub{font-size:.84rem;color:var(--muted);line-height:1.6;}
 
-    .field-group { margin-bottom: 1.25rem; }
-    .field-label { display: block; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #6b7280; margin-bottom: .45rem; }
-    .field-input-wrap { position: relative; }
-    .field-icon { position: absolute; left: .9rem; top: 50%; transform: translateY(-50%); color: #c4cbd0; font-size: .85rem; pointer-events: none; }
-    .field-input { width: 100%; padding: .75rem .9rem .75rem 2.4rem; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: .9rem; color: #333; background: #fafafa; transition: border-color .2s, box-shadow .2s; font-family: 'DM Sans', sans-serif; outline: none; }
-    .field-input:focus { border-color: var(--turq); box-shadow: 0 0 0 3px rgba(79,166,149,.12); background: #fff; }
-    .field-input.error { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,.1); }
+    /* Trust badges */
+    .trust-row{display:flex;gap:.6rem;margin-top:1.35rem;flex-wrap:wrap;}
+    .trust-badge{
+      display:inline-flex;align-items:center;gap:.35rem;
+      padding:.28rem .7rem;border-radius:20px;
+      background:var(--surface);border:1px solid var(--border);
+      font-size:.62rem;font-weight:700;color:var(--muted);
+      text-transform:uppercase;letter-spacing:.05em;
+    }
+    .trust-badge i{font-size:.58rem;}
+    .trust-badge.rose i{color:var(--rose);}
+    .trust-badge.turq i{color:var(--turq);}
+    .trust-badge.gold i{color:var(--gold);}
 
-    .pw-toggle-btn { position: absolute; right: .75rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #9ca3af; font-size: .9rem; padding: 0; line-height: 1; transition: color .2s; }
-    .pw-toggle-btn:hover { color: var(--turq); }
+    /* ══ CORPS ══ */
+    .card-form-body{padding:2.25rem 2.75rem 2.5rem;}
 
-    .forgot-link { display: block; text-align: right; font-size: .78rem; color: var(--rose); font-weight: 600; margin-top: .4rem; text-decoration: none; transition: .2s; }
-    .forgot-link:hover { color: #9a0062; text-decoration: underline; }
+    /* Flash */
+    .flash-msg{
+      padding:.8rem 1rem;border-radius:12px;margin-bottom:1.25rem;
+      font-size:.84rem;display:flex;align-items:flex-start;gap:.5rem;
+      border:1px solid transparent;
+    }
+    .flash-msg.danger{background:#fef2f2;color:#dc2626;border-color:#fecaca;}
+    .flash-msg.success{background:var(--turq-xl);color:var(--turq-d);border-color:rgba(79,166,149,.25);}
+    .flash-msg.warning{background:var(--gold-ll);color:#92400e;border-color:rgba(176,141,87,.25);}
 
-    .btn-login { width: 100%; padding: .9rem; background: linear-gradient(135deg, var(--rose), #9a0062); color: #fff; font-weight: 700; font-size: .95rem; border: none; border-radius: 12px; cursor: pointer; transition: .25s; display: flex; align-items: center; justify-content: center; gap: .5rem; font-family: 'DM Sans', sans-serif; margin-top: 1.75rem; }
-    .btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(193,0,122,.35); }
+    /* ══ CHAMPS ══ */
+    .field-group{margin-bottom:1.35rem;}
+    .field-label{
+      display:block;font-size:.68rem;font-weight:700;
+      text-transform:uppercase;letter-spacing:.09em;
+      color:var(--muted);margin-bottom:.5rem;
+    }
+    .field-input-wrap{position:relative;}
+    .field-icon{
+      position:absolute;left:1rem;top:50%;transform:translateY(-50%);
+      color:var(--faint);font-size:.82rem;pointer-events:none;transition:color .2s;
+    }
+    .field-input{
+      width:100%;padding:.82rem 1rem .82rem 2.6rem;
+      border:1.5px solid var(--border);border-radius:12px;
+      font-size:.9rem;color:var(--text);background:var(--surface2);
+      transition:border-color .22s,box-shadow .22s,background .22s;
+      font-family:var(--ff-body);outline:none;-webkit-appearance:none;
+    }
+    .field-input::placeholder{color:var(--faint);}
+    .field-input:focus{
+      border-color:var(--turq);
+      box-shadow:0 0 0 3px rgba(79,166,149,.1);
+      background:var(--surface);
+    }
+    .field-input.error{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.08);}
+    .field-error-msg{
+      font-size:.72rem;color:#ef4444;
+      display:none;align-items:center;gap:.3rem;margin-top:.35rem;
+    }
+    .field-error-msg.show{display:flex;}
 
-    .divider { display: flex; align-items: center; gap: .75rem; margin: 1.5rem 0; }
-    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #e5e7eb; }
-    .divider span { font-size: .75rem; color: #9ca3af; white-space: nowrap; }
+    /* Œil mdp */
+    .pw-eye{
+      position:absolute;right:1rem;top:50%;transform:translateY(-50%);
+      background:none;border:none;cursor:pointer;
+      color:var(--faint);font-size:.88rem;padding:0;line-height:1;
+      transition:color .2s;
+    }
+    .pw-eye:hover{color:var(--turq);}
 
-    .signup-link { text-align: center; font-size: .85rem; color: #9ca3af; }
-    .signup-link a { color: var(--rose); font-weight: 700; text-decoration: none; }
-    .signup-link a:hover { color: #9a0062; text-decoration: underline; }
+    /* Lien mdp oublié */
+    .forgot-wrap{display:flex;justify-content:flex-end;margin-top:.5rem;}
+    .forgot-link{
+      font-size:.78rem;font-weight:600;color:var(--rose);
+      text-decoration:none;
+      border-bottom:1px dashed rgba(193,0,122,.3);
+      transition:all .2s;
+    }
+    .forgot-link:hover{color:var(--rose-d);border-bottom-color:var(--rose-d);}
 
-    .flash-msg { padding: .75rem 1rem; border-radius: 10px; margin-bottom: 1.25rem; font-size: .85rem; display: flex; align-items: flex-start; gap: .5rem; }
-    .flash-msg.danger  { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
-    .flash-msg.success { background: var(--turq-lt); color: #2d7a70; border: 1px solid #a7f3d0; }
-    .flash-msg.warning { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+    /* ══ BOUTON ══ */
+    .btn-login{
+      width:100%;padding:.9rem 1rem;
+      background:linear-gradient(135deg,var(--rose),var(--rose-d));
+      color:#fff;font-weight:700;font-size:.95rem;
+      border:none;border-radius:14px;cursor:pointer;
+      transition:all .25s;
+      display:flex;align-items:center;justify-content:center;gap:.55rem;
+      font-family:var(--ff-body);margin-top:1.75rem;
+      box-shadow:0 4px 16px rgba(193,0,122,.2);
+      position:relative;overflow:hidden;
+    }
+    .btn-login::before{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(135deg,rgba(255,255,255,.12),transparent);
+      pointer-events:none;
+    }
+    .btn-login:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 28px rgba(193,0,122,.35);
+    }
+    .btn-login:active{transform:translateY(0);}
+    .btn-spinner{display:none;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+
+    /* ══ DIVIDER ══ */
+    .divider{display:flex;align-items:center;gap:.85rem;margin:1.6rem 0 1.25rem;}
+    .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+    .divider span{font-size:.73rem;color:var(--faint);white-space:nowrap;font-style:italic;}
+
+    /* ══ CTA INSCRIPTION ══ */
+    .signup-cta{
+      display:flex;align-items:center;justify-content:space-between;gap:.75rem;
+      padding:.9rem 1.1rem;border-radius:14px;
+      background:var(--bg2);border:1px solid var(--border);
+      text-decoration:none;transition:all .22s;
+    }
+    .signup-cta:hover{background:var(--bg3);border-color:var(--border2);text-decoration:none;}
+    .signup-cta-text{font-size:.83rem;color:var(--muted);}
+    .signup-cta-link{
+      display:inline-flex;align-items:center;gap:.4rem;
+      font-size:.87rem;font-weight:700;color:var(--rose);
+      text-decoration:none;transition:color .2s;white-space:nowrap;
+    }
+    .signup-cta-link:hover{color:var(--rose-d);}
+    .signup-cta-link i{font-size:.78rem;}
+
+    /* Note sécurité */
+    .security-note{
+      display:flex;align-items:center;justify-content:center;gap:.5rem;
+      font-size:.7rem;color:var(--faint);margin-top:1.35rem;
+    }
+    .security-note i{color:var(--turq);font-size:.72rem;}
+
+    @media(max-width:560px){
+      .card-header-luxe{padding:2rem 1.5rem 1.75rem;}
+      .card-form-body{padding:1.75rem 1.5rem 2rem;}
+      .ch-title{font-size:2rem;}
+      .trust-row{display:none;}
+    }
   </style>
 </head>
 <body>
@@ -69,17 +252,21 @@
 <div class="login-wrap">
   <div class="login-card">
 
-    <!-- EN-TÊTE -->
-    <div class="card-top">
-      <div class="ct-inner">
-        <div class="ct-logo">ML2C CONSEIL</div>
-        <h1 class="ct-title">Bon<br><em>retour !</em></h1>
-        <p class="ct-sub">Connectez-vous à votre espace client</p>
+    <!-- ══ EN-TÊTE ══ -->
+    <div class="card-header-luxe">
+      <div class="ch-label">ML2C CONSEIL</div>
+      <h1 class="ch-title">Bon<br><em>retour !</em></h1>
+      <p class="ch-sub">Connectez-vous à votre espace client sécurisé</p>
+
+      <div class="trust-row">
+        <span class="trust-badge rose"><i class="fas fa-shield-alt"></i>Sécurisé</span>
+        <span class="trust-badge turq"><i class="fas fa-lock"></i>Chiffré</span>
+        <span class="trust-badge gold"><i class="fas fa-check-circle"></i>RGPD</span>
       </div>
     </div>
 
-    <!-- FORMULAIRE -->
-    <div class="card-body-form">
+    <!-- ══ FORMULAIRE ══ -->
+    <div class="card-form-body">
 
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -102,34 +289,51 @@
             <input type="email" class="field-input" id="email" name="email"
               placeholder="votre@email.com" required autocomplete="email">
           </div>
+          <div class="field-error-msg" id="err-email">
+            <i class="fas fa-exclamation-circle"></i> Adresse e-mail invalide.
+          </div>
         </div>
 
-        <!-- Mot de passe + œil + mot de passe oublié -->
+        <!-- Mot de passe -->
         <div class="field-group">
           <label class="field-label" for="password">Mot de passe</label>
           <div class="field-input-wrap">
             <i class="fas fa-lock field-icon"></i>
             <input type="password" class="field-input" id="password" name="password"
               placeholder="Votre mot de passe" required autocomplete="current-password"
-              style="padding-right: 2.8rem;">
-            <button type="button" class="pw-toggle-btn" id="pwToggle" aria-label="Afficher/masquer le mot de passe">
-              <i class="fas fa-eye" id="pwToggleIcon"></i>
+              style="padding-right:2.8rem;">
+            <button type="button" class="pw-eye" id="pwEye" aria-label="Afficher/masquer">
+              <i class="fas fa-eye" id="pwEyeIco"></i>
             </button>
           </div>
-          <a href="{{ url_for('mot_de_passe_oublie') if 'mot_de_passe_oublie' in url_for.__globals__['current_app'].view_functions else '#' }}" class="forgot-link">
-            Mot de passe oublié ?
-          </a>
+          <div class="field-error-msg" id="err-password">
+            <i class="fas fa-exclamation-circle"></i> Veuillez saisir votre mot de passe.
+          </div>
+          <div class="forgot-wrap">
+            <a href="{{ url_for('mot_de_passe_oublie') if 'mot_de_passe_oublie' in url_for.__globals__['current_app'].view_functions else '#' }}" class="forgot-link">
+              Mot de passe oublié ?
+            </a>
+          </div>
         </div>
 
-        <button type="submit" class="btn-login">
-          <i class="fas fa-sign-in-alt"></i> Se connecter
+        <button type="submit" class="btn-login" id="btnLogin">
+          <span class="btn-spinner" id="btnSpinner"></span>
+          <i class="fas fa-sign-in-alt" id="btnIco"></i>
+          <span id="btnText">Se connecter</span>
         </button>
 
       </form>
 
       <div class="divider"><span>Pas encore de compte ?</span></div>
-      <div class="signup-link">
-        <a href="{{ url_for('signup') }}"><i class="fas fa-user-plus"></i> Créer un compte</a>
+
+      <a href="{{ url_for('signup') }}" class="signup-cta">
+        <span class="signup-cta-text">Rejoignez l'espace client ML2C CONSEIL</span>
+        <span class="signup-cta-link"><i class="fas fa-user-plus"></i>Créer un compte</span>
+      </a>
+
+      <div class="security-note">
+        <i class="fas fa-lock"></i>
+        <span>Connexion sécurisée · Données chiffrées · Conforme RGPD</span>
       </div>
 
     </div>
@@ -137,52 +341,54 @@
 </div>
 
 {% include "footer.html" %}
-
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  // Header sticky
-  const hdr = document.getElementById('mainHeader');
-  if (hdr) window.addEventListener('scroll', () => hdr.classList.toggle('scrolled', window.scrollY > 60));
+/* Œil mot de passe */
+const pwInput=document.getElementById('password');
+document.getElementById('pwEye').addEventListener('click',function(){
+  const ico=document.getElementById('pwEyeIco');
+  if(pwInput.type==='password'){pwInput.type='text';ico.classList.replace('fa-eye','fa-eye-slash');}
+  else{pwInput.type='password';ico.classList.replace('fa-eye-slash','fa-eye');}
+  pwInput.focus();
+});
 
-  // ── ŒIL MOT DE PASSE ──
-  const pwInput = document.getElementById('password');
-  document.getElementById('pwToggle').addEventListener('click', function() {
-    const icon = document.getElementById('pwToggleIcon');
-    if (pwInput.type === 'password') {
-      pwInput.type = 'text';
-      icon.classList.replace('fa-eye', 'fa-eye-slash');
-    } else {
-      pwInput.type = 'password';
-      icon.classList.replace('fa-eye-slash', 'fa-eye');
-    }
-    pwInput.focus();
+/* Validation */
+document.getElementById('loginForm').addEventListener('submit',function(e){
+  let valid=true;
+
+  const em=document.getElementById('email');
+  const eem=document.getElementById('err-email');
+  if(!em.value.trim()||!em.value.includes('@')){em.classList.add('error');eem.classList.add('show');valid=false;}
+  else{em.classList.remove('error');eem.classList.remove('show');}
+
+  const ep=document.getElementById('err-password');
+  if(!pwInput.value.trim()){pwInput.classList.add('error');ep.classList.add('show');valid=false;}
+  else{pwInput.classList.remove('error');ep.classList.remove('show');}
+
+  if(!valid){
+    e.preventDefault();
+    const first=document.querySelector('.field-input.error');
+    if(first)first.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+
+  /* Loading */
+  const btn=document.getElementById('btnLogin');
+  const sp=document.getElementById('btnSpinner');
+  const ico=document.getElementById('btnIco');
+  const txt=document.getElementById('btnText');
+  btn.disabled=true;sp.style.display='block';ico.style.display='none';txt.textContent='Connexion…';
+});
+
+/* Retirer erreurs */
+document.querySelectorAll('.field-input').forEach(input=>{
+  input.addEventListener('input',()=>{
+    input.classList.remove('error');
+    const err=document.getElementById('err-'+input.id);
+    if(err)err.classList.remove('show');
   });
-
-  // ── VALIDATION AVANT ENVOI ──
-  document.getElementById('loginForm').addEventListener('submit', function(e) {
-    let valid = true;
-
-    const emailEl = document.getElementById('email');
-    if (!emailEl.value.trim() || !emailEl.value.includes('@')) {
-      emailEl.classList.add('error'); valid = false;
-    } else { emailEl.classList.remove('error'); }
-
-    if (!pwInput.value.trim()) {
-      pwInput.classList.add('error'); valid = false;
-    } else { pwInput.classList.remove('error'); }
-
-    if (!valid) {
-      e.preventDefault();
-      const firstError = document.querySelector('.field-input.error');
-      if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  });
-
-  // Retirer erreur à la saisie
-  document.querySelectorAll('.field-input').forEach(input => {
-    input.addEventListener('input', () => input.classList.remove('error'));
-  });
+});
 </script>
 </body>
 </html>

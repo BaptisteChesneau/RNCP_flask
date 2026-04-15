@@ -3,84 +3,297 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Créer un compte - ML2C CONSEIL</title>
+  <title>Créer un compte — ML2C CONSEIL</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <style>
-    :root {
-      --rose: #C1007A; --rose-lt: #fce4f3;
-      --turq: #4FA695; --turq-lt: #d4f0ec;
-      --dark: #2d3436; --bg: #f4f5f7;
+    :root{
+      --rose:#C1007A;--rose-d:#9a0062;--rose-l:#fce4f3;--rose-xl:#fff5fb;
+      --turq:#4FA695;--turq-d:#3a7d70;--turq-l:#d4f0ec;--turq-xl:#edfaf7;
+      --gold:#b08d57;--gold-l:#f5eedf;--gold-ll:#fdfaf5;
+      --ink:#1a1a2e;--ink2:#2d2d3d;
+      --bg:#faf8f4;--bg2:#f5f2ec;--bg3:#ede9e0;
+      --surface:#fff;--surface2:#fdfcfa;
+      --border:#e8e2d9;--border2:#d4cdc0;
+      --text:#1a1a1a;--text2:#3d3d3d;--muted:#8a8278;--faint:#b5aea5;
+      --ff-head:'Cormorant Garamond',serif;
+      --ff-body:'DM Sans',sans-serif;
+      --shadow-sm:0 2px 8px rgba(26,20,10,.06);
+      --shadow-md:0 8px 32px rgba(26,20,10,.09);
+      --shadow-lg:0 24px 64px rgba(26,20,10,.12);
     }
-    body { background: var(--bg); font-family: 'DM Sans', sans-serif; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--bg);font-family:var(--ff-body);color:var(--text);min-height:100vh;}
 
-    .signup-wrap { min-height: calc(100vh - 160px); display: flex; align-items: center; justify-content: center; padding: 3rem 1rem; }
+    /* ══ TEXTURE FOND ══ */
+    body::before{
+      content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+      background:
+        radial-gradient(ellipse 60% 70% at 100% 0%,rgba(193,0,122,.05) 0%,transparent 55%),
+        radial-gradient(ellipse 50% 50% at 0% 100%,rgba(79,166,149,.06) 0%,transparent 50%),
+        radial-gradient(ellipse 40% 40% at 50% 50%,rgba(176,141,87,.04) 0%,transparent 60%);
+    }
+    body::after{
+      content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231a1a1a' fill-opacity='0.018'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
 
-    .signup-card { background: #fff; border-radius: 24px; box-shadow: 0 4px 40px rgba(0,0,0,.10); width: 100%; max-width: 480px; overflow: hidden; animation: cardIn .4s ease both; }
-    @keyframes cardIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    /* ══ LAYOUT ══ */
+    .signup-wrap{
+      position:relative;z-index:1;
+      min-height:calc(100vh - 140px);
+      display:flex;align-items:center;justify-content:center;
+      padding:3rem 1rem;
+    }
 
-    .card-top { background: linear-gradient(135deg, var(--dark) 0%, #1e3a3a 100%); padding: 2.5rem 2.5rem 2rem; position: relative; overflow: hidden; }
-    .card-top::before { content: ''; position: absolute; top: -40px; right: -40px; width: 160px; height: 160px; border-radius: 50%; background: rgba(79,166,149,.12); }
-    .card-top::after { content: ''; position: absolute; bottom: -30px; left: -30px; width: 120px; height: 120px; border-radius: 50%; background: rgba(193,0,122,.10); }
-    .ct-inner { position: relative; z-index: 2; }
-    .ct-logo { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 700; color: rgba(255,255,255,.5); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 1rem; }
-    .ct-title { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 700; color: #fff; line-height: 1.1; margin-bottom: .4rem; }
-    .ct-title em { color: #5eead4; font-style: italic; }
-    .ct-sub { font-size: .83rem; color: rgba(255,255,255,.5); margin: 0; }
+    /* ══ CARTE PRINCIPALE ══ */
+    .signup-card{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:28px;
+      box-shadow:var(--shadow-lg);
+      width:100%;max-width:500px;
+      overflow:hidden;
+      animation:cardReveal .5s cubic-bezier(.4,0,.2,1) both;
+      position:relative;
+    }
+    @keyframes cardReveal{
+      from{opacity:0;transform:translateY(24px) scale(.98);}
+      to{opacity:1;transform:translateY(0) scale(1);}
+    }
 
-    .card-body-form { padding: 2.25rem 2.5rem 2.5rem; }
+    /* Ligne dorée en haut */
+    .signup-card::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:2.5px;z-index:10;
+      background:linear-gradient(90deg,transparent,var(--rose) 30%,var(--gold) 70%,transparent);
+    }
 
-    .field-group { margin-bottom: 1.25rem; }
-    .field-label { display: block; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #6b7280; margin-bottom: .45rem; }
-    .field-input-wrap { position: relative; }
-    .field-icon { position: absolute; left: .9rem; top: 50%; transform: translateY(-50%); color: #c4cbd0; font-size: .85rem; pointer-events: none; }
-    .field-input { width: 100%; padding: .75rem .9rem .75rem 2.4rem; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: .9rem; color: #333; background: #fafafa; transition: border-color .2s, box-shadow .2s; font-family: 'DM Sans', sans-serif; outline: none; }
-    .field-input:focus { border-color: var(--turq); box-shadow: 0 0 0 3px rgba(79,166,149,.12); background: #fff; }
-    .field-input.error { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,.1); }
+    /* ══ EN-TÊTE CARD ══ */
+    .card-header-luxe{
+      padding:2.5rem 2.75rem 2.25rem;
+      background:linear-gradient(160deg,var(--bg) 0%,var(--bg2) 60%,var(--bg3) 100%);
+      border-bottom:1px solid var(--border);
+      position:relative;overflow:hidden;
+    }
+    /* Monogramme watermark */
+    .card-header-luxe::after{
+      content:'ML2C';
+      position:absolute;right:-20px;top:50%;transform:translateY(-50%);
+      font-family:var(--ff-head);font-size:5.5rem;font-weight:700;
+      color:rgba(193,0,122,.04);line-height:1;pointer-events:none;
+      letter-spacing:-.02em;
+    }
+    .ch-label{
+      font-size:.65rem;font-weight:700;text-transform:uppercase;
+      letter-spacing:.15em;color:var(--faint);margin-bottom:.9rem;
+      display:flex;align-items:center;gap:.5rem;
+    }
+    .ch-label::before{content:'';width:18px;height:1px;background:var(--faint);}
+    .ch-title{
+      font-family:var(--ff-head);font-size:2.35rem;font-weight:300;
+      color:var(--ink);line-height:1.05;margin-bottom:.45rem;
+      letter-spacing:-.02em;
+    }
+    .ch-title strong{font-weight:700;}
+    .ch-title em{color:var(--rose);font-style:italic;font-weight:600;}
+    .ch-sub{font-size:.84rem;color:var(--muted);line-height:1.6;}
 
-    /* ŒIL MOT DE PASSE */
-    .pw-toggle-btn { position: absolute; right: .75rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #9ca3af; font-size: .9rem; padding: 0; line-height: 1; transition: color .2s; }
-    .pw-toggle-btn:hover { color: var(--turq); }
+    /* Étapes visuelles */
+    .signup-steps{display:flex;align-items:center;gap:0;margin-top:1.5rem;}
+    .step-item{display:flex;flex-direction:column;align-items:center;gap:.3rem;flex:1;}
+    .step-circle{
+      width:28px;height:28px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-size:.65rem;font-weight:700;
+      border:1.5px solid var(--border2);color:var(--faint);
+      background:var(--surface);transition:all .3s;
+    }
+    .step-item.active .step-circle{
+      background:var(--rose);border-color:var(--rose);color:#fff;
+      box-shadow:0 0 0 3px rgba(193,0,122,.12);
+    }
+    .step-label{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);text-align:center;}
+    .step-item.active .step-label{color:var(--rose);}
+    .step-bar{flex:1;height:1.5px;background:var(--border);margin:0 -1px;margin-bottom:1.5rem;}
 
-    /* FORCE MOT DE PASSE */
-    .pw-strength { margin-top: .45rem; display: none; }
-    .pw-strength.visible { display: block; }
-    .pw-bar-bg { height: 4px; background: #f0f2f4; border-radius: 2px; overflow: hidden; margin-bottom: .3rem; }
-    .pw-bar-fill { height: 100%; border-radius: 2px; transition: width .3s, background .3s; width: 0%; }
-    .pw-label { font-size: .72rem; color: #9ca3af; }
+    /* ══ CORPS FORMULAIRE ══ */
+    .card-form-body{padding:2.25rem 2.75rem 2.5rem;}
 
-    /* CONSENTEMENT */
-    .consent-box { background: #f8f9fb; border: 1.5px solid #e5e7eb; border-radius: 12px; padding: 1.1rem 1.2rem; margin-bottom: .75rem; transition: border-color .2s; }
-    .consent-box.checked { border-color: var(--turq); background: var(--turq-lt); }
-    .consent-box.error-box { border-color: #ef4444; background: #fef2f2; }
-    .consent-label { display: flex; align-items: flex-start; gap: .75rem; cursor: pointer; user-select: none; margin: 0; }
-    .consent-checkbox { display: none; }
-    .custom-check { width: 20px; height: 20px; border-radius: 6px; border: 2px solid #d1d5db; background: #fff; flex-shrink: 0; margin-top: .1rem; display: flex; align-items: center; justify-content: center; transition: .2s; }
-    .consent-checkbox:checked ~ .custom-check { background: var(--turq); border-color: var(--turq); }
-    .consent-checkbox:checked ~ .custom-check::after { content: ''; display: block; width: 5px; height: 9px; border: 2px solid #fff; border-top: none; border-left: none; transform: rotate(45deg) translate(-1px, -1px); }
-    .consent-text { font-size: .84rem; color: #6b7280; line-height: 1.6; }
-    .consent-text a { color: var(--rose); font-weight: 600; text-decoration: none; border-bottom: 1px dashed var(--rose); transition: .2s; }
-    .consent-text a:hover { color: #9a0062; border-bottom-color: #9a0062; }
-    .consent-error { display: none; font-size: .78rem; color: #ef4444; align-items: center; gap: .4rem; margin-bottom: 1rem; }
-    .consent-error.show { display: flex; }
+    /* Flash messages */
+    .flash-msg{
+      padding:.8rem 1rem;border-radius:12px;margin-bottom:1.25rem;
+      font-size:.84rem;display:flex;align-items:flex-start;gap:.5rem;
+      border:1px solid transparent;
+    }
+    .flash-msg.danger{background:#fef2f2;color:#dc2626;border-color:#fecaca;}
+    .flash-msg.success{background:var(--turq-xl);color:var(--turq-d);border-color:rgba(79,166,149,.25);}
 
-    .btn-signup { width: 100%; padding: .9rem; background: linear-gradient(135deg, var(--rose), #9a0062); color: #fff; font-weight: 700; font-size: .95rem; border: none; border-radius: 12px; cursor: pointer; transition: .25s; display: flex; align-items: center; justify-content: center; gap: .5rem; font-family: 'DM Sans', sans-serif; }
-    .btn-signup:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(193,0,122,.35); }
-    .btn-signup:disabled { opacity: .6; cursor: not-allowed; transform: none; box-shadow: none; }
+    /* ══ CHAMPS ══ */
+    .field-group{margin-bottom:1.25rem;}
+    .field-label{
+      display:block;font-size:.68rem;font-weight:700;
+      text-transform:uppercase;letter-spacing:.09em;
+      color:var(--muted);margin-bottom:.5rem;
+    }
+    .field-input-wrap{position:relative;}
+    .field-icon{
+      position:absolute;left:1rem;top:50%;transform:translateY(-50%);
+      color:var(--faint);font-size:.82rem;pointer-events:none;
+      transition:color .2s;
+    }
+    .field-input{
+      width:100%;padding:.8rem 1rem .8rem 2.6rem;
+      border:1.5px solid var(--border);border-radius:12px;
+      font-size:.9rem;color:var(--text);
+      background:var(--surface2);
+      transition:border-color .22s,box-shadow .22s,background .22s;
+      font-family:var(--ff-body);outline:none;
+      -webkit-appearance:none;
+    }
+    .field-input::placeholder{color:var(--faint);}
+    .field-input:focus{
+      border-color:var(--turq);
+      box-shadow:0 0 0 3px rgba(79,166,149,.1);
+      background:var(--surface);
+    }
+    .field-input:focus + .field-icon{color:var(--turq);}
+    .field-input.error{
+      border-color:#ef4444;
+      box-shadow:0 0 0 3px rgba(239,68,68,.08);
+    }
+    .field-error-msg{
+      font-size:.72rem;color:#ef4444;
+      display:none;align-items:center;gap:.3rem;
+      margin-top:.35rem;
+    }
+    .field-error-msg.show{display:flex;}
 
-    .divider { display: flex; align-items: center; gap: .75rem; margin: 1.5rem 0; }
-    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #e5e7eb; }
-    .divider span { font-size: .75rem; color: #9ca3af; white-space: nowrap; }
+    /* Œil mdp */
+    .pw-eye{
+      position:absolute;right:1rem;top:50%;transform:translateY(-50%);
+      background:none;border:none;cursor:pointer;
+      color:var(--faint);font-size:.88rem;padding:0;line-height:1;
+      transition:color .2s;
+    }
+    .pw-eye:hover{color:var(--turq);}
 
-    .login-link { text-align: center; font-size: .85rem; color: #9ca3af; }
-    .login-link a { color: var(--rose); font-weight: 700; text-decoration: none; }
-    .login-link a:hover { color: #9a0062; text-decoration: underline; }
+    /* ══ FORCE MDP ══ */
+    .pw-strength{margin-top:.55rem;display:none;}
+    .pw-strength.visible{display:block;}
+    .pw-track{height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;margin-bottom:.35rem;}
+    .pw-fill{height:100%;border-radius:2px;transition:width .35s,background .35s;width:0;}
+    .pw-info{display:flex;justify-content:space-between;align-items:center;}
+    .pw-text{font-size:.7rem;font-weight:600;}
+    .pw-hints{display:flex;gap:.4rem;flex-wrap:wrap;}
+    .pw-hint{font-size:.6rem;padding:.1rem .45rem;border-radius:20px;background:var(--bg2);color:var(--faint);border:1px solid var(--border);transition:all .2s;}
+    .pw-hint.ok{background:var(--turq-xl);color:var(--turq-d);border-color:rgba(79,166,149,.2);}
 
-    .flash-msg { padding: .75rem 1rem; border-radius: 10px; margin-bottom: 1.25rem; font-size: .85rem; display: flex; align-items: flex-start; gap: .5rem; }
-    .flash-msg.danger  { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
-    .flash-msg.success { background: var(--turq-lt); color: #2d7a70; border: 1px solid #a7f3d0; }
+    /* ══ CONSENTEMENT ══ */
+    .consent-wrap{
+      background:var(--bg2);border:1.5px solid var(--border);
+      border-radius:14px;padding:1.1rem 1.2rem;
+      margin-bottom:.6rem;transition:all .22s;
+    }
+    .consent-wrap.checked{
+      background:var(--turq-xl);border-color:rgba(79,166,149,.25);
+    }
+    .consent-wrap.error-box{
+      background:#fef2f2;border-color:#fecaca;
+    }
+    .consent-label{
+      display:flex;align-items:flex-start;gap:.85rem;
+      cursor:pointer;user-select:none;margin:0;
+    }
+    .consent-cb{display:none;}
+    .cb-custom{
+      width:20px;height:20px;border-radius:6px;
+      border:2px solid var(--border2);background:var(--surface);
+      flex-shrink:0;margin-top:.1rem;
+      display:flex;align-items:center;justify-content:center;
+      transition:all .22s;
+    }
+    .consent-cb:checked ~ .cb-custom{
+      background:var(--turq);border-color:var(--turq);
+    }
+    .consent-cb:checked ~ .cb-custom::after{
+      content:'';display:block;width:5px;height:9px;
+      border:2px solid #fff;border-top:none;border-left:none;
+      transform:rotate(45deg) translate(-1px,-1px);
+    }
+    .consent-text{font-size:.84rem;color:var(--muted);line-height:1.65;}
+    .consent-text a{
+      color:var(--rose);font-weight:600;text-decoration:none;
+      border-bottom:1px dashed rgba(193,0,122,.35);
+      transition:all .2s;
+    }
+    .consent-text a:hover{color:var(--rose-d);border-bottom-color:var(--rose-d);}
+    .consent-err{
+      display:none;align-items:center;gap:.4rem;
+      font-size:.74rem;color:#ef4444;margin-bottom:.85rem;
+    }
+    .consent-err.show{display:flex;}
+
+    /* ══ BOUTON SUBMIT ══ */
+    .btn-signup{
+      width:100%;padding:.9rem 1rem;
+      background:linear-gradient(135deg,var(--rose),var(--rose-d));
+      color:#fff;font-weight:700;font-size:.95rem;
+      border:none;border-radius:14px;cursor:pointer;
+      transition:all .25s;
+      display:flex;align-items:center;justify-content:center;gap:.55rem;
+      font-family:var(--ff-body);
+      box-shadow:0 4px 16px rgba(193,0,122,.2);
+      position:relative;overflow:hidden;
+    }
+    .btn-signup::before{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(135deg,rgba(255,255,255,.12),transparent);
+      pointer-events:none;
+    }
+    .btn-signup:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 28px rgba(193,0,122,.35);
+    }
+    .btn-signup:active{transform:translateY(0);}
+    .btn-signup:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none;}
+
+    /* Loading spinner */
+    .btn-spinner{display:none;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+
+    /* ══ DIVIDER ══ */
+    .divider{display:flex;align-items:center;gap:.85rem;margin:1.6rem 0 1.25rem;}
+    .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+    .divider span{font-size:.73rem;color:var(--faint);white-space:nowrap;font-style:italic;}
+
+    /* ══ LIEN CONNEXION ══ */
+    .login-cta{
+      display:flex;align-items:center;justify-content:center;gap:.75rem;
+      padding:.85rem 1rem;border-radius:12px;
+      background:var(--bg2);border:1px solid var(--border);
+      text-decoration:none;transition:all .22s;
+    }
+    .login-cta:hover{background:var(--bg3);border-color:var(--border2);text-decoration:none;}
+    .login-cta-text{font-size:.84rem;color:var(--muted);}
+    .login-cta-link{font-size:.88rem;font-weight:700;color:var(--rose);display:flex;align-items:center;gap:.4rem;}
+    .login-cta-link i{font-size:.78rem;}
+    .login-cta-link:hover{color:var(--rose-d);}
+
+    /* ══ INDICATEUR SÉCURITÉ ══ */
+    .security-note{
+      display:flex;align-items:center;justify-content:center;gap:.5rem;
+      font-size:.7rem;color:var(--faint);margin-top:1.35rem;
+    }
+    .security-note i{color:var(--turq);font-size:.72rem;}
+
+    @media(max-width:560px){
+      .card-header-luxe{padding:2rem 1.5rem 1.75rem;}
+      .card-form-body{padding:1.75rem 1.5rem 2rem;}
+      .ch-title{font-size:1.9rem;}
+      .signup-steps{display:none;}
+    }
   </style>
 </head>
 <body>
@@ -89,17 +302,38 @@
 <div class="signup-wrap">
   <div class="signup-card">
 
-    <!-- EN-TÊTE -->
-    <div class="card-top">
-      <div class="ct-inner">
-        <div class="ct-logo">ML2C CONSEIL</div>
-        <h1 class="ct-title">Créer<br><em>votre compte</em></h1>
-        <p class="ct-sub">Accédez à votre espace client en quelques secondes</p>
+    <!-- ══ EN-TÊTE ══ -->
+    <div class="card-header-luxe">
+      <div class="ch-label">ML2C CONSEIL</div>
+      <h1 class="ch-title">Créer<br><em>votre compte</em></h1>
+      <p class="ch-sub">Accédez à votre espace client en quelques secondes</p>
+
+      <!-- Étapes -->
+      <div class="signup-steps">
+        <div class="step-item active">
+          <div class="step-circle"><i class="fas fa-user" style="font-size:.55rem;"></i></div>
+          <div class="step-label">Compte</div>
+        </div>
+        <div class="step-bar"></div>
+        <div class="step-item">
+          <div class="step-circle">2</div>
+          <div class="step-label">Fiche</div>
+        </div>
+        <div class="step-bar"></div>
+        <div class="step-item">
+          <div class="step-circle">3</div>
+          <div class="step-label">Devis</div>
+        </div>
+        <div class="step-bar"></div>
+        <div class="step-item">
+          <div class="step-circle"><i class="fas fa-check" style="font-size:.55rem;"></i></div>
+          <div class="step-label">Espace client</div>
+        </div>
       </div>
     </div>
 
-    <!-- FORMULAIRE -->
-    <div class="card-body-form">
+    <!-- ══ FORMULAIRE ══ -->
+    <div class="card-form-body">
 
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -118,9 +352,12 @@
         <div class="field-group">
           <label class="field-label" for="signup-username">Nom d'utilisateur</label>
           <div class="field-input-wrap">
-            <i class="fas fa-user field-icon"></i>
             <input type="text" class="field-input" id="signup-username" name="username"
-              placeholder="Votre nom d'utilisateur" required autocomplete="username">
+              placeholder="Votre identifiant" required autocomplete="username"
+              style="padding-left:1rem;">
+          </div>
+          <div class="field-error-msg" id="err-username">
+            <i class="fas fa-exclamation-circle"></i> Veuillez saisir un nom d'utilisateur.
           </div>
         </div>
 
@@ -132,31 +369,46 @@
             <input type="email" class="field-input" id="signup-email" name="email"
               placeholder="votre@email.com" required autocomplete="email">
           </div>
+          <div class="field-error-msg" id="err-email">
+            <i class="fas fa-exclamation-circle"></i> Adresse e-mail invalide.
+          </div>
         </div>
 
-        <!-- Mot de passe + œil -->
+        <!-- Mot de passe -->
         <div class="field-group">
           <label class="field-label" for="signup-password">Mot de passe</label>
           <div class="field-input-wrap">
             <i class="fas fa-lock field-icon"></i>
             <input type="password" class="field-input" id="signup-password" name="password"
               placeholder="Minimum 8 caractères" required autocomplete="new-password"
-              style="padding-right: 2.8rem;">
-            <button type="button" class="pw-toggle-btn" id="pwToggle" aria-label="Afficher/masquer le mot de passe">
-              <i class="fas fa-eye" id="pwToggleIcon"></i>
+              style="padding-right:2.8rem;">
+            <button type="button" class="pw-eye" id="pwEye" aria-label="Afficher/masquer">
+              <i class="fas fa-eye" id="pwEyeIco"></i>
             </button>
           </div>
+          <!-- Indicateur de force -->
           <div class="pw-strength" id="pwStrength">
-            <div class="pw-bar-bg"><div class="pw-bar-fill" id="pwBar"></div></div>
-            <span class="pw-label" id="pwLabel">Saisissez un mot de passe</span>
+            <div class="pw-track"><div class="pw-fill" id="pwFill"></div></div>
+            <div class="pw-info">
+              <span class="pw-text" id="pwText" style="color:var(--faint);">Saisissez un mot de passe</span>
+              <div class="pw-hints">
+                <span class="pw-hint" id="hint-len">8+ car.</span>
+                <span class="pw-hint" id="hint-maj">Maj.</span>
+                <span class="pw-hint" id="hint-num">Chiffre</span>
+                <span class="pw-hint" id="hint-sym">Symbole</span>
+              </div>
+            </div>
+          </div>
+          <div class="field-error-msg" id="err-password">
+            <i class="fas fa-exclamation-circle"></i> Minimum 8 caractères requis.
           </div>
         </div>
 
         <!-- Consentement -->
-        <div class="consent-box" id="consentBox">
+        <div class="consent-wrap" id="consentBox">
           <label class="consent-label" for="consent">
-            <input type="checkbox" class="consent-checkbox" id="consent" name="consent" required>
-            <span class="custom-check" id="customCheck"></span>
+            <input type="checkbox" class="consent-cb" id="consent" name="consent" required>
+            <span class="cb-custom" id="cbCustom"></span>
             <span class="consent-text">
               J'ai lu et j'accepte les
               <a href="{{ url_for('mentions_legales') }}" target="_blank">Mentions légales</a>,
@@ -166,20 +418,29 @@
             </span>
           </label>
         </div>
-        <div class="consent-error" id="consentError">
+        <div class="consent-err" id="consentErr">
           <i class="fas fa-exclamation-circle"></i>
           Vous devez accepter les conditions pour créer un compte.
         </div>
 
         <button type="submit" class="btn-signup" id="btnSignup">
-          <i class="fas fa-user-plus"></i> Créer mon compte
+          <span class="btn-spinner" id="btnSpinner"></span>
+          <i class="fas fa-user-plus" id="btnIco"></i>
+          <span id="btnText">Créer mon compte</span>
         </button>
 
       </form>
 
       <div class="divider"><span>Déjà inscrit ?</span></div>
-      <div class="login-link">
-        <a href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt"></i> Se connecter</a>
+
+      <a href="{{ url_for('login') }}" class="login-cta">
+        <span class="login-cta-text">Vous avez déjà un compte ?</span>
+        <span class="login-cta-link"><i class="fas fa-sign-in-alt"></i>Se connecter</span>
+      </a>
+
+      <div class="security-note">
+        <i class="fas fa-lock"></i>
+        <span>Connexion sécurisée · Données chiffrées · Conforme RGPD</span>
       </div>
 
     </div>
@@ -187,106 +448,100 @@
 </div>
 
 {% include "footer.html" %}
-
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  // Header sticky
-  const hdr = document.getElementById('mainHeader');
-  if (hdr) window.addEventListener('scroll', () => hdr.classList.toggle('scrolled', window.scrollY > 60));
+/* ── Œil mot de passe ── */
+const pwInput=document.getElementById('signup-password');
+document.getElementById('pwEye').addEventListener('click',function(){
+  const ico=document.getElementById('pwEyeIco');
+  if(pwInput.type==='password'){pwInput.type='text';ico.classList.replace('fa-eye','fa-eye-slash');}
+  else{pwInput.type='password';ico.classList.replace('fa-eye-slash','fa-eye');}
+  pwInput.focus();
+});
 
-  // ── ŒIL MOT DE PASSE ──
-  const pwInput = document.getElementById('signup-password');
+/* ── Force mot de passe ── */
+const pwFill=document.getElementById('pwFill');
+const pwText=document.getElementById('pwText');
+const pwStr=document.getElementById('pwStrength');
+const hints={len:document.getElementById('hint-len'),maj:document.getElementById('hint-maj'),num:document.getElementById('hint-num'),sym:document.getElementById('hint-sym')};
 
-  document.getElementById('pwToggle').addEventListener('click', function() {
-    const icon = document.getElementById('pwToggleIcon');
-    if (pwInput.type === 'password') {
-      pwInput.type = 'text';
-      icon.classList.replace('fa-eye', 'fa-eye-slash');
-    } else {
-      pwInput.type = 'password';
-      icon.classList.replace('fa-eye-slash', 'fa-eye');
-    }
-    pwInput.focus();
+pwInput.addEventListener('input',function(){
+  const val=this.value;
+  pwStr.classList.toggle('visible',val.length>0);
+
+  const checks={len:val.length>=8,maj:/[A-Z]/.test(val),num:/[0-9]/.test(val),sym:/[^A-Za-z0-9]/.test(val)};
+  Object.entries(checks).forEach(([k,ok])=>hints[k].classList.toggle('ok',ok));
+  const score=Object.values(checks).filter(Boolean).length;
+
+  const levels=[
+    {w:'20%',bg:'#ef4444',label:'Très faible'},
+    {w:'45%',bg:'#f97316',label:'Faible'},
+    {w:'72%',bg:'#eab308',label:'Moyen'},
+    {w:'100%',bg:'#22c55e',label:'Fort'},
+  ];
+  if(val.length===0){pwFill.style.width='0';pwText.textContent='Saisissez un mot de passe';pwText.style.color='var(--faint)';return;}
+  const lvl=levels[Math.max(0,score-1)];
+  pwFill.style.width=lvl.w;pwFill.style.background=lvl.bg;
+  pwText.textContent=lvl.label;pwText.style.color=lvl.bg;
+});
+
+/* ── Consentement ── */
+const checkbox=document.getElementById('consent');
+const consentBox=document.getElementById('consentBox');
+checkbox.addEventListener('change',function(){
+  consentBox.classList.toggle('checked',this.checked);
+  consentBox.classList.remove('error-box');
+  if(this.checked)document.getElementById('consentErr').classList.remove('show');
+});
+
+/* ── Validation ── */
+document.getElementById('signupForm').addEventListener('submit',function(e){
+  let valid=true;
+
+  const u=document.getElementById('signup-username');
+  const eu=document.getElementById('err-username');
+  if(!u.value.trim()){u.classList.add('error');eu.classList.add('show');valid=false;}
+  else{u.classList.remove('error');eu.classList.remove('show');}
+
+  const em=document.getElementById('signup-email');
+  const eem=document.getElementById('err-email');
+  if(!em.value.trim()||!em.value.includes('@')){em.classList.add('error');eem.classList.add('show');valid=false;}
+  else{em.classList.remove('error');eem.classList.remove('show');}
+
+  const ep=document.getElementById('err-password');
+  if(!pwInput.value.trim()||pwInput.value.length<8){pwInput.classList.add('error');ep.classList.add('show');valid=false;}
+  else{pwInput.classList.remove('error');ep.classList.remove('show');}
+
+  if(!checkbox.checked){
+    consentBox.classList.add('error-box');
+    document.getElementById('consentErr').classList.add('show');
+    valid=false;
+  }
+
+  if(!valid){
+    e.preventDefault();
+    const first=document.querySelector('.field-input.error,.consent-wrap.error-box');
+    if(first)first.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+
+  /* Loading state */
+  const btn=document.getElementById('btnSignup');
+  const spinner=document.getElementById('btnSpinner');
+  const btnIco=document.getElementById('btnIco');
+  const btnTxt=document.getElementById('btnText');
+  btn.disabled=true;spinner.style.display='block';btnIco.style.display='none';btnTxt.textContent='Création en cours…';
+});
+
+/* Retirer erreurs à la saisie */
+document.querySelectorAll('.field-input').forEach(input=>{
+  input.addEventListener('input',()=>{
+    input.classList.remove('error');
+    const err=document.getElementById('err-'+input.id.replace('signup-',''));
+    if(err)err.classList.remove('show');
   });
-
-  // ── FORCE MOT DE PASSE ──
-  const pwBar    = document.getElementById('pwBar');
-  const pwLabel  = document.getElementById('pwLabel');
-  const pwStrBox = document.getElementById('pwStrength');
-
-  pwInput.addEventListener('input', () => {
-    const val = pwInput.value;
-    pwStrBox.classList.toggle('visible', val.length > 0);
-
-    let score = 0;
-    if (val.length >= 8)           score++;
-    if (/[A-Z]/.test(val))         score++;
-    if (/[0-9]/.test(val))         score++;
-    if (/[^A-Za-z0-9]/.test(val))  score++;
-
-    const levels = [
-      { w: '25%',  bg: '#ef4444', lbl: 'Très faible' },
-      { w: '50%',  bg: '#f97316', lbl: 'Faible' },
-      { w: '75%',  bg: '#eab308', lbl: 'Moyen' },
-      { w: '100%', bg: '#22c55e', lbl: 'Fort' },
-    ];
-    const lvl = levels[Math.max(0, score - 1)];
-    pwBar.style.width      = lvl.w;
-    pwBar.style.background = lvl.bg;
-    pwLabel.textContent    = lvl.lbl;
-    pwLabel.style.color    = lvl.bg;
-  });
-
-  // ── CONSENTEMENT ──
-  const checkbox    = document.getElementById('consent');
-  const consentBox  = document.getElementById('consentBox');
-  const customCheck = document.getElementById('customCheck');
-  const consentErr  = document.getElementById('consentError');
-
-  checkbox.addEventListener('change', () => {
-    consentBox.classList.toggle('checked', checkbox.checked);
-    consentBox.classList.remove('error-box');
-    consentErr.classList.toggle('show', !checkbox.checked && consentErr.classList.contains('show'));
-    customCheck.style.background  = checkbox.checked ? 'var(--turq)' : '#fff';
-    customCheck.style.borderColor = checkbox.checked ? 'var(--turq)' : '#d1d5db';
-  });
-
-  // ── VALIDATION AVANT ENVOI ──
-  document.getElementById('signupForm').addEventListener('submit', function(e) {
-    let valid = true;
-
-    const usernameEl = document.getElementById('signup-username');
-    if (!usernameEl.value.trim()) {
-      usernameEl.classList.add('error'); valid = false;
-    } else { usernameEl.classList.remove('error'); }
-
-    const emailEl = document.getElementById('signup-email');
-    if (!emailEl.value.trim() || !emailEl.value.includes('@')) {
-      emailEl.classList.add('error'); valid = false;
-    } else { emailEl.classList.remove('error'); }
-
-    if (!pwInput.value.trim() || pwInput.value.length < 8) {
-      pwInput.classList.add('error'); valid = false;
-    } else { pwInput.classList.remove('error'); }
-
-    if (!checkbox.checked) {
-      consentBox.classList.add('error-box');
-      consentErr.classList.add('show');
-      valid = false;
-    }
-
-    if (!valid) {
-      e.preventDefault();
-      const firstError = document.querySelector('.field-input.error, .consent-box.error-box');
-      if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  });
-
-  // Retirer erreur à la saisie
-  document.querySelectorAll('.field-input').forEach(input => {
-    input.addEventListener('input', () => input.classList.remove('error'));
-  });
+});
 </script>
 </body>
 </html>

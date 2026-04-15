@@ -3,399 +3,529 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gérer mes devis - ML2C CONSEIL</title>
+  <title>Gérer mes devis — ML2C CONSEIL</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <style>
-    :root {
-      --rose:#C1007A; --rose-dark:#9a0062; --rose-light:#fce4f3;
-      --turq:#4FA695; --turq-dark:#3a7d70; --turq-light:#d4f0ec;
-      --gris:#5C666B; --gris-dark:#2d3436; --border:#e5e7eb;
-      --text:#2d2d2d; --muted:#6b7280;
+    :root{
+      --rose:#C1007A;--rose-d:#9a0062;--rose-l:#fce4f3;--rose-xl:#fff5fb;
+      --turq:#4FA695;--turq-d:#3a7d70;--turq-l:#d4f0ec;--turq-xl:#edfaf7;
+      --gold:#b08d57;--gold-l:#f5eedf;--gold-ll:#fdfaf5;
+      --ink:#1a1a2e;--ink2:#2d2d3d;
+      --bg:#faf8f4;--bg2:#f5f2ec;--bg3:#ede9e0;
+      --surface:#fff;--surface2:#fdfcfa;
+      --border:#e8e2d9;--border2:#d4cdc0;
+      --text:#1a1a1a;--text2:#3d3d3d;--muted:#8a8278;--faint:#b5aea5;
+      --ff-head:'Cormorant Garamond',serif;--ff-body:'DM Sans',sans-serif;
+      --shadow-sm:0 2px 8px rgba(26,20,10,.06);
+      --shadow-md:0 8px 32px rgba(26,20,10,.09);
+      --shadow-lg:0 24px 64px rgba(26,20,10,.12);
     }
-    *, *::before, *::after { box-sizing:border-box; }
-    body { background:#f0f2f5; font-family:'DM Sans',sans-serif; margin:0; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--bg);font-family:var(--ff-body);color:var(--text);min-height:100vh;}
 
-    /* ── HERO ── */
-    .gd-hero {
-      background:linear-gradient(135deg,#1e2729 0%,#2d3436 55%,#1a3333 100%);
-      padding:2.25rem 0 2.25rem; position:relative; overflow:hidden; margin-bottom:0;
+    /* ══ TEXTURE FOND ══ */
+    body::before{
+      content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+      background:
+        radial-gradient(ellipse 60% 70% at 100% 0%,rgba(193,0,122,.05) 0%,transparent 55%),
+        radial-gradient(ellipse 50% 50% at 0% 100%,rgba(79,166,149,.06) 0%,transparent 50%),
+        radial-gradient(ellipse 40% 40% at 50% 50%,rgba(176,141,87,.04) 0%,transparent 60%);
     }
-    .gd-hero::before {
-      content:''; position:absolute; inset:0;
-      background:radial-gradient(ellipse at 80% 40%,rgba(79,166,149,.16) 0%,transparent 55%),
-                 radial-gradient(ellipse at 8% 85%,rgba(193,0,122,.12) 0%,transparent 45%);
+    body::after{
+      content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231a1a1a' fill-opacity='0.018'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
-    .gd-hero-inner { position:relative; z-index:1; }
-    .gd-breadcrumb { font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:.6rem; }
-    .gd-breadcrumb a { color:rgba(255,255,255,.35); text-decoration:none; transition:.2s; }
-    .gd-breadcrumb a:hover { color:var(--turq); }
-    .gd-breadcrumb span { color:var(--turq); }
-    .gd-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,4vw,2.7rem); font-weight:700; color:#fff; line-height:1.1; margin-bottom:.4rem; }
-    .gd-title em { color:#5eead4; font-style:italic; }
-    .gd-sub { font-size:.86rem; color:rgba(255,255,255,.45); margin:0; }
 
-    /* ── PAGE ── */
-    .gd-page { padding:2.5rem 0 4rem; min-height:calc(100vh - 350px); }
+    /* ══ WRAPPER ══ */
+    .gd-wrapper{position:relative;z-index:1;min-height:100vh;padding-bottom:5rem;}
 
-    /* ── TOOLBAR ── */
-    .gd-toolbar {
-      background:#fff; border-radius:16px; padding:1rem 1.5rem;
-      box-shadow:0 4px 20px rgba(0,0,0,.06); margin-bottom:1.25rem;
-      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.75rem;
+    /* ══ HERO ══ */
+    .gd-hero{
+      padding:3.5rem 0 5.5rem;position:relative;overflow:hidden;
+      background:linear-gradient(160deg,var(--bg) 0%,var(--bg2) 55%,var(--bg3) 100%);
+      border-bottom:1px solid var(--border);
     }
-    .toolbar-left { display:flex; align-items:center; gap:.75rem; flex-wrap:wrap; }
-    .select-all-btn {
-      display:inline-flex; align-items:center; gap:.4rem;
-      padding:.5rem 1rem; border-radius:8px; font-size:.82rem; font-weight:600;
-      background:#f0f2f5; color:var(--gris); border:1.5px solid var(--border);
-      cursor:pointer; transition:.2s;
+    .gd-hero::before{
+      content:'';position:absolute;inset:0;pointer-events:none;
+      background:
+        radial-gradient(ellipse 40% 60% at 100% 0%,rgba(193,0,122,.07) 0%,transparent 60%),
+        radial-gradient(ellipse 30% 40% at 0% 100%,rgba(176,141,87,.08) 0%,transparent 50%);
     }
-    .select-all-btn:hover { background:var(--border); color:var(--text); }
-    .selection-count {
-      font-size:.82rem; color:var(--muted); font-weight:500;
+    .gd-hero-deco{position:absolute;top:0;left:0;right:0;height:2.5px;background:linear-gradient(90deg,transparent,var(--rose) 30%,var(--gold) 70%,transparent);}
+    .gd-hero-mono{display:none;}
+    .gd-hero-inner{position:relative;z-index:1;}
+    .gd-breadcrumb{
+      font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+      color:var(--faint);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem;
     }
-    .selection-count span { font-weight:700; color:var(--rose); }
-    .btn-delete-selected {
-      display:inline-flex; align-items:center; gap:.45rem;
-      padding:.55rem 1.25rem; border-radius:9px;
-      background:#fef2f2; color:#dc2626; font-weight:700; font-size:.86rem;
-      border:1.5px solid #fecaca; cursor:pointer; transition:.2s;
-      opacity:.4; pointer-events:none;
+    .gd-breadcrumb a{color:var(--faint);text-decoration:none;transition:.2s;}
+    .gd-breadcrumb a:hover{color:var(--turq);}
+    .gd-breadcrumb::before{content:'';width:18px;height:1px;background:var(--faint);}
+    .gd-title{
+      font-family:var(--ff-head);font-size:clamp(2rem,5vw,3.5rem);font-weight:300;
+      color:var(--ink);line-height:1.05;margin-bottom:.45rem;letter-spacing:-.02em;
     }
-    .btn-delete-selected.active { opacity:1; pointer-events:all; }
-    .btn-delete-selected.active:hover { background:#dc2626; color:#fff; border-color:#dc2626; }
+    .gd-title strong{font-weight:700;}
+    .gd-title em{color:var(--rose);font-style:italic;font-weight:600;}
+    .gd-sub{font-size:.87rem;color:var(--muted);margin:0;}
 
-    /* ── DEVIS CARDS ── */
-    .devis-grid { display:flex; flex-direction:column; gap:.75rem; }
-
-    .devis-row {
-      background:#fff; border-radius:14px;
-      box-shadow:0 3px 16px rgba(0,0,0,.06);
-      border:2px solid transparent;
-      transition:.2s; cursor:pointer;
-      overflow:hidden; position:relative;
+    /* Stats hero */
+    .gd-hero-stats{display:flex;gap:.75rem;margin-top:1.5rem;flex-wrap:wrap;}
+    .gd-stat{
+      display:flex;align-items:center;gap:.65rem;
+      padding:.6rem 1rem;border-radius:12px;
+      background:var(--surface);border:1px solid var(--border);
+      box-shadow:var(--shadow-sm);animation:statRise .5s both;
     }
-    .devis-row:hover { border-color:var(--border); box-shadow:0 6px 24px rgba(0,0,0,.1); }
-    .devis-row.selected { border-color:var(--rose); background:#fff8fc; box-shadow:0 4px 20px rgba(193,0,122,.12); }
+    @keyframes statRise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+    .gd-stat-ico{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;}
+    .gsi-rose{background:var(--rose-xl);color:var(--rose);}
+    .gsi-turq{background:var(--turq-xl);color:var(--turq);}
+    .gd-stat-val{font-family:var(--ff-head);font-size:1.3rem;font-weight:700;color:var(--ink);line-height:1;}
+    .gd-stat-lbl{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--faint);}
 
-    /* Barre latérale colorée */
-    .devis-row::before {
-      content:''; position:absolute; left:0; top:0; bottom:0;
-      width:4px; background:var(--border); border-radius:4px 0 0 4px; transition:.2s;
+    /* ══ CONTENU ══ */
+    .gd-content{margin-top:-2.5rem;position:relative;z-index:2;padding-bottom:5rem;}
+
+    /* ══ TOOLBAR ══ */
+    .gd-toolbar{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:18px;padding:1rem 1.5rem;
+      box-shadow:var(--shadow-sm);margin-bottom:1.25rem;
+      display:flex;align-items:center;justify-content:space-between;
+      flex-wrap:wrap;gap:.75rem;
     }
-    .devis-row.selected::before { background:var(--rose); }
+    .toolbar-left{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;}
+    .btn-select-all{
+      display:inline-flex;align-items:center;gap:.45rem;
+      padding:.5rem 1rem;border-radius:10px;font-size:.82rem;font-weight:600;
+      background:var(--bg2);color:var(--muted);border:1.5px solid var(--border);
+      cursor:pointer;transition:all .22s;font-family:var(--ff-body);
+    }
+    .btn-select-all:hover{background:var(--bg3);color:var(--ink);border-color:var(--border2);}
+    .selection-count{font-size:.82rem;color:var(--muted);font-weight:500;}
+    .selection-count strong{color:var(--rose);}
+    .btn-del-sel{
+      display:inline-flex;align-items:center;gap:.45rem;
+      padding:.52rem 1.15rem;border-radius:10px;
+      background:rgba(220,38,38,.06);border:1.5px solid rgba(220,38,38,.15);
+      color:#dc2626;font-weight:700;font-size:.84rem;
+      cursor:pointer;transition:all .22s;font-family:var(--ff-body);
+      opacity:.4;pointer-events:none;
+    }
+    .btn-del-sel.active{opacity:1;pointer-events:all;}
+    .btn-del-sel.active:hover{background:#dc2626;color:#fff;border-color:#dc2626;box-shadow:0 4px 14px rgba(220,38,38,.2);}
 
-    .devis-row-inner {
-      display:grid; grid-template-columns:44px 1fr auto;
-      align-items:center; gap:1rem; padding:1.1rem 1.25rem 1.1rem 1.5rem;
+    /* ══ GRILLE DEVIS ══ */
+    .devis-grid{display:flex;flex-direction:column;gap:.85rem;}
+
+    .devis-row{
+      background:var(--surface);border:1.5px solid var(--border);
+      border-radius:18px;box-shadow:var(--shadow-sm);
+      transition:all .25s;cursor:pointer;overflow:hidden;position:relative;
+    }
+    /* Ligne dégradée top */
+    .devis-row::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:2px;
+      background:linear-gradient(90deg,transparent,rgba(193,0,122,.1) 40%,rgba(176,141,87,.15) 70%,transparent);
+      opacity:0;transition:opacity .25s;
+    }
+    /* Barre latérale */
+    .devis-row::after{
+      content:'';position:absolute;left:0;top:0;bottom:0;
+      width:3.5px;background:var(--border2);border-radius:4px 0 0 4px;transition:all .25s;
+    }
+    .devis-row:hover{border-color:var(--border2);box-shadow:var(--shadow-md);transform:translateY(-1px);}
+    .devis-row:hover::before{opacity:1;}
+    .devis-row.selected{
+      border-color:rgba(193,0,122,.25);
+      background:var(--rose-xl);
+      box-shadow:0 6px 24px rgba(193,0,122,.1);
+    }
+    .devis-row.selected::after{background:var(--rose);}
+    .devis-row.selected::before{opacity:1;}
+
+    .devis-row-inner{
+      display:grid;grid-template-columns:44px 1fr auto;
+      align-items:center;gap:1.1rem;
+      padding:1.25rem 1.4rem 1.25rem 1.6rem;
     }
 
     /* Checkbox custom */
-    .custom-check { position:relative; width:20px; height:20px; flex-shrink:0; }
-    .custom-check input { position:absolute; opacity:0; width:0; height:0; }
-    .check-box {
-      width:20px; height:20px; border-radius:6px;
-      border:2px solid var(--border); background:#fff;
-      display:flex; align-items:center; justify-content:center;
-      transition:.2s; font-size:.7rem; color:#fff;
+    .custom-check{position:relative;width:20px;height:20px;flex-shrink:0;}
+    .custom-check input{position:absolute;opacity:0;width:0;height:0;}
+    .check-box{
+      width:20px;height:20px;border-radius:6px;
+      border:1.5px solid var(--border2);background:var(--surface);
+      display:flex;align-items:center;justify-content:center;
+      transition:all .22s;font-size:.7rem;color:#fff;
     }
-    .custom-check input:checked + .check-box { background:var(--rose); border-color:var(--rose); }
+    .custom-check input:checked+.check-box{background:var(--rose);border-color:var(--rose);}
 
-    /* Infos devis */
-    .devis-info { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:.5rem .9rem; }
-    .di-label { font-size:.62rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:.12rem; }
-    .di-val { font-size:.88rem; font-weight:600; color:var(--text); }
-    .di-val.service { color:var(--rose); }
+    /* Infos */
+    .devis-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.5rem .9rem;}
+    .di-label{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-bottom:.15rem;}
+    .di-val{font-size:.9rem;font-weight:600;color:var(--ink);}
+    .di-val.service{color:var(--rose);}
 
-    /* RDV pill */
-    .rdv-pill-sm {
-      display:inline-flex; align-items:center; gap:.35rem;
-      padding:.3rem .7rem; border-radius:7px;
-      background:var(--turq-light); color:var(--turq-dark);
-      font-size:.74rem; font-weight:700; white-space:nowrap;
-      border:1px solid rgba(79,166,149,.25);
+    /* Pill RDV */
+    .rdv-pill{
+      display:inline-flex;align-items:center;gap:.38rem;
+      padding:.3rem .75rem;border-radius:8px;
+      background:var(--turq-xl);border:1px solid rgba(79,166,149,.2);
+      color:var(--turq-d);font-size:.75rem;font-weight:700;white-space:nowrap;
     }
 
-    /* Action rapide */
-    .devis-actions { display:flex; gap:.4rem; flex-shrink:0; }
-    .action-icon-btn {
-      width:32px; height:32px; border-radius:8px; border:none;
-      display:flex; align-items:center; justify-content:center;
-      font-size:.78rem; cursor:pointer; transition:.2s;
+    /* Bouton action rapide */
+    .devis-actions{display:flex;gap:.4rem;flex-shrink:0;}
+    .action-btn{
+      width:34px;height:34px;border-radius:10px;border:1.5px solid rgba(220,38,38,.15);
+      background:rgba(220,38,38,.05);color:#dc2626;
+      display:flex;align-items:center;justify-content:center;
+      font-size:.8rem;cursor:pointer;transition:all .22s;
     }
-    .action-icon-btn.del { background:#fef2f2; color:#dc2626; }
-    .action-icon-btn.del:hover { background:#dc2626; color:#fff; }
+    .action-btn:hover{background:#dc2626;color:#fff;border-color:#dc2626;box-shadow:0 4px 12px rgba(220,38,38,.2);}
 
-    /* ── EMPTY STATE ── */
-    .empty-state {
-      background:#fff; border-radius:20px; box-shadow:0 6px 28px rgba(0,0,0,.07);
-      padding:3.5rem 2rem; text-align:center;
+    /* ══ EMPTY STATE ══ */
+    .empty-state{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:22px;box-shadow:var(--shadow-md);
+      padding:4rem 2rem;text-align:center;position:relative;overflow:hidden;
     }
-    .empty-ico-wrap { width:72px; height:72px; border-radius:50%; background:var(--rose-light); margin:0 auto 1.1rem; display:flex; align-items:center; justify-content:center; font-size:1.6rem; color:var(--rose); }
-    .empty-state h4 { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:700; color:var(--text); margin-bottom:.4rem; }
-    .empty-state p { font-size:.88rem; color:var(--muted); margin-bottom:1.5rem; }
-
-    /* ── BOUTONS ── */
-    .btn-rose { display:inline-flex; align-items:center; gap:.45rem; padding:.65rem 1.4rem; border-radius:9px; background:var(--rose); color:#fff; font-weight:600; font-size:.88rem; border:none; cursor:pointer; transition:.2s; text-decoration:none; }
-    .btn-rose:hover { background:var(--rose-dark); color:#fff; transform:translateY(-1px); box-shadow:0 4px 14px rgba(193,0,122,.3); }
-    .btn-ghost { display:inline-flex; align-items:center; gap:.45rem; padding:.65rem 1.4rem; border-radius:9px; background:#f0f2f5; color:var(--gris); font-weight:600; font-size:.88rem; border:none; cursor:pointer; transition:.2s; text-decoration:none; }
-    .btn-ghost:hover { background:var(--border); color:var(--text); text-decoration:none; }
-
-    /* ── CONFIRM MODAL ── */
-    .modal-overlay {
-      position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:1000;
-      display:none; align-items:center; justify-content:center;
-      backdrop-filter:blur(3px);
+    .empty-state::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:2.5px;
+      background:linear-gradient(90deg,transparent,var(--rose) 30%,var(--gold) 70%,transparent);
     }
-    .modal-overlay.open { display:flex; animation:fadeIn .2s ease; }
-    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-    .modal-box {
-      background:#fff; border-radius:20px; padding:2rem 2.25rem;
-      max-width:420px; width:90%; box-shadow:0 24px 60px rgba(0,0,0,.2);
-      animation:slideUp .25s ease;
+    .empty-ico{
+      width:76px;height:76px;border-radius:50%;
+      background:var(--rose-xl);border:1px solid rgba(193,0,122,.1);
+      margin:0 auto 1.25rem;display:flex;align-items:center;justify-content:center;
+      font-size:1.65rem;color:var(--rose);
     }
-    @keyframes slideUp { from{transform:translateY(16px);opacity:0} to{transform:translateY(0);opacity:1} }
-    .modal-ico { width:52px; height:52px; border-radius:50%; background:#fef2f2; margin:0 auto .9rem; display:flex; align-items:center; justify-content:center; font-size:1.25rem; color:#dc2626; }
-    .modal-box h4 { font-size:1.05rem; font-weight:700; color:var(--text); text-align:center; margin-bottom:.4rem; }
-    .modal-box p { font-size:.85rem; color:var(--muted); text-align:center; margin-bottom:1.5rem; }
-    .modal-btns { display:flex; gap:.65rem; }
-    .modal-btns .btn-cancel { flex:1; padding:.65rem; border-radius:9px; background:#f0f2f5; color:var(--gris); font-weight:600; border:none; cursor:pointer; transition:.2s; }
-    .modal-btns .btn-cancel:hover { background:var(--border); }
-    .modal-btns .btn-confirm { flex:1; padding:.65rem; border-radius:9px; background:#dc2626; color:#fff; font-weight:700; border:none; cursor:pointer; transition:.2s; }
-    .modal-btns .btn-confirm:hover { background:#b91c1c; }
+    .empty-state h4{font-family:var(--ff-head);font-size:1.5rem;font-weight:700;color:var(--ink);margin-bottom:.45rem;}
+    .empty-state p{font-size:.87rem;color:var(--muted);margin-bottom:1.75rem;}
 
-    @media(max-width:640px) {
-      .devis-row-inner { grid-template-columns:36px 1fr; }
-      .devis-actions { display:none; }
-      .devis-info { grid-template-columns:1fr 1fr; }
-      .gd-toolbar { flex-direction:column; align-items:flex-start; }
+    /* ══ BOUTONS ══ */
+    .btn-act{
+      display:inline-flex;align-items:center;gap:.45rem;
+      padding:.65rem 1.4rem;border-radius:11px;
+      font-family:var(--ff-body);font-weight:600;font-size:.87rem;
+      cursor:pointer;border:none;transition:all .25s;text-decoration:none;
+    }
+    .btn-rose{background:var(--rose);color:#fff;box-shadow:0 4px 14px rgba(193,0,122,.2);}
+    .btn-rose:hover{background:var(--rose-d);color:#fff;box-shadow:0 8px 20px rgba(193,0,122,.3);transform:translateY(-2px);}
+    .btn-ghost{background:var(--surface);border:1.5px solid var(--border);color:var(--text2);}
+    .btn-ghost:hover{background:var(--bg2);border-color:var(--border2);color:var(--ink);text-decoration:none;}
+
+    /* ══ MODALS ══ */
+    .modal-overlay{
+      position:fixed;inset:0;background:rgba(26,20,10,.3);z-index:1000;
+      display:none;align-items:center;justify-content:center;
+      backdrop-filter:blur(6px);
+    }
+    .modal-overlay.open{display:flex;animation:fadeIn .22s ease;}
+    @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+    .modal-box{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:24px;padding:2.25rem 2.5rem;
+      max-width:420px;width:90%;
+      box-shadow:0 30px 80px rgba(26,20,10,.2);
+      animation:slideUp .28s cubic-bezier(.4,0,.2,1);
+      position:relative;overflow:hidden;
+    }
+    .modal-box::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:2.5px;
+      background:linear-gradient(90deg,transparent,#ef4444 40%,transparent);
+    }
+    @keyframes slideUp{from{transform:translateY(14px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+    .modal-ico{
+      width:54px;height:54px;border-radius:50%;
+      background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.15);
+      margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;
+      font-size:1.25rem;color:#dc2626;
+    }
+    .modal-box h4{font-family:var(--ff-head);font-size:1.25rem;font-weight:700;color:var(--ink);text-align:center;margin-bottom:.4rem;}
+    .modal-box p{font-size:.84rem;color:var(--muted);text-align:center;margin-bottom:1.5rem;line-height:1.6;}
+    .modal-btns{display:flex;gap:.65rem;}
+    .modal-cancel{
+      flex:1;padding:.65rem;border-radius:11px;
+      background:var(--bg2);border:1.5px solid var(--border);color:var(--text2);
+      font-weight:600;font-family:var(--ff-body);cursor:pointer;transition:all .2s;
+    }
+    .modal-cancel:hover{background:var(--bg3);border-color:var(--border2);}
+    .modal-confirm{
+      flex:1;padding:.65rem;border-radius:11px;
+      background:#dc2626;color:#fff;font-weight:700;
+      font-family:var(--ff-body);border:none;cursor:pointer;transition:all .2s;
+    }
+    .modal-confirm:hover{background:#b91c1c;box-shadow:0 4px 12px rgba(220,38,38,.3);}
+
+    /* ══ TOAST ══ */
+    .gd-toast{
+      position:fixed;bottom:2rem;right:2rem;z-index:9999;
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:14px;padding:.85rem 1.25rem;
+      display:flex;align-items:center;gap:.7rem;
+      font-size:.82rem;font-weight:500;color:var(--text);
+      box-shadow:var(--shadow-lg);
+      transform:translateY(80px);opacity:0;
+      transition:all .4s cubic-bezier(.34,1.2,.64,1);pointer-events:none;
+    }
+    .gd-toast.show{transform:translateY(0);opacity:1;}
+    .gd-toast i{color:var(--turq);}
+
+    @media(max-width:640px){
+      .gd-hero{padding:2.5rem 0 4.5rem;}
+      .devis-row-inner{grid-template-columns:36px 1fr;}
+      .devis-actions{display:none;}
+      .devis-info{grid-template-columns:1fr 1fr;}
+      .gd-toolbar{flex-direction:column;align-items:flex-start;}
+      .gd-hero-mono{display:none;}
     }
   </style>
 </head>
 <body>
 {% include "header.html" %}
 
-<!-- HERO -->
-<div class="gd-hero">
-  <div class="container gd-hero-inner">
-    <div class="gd-breadcrumb">
-      <a href="{{ url_for('compte_client') }}">Espace client</a> &rsaquo; <span>Gérer mes devis</span>
-    </div>
-    <h1 class="gd-title">Mes <em>devis</em></h1>
-    <p class="gd-sub">Consultez et supprimez vos demandes de rendez-vous.</p>
-  </div>
-</div>
+<div class="gd-wrapper">
 
-<div class="gd-page">
-  <div class="container">
+  <!-- ══ HERO ══ -->
+  <div class="gd-hero">
+    <div class="gd-hero-deco"></div>
+    <div class="gd-hero-mono">MES DEVIS</div>
+    <div class="container gd-hero-inner">
 
-    {% if devis_list %}
-
-    <!-- TOOLBAR -->
-    <div class="gd-toolbar">
-      <div class="toolbar-left">
-        <button type="button" class="select-all-btn" id="btnSelectAll">
-          <i class="fas fa-check-square"></i> Tout sélectionner
-        </button>
-        <div class="selection-count">
-          <span id="countSelected">0</span> sélectionné(s) sur {{ devis_list|length }}
-        </div>
+      <div class="gd-breadcrumb">
+        <a href="{{ url_for('compte_client') }}">Espace client</a>
+        &rsaquo; Gérer mes devis
       </div>
-      <button type="button" class="btn-delete-selected" id="btnDeleteSelected">
-        <i class="fas fa-trash-alt"></i> Supprimer la sélection
-      </button>
-    </div>
 
-    <!-- LISTE DEVIS -->
-    <form method="POST" action="{{ url_for('gerer_devis') }}" id="formGerer">
-      <div class="devis-grid" id="devisGrid">
-        {% for devis in devis_list %}
-        <div class="devis-row" id="row-{{ devis.id }}" onclick="toggleRow(this, '{{ devis.id }}')">
-          <div class="devis-row-inner">
+      <h1 class="gd-title">Mes <em>devis</em></h1>
+      <p class="gd-sub">Consultez, sélectionnez et supprimez vos demandes de rendez-vous.</p>
 
-            <!-- Checkbox -->
-            <label class="custom-check" onclick="event.stopPropagation()">
-              <input type="checkbox" name="devis_ids" value="{{ devis.id }}" class="devis-cb" onchange="updateCount()">
-              <div class="check-box"><i class="fas fa-check"></i></div>
-            </label>
-
-            <!-- Infos -->
-            <div class="devis-info">
-              <div class="devis-info-item">
-                <div class="di-label">Nom / Société</div>
-                <div class="di-val">{{ devis.nom }}</div>
-              </div>
-              <div class="devis-info-item">
-                <div class="di-label">Secteur</div>
-                <div class="di-val">{{ devis.secteur }}</div>
-              </div>
-              <div class="devis-info-item">
-                <div class="di-label">Service</div>
-                <div class="di-val service">{{ devis.type_service }}</div>
-              </div>
-              <div class="devis-info-item">
-                <div class="di-label">Rendez-vous</div>
-                <div class="di-val">
-                  <span class="rdv-pill-sm">
-                    <i class="fas fa-calendar-check"></i>
-                    {{ devis.date_rdv }} — {{ devis.heure_rdv }}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Action rapide -->
-            <div class="devis-actions">
-              <button type="button" class="action-icon-btn del"
-                      onclick="event.stopPropagation(); confirmDeleteOne('{{ devis.id }}')"
-                      title="Supprimer ce devis">
-                <i class="fas fa-trash-alt"></i>
-              </button>
-            </div>
-
+      <div class="gd-hero-stats">
+        <div class="gd-stat" style="animation-delay:.05s;">
+          <div class="gd-stat-ico gsi-rose"><i class="fas fa-file-invoice"></i></div>
+          <div>
+            <div class="gd-stat-val">{{ devis_list|length if devis_list else 0 }}</div>
+            <div class="gd-stat-lbl">Devis au total</div>
           </div>
         </div>
-        {% endfor %}
+        <div class="gd-stat" style="animation-delay:.1s;">
+          <div class="gd-stat-ico gsi-turq"><i class="fas fa-calendar-check"></i></div>
+          <div>
+            <div class="gd-stat-val">{{ devis_list|length if devis_list else 0 }}</div>
+            <div class="gd-stat-lbl">RDV planifiés</div>
+          </div>
+        </div>
       </div>
 
-      <!-- Input caché pour suppression unitaire -->
-      <input type="hidden" name="devis_ids_single" id="singleDeleteId">
-    </form>
-
-    {% else %}
-
-    <!-- EMPTY STATE -->
-    <div class="empty-state">
-      <div class="empty-ico-wrap"><i class="fas fa-folder-open"></i></div>
-      <h4>Aucun devis enregistré</h4>
-      <p>Vous n'avez pas encore soumis de demande de devis.</p>
-      <a href="{{ url_for('devis') }}" class="btn-rose">
-        <i class="fas fa-plus-circle"></i> Créer un devis
-      </a>
     </div>
+  </div>
 
-    {% endif %}
+  <!-- ══ CONTENU ══ -->
+  <div class="gd-content">
+    <div class="container">
 
-    <!-- ACTIONS BAS -->
-    <div style="display:flex;gap:.65rem;flex-wrap:wrap;margin-top:1.75rem;">
-      <a href="{{ url_for('devis') }}" class="btn-rose">
-        <i class="fas fa-plus-circle"></i> Nouveau devis
-      </a>
-      <a href="{{ url_for('compte_client') }}" class="btn-ghost">
-        <i class="fas fa-arrow-left"></i> Retour à l'espace client
-      </a>
+      {% if devis_list %}
+
+      <!-- TOOLBAR -->
+      <div class="gd-toolbar">
+        <div class="toolbar-left">
+          <button type="button" class="btn-select-all" id="btnSelectAll">
+            <i class="fas fa-check-square"></i> Tout sélectionner
+          </button>
+          <div class="selection-count">
+            <strong id="countSelected">0</strong> sélectionné(s) sur {{ devis_list|length }}
+          </div>
+        </div>
+        <button type="button" class="btn-del-sel" id="btnDeleteSelected">
+          <i class="fas fa-trash-alt"></i> Supprimer la sélection
+        </button>
+      </div>
+
+      <!-- LISTE -->
+      <form method="POST" action="{{ url_for('gerer_devis') }}" id="formGerer">
+        <div class="devis-grid">
+          {% for devis in devis_list %}
+          <div class="devis-row" id="row-{{ devis.id }}" onclick="toggleRow(this,'{{ devis.id }}')">
+            <div class="devis-row-inner">
+
+              <!-- Checkbox -->
+              <label class="custom-check" onclick="event.stopPropagation()">
+                <input type="checkbox" name="devis_ids" value="{{ devis.id }}" class="devis-cb" onchange="updateCount()">
+                <div class="check-box"><i class="fas fa-check" style="font-size:.6rem;"></i></div>
+              </label>
+
+              <!-- Données -->
+              <div class="devis-info">
+                <div>
+                  <div class="di-label">Nom / Société</div>
+                  <div class="di-val">{{ devis.nom }}</div>
+                </div>
+                <div>
+                  <div class="di-label">Secteur</div>
+                  <div class="di-val">{{ devis.secteur }}</div>
+                </div>
+                <div>
+                  <div class="di-label">Service</div>
+                  <div class="di-val service">{{ devis.type_service }}</div>
+                </div>
+                <div>
+                  <div class="di-label">Rendez-vous</div>
+                  <div class="di-val">
+                    <span class="rdv-pill">
+                      <i class="fas fa-calendar-check"></i>
+                      {{ devis.date_rdv }} — {{ devis.heure_rdv }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action rapide -->
+              <div class="devis-actions">
+                <button type="button" class="action-btn"
+                  onclick="event.stopPropagation();confirmSingle('{{ devis.id }}')"
+                  title="Supprimer">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
+
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <input type="hidden" name="devis_ids_single" id="singleDeleteId">
+      </form>
+
+      {% else %}
+
+      <!-- EMPTY STATE -->
+      <div class="empty-state">
+        <div class="empty-ico"><i class="fas fa-folder-open"></i></div>
+        <h4>Aucun devis enregistré</h4>
+        <p>Vous n'avez pas encore soumis de demande de devis.<br>Créez votre première demande en quelques secondes.</p>
+        <a href="{{ url_for('devis') }}" class="btn-act btn-rose">
+          <i class="fas fa-plus-circle"></i> Créer un devis
+        </a>
+      </div>
+
+      {% endif %}
+
+      <!-- ACTIONS BAS -->
+      <div style="display:flex;gap:.65rem;flex-wrap:wrap;margin-top:1.75rem;padding-top:1.5rem;border-top:1px solid var(--border);">
+        <a href="{{ url_for('devis') }}" class="btn-act btn-rose">
+          <i class="fas fa-plus-circle"></i> Nouveau devis
+        </a>
+        <a href="{{ url_for('compte_client') }}" class="btn-act btn-ghost">
+          <i class="fas fa-arrow-left"></i> Retour à l'espace client
+        </a>
+      </div>
+
     </div>
-
   </div>
 </div>
 
-<!-- MODAL CONFIRMATION SUPPRESSION MULTIPLE -->
+<!-- MODAL MULTIPLE -->
 <div class="modal-overlay" id="modalMulti">
   <div class="modal-box">
     <div class="modal-ico"><i class="fas fa-trash-alt"></i></div>
     <h4>Supprimer les devis sélectionnés ?</h4>
     <p id="modalMultiText">Cette action est irréversible.</p>
     <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('modalMulti')">Annuler</button>
-      <button class="btn-confirm" onclick="submitDelete()">Supprimer</button>
+      <button class="modal-cancel" onclick="closeModal('modalMulti')">Annuler</button>
+      <button class="modal-confirm" onclick="submitDelete()">Supprimer</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL CONFIRMATION SUPPRESSION UNITAIRE -->
+<!-- MODAL UNITAIRE -->
 <div class="modal-overlay" id="modalSingle">
   <div class="modal-box">
     <div class="modal-ico"><i class="fas fa-trash-alt"></i></div>
     <h4>Supprimer ce devis ?</h4>
-    <p>Cette action est irréversible.</p>
+    <p>Cette action est irréversible. Le devis sera définitivement supprimé.</p>
     <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('modalSingle')">Annuler</button>
-      <button class="btn-confirm" onclick="submitSingle()">Supprimer</button>
+      <button class="modal-cancel" onclick="closeModal('modalSingle')">Annuler</button>
+      <button class="modal-confirm" onclick="submitSingle()">Supprimer</button>
     </div>
   </div>
 </div>
 
-{% include "footer.html" %}
+<!-- TOAST -->
+<div class="gd-toast" id="gdToast"><i class="fas fa-info-circle"></i><span id="gdToastMsg">—</span></div>
 
+{% include "footer.html" %}
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  let pendingSingleId = null;
-  let allSelected = false;
+let pendingSingleId=null,allSelected=false;
 
-  // ── Toggle ligne au clic ──
-  function toggleRow(row, id) {
-    const cb = row.querySelector('.devis-cb');
-    cb.checked = !cb.checked;
-    row.classList.toggle('selected', cb.checked);
-    updateCount();
-  }
+/* Toggle row */
+function toggleRow(row,id){
+  const cb=row.querySelector('.devis-cb');
+  cb.checked=!cb.checked;
+  row.classList.toggle('selected',cb.checked);
+  updateCount();
+}
 
-  // ── Mise à jour compteur ──
-  function updateCount() {
-    const checked = document.querySelectorAll('.devis-cb:checked').length;
-    document.getElementById('countSelected').textContent = checked;
-    const btn = document.getElementById('btnDeleteSelected');
-    btn.classList.toggle('active', checked > 0);
-
-    // Sync état des rows
-    document.querySelectorAll('.devis-cb').forEach(cb => {
-      const row = cb.closest('.devis-row');
-      row.classList.toggle('selected', cb.checked);
-    });
-  }
-
-  // ── Tout sélectionner / désélectionner ──
-  document.getElementById('btnSelectAll').addEventListener('click', function() {
-    allSelected = !allSelected;
-    document.querySelectorAll('.devis-cb').forEach(cb => cb.checked = allSelected);
-    this.innerHTML = allSelected
-      ? '<i class="fas fa-times-square"></i> Tout désélectionner'
-      : '<i class="fas fa-check-square"></i> Tout sélectionner';
-    updateCount();
+/* Update compteur */
+function updateCount(){
+  const checked=document.querySelectorAll('.devis-cb:checked').length;
+  document.getElementById('countSelected').textContent=checked;
+  const btn=document.getElementById('btnDeleteSelected');
+  btn.classList.toggle('active',checked>0);
+  document.querySelectorAll('.devis-cb').forEach(cb=>{
+    cb.closest('.devis-row').classList.toggle('selected',cb.checked);
   });
+}
 
-  // ── Suppression multiple ──
-  document.getElementById('btnDeleteSelected').addEventListener('click', function() {
-    const n = document.querySelectorAll('.devis-cb:checked').length;
-    document.getElementById('modalMultiText').textContent =
-      `Vous allez supprimer ${n} devis. Cette action est irréversible.`;
-    openModal('modalMulti');
-  });
+/* Tout sélectionner */
+document.getElementById('btnSelectAll')&&document.getElementById('btnSelectAll').addEventListener('click',function(){
+  allSelected=!allSelected;
+  document.querySelectorAll('.devis-cb').forEach(cb=>cb.checked=allSelected);
+  this.innerHTML=allSelected
+    ?'<i class="fas fa-times-circle"></i> Tout désélectionner'
+    :'<i class="fas fa-check-square"></i> Tout sélectionner';
+  updateCount();
+});
 
-  function submitDelete() {
-    document.getElementById('formGerer').submit();
-  }
+/* Suppression multiple */
+document.getElementById('btnDeleteSelected')&&document.getElementById('btnDeleteSelected').addEventListener('click',function(){
+  const n=document.querySelectorAll('.devis-cb:checked').length;
+  document.getElementById('modalMultiText').textContent=`Vous allez supprimer ${n} devis. Cette action est irréversible.`;
+  openModal('modalMulti');
+});
+function submitDelete(){document.getElementById('formGerer').submit();}
 
-  // ── Suppression unitaire ──
-  function confirmDeleteOne(id) {
-    pendingSingleId = id;
-    openModal('modalSingle');
-  }
+/* Suppression unitaire */
+function confirmSingle(id){pendingSingleId=id;openModal('modalSingle');}
+function submitSingle(){
+  if(!pendingSingleId)return;
+  document.querySelectorAll('.devis-cb').forEach(cb=>cb.checked=false);
+  const cb=document.querySelector(`.devis-cb[value="${pendingSingleId}"]`);
+  if(cb)cb.checked=true;
+  closeModal('modalSingle');
+  document.getElementById('formGerer').submit();
+}
 
-  function submitSingle() {
-    if(!pendingSingleId) return;
-    // Cocher uniquement ce devis et soumettre
-    document.querySelectorAll('.devis-cb').forEach(cb => cb.checked = false);
-    const cb = document.querySelector(`.devis-cb[value="${pendingSingleId}"]`);
-    if(cb) cb.checked = true;
-    closeModal('modalSingle');
-    document.getElementById('formGerer').submit();
-  }
+/* Modals */
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(m=>{
+  m.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
+});
 
-  // ── Modals ──
-  function openModal(id) { document.getElementById(id).classList.add('open'); }
-  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
-  // Fermer modal en cliquant à l'extérieur
-  document.querySelectorAll('.modal-overlay').forEach(m => {
-    m.addEventListener('click', function(e) {
-      if(e.target === this) this.classList.remove('open');
-    });
-  });
+/* Toast */
+function showToast(msg){
+  const t=document.getElementById('gdToast');
+  document.getElementById('gdToastMsg').textContent=msg;
+  t.classList.add('show');clearTimeout(window._tt);
+  window._tt=setTimeout(()=>t.classList.remove('show'),3200);
+}
 </script>
 </body>
 </html>

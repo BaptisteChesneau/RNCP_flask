@@ -29,7 +29,6 @@
     html{scroll-behavior:smooth;}
     body{background:var(--bg);font-family:var(--ff-body);color:var(--text);min-height:100vh;overflow-x:hidden;}
 
-    /* ══ TEXTURE FOND ══ */
     body::before{
       content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
       background-image:
@@ -42,10 +41,9 @@
       background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231a1a1a' fill-opacity='0.018'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
 
-    /* ══ WRAPPER ══ */
     .ec-wrapper{position:relative;z-index:1;min-height:100vh;padding-bottom:5rem;}
 
-    /* ══ HERO LUXE ══ */
+    /* ══ HERO ══ */
     .ec-hero{
       padding:4rem 0 6rem;position:relative;overflow:hidden;
       background:linear-gradient(160deg,var(--bg) 0%,var(--bg2) 50%,var(--bg3) 100%);
@@ -57,65 +55,29 @@
         radial-gradient(ellipse 40% 60% at 100% 0%,rgba(193,0,122,.07) 0%,transparent 60%),
         radial-gradient(ellipse 30% 40% at 0% 100%,rgba(176,141,87,.08) 0%,transparent 50%);
     }
-
-    /* Ligne déco hero */
     .ec-hero-deco{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--rose) 30%,var(--gold) 60%,transparent);}
-
-    /* Monogramme flottant */
     .ec-hero-mono{
       position:absolute;right:-40px;top:50%;transform:translateY(-50%);
       font-family:var(--ff-head);font-size:clamp(120px,18vw,220px);font-weight:700;
-      color:rgba(193,0,122,.04);line-height:1;pointer-events:none;user-select:none;
-      letter-spacing:-.02em;
+      color:rgba(193,0,122,.04);line-height:1;pointer-events:none;user-select:none;letter-spacing:-.02em;
     }
-
-    /* Badge session */
     .ec-session-badge{
-      display:inline-flex;align-items:center;gap:.5rem;
-      padding:.35rem 1rem;border-radius:30px;
+      display:inline-flex;align-items:center;gap:.5rem;padding:.35rem 1rem;border-radius:30px;
       background:rgba(79,166,149,.08);border:1px solid rgba(79,166,149,.2);
-      font-size:.7rem;font-weight:700;color:var(--turq-d);letter-spacing:.06em;
-      text-transform:uppercase;margin-bottom:1.25rem;
+      font-size:.7rem;font-weight:700;color:var(--turq-d);letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.25rem;
     }
     .ec-dot{width:6px;height:6px;border-radius:50%;background:var(--turq);animation:dotPulse 2s infinite;}
     @keyframes dotPulse{0%,100%{opacity:1;}50%{opacity:.35;}}
-
-    /* Welcome */
-    .ec-welcome{
-      font-family:var(--ff-head);
-      font-size:clamp(2.4rem,5.5vw,4.2rem);
-      font-weight:300;color:var(--ink);line-height:1.05;
-      margin-bottom:.6rem;letter-spacing:-.02em;
-    }
+    .ec-welcome{font-family:var(--ff-head);font-size:clamp(2.4rem,5.5vw,4.2rem);font-weight:300;color:var(--ink);line-height:1.05;margin-bottom:.6rem;letter-spacing:-.02em;}
     .ec-welcome strong{font-weight:700;}
-    .ec-welcome em{
-      color:var(--rose);font-style:italic;font-weight:600;
-      position:relative;
-    }
-    .ec-welcome em::after{
-      content:'';position:absolute;bottom:0;left:0;right:0;height:1.5px;
-      background:linear-gradient(90deg,var(--rose),transparent);
-      transform:scaleX(0);transform-origin:left;
-      animation:lineIn 1s .7s ease forwards;
-    }
+    .ec-welcome em{color:var(--rose);font-style:italic;font-weight:600;position:relative;}
+    .ec-welcome em::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,var(--rose),transparent);transform:scaleX(0);transform-origin:left;animation:lineIn 1s .7s ease forwards;}
     @keyframes lineIn{to{transform:scaleX(1);}}
     .ec-sub{font-size:.9rem;color:var(--muted);max-width:440px;line-height:1.7;margin:.2rem 0 0;}
-
-    /* Stats hero */
     .ec-hero-stats{display:flex;gap:.85rem;margin-top:2.25rem;flex-wrap:wrap;}
-    .ec-hero-stat{
-      display:flex;align-items:center;gap:.75rem;
-      padding:.7rem 1.15rem;border-radius:14px;
-      background:var(--surface);border:1px solid var(--border);
-      box-shadow:var(--shadow-sm);
-      animation:statRise .5s both;
-    }
+    .ec-hero-stat{display:flex;align-items:center;gap:.75rem;padding:.7rem 1.15rem;border-radius:14px;background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow-sm);animation:statRise .5s both;}
     @keyframes statRise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
-    .ec-hero-stat-ico{
-      width:34px;height:34px;border-radius:9px;
-      display:flex;align-items:center;justify-content:center;
-      font-size:.8rem;flex-shrink:0;
-    }
+    .ec-hero-stat-ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;}
     .esi-rose{background:var(--rose-xl);color:var(--rose);}
     .esi-turq{background:var(--turq-xl);color:var(--turq);}
     .esi-gold{background:var(--gold-ll);color:var(--gold);}
@@ -125,74 +87,39 @@
 
     /* ══ CONTENU ══ */
     .ec-content{margin-top:-2.5rem;position:relative;z-index:2;}
-
-    /* ══ NAVIGATION ══ */
-    .ec-nav-wrap{
-      background:var(--surface);border:1px solid var(--border);
-      border-radius:18px;padding:.4rem;box-shadow:var(--shadow-md);
-      display:inline-flex;gap:.3rem;margin-bottom:1.75rem;
-    }
-    .ec-nav-btn{
-      display:flex;align-items:center;gap:.55rem;
-      padding:.62rem 1.25rem;border:none;background:transparent;
-      color:var(--muted);font-family:var(--ff-body);font-size:.84rem;font-weight:600;
-      border-radius:12px;cursor:pointer;transition:all .22s;white-space:nowrap;
-    }
+    .ec-nav-wrap{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:.4rem;box-shadow:var(--shadow-md);display:inline-flex;gap:.3rem;margin-bottom:1.75rem;}
+    .ec-nav-btn{display:flex;align-items:center;gap:.55rem;padding:.62rem 1.25rem;border:none;background:transparent;color:var(--muted);font-family:var(--ff-body);font-size:.84rem;font-weight:600;border-radius:12px;cursor:pointer;transition:all .22s;white-space:nowrap;}
     .ec-nav-btn:hover:not(.active){background:var(--bg2);color:var(--text2);}
     .ec-nav-btn.active{background:var(--ink);color:#fff;box-shadow:0 4px 16px rgba(26,26,46,.2);}
     .ec-nav-btn i{font-size:.78rem;}
-    .nav-chip{
-      min-width:18px;height:18px;padding:0 4px;
-      background:var(--rose);color:#fff;
-      border-radius:20px;font-size:.58rem;font-weight:700;
-      display:flex;align-items:center;justify-content:center;
-    }
+    .nav-chip{min-width:18px;height:18px;padding:0 4px;background:var(--rose);color:#fff;border-radius:20px;font-size:.58rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
     .ec-nav-btn.active .nav-chip{background:rgba(255,255,255,.25);}
 
-    /* ══ PANNEAUX ══ */
+    /* ══ PANELS ══ */
     .ec-panel{display:none;}
     .ec-panel.active{display:block;animation:panelIn .3s ease;}
     @keyframes panelIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 
-    /* ══ CARD PREMIUM ══ */
-    .prem-card{
-      background:var(--surface);border:1px solid var(--border);
-      border-radius:22px;padding:2rem;margin-bottom:1.25rem;
-      box-shadow:var(--shadow-md);position:relative;overflow:hidden;
-      transition:box-shadow .3s,transform .3s;
-    }
-    .prem-card::before{
-      content:'';position:absolute;top:0;left:0;right:0;height:2px;
-      background:linear-gradient(90deg,transparent,rgba(193,0,122,.15) 30%,rgba(176,141,87,.2) 70%,transparent);
-    }
+    /* ══ CARDS ══ */
+    .prem-card{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:2rem;margin-bottom:1.25rem;box-shadow:var(--shadow-md);position:relative;overflow:hidden;transition:box-shadow .3s,transform .3s;}
+    .prem-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(193,0,122,.15) 30%,rgba(176,141,87,.2) 70%,transparent);}
     .prem-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);}
     .prem-card-head{display:flex;align-items:center;gap:.85rem;margin-bottom:1.5rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border);}
     .prem-card-ico{width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;}
     .pci-rose{background:var(--rose-xl);color:var(--rose);}
     .pci-turq{background:var(--turq-xl);color:var(--turq);}
-    .pci-gold{background:var(--gold-ll);color:var(--gold);}
-    .pci-ink{background:#f0f0f5;color:var(--ink);}
     .prem-card-title{font-family:var(--ff-head);font-size:1.15rem;font-weight:700;color:var(--ink);line-height:1.2;}
     .prem-card-sub{font-size:.73rem;color:var(--muted);margin-top:.1rem;}
 
-    /* ══ STATUT DEVIS ══ */
-    .status-ribbon{
-      display:inline-flex;align-items:center;gap:.4rem;
-      font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
-      padding:.25rem .75rem;border-radius:20px;
-    }
+    /* Statut */
+    .status-ribbon{display:inline-flex;align-items:center;gap:.4rem;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:.25rem .75rem;border-radius:20px;}
     .sr-en-cours{background:rgba(193,0,122,.08);color:var(--rose);border:1px solid rgba(193,0,122,.15);}
     .sr-valide{background:var(--turq-xl);color:var(--turq-d);border:1px solid rgba(79,166,149,.2);}
 
-    /* Timeline devis */
+    /* Timeline */
     .devis-timeline{display:flex;align-items:center;margin:1.5rem 0;}
     .dt-step{display:flex;flex-direction:column;align-items:center;gap:.4rem;flex:1;}
-    .dt-circle{
-      width:36px;height:36px;border-radius:50%;
-      display:flex;align-items:center;justify-content:center;
-      font-size:.75rem;font-weight:700;border:2px solid var(--border);
-      color:var(--faint);background:var(--bg2);transition:all .3s;
-    }
+    .dt-circle{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;border:2px solid var(--border);color:var(--faint);background:var(--bg2);transition:all .3s;}
     .dt-step.done .dt-circle{background:var(--turq-xl);border-color:var(--turq);color:var(--turq-d);}
     .dt-step.active .dt-circle{background:var(--rose-xl);border-color:var(--rose);color:var(--rose);box-shadow:0 0 0 4px rgba(193,0,122,.1);}
     .dt-label{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);text-align:center;}
@@ -200,72 +127,38 @@
     .dt-bar{flex:1;height:2px;background:var(--border);margin:0 -1px;margin-bottom:1.85rem;}
     .dt-bar.done{background:linear-gradient(90deg,var(--turq),rgba(79,166,149,.3));}
 
-    /* Grid devis data */
+    /* Devis grid */
     .devis-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:1rem;}
     .dg-field{background:var(--bg2);border-radius:12px;padding:.85rem 1.1rem;border:1px solid var(--border);transition:all .2s;}
     .dg-field:hover{background:var(--rose-xl);border-color:rgba(193,0,122,.15);}
     .dg-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-bottom:.3rem;}
     .dg-val{font-size:.92rem;font-weight:600;color:var(--ink);}
     .dg-val.accent{color:var(--rose);}
+    .rdv-pill{display:inline-flex;align-items:center;gap:.5rem;padding:.5rem 1.1rem;border-radius:10px;background:var(--turq-xl);border:1px solid rgba(79,166,149,.2);color:var(--turq-d);font-size:.83rem;font-weight:600;margin-top:1.1rem;}
 
-    /* Pill RDV */
-    .rdv-pill{
-      display:inline-flex;align-items:center;gap:.5rem;
-      padding:.5rem 1.1rem;border-radius:10px;
-      background:var(--turq-xl);border:1px solid rgba(79,166,149,.2);
-      color:var(--turq-d);font-size:.83rem;font-weight:600;margin-top:1.1rem;
-    }
-
-    /* ══ FICHE CLIENT ══ */
+    /* Fiche */
     .fiche-header{display:flex;align-items:center;gap:1.1rem;margin-bottom:1.5rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border);}
-    .fiche-avatar{
-      width:60px;height:60px;border-radius:50%;
-      background:linear-gradient(135deg,var(--rose),var(--rose-d));
-      display:flex;align-items:center;justify-content:center;
-      font-family:var(--ff-head);font-size:1.55rem;font-weight:700;color:#fff;
-      flex-shrink:0;box-shadow:0 4px 16px rgba(193,0,122,.25);
-      position:relative;
-    }
+    .fiche-avatar{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--rose),var(--rose-d));display:flex;align-items:center;justify-content:center;font-family:var(--ff-head);font-size:1.55rem;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 4px 16px rgba(193,0,122,.25);position:relative;}
     .fiche-online{position:absolute;bottom:1px;right:1px;width:12px;height:12px;border-radius:50%;background:#22c55e;border:2px solid #fff;}
     .fiche-name{font-family:var(--ff-head);font-size:1.35rem;font-weight:700;color:var(--ink);}
     .fiche-id{font-size:.7rem;color:var(--muted);margin-top:.1rem;}
     .fiche-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.85rem;}
-    .fiche-item{
-      background:var(--bg2);border:1px solid var(--border);
-      border-radius:14px;padding:.9rem 1.1rem;
-      display:flex;align-items:flex-start;gap:.7rem;
-      transition:all .22s;
-    }
+    .fiche-item{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:.9rem 1.1rem;display:flex;align-items:flex-start;gap:.7rem;transition:all .22s;}
     .fiche-item:hover{background:var(--turq-xl);border-color:rgba(79,166,149,.2);}
-    .fi-ico{
-      width:30px;height:30px;border-radius:9px;
-      background:rgba(79,166,149,.1);color:var(--turq-d);
-      display:flex;align-items:center;justify-content:center;
-      font-size:.72rem;flex-shrink:0;
-    }
+    .fi-ico{width:30px;height:30px;border-radius:9px;background:rgba(79,166,149,.1);color:var(--turq-d);display:flex;align-items:center;justify-content:center;font-size:.72rem;flex-shrink:0;}
     .fi-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.22rem;}
     .fi-val{font-size:.88rem;font-weight:500;color:var(--ink);}
 
-    /* ══ CARTE BANCAIRE LUXE ══ */
+    /* Carte bancaire */
     .card-scene{perspective:1400px;max-width:420px;margin:0 auto 1.5rem;}
-    .credit-card{
-      width:100%;aspect-ratio:1.586;border-radius:22px;
-      position:relative;overflow:hidden;cursor:pointer;
-      background:linear-gradient(135deg,#1c1c2e 0%,#2d1b4e 35%,#1a2a3a 70%,#0f1f2e 100%);
-      box-shadow:0 32px 80px rgba(0,0,0,.35),0 4px 20px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.12);
-      transform-style:preserve-3d;transition:transform .4s cubic-bezier(.4,0,.2,1);
-    }
+    .credit-card{width:100%;aspect-ratio:1.586;border-radius:22px;position:relative;overflow:hidden;cursor:pointer;background:linear-gradient(135deg,#1c1c2e 0%,#2d1b4e 35%,#1a2a3a 70%,#0f1f2e 100%);box-shadow:0 32px 80px rgba(0,0,0,.35),0 4px 20px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.12);transform-style:preserve-3d;transition:transform .4s cubic-bezier(.4,0,.2,1);}
     .credit-card:hover{transform:rotateY(-10deg) rotateX(5deg) scale(1.02);}
-
-    /* Effets holographiques */
     .cc-holo{position:absolute;inset:0;background:linear-gradient(125deg,rgba(193,0,122,.15) 0%,rgba(79,166,149,.12) 25%,rgba(176,141,87,.1) 50%,rgba(59,130,246,.12) 75%,rgba(193,0,122,.15) 100%);background-size:400% 400%;animation:holoShift 6s ease infinite;}
     @keyframes holoShift{0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
     .cc-shine{position:absolute;top:-60%;left:-60%;width:220%;height:220%;background:conic-gradient(from 0deg,transparent 0%,rgba(255,255,255,.04) 20%,transparent 40%,rgba(255,255,255,.02) 60%,transparent 80%);animation:ccRot 10s linear infinite;}
     @keyframes ccRot{to{transform:rotate(360deg);}}
     .cc-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");background-size:200px;opacity:.3;}
     .cc-lines{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(255,255,255,.012) 3px,rgba(255,255,255,.012) 4px);}
-
-    /* Contenu carte */
     .cc-inner{position:relative;z-index:2;height:100%;padding:1.6rem 1.8rem;display:flex;flex-direction:column;justify-content:space-between;}
     .cc-top{display:flex;justify-content:space-between;align-items:center;}
     .cc-brand{font-family:var(--ff-head);font-size:1.1rem;font-weight:700;color:rgba(255,255,255,.9);letter-spacing:.06em;}
@@ -284,27 +177,13 @@
     .cc-fl{font-size:.5rem;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.3);margin-bottom:.2rem;}
     .cc-fv{font-family:var(--ff-mono);font-size:.88rem;color:rgba(255,255,255,.88);letter-spacing:.06em;}
     .cc-fv.cens{color:rgba(255,255,255,.3);letter-spacing:.28em;}
-
-    /* Sécurité + bouton suppr */
     .card-secure-note{display:flex;align-items:center;justify-content:center;gap:.5rem;font-size:.73rem;color:var(--muted);margin-bottom:1rem;}
     .card-secure-note i{color:var(--turq);}
-    .btn-del-card{
-      width:100%;padding:.72rem;border-radius:12px;
-      background:rgba(220,38,38,.06);border:1.5px solid rgba(220,38,38,.15);
-      color:#dc2626;font-weight:600;font-size:.85rem;
-      cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;
-      transition:all .25s;font-family:var(--ff-body);
-    }
+    .btn-del-card{width:100%;padding:.72rem;border-radius:12px;background:rgba(220,38,38,.06);border:1.5px solid rgba(220,38,38,.15);color:#dc2626;font-weight:600;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;transition:all .25s;font-family:var(--ff-body);}
     .btn-del-card:hover{background:#dc2626;color:#fff;border-color:#dc2626;box-shadow:0 8px 20px rgba(220,38,38,.25);}
 
-    /* ══ CTA AJOUTER ══ */
-    .cta-add{
-      display:flex;align-items:center;gap:1.1rem;
-      padding:1.25rem 1.5rem;border-radius:18px;
-      border:1.5px dashed var(--border2);background:var(--surface2);
-      transition:all .25s;text-decoration:none;color:var(--text);
-      margin-top:1rem;
-    }
+    /* CTA */
+    .cta-add{display:flex;align-items:center;gap:1.1rem;padding:1.25rem 1.5rem;border-radius:18px;border:1.5px dashed var(--border2);background:var(--surface2);transition:all .25s;text-decoration:none;color:var(--text);margin-top:1rem;}
     .cta-add:hover{border-color:var(--rose);background:var(--rose-xl);color:var(--rose);text-decoration:none;transform:translateX(4px);}
     .cta-add:hover .cta-ico{background:var(--rose);color:#fff;}
     .cta-add:hover .cta-arrow{transform:translateX(5px);}
@@ -315,13 +194,13 @@
     .cta-sub{font-size:.78rem;color:var(--muted);margin-top:.1rem;}
     .cta-arrow{margin-left:auto;font-size:.85rem;color:var(--faint);transition:transform .25s;}
 
-    /* ══ EMPTY STATE ══ */
+    /* Empty */
     .ec-empty{text-align:center;padding:3rem 1.5rem;}
     .ec-empty-ico{width:70px;height:70px;border-radius:50%;background:var(--bg2);border:1px solid var(--border);margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:var(--faint);}
     .ec-empty h5{font-family:var(--ff-head);font-size:1.25rem;font-weight:700;color:var(--ink);margin-bottom:.4rem;}
     .ec-empty p{font-size:.84rem;color:var(--muted);}
 
-    /* ══ BARRE D'ACTIONS ══ */
+    /* Action bar */
     .ec-action-bar{display:flex;gap:.65rem;flex-wrap:wrap;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);}
     .btn-act{display:inline-flex;align-items:center;gap:.45rem;padding:.65rem 1.35rem;border-radius:11px;font-family:var(--ff-body);font-weight:600;font-size:.85rem;cursor:pointer;border:none;transition:all .25s;text-decoration:none;}
     .btn-act-rose{background:var(--rose);color:#fff;box-shadow:0 4px 14px rgba(193,0,122,.2);}
@@ -329,34 +208,15 @@
     .btn-act-turq{background:var(--turq);color:#fff;box-shadow:0 4px 14px rgba(79,166,149,.2);}
     .btn-act-turq:hover{background:var(--turq-d);color:#fff;box-shadow:0 8px 20px rgba(79,166,149,.3);transform:translateY(-2px);}
     .btn-act-ghost{background:var(--surface);border:1.5px solid var(--border);color:var(--text2);}
-    .btn-act-ghost:hover{border-color:var(--border2);background:var(--bg2);color:var(--ink);}
+    .btn-act-ghost:hover{border-color:var(--border2);background:var(--bg2);color:var(--ink);text-decoration:none;}
     .btn-act-danger{background:rgba(220,38,38,.07);border:1.5px solid rgba(220,38,38,.15);color:#dc2626;}
     .btn-act-danger:hover{background:#dc2626;color:#fff;border-color:#dc2626;}
 
-    /* ══ ORNEMENT DÉCORATIF ══ */
-    .ec-ornement{position:absolute;right:0;top:50%;transform:translateY(-50%);pointer-events:none;opacity:.04;}
-
-    /* ══ TOAST ══ */
-    .ec-toast{
-      position:fixed;bottom:2rem;right:2rem;z-index:9999;
-      background:var(--surface);border:1px solid var(--border);
-      border-radius:16px;padding:.9rem 1.35rem;
-      display:flex;align-items:center;gap:.75rem;
-      font-size:.83rem;font-weight:500;color:var(--text);
-      box-shadow:var(--shadow-lg);
-      transform:translateY(80px);opacity:0;
-      transition:all .4s cubic-bezier(.34,1.2,.64,1);pointer-events:none;
-    }
+    /* Toast */
+    .ec-toast{position:fixed;bottom:2rem;right:2rem;z-index:9999;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:.9rem 1.35rem;display:flex;align-items:center;gap:.75rem;font-size:.83rem;font-weight:500;color:var(--text);box-shadow:var(--shadow-lg);transform:translateY(80px);opacity:0;transition:all .4s cubic-bezier(.34,1.2,.64,1);pointer-events:none;}
     .ec-toast.show{transform:translateY(0);opacity:1;}
     .ec-toast i{color:var(--turq);}
-
-    /* ══ SCROLLBAR ══ */
-    ::-webkit-scrollbar{width:5px;}
-    ::-webkit-scrollbar-track{background:var(--bg2);}
-    ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
-    ::-webkit-scrollbar-thumb:hover{background:var(--muted);}
-
-    /* ══ STAGGER ANIMS ══ */
+    ::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--bg2);}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
     .s1{animation-delay:.05s;}.s2{animation-delay:.1s;}.s3{animation-delay:.15s;}.s4{animation-delay:.2s;}
 
     @media(max-width:640px){
@@ -374,7 +234,6 @@
 
 <div class="ec-wrapper">
 
-  <!-- ══ HERO ══ -->
   <div class="ec-hero">
     <div class="ec-hero-deco"></div>
     <div class="ec-hero-mono">ML2C</div>
@@ -386,49 +245,33 @@
         <span style="font-family:var(--ff-mono);font-size:.68rem;" id="heroTime">--:--:--</span>
       </div>
 
-      <h1 class="ec-welcome">
-        Bonjour,&nbsp;<em id="welcomeName">Utilisateur</em>
-      </h1>
+      <h1 class="ec-welcome">Bonjour,&nbsp;<em id="welcomeName">Utilisateur</em></h1>
       <p class="ec-sub">Bienvenue dans votre espace client. Gérez vos devis, votre fiche et vos informations de paiement.</p>
 
       <div class="ec-hero-stats">
         <div class="ec-hero-stat s1">
           <div class="ec-hero-stat-ico esi-rose"><i class="fas fa-file-invoice"></i></div>
-          <div>
-            <div class="ec-hero-stat-val" id="statDevis">{% if devis_list %}{{ devis_list|length }}{% else %}0{% endif %}</div>
-            <div class="ec-hero-stat-lbl">Devis</div>
-          </div>
+          <div><div class="ec-hero-stat-val" id="statDevis">{% if devis_list %}{{ devis_list|length }}{% else %}0{% endif %}</div><div class="ec-hero-stat-lbl">Devis</div></div>
         </div>
         <div class="ec-hero-stat s2">
           <div class="ec-hero-stat-ico esi-turq"><i class="fas fa-id-card"></i></div>
-          <div>
-            <div class="ec-hero-stat-val" id="statFiches">{% if clients %}{{ clients|length }}{% else %}0{% endif %}</div>
-            <div class="ec-hero-stat-lbl">Fiches</div>
-          </div>
+          <div><div class="ec-hero-stat-val" id="statFiches">{% if clients %}{{ clients|length }}{% else %}0{% endif %}</div><div class="ec-hero-stat-lbl">Fiches</div></div>
         </div>
         <div class="ec-hero-stat s3">
           <div class="ec-hero-stat-ico esi-gold"><i class="fas fa-shield-alt"></i></div>
-          <div>
-            <div class="ec-hero-stat-val">100%</div>
-            <div class="ec-hero-stat-lbl">Sécurisé</div>
-          </div>
+          <div><div class="ec-hero-stat-val">100%</div><div class="ec-hero-stat-lbl">Sécurisé</div></div>
         </div>
         <div class="ec-hero-stat s4">
           <div class="ec-hero-stat-ico esi-ink"><i class="fas fa-calendar"></i></div>
-          <div>
-            <div class="ec-hero-stat-val" id="statDate">--/--</div>
-            <div class="ec-hero-stat-lbl">Aujourd'hui</div>
-          </div>
+          <div><div class="ec-hero-stat-val" id="statDate">--/--</div><div class="ec-hero-stat-lbl">Aujourd'hui</div></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ══ CONTENU ══ -->
   <div class="ec-content">
     <div class="container">
 
-      <!-- Navigation -->
       <div class="ec-nav-wrap">
         <button class="ec-nav-btn active" data-panel="devis">
           <i class="fas fa-file-invoice"></i>
@@ -446,48 +289,28 @@
         </button>
       </div>
 
-      <!-- Panneaux -->
       <div class="ec-panels">
 
-        <!-- ════ DEVIS ════ -->
+        <!-- DEVIS -->
         <div class="ec-panel active" id="panel-devis">
-
           {% if session.devis_data or devis_list %}
-
-          <!-- Timeline statut -->
           <div class="prem-card">
             <div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-bottom:1.1rem;">Statut de la demande</div>
             <div class="devis-timeline">
-              <div class="dt-step done">
-                <div class="dt-circle"><i class="fas fa-check"></i></div>
-                <div class="dt-label">Soumis</div>
-              </div>
+              <div class="dt-step done"><div class="dt-circle"><i class="fas fa-check"></i></div><div class="dt-label">Soumis</div></div>
               <div class="dt-bar done"></div>
-              <div class="dt-step active">
-                <div class="dt-circle"><i class="fas fa-search"></i></div>
-                <div class="dt-label">En analyse</div>
-              </div>
+              <div class="dt-step active"><div class="dt-circle"><i class="fas fa-search"></i></div><div class="dt-label">En analyse</div></div>
               <div class="dt-bar"></div>
-              <div class="dt-step">
-                <div class="dt-circle">3</div>
-                <div class="dt-label">Devis envoyé</div>
-              </div>
+              <div class="dt-step"><div class="dt-circle">3</div><div class="dt-label">Devis envoyé</div></div>
               <div class="dt-bar"></div>
-              <div class="dt-step">
-                <div class="dt-circle">4</div>
-                <div class="dt-label">Accepté</div>
-              </div>
+              <div class="dt-step"><div class="dt-circle">4</div><div class="dt-label">Accepté</div></div>
             </div>
           </div>
-
           {% if session.devis_data %}
           <div class="prem-card">
             <div class="prem-card-head">
               <div class="prem-card-ico pci-rose"><i class="fas fa-file-alt"></i></div>
-              <div>
-                <div class="prem-card-title">Devis en cours</div>
-                <div class="prem-card-sub">Soumis via le formulaire en ligne</div>
-              </div>
+              <div><div class="prem-card-title">Devis en cours</div><div class="prem-card-sub">Soumis via le formulaire en ligne</div></div>
               <span class="status-ribbon sr-en-cours" style="margin-left:auto;"><i class="fas fa-circle" style="font-size:.45rem;"></i>En traitement</span>
             </div>
             <div class="devis-grid">
@@ -501,15 +324,11 @@
             {% endif %}
           </div>
           {% endif %}
-
           {% for devis in devis_list %}
           <div class="prem-card">
             <div class="prem-card-head">
               <div class="prem-card-ico pci-turq"><i class="fas fa-folder-open"></i></div>
-              <div>
-                <div class="prem-card-title">{{ devis.nom }}</div>
-                <div class="prem-card-sub">Demande de devis</div>
-              </div>
+              <div><div class="prem-card-title">{{ devis.nom }}</div><div class="prem-card-sub">Demande de devis</div></div>
             </div>
             <div class="devis-grid">
               <div class="dg-field"><div class="dg-label">Secteur</div><div class="dg-val">{{ devis.secteur }}</div></div>
@@ -519,7 +338,6 @@
             </div>
           </div>
           {% endfor %}
-
           {% else %}
           <div class="prem-card">
             <div class="ec-empty">
@@ -529,31 +347,21 @@
             </div>
           </div>
           {% endif %}
-
           <a href="{{ url_for('devis') }}" class="cta-add">
             <div class="cta-ico"><i class="fas fa-plus-circle"></i></div>
-            <div>
-              <div class="cta-title">Créer un nouveau devis</div>
-              <div class="cta-sub">Remplir une demande de devis personnalisée</div>
-            </div>
+            <div><div class="cta-title">Créer un nouveau devis</div><div class="cta-sub">Remplir une demande personnalisée</div></div>
             <i class="fas fa-arrow-right cta-arrow"></i>
           </a>
         </div>
 
-        <!-- ════ FICHE ════ -->
+        <!-- FICHE -->
         <div class="ec-panel" id="panel-fiche">
           {% if clients %}
             {% for client in clients %}
             <div class="prem-card">
               <div class="fiche-header">
-                <div class="fiche-avatar">
-                  {{ client.prenom[0] if client.prenom else '?' }}
-                  <span class="fiche-online"></span>
-                </div>
-                <div>
-                  <div class="fiche-name">{{ client.prenom }} {{ client.nom }}</div>
-                  <div class="fiche-id">Fiche client n°{{ client.id }} · Compte actif</div>
-                </div>
+                <div class="fiche-avatar">{{ client.prenom[0] if client.prenom else '?' }}<span class="fiche-online"></span></div>
+                <div><div class="fiche-name">{{ client.prenom }} {{ client.nom }}</div><div class="fiche-id">Fiche client n°{{ client.id }} · Compte actif</div></div>
                 <span class="status-ribbon sr-valide" style="margin-left:auto;"><i class="fas fa-check" style="font-size:.55rem;"></i>Vérifié</span>
               </div>
               <div class="fiche-grid">
@@ -577,41 +385,25 @@
           {% endif %}
           <a href="{{ url_for('formulaire_client') }}" class="cta-add turq">
             <div class="cta-ico"><i class="fas fa-user-edit"></i></div>
-            <div>
-              <div class="cta-title">Remplir ma fiche client</div>
-              <div class="cta-sub">Compléter ou mettre à jour vos informations</div>
-            </div>
+            <div><div class="cta-title">Remplir ma fiche client</div><div class="cta-sub">Compléter ou mettre à jour vos informations</div></div>
             <i class="fas fa-arrow-right cta-arrow"></i>
           </a>
         </div>
 
-        <!-- ════ CARTE ════ -->
+        <!-- CARTE -->
         <div class="ec-panel" id="panel-carte">
           {% if session.get('carte_bancaire') %}
-
-          <div class="card-secure-note">
-            <i class="fas fa-lock"></i>
-            <span>Données chiffrées AES-256 · Conforme PCI-DSS</span>
-          </div>
-
+          <div class="card-secure-note"><i class="fas fa-lock"></i><span>Données chiffrées AES-256 · Conforme PCI-DSS</span></div>
           <div class="card-scene">
             <div class="credit-card" id="creditCard">
-              <div class="cc-holo"></div>
-              <div class="cc-shine"></div>
-              <div class="cc-noise"></div>
-              <div class="cc-lines"></div>
+              <div class="cc-holo"></div><div class="cc-shine"></div><div class="cc-noise"></div><div class="cc-lines"></div>
               <div class="cc-inner">
                 <div class="cc-top">
                   <div class="cc-brand">ML2C <span class="cc-brand-em">PAY</span></div>
                   <div class="cc-network"><div class="cc-c1"></div><div class="cc-c2"></div></div>
                 </div>
-                <div class="cc-mid">
-                  <div class="cc-chip"></div>
-                  <div class="cc-nfc"><i class="fas fa-wifi fa-rotate-90"></i></div>
-                </div>
-                <div class="cc-number">
-                  <span class="cens">•••• •••• ••••</span>&nbsp;{{ session.carte_bancaire.numero[-4:] }}
-                </div>
+                <div class="cc-mid"><div class="cc-chip"></div><div class="cc-nfc"><i class="fas fa-wifi fa-rotate-90"></i></div></div>
+                <div class="cc-number"><span class="cens">•••• •••• ••••</span>&nbsp;{{ session.carte_bancaire.numero[-4:] }}</div>
                 <div class="cc-bottom">
                   <div><div class="cc-fl">Titulaire</div><div class="cc-fv">{{ session.carte_bancaire.nom | upper }}</div></div>
                   <div><div class="cc-fl">Expire</div><div class="cc-fv">{{ session.carte_bancaire.expiration }}</div></div>
@@ -620,12 +412,10 @@
               </div>
             </div>
           </div>
-
           <form method="POST" action="{{ url_for('supprimer_carte') }}" onsubmit="return confirm('Confirmer la suppression ?')">
             <button type="submit" class="btn-del-card"><i class="fas fa-trash-alt"></i>Supprimer la carte</button>
           </form>
           <p style="text-align:center;font-size:.74rem;color:var(--muted);margin-top:.85rem;"><i class="fas fa-info-circle" style="color:var(--turq);"></i> Détails complets dans vos paramètres de facturation.</p>
-
           {% else %}
           <div class="prem-card">
             <div class="ec-empty">
@@ -636,10 +426,7 @@
           </div>
           <a href="{{ url_for('paiement') }}" class="cta-add">
             <div class="cta-ico"><i class="fas fa-plus-circle"></i></div>
-            <div>
-              <div class="cta-title">Ajouter une carte bancaire</div>
-              <div class="cta-sub">Visa, Mastercard ou American Express</div>
-            </div>
+            <div><div class="cta-title">Ajouter une carte bancaire</div><div class="cta-sub">Visa, Mastercard ou American Express</div></div>
             <i class="fas fa-arrow-right cta-arrow"></i>
           </a>
           {% endif %}
@@ -650,7 +437,7 @@
           <a href="{{ url_for('parametres') }}" class="btn-act btn-act-rose"><i class="fas fa-cog"></i>Paramètres</a>
           <a href="{{ url_for('gerer_devis') }}" class="btn-act btn-act-turq"><i class="fas fa-folder-open"></i>Gérer mes devis</a>
           <a href="{{ url_for('menu') }}" class="btn-act btn-act-ghost"><i class="fas fa-arrow-left"></i>Retour au menu</a>
-          <a href="{{ url_for('logout') }}" class="btn-act btn-act-danger" onclick="return confirm('Confirmer la déconnexion ?')"><i class="fas fa-sign-out-alt"></i>Déconnexion</a>
+          <a href="{{ url_for('logout') }}" class="btn-act btn-act-danger"><i class="fas fa-sign-out-alt"></i>Déconnexion</a>
         </div>
 
       </div>
@@ -658,70 +445,21 @@
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="ec-toast" id="ecToast"><i class="fas fa-check-circle"></i><span>Bienvenue dans votre espace client</span></div>
 
 {% include "footer.html" %}
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-/* Prénom */
-(function(){
-  const p="{{ session.get('prenom','Utilisateur') }}";
-  const el=document.getElementById('welcomeName');
-  if(el)el.textContent=p;
-})();
-
-/* Horloge */
-function tick(){
-  const n=new Date();
-  const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');
-  const el=document.getElementById('heroTime');if(el)el.textContent=t;
-  const d=document.getElementById('statDate');
-  if(d){const now=new Date();d.textContent=(now.getDate()+'').padStart(2,'0')+'/'+(now.getMonth()+1+'').padStart(2,'0');}
-}
+(function(){const p="{{ session.get('prenom','Utilisateur') }}";const el=document.getElementById('welcomeName');if(el)el.textContent=p;})();
+function tick(){const n=new Date();const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('heroTime');if(el)el.textContent=t;const d=document.getElementById('statDate');if(d){const now=new Date();d.textContent=(now.getDate()+'').padStart(2,'0')+'/'+(now.getMonth()+1+'').padStart(2,'0');}}
 tick();setInterval(tick,1000);
-
-/* Tabs */
-document.querySelectorAll('.ec-nav-btn').forEach(btn=>{
-  btn.addEventListener('click',function(){
-    document.querySelectorAll('.ec-nav-btn').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.ec-panel').forEach(p=>p.classList.remove('active'));
-    this.classList.add('active');
-    const t=document.getElementById('panel-'+this.dataset.panel);
-    if(t)t.classList.add('active');
-  });
-});
-
-/* Carte 3D souris */
+document.querySelectorAll('.ec-nav-btn').forEach(btn=>{btn.addEventListener('click',function(){document.querySelectorAll('.ec-nav-btn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.ec-panel').forEach(p=>p.classList.remove('active'));this.classList.add('active');const t=document.getElementById('panel-'+this.dataset.panel);if(t)t.classList.add('active');});});
 const card=document.getElementById('creditCard');
-if(card){
-  card.addEventListener('mousemove',function(e){
-    const r=this.getBoundingClientRect();
-    const x=(e.clientX-r.left)/r.width-.5;
-    const y=(e.clientY-r.top)/r.height-.5;
-    this.style.transform=`rotateY(${x*20}deg) rotateX(${-y*12}deg) scale(1.03)`;
-  });
-  card.addEventListener('mouseleave',function(){
-    this.style.transform='rotateY(0) rotateX(0) scale(1)';
-  });
-}
-
-/* Compteurs animés */
-function animCount(el,target){
-  let v=0;const step=Math.ceil(target/18);
-  const t=setInterval(()=>{v=Math.min(v+step,target);el.textContent=v;if(v>=target)clearInterval(t);},55);
-}
-document.querySelectorAll('.ec-hero-stat-val').forEach(el=>{
-  const n=parseInt(el.textContent);
-  if(!isNaN(n)&&n>0){el.textContent='0';setTimeout(()=>animCount(el,n),500);}
-});
-
-/* Toast bienvenue */
-setTimeout(()=>{
-  const t=document.getElementById('ecToast');
-  if(t){t.classList.add('show');setTimeout(()=>t.classList.remove('show'),4000);}
-},900);
+if(card){card.addEventListener('mousemove',function(e){const r=this.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5;const y=(e.clientY-r.top)/r.height-.5;this.style.transform=`rotateY(${x*20}deg) rotateX(${-y*12}deg) scale(1.03)`;});card.addEventListener('mouseleave',function(){this.style.transform='rotateY(0) rotateX(0) scale(1)';});}
+function animCount(el,target){let v=0;const step=Math.ceil(target/18);const t=setInterval(()=>{v=Math.min(v+step,target);el.textContent=v;if(v>=target)clearInterval(t);},55);}
+document.querySelectorAll('.ec-hero-stat-val').forEach(el=>{const n=parseInt(el.textContent);if(!isNaN(n)&&n>0){el.textContent='0';setTimeout(()=>animCount(el,n),500);}});
+setTimeout(()=>{const t=document.getElementById('ecToast');if(t){t.classList.add('show');setTimeout(()=>t.classList.remove('show'),4000);}},900);
 </script>
 </body>
 </html>

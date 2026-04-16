@@ -18,274 +18,122 @@
       --surface:#fff;--surface2:#fdfcfa;
       --border:#e8e2d9;--border2:#d4cdc0;
       --text:#1a1a1a;--text2:#3d3d3d;--muted:#8a8278;--faint:#b5aea5;
-      --ff-head:'Cormorant Garamond',serif;
-      --ff-body:'DM Sans',sans-serif;
+      --ff-head:'Cormorant Garamond',serif;--ff-body:'DM Sans',sans-serif;
       --shadow-sm:0 2px 8px rgba(26,20,10,.06);
       --shadow-md:0 8px 32px rgba(26,20,10,.09);
       --shadow-lg:0 24px 64px rgba(26,20,10,.12);
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     body{background:var(--bg);font-family:var(--ff-body);color:var(--text);min-height:100vh;}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 60% 70% at 100% 0%,rgba(193,0,122,.05) 0%,transparent 55%),radial-gradient(ellipse 50% 50% at 0% 100%,rgba(79,166,149,.06) 0%,transparent 50%),radial-gradient(ellipse 40% 40% at 50% 50%,rgba(176,141,87,.04) 0%,transparent 60%);}
+    body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231a1a1a' fill-opacity='0.018'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");}
 
-    /* ══ TEXTURE FOND ══ */
-    body::before{
-      content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-      background:
-        radial-gradient(ellipse 60% 70% at 100% 0%,rgba(193,0,122,.05) 0%,transparent 55%),
-        radial-gradient(ellipse 50% 50% at 0% 100%,rgba(79,166,149,.06) 0%,transparent 50%),
-        radial-gradient(ellipse 40% 40% at 50% 50%,rgba(176,141,87,.04) 0%,transparent 60%);
-    }
-    body::after{
-      content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-      background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231a1a1a' fill-opacity='0.018'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    }
+    .signup-wrap{position:relative;z-index:1;min-height:calc(100vh - 140px);display:flex;align-items:center;justify-content:center;padding:3rem 1rem;}
 
-    /* ══ LAYOUT ══ */
-    .signup-wrap{
-      position:relative;z-index:1;
-      min-height:calc(100vh - 140px);
-      display:flex;align-items:center;justify-content:center;
-      padding:3rem 1rem;
-    }
+    .signup-card{background:var(--surface);border:1px solid var(--border);border-radius:28px;box-shadow:var(--shadow-lg);width:100%;max-width:500px;overflow:hidden;animation:cardReveal .5s cubic-bezier(.4,0,.2,1) both;position:relative;}
+    @keyframes cardReveal{from{opacity:0;transform:translateY(24px) scale(.98);}to{opacity:1;transform:translateY(0) scale(1);}}
+    .signup-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;z-index:10;background:linear-gradient(90deg,transparent,var(--rose) 30%,var(--gold) 70%,transparent);}
 
-    /* ══ CARTE PRINCIPALE ══ */
-    .signup-card{
-      background:var(--surface);
-      border:1px solid var(--border);
-      border-radius:28px;
-      box-shadow:var(--shadow-lg);
-      width:100%;max-width:500px;
-      overflow:hidden;
-      animation:cardReveal .5s cubic-bezier(.4,0,.2,1) both;
-      position:relative;
-    }
-    @keyframes cardReveal{
-      from{opacity:0;transform:translateY(24px) scale(.98);}
-      to{opacity:1;transform:translateY(0) scale(1);}
-    }
-
-    /* Ligne dorée en haut */
-    .signup-card::before{
-      content:'';position:absolute;top:0;left:0;right:0;height:2.5px;z-index:10;
-      background:linear-gradient(90deg,transparent,var(--rose) 30%,var(--gold) 70%,transparent);
-    }
-
-    /* ══ EN-TÊTE CARD ══ */
-    .card-header-luxe{
-      padding:2.5rem 2.75rem 2.25rem;
-      background:linear-gradient(160deg,var(--bg) 0%,var(--bg2) 60%,var(--bg3) 100%);
-      border-bottom:1px solid var(--border);
-      position:relative;overflow:hidden;
-    }
-    /* Monogramme watermark */
-    .card-header-luxe::after{
-      content:'ML2C';
-      position:absolute;right:-20px;top:50%;transform:translateY(-50%);
-      font-family:var(--ff-head);font-size:5.5rem;font-weight:700;
-      color:rgba(193,0,122,.04);line-height:1;pointer-events:none;
-      letter-spacing:-.02em;
-    }
-    .ch-label{
-      font-size:.65rem;font-weight:700;text-transform:uppercase;
-      letter-spacing:.15em;color:var(--faint);margin-bottom:.9rem;
-      display:flex;align-items:center;gap:.5rem;
-    }
+    .card-header-luxe{padding:2.5rem 2.75rem 2.25rem;background:linear-gradient(160deg,var(--bg) 0%,var(--bg2) 60%,var(--bg3) 100%);border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+    .card-header-luxe::after{content:'ML2C';position:absolute;right:-20px;top:50%;transform:translateY(-50%);font-family:var(--ff-head);font-size:5.5rem;font-weight:700;color:rgba(193,0,122,.04);line-height:1;pointer-events:none;letter-spacing:-.02em;}
+    .ch-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--faint);margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem;}
     .ch-label::before{content:'';width:18px;height:1px;background:var(--faint);}
-    .ch-title{
-      font-family:var(--ff-head);font-size:2.35rem;font-weight:300;
-      color:var(--ink);line-height:1.05;margin-bottom:.45rem;
-      letter-spacing:-.02em;
-    }
+    .ch-title{font-family:var(--ff-head);font-size:2.35rem;font-weight:300;color:var(--ink);line-height:1.05;margin-bottom:.45rem;letter-spacing:-.02em;}
     .ch-title strong{font-weight:700;}
     .ch-title em{color:var(--rose);font-style:italic;font-weight:600;}
     .ch-sub{font-size:.84rem;color:var(--muted);line-height:1.6;}
 
-    /* Étapes visuelles */
     .signup-steps{display:flex;align-items:center;gap:0;margin-top:1.5rem;}
     .step-item{display:flex;flex-direction:column;align-items:center;gap:.3rem;flex:1;}
-    .step-circle{
-      width:28px;height:28px;border-radius:50%;
-      display:flex;align-items:center;justify-content:center;
-      font-size:.65rem;font-weight:700;
-      border:1.5px solid var(--border2);color:var(--faint);
-      background:var(--surface);transition:all .3s;
-    }
-    .step-item.active .step-circle{
-      background:var(--rose);border-color:var(--rose);color:#fff;
-      box-shadow:0 0 0 3px rgba(193,0,122,.12);
-    }
+    .step-circle{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;border:1.5px solid var(--border2);color:var(--faint);background:var(--surface);transition:all .3s;}
+    .step-item.active .step-circle{background:var(--rose);border-color:var(--rose);color:#fff;box-shadow:0 0 0 3px rgba(193,0,122,.12);}
     .step-label{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);text-align:center;}
     .step-item.active .step-label{color:var(--rose);}
     .step-bar{flex:1;height:1.5px;background:var(--border);margin:0 -1px;margin-bottom:1.5rem;}
 
-    /* ══ CORPS FORMULAIRE ══ */
     .card-form-body{padding:2.25rem 2.75rem 2.5rem;}
 
-    /* Flash messages */
-    .flash-msg{
-      padding:.8rem 1rem;border-radius:12px;margin-bottom:1.25rem;
-      font-size:.84rem;display:flex;align-items:flex-start;gap:.5rem;
-      border:1px solid transparent;
-    }
+    .flash-msg{padding:.8rem 1rem;border-radius:12px;margin-bottom:1.25rem;font-size:.84rem;display:flex;align-items:flex-start;gap:.5rem;border:1px solid transparent;}
     .flash-msg.danger{background:#fef2f2;color:#dc2626;border-color:#fecaca;}
     .flash-msg.success{background:var(--turq-xl);color:var(--turq-d);border-color:rgba(79,166,149,.25);}
 
-    /* ══ CHAMPS ══ */
     .field-group{margin-bottom:1.25rem;}
-    .field-label{
-      display:block;font-size:.68rem;font-weight:700;
-      text-transform:uppercase;letter-spacing:.09em;
-      color:var(--muted);margin-bottom:.5rem;
-    }
+    .field-label{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:.5rem;}
     .field-input-wrap{position:relative;}
-    .field-icon{
-      position:absolute;left:1rem;top:50%;transform:translateY(-50%);
-      color:var(--faint);font-size:.82rem;pointer-events:none;
-      transition:color .2s;
-    }
-    .field-input{
-      width:100%;padding:.8rem 1rem .8rem 2.6rem;
-      border:1.5px solid var(--border);border-radius:12px;
-      font-size:.9rem;color:var(--text);
-      background:var(--surface2);
-      transition:border-color .22s,box-shadow .22s,background .22s;
-      font-family:var(--ff-body);outline:none;
-      -webkit-appearance:none;appearance:none;
-    }
+    .field-icon{position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--faint);font-size:.82rem;pointer-events:none;transition:color .2s;}
+    .field-input{width:100%;padding:.8rem 1rem .8rem 2.6rem;border:1.5px solid var(--border);border-radius:12px;font-size:.9rem;color:var(--text);background:var(--surface2);transition:border-color .22s,box-shadow .22s,background .22s;font-family:var(--ff-body);outline:none;-webkit-appearance:none;appearance:none;}
     .field-input::placeholder{color:var(--faint);}
-    .field-input:focus{
-      border-color:var(--turq);
-      box-shadow:0 0 0 3px rgba(79,166,149,.1);
-      background:var(--surface);
-    }
-    .field-input:focus + .field-icon{color:var(--turq);}
-    .field-input.error{
-      border-color:#ef4444;
-      box-shadow:0 0 0 3px rgba(239,68,68,.08);
-    }
-    .field-error-msg{
-      font-size:.72rem;color:#ef4444;
-      display:none;align-items:center;gap:.3rem;
-      margin-top:.35rem;
-    }
+    .field-input:focus{border-color:var(--turq);box-shadow:0 0 0 3px rgba(79,166,149,.1);background:var(--surface);}
+    .field-input.error{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.08);}
+    .field-error-msg{font-size:.72rem;color:#ef4444;display:none;align-items:center;gap:.3rem;margin-top:.35rem;}
     .field-error-msg.show{display:flex;}
 
-    /* Œil mdp */
-    .pw-eye{
-      position:absolute;right:1rem;top:50%;transform:translateY(-50%);
-      background:none;border:none;cursor:pointer;
-      color:var(--faint);font-size:.88rem;padding:0;line-height:1;
-      transition:color .2s;
-    }
+    .pw-eye{position:absolute;right:1rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--faint);font-size:.88rem;padding:0;line-height:1;transition:color .2s;}
     .pw-eye:hover{color:var(--turq);}
 
-    /* ══ FORCE MDP ══ */
+    /* ══ BARRE DE FORCE ══ */
     .pw-strength{margin-top:.55rem;display:none;}
     .pw-strength.visible{display:block;}
-    .pw-track{height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;margin-bottom:.35rem;}
+    .pw-track{height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;margin-bottom:.4rem;}
     .pw-fill{height:100%;border-radius:2px;transition:width .35s,background .35s;width:0;}
-    .pw-info{display:flex;justify-content:space-between;align-items:center;}
-    .pw-text{font-size:.7rem;font-weight:600;}
-    .pw-hints{display:flex;gap:.4rem;flex-wrap:wrap;}
-    .pw-hint{font-size:.6rem;padding:.1rem .45rem;border-radius:20px;background:var(--bg2);color:var(--faint);border:1px solid var(--border);transition:all .2s;}
-    .pw-hint.ok{background:var(--turq-xl);color:var(--turq-d);border-color:rgba(79,166,149,.2);}
+    .pw-level{font-size:.7rem;font-weight:600;margin-bottom:.5rem;}
+
+    /* ══ CHECKLIST MDP ══ */
+    .pw-checklist{
+      background:var(--bg2);border:1px solid var(--border);
+      border-radius:12px;padding:.85rem 1rem;
+      display:flex;flex-direction:column;gap:.38rem;
+      margin-top:.5rem;
+    }
+    .pw-check-item{
+      display:flex;align-items:center;gap:.55rem;
+      font-size:.79rem;color:var(--muted);
+      transition:color .25s;
+    }
+    .pw-check-ico{
+      width:17px;height:17px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-size:.58rem;font-weight:900;flex-shrink:0;
+      background:rgba(239,68,68,.1);color:#ef4444;
+      transition:all .25s;
+    }
+    .pw-check-item.ok{color:var(--ink2);}
+    .pw-check-item.ok .pw-check-ico{background:rgba(79,166,149,.15);color:var(--turq-d);}
 
     /* ══ CONSENTEMENT ══ */
-    .consent-wrap{
-      background:var(--bg2);border:1.5px solid var(--border);
-      border-radius:14px;padding:1.1rem 1.2rem;
-      margin-bottom:.6rem;transition:all .22s;
-    }
-    .consent-wrap.checked{
-      background:var(--turq-xl);border-color:rgba(79,166,149,.25);
-    }
-    .consent-wrap.error-box{
-      background:#fef2f2;border-color:#fecaca;
-    }
-    .consent-label{
-      display:flex;align-items:flex-start;gap:.85rem;
-      cursor:pointer;user-select:none;margin:0;
-    }
+    .consent-wrap{background:var(--bg2);border:1.5px solid var(--border);border-radius:14px;padding:1.1rem 1.2rem;margin-bottom:.6rem;transition:all .22s;}
+    .consent-wrap.checked{background:var(--turq-xl);border-color:rgba(79,166,149,.25);}
+    .consent-wrap.error-box{background:#fef2f2;border-color:#fecaca;}
+    .consent-label{display:flex;align-items:flex-start;gap:.85rem;cursor:pointer;user-select:none;margin:0;}
     .consent-cb{display:none;}
-    .cb-custom{
-      width:20px;height:20px;border-radius:6px;
-      border:2px solid var(--border2);background:var(--surface);
-      flex-shrink:0;margin-top:.1rem;
-      display:flex;align-items:center;justify-content:center;
-      transition:all .22s;
-    }
-    .consent-cb:checked ~ .cb-custom{
-      background:var(--turq);border-color:var(--turq);
-    }
-    .consent-cb:checked ~ .cb-custom::after{
-      content:'';display:block;width:5px;height:9px;
-      border:2px solid #fff;border-top:none;border-left:none;
-      transform:rotate(45deg) translate(-1px,-1px);
-    }
+    .cb-custom{width:20px;height:20px;border-radius:6px;border:2px solid var(--border2);background:var(--surface);flex-shrink:0;margin-top:.1rem;display:flex;align-items:center;justify-content:center;transition:all .22s;}
+    .consent-cb:checked ~ .cb-custom{background:var(--turq);border-color:var(--turq);}
+    .consent-cb:checked ~ .cb-custom::after{content:'';display:block;width:5px;height:9px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translate(-1px,-1px);}
     .consent-text{font-size:.84rem;color:var(--muted);line-height:1.65;}
-    .consent-text a{
-      color:var(--rose);font-weight:600;text-decoration:none;
-      border-bottom:1px dashed rgba(193,0,122,.35);
-      transition:all .2s;
-    }
+    .consent-text a{color:var(--rose);font-weight:600;text-decoration:none;border-bottom:1px dashed rgba(193,0,122,.35);transition:all .2s;}
     .consent-text a:hover{color:var(--rose-d);border-bottom-color:var(--rose-d);}
-    .consent-err{
-      display:none;align-items:center;gap:.4rem;
-      font-size:.74rem;color:#ef4444;margin-bottom:.85rem;
-    }
+    .consent-err{display:none;align-items:center;gap:.4rem;font-size:.74rem;color:#ef4444;margin-bottom:.85rem;}
     .consent-err.show{display:flex;}
 
-    /* ══ BOUTON SUBMIT ══ */
-    .btn-signup{
-      width:100%;padding:.9rem 1rem;
-      background:linear-gradient(135deg,var(--rose),var(--rose-d));
-      color:#fff;font-weight:700;font-size:.95rem;
-      border:none;border-radius:14px;cursor:pointer;
-      transition:all .25s;
-      display:flex;align-items:center;justify-content:center;gap:.55rem;
-      font-family:var(--ff-body);
-      box-shadow:0 4px 16px rgba(193,0,122,.2);
-      position:relative;overflow:hidden;
-    }
-    .btn-signup::before{
-      content:'';position:absolute;inset:0;
-      background:linear-gradient(135deg,rgba(255,255,255,.12),transparent);
-      pointer-events:none;
-    }
-    .btn-signup:hover{
-      transform:translateY(-2px);
-      box-shadow:0 10px 28px rgba(193,0,122,.35);
-    }
+    .btn-signup{width:100%;padding:.9rem 1rem;background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff;font-weight:700;font-size:.95rem;border:none;border-radius:14px;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:.55rem;font-family:var(--ff-body);box-shadow:0 4px 16px rgba(193,0,122,.2);position:relative;overflow:hidden;}
+    .btn-signup::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.12),transparent);pointer-events:none;}
+    .btn-signup:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(193,0,122,.35);}
     .btn-signup:active{transform:translateY(0);}
     .btn-signup:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none;}
-
-    /* Loading spinner */
     .btn-spinner{display:none;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
     @keyframes spin{to{transform:rotate(360deg);}}
 
-    /* ══ DIVIDER ══ */
     .divider{display:flex;align-items:center;gap:.85rem;margin:1.6rem 0 1.25rem;}
     .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
     .divider span{font-size:.73rem;color:var(--faint);white-space:nowrap;font-style:italic;}
 
-    /* ══ LIEN CONNEXION ══ */
-    .login-cta{
-      display:flex;align-items:center;justify-content:center;gap:.75rem;
-      padding:.85rem 1rem;border-radius:12px;
-      background:var(--bg2);border:1px solid var(--border);
-      text-decoration:none;transition:all .22s;
-    }
+    .login-cta{display:flex;align-items:center;justify-content:center;gap:.75rem;padding:.85rem 1rem;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-decoration:none;transition:all .22s;}
     .login-cta:hover{background:var(--bg3);border-color:var(--border2);text-decoration:none;}
     .login-cta-text{font-size:.84rem;color:var(--muted);}
     .login-cta-link{font-size:.88rem;font-weight:700;color:var(--rose);display:flex;align-items:center;gap:.4rem;}
-    .login-cta-link i{font-size:.78rem;}
     .login-cta-link:hover{color:var(--rose-d);}
 
-    /* ══ INDICATEUR SÉCURITÉ ══ */
-    .security-note{
-      display:flex;align-items:center;justify-content:center;gap:.5rem;
-      font-size:.7rem;color:var(--faint);margin-top:1.35rem;
-    }
+    .security-note{display:flex;align-items:center;justify-content:center;gap:.5rem;font-size:.7rem;color:var(--faint);margin-top:1.35rem;}
     .security-note i{color:var(--turq);font-size:.72rem;}
 
     @media(max-width:560px){
@@ -302,37 +150,21 @@
 <div class="signup-wrap">
   <div class="signup-card">
 
-    <!-- ══ EN-TÊTE ══ -->
     <div class="card-header-luxe">
       <div class="ch-label">ML2C CONSEIL</div>
       <h1 class="ch-title">Créer<br><em>votre compte</em></h1>
       <p class="ch-sub">Accédez à votre espace client en quelques secondes</p>
-
-      <!-- Étapes -->
       <div class="signup-steps">
-        <div class="step-item active">
-          <div class="step-circle"><i class="fas fa-user" style="font-size:.55rem;"></i></div>
-          <div class="step-label">Compte</div>
-        </div>
+        <div class="step-item active"><div class="step-circle"><i class="fas fa-user" style="font-size:.55rem;"></i></div><div class="step-label">Compte</div></div>
         <div class="step-bar"></div>
-        <div class="step-item">
-          <div class="step-circle">2</div>
-          <div class="step-label">Fiche</div>
-        </div>
+        <div class="step-item"><div class="step-circle">2</div><div class="step-label">Fiche</div></div>
         <div class="step-bar"></div>
-        <div class="step-item">
-          <div class="step-circle">3</div>
-          <div class="step-label">Devis</div>
-        </div>
+        <div class="step-item"><div class="step-circle">3</div><div class="step-label">Devis</div></div>
         <div class="step-bar"></div>
-        <div class="step-item">
-          <div class="step-circle"><i class="fas fa-check" style="font-size:.55rem;"></i></div>
-          <div class="step-label">Espace client</div>
-        </div>
+        <div class="step-item"><div class="step-circle"><i class="fas fa-check" style="font-size:.55rem;"></i></div><div class="step-label">Espace client</div></div>
       </div>
     </div>
 
-    <!-- ══ FORMULAIRE ══ -->
     <div class="card-form-body">
 
       {% with messages = get_flashed_messages(with_categories=true) %}
@@ -380,27 +212,45 @@
           <div class="field-input-wrap">
             <i class="fas fa-lock field-icon"></i>
             <input type="password" class="field-input" id="signup-password" name="password"
-              placeholder="Minimum 8 caractères" required autocomplete="new-password"
+              placeholder="Créez un mot de passe sécurisé" required autocomplete="new-password"
               style="padding-right:2.8rem;">
             <button type="button" class="pw-eye" id="pwEye" aria-label="Afficher/masquer">
               <i class="fas fa-eye" id="pwEyeIco"></i>
             </button>
           </div>
-          <!-- Indicateur de force -->
+
+          <!-- Barre de force -->
           <div class="pw-strength" id="pwStrength">
             <div class="pw-track"><div class="pw-fill" id="pwFill"></div></div>
-            <div class="pw-info">
-              <span class="pw-text" id="pwText" style="color:var(--faint);">Saisissez un mot de passe</span>
-              <div class="pw-hints">
-                <span class="pw-hint" id="hint-len">8+ car.</span>
-                <span class="pw-hint" id="hint-maj">Maj.</span>
-                <span class="pw-hint" id="hint-num">Chiffre</span>
-                <span class="pw-hint" id="hint-sym">Symbole</span>
-              </div>
+            <div class="pw-level" id="pwLevel" style="color:var(--faint);">Saisissez un mot de passe</div>
+          </div>
+
+          <!-- Checklist critères -->
+          <div class="pw-checklist" id="pwChecklist">
+            <div class="pw-check-item" id="chk-len">
+              <div class="pw-check-ico"><i class="fas fa-times"></i></div>
+              Au moins 12 caractères
+            </div>
+            <div class="pw-check-item" id="chk-maj">
+              <div class="pw-check-ico"><i class="fas fa-times"></i></div>
+              Une majuscule
+            </div>
+            <div class="pw-check-item" id="chk-min">
+              <div class="pw-check-ico"><i class="fas fa-times"></i></div>
+              Une minuscule
+            </div>
+            <div class="pw-check-item" id="chk-num">
+              <div class="pw-check-ico"><i class="fas fa-times"></i></div>
+              Un chiffre
+            </div>
+            <div class="pw-check-item" id="chk-sym">
+              <div class="pw-check-ico"><i class="fas fa-times"></i></div>
+              Un symbole @ $ ! % * ? &amp; , . ; : – _ + = ( ) [ ] { } / \ | ^ ~ #
             </div>
           </div>
+
           <div class="field-error-msg" id="err-password">
-            <i class="fas fa-exclamation-circle"></i> Minimum 8 caractères requis.
+            <i class="fas fa-exclamation-circle"></i> Le mot de passe ne remplit pas tous les critères.
           </div>
         </div>
 
@@ -460,86 +310,105 @@ document.getElementById('pwEye').addEventListener('click',function(){
   pwInput.focus();
 });
 
-/* ── Force mot de passe ── */
-const pwFill=document.getElementById('pwFill');
-const pwText=document.getElementById('pwText');
-const pwStr=document.getElementById('pwStrength');
-const hints={len:document.getElementById('hint-len'),maj:document.getElementById('hint-maj'),num:document.getElementById('hint-num'),sym:document.getElementById('hint-sym')};
+/* ── Force + Checklist mot de passe ── */
+const pwFill   = document.getElementById('pwFill');
+const pwLevel  = document.getElementById('pwLevel');
+const pwStr    = document.getElementById('pwStrength');
 
-pwInput.addEventListener('input',function(){
-  const val=this.value;
-  pwStr.classList.toggle('visible',val.length>0);
+const checks = {
+  len: { el: document.getElementById('chk-len'), test: v => v.length >= 12 },
+  maj: { el: document.getElementById('chk-maj'), test: v => /[A-Z]/.test(v) },
+  min: { el: document.getElementById('chk-min'), test: v => /[a-z]/.test(v) },
+  num: { el: document.getElementById('chk-num'), test: v => /[0-9]/.test(v) },
+  sym: { el: document.getElementById('chk-sym'), test: v => /[@$!%*?&,\.;:\-_+=(){}\[\]\/\\|^~#]/.test(v) },
+};
 
-  const checks={len:val.length>=8,maj:/[A-Z]/.test(val),num:/[0-9]/.test(val),sym:/[^A-Za-z0-9]/.test(val)};
-  Object.entries(checks).forEach(([k,ok])=>hints[k].classList.toggle('ok',ok));
-  const score=Object.values(checks).filter(Boolean).length;
+function setCheck(item, ok){
+  item.el.classList.toggle('ok', ok);
+  const ico = item.el.querySelector('.pw-check-ico');
+  ico.innerHTML = ok ? '<i class="fas fa-check"></i>' : '<i class="fas fa-times"></i>';
+}
 
-  const levels=[
-    {w:'20%',bg:'#ef4444',label:'Très faible'},
-    {w:'45%',bg:'#f97316',label:'Faible'},
-    {w:'72%',bg:'#eab308',label:'Moyen'},
-    {w:'100%',bg:'#22c55e',label:'Fort'},
+pwInput.addEventListener('input', function(){
+  const val = this.value;
+  pwStr.classList.toggle('visible', val.length > 0);
+
+  let score = 0;
+  Object.values(checks).forEach(c => { const ok = c.test(val); setCheck(c, ok); if(ok) score++; });
+
+  const levels = [
+    {w:'15%', bg:'#ef4444', label:'Très faible'},
+    {w:'35%', bg:'#f97316', label:'Faible'},
+    {w:'60%', bg:'#eab308', label:'Moyen'},
+    {w:'80%', bg:'#84cc16', label:'Bien'},
+    {w:'100%',bg:'#22c55e', label:'Fort'},
   ];
-  if(val.length===0){pwFill.style.width='0';pwText.textContent='Saisissez un mot de passe';pwText.style.color='var(--faint)';return;}
-  const lvl=levels[Math.max(0,score-1)];
-  pwFill.style.width=lvl.w;pwFill.style.background=lvl.bg;
-  pwText.textContent=lvl.label;pwText.style.color=lvl.bg;
+  if(val.length === 0){ pwFill.style.width='0'; pwLevel.textContent='Saisissez un mot de passe'; pwLevel.style.color='var(--faint)'; return; }
+  const lvl = levels[Math.min(score, 4)];
+  pwFill.style.width   = lvl.w;
+  pwFill.style.background = lvl.bg;
+  pwLevel.textContent  = lvl.label;
+  pwLevel.style.color  = lvl.bg;
 });
 
 /* ── Consentement ── */
-const checkbox=document.getElementById('consent');
-const consentBox=document.getElementById('consentBox');
-checkbox.addEventListener('change',function(){
-  consentBox.classList.toggle('checked',this.checked);
+const checkbox   = document.getElementById('consent');
+const consentBox = document.getElementById('consentBox');
+checkbox.addEventListener('change', function(){
+  consentBox.classList.toggle('checked', this.checked);
   consentBox.classList.remove('error-box');
-  if(this.checked)document.getElementById('consentErr').classList.remove('show');
+  if(this.checked) document.getElementById('consentErr').classList.remove('show');
 });
 
-/* ── Validation ── */
-document.getElementById('signupForm').addEventListener('submit',function(e){
-  let valid=true;
+/* ── Validation soumission ── */
+document.getElementById('signupForm').addEventListener('submit', function(e){
+  let valid = true;
 
-  const u=document.getElementById('signup-username');
-  const eu=document.getElementById('err-username');
-  if(!u.value.trim()){u.classList.add('error');eu.classList.add('show');valid=false;}
-  else{u.classList.remove('error');eu.classList.remove('show');}
+  const u = document.getElementById('signup-username');
+  const eu = document.getElementById('err-username');
+  if(!u.value.trim()){ u.classList.add('error'); eu.classList.add('show'); valid=false; }
+  else { u.classList.remove('error'); eu.classList.remove('show'); }
 
-  const em=document.getElementById('signup-email');
-  const eem=document.getElementById('err-email');
-  if(!em.value.trim()||!em.value.includes('@')){em.classList.add('error');eem.classList.add('show');valid=false;}
-  else{em.classList.remove('error');eem.classList.remove('show');}
+  const em = document.getElementById('signup-email');
+  const eem = document.getElementById('err-email');
+  if(!em.value.trim() || !em.value.includes('@')){ em.classList.add('error'); eem.classList.add('show'); valid=false; }
+  else { em.classList.remove('error'); eem.classList.remove('show'); }
 
-  const ep=document.getElementById('err-password');
-  if(!pwInput.value.trim()||pwInput.value.length<8){pwInput.classList.add('error');ep.classList.add('show');valid=false;}
-  else{pwInput.classList.remove('error');ep.classList.remove('show');}
+  // Vérifier tous les critères MDP
+  const val = pwInput.value;
+  const allOk = Object.values(checks).every(c => c.test(val));
+  const ep = document.getElementById('err-password');
+  if(!allOk){ pwInput.classList.add('error'); ep.classList.add('show'); valid=false; }
+  else { pwInput.classList.remove('error'); ep.classList.remove('show'); }
 
   if(!checkbox.checked){
     consentBox.classList.add('error-box');
     document.getElementById('consentErr').classList.add('show');
-    valid=false;
+    valid = false;
   }
 
   if(!valid){
     e.preventDefault();
-    const first=document.querySelector('.field-input.error,.consent-wrap.error-box');
-    if(first)first.scrollIntoView({behavior:'smooth',block:'center'});
+    const first = document.querySelector('.field-input.error, .consent-wrap.error-box');
+    if(first) first.scrollIntoView({behavior:'smooth', block:'center'});
     return;
   }
 
   /* Loading state */
-  const btn=document.getElementById('btnSignup');
-  const spinner=document.getElementById('btnSpinner');
-  const btnIco=document.getElementById('btnIco');
-  const btnTxt=document.getElementById('btnText');
-  btn.disabled=true;spinner.style.display='block';btnIco.style.display='none';btnTxt.textContent='Création en cours…';
+  const btn = document.getElementById('btnSignup');
+  btn.disabled=true;
+  document.getElementById('btnSpinner').style.display='block';
+  document.getElementById('btnIco').style.display='none';
+  document.getElementById('btnText').textContent='Création en cours…';
 });
 
 /* Retirer erreurs à la saisie */
 document.querySelectorAll('.field-input').forEach(input=>{
-  input.addEventListener('input',()=>{
+  input.addEventListener('input', ()=>{
     input.classList.remove('error');
-    const err=document.getElementById('err-'+input.id.replace('signup-',''));
-    if(err)err.classList.remove('show');
+    const id = input.id.replace('signup-','');
+    const err = document.getElementById('err-'+id);
+    if(err) err.classList.remove('show');
   });
 });
 </script>

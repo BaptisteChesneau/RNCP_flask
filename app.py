@@ -770,6 +770,10 @@ def inscription():
 
     return "inscription ok", 200
 
+@app.route('/logout')
+def logout():
+    session.clear()
+    return render_template('logout.html')
 
 @app.route("/compte-client")
 def compte_client():

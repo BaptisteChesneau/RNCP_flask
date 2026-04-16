@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Déconnexion — ML2C CONSEIL</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    :root{
+      --rose:#C1007A;--rose-d:#9a0062;--rose-l:#fce4f3;--rose-xl:#fff5fb;
+      --turq:#4FA695;--turq-d:#3a7d70;--turq-xl:#edfaf7;
+      --gold:#b08d57;
+      --ink:#1a1a2e;
+      --bg:#faf8f4;--bg2:#f5f2ec;--bg3:#ede9e0;
+      --surface:#fff;
+      --border:#e8e2d9;--border2:#d4cdc0;
+      --muted:#8a8278;--faint:#b5aea5;
+      --ff-head:'Cormorant Garamond',serif;--ff-body:'DM Sans',sans-serif;
+      --shadow-lg:0 24px 64px rgba(26,20,10,.12);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--bg);font-family:var(--ff-body);color:var(--ink);min-height:100vh;}
+
+    /* ══ TEXTURE FOND ══ */
+    body::before{
+      content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+      background:
+        radial-gradient(ellipse 60% 70% at 100% 0%,rgba(193,0,122,.05) 0%,transparent 55%),
+        radial-gradient(ellipse 50% 50% at 0% 100%,rgba(79,166,149,.06) 0%,transparent 50%),
+        radial-gradient(ellipse 40% 40% at 50% 50%,rgba(176,141,87,.04) 0%,transparent 60%);
+    }
+    body::after{
+      content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231a1a1a' fill-opacity='0.018'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    /* ══ LAYOUT ══ */
+    .logout-wrap{
+      position:relative;z-index:1;
+      min-height:calc(100vh - 140px);
+      display:flex;align-items:center;justify-content:center;
+      padding:3rem 1rem;
+    }
+
+    /* ══ CARTE ══ */
+    .logout-card{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:28px;box-shadow:var(--shadow-lg);
+      width:100%;max-width:440px;overflow:hidden;
+      animation:cardReveal .5s cubic-bezier(.4,0,.2,1) both;
+      position:relative;text-align:center;
+    }
+    @keyframes cardReveal{
+      from{opacity:0;transform:translateY(20px) scale(.98);}
+      to{opacity:1;transform:translateY(0) scale(1);}
+    }
+    .logout-card::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:2.5px;
+      background:linear-gradient(90deg,transparent,var(--rose) 30%,var(--gold) 70%,transparent);
+    }
+
+    /* ══ HEADER CARD ══ */
+    .logout-head{
+      padding:2.75rem 2.5rem 2.25rem;
+      background:linear-gradient(160deg,var(--bg) 0%,var(--bg2) 60%,var(--bg3) 100%);
+      border-bottom:1px solid var(--border);
+      position:relative;overflow:hidden;
+    }
+    .logout-head::after{
+      content:'ML2C';
+      position:absolute;right:-15px;top:50%;transform:translateY(-50%);
+      font-family:var(--ff-head);font-size:5rem;font-weight:700;
+      color:rgba(193,0,122,.04);line-height:1;pointer-events:none;
+    }
+
+    /* Icône centrale animée */
+    .logout-ico-wrap{
+      width:76px;height:76px;border-radius:50%;
+      background:var(--surface);border:1.5px solid var(--border);
+      margin:0 auto 1.35rem;
+      display:flex;align-items:center;justify-content:center;
+      position:relative;animation:icoIn .6s .2s cubic-bezier(.34,1.4,.64,1) both;
+      box-shadow:0 4px 20px rgba(26,20,10,.08);
+    }
+    @keyframes icoIn{from{opacity:0;transform:scale(.5);}to{opacity:1;transform:scale(1);}}
+    .logout-ico-wrap::before{
+      content:'';position:absolute;inset:-6px;border-radius:50%;
+      border:1.5px dashed rgba(193,0,122,.15);
+      animation:icoRing 6s linear infinite;
+    }
+    @keyframes icoRing{to{transform:rotate(360deg);}}
+    .logout-ico{font-size:1.65rem;color:var(--rose);}
+
+    .logout-label{
+      font-size:.65rem;font-weight:700;text-transform:uppercase;
+      letter-spacing:.15em;color:var(--faint);margin-bottom:.85rem;
+      display:flex;align-items:center;justify-content:center;gap:.5rem;
+    }
+    .logout-label::before,.logout-label::after{content:'';width:18px;height:1px;background:var(--faint);}
+
+    .logout-title{
+      font-family:var(--ff-head);font-size:2.2rem;font-weight:300;
+      color:var(--ink);line-height:1.1;margin-bottom:.45rem;letter-spacing:-.02em;
+    }
+    .logout-title strong{font-weight:700;}
+    .logout-title em{color:var(--rose);font-style:italic;font-weight:600;}
+    .logout-sub{font-size:.87rem;color:var(--muted);line-height:1.6;}
+
+    /* ══ CORPS ══ */
+    .logout-body{padding:2rem 2.5rem 2.5rem;}
+
+    /* Barre de progression */
+    .progress-wrap{margin-bottom:1.75rem;}
+    .progress-label{
+      display:flex;justify-content:space-between;align-items:center;
+      font-size:.72rem;color:var(--muted);margin-bottom:.5rem;font-weight:500;
+    }
+    .progress-track{
+      height:4px;background:var(--bg3);border-radius:20px;overflow:hidden;
+    }
+    .progress-fill{
+      height:100%;border-radius:20px;
+      background:linear-gradient(90deg,var(--rose),var(--gold));
+      width:0%;transition:width .1s linear;
+    }
+    .progress-count{
+      font-family:'DM Sans',sans-serif;font-size:.7rem;
+      color:var(--rose);font-weight:700;
+    }
+
+    /* Boutons */
+    .logout-actions{display:flex;flex-direction:column;gap:.65rem;}
+    .btn-act{
+      display:flex;align-items:center;justify-content:center;gap:.5rem;
+      padding:.8rem 1.5rem;border-radius:12px;
+      font-family:var(--ff-body);font-weight:600;font-size:.9rem;
+      cursor:pointer;border:none;transition:all .25s;text-decoration:none;
+    }
+    .btn-rose{
+      background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff;
+      box-shadow:0 4px 16px rgba(193,0,122,.2);
+    }
+    .btn-rose:hover{box-shadow:0 8px 24px rgba(193,0,122,.35);transform:translateY(-2px);color:#fff;}
+    .btn-ghost{
+      background:var(--surface);border:1.5px solid var(--border);color:var(--muted);
+    }
+    .btn-ghost:hover{background:var(--bg2);border-color:var(--border2);color:var(--ink);text-decoration:none;}
+
+    /* Note sécurité */
+    .security-note{
+      display:flex;align-items:center;justify-content:center;gap:.5rem;
+      font-size:.7rem;color:var(--faint);margin-top:1.25rem;
+    }
+    .security-note i{color:var(--turq);}
+
+    @media(max-width:480px){
+      .logout-head{padding:2rem 1.5rem 1.75rem;}
+      .logout-body{padding:1.75rem 1.5rem 2rem;}
+      .logout-title{font-size:1.85rem;}
+    }
+  </style>
+</head>
+<body>
+{% include "header.html" %}
+
+<div class="logout-wrap">
+  <div class="logout-card">
+
+    <!-- ══ HEADER ══ -->
+    <div class="logout-head">
+      <div class="logout-ico-wrap">
+        <i class="fas fa-sign-out-alt logout-ico"></i>
+      </div>
+      <div class="logout-label">ML2C CONSEIL</div>
+      <h1 class="logout-title">À <em>bientôt !</em></h1>
+      <p class="logout-sub">Vous avez été déconnecté de votre espace client. Vos données sont en sécurité.</p>
+    </div>
+
+    <!-- ══ CORPS ══ -->
+    <div class="logout-body">
+
+      <!-- Barre de redirection auto -->
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>Redirection automatique…</span>
+          <span class="progress-count" id="countDown">5s</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <div class="logout-actions">
+        <a href="{{ url_for('login') }}" class="btn-act btn-rose">
+          <i class="fas fa-sign-in-alt"></i> Se reconnecter
+        </a>
+        <a href="{{ url_for('menu') }}" class="btn-act btn-ghost" id="btnHome">
+          <i class="fas fa-home"></i> Retour à l'accueil
+        </a>
+      </div>
+
+      <div class="security-note">
+        <i class="fas fa-lock"></i>
+        <span>Session fermée · Données sécurisées · Conforme RGPD</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% include "footer.html" %}
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+/* Countdown + barre de progression → redirige vers accueil */
+(function(){
+  const total = 5000;
+  const fill  = document.getElementById('progressFill');
+  const count = document.getElementById('countDown');
+  let elapsed = 0;
+  const step  = 50;
+
+  const timer = setInterval(function(){
+    elapsed += step;
+    const pct = Math.min((elapsed / total) * 100, 100);
+    if(fill) fill.style.width = pct + '%';
+    const sLeft = Math.ceil((total - elapsed) / 1000);
+    if(count) count.textContent = sLeft > 0 ? sLeft + 's' : '…';
+    if(elapsed >= total){
+      clearInterval(timer);
+      window.location.href = "{{ url_for('menu') }}";
+    }
+  }, step);
+
+  /* Annuler le compte à rebours si l'utilisateur clique */
+  document.querySelectorAll('.btn-act').forEach(function(btn){
+    btn.addEventListener('click', function(){ clearInterval(timer); });
+  });
+})();
+</script>
+</body>
+</html>

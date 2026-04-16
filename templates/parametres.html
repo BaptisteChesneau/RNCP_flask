@@ -3,362 +3,472 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Paramètres - ML2C CONSEIL</title>
+  <title>Paramètres — ML2C CONSEIL</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <style>
-    :root {
-      --rose:#C1007A; --rose-dark:#9a0062; --rose-light:#fce4f3;
-      --turq:#4FA695; --turq-dark:#3a7d70; --turq-light:#d4f0ec;
-      --gris:#5C666B; --gris-dark:#2d3436; --border:#e5e7eb;
-      --text:#2d2d2d; --muted:#6b7280;
+    :root{
+      --rose:#C1007A;--rose-d:#9a0062;--rose-l:#fce4f3;--rose-xl:#fff5fb;
+      --turq:#4FA695;--turq-d:#3a7d70;--turq-l:#d4f0ec;--turq-xl:#edfaf7;
+      --gold:#b08d57;--gold-l:#f5eedf;--gold-ll:#fdfaf5;
+      --ink:#1a1a2e;--ink2:#2d2d3d;
+      --bg:#faf8f4;--bg2:#f5f2ec;--bg3:#ede9e0;
+      --surface:#fff;--surface2:#fdfcfa;
+      --border:#e8e2d9;--border2:#d4cdc0;
+      --text:#1a1a1a;--text2:#3d3d3d;--muted:#8a8278;--faint:#b5aea5;
+      --ff-head:'Cormorant Garamond',serif;--ff-body:'DM Sans',sans-serif;
+      --shadow-sm:0 2px 8px rgba(26,20,10,.06);
+      --shadow-md:0 8px 32px rgba(26,20,10,.09);
+      --shadow-lg:0 24px 64px rgba(26,20,10,.12);
     }
-    body { background:#f0f2f5; font-family:'DM Sans',sans-serif; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--bg);font-family:var(--ff-body);color:var(--text);min-height:100vh;}
 
-    /* ── HERO ── */
-    .set-hero {
-      background:linear-gradient(135deg,#1e2729 0%,#2d3436 55%,#1a3333 100%);
-      padding:2.25rem 0 3.25rem; position:relative; overflow:hidden; margin-bottom:-2rem;
+    /* ══ TEXTURE FOND ══ */
+    body::before{
+      content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+      background:
+        radial-gradient(ellipse 60% 70% at 100% 0%,rgba(193,0,122,.05) 0%,transparent 55%),
+        radial-gradient(ellipse 50% 50% at 0% 100%,rgba(79,166,149,.06) 0%,transparent 50%);
     }
-    .set-hero::before {
-      content:''; position:absolute; inset:0;
-      background:radial-gradient(ellipse at 80% 40%,rgba(79,166,149,.16) 0%,transparent 55%),
-                 radial-gradient(ellipse at 8% 85%,rgba(193,0,122,.12) 0%,transparent 45%);
+    body::after{
+      content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231a1a1a' fill-opacity='0.018'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
-    .set-hero-inner { position:relative; z-index:1; }
-    .set-breadcrumb { font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:.6rem; }
-    .set-breadcrumb a { color:rgba(255,255,255,.35); text-decoration:none; }
-    .set-breadcrumb a:hover { color:var(--turq); }
-    .set-breadcrumb span { color:var(--turq); }
-    .set-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,4vw,2.7rem); font-weight:700; color:#fff; line-height:1.1; margin-bottom:.4rem; }
-    .set-title em { color:#5eead4; font-style:italic; }
-    .set-sub { font-size:.86rem; color:rgba(255,255,255,.45); margin:0; }
 
-    /* ── PAGE ── */
-    .set-page { padding:2.5rem 0 4rem; }
-    .set-layout { display:grid; grid-template-columns:240px 1fr; gap:1.75rem; align-items:start; }
+    .set-wrapper{position:relative;z-index:1;min-height:100vh;padding-bottom:5rem;}
 
-    /* ── SIDEBAR ── */
-    .set-sidebar { background:#fff; border-radius:18px; box-shadow:0 6px 28px rgba(0,0,0,.07); overflow:hidden; position:sticky; top:100px; }
-    .sidebar-section-label {
-      font-size:.67rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em;
-      color:var(--muted); padding:.85rem 1.25rem .4rem; background:#f8f9fb;
+    /* ══ HERO ══ */
+    .set-hero{
+      padding:3.5rem 0 5.5rem;position:relative;overflow:hidden;
+      background:linear-gradient(160deg,var(--bg) 0%,var(--bg2) 55%,var(--bg3) 100%);
       border-bottom:1px solid var(--border);
     }
-    .sidebar-btn {
-      display:flex; align-items:center; gap:.7rem;
-      width:100%; padding:.72rem 1.25rem; font-size:.86rem; font-weight:500;
-      color:var(--text); background:none; border:none; cursor:pointer;
-      border-left:3px solid transparent; transition:.18s; text-align:left;
+    .set-hero::before{
+      content:'';position:absolute;inset:0;pointer-events:none;
+      background:
+        radial-gradient(ellipse 40% 60% at 100% 0%,rgba(193,0,122,.07) 0%,transparent 60%),
+        radial-gradient(ellipse 30% 40% at 0% 100%,rgba(176,141,87,.08) 0%,transparent 50%);
     }
-    .sidebar-btn:hover { background:var(--rose-light); color:var(--rose); border-left-color:var(--rose-light); }
-    .sidebar-btn.active { background:var(--rose-light); color:var(--rose); border-left-color:var(--rose); font-weight:700; }
-    .sidebar-btn i { width:16px; text-align:center; font-size:.8rem; }
-    .sidebar-divider { height:1px; background:var(--border); margin:.3rem 0; }
-    .sidebar-btn.danger { color:#dc2626; }
-    .sidebar-btn.danger:hover { background:#fef2f2; border-left-color:#dc2626; }
+    .set-hero-deco{position:absolute;top:0;left:0;right:0;height:2.5px;background:linear-gradient(90deg,transparent,var(--rose) 30%,var(--gold) 70%,transparent);}
+    .set-hero-mono{display:none;}
+    .set-hero-inner{position:relative;z-index:1;}
+    .set-breadcrumb{
+      font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+      color:var(--faint);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem;
+    }
+    .set-breadcrumb::before{content:'';width:18px;height:1px;background:var(--faint);}
+    .set-breadcrumb a{color:var(--faint);text-decoration:none;transition:.2s;}
+    .set-breadcrumb a:hover{color:var(--turq);}
+    .set-title{
+      font-family:var(--ff-head);font-size:clamp(2rem,5vw,3.5rem);font-weight:300;
+      color:var(--ink);line-height:1.05;margin-bottom:.45rem;letter-spacing:-.02em;
+    }
+    .set-title strong{font-weight:700;}
+    .set-title em{color:var(--rose);font-style:italic;font-weight:600;}
+    .set-sub{font-size:.87rem;color:var(--muted);margin:0;}
 
-    /* ── PANELS ── */
-    .set-panel { display:none; }
-    .set-panel.active { display:block; animation:panelIn .25s ease; }
-    @keyframes panelIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+    /* ══ CONTENU ══ */
+    .set-content{margin-top:-2.5rem;position:relative;z-index:2;padding-bottom:5rem;}
+    .set-layout{display:grid;grid-template-columns:230px 1fr;gap:1.75rem;align-items:start;}
 
-    /* ── CARD ── */
-    .set-card { background:#fff; border-radius:18px; box-shadow:0 6px 28px rgba(0,0,0,.07); overflow:hidden; margin-bottom:1.25rem; }
-    .set-card-head { padding:1.25rem 1.6rem; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:.75rem; }
-    .set-card-ico { width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:.85rem; flex-shrink:0; }
-    .set-card-ico.rose { background:var(--rose-light); color:var(--rose); }
-    .set-card-ico.turq { background:var(--turq-light); color:var(--turq); }
-    .set-card-ico.grey { background:#f0f2f5; color:var(--gris); }
-    .set-card-head h3 { font-size:1rem; font-weight:700; color:var(--text); margin:0; }
-    .set-card-head p { font-size:.76rem; color:var(--muted); margin:0; }
-    .set-card-body { padding:1.5rem 1.6rem; }
+    /* ══ SIDEBAR ══ */
+    .set-sidebar{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:20px;box-shadow:var(--shadow-md);
+      overflow:hidden;position:sticky;top:100px;
+    }
+    .sb-section{
+      font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;
+      color:var(--faint);padding:.85rem 1.25rem .4rem;background:var(--bg2);
+      border-bottom:1px solid var(--border);
+    }
+    .sb-btn{
+      display:flex;align-items:center;gap:.65rem;
+      width:100%;padding:.72rem 1.25rem;font-size:.86rem;font-weight:500;
+      color:var(--text2);background:none;border:none;cursor:pointer;
+      border-left:3px solid transparent;transition:all .18s;text-align:left;
+      font-family:var(--ff-body);
+    }
+    .sb-btn:hover{background:var(--rose-xl);color:var(--rose);}
+    .sb-btn.active{background:var(--rose-xl);color:var(--rose);border-left-color:var(--rose);font-weight:700;}
+    .sb-btn i{width:15px;text-align:center;font-size:.8rem;}
+    .sb-divider{height:1px;background:var(--border);margin:.3rem 0;}
+    .sb-btn.danger{color:#dc2626;}
+    .sb-btn.danger:hover{background:#fef2f2;border-left-color:#dc2626;}
 
-    /* ── CHAMPS ── */
-    .field-wrap { margin-bottom:1rem; }
-    .field-label { display:block; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin-bottom:.4rem; }
-    .field-input { width:100%; padding:.7rem 1rem; border:1.5px solid var(--border); border-radius:10px; font-size:.92rem; color:var(--text); background:#fafbfc; transition:.2s; outline:none; font-family:'DM Sans',sans-serif; }
-    .field-input:focus { border-color:var(--rose); background:#fff; box-shadow:0 0 0 3px rgba(193,0,122,.08); }
-    .field-row { display:grid; gap:.9rem; }
-    .field-row.col2 { grid-template-columns:1fr 1fr; }
+    /* ══ PANNEAUX ══ */
+    .set-panel{display:none;}
+    .set-panel.active{display:block;animation:panelIn .28s ease;}
+    @keyframes panelIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 
-    /* ── BOUTONS ── */
-    .btn-rose { display:inline-flex; align-items:center; gap:.45rem; padding:.65rem 1.4rem; border-radius:9px; background:var(--rose); color:#fff; font-weight:600; font-size:.88rem; border:none; cursor:pointer; transition:.2s; }
-    .btn-rose:hover { background:var(--rose-dark); transform:translateY(-1px); box-shadow:0 4px 14px rgba(193,0,122,.3); }
-    .btn-ghost { display:inline-flex; align-items:center; gap:.45rem; padding:.65rem 1.4rem; border-radius:9px; background:#f0f2f5; color:var(--gris); font-weight:600; font-size:.88rem; border:none; cursor:pointer; transition:.2s; text-decoration:none; }
-    .btn-ghost:hover { background:var(--border); color:var(--text); text-decoration:none; }
-    .btn-danger { display:inline-flex; align-items:center; gap:.45rem; padding:.65rem 1.4rem; border-radius:9px; background:#fef2f2; color:#dc2626; font-weight:600; font-size:.88rem; border:1.5px solid #fecaca; cursor:pointer; transition:.2s; }
-    .btn-danger:hover { background:#dc2626; color:#fff; border-color:#dc2626; }
+    /* ══ CARD PREMIUM ══ */
+    .prem-card{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:22px;padding:0;margin-bottom:1.25rem;
+      box-shadow:var(--shadow-md);position:relative;overflow:hidden;
+      transition:box-shadow .3s;
+    }
+    .prem-card::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:2px;
+      background:linear-gradient(90deg,transparent,rgba(193,0,122,.15) 30%,rgba(176,141,87,.2) 70%,transparent);
+    }
+    .prem-card-head{
+      padding:1.35rem 1.75rem;border-bottom:1px solid var(--border);
+      display:flex;align-items:center;gap:.85rem;
+    }
+    .prem-card-ico{
+      width:40px;height:40px;border-radius:12px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:.88rem;flex-shrink:0;
+    }
+    .pci-rose{background:var(--rose-xl);color:var(--rose);}
+    .pci-turq{background:var(--turq-xl);color:var(--turq);}
+    .pci-gold{background:var(--gold-ll);color:var(--gold);}
+    .pci-danger{background:#fef2f2;color:#dc2626;}
+    .prem-card-title{font-family:var(--ff-head);font-size:1.15rem;font-weight:700;color:var(--ink);}
+    .prem-card-sub{font-size:.73rem;color:var(--muted);margin-top:.08rem;}
+    .prem-card-body{padding:1.75rem;}
 
-    /* ── TOGGLE NOTIF ── */
-    .toggle-row { display:flex; align-items:center; justify-content:space-between; padding:.85rem 0; border-bottom:1px solid var(--border); }
-    .toggle-row:last-child { border-bottom:none; }
-    .toggle-info strong { display:block; font-size:.9rem; font-weight:600; color:var(--text); }
-    .toggle-info span { font-size:.78rem; color:var(--muted); }
-    .toggle-switch { position:relative; width:42px; height:24px; flex-shrink:0; }
-    .toggle-switch input { opacity:0; width:0; height:0; }
-    .toggle-slider { position:absolute; inset:0; background:#d1d5db; border-radius:24px; cursor:pointer; transition:.25s; }
-    .toggle-slider::before { content:''; position:absolute; width:18px; height:18px; background:#fff; border-radius:50%; bottom:3px; left:3px; transition:.25s; box-shadow:0 1px 4px rgba(0,0,0,.2); }
-    .toggle-switch input:checked + .toggle-slider { background:var(--turq); }
-    .toggle-switch input:checked + .toggle-slider::before { transform:translateX(18px); }
+    /* ══ CHAMPS ══ */
+    .field-group{margin-bottom:1.1rem;}
+    .field-label{
+      display:block;font-size:.68rem;font-weight:700;
+      text-transform:uppercase;letter-spacing:.09em;
+      color:var(--muted);margin-bottom:.5rem;
+    }
+    .field-input{
+      width:100%;padding:.78rem 1.1rem;
+      border:1.5px solid var(--border);border-radius:12px;
+      font-size:.9rem;color:var(--text);background:var(--surface2);
+      transition:all .22s;outline:none;font-family:var(--ff-body);
+      -webkit-appearance:none;appearance:none;
+    }
+    .field-input::placeholder{color:var(--faint);}
+    .field-input:focus{
+      border-color:var(--rose);background:var(--surface);
+      box-shadow:0 0 0 3px rgba(193,0,122,.08);
+    }
+    .field-row{display:grid;gap:.9rem;}
+    .field-row.col2{grid-template-columns:1fr 1fr;}
 
-    /* ── DANGER ZONE ── */
-    .danger-zone { background:#fff8f8; border:1.5px solid #fecaca; border-radius:14px; padding:1.25rem 1.5rem; }
-    .danger-zone h4 { font-size:.92rem; font-weight:700; color:#dc2626; margin-bottom:.35rem; }
-    .danger-zone p { font-size:.82rem; color:var(--muted); margin-bottom:1rem; }
+    /* ══ BOUTONS ══ */
+    .btn-act{
+      display:inline-flex;align-items:center;gap:.45rem;
+      padding:.65rem 1.35rem;border-radius:11px;
+      font-family:var(--ff-body);font-weight:600;font-size:.87rem;
+      cursor:pointer;border:none;transition:all .25s;text-decoration:none;
+    }
+    .btn-rose{background:var(--rose);color:#fff;box-shadow:0 4px 14px rgba(193,0,122,.2);}
+    .btn-rose:hover{background:var(--rose-d);color:#fff;box-shadow:0 8px 20px rgba(193,0,122,.3);transform:translateY(-2px);}
+    .btn-ghost{background:var(--surface);border:1.5px solid var(--border);color:var(--text2);}
+    .btn-ghost:hover{background:var(--bg2);border-color:var(--border2);color:var(--ink);text-decoration:none;}
+    .btn-danger-soft{background:rgba(220,38,38,.07);border:1.5px solid rgba(220,38,38,.15);color:#dc2626;}
+    .btn-danger-soft:hover{background:#dc2626;color:#fff;border-color:#dc2626;box-shadow:0 6px 16px rgba(220,38,38,.25);}
 
-    /* ── FLASH ── */
-    .flash-wrap { margin-bottom:1.25rem; }
+    /* ══ TOGGLE SWITCH ══ */
+    .toggle-row{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:.9rem 0;border-bottom:1px solid var(--border);
+    }
+    .toggle-row:last-of-type{border-bottom:none;}
+    .toggle-info strong{display:block;font-size:.9rem;font-weight:600;color:var(--ink);}
+    .toggle-info span{font-size:.78rem;color:var(--muted);}
+    .toggle-wrap{position:relative;width:44px;height:24px;flex-shrink:0;}
+    .toggle-wrap input{opacity:0;width:0;height:0;position:absolute;}
+    .toggle-track{
+      position:absolute;inset:0;background:var(--border2);border-radius:24px;
+      cursor:pointer;transition:.25s;border:1px solid var(--border);
+    }
+    .toggle-thumb{
+      position:absolute;width:18px;height:18px;background:#fff;border-radius:50%;
+      top:2px;left:2px;transition:.25s;box-shadow:0 1px 4px rgba(0,0,0,.15);
+    }
+    .toggle-wrap input:checked ~ .toggle-track{background:var(--turq);border-color:var(--turq);}
+    .toggle-wrap input:checked ~ .toggle-track + .toggle-thumb,
+    .toggle-wrap input:checked + .toggle-track ~ .toggle-thumb{transform:translateX(20px);}
 
-    @media(max-width:860px) {
-      .set-layout { grid-template-columns:1fr; }
-      .set-sidebar { position:static; display:flex; flex-wrap:wrap; border-radius:14px; }
-      .sidebar-section-label { display:none; }
-      .sidebar-btn { border-left:none; border-bottom:3px solid transparent; padding:.6rem .9rem; font-size:.8rem; }
-      .sidebar-btn.active { border-bottom-color:var(--rose); border-left:none; }
-      .sidebar-divider { display:none; }
+    /* Fix toggle thumb on checked */
+    .toggle-wrap input:checked + .toggle-track { background:var(--turq); border-color:var(--turq); }
+    .toggle-wrap input:checked + .toggle-track + .toggle-thumb { transform:translateX(20px); }
+
+    /* ══ DANGER ZONE ══ */
+    .danger-block{
+      background:#fef9f9;border:1.5px solid rgba(220,38,38,.15);
+      border-radius:16px;padding:1.35rem 1.5rem;margin-bottom:1rem;
+    }
+    .danger-block:last-child{margin-bottom:0;}
+    .danger-block h4{
+      font-family:var(--ff-head);font-size:1.05rem;font-weight:700;
+      color:#dc2626;margin-bottom:.35rem;display:flex;align-items:center;gap:.5rem;
+    }
+    .danger-block p{font-size:.83rem;color:var(--muted);margin-bottom:1rem;line-height:1.6;}
+
+    /* ══ FLASH ══ */
+    .flash-wrap{margin-bottom:1.5rem;}
+    .flash-item{
+      padding:.8rem 1.1rem;border-radius:12px;margin-bottom:.5rem;
+      font-size:.84rem;display:flex;align-items:center;gap:.6rem;
+      border:1px solid transparent;
+    }
+    .flash-item.success{background:var(--turq-xl);color:var(--turq-d);border-color:rgba(79,166,149,.2);}
+    .flash-item.danger{background:#fef2f2;color:#dc2626;border-color:#fecaca;}
+    .flash-item.warning{background:var(--gold-ll);color:#92400e;border-color:rgba(176,141,87,.2);}
+
+    @media(max-width:860px){
+      .set-layout{grid-template-columns:1fr;}
+      .set-sidebar{position:static;display:flex;flex-wrap:wrap;border-radius:16px;}
+      .sb-section{display:none;}
+      .sb-btn{border-left:none;border-bottom:3px solid transparent;padding:.6rem .9rem;font-size:.8rem;}
+      .sb-btn.active{border-bottom-color:var(--rose);border-left:none;}
+      .sb-divider{display:none;}
+      .set-hero-mono{display:none;}
+    }
+    @media(max-width:560px){
+      .field-row.col2{grid-template-columns:1fr;}
     }
   </style>
 </head>
 <body>
 {% include "header.html" %}
 
-<!-- HERO -->
-<div class="set-hero">
-  <div class="container set-hero-inner">
-    <div class="set-breadcrumb">
-      <a href="{{ url_for('compte_client') }}">Espace client</a> &rsaquo; <span>Paramètres</span>
-    </div>
-    <h1 class="set-title">Mon <em>compte</em></h1>
-    <p class="set-sub">Gérez vos informations, sécurité et préférences.</p>
-  </div>
-</div>
+<div class="set-wrapper">
 
-<div class="set-page">
-  <div class="container">
-
-    <!-- Flash messages -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <div class="flash-wrap">
-          {% for category, message in messages %}
-            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-              {{ message }}
-              <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-            </div>
-          {% endfor %}
-        </div>
-      {% endif %}
-    {% endwith %}
-
-    <div class="set-layout">
-
-      <!-- ══ SIDEBAR ══ -->
-      <div class="set-sidebar">
-        <div class="sidebar-section-label">Mon compte</div>
-        <button class="sidebar-btn active" data-panel="profil">
-          <i class="fas fa-user"></i> Profil
-        </button>
-        <button class="sidebar-btn" data-panel="password">
-          <i class="fas fa-lock"></i> Mot de passe
-        </button>
-        <div class="sidebar-divider"></div>
-        <div class="sidebar-section-label">Préférences</div>
-        <button class="sidebar-btn" data-panel="notifs">
-          <i class="fas fa-bell"></i> Notifications
-        </button>
-        <div class="sidebar-divider"></div>
-        <div class="sidebar-section-label">Données</div>
-        <button class="sidebar-btn" data-panel="donnees">
-          <i class="fas fa-download"></i> Mes données
-        </button>
-        <div class="sidebar-divider"></div>
-        <button class="sidebar-btn danger" data-panel="danger">
-          <i class="fas fa-exclamation-triangle"></i> Zone de danger
-        </button>
+  <!-- ══ HERO ══ -->
+  <div class="set-hero">
+    <div class="set-hero-deco"></div>
+    <div class="set-hero-mono">RÉGLAGES</div>
+    <div class="container set-hero-inner">
+      <div class="set-breadcrumb">
+        <a href="{{ url_for('compte_client') }}">Espace client</a>
+        &rsaquo; Paramètres
       </div>
+      <h1 class="set-title">Mon <em>compte</em></h1>
+      <p class="set-sub">Gérez vos informations personnelles, sécurité et préférences.</p>
+    </div>
+  </div>
 
-      <!-- ══ CONTENU ══ -->
-      <div>
+  <!-- ══ CONTENU ══ -->
+  <div class="set-content">
+    <div class="container">
 
-        <!-- ── PROFIL ── -->
-        <div class="set-panel active" id="panel-profil">
-          <div class="set-card">
-            <div class="set-card-head">
-              <div class="set-card-ico rose"><i class="fas fa-user"></i></div>
-              <div>
-                <h3>Informations personnelles</h3>
-                <p>Nom, prénom et adresse email du compte</p>
+      <!-- Flash -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-wrap">
+            {% for category, message in messages %}
+              <div class="flash-item {{ category }}">
+                <i class="fas {% if category == 'success' %}fa-check-circle{% elif category == 'danger' %}fa-exclamation-circle{% else %}fa-exclamation-triangle{% endif %}"></i>
+                {{ message }}
               </div>
-            </div>
-            <div class="set-card-body">
-              <form action="{{ url_for('update_profile') }}" method="POST">
-                <div class="field-row col2">
-                  <div class="field-wrap" style="margin:0">
-                    <label class="field-label">Prénom</label>
-                    <input type="text" class="field-input" name="prenom" value="{{ user.prenom }}" required>
-                  </div>
-                  <div class="field-wrap" style="margin:0">
-                    <label class="field-label">Nom</label>
-                    <input type="text" class="field-input" name="nom" value="{{ user.nom }}" required>
-                  </div>
-                </div>
-                <div class="field-wrap mt-3">
-                  <label class="field-label">Adresse email</label>
-                  <input type="email" class="field-input" name="email" value="{{ user.email }}" required>
-                </div>
-                <div class="mt-3 d-flex gap-2" style="gap:.65rem">
-                  <button type="submit" class="btn-rose"><i class="fas fa-save"></i> Enregistrer</button>
-                  <a href="{{ url_for('compte_client') }}" class="btn-ghost"><i class="fas fa-arrow-left"></i> Retour</a>
-                </div>
-              </form>
-            </div>
+            {% endfor %}
           </div>
+        {% endif %}
+      {% endwith %}
+
+      <div class="set-layout">
+
+        <!-- ══ SIDEBAR ══ -->
+        <div class="set-sidebar">
+          <div class="sb-section">Mon compte</div>
+          <button class="sb-btn active" data-panel="profil">
+            <i class="fas fa-user"></i> Profil
+          </button>
+          <button class="sb-btn" data-panel="password">
+            <i class="fas fa-lock"></i> Mot de passe
+          </button>
+          <div class="sb-divider"></div>
+          <div class="sb-section" style="border-top:1px solid var(--border);">Préférences</div>
+          <button class="sb-btn" data-panel="notifs">
+            <i class="fas fa-bell"></i> Notifications
+          </button>
+          <div class="sb-divider"></div>
+          <button class="sb-btn danger" data-panel="danger">
+            <i class="fas fa-exclamation-triangle"></i> Zone de danger
+          </button>
         </div>
 
-        <!-- ── MOT DE PASSE ── -->
-        <div class="set-panel" id="panel-password">
-          <div class="set-card">
-            <div class="set-card-head">
-              <div class="set-card-ico rose"><i class="fas fa-lock"></i></div>
-              <div>
-                <h3>Changer le mot de passe</h3>
-                <p>Utilisez un mot de passe fort d'au moins 8 caractères</p>
-              </div>
-            </div>
-            <div class="set-card-body">
-              <form action="{{ url_for('update_password') }}" method="POST">
-                <div class="field-wrap">
-                  <label class="field-label">Mot de passe actuel</label>
-                  <input type="password" class="field-input" name="current_password" required>
-                </div>
-                <div class="field-wrap">
-                  <label class="field-label">Nouveau mot de passe</label>
-                  <input type="password" class="field-input" name="new_password" required>
-                </div>
-                <div class="field-wrap">
-                  <label class="field-label">Confirmer le nouveau mot de passe</label>
-                  <input type="password" class="field-input" name="confirm_password" required>
-                </div>
-                <button type="submit" class="btn-rose mt-1"><i class="fas fa-key"></i> Changer le mot de passe</button>
-              </form>
-            </div>
-          </div>
-        </div>
+        <!-- ══ PANELS ══ -->
+        <div>
 
-        <!-- ── NOTIFICATIONS ── -->
-        <div class="set-panel" id="panel-notifs">
-          <div class="set-card">
-            <div class="set-card-head">
-              <div class="set-card-ico turq"><i class="fas fa-bell"></i></div>
-              <div>
-                <h3>Notifications</h3>
-                <p>Choisissez comment vous souhaitez être contacté</p>
+          <!-- ── PROFIL ── -->
+          <div class="set-panel active" id="panel-profil">
+            <div class="prem-card">
+              <div class="prem-card-head">
+                <div class="prem-card-ico pci-rose"><i class="fas fa-user"></i></div>
+                <div>
+                  <div class="prem-card-title">Informations personnelles</div>
+                  <div class="prem-card-sub">Nom, prénom et adresse email du compte</div>
+                </div>
               </div>
-            </div>
-            <div class="set-card-body">
-              <form action="{{ url_for('update_notifications') }}" method="POST">
-                <div class="toggle-row">
-                  <div class="toggle-info">
-                    <strong>Notifications par email</strong>
-                    <span>Devis, rendez-vous, confirmations</span>
+              <div class="prem-card-body">
+                <form action="{{ url_for('update_profile') }}" method="POST">
+                  <div class="field-row col2" style="margin-bottom:1.1rem;">
+                    <div class="field-group" style="margin:0;">
+                      <label class="field-label">Prénom</label>
+                      <input type="text" class="field-input" name="prenom" value="{{ user.prenom }}" required>
+                    </div>
+                    <div class="field-group" style="margin:0;">
+                      <label class="field-label">Nom</label>
+                      <input type="text" class="field-input" name="nom" value="{{ user.nom }}" required>
+                    </div>
                   </div>
-                  <label class="toggle-switch">
-                    <input type="checkbox" name="notif_email" checked>
-                    <span class="toggle-slider"></span>
-                  </label>
-                </div>
-                <div class="toggle-row">
-                  <div class="toggle-info">
-                    <strong>Notifications par SMS</strong>
-                    <span>Rappels de rendez-vous uniquement</span>
+                  <div class="field-group">
+                    <label class="field-label">Adresse e-mail</label>
+                    <input type="email" class="field-input" name="email" value="{{ user.email }}" required>
                   </div>
-                  <label class="toggle-switch">
-                    <input type="checkbox" name="notif_sms">
-                    <span class="toggle-slider"></span>
-                  </label>
-                </div>
-                <button type="submit" class="btn-rose mt-3"><i class="fas fa-save"></i> Enregistrer</button>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── MES DONNÉES ── -->
-        <div class="set-panel" id="panel-donnees">
-          <div class="set-card">
-            <div class="set-card-head">
-              <div class="set-card-ico grey"><i class="fas fa-download"></i></div>
-              <div>
-                <h3>Exporter mes données</h3>
-                <p>Téléchargez l'ensemble des informations liées à votre compte</p>
-              </div>
-            </div>
-            <div class="set-card-body">
-              <p style="font-size:.88rem;color:var(--muted);margin-bottom:1.25rem;">
-                Conformément au RGPD, vous pouvez demander à tout moment l'export de vos données personnelles. Le fichier vous sera envoyé par email sous 48h.
-              </p>
-              <form action="{{ url_for('export_data') }}" method="POST">
-                <button type="submit" class="btn-ghost"><i class="fas fa-file-export"></i> Demander l'export</button>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── ZONE DE DANGER ── -->
-        <div class="set-panel" id="panel-danger">
-          <div class="set-card">
-            <div class="set-card-head">
-              <div class="set-card-ico" style="background:#fef2f2;color:#dc2626"><i class="fas fa-exclamation-triangle"></i></div>
-              <div>
-                <h3>Zone de danger</h3>
-                <p>Actions irréversibles — à utiliser avec précaution</p>
-              </div>
-            </div>
-            <div class="set-card-body">
-              <div class="danger-zone mb-3">
-                <h4><i class="fas fa-credit-card"></i> Supprimer ma carte bancaire</h4>
-                <p>La carte enregistrée sera définitivement supprimée de votre compte.</p>
-                <form method="POST" action="{{ url_for('supprimer_carte') }}"
-                      onsubmit="return confirm('Confirmer la suppression de la carte ?')">
-                  <button type="submit" class="btn-danger"><i class="fas fa-trash-alt"></i> Supprimer la carte</button>
+                  <div style="display:flex;gap:.65rem;margin-top:1.35rem;flex-wrap:wrap;">
+                    <button type="submit" class="btn-act btn-rose"><i class="fas fa-save"></i> Enregistrer</button>
+                    <a href="{{ url_for('compte_client') }}" class="btn-act btn-ghost"><i class="fas fa-arrow-left"></i> Retour</a>
+                  </div>
                 </form>
               </div>
-              <div class="danger-zone">
-                <h4><i class="fas fa-user-times"></i> Supprimer mon compte</h4>
-                <p>Cette action est définitive. Toutes vos données seront effacées sans possibilité de récupération.</p>
-                <form method="POST" action="{{ url_for('supprimer_compte') }}"
-                      onsubmit="return confirm('Êtes-vous absolument certain ? Toutes vos données seront effacées.')">
-                  <button type="submit" class="btn-danger">
-                    <i class="fas fa-trash-alt"></i> Supprimer mon compte
-                  </button>
+            </div>
+          </div>
+
+          <!-- ── MOT DE PASSE ── -->
+          <div class="set-panel" id="panel-password">
+            <div class="prem-card">
+              <div class="prem-card-head">
+                <div class="prem-card-ico pci-rose"><i class="fas fa-lock"></i></div>
+                <div>
+                  <div class="prem-card-title">Changer le mot de passe</div>
+                  <div class="prem-card-sub">Utilisez un mot de passe fort d'au moins 8 caractères</div>
+                </div>
+              </div>
+              <div class="prem-card-body">
+                <form action="{{ url_for('update_password') }}" method="POST">
+                  <div class="field-group">
+                    <label class="field-label">Mot de passe actuel</label>
+                    <input type="password" class="field-input" name="current_password" placeholder="••••••••" required>
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Nouveau mot de passe</label>
+                    <input type="password" class="field-input" name="new_password" placeholder="Minimum 8 caractères" required>
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Confirmer le nouveau mot de passe</label>
+                    <input type="password" class="field-input" name="confirm_password" placeholder="••••••••" required>
+                  </div>
+                  <div style="margin-top:1.35rem;">
+                    <button type="submit" class="btn-act btn-rose"><i class="fas fa-key"></i> Changer le mot de passe</button>
+                  </div>
                 </form>
-                </button>
               </div>
             </div>
           </div>
-        </div>
 
+          <!-- ── NOTIFICATIONS ── -->
+          <div class="set-panel" id="panel-notifs">
+            <div class="prem-card">
+              <div class="prem-card-head">
+                <div class="prem-card-ico pci-turq"><i class="fas fa-bell"></i></div>
+                <div>
+                  <div class="prem-card-title">Notifications</div>
+                  <div class="prem-card-sub">Choisissez comment vous souhaitez être contacté</div>
+                </div>
+              </div>
+              <div class="prem-card-body">
+                <form action="{{ url_for('update_notifications') }}" method="POST">
+                  <div class="toggle-row">
+                    <div class="toggle-info">
+                      <strong>Notifications par e-mail</strong>
+                      <span>Devis, rendez-vous, confirmations</span>
+                    </div>
+                    <label class="toggle-wrap">
+                      <input type="checkbox" name="notif_email" checked>
+                      <div class="toggle-track"></div>
+                      <div class="toggle-thumb"></div>
+                    </label>
+                  </div>
+                  <div class="toggle-row">
+                    <div class="toggle-info">
+                      <strong>Notifications par SMS</strong>
+                      <span>Rappels de rendez-vous uniquement</span>
+                    </div>
+                    <label class="toggle-wrap">
+                      <input type="checkbox" name="notif_sms">
+                      <div class="toggle-track"></div>
+                      <div class="toggle-thumb"></div>
+                    </label>
+                  </div>
+                  <div style="margin-top:1.35rem;">
+                    <button type="submit" class="btn-act btn-rose"><i class="fas fa-save"></i> Enregistrer</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── ZONE DE DANGER ── -->
+          <div class="set-panel" id="panel-danger">
+            <div class="prem-card">
+              <div class="prem-card-head">
+                <div class="prem-card-ico pci-danger"><i class="fas fa-exclamation-triangle"></i></div>
+                <div>
+                  <div class="prem-card-title" style="color:#dc2626;">Zone de danger</div>
+                  <div class="prem-card-sub">Actions irréversibles — à utiliser avec précaution</div>
+                </div>
+              </div>
+              <div class="prem-card-body">
+
+                <div class="danger-block">
+                  <h4><i class="fas fa-credit-card"></i> Supprimer ma carte bancaire</h4>
+                  <p>La carte enregistrée sera définitivement supprimée de votre compte.</p>
+                  <form method="POST" action="{{ url_for('supprimer_carte') }}"
+                        onsubmit="return confirm('Confirmer la suppression de la carte ?')">
+                    <button type="submit" class="btn-act btn-danger-soft">
+                      <i class="fas fa-trash-alt"></i> Supprimer la carte
+                    </button>
+                  </form>
+                </div>
+
+                <div class="danger-block">
+                  <h4><i class="fas fa-user-times"></i> Supprimer mon compte</h4>
+                  <p>Cette action est définitive. Toutes vos données seront effacées sans possibilité de récupération.</p>
+                  <form method="POST" action="{{ url_for('supprimer_compte') }}"
+                        onsubmit="return confirm('Êtes-vous absolument certain ? Toutes vos données seront effacées.')">
+                    <button type="submit" class="btn-act btn-danger-soft">
+                      <i class="fas fa-trash-alt"></i> Supprimer mon compte
+                    </button>
+                  </form>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 {% include "footer.html" %}
-
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  document.querySelectorAll('.sidebar-btn[data-panel]').forEach(btn => {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.set-panel').forEach(p => p.classList.remove('active'));
-      this.classList.add('active');
-      document.getElementById('panel-' + this.dataset.panel).classList.add('active');
-    });
+/* Navigation sidebar */
+document.querySelectorAll('.sb-btn[data-panel]').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.sb-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.set-panel').forEach(p=>p.classList.remove('active'));
+    this.classList.add('active');
+    document.getElementById('panel-'+this.dataset.panel).classList.add('active');
   });
+});
+
+/* Toggle switch thumb sync */
+document.querySelectorAll('.toggle-wrap input').forEach(input=>{
+  function syncThumb(){
+    const thumb=input.parentElement.querySelector('.toggle-thumb');
+    if(thumb)thumb.style.transform=input.checked?'translateX(20px)':'translateX(0)';
+  }
+  syncThumb();
+  input.addEventListener('change',syncThumb);
+});
 </script>
 </body>
 </html>

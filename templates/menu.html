@@ -8,9 +8,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-
   <style>
-    /* ══ COMPTABILITÉ ══ */
+    /* ══ COMPTABILITÉ ic- ══ */
     @keyframes ic-bar-rise   { from{transform:scaleY(0);} to{transform:scaleY(1);} }
     @keyframes ic-row-scroll { 0%{transform:translateY(0);} 100%{transform:translateY(-50%);} }
     @keyframes ic-draw-line  { from{stroke-dashoffset:400;} to{stroke-dashoffset:0;} }
@@ -19,51 +18,129 @@
     @keyframes ic-glow-pulse { 0%,100%{opacity:.10;} 50%{opacity:.20;} }
     @keyframes ic-badge-float{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-4px);} }
     @keyframes ic-shimmer    { 0%,100%{opacity:.10;} 50%{opacity:.35;} }
+    .svc-illus-compta{background:#0d1824!important;border-radius:18px;overflow:hidden;position:relative;padding:0!important;}
+    .svc-illus-compta svg{display:block;width:100%;height:100%;}
+    .ic-ledger{animation:ic-row-scroll 8s linear infinite;}
+    .ic-bar{transform-origin:0 100%;animation:ic-bar-rise .7s cubic-bezier(.34,1.2,.64,1) both;}
+    .ic-spark{stroke-dasharray:400;animation:ic-draw-line 2s .8s ease both;}
+    .ic-stamp{animation:ic-stamp-in .6s 2s cubic-bezier(.34,1.2,.64,1) both;}
+    .ic-pen{animation:ic-pen-write 2s 1s ease-in-out infinite;}
+    .ic-gr{animation:ic-glow-pulse 3s ease-in-out infinite;}
+    .ic-gt{animation:ic-glow-pulse 3s 1.5s ease-in-out infinite;}
+    .ic-spine{animation:ic-shimmer 2.5s ease-in-out infinite;}
+    .ic-b1{animation:ic-badge-float 3s ease-in-out infinite;}
+    .ic-b2{animation:ic-badge-float 3s .8s ease-in-out infinite;}
+    .ic-b3{animation:ic-badge-float 3s 1.4s ease-in-out infinite;}
 
-    .svc-illus-compta { background:#0d1824 !important; border-radius:18px; overflow:hidden; position:relative; padding:0 !important; }
-    .svc-illus-compta svg { display:block; width:100%; height:100%; }
-    .ic-ledger { animation:ic-row-scroll 8s linear infinite; }
-    .ic-bar    { transform-origin:0 100%; animation:ic-bar-rise .7s cubic-bezier(.34,1.2,.64,1) both; }
-    .ic-spark  { stroke-dasharray:400; animation:ic-draw-line 2s .8s ease both; }
-    .ic-stamp  { animation:ic-stamp-in .6s 2s cubic-bezier(.34,1.2,.64,1) both; }
-    .ic-pen    { animation:ic-pen-write 2s 1s ease-in-out infinite; }
-    .ic-gr     { animation:ic-glow-pulse 3s ease-in-out infinite; }
-    .ic-gt     { animation:ic-glow-pulse 3s 1.5s ease-in-out infinite; }
-    .ic-spine  { animation:ic-shimmer 2.5s ease-in-out infinite; }
-    .ic-b1     { animation:ic-badge-float 3s ease-in-out infinite; }
-    .ic-b2     { animation:ic-badge-float 3s .8s ease-in-out infinite; }
-    .ic-b3     { animation:ic-badge-float 3s 1.4s ease-in-out infinite; }
+    /* ══ SOCIAL sw- ══ */
+    @keyframes sw-float-up{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+    @keyframes sw-float-dn{0%,100%{transform:translateY(0);}50%{transform:translateY(5px);}}
+    @keyframes sw-badge-in{0%{opacity:0;transform:scale(.5) translateY(10px);}100%{opacity:1;transform:scale(1) translateY(0);}}
+    @keyframes sw-line-draw{from{stroke-dashoffset:200;}to{stroke-dashoffset:0;}}
+    @keyframes sw-glow{0%,100%{opacity:.08;}50%{opacity:.18;}}
+    @keyframes sw-pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+    @keyframes sw-count{0%{opacity:0;transform:translateY(6px);}100%{opacity:1;transform:translateY(0);}}
+    @keyframes sw-slide-row{0%{transform:translateY(0);}100%{transform:translateY(-50%);}}
+    @keyframes sw-stamp{0%{opacity:0;transform:scale(1.4) rotate(-12deg);}100%{opacity:1;transform:scale(1) rotate(0deg);}}
+    .svc-illus-social{background:#0d1824!important;border-radius:18px;overflow:hidden;position:relative;padding:0!important;}
+    .svc-illus-social svg{display:block;width:100%;height:100%;}
+    .sw-gr{animation:sw-glow 3s ease-in-out infinite;}
+    .sw-gt{animation:sw-glow 3s 1.5s ease-in-out infinite;}
+    .sw-p1{animation:sw-float-dn 3.2s ease-in-out infinite;}
+    .sw-p2{animation:sw-float-up 2.8s .4s ease-in-out infinite;}
+    .sw-p3{animation:sw-float-dn 3.5s .8s ease-in-out infinite;}
+    .sw-b1{animation:sw-badge-in .5s .2s cubic-bezier(.34,1.2,.64,1) both;}
+    .sw-b2{animation:sw-badge-in .5s .5s cubic-bezier(.34,1.2,.64,1) both;}
+    .sw-b3{animation:sw-badge-in .5s .8s cubic-bezier(.34,1.2,.64,1) both;}
+    .sw-l1{stroke-dasharray:200;animation:sw-line-draw 1.2s .3s ease both;}
+    .sw-l2{stroke-dasharray:200;animation:sw-line-draw 1.2s .6s ease both;}
+    .sw-dot1{animation:sw-pulse 2s .3s ease-in-out infinite;}
+    .sw-dot2{animation:sw-pulse 2s .8s ease-in-out infinite;}
+    .sw-rows{animation:sw-slide-row 7s linear infinite;}
+    .sw-stamp{animation:sw-stamp .6s 1.8s cubic-bezier(.34,1.2,.64,1) both;}
+    .sw-n1{animation:sw-count .4s .4s ease both;}
+    .sw-n2{animation:sw-count .4s .7s ease both;}
+    .sw-n3{animation:sw-count .4s 1.0s ease both;}
 
-    /* ══ SOCIAL / PAIE ══ */
-    @keyframes sw-float-up   { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-5px);} }
-    @keyframes sw-float-dn   { 0%,100%{transform:translateY(0);} 50%{transform:translateY(5px);} }
-    @keyframes sw-badge-in   { 0%{opacity:0;transform:scale(.5) translateY(10px);} 100%{opacity:1;transform:scale(1) translateY(0);} }
-    @keyframes sw-line-draw  { from{stroke-dashoffset:200;} to{stroke-dashoffset:0;} }
-    @keyframes sw-glow       { 0%,100%{opacity:.08;} 50%{opacity:.18;} }
-    @keyframes sw-pulse      { 0%,100%{opacity:1;} 50%{opacity:.4;} }
-    @keyframes sw-count      { 0%{opacity:0;transform:translateY(6px);} 100%{opacity:1;transform:translateY(0);} }
-    @keyframes sw-slide-row  { 0%{transform:translateY(0);} 100%{transform:translateY(-50%);} }
-    @keyframes sw-stamp      { 0%{opacity:0;transform:scale(1.4) rotate(-12deg);} 100%{opacity:1;transform:scale(1) rotate(0deg);} }
+    /* ══ JURIDIQUE jw- ══ */
+    @keyframes jw-scale-rock{0%{transform:rotate(-8deg);}50%{transform:rotate(6deg);}100%{transform:rotate(-8deg);}}
+    @keyframes jw-pan-l{0%{transform:translateY(-6px);}50%{transform:translateY(5px);}100%{transform:translateY(-6px);}}
+    @keyframes jw-pan-r{0%{transform:translateY(5px);}50%{transform:translateY(-6px);}100%{transform:translateY(5px);}}
+    @keyframes jw-doc-in{0%{opacity:0;transform:translateY(12px);}100%{opacity:1;transform:translateY(0);}}
+    @keyframes jw-badge-in{0%{opacity:0;transform:scale(.5);}100%{opacity:1;transform:scale(1);}}
+    @keyframes jw-glow{0%,100%{opacity:.08;}50%{opacity:.18;}}
+    @keyframes jw-float{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+    @keyframes jw-row-scroll{0%{transform:translateY(0);}100%{transform:translateY(-50%);}}
+    @keyframes jw-stamp{0%{opacity:0;transform:scale(1.5) rotate(-15deg);}100%{opacity:1;transform:scale(1) rotate(0deg);}}
+    @keyframes jw-shimmer{0%,100%{opacity:.08;}50%{opacity:.3;}}
+    @keyframes jw-draw{from{stroke-dashoffset:300;}to{stroke-dashoffset:0;}}
+    .svc-illus-juridique{background:#0d1824!important;border-radius:18px;overflow:hidden;position:relative;padding:0!important;}
+    .svc-illus-juridique svg{display:block;width:100%;height:100%;}
+    .jw-gr{animation:jw-glow 3s ease-in-out infinite;}
+    .jw-gt{animation:jw-glow 3s 1.5s ease-in-out infinite;}
+    .jw-beam{transform-origin:240px 155px;animation:jw-scale-rock 4s ease-in-out infinite;}
+    .jw-pl{transform-origin:118px 185px;animation:jw-pan-l 4s ease-in-out infinite;}
+    .jw-pr{transform-origin:362px 185px;animation:jw-pan-r 4s ease-in-out infinite;}
+    .jw-d1{animation:jw-doc-in .5s .1s ease both;}
+    .jw-d2{animation:jw-doc-in .5s .3s ease both;}
+    .jw-d3{animation:jw-doc-in .5s .5s ease both;}
+    .jw-b1{animation:jw-badge-in .5s .2s cubic-bezier(.34,1.2,.64,1) both;}
+    .jw-b2{animation:jw-badge-in .5s .5s cubic-bezier(.34,1.2,.64,1) both;}
+    .jw-b3{animation:jw-badge-in .5s .8s cubic-bezier(.34,1.2,.64,1) both;}
+    .jw-f1{animation:jw-float 3s ease-in-out infinite;}
+    .jw-f2{animation:jw-float 3s .8s ease-in-out infinite;}
+    .jw-f3{animation:jw-float 3s 1.6s ease-in-out infinite;}
+    .jw-rows{animation:jw-row-scroll 7s linear infinite;}
+    .jw-stamp{animation:jw-stamp .6s 2s cubic-bezier(.34,1.2,.64,1) both;}
+    .jw-spine{animation:jw-shimmer 2.5s ease-in-out infinite;}
+    .jw-sign{stroke-dasharray:300;animation:jw-draw 1.5s 1.2s ease both;}
 
-    .svc-illus-social { background:#0d1824 !important; border-radius:18px; overflow:hidden; position:relative; padding:0 !important; }
-    .svc-illus-social svg { display:block; width:100%; height:100%; }
-    .sw-gr   { animation:sw-glow 3s ease-in-out infinite; }
-    .sw-gt   { animation:sw-glow 3s 1.5s ease-in-out infinite; }
-    .sw-p1   { animation:sw-float-dn 3.2s ease-in-out infinite; }
-    .sw-p2   { animation:sw-float-up 2.8s .4s ease-in-out infinite; }
-    .sw-p3   { animation:sw-float-dn 3.5s .8s ease-in-out infinite; }
-    .sw-b1   { animation:sw-badge-in .5s .2s cubic-bezier(.34,1.2,.64,1) both; }
-    .sw-b2   { animation:sw-badge-in .5s .5s cubic-bezier(.34,1.2,.64,1) both; }
-    .sw-b3   { animation:sw-badge-in .5s .8s cubic-bezier(.34,1.2,.64,1) both; }
-    .sw-l1   { stroke-dasharray:200; animation:sw-line-draw 1.2s .3s ease both; }
-    .sw-l2   { stroke-dasharray:200; animation:sw-line-draw 1.2s .6s ease both; }
-    .sw-dot1 { animation:sw-pulse 2s .3s ease-in-out infinite; }
-    .sw-dot2 { animation:sw-pulse 2s .8s ease-in-out infinite; }
-    .sw-rows { animation:sw-slide-row 7s linear infinite; }
-    .sw-stamp{ animation:sw-stamp .6s 1.8s cubic-bezier(.34,1.2,.64,1) both; }
-    .sw-n1   { animation:sw-count .4s .4s ease both; }
-    .sw-n2   { animation:sw-count .4s .7s ease both; }
-    .sw-n3   { animation:sw-count .4s 1.0s ease both; }
+    /* ══ IA / CONSEIL aw- ══ */
+    @keyframes aw-glow{0%,100%{opacity:.08;}50%{opacity:.20;}}
+    @keyframes aw-brain{0%,100%{transform:scale(1) rotate(0deg);}50%{transform:scale(1.08) rotate(3deg);}}
+    @keyframes aw-node{0%,100%{transform:translateY(0);opacity:.9;}50%{transform:translateY(-5px);opacity:1;}}
+    @keyframes aw-dash{from{stroke-dashoffset:200;}to{stroke-dashoffset:0;}}
+    @keyframes aw-flow{0%{stroke-dashoffset:60;}100%{stroke-dashoffset:0;}}
+    @keyframes aw-badge-in{0%{opacity:0;transform:scale(.5);}100%{opacity:1;transform:scale(1);}}
+    @keyframes aw-float{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+    @keyframes aw-count{0%{opacity:0;transform:translateY(6px);}100%{opacity:1;transform:translateY(0);}}
+    @keyframes aw-data{0%{transform:translateY(0);}100%{transform:translateY(-50%);}}
+    @keyframes aw-ring{from{stroke-dashoffset:220;}to{stroke-dashoffset:0;}}
+    @keyframes aw-predict{0%{opacity:0;transform:scaleX(0);}100%{opacity:1;transform:scaleX(1);}}
+    @keyframes aw-shimmer{0%,100%{opacity:.08;}50%{opacity:.3;}}
+    .svc-illus-ia{background:#0d1824!important;border-radius:18px;overflow:hidden;position:relative;padding:0!important;}
+    .svc-illus-ia svg{display:block;width:100%;height:100%;}
+    .aw-gr{animation:aw-glow 3s ease-in-out infinite;}
+    .aw-gt{animation:aw-glow 3s 1.5s ease-in-out infinite;}
+    .aw-hub{transform-origin:240px 210px;animation:aw-brain 3s ease-in-out infinite;}
+    .aw-ring{stroke-dasharray:220;animation:aw-ring 1.5s ease both;}
+    .aw-n1{transform-origin:90px 130px;animation:aw-node 3.2s ease-in-out infinite;}
+    .aw-n2{transform-origin:390px 130px;animation:aw-node 3.0s .5s ease-in-out infinite;}
+    .aw-n3{transform-origin:90px 295px;animation:aw-node 3.5s .3s ease-in-out infinite;}
+    .aw-n4{transform-origin:390px 295px;animation:aw-node 2.8s .8s ease-in-out infinite;}
+    .aw-n5{transform-origin:240px 80px;animation:aw-node 3.1s .6s ease-in-out infinite;}
+    .aw-l1{stroke-dasharray:200;animation:aw-dash 1s .1s ease both;}
+    .aw-l2{stroke-dasharray:200;animation:aw-dash 1s .2s ease both;}
+    .aw-l3{stroke-dasharray:200;animation:aw-dash 1s .3s ease both;}
+    .aw-l4{stroke-dasharray:200;animation:aw-dash 1s .4s ease both;}
+    .aw-l5{stroke-dasharray:200;animation:aw-dash 1s .5s ease both;}
+    .aw-f1{stroke-dasharray:12 8;animation:aw-flow 1.2s linear infinite;}
+    .aw-f2{stroke-dasharray:12 8;animation:aw-flow 1.2s .3s linear infinite;}
+    .aw-f3{stroke-dasharray:12 8;animation:aw-flow 1.4s .6s linear infinite;}
+    .aw-f4{stroke-dasharray:12 8;animation:aw-flow 1.1s .9s linear infinite;}
+    .aw-f5{stroke-dasharray:12 8;animation:aw-flow 1.3s .4s linear infinite;}
+    .aw-b1{animation:aw-badge-in .5s .2s cubic-bezier(.34,1.2,.64,1) both;}
+    .aw-b2{animation:aw-badge-in .5s .5s cubic-bezier(.34,1.2,.64,1) both;}
+    .aw-b3{animation:aw-badge-in .5s .8s cubic-bezier(.34,1.2,.64,1) both;}
+    .aw-fl1{animation:aw-float 3s ease-in-out infinite;}
+    .aw-fl2{animation:aw-float 3s .8s ease-in-out infinite;}
+    .aw-fl3{animation:aw-float 3s 1.6s ease-in-out infinite;}
+    .aw-c1{animation:aw-count .4s .4s ease both;}
+    .aw-c2{animation:aw-count .4s .7s ease both;}
+    .aw-c3{animation:aw-count .4s 1.0s ease both;}
+    .aw-data{animation:aw-data 6s linear infinite;}
+    .aw-bar{transform-origin:0 100%;animation:aw-predict .6s cubic-bezier(.34,1.2,.64,1) both;}
+    .aw-sp{animation:aw-shimmer 2.5s ease-in-out infinite;}
   </style>
 </head>
 <body>
@@ -306,23 +383,17 @@
         </div>
       </div>
 
-      <!-- ════ SOCIAL / PAIE : SVG DYNAMIQUE ════ -->
+      <!-- ════ SOCIAL / PAIE ════ -->
       <div class="svc-panel" id="svc-social">
         <div class="svc-img-box svc-illus-social">
           <svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <defs>
-              <marker id="sw-arr1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-                <path d="M2 1L8 5L2 9" fill="none" stroke="#C1007A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </marker>
-              <marker id="sw-arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-                <path d="M2 1L8 5L2 9" fill="none" stroke="#4FA695" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </marker>
+              <marker id="sw-arr1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#C1007A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker>
+              <marker id="sw-arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#4FA695" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker>
             </defs>
             <rect width="480" height="480" fill="#0d1824"/>
             <ellipse class="sw-gr" cx="380" cy="70" rx="200" ry="130" fill="#4FA695" opacity=".08"/>
             <ellipse class="sw-gt" cx="90" cy="390" rx="160" ry="110" fill="#C1007A" opacity=".08"/>
-
-            <!-- Personne gauche (employé) -->
             <g class="sw-p1" transform-origin="110 200">
               <ellipse cx="110" cy="252" rx="28" ry="6" fill="#000" opacity=".2"/>
               <rect x="82" y="192" width="56" height="58" rx="12" fill="#1e2d3d"/>
@@ -334,8 +405,6 @@
               <line x1="99" y1="225" x2="115" y2="225" stroke="rgba(255,255,255,.08)" stroke-width="1.5"/>
               <text x="110" y="268" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="rgba(255,255,255,.3)" letter-spacing=".5">EMPLOYÉ</text>
             </g>
-
-            <!-- Personne centrale (RH, rose) -->
             <g class="sw-p2" transform-origin="240 175">
               <circle cx="240" cy="154" r="36" fill="#C1007A" opacity=".12"/>
               <circle cx="240" cy="154" r="28" fill="#C1007A" opacity=".10"/>
@@ -354,8 +423,6 @@
               <line x1="221" y1="231" x2="259" y2="231" stroke="#C1007A" stroke-width="1.2" opacity=".5"/>
               <text x="240" y="268" text-anchor="middle" font-family="sans-serif" font-size="9.5" font-weight="700" fill="#f472b6" letter-spacing=".5">GESTIONNAIRE</text>
             </g>
-
-            <!-- Personne droite (organisme DSN, turquoise) -->
             <g class="sw-p3" transform-origin="370 200">
               <ellipse cx="370" cy="252" rx="28" ry="6" fill="#000" opacity=".2"/>
               <rect x="342" y="192" width="56" height="58" rx="12" fill="#0d2420"/>
@@ -369,14 +436,10 @@
               <line x1="359" y1="223" x2="380" y2="223" stroke="#4FA695" stroke-width="1.2" opacity=".2"/>
               <text x="370" y="268" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="rgba(79,166,149,.7)" letter-spacing=".5">ORGANISME</text>
             </g>
-
-            <!-- Flèches flux -->
             <path class="sw-l1" d="M139 210 Q175 205 205 208" fill="none" stroke="#C1007A" stroke-width="1.5" opacity=".6" marker-end="url(#sw-arr1)"/>
             <path class="sw-l2" d="M275 208 Q315 205 341 210" fill="none" stroke="#4FA695" stroke-width="1.5" opacity=".6" marker-end="url(#sw-arr2)"/>
             <circle class="sw-dot1" cx="172" cy="207" r="3" fill="#C1007A" opacity=".8"/>
             <circle class="sw-dot2" cx="312" cy="207" r="3" fill="#4FA695" opacity=".8"/>
-
-            <!-- Panel bulletin de paie (droite) -->
             <rect x="408" y="28" width="64" height="210" rx="8" fill="#f5f2ec" opacity=".97"/>
             <rect x="408" y="28" width="64" height="18" rx="8" fill="#1a1a2e"/>
             <rect x="408" y="40" width="64" height="6" fill="#1a1a2e"/>
@@ -389,40 +452,29 @@
             <clipPath id="sw-bp"><rect x="408" y="83" width="64" height="90"/></clipPath>
             <g clip-path="url(#sw-bp)">
               <g class="sw-rows">
-                <text x="413" y="93" font-family="sans-serif" font-size="5" fill="#3d3d3d">Salaire brut</text>
-                <text x="467" y="93" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#1a1a2e">3 800,00</text>
+                <text x="413" y="93" font-family="sans-serif" font-size="5" fill="#3d3d3d">Salaire brut</text><text x="467" y="93" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#1a1a2e">3 800,00</text>
                 <line x1="413" y1="96" x2="467" y2="96" stroke="#e8e2d9" stroke-width=".4"/>
-                <text x="413" y="105" font-family="sans-serif" font-size="5" fill="#3d3d3d">Cotis. salariales</text>
-                <text x="467" y="105" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#ef4444">- 760,00</text>
+                <text x="413" y="105" font-family="sans-serif" font-size="5" fill="#3d3d3d">Cotis. salariales</text><text x="467" y="105" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#ef4444">- 760,00</text>
                 <line x1="413" y1="108" x2="467" y2="108" stroke="#e8e2d9" stroke-width=".4"/>
-                <text x="413" y="117" font-family="sans-serif" font-size="5" fill="#3d3d3d">Mutuelle</text>
-                <text x="467" y="117" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#ef4444">- 45,00</text>
+                <text x="413" y="117" font-family="sans-serif" font-size="5" fill="#3d3d3d">Mutuelle</text><text x="467" y="117" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#ef4444">- 45,00</text>
                 <line x1="413" y1="120" x2="467" y2="120" stroke="#e8e2d9" stroke-width=".4"/>
-                <text x="413" y="129" font-family="sans-serif" font-size="5" fill="#3d3d3d">Prévoyance</text>
-                <text x="467" y="129" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#ef4444">- 28,50</text>
+                <text x="413" y="129" font-family="sans-serif" font-size="5" fill="#3d3d3d">Prévoyance</text><text x="467" y="129" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#ef4444">- 28,50</text>
                 <line x1="413" y1="132" x2="467" y2="132" stroke="#e8e2d9" stroke-width=".4"/>
                 <rect x="408" y="133" width="64" height="12" fill="#C1007A" opacity=".08"/>
-                <text x="413" y="142" font-family="sans-serif" font-size="5.5" font-weight="700" fill="#1a1a2e">NET IMPOSABLE</text>
-                <text x="467" y="142" text-anchor="end" font-family="monospace" font-size="5.5" font-weight="700" fill="#C1007A">2 966,50</text>
+                <text x="413" y="142" font-family="sans-serif" font-size="5.5" font-weight="700" fill="#1a1a2e">NET IMPOSABLE</text><text x="467" y="142" text-anchor="end" font-family="monospace" font-size="5.5" font-weight="700" fill="#C1007A">2 966,50</text>
                 <line x1="413" y1="145" x2="467" y2="145" stroke="#C1007A" stroke-width=".7" opacity=".3"/>
-                <text x="413" y="154" font-family="sans-serif" font-size="5" fill="#3d3d3d">Prélèv. source</text>
-                <text x="467" y="154" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#ef4444">- 295,00</text>
+                <text x="413" y="154" font-family="sans-serif" font-size="5" fill="#3d3d3d">Prélèv. source</text><text x="467" y="154" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#ef4444">- 295,00</text>
                 <line x1="413" y1="157" x2="467" y2="157" stroke="#e8e2d9" stroke-width=".4"/>
-                <!-- Copie seamless -->
                 <g transform="translate(0,74)">
-                  <text x="413" y="93" font-family="sans-serif" font-size="5" fill="#3d3d3d">Salaire brut</text>
-                  <text x="467" y="93" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#1a1a2e">3 800,00</text>
+                  <text x="413" y="93" font-family="sans-serif" font-size="5" fill="#3d3d3d">Salaire brut</text><text x="467" y="93" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#1a1a2e">3 800,00</text>
                   <line x1="413" y1="96" x2="467" y2="96" stroke="#e8e2d9" stroke-width=".4"/>
-                  <text x="413" y="105" font-family="sans-serif" font-size="5" fill="#3d3d3d">Cotis. salariales</text>
-                  <text x="467" y="105" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#ef4444">- 760,00</text>
+                  <text x="413" y="105" font-family="sans-serif" font-size="5" fill="#3d3d3d">Cotis. salariales</text><text x="467" y="105" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#ef4444">- 760,00</text>
                   <line x1="413" y1="108" x2="467" y2="108" stroke="#e8e2d9" stroke-width=".4"/>
-                  <text x="413" y="117" font-family="sans-serif" font-size="5" fill="#3d3d3d">Mutuelle</text>
-                  <text x="467" y="117" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#ef4444">- 45,00</text>
+                  <text x="413" y="117" font-family="sans-serif" font-size="5" fill="#3d3d3d">Mutuelle</text><text x="467" y="117" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#ef4444">- 45,00</text>
                   <line x1="413" y1="120" x2="467" y2="120" stroke="#e8e2d9" stroke-width=".4"/>
                 </g>
               </g>
             </g>
-            <!-- NET À PAYER fixe -->
             <line x1="408" y1="173" x2="472" y2="173" stroke="#C1007A" stroke-width=".8" opacity=".4"/>
             <rect x="408" y="174" width="64" height="16" fill="#1a1a2e"/>
             <text x="413" y="185" font-family="sans-serif" font-size="5.5" font-weight="700" fill="rgba(255,255,255,.5)" letter-spacing=".2">NET À PAYER</text>
@@ -433,33 +485,14 @@
             <text x="413" y="210" font-family="sans-serif" font-size="4.5" fill="#8a8278">Ref. 2025-04-D001</text>
             <text x="413" y="217" font-family="sans-serif" font-size="4.5" fill="#8a8278">Sig. employeur :</text>
             <line x1="440" y1="218" x2="467" y2="218" stroke="#d4cdc0" stroke-width=".8"/>
-            <!-- Tampon validé -->
             <g class="sw-stamp" transform-origin="446 212">
               <circle cx="446" cy="212" r="12" fill="none" stroke="#4FA695" stroke-width="1.2" stroke-dasharray="3,2" opacity=".7"/>
               <text x="446" y="209" text-anchor="middle" font-family="sans-serif" font-size="4.5" font-weight="700" fill="#4FA695" opacity=".9">VALIDÉ</text>
               <text x="446" y="216" text-anchor="middle" font-family="sans-serif" font-size="4" font-weight="700" fill="#4FA695" opacity=".9">28/04</text>
             </g>
-
-            <!-- Badges flottants (gauche) -->
-            <g class="sw-b1">
-              <rect x="8" y="18" width="86" height="24" rx="12" fill="#0d2420" stroke="#4FA695" stroke-width=".9"/>
-              <circle cx="24" cy="30" r="7" fill="#4FA695" opacity=".2"/>
-              <text x="24" y="34" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4FA695">✓</text>
-              <text x="87" y="34" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#4FA695">Paie générée</text>
-            </g>
-            <g class="sw-b2">
-              <rect x="8" y="50" width="88" height="24" rx="12" fill="#200a14" stroke="#C1007A" stroke-width=".9"/>
-              <circle cx="24" cy="62" r="7" fill="#C1007A" opacity=".2"/>
-              <text x="24" y="66" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#C1007A">DSN</text>
-              <text x="89" y="66" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#f472b6">DSN envoyée</text>
-            </g>
-            <g class="sw-b3">
-              <rect x="8" y="82" width="76" height="24" rx="12" fill="#1a2030" stroke="#b08d57" stroke-width=".9"/>
-              <text x="26" y="96" text-anchor="middle" font-family="monospace" font-size="11" font-weight="700" fill="#b08d57">14</text>
-              <text x="77" y="96" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#b08d57">bulletins</text>
-            </g>
-
-            <!-- KPI bas -->
+            <g class="sw-b1"><rect x="8" y="18" width="86" height="24" rx="12" fill="#0d2420" stroke="#4FA695" stroke-width=".9"/><circle cx="24" cy="30" r="7" fill="#4FA695" opacity=".2"/><text x="24" y="34" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4FA695">✓</text><text x="87" y="34" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#4FA695">Paie générée</text></g>
+            <g class="sw-b2"><rect x="8" y="50" width="88" height="24" rx="12" fill="#200a14" stroke="#C1007A" stroke-width=".9"/><circle cx="24" cy="62" r="7" fill="#C1007A" opacity=".2"/><text x="24" y="66" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#C1007A">DSN</text><text x="89" y="66" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#f472b6">DSN envoyée</text></g>
+            <g class="sw-b3"><rect x="8" y="82" width="76" height="24" rx="12" fill="#1a2030" stroke="#b08d57" stroke-width=".9"/><text x="26" y="96" text-anchor="middle" font-family="monospace" font-size="11" font-weight="700" fill="#b08d57">14</text><text x="77" y="96" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#b08d57">bulletins</text></g>
             <rect x="12" y="300" width="396" height="56" rx="10" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.06)" stroke-width=".8"/>
             <text x="80" y="324" text-anchor="middle" font-family="Georgia,serif" font-size="20" font-weight="700" fill="#4FA695" class="sw-n1">14</text>
             <text x="80" y="340" text-anchor="middle" font-family="sans-serif" font-size="7" font-weight="700" fill="rgba(255,255,255,.4)" letter-spacing=".4">Bulletins émis</text>
@@ -469,8 +502,6 @@
             <line x1="284" y1="306" x2="284" y2="350" stroke="rgba(255,255,255,.06)" stroke-width=".8"/>
             <text x="352" y="324" text-anchor="middle" font-family="Georgia,serif" font-size="20" font-weight="700" fill="#b08d57" class="sw-n3">100%</text>
             <text x="352" y="340" text-anchor="middle" font-family="sans-serif" font-size="7" font-weight="700" fill="rgba(255,255,255,.4)" letter-spacing=".4">DSN conforme</text>
-
-            <!-- Ligne déco -->
             <line x1="12" y1="364" x2="408" y2="364" stroke="rgba(255,255,255,.04)" stroke-width=".8"/>
           </svg>
         </div>
@@ -491,12 +522,116 @@
       <!-- ════ JURIDIQUE ════ -->
       <div class="svc-panel" id="svc-juridique">
         <div class="svc-img-box svc-illus-juridique">
-          <div class="illus-scale-arm">
-            <div class="illus-scale-bar"></div>
-            <div class="illus-scale-left"><div class="illus-scale-pan"></div></div>
-            <div class="illus-scale-right"><div class="illus-scale-pan"></div></div>
-          </div>
-          <div class="illus-scale-base"></div>
+          <svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="480" height="480" fill="#0d1824"/>
+            <ellipse class="jw-gr" cx="360" cy="80" rx="200" ry="140" fill="#b08d57" opacity=".08"/>
+            <ellipse class="jw-gt" cx="100" cy="380" rx="160" ry="120" fill="#C1007A" opacity=".08"/>
+            <rect x="228" y="270" width="24" height="80" rx="4" fill="#1e2d3d"/>
+            <rect x="200" y="348" width="80" height="10" rx="5" fill="#1e2d3d"/>
+            <rect x="210" y="356" width="60" height="6" rx="3" fill="#253545"/>
+            <circle cx="240" cy="158" r="8" fill="#4FA695" opacity=".8"/>
+            <circle cx="240" cy="158" r="4" fill="#fff" opacity=".5"/>
+            <rect x="237" y="166" width="6" height="106" rx="3" fill="#253545"/>
+            <g class="jw-beam">
+              <rect x="90" y="152" width="300" height="8" rx="4" fill="#2d4050"/>
+              <rect x="90" y="152" width="300" height="8" rx="4" fill="none" stroke="#4FA695" stroke-width=".5" opacity=".4"/>
+              <line x1="118" y1="160" x2="118" y2="195" stroke="#3a4d5c" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <line x1="362" y1="160" x2="362" y2="195" stroke="#3a4d5c" stroke-width="1.5" stroke-dasharray="3,2"/>
+            </g>
+            <g class="jw-pl">
+              <ellipse cx="118" cy="202" rx="42" ry="10" fill="#1a2a3a"/>
+              <ellipse cx="118" cy="202" rx="42" ry="10" fill="none" stroke="#C1007A" stroke-width="1" opacity=".6"/>
+              <path d="M76 202 Q118 218 160 202" fill="#C1007A" opacity=".25"/>
+              <g class="jw-d1">
+                <rect x="98" y="172" width="28" height="36" rx="3" fill="#f5f2ec"/>
+                <rect x="98" y="172" width="28" height="9" rx="3" fill="#C1007A" opacity=".8"/>
+                <text x="112" y="179" text-anchor="middle" font-family="sans-serif" font-size="5" font-weight="700" fill="#fff">SAS</text>
+                <line x1="102" y1="187" x2="122" y2="187" stroke="#d4cdc0" stroke-width=".8"/>
+                <line x1="102" y1="192" x2="120" y2="192" stroke="#d4cdc0" stroke-width=".8"/>
+                <line x1="102" y1="197" x2="122" y2="197" stroke="#d4cdc0" stroke-width=".8"/>
+                <line x1="102" y1="202" x2="118" y2="202" stroke="#C1007A" stroke-width=".8" opacity=".5"/>
+              </g>
+              <text x="118" y="220" text-anchor="middle" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#f472b6" letter-spacing=".3">SAS</text>
+            </g>
+            <g class="jw-pr">
+              <ellipse cx="362" cy="202" rx="42" ry="10" fill="#1a2a3a"/>
+              <ellipse cx="362" cy="202" rx="42" ry="10" fill="none" stroke="#4FA695" stroke-width="1" opacity=".6"/>
+              <path d="M320 202 Q362 218 404 202" fill="#4FA695" opacity=".2"/>
+              <g class="jw-d2">
+                <rect x="348" y="172" width="28" height="36" rx="3" fill="#f5f2ec"/>
+                <rect x="348" y="172" width="28" height="9" rx="3" fill="#4FA695" opacity=".8"/>
+                <text x="362" y="179" text-anchor="middle" font-family="sans-serif" font-size="4.5" font-weight="700" fill="#fff">SARL</text>
+                <line x1="352" y1="187" x2="372" y2="187" stroke="#d4cdc0" stroke-width=".8"/>
+                <line x1="352" y1="192" x2="370" y2="192" stroke="#d4cdc0" stroke-width=".8"/>
+                <line x1="352" y1="197" x2="372" y2="197" stroke="#d4cdc0" stroke-width=".8"/>
+                <line x1="352" y1="202" x2="368" y2="202" stroke="#4FA695" stroke-width=".8" opacity=".5"/>
+              </g>
+              <text x="362" y="220" text-anchor="middle" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#4FA695" letter-spacing=".3">SARL</text>
+            </g>
+            <rect x="172" y="290" width="136" height="110" rx="8" fill="#f5f2ec" opacity=".97"/>
+            <rect x="172" y="290" width="136" height="20" rx="8" fill="#1a1a2e"/>
+            <rect x="172" y="304" width="136" height="6" fill="#1a1a2e"/>
+            <text x="240" y="303" text-anchor="middle" font-family="Georgia,serif" font-size="8" font-weight="700" fill="#fff" letter-spacing=".8">STATUTS</text>
+            <clipPath id="jw-clip"><rect x="172" y="312" width="136" height="66"/></clipPath>
+            <g clip-path="url(#jw-clip)">
+              <g class="jw-rows">
+                <text x="178" y="323" font-family="sans-serif" font-size="6" font-weight="700" fill="#1a1a2e">Art. 1 — Forme juridique</text>
+                <line x1="178" y1="326" x2="302" y2="326" stroke="#e8e2d9" stroke-width=".5"/>
+                <text x="178" y="334" font-family="sans-serif" font-size="5.5" fill="#5a5450">La société est constituée sous</text>
+                <text x="178" y="341" font-family="sans-serif" font-size="5.5" fill="#5a5450">la forme d'une SAS au capital</text>
+                <text x="178" y="348" font-family="sans-serif" font-size="5.5" fill="#5a5450">de 10 000 euros.</text>
+                <line x1="178" y1="352" x2="302" y2="352" stroke="#e8e2d9" stroke-width=".5"/>
+                <text x="178" y="360" font-family="sans-serif" font-size="6" font-weight="700" fill="#1a1a2e">Art. 2 — Objet social</text>
+                <line x1="178" y1="363" x2="302" y2="363" stroke="#e8e2d9" stroke-width=".5"/>
+                <text x="178" y="371" font-family="sans-serif" font-size="5.5" fill="#5a5450">Toutes opérations commerciales</text>
+                <text x="178" y="378" font-family="sans-serif" font-size="5.5" fill="#5a5450">et prestations de services.</text>
+                <line x1="178" y1="382" x2="302" y2="382" stroke="#e8e2d9" stroke-width=".5"/>
+                <g transform="translate(0,70)">
+                  <text x="178" y="323" font-family="sans-serif" font-size="6" font-weight="700" fill="#1a1a2e">Art. 1 — Forme juridique</text>
+                  <line x1="178" y1="326" x2="302" y2="326" stroke="#e8e2d9" stroke-width=".5"/>
+                  <text x="178" y="334" font-family="sans-serif" font-size="5.5" fill="#5a5450">La société est constituée sous</text>
+                  <text x="178" y="341" font-family="sans-serif" font-size="5.5" fill="#5a5450">la forme d'une SAS au capital</text>
+                  <text x="178" y="348" font-family="sans-serif" font-size="5.5" fill="#5a5450">de 10 000 euros.</text>
+                </g>
+              </g>
+            </g>
+            <line x1="178" y1="385" x2="302" y2="385" stroke="#d4cdc0" stroke-width=".8"/>
+            <text x="178" y="394" font-family="sans-serif" font-size="5.5" fill="#8a8278">Signataires :</text>
+            <path class="jw-sign" d="M210 393 Q220 386 228 393 Q234 398 240 390 Q246 382 255 390 Q262 396 268 389" fill="none" stroke="#C1007A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <g class="jw-stamp" transform-origin="290 375">
+              <circle cx="290" cy="375" r="20" fill="none" stroke="#b08d57" stroke-width="1.5" stroke-dasharray="3,2" opacity=".7"/>
+              <circle cx="290" cy="375" r="14" fill="none" stroke="#b08d57" stroke-width=".7" opacity=".4"/>
+              <text x="290" y="372" text-anchor="middle" font-family="sans-serif" font-size="5" font-weight="700" fill="#b08d57" opacity=".9" letter-spacing=".5">ENREG.</text>
+              <text x="290" y="380" text-anchor="middle" font-family="sans-serif" font-size="4.5" font-weight="700" fill="#b08d57" opacity=".9" letter-spacing=".5">GREFFE</text>
+            </g>
+            <g class="jw-f1 jw-b1"><rect x="14" y="30" width="96" height="26" rx="13" fill="#0d2420" stroke="#4FA695" stroke-width=".9"/><circle cx="30" cy="43" r="7" fill="#4FA695" opacity=".2"/><text x="30" y="47" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#4FA695">+</text><text x="103" y="47" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#4FA695">Création SAS</text></g>
+            <g class="jw-f2 jw-b2"><rect x="14" y="64" width="108" height="26" rx="13" fill="#200a14" stroke="#C1007A" stroke-width=".9"/><circle cx="30" cy="77" r="7" fill="#C1007A" opacity=".2"/><text x="30" y="81" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#C1007A">→</text><text x="115" y="81" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#f472b6">Cession parts</text></g>
+            <g class="jw-f3 jw-b3"><rect x="14" y="98" width="84" height="26" rx="13" fill="#1a1808" stroke="#b08d57" stroke-width=".9"/><circle cx="30" cy="111" r="7" fill="#b08d57" opacity=".2"/><text x="30" y="115" text-anchor="middle" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#b08d57">AG</text><text x="91" y="115" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#b08d57">Secrétariat</text></g>
+            <g class="jw-d3">
+              <rect x="386" y="130" width="78" height="96" rx="6" fill="#f5f2ec" opacity=".97"/>
+              <rect x="386" y="130" width="78" height="18" rx="6" fill="#1a3333"/>
+              <rect x="386" y="142" width="78" height="6" fill="#1a3333"/>
+              <text x="425" y="142" text-anchor="middle" font-family="Georgia,serif" font-size="8" font-weight="700" fill="#fff" letter-spacing=".5">K-BIS</text>
+              <text x="425" y="157" text-anchor="middle" font-family="sans-serif" font-size="6" font-weight="700" fill="#4FA695" letter-spacing=".3">EXTRAIT</text>
+              <line x1="391" y1="161" x2="459" y2="161" stroke="#d4cdc0" stroke-width=".7"/>
+              <text x="391" y="170" font-family="sans-serif" font-size="5.5" fill="#3d3d3d">SIRET</text><text x="459" y="170" text-anchor="end" font-family="monospace" font-size="5.5" fill="#1a1a2e">84312•••</text>
+              <text x="391" y="180" font-family="sans-serif" font-size="5.5" fill="#3d3d3d">Forme</text><text x="459" y="180" text-anchor="end" font-family="monospace" font-size="5.5" fill="#1a1a2e">SAS</text>
+              <text x="391" y="190" font-family="sans-serif" font-size="5.5" fill="#3d3d3d">Capital</text><text x="459" y="190" text-anchor="end" font-family="monospace" font-size="5.5" fill="#C1007A">10 000 €</text>
+              <text x="391" y="200" font-family="sans-serif" font-size="5.5" fill="#3d3d3d">APE</text><text x="459" y="200" text-anchor="end" font-family="monospace" font-size="5.5" fill="#1a1a2e">6920Z</text>
+              <line x1="391" y1="204" x2="459" y2="204" stroke="#d4cdc0" stroke-width=".7"/>
+              <text x="425" y="215" text-anchor="middle" font-family="sans-serif" font-size="5.5" fill="#4FA695" font-weight="700">✓ Immatriculé</text>
+              <line class="jw-spine" x1="386" y1="148" x2="386" y2="224" stroke="#4FA695" stroke-width="1.5" opacity=".4"/>
+            </g>
+            <rect x="14" y="408" width="454" height="56" rx="10" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.06)" stroke-width=".8"/>
+            <text x="90" y="432" text-anchor="middle" font-family="Georgia,serif" font-size="20" font-weight="700" fill="#4FA695">SAS</text>
+            <text x="90" y="448" text-anchor="middle" font-family="sans-serif" font-size="7" font-weight="700" fill="rgba(255,255,255,.4)" letter-spacing=".4">Création</text>
+            <line x1="158" y1="414" x2="158" y2="458" stroke="rgba(255,255,255,.06)" stroke-width=".8"/>
+            <text x="240" y="432" text-anchor="middle" font-family="Georgia,serif" font-size="20" font-weight="700" fill="#C1007A">PV · AG</text>
+            <text x="240" y="448" text-anchor="middle" font-family="sans-serif" font-size="7" font-weight="700" fill="rgba(255,255,255,.4)" letter-spacing=".4">Secrétariat juridique</text>
+            <line x1="322" y1="414" x2="322" y2="458" stroke="rgba(255,255,255,.06)" stroke-width=".8"/>
+            <text x="400" y="432" text-anchor="middle" font-family="Georgia,serif" font-size="20" font-weight="700" fill="#b08d57">100%</text>
+            <text x="400" y="448" text-anchor="middle" font-family="sans-serif" font-size="7" font-weight="700" fill="rgba(255,255,255,.4)" letter-spacing=".4">Sécurité juridique</text>
+          </svg>
         </div>
         <div class="svc-content">
           <h3>Conseil juridique &amp; Création</h3>
@@ -512,19 +647,161 @@
         </div>
       </div>
 
-      <!-- ════ CONSEIL & IA ════ -->
+      <!-- ════ CONSEIL & IA : SVG DYNAMIQUE ════ -->
       <div class="svc-panel" id="svc-conseil">
         <div class="svc-img-box svc-illus-ia">
-          <div class="illus-node n1"></div>
-          <div class="illus-node n2"></div>
-          <div class="illus-node n3"></div>
-          <div class="illus-node n4"></div>
-          <div class="illus-node n5 central"><i class="fas fa-brain"></i></div>
-          <svg class="illus-lines" viewBox="0 0 300 220">
-            <line x1="150" y1="110" x2="60" y2="50"/>
-            <line x1="150" y1="110" x2="240" y2="50"/>
-            <line x1="150" y1="110" x2="50" y2="170"/>
-            <line x1="150" y1="110" x2="250" y2="170"/>
+          <svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="480" height="480" fill="#0d1824"/>
+            <ellipse class="aw-gr" cx="240" cy="210" rx="220" ry="180" fill="#C1007A" opacity=".08"/>
+            <ellipse class="aw-gt" cx="240" cy="210" rx="160" ry="130" fill="#4FA695" opacity=".06"/>
+            <!-- Connexions fond -->
+            <line class="aw-l1" x1="90" y1="130" x2="218" y2="196" stroke="#C1007A" stroke-width="1.2" opacity=".5"/>
+            <line class="aw-l2" x1="390" y1="130" x2="262" y2="196" stroke="#4FA695" stroke-width="1.2" opacity=".5"/>
+            <line class="aw-l3" x1="90" y1="295" x2="218" y2="224" stroke="#4FA695" stroke-width="1.2" opacity=".5"/>
+            <line class="aw-l4" x1="390" y1="295" x2="262" y2="224" stroke="#C1007A" stroke-width="1.2" opacity=".5"/>
+            <line class="aw-l5" x1="240" y1="80" x2="240" y2="180" stroke="#b08d57" stroke-width="1.2" opacity=".5"/>
+            <!-- Flux animés -->
+            <line class="aw-f1" x1="90" y1="130" x2="218" y2="196" stroke="#C1007A" stroke-width="2" opacity=".7"/>
+            <line class="aw-f2" x1="390" y1="130" x2="262" y2="196" stroke="#4FA695" stroke-width="2" opacity=".7"/>
+            <line class="aw-f3" x1="90" y1="295" x2="218" y2="224" stroke="#4FA695" stroke-width="2" opacity=".7"/>
+            <line class="aw-f4" x1="390" y1="295" x2="262" y2="224" stroke="#C1007A" stroke-width="2" opacity=".7"/>
+            <line class="aw-f5" x1="240" y1="80" x2="240" y2="180" stroke="#b08d57" stroke-width="2" opacity=".7"/>
+            <!-- Hub central -->
+            <g class="aw-hub">
+              <circle cx="240" cy="210" r="52" fill="#C1007A" opacity=".06"/>
+              <circle cx="240" cy="210" r="42" fill="#C1007A" opacity=".08"/>
+              <circle class="aw-ring" cx="240" cy="210" r="36" fill="none" stroke="#C1007A" stroke-width="2" opacity=".6"/>
+              <circle cx="240" cy="210" r="28" fill="#C1007A"/>
+              <circle cx="240" cy="210" r="28" fill="none" stroke="#f472b6" stroke-width="1.2" opacity=".5"/>
+              <g transform="translate(222,194)" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".9">
+                <path d="M18 4 C10 4 6 9 6 14 C4 14 2 16 2 19 C2 23 5 26 9 26 C9 28 11 30 14 30 C17 30 19 28 19 26 C23 26 26 23 26 19 C26 16 24 14 22 14 C22 9 18 4 18 4Z"/>
+                <line x1="14" y1="14" x2="14" y2="26"/>
+                <path d="M8 18 Q11 16 14 18 Q17 20 20 18"/>
+                <path d="M10 22 Q12 20 14 22"/>
+              </g>
+              <text x="240" y="252" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="700" fill="#f472b6" letter-spacing=".5" opacity=".9">IA · ML2C</text>
+            </g>
+            <!-- Nœud 1 : FISCAL -->
+            <g class="aw-n1">
+              <circle cx="90" cy="130" r="34" fill="#1a2a3a"/>
+              <circle cx="90" cy="130" r="34" fill="none" stroke="#C1007A" stroke-width="1.2" opacity=".5"/>
+              <circle cx="90" cy="130" r="28" fill="#C1007A" opacity=".15"/>
+              <text x="90" y="122" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="700" fill="#f472b6" letter-spacing=".3">TVA</text>
+              <text x="90" y="132" text-anchor="middle" font-family="sans-serif" font-size="7" fill="rgba(255,255,255,.5)">IS · BIC</text>
+              <line x1="68" y1="137" x2="112" y2="137" stroke="#C1007A" stroke-width=".8" opacity=".4"/>
+              <text x="90" y="147" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="rgba(255,255,255,.6)" letter-spacing=".3">FISCAL</text>
+            </g>
+            <!-- Nœud 2 : PRÉDICTION -->
+            <g class="aw-n2">
+              <circle cx="390" cy="130" r="34" fill="#1a2a3a"/>
+              <circle cx="390" cy="130" r="34" fill="none" stroke="#4FA695" stroke-width="1.2" opacity=".5"/>
+              <circle cx="390" cy="130" r="28" fill="#4FA695" opacity=".12"/>
+              <polyline points="368,138 376,128 384,132 392,122 400,125 408,116" fill="none" stroke="#4FA695" stroke-width="1.5" stroke-linecap="round" opacity=".8"/>
+              <circle cx="408" cy="116" r="2.5" fill="#4FA695" opacity=".9"/>
+              <text x="390" y="150" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="rgba(255,255,255,.6)" letter-spacing=".3">PRÉDICTION</text>
+            </g>
+            <!-- Nœud 3 : DONNÉES -->
+            <g class="aw-n3">
+              <circle cx="90" cy="295" r="34" fill="#1a2a3a"/>
+              <circle cx="90" cy="295" r="34" fill="none" stroke="#4FA695" stroke-width="1.2" opacity=".5"/>
+              <circle cx="90" cy="295" r="28" fill="#4FA695" opacity=".12"/>
+              <ellipse cx="90" cy="283" rx="16" ry="5" fill="#4FA695" opacity=".3"/>
+              <rect x="74" y="283" width="32" height="12" fill="#4FA695" opacity=".2"/>
+              <ellipse cx="90" cy="295" rx="16" ry="5" fill="#4FA695" opacity=".3"/>
+              <rect x="74" y="295" width="32" height="6" fill="#4FA695" opacity=".15"/>
+              <ellipse cx="90" cy="301" rx="16" ry="5" fill="#4FA695" opacity=".3"/>
+              <text x="90" y="313" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="rgba(255,255,255,.6)" letter-spacing=".3">DONNÉES</text>
+            </g>
+            <!-- Nœud 4 : AUDIT -->
+            <g class="aw-n4">
+              <circle cx="390" cy="295" r="34" fill="#1a2a3a"/>
+              <circle cx="390" cy="295" r="34" fill="none" stroke="#C1007A" stroke-width="1.2" opacity=".5"/>
+              <circle cx="390" cy="295" r="28" fill="#C1007A" opacity=".12"/>
+              <circle cx="384" cy="288" r="10" fill="none" stroke="#f472b6" stroke-width="1.5" opacity=".7"/>
+              <line x1="391" y1="295" x2="398" y2="303" stroke="#f472b6" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+              <line x1="380" y1="285" x2="388" y2="285" stroke="#f472b6" stroke-width=".8" opacity=".5"/>
+              <line x1="381" y1="289" x2="387" y2="289" stroke="#f472b6" stroke-width=".8" opacity=".4"/>
+              <text x="390" y="313" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="rgba(255,255,255,.6)" letter-spacing=".3">AUDIT</text>
+            </g>
+            <!-- Nœud 5 : DASHBOARD -->
+            <g class="aw-n5">
+              <circle cx="240" cy="62" r="28" fill="#1e2a18"/>
+              <circle cx="240" cy="62" r="28" fill="none" stroke="#b08d57" stroke-width="1.2" opacity=".5"/>
+              <circle cx="240" cy="62" r="22" fill="#b08d57" opacity=".1"/>
+              <rect class="aw-bar" x="225" y="62" width="6" height="14" rx="2" fill="#b08d57" opacity=".7" style="animation-delay:.2s"/>
+              <rect class="aw-bar" x="234" y="56" width="6" height="20" rx="2" fill="#b08d57" opacity=".7" style="animation-delay:.35s"/>
+              <rect class="aw-bar" x="243" y="59" width="6" height="17" rx="2" fill="#b08d57" opacity=".7" style="animation-delay:.5s"/>
+              <text x="240" y="88" text-anchor="middle" font-family="sans-serif" font-size="6" font-weight="700" fill="rgba(255,255,255,.6)" letter-spacing=".3">DASHBOARD</text>
+            </g>
+            <!-- Zone bas -->
+            <line x1="0" y1="360" x2="480" y2="360" stroke="rgba(255,255,255,.06)" stroke-width=".8"/>
+            <!-- Panel données défilantes -->
+            <rect x="14" y="370" width="130" height="98" rx="8" fill="#13202e"/>
+            <rect x="14" y="370" width="130" height="16" rx="8" fill="#1a1a2e"/>
+            <rect x="14" y="380" width="130" height="6" fill="#1a1a2e"/>
+            <text x="79" y="380" text-anchor="middle" font-family="sans-serif" font-size="6" font-weight="700" fill="#fff" letter-spacing=".5">ANALYSE EN COURS</text>
+            <clipPath id="aw-dp"><rect x="14" y="388" width="130" height="74"/></clipPath>
+            <g clip-path="url(#aw-dp)">
+              <g class="aw-data">
+                <text x="20" y="400" font-family="monospace" font-size="6" fill="#4FA695" opacity=".9">▶ TVA Q1 2025 ........... OK</text>
+                <text x="20" y="410" font-family="monospace" font-size="6" fill="#b08d57" opacity=".8">▶ IS optimisation ..... +12%</text>
+                <text x="20" y="420" font-family="monospace" font-size="6" fill="#4FA695" opacity=".9">▶ Charges déduc. ...... 94%</text>
+                <text x="20" y="430" font-family="monospace" font-size="6" fill="#C1007A" opacity=".9">▶ Alerte BIC seuil ..... ⚠</text>
+                <text x="20" y="440" font-family="monospace" font-size="6" fill="#4FA695" opacity=".9">▶ DSN déclarée .......... ✓</text>
+                <text x="20" y="450" font-family="monospace" font-size="6" fill="#b08d57" opacity=".8">▶ Prévision Q3 ........ +8%</text>
+                <text x="20" y="460" font-family="monospace" font-size="6" fill="#4FA695" opacity=".9">▶ Résultat net .......... ↑</text>
+                <g transform="translate(0,74)">
+                  <text x="20" y="400" font-family="monospace" font-size="6" fill="#4FA695" opacity=".9">▶ TVA Q1 2025 ........... OK</text>
+                  <text x="20" y="410" font-family="monospace" font-size="6" fill="#b08d57" opacity=".8">▶ IS optimisation ..... +12%</text>
+                  <text x="20" y="420" font-family="monospace" font-size="6" fill="#4FA695" opacity=".9">▶ Charges déduc. ...... 94%</text>
+                  <text x="20" y="430" font-family="monospace" font-size="6" fill="#C1007A" opacity=".9">▶ Alerte BIC seuil ..... ⚠</text>
+                </g>
+              </g>
+            </g>
+            <!-- Graphique prédictif -->
+            <rect x="156" y="370" width="154" height="98" rx="8" fill="#13202e"/>
+            <text x="233" y="384" text-anchor="middle" font-family="sans-serif" font-size="6" font-weight="700" fill="#b08d57" letter-spacing=".4">PRÉVISION RÉSULTAT</text>
+            <line x1="165" y1="450" x2="302" y2="450" stroke="#2d3d4d" stroke-width=".8"/>
+            <line x1="165" y1="430" x2="302" y2="430" stroke="#2d3d4d" stroke-width=".5" stroke-dasharray="2,3"/>
+            <line x1="165" y1="415" x2="302" y2="415" stroke="#2d3d4d" stroke-width=".5" stroke-dasharray="2,3"/>
+            <rect class="aw-bar" x="170" y="422" width="16" height="28" rx="2" fill="#4FA695" opacity=".5" style="animation-delay:.1s"/>
+            <rect class="aw-bar" x="192" y="418" width="16" height="32" rx="2" fill="#4FA695" opacity=".5" style="animation-delay:.2s"/>
+            <rect class="aw-bar" x="214" y="412" width="16" height="38" rx="2" fill="#4FA695" opacity=".5" style="animation-delay:.3s"/>
+            <rect class="aw-bar" x="236" y="406" width="16" height="44" rx="2" fill="#C1007A" opacity=".7" style="animation-delay:.4s"/>
+            <rect x="236" y="406" width="16" height="44" rx="2" fill="none" stroke="#f472b6" stroke-width=".8" opacity=".8"/>
+            <rect class="aw-bar" x="258" y="402" width="16" height="48" rx="2" fill="#C1007A" opacity=".5" style="animation-delay:.5s"/>
+            <rect class="aw-bar" x="280" y="396" width="16" height="54" rx="2" fill="#C1007A" opacity=".4" style="animation-delay:.6s"/>
+            <text x="178" y="458" text-anchor="middle" font-family="sans-serif" font-size="5.5" fill="#8a8278">Q1</text>
+            <text x="200" y="458" text-anchor="middle" font-family="sans-serif" font-size="5.5" fill="#8a8278">Q2</text>
+            <text x="222" y="458" text-anchor="middle" font-family="sans-serif" font-size="5.5" fill="#8a8278">Q3</text>
+            <text x="244" y="458" text-anchor="middle" font-family="sans-serif" font-size="5.5" fill="#f472b6">Q4</text>
+            <text x="266" y="458" text-anchor="middle" font-family="sans-serif" font-size="5.5" fill="#f472b6">Q1*</text>
+            <text x="288" y="458" text-anchor="middle" font-family="sans-serif" font-size="5.5" fill="#f472b6">Q2*</text>
+            <rect x="230" y="462" width="5" height="5" rx="1" fill="#C1007A" opacity=".7"/>
+            <text x="237" y="467" font-family="sans-serif" font-size="5.5" fill="#f472b6">Prédiction IA</text>
+            <!-- Score IA -->
+            <rect x="322" y="370" width="144" height="98" rx="8" fill="#13202e"/>
+            <text x="394" y="384" text-anchor="middle" font-family="sans-serif" font-size="6" font-weight="700" fill="#fff" letter-spacing=".4">SCORE OPTIMISATION</text>
+            <circle cx="394" cy="423" r="28" fill="none" stroke="#1e2d3d" stroke-width="6"/>
+            <circle class="aw-sp" cx="394" cy="423" r="28" fill="none" stroke="#C1007A" stroke-width="6" stroke-dasharray="132 44" stroke-dashoffset="44" stroke-linecap="round" opacity=".8"/>
+            <circle cx="394" cy="423" r="28" fill="none" stroke="#4FA695" stroke-width="6" stroke-dasharray="44 132" stroke-dashoffset="-88" stroke-linecap="round" opacity=".6"/>
+            <text x="394" y="419" text-anchor="middle" font-family="Georgia,serif" font-size="16" font-weight="700" fill="#fff">94</text>
+            <text x="394" y="430" text-anchor="middle" font-family="sans-serif" font-size="6" fill="rgba(255,255,255,.5)">/ 100</text>
+            <text x="394" y="457" text-anchor="middle" font-family="sans-serif" font-size="6" font-weight="700" fill="#4FA695" letter-spacing=".3">✓ Excellent</text>
+            <!-- Badges -->
+            <g class="aw-fl1 aw-b1"><rect x="8" y="18" width="110" height="26" rx="13" fill="#0d2420" stroke="#4FA695" stroke-width=".9"/><circle cx="24" cy="31" r="7" fill="#4FA695" opacity=".2"/><text x="24" y="35" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#4FA695">✓</text><text x="111" y="35" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#4FA695">Analyse IA active</text></g>
+            <g class="aw-fl2 aw-b2"><rect x="8" y="52" width="108" height="26" rx="13" fill="#200a14" stroke="#C1007A" stroke-width=".9"/><circle cx="24" cy="65" r="7" fill="#C1007A" opacity=".2"/><text x="24" y="69" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#C1007A">%</text><text x="109" y="69" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#f472b6">Optim. fiscale</text></g>
+            <g class="aw-fl3 aw-b3"><rect x="8" y="86" width="92" height="26" rx="13" fill="#1a1808" stroke="#b08d57" stroke-width=".9"/><circle cx="24" cy="99" r="7" fill="#b08d57" opacity=".2"/><text x="24" y="103" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#b08d57">↑</text><text x="93" y="103" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#b08d57">Prédictions</text></g>
+            <!-- KPI -->
+            <rect x="14" y="330" width="452" height="24" rx="8" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.05)" stroke-width=".8"/>
+            <text x="90" y="346" text-anchor="middle" font-family="Georgia,serif" font-size="14" font-weight="700" fill="#4FA695" class="aw-c1">-12%</text>
+            <text x="90" y="354" text-anchor="middle" font-family="sans-serif" font-size="5.5" font-weight="700" fill="rgba(255,255,255,.35)" letter-spacing=".3">charges fiscales</text>
+            <line x1="180" y1="334" x2="180" y2="352" stroke="rgba(255,255,255,.06)" stroke-width=".8"/>
+            <text x="240" y="346" text-anchor="middle" font-family="Georgia,serif" font-size="14" font-weight="700" fill="#C1007A" class="aw-c2">+18%</text>
+            <text x="240" y="354" text-anchor="middle" font-family="sans-serif" font-size="5.5" font-weight="700" fill="rgba(255,255,255,.35)" letter-spacing=".3">résultat net prédit</text>
+            <line x1="300" y1="334" x2="300" y2="352" stroke="rgba(255,255,255,.06)" stroke-width=".8"/>
+            <text x="390" y="346" text-anchor="middle" font-family="Georgia,serif" font-size="14" font-weight="700" fill="#b08d57" class="aw-c3">24h</text>
+            <text x="390" y="354" text-anchor="middle" font-family="sans-serif" font-size="5.5" font-weight="700" fill="rgba(255,255,255,.35)" letter-spacing=".3">rapport IA livré</text>
           </svg>
         </div>
         <div class="svc-content">
@@ -587,37 +864,36 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-document.querySelectorAll('.svc-tab').forEach(tab => {
-  tab.addEventListener('click', function() {
-    document.querySelectorAll('.svc-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.svc-panel').forEach(p => p.classList.remove('active'));
+document.querySelectorAll('.svc-tab').forEach(tab=>{
+  tab.addEventListener('click',function(){
+    document.querySelectorAll('.svc-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.svc-panel').forEach(p=>p.classList.remove('active'));
     this.classList.add('active');
-    document.getElementById('svc-' + this.dataset.target).classList.add('active');
+    document.getElementById('svc-'+this.dataset.target).classList.add('active');
   });
 });
-function animateCounters() {
-  document.querySelectorAll('.stat-num[data-target]').forEach(el => {
-    const target = +el.dataset.target;
-    const step = target / (1800 / 16);
-    let current = 0;
-    const timer = setInterval(() => {
-      current += step;
-      if (current >= target) { el.textContent = target; clearInterval(timer); }
-      else { el.textContent = Math.floor(current); }
-    }, 16);
+function animateCounters(){
+  document.querySelectorAll('.stat-num[data-target]').forEach(el=>{
+    const target=+el.dataset.target;
+    const step=target/(1800/16);let current=0;
+    const timer=setInterval(()=>{
+      current+=step;
+      if(current>=target){el.textContent=target;clearInterval(timer);}
+      else{el.textContent=Math.floor(current);}
+    },16);
   });
 }
-const statsObs = new IntersectionObserver(entries => {
-  if (entries[0].isIntersecting) { animateCounters(); statsObs.disconnect(); }
-}, { threshold: 0.3 });
-if (document.querySelector('.stats-bar')) statsObs.observe(document.querySelector('.stats-bar'));
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', function(e) {
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
+const statsObs=new IntersectionObserver(entries=>{
+  if(entries[0].isIntersecting){animateCounters();statsObs.disconnect();}
+},{threshold:0.3});
+if(document.querySelector('.stats-bar'))statsObs.observe(document.querySelector('.stats-bar'));
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',function(e){
+    const target=document.querySelector(this.getAttribute('href'));
+    if(target){
       e.preventDefault();
-      const headerH = document.querySelector('.main-header')?.offsetHeight || 80;
-      window.scrollTo({ top: target.offsetTop - headerH - 16, behavior: 'smooth' });
+      const headerH=document.querySelector('.main-header')?.offsetHeight||80;
+      window.scrollTo({top:target.offsetTop-headerH-16,behavior:'smooth'});
     }
   });
 });

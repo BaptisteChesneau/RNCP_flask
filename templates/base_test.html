@@ -293,19 +293,58 @@
     .role-badge i { font-size: .6rem; }
 
     /* Actions */
-    .actions { display: flex; align-items: center; gap: .4rem; }
+    .actions { display: flex; align-items: center; gap: .5rem; }
+
     .btn-act {
-      width: 34px; height: 34px;
-      border: 1px solid var(--border2); border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; font-size: .8rem; transition: all .15s;
-      text-decoration: none; background: var(--surface); color: var(--muted);
+      height: 32px;
+      padding: 0 .75rem;
+      border-radius: 8px;
+      display: inline-flex; align-items: center; gap: .4rem;
+      cursor: pointer; font-size: .72rem; font-weight: 600;
+      font-family: 'Syne', sans-serif; letter-spacing: .03em;
+      text-decoration: none; transition: all .15s;
+      border: 1px solid transparent;
       box-shadow: var(--shadow-sm);
+      white-space: nowrap;
     }
     .btn-act:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
-    .btn-edit:hover { background: var(--teal-lt);    border-color: var(--teal);   color: var(--teal); }
-    .btn-copy:hover { background: var(--surface2);   border-color: var(--border2); color: var(--text); }
-    .btn-del:hover  { background: var(--danger-lt);  border-color: var(--danger); color: var(--danger); }
+    .btn-act i { font-size: .7rem; }
+
+    /* Modifier — vert teal */
+    .btn-edit {
+      background: var(--teal-lt);
+      border-color: rgba(45,122,110,.3);
+      color: var(--teal);
+    }
+    .btn-edit:hover {
+      background: #c8ebe6;
+      border-color: var(--teal);
+      color: #1f5c53;
+    }
+
+    /* Copier — or/ambre */
+    .btn-copy {
+      background: var(--gold-lt);
+      border-color: rgba(154,98,0,.25);
+      color: var(--gold);
+    }
+    .btn-copy:hover {
+      background: #fce9c0;
+      border-color: var(--gold);
+      color: #7a4d00;
+    }
+
+    /* Supprimer — rouge */
+    .btn-del {
+      background: var(--danger-lt);
+      border-color: rgba(192,57,43,.25);
+      color: var(--danger);
+    }
+    .btn-del:hover {
+      background: #fbd0cc;
+      border-color: var(--danger);
+      color: #96291e;
+    }
 
     /* Empty */
     .empty-state { text-align: center; padding: 5rem 2rem; color: var(--muted); }
@@ -536,21 +575,21 @@
             <td>
               <div class="actions">
                 <a href="{{ url_for('edit_user', user_id=user.id) }}"
-                   class="btn-act btn-edit" title="Modifier">
-                  <i class="fas fa-pen"></i>
+                   class="btn-act btn-edit">
+                  <i class="fas fa-pen"></i> Modifier
                 </a>
-                <button class="btn-act btn-copy" title="Copier"
+                <button class="btn-act btn-copy"
                         data-uid="{{ user.id }}"
                         data-uname="{{ user.nom_utilisateur }}"
                         data-uemail="{{ user.email }}"
                         onclick="copyUser(this)">
-                  <i class="fas fa-copy"></i>
+                  <i class="fas fa-copy"></i> Copier
                 </button>
-                <button class="btn-act btn-del" title="Supprimer"
+                <button class="btn-act btn-del"
                         data-url="{{ url_for('supprimer_user', user_id=user.id) }}"
                         data-name="{{ user.nom_utilisateur }}"
                         onclick="askDelete(this)">
-                  <i class="fas fa-trash-alt"></i>
+                  <i class="fas fa-trash-alt"></i> Supprimer
                 </button>
               </div>
             </td>

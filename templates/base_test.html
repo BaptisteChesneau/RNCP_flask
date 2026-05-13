@@ -1,223 +1,769 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Test des tables de données - Admin View</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestion des utilisateurs — Admin ML2C</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    :root {
+      --bg:       #080b10;
+      --bg2:      #0d1219;
+      --surface:  #111720;
+      --surface2: #16202e;
+      --border:   #1e2d3d;
+      --border2:  #243444;
+      --accent:   #C1007A;
+      --accent-g: #9b005f;
+      --teal:     #4FA695;
+      --gold:     #c9974a;
+      --text:     #e8f0f8;
+      --muted:    #5a7a9a;
+      --muted2:   #3d5a72;
+      --danger:   #e05252;
+      --success:  #4ade80;
+      --r: 12px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(193,0,122,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(193,0,122,.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: .5;
+    }
+
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .orb1 {
+      width: 500px; height: 500px;
+      top: -150px; left: -100px;
+      background: radial-gradient(circle, rgba(193,0,122,.12) 0%, transparent 70%);
+    }
+    .orb2 {
+      width: 400px; height: 400px;
+      bottom: -100px; right: -80px;
+      background: radial-gradient(circle, rgba(79,166,149,.1) 0%, transparent 70%);
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+
+    /* ── TOP NAV ── */
+    .topnav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 3rem;
+    }
+    .topnav-brand { display: flex; align-items: center; gap: 1rem; }
+    .brand-logo {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-g));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .85rem; color: #fff;
+      box-shadow: 0 0 20px rgba(193,0,122,.35);
+    }
+    .brand-text .title { font-weight: 700; font-size: .95rem; letter-spacing: .02em; }
+    .brand-text .sub   { font-size: .72rem; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; }
+
+    .topnav-right { display: flex; align-items: center; gap: 1rem; }
+    .live-indicator {
+      display: flex; align-items: center; gap: .5rem;
+      font-size: .75rem; color: var(--teal);
+      letter-spacing: .04em; text-transform: uppercase;
+    }
+    .live-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%; background: var(--teal);
+      animation: livepulse 2s ease-in-out infinite;
+    }
+    @keyframes livepulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(79,166,149,.5); }
+      50%      { box-shadow: 0 0 0 5px rgba(79,166,149,0); }
+    }
+    .back-link {
+      display: flex; align-items: center; gap: .5rem;
+      font-size: .8rem; color: var(--muted); text-decoration: none;
+      padding: .5rem .9rem; border: 1px solid var(--border);
+      border-radius: 8px; transition: all .2s; letter-spacing: .02em;
+    }
+    .back-link:hover { color: var(--text); border-color: var(--border2); background: var(--surface); }
+
+    /* ── HERO ── */
+    .page-hero {
+      display: flex; align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 2.5rem; gap: 1.5rem; flex-wrap: wrap;
+    }
+    .page-hero-left h1 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800; letter-spacing: -.02em;
+      line-height: 1.1; margin-bottom: .5rem;
+    }
+    .page-hero-left h1 em {
+      font-style: normal;
+      background: linear-gradient(90deg, var(--accent), #ff6eb4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .page-hero-left p { font-size: .875rem; color: var(--muted); letter-spacing: .01em; }
+
+    /* ── STAT CARDS ── */
+    .stat-cards { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: .9rem 1.3rem;
+      min-width: 130px; position: relative; overflow: hidden;
+    }
+    .stat-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+    }
+    .stat-card.c-pink::before { background: linear-gradient(90deg, var(--accent), transparent); }
+    .stat-card.c-teal::before { background: linear-gradient(90deg, var(--teal),   transparent); }
+    .stat-card.c-gold::before { background: linear-gradient(90deg, var(--gold),   transparent); }
+    .sc-val {
+      font-size: 1.6rem; font-weight: 800; line-height: 1;
+      margin-bottom: .25rem; font-family: 'JetBrains Mono', monospace;
+    }
+    .c-pink .sc-val { color: #f472b6; }
+    .c-teal .sc-val { color: var(--teal); }
+    .c-gold .sc-val { color: var(--gold); }
+    .sc-lbl { font-size: .7rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+
+    /* ── TOOLBAR ── */
+    .toolbar {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 1rem 1.25rem;
+      display: flex; align-items: center; gap: .75rem;
+      flex-wrap: wrap; margin-bottom: 1rem;
+    }
+    .search-box { position: relative; flex: 1; min-width: 240px; }
+    .search-box i {
+      position: absolute; left: 1rem; top: 50%;
+      transform: translateY(-50%); color: var(--muted);
+      font-size: .8rem; pointer-events: none;
+    }
+    .search-box input {
+      width: 100%; background: var(--bg2);
+      border: 1px solid var(--border); border-radius: 8px;
+      color: var(--text); padding: .65rem 1rem .65rem 2.4rem;
+      font-size: .85rem; font-family: 'Syne', sans-serif;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .search-box input:focus {
+      outline: none; border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(193,0,122,.1);
+    }
+    .search-box input::placeholder { color: var(--muted2); }
+
+    .chip-filters { display: flex; gap: .4rem; flex-wrap: wrap; }
+    .chip {
+      padding: .45rem .9rem; border-radius: 20px;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--muted); font-size: .75rem;
+      font-family: 'Syne', sans-serif; font-weight: 500;
+      cursor: pointer; letter-spacing: .03em; transition: all .2s;
+    }
+    .chip:hover                { border-color: var(--border2); color: var(--text); }
+    .chip.active-all           { background: rgba(255,255,255,.06); border-color: var(--border2); color: var(--text); }
+    .chip.active-admin         { background: rgba(193,0,122,.12); border-color: rgba(193,0,122,.4); color: #f472b6; }
+    .chip.active-user          { background: rgba(79,166,149,.1);  border-color: rgba(79,166,149,.35); color: var(--teal); }
+
+    .sort-select {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text);
+      padding: .65rem .9rem; font-size: .82rem;
+      font-family: 'Syne', sans-serif; cursor: pointer; transition: border-color .2s;
+    }
+    .sort-select:focus { outline: none; border-color: var(--teal); }
+
+    .toolbar-info { margin-left: auto; font-size: .75rem; color: var(--muted); white-space: nowrap; }
+    .toolbar-info strong { color: var(--text); }
+
+    /* ── TABLE ── */
+    .table-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.4);
+    }
+    table { width: 100%; border-collapse: collapse; }
+
+    thead {
+      background: linear-gradient(180deg, var(--surface2) 0%, var(--surface) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+    thead th {
+      padding: 1rem 1.25rem; font-size: .7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .1em; color: var(--muted);
+      white-space: nowrap; cursor: pointer; user-select: none; transition: color .2s;
+    }
+    thead th:hover { color: var(--text); }
+    thead th.sorted { color: var(--teal); }
+    .sort-icon { margin-left: .3rem; opacity: .35; font-size: .65rem; }
+    thead th.sorted .sort-icon { opacity: 1; }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background .15s; position: relative;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr.row-admin:hover { background: rgba(193,0,122,.04); }
+    tbody tr.row-user:hover  { background: rgba(79,166,149,.03); }
+
+    tbody tr::before {
+      content: ''; position: absolute;
+      left: 0; top: 0; bottom: 0; width: 3px;
+      background: transparent; transition: background .2s;
+    }
+    tbody tr.row-admin:hover::before { background: var(--accent); }
+    tbody tr.row-user:hover::before  { background: var(--teal); }
+
+    td { padding: 1rem 1.25rem; vertical-align: middle; }
+
+    .cell-id {
+      font-family: 'JetBrains Mono', monospace; font-size: .75rem;
+      color: var(--muted2); background: var(--bg2);
+      border: 1px solid var(--border); padding: .2rem .55rem; border-radius: 5px;
+    }
+
+    .user-cell { display: flex; align-items: center; gap: .9rem; }
+    .avatar-wrap { position: relative; flex-shrink: 0; }
+    .avatar {
+      width: 40px; height: 40px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: .9rem; color: #fff;
+    }
+    .avatar.av-admin { background: linear-gradient(135deg, var(--accent), #ff6eb4); box-shadow: 0 4px 15px rgba(193,0,122,.3); }
+    .avatar.av-user  { background: linear-gradient(135deg, var(--teal), #80c9bc);   box-shadow: 0 4px 15px rgba(79,166,149,.25); }
+    .avatar-ring {
+      position: absolute; inset: -3px; border-radius: 14px; border: 1px solid transparent;
+    }
+    .av-admin + .avatar-ring { border-color: rgba(193,0,122,.3); }
+    .av-user  + .avatar-ring { border-color: rgba(79,166,149,.25); }
+
+    .user-name  { font-weight: 600; font-size: .9rem; letter-spacing: .01em; }
+    .user-email { font-size: .75rem; color: var(--muted); margin-top: .15rem; font-family: 'JetBrains Mono', monospace; }
+
+    .role-badge {
+      display: inline-flex; align-items: center; gap: .35rem;
+      padding: .28rem .75rem; border-radius: 20px;
+      font-size: .72rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+    }
+    .rb-admin { background: rgba(193,0,122,.12); color: #f472b6; border: 1px solid rgba(193,0,122,.25); }
+    .rb-user  { background: rgba(79,166,149,.1);  color: var(--teal); border: 1px solid rgba(79,166,149,.22); }
+    .role-badge i { font-size: .62rem; }
+
+    .actions { display: flex; align-items: center; gap: .4rem; }
+    .btn-act {
+      width: 34px; height: 34px;
+      border: 1px solid var(--border); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: .78rem; transition: all .18s;
+      text-decoration: none; background: var(--bg2); color: var(--muted);
+    }
+    .btn-act:hover { transform: translateY(-2px); }
+    .btn-edit:hover { background: rgba(79,166,149,.15); border-color: rgba(79,166,149,.4); color: var(--teal); }
+    .btn-copy:hover { background: rgba(255,255,255,.06); border-color: var(--border2); color: var(--text); }
+    .btn-del:hover  { background: rgba(224,82,82,.15); border-color: rgba(224,82,82,.4); color: var(--danger); }
+
+    .empty-state { text-align: center; padding: 5rem 2rem; color: var(--muted); }
+    .empty-icon {
+      width: 64px; height: 64px; background: var(--surface2);
+      border: 1px solid var(--border); border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1rem; font-size: 1.4rem; color: var(--muted2);
+    }
+
+    /* ── PAGINATION ── */
+    .pagination-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.5rem; border-top: 1px solid var(--border);
+      background: var(--surface2); flex-wrap: wrap; gap: .75rem;
+    }
+    .pag-info { font-size: .75rem; color: var(--muted); }
+    .pag-info strong { color: var(--text); }
+    .pag-btns { display: flex; gap: .3rem; }
+    .pag-btn {
+      height: 30px; min-width: 30px; padding: 0 .5rem;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 6px; color: var(--muted);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: .78rem;
+      font-family: 'Syne', sans-serif; font-weight: 500; transition: all .15s;
+    }
+    .pag-btn:hover:not(.disabled) { border-color: var(--teal); color: var(--teal); }
+    .pag-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 0 12px rgba(193,0,122,.3); }
+    .pag-btn.disabled { opacity: .35; cursor: default; }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.7); backdrop-filter: blur(6px);
+      z-index: 1000; display: none;
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal-box {
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 18px; padding: 2.5rem;
+      max-width: 420px; width: 90%; text-align: center;
+      box-shadow: 0 30px 80px rgba(0,0,0,.6);
+      animation: modalIn .25s cubic-bezier(.34,1.2,.64,1);
+    }
+    @keyframes modalIn {
+      from { transform: scale(.9) translateY(20px); opacity: 0; }
+      to   { transform: scale(1)  translateY(0);    opacity: 1; }
+    }
+    .modal-icon-wrap {
+      width: 60px; height: 60px;
+      background: rgba(224,82,82,.1); border: 1px solid rgba(224,82,82,.25);
+      border-radius: 16px; display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.5rem; font-size: 1.4rem; color: var(--danger);
+    }
+    .modal-box h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: .6rem; }
+    .modal-box p  { font-size: .875rem; color: var(--muted); margin-bottom: 2rem; line-height: 1.6; }
+    .modal-target { color: var(--text); font-weight: 600; }
+    .modal-acts { display: flex; gap: .75rem; justify-content: center; }
+    .btn-cancel {
+      padding: .65rem 1.5rem; border: 1px solid var(--border2);
+      border-radius: 9px; background: transparent; color: var(--muted);
+      font-size: .875rem; font-family: 'Syne', sans-serif;
+      font-weight: 500; cursor: pointer; transition: all .2s;
+    }
+    .btn-cancel:hover { border-color: var(--text); color: var(--text); }
+    .btn-confirm {
+      padding: .65rem 1.5rem; border: none; border-radius: 9px;
+      background: var(--danger); color: #fff;
+      font-size: .875rem; font-family: 'Syne', sans-serif; font-weight: 700;
+      cursor: pointer; box-shadow: 0 4px 15px rgba(224,82,82,.3);
+      transition: opacity .2s, transform .2s;
+    }
+    .btn-confirm:hover { opacity: .9; transform: translateY(-1px); }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 2rem; right: 2rem;
+      background: var(--surface2); border: 1px solid var(--border2);
+      border-radius: 12px; padding: 1rem 1.5rem;
+      display: flex; align-items: center; gap: .75rem;
+      font-size: .875rem; color: var(--text); z-index: 9999;
+      transform: translateY(120%) scale(.95); opacity: 0;
+      transition: all .35s cubic-bezier(.34,1.2,.64,1);
+      box-shadow: 0 10px 40px rgba(0,0,0,.5); max-width: 320px;
+    }
+    .toast.show { transform: translateY(0) scale(1); opacity: 1; }
+    .toast-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .85rem; flex-shrink: 0;
+    }
+    .toast-icon.success { background: rgba(74,222,128,.12); color: var(--success); }
+    .toast-icon.error   { background: rgba(224,82,82,.12);  color: var(--danger); }
+    .toast-msg { font-size: .82rem; line-height: 1.4; }
+
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    @media (max-width: 640px) {
+      .wrapper { padding: 0 1rem 3rem; }
+      .page-hero { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
 </head>
 <body>
 
-  {% include "header.html" %}
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
 
-  <div class="container py-5">
+{% include "header.html" %}
 
-    <!-- ✅ 1. Title First -->
-    <h1 class="text-center text-success mb-4">
-      <i class="fas fa-users"></i> User Database (Admin Only)
-    </h1>
+<div class="wrapper">
 
-    <!-- ✅ 2. Toolbar Below -->
-    <div class="phpmyadmin-toolbar mb-3">
-      <div class="d-flex flex-wrap align-items-center justify-content-between">
-        <div class="text-muted small mb-2">
-          <strong>Profiling</strong>
-          <a href="#" class="ml-2">[ Edit inline ]</a>
-          <a href="#" class="ml-2">[ Edit ]</a>
-          <a href="#" class="ml-2">[ Explain SQL ]</a>
-          <a href="#" class="ml-2">[ View source PHP ]</a>
-          <a href="#" class="ml-2">[ Refresh ]</a>
-        </div>
-
-        <div class="form-row align-items-center">
-          <div class="form-group mb-2 mr-2">
-            <label class="mr-1">Show:</label>
-            <select class="form-control form-control-sm" style="width: 70px;">
-              <option>25</option>
-              <option>50</option>
-              <option>100</option>
-            </select>
-          </div>
-
-          <div class="form-group mb-2 mr-2">
-            <label class="mr-1">Filter:</label>
-            <input id="customSearch" type="text" class="form-control form-control-sm" placeholder="Search table" style="width: 160px;">
-          </div>          
-
-          <div class="form-group mb-2">
-            <label class="mr-1">Sort by:</label>
-            <select id="sortBy" class="form-control form-control-sm" style="width: 120px;">
-              <option>None</option>
-              <option>ID</option>
-              <option>Username</option>
-            </select>
-          </div>
-
-          <div class="form-group mb-2 ml-2">
-            <button id="resetFilterBtn" class="btn btn-sm btn-outline-secondary">Réinitialiser</button>
-          </div>
-
-          <div class="form-group mb-2 ml-2">
-            <button id="applyFilterBtn" class="btn btn-sm btn-outline-primary">Filtrer</button>
-          </div>
-        </div>
+  <nav class="topnav">
+    <div class="topnav-brand">
+      <div class="brand-logo"><i class="fas fa-shield-alt"></i></div>
+      <div class="brand-text">
+        <div class="title">ML2C CONSEIL</div>
+        <div class="sub">Panneau d'administration</div>
       </div>
     </div>
+    <div class="topnav-right">
+      <div class="live-indicator">
+        <div class="live-dot"></div>
+        Session active
+      </div>
+      <a href="{{ url_for('admin_dashboard') }}" class="back-link">
+        <i class="fas fa-arrow-left"></i> Dashboard
+      </a>
+    </div>
+  </nav>
 
-    <!-- ✅ 3. User Table -->
-    <div class="table-responsive">
-      <table id="userTable" class="table table-bordered table-hover bg-white">
-        <thead class="text-center">
+  <div class="page-hero">
+    <div class="page-hero-left">
+      <h1>Gestion des <em>utilisateurs</em></h1>
+      <p>Visualisez, modifiez et supprimez les comptes de la plateforme.</p>
+    </div>
+    <div class="stat-cards">
+      <div class="stat-card c-pink">
+        <div class="sc-val" id="statTotal">—</div>
+        <div class="sc-lbl">Total</div>
+      </div>
+      <div class="stat-card c-teal">
+        <div class="sc-val" id="statUsers">—</div>
+        <div class="sc-lbl">Utilisateurs</div>
+      </div>
+      <div class="stat-card c-gold">
+        <div class="sc-val" id="statAdmins">—</div>
+        <div class="sc-lbl">Admins</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="Rechercher par nom ou email…">
+    </div>
+    <div class="chip-filters">
+      <button class="chip active-all" data-role="">Tous</button>
+      <button class="chip" data-role="admin">Admins</button>
+      <button class="chip" data-role="user">Utilisateurs</button>
+    </div>
+    <select class="sort-select" id="sortSel">
+      <option value="">Trier par…</option>
+      <option value="id-asc">ID ↑</option>
+      <option value="id-desc">ID ↓</option>
+      <option value="name-asc">Nom A → Z</option>
+      <option value="name-desc">Nom Z → A</option>
+    </select>
+    <div class="toolbar-info">
+      <strong id="visCount">—</strong> affiché(s)
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div style="overflow-x:auto;">
+      <table>
+        <thead>
           <tr>
-            <th>#</th>
-            <th><i class="fas fa-edit text-dark" title="Edit"></i></th>
-            <th><i class="fas fa-copy text-dark" title="Copy"></i></th>
-            <th><i class="fas fa-trash-alt text-dark" title="Delete"></i></th>
-            <th>ID</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Password Hash</th>
+            <th data-col="id">ID <i class="fas fa-sort sort-icon"></i></th>
+            <th data-col="name">Utilisateur <i class="fas fa-sort sort-icon"></i></th>
+            <th data-col="role">Rôle <i class="fas fa-sort sort-icon"></i></th>
+            <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="tableBody">
           {% for user in utilisateurs %}
-          <tr>
-            <td class="text-center">{{ loop.index }}</td>
-            <td class="text-center">
-              <a href="{{ url_for('edit_user', user_id=user.id) }}" class="btn btn-sm btn-ml2c-edit" title="Edit">
-                <i class="fas fa-edit"></i>
-              </a>
+          <tr
+            class="row-{{ user.role | default('user') | lower }}"
+            data-id="{{ user.id }}"
+            data-name="{{ user.nom_utilisateur | lower }}"
+            data-email="{{ user.email | lower }}"
+            data-role="{{ user.role | default('user') | lower }}"
+          >
+            <td><span class="cell-id">#{{ user.id }}</span></td>
+
+            <td>
+              <div class="user-cell">
+                <div class="avatar-wrap">
+                  <div class="avatar av-{{ user.role | default('user') | lower }}">
+                    {{ user.nom_utilisateur[0] | upper }}
+                  </div>
+                  <div class="avatar-ring"></div>
+                </div>
+                <div>
+                  <div class="user-name">{{ user.nom_utilisateur }}</div>
+                  <div class="user-email">{{ user.email }}</div>
+                </div>
+              </div>
             </td>
-            <td class="text-center">
-              <button type="button" class="btn btn-sm btn-ml2c-copy" title="Copy" onclick="copyRow(this)">
-                <i class="fas fa-copy"></i>
-              </button>
+
+            <td>
+              {% if user.role == 'admin' %}
+                <span class="role-badge rb-admin">
+                  <i class="fas fa-shield-alt"></i> Admin
+                </span>
+              {% else %}
+                <span class="role-badge rb-user">
+                  <i class="fas fa-user"></i> Utilisateur
+                </span>
+              {% endif %}
             </td>
-            <td class="text-center">
-              <form method="POST" action="{{ url_for('supprimer_user', user_id=user.id) }}" onsubmit="return confirm('Are you sure you want to delete this user?');">
-                <button type="submit" class="btn btn-sm btn-ml2c-delete" title="Delete"><i class="fas fa-trash-alt"></i></button>
-              </form>
+
+            <td>
+              <div class="actions">
+                <!-- Modifier -->
+                <a href="{{ url_for('edit_user', user_id=user.id) }}"
+                   class="btn-act btn-edit" title="Modifier">
+                  <i class="fas fa-pen"></i>
+                </a>
+
+                <!-- Copier — data-* évite les conflits de guillemets Jinja -->
+                <button class="btn-act btn-copy" title="Copier"
+                        data-uid="{{ user.id }}"
+                        data-uname="{{ user.nom_utilisateur }}"
+                        data-uemail="{{ user.email }}"
+                        onclick="copyUser(this)">
+                  <i class="fas fa-copy"></i>
+                </button>
+
+                <!-- Supprimer — data-* évite les conflits de guillemets Jinja -->
+                <button class="btn-act btn-del" title="Supprimer"
+                        data-url="{{ url_for('supprimer_user', user_id=user.id) }}"
+                        data-name="{{ user.nom_utilisateur }}"
+                        onclick="askDelete(this)">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
             </td>
-            <td class="text-center">{{ user.id }}</td>
-            <td>{{ user.nom_utilisateur }}</td>
-            <td>{{ user.email }}</td>
-            <td style="word-break: break-word;">{{ user.mot_de_passe_hash }}</td>
           </tr>
           {% else %}
           <tr>
-            <td colspan="8" class="text-center text-muted">No users found in the database.</td>
+            <td colspan="4">
+              <div class="empty-state">
+                <div class="empty-icon"><i class="fas fa-users-slash"></i></div>
+                <div style="font-weight:600;margin-bottom:.35rem;">Aucun utilisateur</div>
+                <div style="font-size:.8rem;">La base de données ne contient aucun compte.</div>
+              </div>
+            </td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
-
-    <div class="text-center mt-4">
-      <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-success">
-        <i class="fas fa-arrow-left"></i> Back to Admin Dashboard
-      </a>
+    <div class="pagination-bar">
+      <div class="pag-info" id="pagInfo"></div>
+      <div class="pag-btns" id="pagBtns"></div>
     </div>
-
-    <!-- ✅ Toast PRO Bootstrap 5 -->
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
-      <div id="liveToast" class="toast text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-          <div class="toast-body">
-            ✅ User data successfully copied!
-          </div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-      </div>
-    </div>
-
   </div>
 
-  {% include "footer.html" %}
+</div>
 
-  <!-- ✅ Scripts -->
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-  <script>
-    $(document).ready(function () {
-      var table = $('#userTable').DataTable({
-        dom: 'lrtip',
-        language: {
-          search: "🔍 Search:",
-          lengthMenu: "Show _MENU_ entries",
-          info: "Showing _START_ to _END_ of _TOTAL_ users",
-          paginate: {
-            previous: "Previous",
-            next: "Next"
-          },
-          zeroRecords: "No matching records found"
-        },
-        pageLength: 25
+<!-- Modal suppression -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <div class="modal-icon-wrap"><i class="fas fa-trash-alt"></i></div>
+    <h3>Supprimer le compte</h3>
+    <p>
+      Vous allez supprimer définitivement le compte
+      <span class="modal-target" id="modalName"></span>.<br>
+      Cette action est irréversible.
+    </p>
+    <div class="modal-acts">
+      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+      <form id="modalForm" method="POST" style="margin:0;">
+        <button type="submit" class="btn-confirm">Supprimer</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <div class="toast-icon" id="toastIcon"><i class="fas fa-check"></i></div>
+  <div class="toast-msg" id="toastMsg"></div>
+</div>
+
+{% include "footer.html" %}
+
+<script>
+  /* ── CONFIG ── */
+  const PER_PAGE = 15;
+  let page = 1, activeRole = '', sortVal = '';
+
+  const searchEl = document.getElementById('searchInput');
+  const sortEl   = document.getElementById('sortSel');
+  const tbody    = document.getElementById('tableBody');
+  const allRows  = Array.from(tbody.querySelectorAll('tr[data-id]'));
+
+  /* ── STATS ── */
+  const nbAdmins = allRows.filter(r => r.dataset.role === 'admin').length;
+  const nbUsers  = allRows.filter(r => r.dataset.role !== 'admin').length;
+  document.getElementById('statTotal').textContent  = allRows.length;
+  document.getElementById('statAdmins').textContent = nbAdmins;
+  document.getElementById('statUsers').textContent  = nbUsers;
+
+  /* ── CHIPS ── */
+  document.querySelectorAll('.chip').forEach(c => {
+    c.addEventListener('click', () => {
+      activeRole = c.dataset.role;
+      document.querySelectorAll('.chip').forEach(x => x.className = 'chip');
+      if (!activeRole)                c.classList.add('active-all');
+      else if (activeRole === 'admin') c.classList.add('active-admin');
+      else                            c.classList.add('active-user');
+      page = 1; render();
+    });
+  });
+
+  /* ── EVENTS ── */
+  searchEl.addEventListener('input',  () => { page = 1; render(); });
+  sortEl.addEventListener('change',   () => { sortVal = sortEl.value; page = 1; render(); });
+
+  /* ── HEADER SORT ── */
+  document.querySelectorAll('thead th[data-col]').forEach(th => {
+    th.addEventListener('click', () => {
+      const col = th.dataset.col;
+      const cur = sortEl.value;
+      if      (col === 'id'   && cur !== 'id-asc')   sortEl.value = 'id-asc';
+      else if (col === 'id')                          sortEl.value = 'id-desc';
+      else if (col === 'name' && cur !== 'name-asc')  sortEl.value = 'name-asc';
+      else if (col === 'name')                        sortEl.value = 'name-desc';
+      document.querySelectorAll('thead th').forEach(h => {
+        h.classList.remove('sorted');
+        const ic = h.querySelector('.sort-icon');
+        if (ic) ic.className = 'fas fa-sort sort-icon';
       });
+      th.classList.add('sorted');
+      const dir = sortEl.value.endsWith('asc') ? 'up' : 'down';
+      th.querySelector('.sort-icon').className = `fas fa-sort-${dir} sort-icon`;
+      sortVal = sortEl.value; page = 1; render();
+    });
+  });
 
-      $('#applyFilterBtn').on('click', function () {
-        const searchTerm = $('#customSearch').val().trim();
-        const sortBy = $('#sortBy').val();
+  /* ── RENDER ── */
+  function render() {
+    const q = searchEl.value.trim().toLowerCase();
 
-        table.search(searchTerm);
-        if (sortBy === "ID") {
-          table.order([4, 'asc']);
-        } else if (sortBy === "Username") {
-          table.order([5, 'asc']);
-        } else {
-          table.order([]);
-        }
-        table.draw();
-      });
-
-      $('#resetFilterBtn').on('click', function () {
-        $('#customSearch').val('');
-        $('#sortBy').val('None');
-        table.search('');
-        table.order([]).draw();
-      });
-
-      $('#customSearch').on('keyup', function () {
-        table.search(this.value).draw();
-      });
-
-      $('#sortBy').on('change', function () {
-        const selected = $(this).val();
-        if (selected === "ID") {
-          table.order([4, 'asc']).draw();
-        } else if (selected === "Username") {
-          table.order([5, 'asc']).draw();
-        } else {
-          table.order([]).draw();
-        }
-      });
+    let rows = allRows.filter(r => {
+      const mq = !q || r.dataset.name.includes(q) || r.dataset.email.includes(q);
+      const mr = !activeRole || r.dataset.role === activeRole;
+      return mq && mr;
     });
 
-    function showToast(message = "✅ User data successfully copied!") {
-      const toastEl = document.getElementById('liveToast');
-      const toastBody = toastEl.querySelector('.toast-body');
-      toastBody.textContent = message;
-
-      const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
-      toast.show();
-    }
-
-    function copyRow(button) {
-      const row = button.closest('tr');
-      const cells = row.querySelectorAll('td');
-      let userData = [];
-      for (let i = 4; i < cells.length; i++) {
-        userData.push(cells[i].innerText.trim());
-      }
-      const textToCopy = userData.join('\t');
-      navigator.clipboard.writeText(textToCopy).then(() => {
-        showToast();
-      }).catch(() => {
-        alert("❌ Error copying data.");
+    if (sortVal) {
+      rows.sort((a, b) => {
+        if (sortVal === 'id-asc')    return +a.dataset.id - +b.dataset.id;
+        if (sortVal === 'id-desc')   return +b.dataset.id - +a.dataset.id;
+        if (sortVal === 'name-asc')  return a.dataset.name.localeCompare(b.dataset.name);
+        if (sortVal === 'name-desc') return b.dataset.name.localeCompare(a.dataset.name);
+        return 0;
       });
     }
-  </script>
 
+    const total = rows.length;
+    const pages = Math.max(1, Math.ceil(total / PER_PAGE));
+    page = Math.min(page, pages);
+    const s = (page - 1) * PER_PAGE;
+
+    allRows.forEach(r => r.style.display = 'none');
+    rows.forEach((r, i) => r.style.display = (i >= s && i < s + PER_PAGE) ? '' : 'none');
+
+    document.getElementById('visCount').textContent = total;
+    document.getElementById('pagInfo').innerHTML = total
+      ? `Affichage <strong>${s + 1}–${Math.min(s + PER_PAGE, total)}</strong> sur <strong>${total}</strong>`
+      : 'Aucun résultat';
+
+    /* Pagination buttons */
+    const pb = document.getElementById('pagBtns');
+    pb.innerHTML = '';
+    if (pages > 1) {
+      mkBtn('‹', page > 1,    () => { page--; render(); });
+      for (let p = 1; p <= pages; p++) {
+        const b = mkBtn(p, true, () => { page = p; render(); });
+        if (p === page) b.classList.add('active');
+      }
+      mkBtn('›', page < pages, () => { page++; render(); });
+    }
+  }
+
+  function mkBtn(label, enabled, cb) {
+    const b = document.createElement('div');
+    b.className = 'pag-btn' + (!enabled ? ' disabled' : '');
+    b.textContent = label;
+    if (enabled) b.addEventListener('click', cb);
+    document.getElementById('pagBtns').appendChild(b);
+    return b;
+  }
+
+  render();
+
+  /* ── MODAL SUPPRESSION ──
+     Reçoit le bouton lui-même (this) pour lire ses data-* attributes.
+     Aucun guillemet Jinja dans l'appel JS. */
+  function askDelete(btn) {
+    const url  = btn.dataset.url;
+    const name = btn.dataset.name;
+    document.getElementById('modalName').textContent = '"' + name + '"';
+    document.getElementById('modalForm').action = url;
+    document.getElementById('modal').classList.add('show');
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('show');
+  }
+
+  document.getElementById('modal').addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeModal();
+  });
+
+  /* ── COPIER ──
+     Même principe : data-* attributes sur le bouton, pas de guillemets Jinja. */
+  function copyUser(btn) {
+    const id    = btn.dataset.uid;
+    const name  = btn.dataset.uname;
+    const email = btn.dataset.uemail;
+    navigator.clipboard.writeText(`ID: ${id} | ${name} | ${email}`)
+      .then(() => showToast('Données copiées dans le presse-papier', 'success'))
+      .catch(() => showToast('Erreur lors de la copie', 'error'));
+  }
+
+  /* ── TOAST ── */
+  let toastTimer;
+  function showToast(msg, type = 'success') {
+    const t  = document.getElementById('toast');
+    const ic = document.getElementById('toastIcon');
+    document.getElementById('toastMsg').textContent = msg;
+    ic.className = `toast-icon ${type}`;
+    ic.innerHTML = type === 'success'
+      ? '<i class="fas fa-check"></i>'
+      : '<i class="fas fa-times"></i>';
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+  }
+</script>
 </body>
 </html>

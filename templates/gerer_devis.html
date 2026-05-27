@@ -292,7 +292,6 @@
 
 <div class="gd-wrapper">
 
-  <!-- ══ HERO ══ -->
   <div class="gd-hero">
     <div class="gd-hero-deco"></div>
     <div class="gd-hero-mono">MES DEVIS</div>
@@ -326,13 +325,11 @@
     </div>
   </div>
 
-  <!-- ══ CONTENU ══ -->
   <div class="gd-content">
     <div class="container">
 
       {% if devis_list %}
 
-      <!-- TOOLBAR -->
       <div class="gd-toolbar">
         <div class="toolbar-left">
           <button type="button" class="btn-select-all" id="btnSelectAll">
@@ -347,20 +344,17 @@
         </button>
       </div>
 
-      <!-- LISTE -->
       <form method="POST" action="{{ url_for('gerer_devis') }}" id="formGerer">
         <div class="devis-grid">
           {% for devis in devis_list %}
           <div class="devis-row" id="row-{{ devis.id }}" onclick="toggleRow(this,'{{ devis.id }}')">
             <div class="devis-row-inner">
 
-              <!-- Checkbox -->
               <label class="custom-check" onclick="event.stopPropagation()">
                 <input type="checkbox" name="devis_ids" value="{{ devis.id }}" class="devis-cb" onchange="updateCount()">
                 <div class="check-box"><i class="fas fa-check" style="font-size:.6rem;"></i></div>
               </label>
 
-              <!-- Données -->
               <div class="devis-info">
                 <div>
                   <div class="di-label">Nom / Société</div>
@@ -385,7 +379,6 @@
                 </div>
               </div>
 
-              <!-- Action rapide -->
               <div class="devis-actions">
                 <button type="button" class="action-btn"
                   onclick="event.stopPropagation();confirmSingle('{{ devis.id }}')"
@@ -403,7 +396,6 @@
 
       {% else %}
 
-      <!-- EMPTY STATE -->
       <div class="empty-state">
         <div class="empty-ico"><i class="fas fa-folder-open"></i></div>
         <h4>Aucun devis enregistré</h4>
@@ -415,7 +407,6 @@
 
       {% endif %}
 
-      <!-- ACTIONS BAS -->
       <div style="display:flex;gap:.65rem;flex-wrap:wrap;margin-top:1.75rem;padding-top:1.5rem;border-top:1px solid var(--border);">
         <a href="{{ url_for('devis') }}" class="btn-act btn-rose">
           <i class="fas fa-plus-circle"></i> Nouveau devis
@@ -429,7 +420,6 @@
   </div>
 </div>
 
-<!-- MODAL MULTIPLE -->
 <div class="modal-overlay" id="modalMulti">
   <div class="modal-box">
     <div class="modal-ico"><i class="fas fa-trash-alt"></i></div>
@@ -442,7 +432,6 @@
   </div>
 </div>
 
-<!-- MODAL UNITAIRE -->
 <div class="modal-overlay" id="modalSingle">
   <div class="modal-box">
     <div class="modal-ico"><i class="fas fa-trash-alt"></i></div>
@@ -455,77 +444,112 @@
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="gd-toast" id="gdToast"><i class="fas fa-info-circle"></i><span id="gdToastMsg">—</span></div>
 
 {% include "footer.html" %}
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-let pendingSingleId=null,allSelected=false;
+let pendingSingleId = null, allSelected = false;
 
 /* Toggle row */
-function toggleRow(row,id){
-  const cb=row.querySelector('.devis-cb');
-  cb.checked=!cb.checked;
-  row.classList.toggle('selected',cb.checked);
+function toggleRow(row, id) {
+  const cb = row.querySelector('.devis-cb');
+  cb.checked = !cb.checked;
+  row.classList.toggle('selected', cb.checked);
   updateCount();
 }
 
 /* Update compteur */
-function updateCount(){
-  const checked=document.querySelectorAll('.devis-cb:checked').length;
-  document.getElementById('countSelected').textContent=checked;
-  const btn=document.getElementById('btnDeleteSelected');
-  btn.classList.toggle('active',checked>0);
-  document.querySelectorAll('.devis-cb').forEach(cb=>{
-    cb.closest('.devis-row').classList.toggle('selected',cb.checked);
+function updateCount() {
+  const checked = document.querySelectorAll('.devis-cb:checked').length;
+  document.getElementById('countSelected').textContent = checked;
+  const btn = document.getElementById('btnDeleteSelected');
+  btn.classList.toggle('active', checked > 0);
+  document.querySelectorAll('.devis-cb').forEach(cb => {
+    cb.closest('.devis-row').classList.toggle('selected', cb.checked);
   });
 }
 
 /* Tout sélectionner */
-document.getElementById('btnSelectAll')&&document.getElementById('btnSelectAll').addEventListener('click',function(){
-  allSelected=!allSelected;
-  document.querySelectorAll('.devis-cb').forEach(cb=>cb.checked=allSelected);
-  this.innerHTML=allSelected
-    ?'<i class="fas fa-times-circle"></i> Tout désélectionner'
-    :'<i class="fas fa-check-square"></i> Tout sélectionner';
+document.getElementById('btnSelectAll') && document.getElementById('btnSelectAll').addEventListener('click', function () {
+  allSelected = !allSelected;
+  document.querySelectorAll('.devis-cb').forEach(cb => cb.checked = allSelected);
+  this.innerHTML = allSelected
+    ? '<i class="fas fa-times-circle"></i> Tout désélectionner'
+    : '<i class="fas fa-check-square"></i> Tout sélectionner';
   updateCount();
 });
 
 /* Suppression multiple */
-document.getElementById('btnDeleteSelected')&&document.getElementById('btnDeleteSelected').addEventListener('click',function(){
-  const n=document.querySelectorAll('.devis-cb:checked').length;
-  document.getElementById('modalMultiText').textContent=`Vous allez supprimer ${n} devis. Cette action est irréversible.`;
+document.getElementById('btnDeleteSelected') && document.getElementById('btnDeleteSelected').addEventListener('click', function () {
+  const n = document.querySelectorAll('.devis-cb:checked').length;
+  document.getElementById('modalMultiText').textContent = `Vous allez supprimer ${n} devis. Cette action est irréversible.`;
   openModal('modalMulti');
 });
-function submitDelete(){document.getElementById('formGerer').submit();}
+
+function submitDelete() {
+  const n = document.querySelectorAll('.devis-cb:checked').length;
+  closeModal('modalMulti');
+  
+  // Affichage du message personnalisé dans le Toast
+  showToast(`Succès : ${n} devis ont été supprimés de votre espace client.`);
+  
+  // Légère temporisation pour permettre de lire le message avant la soumission du formulaire
+  setTimeout(() => {
+    document.getElementById('formGerer').submit();
+  }, 1000);
+}
 
 /* Suppression unitaire */
-function confirmSingle(id){pendingSingleId=id;openModal('modalSingle');}
-function submitSingle(){
-  if(!pendingSingleId)return;
-  document.querySelectorAll('.devis-cb').forEach(cb=>cb.checked=false);
-  const cb=document.querySelector(`.devis-cb[value="${pendingSingleId}"]`);
-  if(cb)cb.checked=true;
+function confirmSingle(id) {
+  pendingSingleId = id;
+  openModal('modalSingle');
+}
+
+function submitSingle() {
+  if (!pendingSingleId) return;
+  
+  // Réinitialisation de la sélection multiple pour ne conserver que l'élément unitaire
+  document.querySelectorAll('.devis-cb').forEach(cb => cb.checked = false);
+  const cb = document.querySelector(`.devis-cb[value="${pendingSingleId}"]`);
+  if (cb) cb.checked = true;
+  
   closeModal('modalSingle');
-  document.getElementById('formGerer').submit();
+  
+  // Affichage du message personnalisé dans le Toast
+  showToast("Le devis a bien été supprimé avec succès.");
+  
+  // Légère temporisation pour permettre de lire le message avant la soumission du formulaire
+  setTimeout(() => {
+    document.getElementById('formGerer').submit();
+  }, 1000);
 }
 
 /* Modals */
-function openModal(id){document.getElementById(id).classList.add('open');}
-function closeModal(id){document.getElementById(id).classList.remove('open');}
-document.querySelectorAll('.modal-overlay').forEach(m=>{
-  m.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', function (e) { if (e.target === this) this.classList.remove('open'); });
 });
 
 /* Toast */
-function showToast(msg){
-  const t=document.getElementById('gdToast');
-  document.getElementById('gdToastMsg').textContent=msg;
-  t.classList.add('show');clearTimeout(window._tt);
-  window._tt=setTimeout(()=>t.classList.remove('show'),3200);
+function showToast(msg) {
+  const t = document.getElementById('gdToast');
+  document.getElementById('gdToastMsg').textContent = msg;
+  t.classList.add('show'); 
+  clearTimeout(window._tt);
+  window._tt = setTimeout(() => t.classList.remove('show'), 3200);
 }
+
+// Optional Flask block: If a flash message appears after reloading, it is also displayed
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    document.addEventListener("DOMContentLoaded", function() {
+      showToast("{{ messages[0] }}");
+    });
+  {% endif %}
+{% endwith %}
 </script>
 </body>
 </html>

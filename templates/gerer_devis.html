@@ -263,18 +263,33 @@
     }
     .modal-confirm:hover{background:#b91c1c;box-shadow:0 4px 12px rgba(220,38,38,.3);}
 
-    /* ══ TOAST ══ */
+    /* ══ TOAST MODIFIÉ POUR APPARAÎTRE EN HAUT DE LA PAGE ══ */
     .gd-toast{
-      position:fixed;bottom:2rem;right:2rem;z-index:9999;
-      background:var(--surface);border:1px solid var(--border);
-      border-radius:14px;padding:.85rem 1.25rem;
-      display:flex;align-items:center;gap:.7rem;
-      font-size:.82rem;font-weight:500;color:var(--text);
-      box-shadow:var(--shadow-lg);
-      transform:translateY(80px);opacity:0;
-      transition:all .4s cubic-bezier(.34,1.2,.64,1);pointer-events:none;
+      position:fixed;
+      top: 6.5rem; /* Ajusté sous le header */
+      right: 2rem;
+      z-index: 9999;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: .85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      font-size: .82rem;
+      font-weight: 500;
+      color: var(--text);
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-150px); /* Animation depuis le haut */
+      opacity: 0;
+      transition: all .4s cubic-bezier(.34,1.2,.64,1);
+      pointer-events: none;
     }
-    .gd-toast.show{transform:translateY(0);opacity:1;}
+    .gd-toast.show{
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
     .gd-toast i{color:var(--turq);}
 
     @media(max-width:640px){
@@ -444,7 +459,7 @@
   </div>
 </div>
 
-<div class="gd-toast" id="gdToast"><i class="fas fa-info-circle"></i><span id="gdToastMsg">—</span></div>
+<div class="gd-toast" id="gdToast"><i class="fas fa-check-circle"></i><span id="gdToastMsg">—</span></div>
 
 {% include "footer.html" %}
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -492,13 +507,11 @@ function submitDelete() {
   const n = document.querySelectorAll('.devis-cb:checked').length;
   closeModal('modalMulti');
   
-  // Affichage du message personnalisé dans le Toast
+  // Affichage du message dans le Toast en haut de la page
   showToast(`Succès : ${n} devis ont été supprimés de votre espace client.`);
   
-  // Légère temporisation pour permettre de lire le message avant la soumission du formulaire
-  setTimeout(() => {
-    document.getElementById('formGerer').submit();
-  }, 1000);
+  // SOU_RECHARGEMENT BLOQUÉ POUR LA CAPTURE D'ÉCRAN
+  console.log("Formulaire multiple en attente (soumission désactivée pour capture).");
 }
 
 /* Suppression unitaire */
@@ -510,20 +523,17 @@ function confirmSingle(id) {
 function submitSingle() {
   if (!pendingSingleId) return;
   
-  // Réinitialisation de la sélection multiple pour ne conserver que l'élément unitaire
   document.querySelectorAll('.devis-cb').forEach(cb => cb.checked = false);
   const cb = document.querySelector(`.devis-cb[value="${pendingSingleId}"]`);
   if (cb) cb.checked = true;
   
   closeModal('modalSingle');
   
-  // Affichage du message personnalisé dans le Toast
+  // Affichage du message dans le Toast en haut de la page
   showToast("Le devis a bien été supprimé avec succès.");
   
-  // Légère temporisation pour permettre de lire le message avant la soumission du formulaire
-  setTimeout(() => {
-    document.getElementById('formGerer').submit();
-  }, 1000);
+  // SOU_RECHARGEMENT BLOQUÉ POUR LA CAPTURE D'ÉCRAN
+  console.log("Formulaire unitaire en attente (soumission désactivée pour capture).");
 }
 
 /* Modals */
@@ -533,16 +543,14 @@ document.querySelectorAll('.modal-overlay').forEach(m => {
   m.addEventListener('click', function (e) { if (e.target === this) this.classList.remove('open'); });
 });
 
-/* Toast */
+/* Toast avec affichage permanent (Pas de clearTimeout ni de setTimeout) */
 function showToast(msg) {
   const t = document.getElementById('gdToast');
   document.getElementById('gdToastMsg').textContent = msg;
   t.classList.add('show'); 
-  clearTimeout(window._tt);
-  window._tt = setTimeout(() => t.classList.remove('show'), 3200);
 }
 
-// Optional Flask block: If a flash message appears after reloading, it is also displayed
+// Bloc Flask optionnel
 {% with messages = get_flashed_messages() %}
   {% if messages %}
     document.addEventListener("DOMContentLoaded", function() {

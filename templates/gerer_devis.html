@@ -543,7 +543,7 @@ document.querySelectorAll('.modal-overlay').forEach(m => {
   m.addEventListener('click', function (e) { if (e.target === this) this.classList.remove('open'); });
 });
 
-/* Toast avec affichage permanent (Pas de clearTimeout ni de setTimeout) */
+/* Toast with persistent display (no clearTimeout or setTimeout) */
 function showToast(msg) {
   const t = document.getElementById('gdToast');
   document.getElementById('gdToastMsg').textContent = msg;

@@ -717,11 +717,13 @@ document.querySelectorAll('.ec-hero-stat-val').forEach(el=>{
   if(!isNaN(n)&&n>0){el.textContent='0';setTimeout(()=>animCount(el,n),500);}
 });
 
-/* Toast bienvenue */
-setTimeout(()=>{
-  const t=document.getElementById('ecToast');
-  if(t){t.classList.add('show');setTimeout(()=>t.classList.remove('show'),4000);}
-},900);
+/* CHANGE: Toast displayed immediately and permanently for the screenshot */
+document.addEventListener("DOMContentLoaded", function() {
+  const t = document.getElementById('ecToast');
+  if(t) {
+    t.classList.add('show');
+  }
+ }); 
 </script>
 </body>
 </html>

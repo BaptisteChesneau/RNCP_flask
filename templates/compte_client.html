@@ -211,7 +211,7 @@
     /* Pill RDV */
     .rdv-pill{
       display:inline-flex;align-items:center;gap:.5rem;
-      padding:.5rem 1.1rem;border-radius:10px;
+      padding:.5rem 1.1窗口;border-radius:10px;
       background:var(--turq-xl);border:1px solid rgba(79,166,149,.2);
       color:var(--turq-d);font-size:.83rem;font-weight:600;margin-top:1.1rem;
     }
@@ -268,7 +268,7 @@
     /* Contenu carte */
     .cc-inner{position:relative;z-index:2;height:100%;padding:1.6rem 1.8rem;display:flex;flex-direction:column;justify-content:space-between;}
     .cc-top{display:flex;justify-content:space-between;align-items:center;}
-    .cc-brand{font-family:var(--ff-head);font-size:1.1rem;font-weight:700;color:rgba(255,255,255,.9);letter-spacing:.06em;}
+    .cc-brand{font-family:var(--ff-head);font-size:1.1rem;font-weight:700;color:rgba(255,255,255,.9);letter-spacing Club:.06em;}
     .cc-brand-em{color:#5eead4;}
     .cc-network{display:flex;}
     .cc-c1{width:30px;height:30px;border-radius:50%;background:rgba(235,0,27,.8);margin-right:-10px;}
@@ -336,19 +336,33 @@
     /* ══ ORNEMENT DÉCORATIF ══ */
     .ec-ornement{position:absolute;right:0;top:50%;transform:translateY(-50%);pointer-events:none;opacity:.04;}
 
-    /* ══ TOAST ══ */
+    /* ══ TOAST REPOSITIONNÉ EN HAUT ET EN AFFICHAGE PERMANENT ══ */
     .ec-toast{
-      position:relative;z-index:9999;
-      background:var(--surface);border:1px solid var(--border);
-      border-radius:16px;padding:.9rem 1.35rem;
-      display:inline-flex;align-items:center;gap:.75rem;
-      margin-bottom:1rem;
-      font-size:.83rem;font-weight:500;color:var(--text);
-      box-shadow:var(--shadow-lg);
-      transform:translateY(80px);opacity:0;
-      transition:all .4s cubic-bezier(.34,1.2,.64,1);pointer-events:none;
+      position:fixed;
+      top: 6.5rem; /* Fixé en haut sous la barre de navigation */
+      right: 2rem;
+      z-index: 9999;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: .9rem 1.35rem;
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      font-size: .83rem;
+      font-weight: 500;
+      color: var(--text);
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-150px); /* Position initiale hors-champ haut */
+      opacity: 0;
+      transition: all .4s cubic-bezier(.34,1.2,.64,1);
+      pointer-events: none;
     }
-    .ec-toast.show{transform:translateY(0);opacity:1;}
+    .ec-toast.show{
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
     .ec-toast i{color:var(--turq);}
 
     /* ══ SCROLLBAR ══ */
@@ -375,13 +389,11 @@
 
 <div class="ec-wrapper">
 
-  <!-- ══ HERO ══ -->
   <div class="ec-hero">
     <div class="ec-hero-deco"></div>
     <div class="ec-hero-mono">ML2C</div>
     <div class="container" style="position:relative;z-index:1;">
 
-      <div class="ec-toast" id="ecToast"><i class="fas fa-check-circle"></i><span>Bienvenue dans votre espace client</span></div>
       <div class="ec-session-badge">
         <span class="ec-dot"></span>
         Session active &nbsp;·&nbsp;
@@ -426,11 +438,9 @@
     </div>
   </div>
 
-  <!-- ══ CONTENU ══ -->
   <div class="ec-content">
     <div class="container">
 
-      <!-- Navigation -->
       <div class="ec-nav-wrap">
         <button class="ec-nav-btn active" data-panel="devis">
           <i class="fas fa-file-invoice"></i>
@@ -448,15 +458,12 @@
         </button>
       </div>
 
-      <!-- Panneaux -->
       <div class="ec-panels">
 
-        <!-- ════ DEVIS ════ -->
         <div class="ec-panel active" id="panel-devis">
 
           {% if session.devis_data or devis_list %}
 
-          <!-- Timeline statut -->
           <div class="prem-card">
             <div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-bottom:1.1rem;">Statut de la demande</div>
             <div class="devis-timeline">
@@ -542,7 +549,6 @@
           </a>
         </div>
 
-        <!-- ════ FICHE ════ -->
         <div class="ec-panel" id="panel-fiche">
           {% if clients %}
             {% for client in clients %}
@@ -587,7 +593,6 @@
           </a>
         </div>
 
-        <!-- ════ CARTE ════ -->
         <div class="ec-panel" id="panel-carte">
           {% if session.get('carte_bancaire') %}
 
@@ -647,7 +652,6 @@
           {% endif %}
         </div>
 
-        <!-- ACTIONS -->
         <div class="ec-action-bar">
           <a href="{{ url_for('parametres') }}" class="btn-act btn-act-rose"><i class="fas fa-cog"></i>Paramètres</a>
           <a href="{{ url_for('gerer_devis') }}" class="btn-act btn-act-turq"><i class="fas fa-folder-open"></i>Gérer mes devis</a>
@@ -660,7 +664,6 @@
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="ec-toast" id="ecToast"><i class="fas fa-check-circle"></i><span>Bienvenue dans votre espace client</span></div>
 
 {% include "footer.html" %}
@@ -719,18 +722,13 @@ document.querySelectorAll('.ec-hero-stat-val').forEach(el=>{
   if(!isNaN(n)&&n>0){el.textContent='0';setTimeout(()=>animCount(el,n),500);}
 });
 
-/* CHANGE: Toast displayed immediately and permanently for the screenshot */
+/* FIX POUR CAPTURE D'ÉCRAN PERMANENTE : Affichage forcé du Toast dès le chargement du DOM sans fermeture automatique */
 document.addEventListener("DOMContentLoaded", function() {
   const t = document.getElementById('ecToast');
   if(t) {
     t.classList.add('show');
-    
-    setTimeout(()=>{
-  const t=document.getElementById('ecToast');
-  if(t){t.classList.add('show');setTimeout(()=>t.classList.remove('show'),4000);}
-},900);
   }
- }); 
+});
 </script>
 </body>
 </html>

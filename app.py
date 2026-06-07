@@ -121,7 +121,7 @@ class Historique(db.Model):
     utilisateur = db.relationship("Utilisateur", back_populates="historiques")
 
 
-class Utilisateur(db.Model):
+class Utilisateur(db.Model, UserMixing):
     id = db.Column(db.Integer, primary_key=True)
     nom_utilisateur = db.Column(db.String(100), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -279,7 +279,7 @@ class ParametresCompte(db.Model):
         return f"<ParametresCompte utilisateur_id={self.utilisateur_id} langue={self.langue} theme={self.theme}>"
 
 
-class UtilisateurClient(db.Model, UserMixing):
+class UtilisateurClient(db.Model):
     __tablename__ = "utilisateur_client"
 
     utilisateur_id = db.Column(

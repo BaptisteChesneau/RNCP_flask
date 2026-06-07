@@ -135,7 +135,7 @@ class Utilisateur(db.Model):
     articles = db.relationship("BlogPost", back_populates="auteur")
     parametres = db.relationship("ParametresCompte", back_populates="utilisateur", uselist=False)
 
-    # ✅ Relations directes et via table de liaison
+    # Direct relationships and relationships via a join table
     clients = db.relationship("Client", back_populates="utilisateur", lazy=True)
     clients_lies = db.relationship(
         "UtilisateurClient", back_populates="utilisateur", cascade="all, delete-orphan"
@@ -1308,7 +1308,7 @@ def login_admin():
         # Search for the admin user in the MongoDB database
         admin = mongo.db.admin_users.find_one({"username": username})
 
-        # ✅ Enhanced security: unique message if user unknown or password invalid
+        # Enhanced security: unique message if user unknown or password invalid
         if not admin or not check_password_hash(admin["password"], password):
             flash("Identifiants invalides ❌", "danger")
             return redirect(url_for("login_admin"))

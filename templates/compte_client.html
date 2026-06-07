@@ -338,10 +338,11 @@
 
     /* ══ TOAST ══ */
     .ec-toast{
-      position:fixed;bottom:2rem;right:2rem;z-index:9999;
+      position:relative;z-index:9999;
       background:var(--surface);border:1px solid var(--border);
       border-radius:16px;padding:.9rem 1.35rem;
-      display:flex;align-items:center;gap:.75rem;
+      display:inline-flex;align-items:center;gap:.75rem;
+      margin-bottom:1rem;
       font-size:.83rem;font-weight:500;color:var(--text);
       box-shadow:var(--shadow-lg);
       transform:translateY(80px);opacity:0;
@@ -380,6 +381,7 @@
     <div class="ec-hero-mono">ML2C</div>
     <div class="container" style="position:relative;z-index:1;">
 
+      <div class="ec-toast" id="ecToast"><i class="fas fa-check-circle"></i><span>Bienvenue dans votre espace client</span></div>
       <div class="ec-session-badge">
         <span class="ec-dot"></span>
         Session active &nbsp;·&nbsp;
@@ -722,6 +724,11 @@ document.addEventListener("DOMContentLoaded", function() {
   const t = document.getElementById('ecToast');
   if(t) {
     t.classList.add('show');
+    
+    setTimeout(()=>{
+  const t=document.getElementById('ecToast');
+  if(t){t.classList.add('show');setTimeout(()=>t.classList.remove('show'),4000);}
+},900);
   }
  }); 
 </script>

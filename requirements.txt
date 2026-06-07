@@ -42,6 +42,7 @@ fastjsonschema==2.20.0
 filelock==3.16.1
 Flask==3.0.3
 Flask-Mail==0.10.0
+Flask-Login==0.6.3
 Flask-Migrate==4.0.7
 Flask-PyMongo==3.0.1
 Flask-SQLAlchemy==3.1.1

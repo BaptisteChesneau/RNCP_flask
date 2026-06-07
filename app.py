@@ -4,6 +4,7 @@ import os
 import secrets
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_mail import Mail, Message
+from flask_login import UserMixing
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
 from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
@@ -278,7 +279,7 @@ class ParametresCompte(db.Model):
         return f"<ParametresCompte utilisateur_id={self.utilisateur_id} langue={self.langue} theme={self.theme}>"
 
 
-class UtilisateurClient(db.Model):
+class UtilisateurClient(db.Model, UserMixing):
     __tablename__ = "utilisateur_client"
 
     utilisateur_id = db.Column(

@@ -93,7 +93,6 @@ class Client(db.Model):
 
     utilisateur = db.relationship("Utilisateur", back_populates="clients")
 
-    # ✅ Relation via table de liaison
     utilisateurs_lies = db.relationship(
         "UtilisateurClient", back_populates="client", cascade="all, delete-orphan"
     )

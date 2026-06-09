@@ -127,7 +127,7 @@ class Utilisateur(db.Model, UserMixing):
     email = db.Column(db.String(120), unique=True, nullable=False)
     mot_de_passe_hash = db.Column(db.String(200), nullable=False)
 
-    # Relations avec d'autres tables
+    # Relationships with other tables
     devis = db.relationship("Devis", back_populates="utilisateur")
     paiements = db.relationship("Paiement", back_populates="utilisateur")
     support_tickets = db.relationship("SupportTicket", back_populates="utilisateur")

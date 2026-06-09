@@ -606,19 +606,19 @@ def cookies():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        # Récupération des données du formulaire
+        # Retrieving form data
         email = request.form.get("email")
         password = request.form.get("password")
         print(f"Tentative de connexion avec : {email}")
 
-        # Rechercher l'utilisateur par email
+        # Search for a user by email
         utilisateur = Utilisateur.query.filter_by(email=email).first()
         print(f"Utilisateur trouvé : {utilisateur}")
 
-        # Vérification du mot de passe
+        # Password Verification
         if utilisateur and utilisateur.check_password(password):
             try:
-                # Connexion normale
+                # Normal connection
                 session["utilisateur_id"] = utilisateur.id
                 session["email"] = utilisateur.email
                 session["prenom"] = utilisateur.nom_utilisateur
@@ -632,11 +632,11 @@ def login():
                 flash("Erreur interne lors de la connexion.", "danger")
                 return redirect(url_for("login"))
         else:
-            # Identifiants incorrects
+            # Incorrect credentials
             print("Email ou mot de passe invalide")
             flash("Email ou mot de passe invalide.", "danger")
 
-    # Affichage de la page de connexion
+    # Displaying the login page
     return render_template("login.html")
 
 @app.route("/mot-de-passe-oublie", methods=["GET", "POST"])

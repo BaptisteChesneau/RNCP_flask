@@ -120,7 +120,7 @@ class Historique(db.Model):
     utilisateur = db.relationship("Utilisateur", back_populates="historiques")
 
 
-class Utilisateur(db.Model, UserMixing):
+class Utilisateur(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     nom_utilisateur = db.Column(db.String(100), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)

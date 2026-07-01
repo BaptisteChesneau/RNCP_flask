@@ -250,6 +250,188 @@ img { max-width: 100%; display: block; }
    DROPDOWN / MEGA-MENU
 ══════════════════════════════════════════ */
 
+/* ══ HERO FOND BLANC A LA PLACE DU CAROUSEL ══ */
+.hero-white {
+  background-color: #ffffff !important;
+  padding: 100px 0 80px 0;
+  position: relative;
+  overflow: hidden;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.hero-inner-white {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-badge-white {
+  display: inline-block;
+  background-color: rgba(193, 0, 122, 0.06);
+  color: #C1007A;
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  margin-bottom: 24px;
+}
+
+/* Titre forcé sur une seule ligne */
+.hero-title-white {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #0d1824;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  white-space: nowrap; /* Empêche le retour à la ligne */
+}
+
+.hero-sub-white {
+  font-size: 1.15rem;
+  color: #5a6675;
+  max-width: 600px;
+  line-height: 1.6;
+  margin-bottom: 35px;
+}
+
+/* Boutons d'action */
+.hero-ctas-white {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.cta-call-white {
+  background-color: #C1007A;
+  color: #ffffff !important;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none !important;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(193, 0, 122, 0.2);
+}
+
+.cta-call-white:hover {
+  background-color: #a01267;
+  transform: translateY(-2px);
+}
+
+.cta-devis-white {
+  background-color: transparent;
+  color: #0d1824 !important;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  border: 1px solid #dcdcdc;
+  text-decoration: none !important;
+  transition: all 0.3s ease;
+}
+
+.cta-devis-white:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+  border-color: #0d1824;
+  transform: translateY(-2px);
+}
+
+/* Réassurance */
+.hero-trust-white {
+  display: flex;
+  gap: 24px;
+  border-top: 1px solid #eaeaea;
+  padding-top: 24px;
+}
+
+.trust-item-white {
+  font-size: 0.85rem;
+  color: #7a8695;
+  font-weight: 500;
+}
+
+.trust-item-white i {
+  color: #4FA695;
+  margin-right: 6px;
+}
+
+/* Responsive pour tablettes/mobiles */
+@media (max-width: 1199px) {
+  .hero-title-white {
+    font-size: 2.6rem;
+    white-space: normal; /* Permet le retour à la ligne uniquement sur petit écran pour éviter les bugs visuels */
+  }
+}
+
+@media (max-width: 575px) {
+  .hero-ctas-white {
+    flex-direction: column;
+  }
+  .hero-trust-white {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+/* ══ ANIMATIONS DU ROBOT SVG ══ */
+.hero-robot-container {
+  max-width: 100%;
+  position: relative;
+}
+
+.robot-calc-svg {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+}
+
+/* Animation de flottaison globale du Robot */
+@keyframes robotFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+.svg-robot {
+  transform-origin: center;
+  animation: robotFloat 4s ease-in-out infinite;
+}
+
+/* Animation légère de la tête du robot */
+@keyframes headNod {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(2deg) translateY(-2px); }
+}
+.robot-head {
+  transform-origin: 200px 170px;
+  animation: headNod 6s ease-in-out infinite;
+}
+
+/* Pulsation de l'antenne */
+@keyframes antennaGlow {
+  0%, 100% { opacity: 0.6; fill: #4FA695; }
+  50% { opacity: 1; fill: #C1007A; }
+}
+.robot-antenna-glow {
+  animation: antennaGlow 2s ease-in-out infinite;
+}
+
+/* Clignotement des yeux */
+@keyframes eyeBlink {
+  0%, 95%, 100% { transform: scaleY(1); }
+  97% { transform: scaleY(0.1); }
+}
+.robot-eye {
+  transform-origin: center;
+  animation: eyeBlink 4s infinite;
+}
+
+/* Flottaison de la calculatrice tenue à la main */
+@keyframes calcFloat {
+  0%, 100% { transform: translate(140px, 160px) rotate(0deg); }
+  50% { transform: translate(140px, 155px) rotate(-1deg); }
+}
+.svg-calc {
+  animation: calcFloat 4s ease-in-out infinite;
+}
+
 /* ══ COMPTABILITÉ ic- ══ */
 @keyframes ic-bar-rise   { from{transform:scaleY(0);} to{transform:scaleY(1);} }
 @keyframes ic-row-scroll { 0%{transform:translateY(0);} 100%{transform:translateY(-50%);} }

@@ -13,27 +13,94 @@
 
 {% include "header.html" %}
 
-<section class="hero" id="accueil">
-  <div id="heroCarousel" class="carousel slide hero-carousel" data-ride="carousel" data-interval="5000">
-    <div class="carousel-inner">
-      <div class="carousel-item active"><img src="{{ url_for('static', filename='images/slide1.jpg') }}" class="hero-slide-img" alt="ML2C Conseil"></div>
-      <div class="carousel-item"><img src="{{ url_for('static', filename='images/slide2.jpg') }}" class="hero-slide-img" alt="ML2C Conseil"></div>
-    </div>
-  </div>
-  <div class="hero-overlay"></div>
+<section class="hero-white" id="accueil">
   <div class="container">
-    <div class="hero-inner">
-      <div class="hero-badge">Cabinet d'expertise comptable — Dammarie</div>
-      <h1 class="hero-title">Votre partenaire<br><span>comptable & fiscal</span></h1>
-      <p class="hero-sub">Expertise, proximité et intelligence artificielle<br>au service de votre réussite durable.</p>
-      <div class="hero-ctas">
-        <a href="tel:+33672343294" class="cta-call"><i class="fas fa-phone-alt"></i> Appeler maintenant</a>
-        <a href="{{ url_for('nous_contacter') }}" class="cta-devis"><i class="fas fa-file-invoice"></i> Devis gratuit</a>
+    <div class="row align-items-center">
+      <!-- Partie texte à gauche -->
+      <div class="col-lg-7">
+        <div class="hero-inner-white">
+          <div class="hero-badge-white">Cabinet d'expertise comptable — Dammarie</div>
+          <h1 class="hero-title-white">Votre partenaire comptable & fiscal</h1>
+          <p class="hero-sub-white">Expertise, proximité et intelligence artificielle au service de votre réussite durable.</p>
+          <div class="hero-ctas-white">
+            <a href="tel:+33672343294" class="cta-call-white"><i class="fas fa-phone-alt"></i> Appeler maintenant</a>
+            <a href="{{ url_for('nous_contacter') }}" class="cta-devis-white"><i class="fas fa-file-invoice"></i> Devis gratuit</a>
+          </div>
+          <div class="hero-trust-white">
+            <div class="trust-item-white"><i class="fas fa-shield-alt"></i> Expert-comptable certifié</div>
+            <div class="trust-item-white"><i class="fas fa-clock"></i> Réponse sous 24h</div>
+            <div class="trust-item-white"><i class="fas fa-star"></i> +150 clients accompagnés</div>
+          </div>
+        </div>
       </div>
-      <div class="hero-trust">
-        <div class="trust-item"><i class="fas fa-shield-alt"></i> Expert-comptable certifié</div>
-        <div class="trust-item"><i class="fas fa-clock"></i> Réponse sous 24h</div>
-        <div class="trust-item"><i class="fas fa-star"></i> +150 clients accompagnés</div>
+      
+      <!-- Partie Illustration IA / Calculatrice interactive à droite -->
+      <div class="col-lg-5 text-center mt-5 mt-lg-0">
+        <div class="hero-robot-container">
+          <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" class="robot-calc-svg">
+            <!-- Cercles d'arrière-plan esthétiques -->
+            <circle cx="200" cy="200" r="160" fill="#4FA695" opacity="0.05" />
+            <circle cx="200" cy="200" r="120" fill="#C1007A" opacity="0.03" />
+            
+            <!-- LA CALCULATRICE (Portée par le robot) -->
+            <g class="svg-calc" transform="translate(140, 160)">
+              <!-- Boîtier principal -->
+              <rect width="120" height="160" rx="14" fill="#0d1824" stroke="#4FA695" stroke-width="2" />
+              <!-- Écran -->
+              <rect x="12" y="15" width="96" height="32" rx="6" fill="#1a2d3d" />
+              <text x="96" y="36" text-anchor="end" font-family="monospace" font-size="16" font-weight="700" fill="#4FA695">ML2C + IA</text>
+              <!-- Touches de la calculatrice -->
+              <rect x="15" y="60" width="22" height="16" rx="3" fill="#C1007A" opacity="0.8"/>
+              <rect x="49" y="60" width="22" height="16" rx="3" fill="#2d3d4d"/>
+              <rect x="83" y="60" width="22" height="16" rx="3" fill="#4FA695"/>
+              
+              <rect x="15" y="84" width="22" height="16" rx="3" fill="#2d3d4d"/>
+              <rect x="49" y="84" width="22" height="16" rx="3" fill="#2d3d4d"/>
+              <rect x="83" y="84" width="22" height="16" rx="3" fill="#2d3d4d"/>
+              
+              <rect x="15" y="108" width="22" height="16" rx="3" fill="#2d3d4d"/>
+              <rect x="49" y="108" width="22" height="16" rx="3" fill="#2d3d4d"/>
+              <rect x="83" y="108" width="22" height="28" rx="3" fill="#C1007A"/> <!-- Touche Enter -->
+              
+              <rect x="15" y="132" width="56" height="16" rx="3" fill="#2d3d4d"/> <!-- Touche 0 large -->
+            </g>
+
+            <!-- LE ROBOT -->
+            <g class="svg-robot">
+              <!-- Bras gauche tenant la calculatrice -->
+              <path d="M 120 230 Q 150 250 170 230" fill="none" stroke="#C1007A" stroke-width="12" stroke-linecap="round" />
+              <!-- Bras droit -->
+              <path d="M 280 230 Q 310 210 320 180" fill="none" stroke="#C1007A" stroke-width="12" stroke-linecap="round" class="robot-right-arm" />
+              
+              <!-- Corps -->
+              <rect x="130" y="180" width="140" height="110" rx="25" fill="#C1007A" />
+              <!-- Écran ventral du robot -->
+              <rect x="150" y="200" width="100" height="60" rx="12" fill="#0d1824" stroke="rgba(255,255,255,0.1)" />
+              <!-- Ondes de données animées sur le ventre -->
+              <path d="M 165 230 Q 180 215 200 230 T 235 230" fill="none" stroke="#4FA695" stroke-width="2" stroke-linecap="round" class="robot-belly-wave" />
+              
+              <!-- Cou -->
+              <rect x="185" y="165" width="30" height="20" fill="#a01267" rx="4" />
+              
+              <!-- Tête -->
+              <g class="robot-head">
+                <rect x="140" y="90" width="120" height="85" rx="30" fill="#C1007A" />
+                <!-- Visière noire -->
+                <rect x="152" y="105" width="96" height="50" rx="18" fill="#0d1824" />
+                <!-- Yeux lumineux (Verts) -->
+                <circle cx="180" cy="130" r="8" fill="#4FA695" class="robot-eye" />
+                <circle cx="220" cy="130" r="8" fill="#4FA695" class="robot-eye" />
+                <!-- Reflets yeux -->
+                <circle cx="178" cy="128" r="2.5" fill="#fff" />
+                <circle cx="218" cy="128" r="2.5" fill="#fff" />
+              </g>
+              
+              <!-- Antennes -->
+              <line x1="200" y1="90" x2="200" y2="65" stroke="#a01267" stroke-width="6" stroke-linecap="round" />
+              <circle cx="200" cy="60" r="7" fill="#4FA695" class="robot-antenna-glow" />
+            </g>
+          </svg>
+        </div>
       </div>
     </div>
   </div>

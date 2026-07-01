@@ -329,21 +329,28 @@ img { max-width: 100%; display: block; }
   transform: translateY(-2px);
 }
 
-.cta-devis-white {
+.cta-devis-rose {
   background-color: transparent;
-  color: #0d1824 !important;
+  color: #0d1824 !important; /* Texte et icône en noir profond */
   padding: 14px 28px;
   border-radius: 8px;
   font-weight: 600;
-  border: 1px solid #dcdcdc;
+  border: 2px solid #C1007A; /* Belle bordure avec votre rose identitaire */
   text-decoration: none !important;
   transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* Espace propre entre l'icône et le texte */
 }
 
-.cta-devis-white:hover {
-  background-color: rgba(0, 0, 0, 0.02);
-  border-color: #0d1824;
+.cta-devis-rose i {
+  color: #0d1824; /* Icône noire */
+}
+
+.cta-devis-rose:hover {
+  background-color: rgba(193, 0, 122, 0.05); /* Léger fond rose transparent au survol */
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(193, 0, 122, 0.1);
 }
 
 /* Réassurance */

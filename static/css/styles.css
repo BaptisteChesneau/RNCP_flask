@@ -302,6 +302,17 @@ img { max-width: 100%; display: block; }
   margin-bottom: 40px;
 }
 
+.trust-item-white {
+  font-size: 0.85rem;
+  color: #0d1824 !important; /* Force le texte en noir pour une parfaite visibilité sur fond blanc */
+  font-weight: 600;          /* Donne un aspect légèrement plus soutenu au noir */
+}
+
+.trust-item-white i {
+  color: #4FA695;            /* Conserve le vert identitaire pour les icônes */
+  margin-right: 6px;
+}
+
 .cta-call-white {
   background-color: #C1007A;
   color: #ffffff !important;

@@ -2500,3 +2500,19 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
   .articles-grid { grid-template-columns: 1fr; }
   .blog-hero { padding: 3.5rem 0 3rem; }
 }
+
+.blog-hero-sub {
+  font-size: 1rem; 
+  color: rgba(255,255,255,.7);
+  max-width: 100%; /* Augmenté à 100% au lieu de 500px pour laisser le texte s'étaler */
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  white-space: nowrap; /* Force le texte à rester strictement sur une seule ligne */
+}
+
+/* On désactive le forçage sur mobile pour éviter que le texte ne dépasse de l'écran */
+@media (max-width: 768px) {
+  .blog-hero-sub {
+    white-space: normal;
+  }
+}

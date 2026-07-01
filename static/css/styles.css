@@ -249,6 +249,140 @@ img { max-width: 100%; display: block; }
 /* ══════════════════════════════════════════
    DROPDOWN / MEGA-MENU
 ══════════════════════════════════════════ */
+
+/* ══ COMPTABILITÉ ic- ══ */
+@keyframes ic-bar-rise   { from{transform:scaleY(0);} to{transform:scaleY(1);} }
+@keyframes ic-row-scroll { 0%{transform:translateY(0);} 100%{transform:translateY(-50%);} }
+@keyframes ic-draw-line  { from{stroke-dashoffset:400;} to{stroke-dashoffset:0;} }
+@keyframes ic-stamp-in   { 0%{opacity:0;transform:scale(1.5) rotate(-15deg);} 100%{opacity:1;transform:scale(1) rotate(0deg);} }
+@keyframes ic-pen-write  { 0%,100%{transform:translate(0,0) rotate(-35deg);} 50%{transform:translate(7px,-3px) rotate(-30deg);} }
+@keyframes ic-glow-pulse { 0%,100%{opacity:.10;} 50%{opacity:.20;} }
+@keyframes ic-badge-float{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-4px);} }
+@keyframes ic-shimmer    { 0%,100%{opacity:.10;} 50%{opacity:.35;} }
+.svc-illus-compta{background:#0d1824!important;border-radius:18px;overflow:hidden;position:relative;padding:0!important;}
+.svc-illus-compta svg{display:block;width:100%;height:100%;}
+.ic-ledger{animation:ic-row-scroll 8s linear infinite;}
+.ic-bar{transform-origin:0 100%;animation:ic-bar-rise .7s cubic-bezier(.34,1.2,.64,1) both;}
+.ic-spark{stroke-dasharray:400;animation:ic-draw-line 2s .8s ease both;}
+.ic-stamp{animation:ic-stamp-in .6s 2s cubic-bezier(.34,1.2,.64,1) both;}
+.ic-pen{animation:ic-pen-write 2s 1s ease-in-out infinite;}
+.ic-gr{animation:ic-glow-pulse 3s ease-in-out infinite;}
+.ic-gt{animation:ic-glow-pulse 3s 1.5s ease-in-out infinite;}
+.ic-spine{animation:ic-shimmer 2.5s ease-in-out infinite;}
+.ic-b1{animation:ic-badge-float 3s ease-in-out infinite;}
+.ic-b2{animation:ic-badge-float 3s .8s ease-in-out infinite;}
+.ic-b3{animation:ic-badge-float 3s 1.4s ease-in-out infinite;}
+
+/* ══ SOCIAL sw- ══ */
+@keyframes sw-float-up{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+@keyframes sw-float-dn{0%,100%{transform:translateY(0);}50%{transform:translateY(5px);}}
+@keyframes sw-badge-in{0%{opacity:0;transform:scale(.5) translateY(10px);}100%{opacity:1;transform:scale(1) translateY(0);}}
+@keyframes sw-line-draw{from{stroke-dashoffset:200;}to{stroke-dashoffset:0;}}
+@keyframes sw-glow{0%,100%{opacity:.08;}50%{opacity:.18;}}
+@keyframes sw-pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+@keyframes sw-count{0%{opacity:0;transform:translateY(6px);}100%{opacity:1;transform:translateY(0);}}
+@keyframes sw-slide-row{0%{transform:translateY(0);}100%{transform:translateY(-50%);}}
+@keyframes sw-stamp{0%{opacity:0;transform:scale(1.4) rotate(-12deg);}100%{opacity:1;transform:scale(1) rotate(0deg);}}
+.svc-illus-social{background:#0d1824!important;border-radius:18px;overflow:hidden;position:relative;padding:0!important;}
+.svc-illus-social svg{display:block;width:100%;height:100%;}
+.sw-gr{animation:sw-glow 3s ease-in-out infinite;}
+.sw-gt{animation:sw-glow 3s 1.5s ease-in-out infinite;}
+.sw-p1{animation:sw-float-dn 3.2s ease-in-out infinite;}
+.sw-p2{animation:sw-float-up 2.8s .4s ease-in-out infinite;}
+.sw-p3{animation:sw-float-dn 3.5s .8s ease-in-out infinite;}
+.sw-b1{animation:sw-badge-in .5s .2s cubic-bezier(.34,1.2,.64,1) both;}
+.sw-b2{animation:sw-badge-in .5s .5s cubic-bezier(.34,1.2,.64,1) both;}
+.sw-b3{animation:sw-badge-in .5s .8s cubic-bezier(.34,1.2,.64,1) both;}
+.sw-l1{stroke-dasharray:200;animation:sw-line-draw 1.2s .3s ease both;}
+.sw-l2{stroke-dasharray:200;animation:sw-line-draw 1.2s .6s ease both;}
+.sw-dot1{animation:sw-pulse 2s .3s ease-in-out infinite;}
+.sw-dot2{animation:sw-pulse 2s .8s ease-in-out infinite;}
+.sw-rows{animation:sw-slide-row 7s linear infinite;}
+.sw-stamp{animation:sw-stamp .6s 1.8s cubic-bezier(.34,1.2,.64,1) both;}
+.sw-n1{animation:sw-count .4s .4s ease both;}
+.sw-n2{animation:sw-count .4s .7s ease both;}
+.sw-n3{animation:sw-count .4s 1.0s ease both;}
+
+/* ══ JURIDIQUE jw- ══ */
+@keyframes jw-scale-rock{0%{transform:rotate(-8deg);}50%{transform:rotate(6deg);}100%{transform:rotate(-8deg);}}
+@keyframes jw-pan-l{0%{transform:translateY(-6px);}50%{transform:translateY(5px);}100%{transform:translateY(-6px);}}
+@keyframes jw-pan-r{0%{transform:translateY(5px);}50%{transform:translateY(-6px);}100%{transform:translateY(5px);}}
+@keyframes jw-doc-in{0%{opacity:0;transform:translateY(12px);}100%{opacity:1;transform:translateY(0);}}
+@keyframes jw-badge-in{0%{opacity:0;transform:scale(.5);}100%{opacity:1;transform:scale(1);}}
+@keyframes jw-glow{0%,100%{opacity:.08;}50%{opacity:.18;}}
+@keyframes jw-float{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+@keyframes jw-row-scroll{0%{transform:translateY(0);}100%{transform:translateY(-50%);}}
+@keyframes jw-stamp{0%{opacity:0;transform:scale(1.5) rotate(-15deg);}100%{opacity:1;transform:scale(1) rotate(0deg);}}
+@keyframes jw-shimmer{0%,100%{opacity:.08;}50%{opacity:.3;}}
+@keyframes jw-draw{from{stroke-dashoffset:300;}to{stroke-dashoffset:0;}}
+.svc-illus-juridique{background:#0d1824!important;border-radius:18px;overflow:hidden;position:relative;padding:0!important;}
+.svc-illus-juridique svg{display:block;width:100%;height:100%;}
+.jw-gr{animation:jw-glow 3s ease-in-out infinite;}
+.jw-gt{animation:jw-glow 3s 1.5s ease-in-out infinite;}
+.jw-beam{transform-origin:240px 155px;animation:jw-scale-rock 4s ease-in-out infinite;}
+.jw-pl{transform-origin:118px 185px;animation:jw-pan-l 4s ease-in-out infinite;}
+.jw-pr{transform-origin:362px 185px;animation:jw-pan-r 4s ease-in-out infinite;}
+.jw-d1{animation:jw-doc-in .5s .1s ease both;}
+.jw-d2{animation:jw-doc-in .5s .3s ease both;}
+.jw-d3{animation:jw-doc-in .5s .5s ease both;}
+.jw-b1{animation:jw-badge-in .5s .2s cubic-bezier(.34,1.2,.64,1) both;}
+.jw-b2{animation:jw-badge-in .5s .5s cubic-bezier(.34,1.2,.64,1) both;}
+.jw-b3{animation:jw-badge-in .5s .8s cubic-bezier(.34,1.2,.64,1) both;}
+.jw-f1{animation:jw-float 3s ease-in-out infinite;}
+.jw-f2{animation:jw-float 3s .8s ease-in-out infinite;}
+.jw-f3{animation:jw-float 3s 1.6s ease-in-out infinite;}
+.jw-rows{animation:jw-row-scroll 7s linear infinite;}
+.jw-stamp{animation:jw-stamp .6s 2s cubic-bezier(.34,1.2,.64,1) both;}
+.jw-spine{animation:jw-shimmer 2.5s ease-in-out infinite;}
+.jw-sign{stroke-dasharray:300;animation:jw-draw 1.5s 1.2s ease both;}
+
+/* ══ IA / CONSEIL aw- ══ */
+@keyframes aw-glow{0%,100%{opacity:.08;}50%{opacity:.20;}}
+@keyframes aw-brain{0%,100%{transform:scale(1) rotate(0deg);}50%{transform:scale(1.08) rotate(3deg);}}
+@keyframes aw-node{0%,100%{transform:translateY(0);opacity:.9;}50%{transform:translateY(-5px);opacity:1;}}
+@keyframes aw-dash{from{stroke-dashoffset:200;}to{stroke-dashoffset:0;}}
+@keyframes aw-flow{0%{stroke-dashoffset:60;}100%{stroke-dashoffset:0;}}
+@keyframes aw-badge-in{0%{opacity:0;transform:scale(.5);}100%{opacity:1;transform:scale(1);}}
+@keyframes aw-float{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+@keyframes aw-count{0%{opacity:0;transform:translateY(6px);}100%{opacity:1;transform:translateY(0);}}
+@keyframes aw-data{0%{transform:translateY(0);}100%{transform:translateY(-50%);}}
+@keyframes aw-ring{from{stroke-dashoffset:220;}to{stroke-dashoffset:0;}}
+@keyframes aw-predict{0%{opacity:0;transform:scaleX(0);}100%{opacity:1;transform:scaleX(1);}}
+@keyframes aw-shimmer{0%,100%{opacity:.08;}50%{opacity:.3;}}
+.svc-illus-ia{background:#0d1824!important;border-radius:18px;overflow:hidden;position:relative;padding:0!important;}
+.svc-illus-ia svg{display:block;width:100%;height:100%;}
+.aw-gr{animation:aw-glow 3s ease-in-out infinite;}
+.aw-gt{animation:aw-glow 3s 1.5s ease-in-out infinite;}
+.aw-hub{transform-origin:240px 210px;animation:aw-brain 3s ease-in-out infinite;}
+.aw-ring{stroke-dasharray:220;animation:aw-ring 1.5s ease both;}
+.aw-n1{transform-origin:90px 130px;animation:aw-node 3.2s ease-in-out infinite;}
+.aw-n2{transform-origin:390px 130px;animation:aw-node 3.0s .5s ease-in-out infinite;}
+.aw-n3{transform-origin:90px 295px;animation:aw-node 3.5s .3s ease-in-out infinite;}
+.aw-n4{transform-origin:390px 295px;animation:aw-node 2.8s .8s ease-in-out infinite;}
+.aw-n5{transform-origin:240px 80px;animation:aw-node 3.1s .6s ease-in-out infinite;}
+.aw-l1{stroke-dasharray:200;animation:aw-dash 1s .1s ease both;}
+.aw-l2{stroke-dasharray:200;animation:aw-dash 1s .2s ease both;}
+.aw-l3{stroke-dasharray:200;animation:aw-dash 1s .3s ease both;}
+.aw-l4{stroke-dasharray:200;animation:aw-dash 1s .4s ease both;}
+.aw-l5{stroke-dasharray:200;animation:aw-dash 1s .5s ease both;}
+.aw-f1{stroke-dasharray:12 8;animation:aw-flow 1.2s linear infinite;}
+.aw-f2{stroke-dasharray:12 8;animation:aw-flow 1.2s .3s linear infinite;}
+.aw-f3{stroke-dasharray:12 8;animation:aw-flow 1.4s .6s linear infinite;}
+.aw-f4{stroke-dasharray:12 8;animation:aw-flow 1.1s .9s linear infinite;}
+.aw-f5{stroke-dasharray:12 8;animation:aw-flow 1.3s .4s linear infinite;}
+.aw-b1{animation:aw-badge-in .5s .2s cubic-bezier(.34,1.2,.64,1) both;}
+.aw-b2{animation:aw-badge-in .5s .5s cubic-bezier(.34,1.2,.64,1) both;}
+.aw-b3{animation:aw-badge-in .5s .8s cubic-bezier(.34,1.2,.64,1) both;}
+.aw-fl1{animation:aw-float 3s ease-in-out infinite;}
+.aw-fl2{animation:aw-float 3s .8s ease-in-out infinite;}
+.aw-fl3{animation:aw-float 3s 1.6s ease-in-out infinite;}
+.aw-c1{animation:aw-count .4s .4s ease both;}
+.aw-c2{animation:aw-count .4s .7s ease both;}
+.aw-c3{animation:aw-count .4s 1.0s ease both;}
+.aw-data{animation:aw-data 6s linear infinite;}
+.aw-bar{transform-origin:0 100%;animation:aw-predict .6s cubic-bezier(.34,1.2,.64,1) both;}
+.aw-sp{animation:aw-shimmer 2.5s ease-in-out infinite;}
+
 .nav-dropdown { position: relative; }
 .dropdown-panel {
   position: absolute;

@@ -6,142 +6,8 @@
   <title>ML2C CONSEIL — Cabinet d'Expertise Comptable</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght=0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght=300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-  <style>
-    /* ══ COMPTABILITÉ ic- ══ */
-    @keyframes ic-bar-rise   { from{transform:scaleY(0);} to{transform:scaleY(1);} }
-    @keyframes ic-row-scroll { 0%{transform:translateY(0);} 100%{transform:translateY(-50%);} }
-    @keyframes ic-draw-line  { from{stroke-dashoffset:400;} to{stroke-dashoffset:0;} }
-    @keyframes ic-stamp-in   { 0%{opacity:0;transform:scale(1.5) rotate(-15deg);} 100%{opacity:1;transform:scale(1) rotate(0deg);} }
-    @keyframes ic-pen-write  { 0%,100%{transform:translate(0,0) rotate(-35deg);} 50%{transform:translate(7px,-3px) rotate(-30deg);} }
-    @keyframes ic-glow-pulse { 0%,100%{opacity:.10;} 50%{opacity:.20;} }
-    @keyframes ic-badge-float{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-4px);} }
-    @keyframes ic-shimmer    { 0%,100%{opacity:.10;} 50%{opacity:.35;} }
-    .svc-illus-compta{background:#0d1824!important;border-radius:18px;overflow:hidden;position:relative;padding:0!important;}
-    .svc-illus-compta svg{display:block;width:100%;height:100%;}
-    .ic-ledger{animation:ic-row-scroll 8s linear infinite;}
-    .ic-bar{transform-origin:0 100%;animation:ic-bar-rise .7s cubic-bezier(.34,1.2,.64,1) both;}
-    .ic-spark{stroke-dasharray:400;animation:ic-draw-line 2s .8s ease both;}
-    .ic-stamp{animation:ic-stamp-in .6s 2s cubic-bezier(.34,1.2,.64,1) both;}
-    .ic-pen{animation:ic-pen-write 2s 1s ease-in-out infinite;}
-    .ic-gr{animation:ic-glow-pulse 3s ease-in-out infinite;}
-    .ic-gt{animation:ic-glow-pulse 3s 1.5s ease-in-out infinite;}
-    .ic-spine{animation:ic-shimmer 2.5s ease-in-out infinite;}
-    .ic-b1{animation:ic-badge-float 3s ease-in-out infinite;}
-    .ic-b2{animation:ic-badge-float 3s .8s ease-in-out infinite;}
-    .ic-b3{animation:ic-badge-float 3s 1.4s ease-in-out infinite;}
-
-    /* ══ SOCIAL sw- ══ */
-    @keyframes sw-float-up{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
-    @keyframes sw-float-dn{0%,100%{transform:translateY(0);}50%{transform:translateY(5px);}}
-    @keyframes sw-badge-in{0%{opacity:0;transform:scale(.5) translateY(10px);}100%{opacity:1;transform:scale(1) translateY(0);}}
-    @keyframes sw-line-draw{from{stroke-dashoffset:200;}to{stroke-dashoffset:0;}}
-    @keyframes sw-glow{0%,100%{opacity:.08;}50%{opacity:.18;}}
-    @keyframes sw-pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
-    @keyframes sw-count{0%{opacity:0;transform:translateY(6px);}100%{opacity:1;transform:translateY(0);}}
-    @keyframes sw-slide-row{0%{transform:translateY(0);}100%{transform:translateY(-50%);}}
-    @keyframes sw-stamp{0%{opacity:0;transform:scale(1.4) rotate(-12deg);}100%{opacity:1;transform:scale(1) rotate(0deg);}}
-    .svc-illus-social{background:#0d1824!important;border-radius:18px;overflow:hidden;position:relative;padding:0!important;}
-    .svc-illus-social svg{display:block;width:100%;height:100%;}
-    .sw-gr{animation:sw-glow 3s ease-in-out infinite;}
-    .sw-gt{animation:sw-glow 3s 1.5s ease-in-out infinite;}
-    .sw-p1{animation:sw-float-dn 3.2s ease-in-out infinite;}
-    .sw-p2{animation:sw-float-up 2.8s .4s ease-in-out infinite;}
-    .sw-p3{animation:sw-float-dn 3.5s .8s ease-in-out infinite;}
-    .sw-b1{animation:sw-badge-in .5s .2s cubic-bezier(.34,1.2,.64,1) both;}
-    .sw-b2{animation:sw-badge-in .5s .5s cubic-bezier(.34,1.2,.64,1) both;}
-    .sw-b3{animation:sw-badge-in .5s .8s cubic-bezier(.34,1.2,.64,1) both;}
-    .sw-l1{stroke-dasharray:200;animation:sw-line-draw 1.2s .3s ease both;}
-    .sw-l2{stroke-dasharray:200;animation:sw-line-draw 1.2s .6s ease both;}
-    .sw-dot1{animation:sw-pulse 2s .3s ease-in-out infinite;}
-    .sw-dot2{animation:sw-pulse 2s .8s ease-in-out infinite;}
-    .sw-rows{animation:sw-slide-row 7s linear infinite;}
-    .sw-stamp{animation:sw-stamp .6s 1.8s cubic-bezier(.34,1.2,.64,1) both;}
-    .sw-n1{animation:sw-count .4s .4s ease both;}
-    .sw-n2{animation:sw-count .4s .7s ease both;}
-    .sw-n3{animation:sw-count .4s 1.0s ease both;}
-
-    /* ══ JURIDIQUE jw- ══ */
-    @keyframes jw-scale-rock{0%{transform:rotate(-8deg);}50%{transform:rotate(6deg);}100%{transform:rotate(-8deg);}}
-    @keyframes jw-pan-l{0%{transform:translateY(-6px);}50%{transform:translateY(5px);}100%{transform:translateY(-6px);}}
-    @keyframes jw-pan-r{0%{transform:translateY(5px);}50%{transform:translateY(-6px);}100%{transform:translateY(5px);}}
-    @keyframes jw-doc-in{0%{opacity:0;transform:translateY(12px);}100%{opacity:1;transform:translateY(0);}}
-    @keyframes jw-badge-in{0%{opacity:0;transform:scale(.5);}100%{opacity:1;transform:scale(1);}}
-    @keyframes jw-glow{0%,100%{opacity:.08;}50%{opacity:.18;}}
-    @keyframes jw-float{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
-    @keyframes jw-row-scroll{0%{transform:translateY(0);}100%{transform:translateY(-50%);}}
-    @keyframes jw-stamp{0%{opacity:0;transform:scale(1.5) rotate(-15deg);}100%{opacity:1;transform:scale(1) rotate(0deg);}}
-    @keyframes jw-shimmer{0%,100%{opacity:.08;}50%{opacity:.3;}}
-    @keyframes jw-draw{from{stroke-dashoffset:300;}to{stroke-dashoffset:0;}}
-    .svc-illus-juridique{background:#0d1824!important;border-radius:18px;overflow:hidden;position:relative;padding:0!important;}
-    .svc-illus-juridique svg{display:block;width:100%;height:100%;}
-    .jw-gr{animation:jw-glow 3s ease-in-out infinite;}
-    .jw-gt{animation:jw-glow 3s 1.5s ease-in-out infinite;}
-    .jw-beam{transform-origin:240px 155px;animation:jw-scale-rock 4s ease-in-out infinite;}
-    .jw-pl{transform-origin:118px 185px;animation:jw-pan-l 4s ease-in-out infinite;}
-    .jw-pr{transform-origin:362px 185px;animation:jw-pan-r 4s ease-in-out infinite;}
-    .jw-d1{animation:jw-doc-in .5s .1s ease both;}
-    .jw-d2{animation:jw-doc-in .5s .3s ease both;}
-    .jw-d3{animation:jw-doc-in .5s .5s ease both;}
-    .jw-b1{animation:jw-badge-in .5s .2s cubic-bezier(.34,1.2,.64,1) both;}
-    .jw-b2{animation:jw-badge-in .5s .5s cubic-bezier(.34,1.2,.64,1) both;}
-    .jw-b3{animation:jw-badge-in .5s .8s cubic-bezier(.34,1.2,.64,1) both;}
-    .jw-f1{animation:jw-float 3s ease-in-out infinite;}
-    .jw-f2{animation:jw-float 3s .8s ease-in-out infinite;}
-    .jw-f3{animation:jw-float 3s 1.6s ease-in-out infinite;}
-    .jw-rows{animation:jw-row-scroll 7s linear infinite;}
-    .jw-stamp{animation:jw-stamp .6s 2s cubic-bezier(.34,1.2,.64,1) both;}
-    .jw-spine{animation:jw-shimmer 2.5s ease-in-out infinite;}
-    .jw-sign{stroke-dasharray:300;animation:jw-draw 1.5s 1.2s ease both;}
-
-    /* ══ IA / CONSEIL aw- ══ */
-    @keyframes aw-glow{0%,100%{opacity:.08;}50%{opacity:.20;}}
-    @keyframes aw-brain{0%,100%{transform:scale(1) rotate(0deg);}50%{transform:scale(1.08) rotate(3deg);}}
-    @keyframes aw-node{0%,100%{transform:translateY(0);opacity:.9;}50%{transform:translateY(-5px);opacity:1;}}
-    @keyframes aw-dash{from{stroke-dashoffset:200;}to{stroke-dashoffset:0;}}
-    @keyframes aw-flow{0%{stroke-dashoffset:60;}100%{stroke-dashoffset:0;}}
-    @keyframes aw-badge-in{0%{opacity:0;transform:scale(.5);}100%{opacity:1;transform:scale(1);}}
-    @keyframes aw-float{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
-    @keyframes aw-count{0%{opacity:0;transform:translateY(6px);}100%{opacity:1;transform:translateY(0);}}
-    @keyframes aw-data{0%{transform:translateY(0);}100%{transform:translateY(-50%);}}
-    @keyframes aw-ring{from{stroke-dashoffset:220;}to{stroke-dashoffset:0;}}
-    @keyframes aw-predict{0%{opacity:0;transform:scaleX(0);}100%{opacity:1;transform:scaleX(1);}}
-    @keyframes aw-shimmer{0%,100%{opacity:.08;}50%{opacity:.3;}}
-    .svc-illus-ia{background:#0d1824!important;border-radius:18px;overflow:hidden;position:relative;padding:0!important;}
-    .svc-illus-ia svg{display:block;width:100%;height:100%;}
-    .aw-gr{animation:aw-glow 3s ease-in-out infinite;}
-    .aw-gt{animation:aw-glow 3s 1.5s ease-in-out infinite;}
-    .aw-hub{transform-origin:240px 210px;animation:aw-brain 3s ease-in-out infinite;}
-    .aw-ring{stroke-dasharray:220;animation:aw-ring 1.5s ease both;}
-    .aw-n1{transform-origin:90px 130px;animation:aw-node 3.2s ease-in-out infinite;}
-    .aw-n2{transform-origin:390px 130px;animation:aw-node 3.0s .5s ease-in-out infinite;}
-    .aw-n3{transform-origin:90px 295px;animation:aw-node 3.5s .3s ease-in-out infinite;}
-    .aw-n4{transform-origin:390px 295px;animation:aw-node 2.8s .8s ease-in-out infinite;}
-    .aw-n5{transform-origin:240px 80px;animation:aw-node 3.1s .6s ease-in-out infinite;}
-    .aw-l1{stroke-dasharray:200;animation:aw-dash 1s .1s ease both;}
-    .aw-l2{stroke-dasharray:200;animation:aw-dash 1s .2s ease both;}
-    .aw-l3{stroke-dasharray:200;animation:aw-dash 1s .3s ease both;}
-    .aw-l4{stroke-dasharray:200;animation:aw-dash 1s .4s ease both;}
-    .aw-l5{stroke-dasharray:200;animation:aw-dash 1s .5s ease both;}
-    .aw-f1{stroke-dasharray:12 8;animation:aw-flow 1.2s linear infinite;}
-    .aw-f2{stroke-dasharray:12 8;animation:aw-flow 1.2s .3s linear infinite;}
-    .aw-f3{stroke-dasharray:12 8;animation:aw-flow 1.4s .6s linear infinite;}
-    .aw-f4{stroke-dasharray:12 8;animation:aw-flow 1.1s .9s linear infinite;}
-    .aw-f5{stroke-dasharray:12 8;animation:aw-flow 1.3s .4s linear infinite;}
-    .aw-b1{animation:aw-badge-in .5s .2s cubic-bezier(.34,1.2,.64,1) both;}
-    .aw-b2{animation:aw-badge-in .5s .5s cubic-bezier(.34,1.2,.64,1) both;}
-    .aw-b3{animation:aw-badge-in .5s .8s cubic-bezier(.34,1.2,.64,1) both;}
-    .aw-fl1{animation:aw-float 3s ease-in-out infinite;}
-    .aw-fl2{animation:aw-float 3s .8s ease-in-out infinite;}
-    .aw-fl3{animation:aw-float 3s 1.6s ease-in-out infinite;}
-    .aw-c1{animation:aw-count .4s .4s ease both;}
-    .aw-c2{animation:aw-count .4s .7s ease both;}
-    .aw-c3{animation:aw-count .4s 1.0s ease both;}
-    .aw-data{animation:aw-data 6s linear infinite;}
-    .aw-bar{transform-origin:0 100%;animation:aw-predict .6s cubic-bezier(.34,1.2,.64,1) both;}
-    .aw-sp{animation:aw-shimmer 2.5s ease-in-out infinite;}
-  </style>
 </head>
 <body>
 
@@ -216,7 +82,6 @@
     </div>
     <div class="svc-panels">
 
-      <!-- ════ COMPTABILITÉ ════ -->
       <div class="svc-panel active" id="svc-compta">
         <div class="svc-img-box svc-illus-compta">
           <svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -383,7 +248,6 @@
         </div>
       </div>
 
-      <!-- ════ SOCIAL / PAIE ════ -->
       <div class="svc-panel" id="svc-social">
         <div class="svc-img-box svc-illus-social">
           <svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -519,7 +383,6 @@
         </div>
       </div>
 
-      <!-- ════ JURIDIQUE ════ -->
       <div class="svc-panel" id="svc-juridique">
         <div class="svc-img-box svc-illus-juridique">
           <svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -635,7 +498,7 @@
         </div>
         <div class="svc-content">
           <h3>Conseil juridique &amp; Création</h3>
-          <p>De la création à la transmission de votre entreprise, nous vous accompagnons à chaque étape clé : choix de la forme juridique, rédaction des statuts, accompagnement lors des cessions ou fusions. Un expert à vos côtés pour sécuriser chaque décision.</p>
+          <p>De la création à la transmission de votre entreprise, nous vous gérons à chaque étape clé : choix de la forme juridique, rédaction des statuts, accompagnement lors des cessions ou fusions. Un expert à vos côtés pour sécuriser chaque décision.</p>
           <ul class="svc-list">
             <li><i class="fas fa-check"></i> Création, immatriculation &amp; choix du statut</li>
             <li><i class="fas fa-check"></i> Rédaction &amp; modification des statuts</li>
@@ -647,26 +510,22 @@
         </div>
       </div>
 
-      <!-- ════ CONSEIL & IA : SVG DYNAMIQUE ════ -->
       <div class="svc-panel" id="svc-conseil">
         <div class="svc-img-box svc-illus-ia">
           <svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <rect width="480" height="480" fill="#0d1824"/>
             <ellipse class="aw-gr" cx="240" cy="210" rx="220" ry="180" fill="#C1007A" opacity=".08"/>
             <ellipse class="aw-gt" cx="240" cy="210" rx="160" ry="130" fill="#4FA695" opacity=".06"/>
-            <!-- Connexions fond -->
             <line class="aw-l1" x1="90" y1="130" x2="218" y2="196" stroke="#C1007A" stroke-width="1.2" opacity=".5"/>
             <line class="aw-l2" x1="390" y1="130" x2="262" y2="196" stroke="#4FA695" stroke-width="1.2" opacity=".5"/>
             <line class="aw-l3" x1="90" y1="295" x2="218" y2="224" stroke="#4FA695" stroke-width="1.2" opacity=".5"/>
             <line class="aw-l4" x1="390" y1="295" x2="262" y2="224" stroke="#C1007A" stroke-width="1.2" opacity=".5"/>
             <line class="aw-l5" x1="240" y1="80" x2="240" y2="180" stroke="#b08d57" stroke-width="1.2" opacity=".5"/>
-            <!-- Flux animés -->
             <line class="aw-f1" x1="90" y1="130" x2="218" y2="196" stroke="#C1007A" stroke-width="2" opacity=".7"/>
             <line class="aw-f2" x1="390" y1="130" x2="262" y2="196" stroke="#4FA695" stroke-width="2" opacity=".7"/>
             <line class="aw-f3" x1="90" y1="295" x2="218" y2="224" stroke="#4FA695" stroke-width="2" opacity=".7"/>
             <line class="aw-f4" x1="390" y1="295" x2="262" y2="224" stroke="#C1007A" stroke-width="2" opacity=".7"/>
             <line class="aw-f5" x1="240" y1="80" x2="240" y2="180" stroke="#b08d57" stroke-width="2" opacity=".7"/>
-            <!-- Hub central -->
             <g class="aw-hub">
               <circle cx="240" cy="210" r="52" fill="#C1007A" opacity=".06"/>
               <circle cx="240" cy="210" r="42" fill="#C1007A" opacity=".08"/>
@@ -681,7 +540,6 @@
               </g>
               <text x="240" y="252" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="700" fill="#f472b6" letter-spacing=".5" opacity=".9">IA · ML2C</text>
             </g>
-            <!-- Nœud 1 : FISCAL -->
             <g class="aw-n1">
               <circle cx="90" cy="130" r="34" fill="#1a2a3a"/>
               <circle cx="90" cy="130" r="34" fill="none" stroke="#C1007A" stroke-width="1.2" opacity=".5"/>
@@ -691,7 +549,6 @@
               <line x1="68" y1="137" x2="112" y2="137" stroke="#C1007A" stroke-width=".8" opacity=".4"/>
               <text x="90" y="147" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="rgba(255,255,255,.6)" letter-spacing=".3">FISCAL</text>
             </g>
-            <!-- Nœud 2 : PRÉDICTION -->
             <g class="aw-n2">
               <circle cx="390" cy="130" r="34" fill="#1a2a3a"/>
               <circle cx="390" cy="130" r="34" fill="none" stroke="#4FA695" stroke-width="1.2" opacity=".5"/>
@@ -700,7 +557,6 @@
               <circle cx="408" cy="116" r="2.5" fill="#4FA695" opacity=".9"/>
               <text x="390" y="150" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="rgba(255,255,255,.6)" letter-spacing=".3">PRÉDICTION</text>
             </g>
-            <!-- Nœud 3 : DONNÉES -->
             <g class="aw-n3">
               <circle cx="90" cy="295" r="34" fill="#1a2a3a"/>
               <circle cx="90" cy="295" r="34" fill="none" stroke="#4FA695" stroke-width="1.2" opacity=".5"/>
@@ -712,7 +568,6 @@
               <ellipse cx="90" cy="301" rx="16" ry="5" fill="#4FA695" opacity=".3"/>
               <text x="90" y="313" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="rgba(255,255,255,.6)" letter-spacing=".3">DONNÉES</text>
             </g>
-            <!-- Nœud 4 : AUDIT -->
             <g class="aw-n4">
               <circle cx="390" cy="295" r="34" fill="#1a2a3a"/>
               <circle cx="390" cy="295" r="34" fill="none" stroke="#C1007A" stroke-width="1.2" opacity=".5"/>
@@ -723,7 +578,6 @@
               <line x1="381" y1="289" x2="387" y2="289" stroke="#f472b6" stroke-width=".8" opacity=".4"/>
               <text x="390" y="313" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="rgba(255,255,255,.6)" letter-spacing=".3">AUDIT</text>
             </g>
-            <!-- Nœud 5 : DASHBOARD -->
             <g class="aw-n5">
               <circle cx="240" cy="62" r="28" fill="#1e2a18"/>
               <circle cx="240" cy="62" r="28" fill="none" stroke="#b08d57" stroke-width="1.2" opacity=".5"/>
@@ -733,9 +587,7 @@
               <rect class="aw-bar" x="243" y="59" width="6" height="17" rx="2" fill="#b08d57" opacity=".7" style="animation-delay:.5s"/>
               <text x="240" y="88" text-anchor="middle" font-family="sans-serif" font-size="6" font-weight="700" fill="rgba(255,255,255,.6)" letter-spacing=".3">DASHBOARD</text>
             </g>
-            <!-- Zone bas -->
             <line x1="0" y1="360" x2="480" y2="360" stroke="rgba(255,255,255,.06)" stroke-width=".8"/>
-            <!-- Panel données défilantes -->
             <rect x="14" y="370" width="130" height="98" rx="8" fill="#13202e"/>
             <rect x="14" y="370" width="130" height="16" rx="8" fill="#1a1a2e"/>
             <rect x="14" y="380" width="130" height="6" fill="#1a1a2e"/>
@@ -758,7 +610,6 @@
                 </g>
               </g>
             </g>
-            <!-- Graphique prédictif -->
             <rect x="156" y="370" width="154" height="98" rx="8" fill="#13202e"/>
             <text x="233" y="384" text-anchor="middle" font-family="sans-serif" font-size="6" font-weight="700" fill="#b08d57" letter-spacing=".4">PRÉVISION RÉSULTAT</text>
             <line x1="165" y1="450" x2="302" y2="450" stroke="#2d3d4d" stroke-width=".8"/>
@@ -779,7 +630,6 @@
             <text x="288" y="458" text-anchor="middle" font-family="sans-serif" font-size="5.5" fill="#f472b6">Q2*</text>
             <rect x="230" y="462" width="5" height="5" rx="1" fill="#C1007A" opacity=".7"/>
             <text x="237" y="467" font-family="sans-serif" font-size="5.5" fill="#f472b6">Prédiction IA</text>
-            <!-- Score IA -->
             <rect x="322" y="370" width="144" height="98" rx="8" fill="#13202e"/>
             <text x="394" y="384" text-anchor="middle" font-family="sans-serif" font-size="6" font-weight="700" fill="#fff" letter-spacing=".4">SCORE OPTIMISATION</text>
             <circle cx="394" cy="423" r="28" fill="none" stroke="#1e2d3d" stroke-width="6"/>
@@ -788,11 +638,9 @@
             <text x="394" y="419" text-anchor="middle" font-family="Georgia,serif" font-size="16" font-weight="700" fill="#fff">94</text>
             <text x="394" y="430" text-anchor="middle" font-family="sans-serif" font-size="6" fill="rgba(255,255,255,.5)">/ 100</text>
             <text x="394" y="457" text-anchor="middle" font-family="sans-serif" font-size="6" font-weight="700" fill="#4FA695" letter-spacing=".3">✓ Excellent</text>
-            <!-- Badges -->
             <g class="aw-fl1 aw-b1"><rect x="8" y="18" width="110" height="26" rx="13" fill="#0d2420" stroke="#4FA695" stroke-width=".9"/><circle cx="24" cy="31" r="7" fill="#4FA695" opacity=".2"/><text x="24" y="35" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#4FA695">✓</text><text x="111" y="35" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#4FA695">Analyse IA active</text></g>
             <g class="aw-fl2 aw-b2"><rect x="8" y="52" width="108" height="26" rx="13" fill="#200a14" stroke="#C1007A" stroke-width=".9"/><circle cx="24" cy="65" r="7" fill="#C1007A" opacity=".2"/><text x="24" y="69" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#C1007A">%</text><text x="109" y="69" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#f472b6">Optim. fiscale</text></g>
             <g class="aw-fl3 aw-b3"><rect x="8" y="86" width="92" height="26" rx="13" fill="#1a1808" stroke="#b08d57" stroke-width=".9"/><circle cx="24" cy="99" r="7" fill="#b08d57" opacity=".2"/><text x="24" y="103" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#b08d57">↑</text><text x="93" y="103" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#b08d57">Prédictions</text></g>
-            <!-- KPI -->
             <rect x="14" y="330" width="452" height="24" rx="8" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.05)" stroke-width=".8"/>
             <text x="90" y="346" text-anchor="middle" font-family="Georgia,serif" font-size="14" font-weight="700" fill="#4FA695" class="aw-c1">-12%</text>
             <text x="90" y="354" text-anchor="middle" font-family="sans-serif" font-size="5.5" font-weight="700" fill="rgba(255,255,255,.35)" letter-spacing=".3">charges fiscales</text>
@@ -834,8 +682,6 @@
       <div class="valeur-card"><i class="fas fa-comments"></i><h4>Transparence</h4><p>Informé à chaque étape. Pas de surprises, pas de jargon — communication claire et honnête.</p></div>
       <div class="valeur-card"><i class="fas fa-lightbulb"></i><h4>Innovation</h4><p>Nous intégrons en permanence les meilleurs outils digitaux et IA pour un service toujours plus performant.</p></div>
       <div class="valeur-card"><i class="fas fa-user-tie"></i><h4>Expertise</h4><p>Professionnels certifiés avec +15 ans d'expérience au service des TPE et PME.</p></div>
-      <div class="valeur-card"><i class="fas fa-heart"></i><h4>Proximité</h4><p>Vous n'êtes pas un numéro de dossier. Votre réussite est notre priorité personnelle.</p></div>
-      <div class="valeur-card"><i class="fas fa-globe"></i><h4>Accessibilité</h4><p>Disponibles 24h/24 via notre conseiller et joignables sous 24h par téléphone ou email.</p></div>
     </div>
   </div>
 </section>
@@ -863,40 +709,6 @@
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-document.querySelectorAll('.svc-tab').forEach(tab=>{
-  tab.addEventListener('click',function(){
-    document.querySelectorAll('.svc-tab').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.svc-panel').forEach(p=>p.classList.remove('active'));
-    this.classList.add('active');
-    document.getElementById('svc-'+this.dataset.target).classList.add('active');
-  });
-});
-function animateCounters(){
-  document.querySelectorAll('.stat-num[data-target]').forEach(el=>{
-    const target=+el.dataset.target;
-    const step=target/(1800/16);let current=0;
-    const timer=setInterval(()=>{
-      current+=step;
-      if(current>=target){el.textContent=target;clearInterval(timer);}
-      else{el.textContent=Math.floor(current);}
-    },16);
-  });
-}
-const statsObs=new IntersectionObserver(entries=>{
-  if(entries[0].isIntersecting){animateCounters();statsObs.disconnect();}
-},{threshold:0.3});
-if(document.querySelector('.stats-bar'))statsObs.observe(document.querySelector('.stats-bar'));
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click',function(e){
-    const target=document.querySelector(this.getAttribute('href'));
-    if(target){
-      e.preventDefault();
-      const headerH=document.querySelector('.main-header')?.offsetHeight||80;
-      window.scrollTo({top:target.offsetTop-headerH-16,behavior:'smooth'});
-    }
-  });
-});
-</script>
+<script src="{{ url_for('static', filename='js/menu.js') }}"></script>
 </body>
 </html>

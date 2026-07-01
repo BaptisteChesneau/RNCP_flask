@@ -2562,11 +2562,21 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
 .vis-main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
 .vis-main-text p { font-size: .96rem; color: var(--text-muted); line-height: 1.85; margin-bottom: 1rem; }
 .vis-quote {
-  border-left: 4px solid var(--rose); padding: 1.25rem 1.5rem;
-  background: var(--rose-light); border-radius: 0 12px 12px 0;
+  border-left: 4px solid var(--rose); 
+  padding: 1.25rem 1.5rem;
+  background: var(--rose-light); 
+  border-radius: 0 12px 12px 0;
   margin: 1.5rem 0;
+  display: block; /* Force le bloc à s'afficher */
 }
-.vis-quote p { font-family: var(--font-head); font-size: 1.15rem; font-style: italic; color: var(--gris-dark); margin: 0; line-height: 1.6; }
+.vis-quote p { 
+  font-family: var(--font-head); 
+  font-size: 1.15rem; 
+  font-style: italic; 
+  color: #1e293b !important; /* Force une couleur foncée lisible sur le fond rose clair */
+  margin: 0; 
+  line-height: 1.6; 
+}
 .vis-quote cite { font-size: .8rem; color: var(--rose); font-style: normal; font-weight: 600; margin-top: .5rem; display: block; }
 .vis-main-visual {
   border-radius: 20px; min-height: 400px;

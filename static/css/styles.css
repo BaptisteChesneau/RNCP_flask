@@ -3902,6 +3902,17 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
   margin-top: 1.2rem !important;
 }
 
+.pg-lead {
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.96rem;
+  color: var(--text-muted); /* Ton gris doux existant */
+  line-height: 1.8;
+  text-align: center;       /* Aligne le texte au centre comme sur l'image */
+  max-width: 520px;         /* Limite la largeur pour forcer le retour à la ligne élégant */
+  margin-left: auto;        /* Centre le bloc horizontalement */
+  margin-right: auto;       /* Centre le bloc horizontalement */
+}
+
 /* ── CALL TO ACTION (CTA) ── */
 .pg-cta { 
   background: linear-gradient(135deg, var(--rose), #9a0062); 

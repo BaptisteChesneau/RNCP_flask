@@ -2696,3 +2696,365 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
 @media(max-width: 576px) {
   .vis-piliers-grid { grid-template-columns: 1fr; }
 }
+
+/* ==========================================================================
+   NOTRE HISTOIRE — COMPOSANTS
+   ========================================================================== */
+
+/* HERO */
+.page-hero {
+  background: linear-gradient(120deg, #2d3436 0%, #3d4549 100%);
+  padding: 80px 0 72px; 
+  position: relative; 
+  overflow: hidden;
+}
+.page-hero::before {
+  content: ''; 
+  position: absolute; 
+  inset: 0;
+  background: radial-gradient(circle at 80% 50%, rgba(193,0,122,.14) 0%, transparent 60%);
+}
+.page-hero::after {
+  content: ''; 
+  position: absolute; 
+  bottom: -1px; 
+  left: 0; 
+  right: 0; 
+  height: 56px;
+  background: #f5f6f7; 
+  clip-path: ellipse(55% 100% at 50% 100%);
+}
+.ph-inner { 
+  position: relative; 
+  z-index: 2; 
+}
+.breadcrumb-ml2c {
+  display: flex; 
+  align-items: center; 
+  gap: .4rem;
+  font-size: .75rem; 
+  color: rgba(255,255,255,.38);
+  list-style: none; 
+  padding: 0; 
+  margin-bottom: 1.5rem;
+}
+.breadcrumb-ml2c a { 
+  color: rgba(255,255,255,.38); 
+  transition: color .2s; 
+}
+.breadcrumb-ml2c a:hover { 
+  color: #f9a8d4; 
+}
+.breadcrumb-ml2c .sep { 
+  font-size: .5rem; 
+}
+.ph-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: 700; 
+  color: #fff; 
+  line-height: 1.1; 
+  margin-bottom: 1rem;
+}
+.ph-title em { 
+  color: #f9a8d4; 
+  font-style: italic; 
+}
+.ph-sub { 
+  font-size: .97rem; 
+  color: rgba(255,255,255,.62); 
+  max-width: 500px; 
+  line-height: 1.8; 
+  margin: 0; 
+}
+
+/* UTILITAIRES */
+.label-tag {
+  display: inline-block; 
+  font-size: .7rem; 
+  font-weight: 700;
+  text-transform: uppercase; 
+  letter-spacing: .13em; 
+  color: #C1007A; 
+  margin-bottom: .5rem;
+}
+.titre-sec {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.55rem, 3vw, 2.1rem); 
+  font-weight: 700;
+  color: #333; 
+  line-height: 1.15; 
+  margin-bottom: .45rem;
+}
+.barre {
+  width: 36px; 
+  height: 3px; 
+  border-radius: 2px;
+  background: linear-gradient(90deg, #C1007A, #4FA695);
+  margin: .85rem 0 1.5rem;
+}
+.barre.c { 
+  margin-left: auto; 
+  margin-right: auto; 
+}
+.sec { 
+  padding: 5rem 0; 
+}
+.sec-grey { 
+  background: #f5f6f7; 
+}
+.sec-white { 
+  background: #fff; 
+}
+
+/* KPIS */
+.kpis-row { 
+  display: grid; 
+  grid-template-columns: repeat(4,1fr); 
+  gap: 1.25rem; 
+}
+.kpi {
+  background: #fff; 
+  border-radius: 16px; 
+  padding: 2rem 1.5rem;
+  text-align: center; 
+  box-shadow: 0 2px 12px rgba(0,0,0,.07);
+  border-bottom: 3px solid transparent;
+  transition: transform .3s, box-shadow .3s, border-color .3s;
+}
+.kpi:hover { 
+  transform: translateY(-5px); 
+  box-shadow: 0 10px 32px rgba(0,0,0,.12); 
+  border-bottom-color: #C1007A; 
+}
+.kpi-val { 
+  font-family: 'Cormorant Garamond', serif; 
+  font-size: 3rem; 
+  font-weight: 700; 
+  line-height: 1; 
+  color: #C1007A; 
+}
+.kpi-val sup { 
+  font-size: 1.3rem; 
+  color: #4FA695; 
+}
+.kpi-txt { 
+  font-size: .83rem; 
+  color: #6b7280; 
+  margin-top: .4rem; 
+  line-height: 1.4; 
+}
+
+/* BLOCS HISTOIRE ALTERNÉS */
+.histoire-bloc {
+  display: grid; 
+  grid-template-columns: 1fr 1fr;
+  gap: 0; 
+  align-items: stretch;
+  border-radius: 20px; 
+  overflow: hidden;
+  box-shadow: 0 4px 32px rgba(0,0,0,.09);
+  margin-bottom: 2.5rem;
+}
+.histoire-bloc:last-child { 
+  margin-bottom: 0; 
+}
+
+/* pair = visuel gauche, texte droite */
+.histoire-bloc.pair .hb-visuel  { order: 1; }
+.histoire-bloc.pair .hb-texte   { order: 2; }
+/* impair = texte gauche, visuel droite */
+.histoire-bloc.impair .hb-texte  { order: 1; }
+.histoire-bloc.impair .hb-visuel { order: 2; }
+
+.hb-visuel {
+  min-height: 340px; 
+  position: relative;
+  display: flex; 
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center; 
+  gap: 1rem;
+  overflow: hidden; 
+  padding: 2.5rem 1.5rem;
+}
+.hb-visuel.v1 { background: linear-gradient(145deg, #fce4f3 0%, #f472b6 100%); }
+.hb-visuel.v2 { background: linear-gradient(145deg, #d4f0ec 0%, #4FA695 100%); }
+.hb-visuel.v3 { background: linear-gradient(145deg, #dde0e2 0%, #5C666B 100%); }
+
+.hb-num-bg {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 7rem; 
+  font-weight: 700; 
+  line-height: 1;
+  position: absolute; 
+  bottom: -.5rem; 
+  right: .5rem;
+  opacity: .13; 
+  color: #fff; 
+  user-select: none; 
+  pointer-events: none;
+  overflow: hidden;
+}
+.hb-visuel.v1 .hb-num-bg { 
+  color: #9a0062; 
+}
+
+.hb-icon-wrap {
+  width: 80px; 
+  height: 80px; 
+  border-radius: 20px;
+  background: rgba(255,255,255,.35); 
+  backdrop-filter: blur(6px);
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  font-size: 2.2rem; 
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  position: relative; 
+  z-index: 1;
+}
+.hb-visuel.v1 .hb-icon-wrap { 
+  color: #9a0062; 
+}
+
+.hb-periode {
+  font-size: .75rem; 
+  font-weight: 700; 
+  letter-spacing: .1em;
+  text-transform: uppercase; 
+  color: rgba(255,255,255,.95);
+  background: rgba(0,0,0,.2); 
+  border-radius: 20px;
+  padding: .35rem 1rem; 
+  position: relative; 
+  z-index: 1;
+}
+.hb-visuel.v1 .hb-periode { 
+  color: #9a0062; 
+  background: rgba(255,255,255,.55); 
+}
+
+.hb-texte {
+  background: #fff; 
+  padding: 3rem 3rem;
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center;
+}
+.hb-texte h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem; 
+  font-weight: 700; 
+  color: #333;
+  margin-bottom: .3rem; 
+  line-height: 1.2;
+}
+.hb-texte .barre { 
+  margin-top: .75rem; 
+  margin-bottom: 1.1rem; 
+}
+.hb-texte p { 
+  font-size: .93rem; 
+  color: #6b7280; 
+  line-height: 1.85; 
+  margin: 0; 
+}
+
+/* CTA FINAL */
+.cta-bande {
+  background: linear-gradient(135deg, #C1007A 0%, #9a0062 100%);
+  border-radius: 20px; 
+  padding: 3rem 3rem;
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between;
+  gap: 2rem; 
+  flex-wrap: wrap;
+  box-shadow: 0 12px 40px rgba(193,0,122,.28);
+}
+.cta-bande h2 { 
+  font-family: 'Cormorant Garamond', serif; 
+  font-size: 1.9rem; 
+  font-weight: 700; 
+  color: #fff; 
+  margin-bottom: .25rem; 
+}
+.cta-bande p { 
+  color: rgba(255,255,255,.7); 
+  margin: 0; 
+  font-size: .93rem; 
+}
+.cta-buttons { 
+  display: flex; 
+  gap: .75rem; 
+  flex-wrap: wrap; 
+  flex-shrink: 0; 
+}
+.btn-blanc {
+  display: inline-flex; 
+  align-items: center; 
+  gap: .45rem;
+  padding: .8rem 1.6rem; 
+  background: #fff; 
+  color: #C1007A;
+  font-weight: 700; 
+  font-size: .88rem; 
+  border-radius: 9px;
+  text-decoration: none; 
+  transition: .25s; 
+  white-space: nowrap;
+}
+.btn-blanc:hover { 
+  transform: translateY(-2px); 
+  box-shadow: 0 6px 18px rgba(0,0,0,.18); 
+  color: #9a0062; 
+  text-decoration: none; 
+}
+.btn-contour {
+  display: inline-flex; 
+  align-items: center; 
+  gap: .45rem;
+  padding: .8rem 1.6rem; 
+  background: transparent;
+  border: 2px solid rgba(255,255,255,.4); 
+  color: #fff;
+  font-weight: 600; 
+  font-size: .88rem; 
+  border-radius: 9px;
+  text-decoration: none; 
+  transition: .25s; 
+  white-space: nowrap;
+}
+.btn-contour:hover { 
+  border-color: #fff; 
+  background: rgba(255,255,255,.1); 
+  color: #fff; 
+  text-decoration: none; 
+}
+
+/* ANIMATIONS */
+[data-anim] { 
+  opacity: 0; 
+  transition: opacity .55s ease, transform .55s ease; 
+}
+[data-anim="fade"]  { transform: translateY(22px); }
+[data-anim="left"]  { transform: translateX(-28px); }
+[data-anim="right"] { transform: translateX(28px); }
+[data-anim].visible { opacity: 1; transform: translate(0); }
+
+/* RESPONSIVE */
+@media(max-width: 992px) {
+  .histoire-bloc { grid-template-columns: 1fr; }
+  .histoire-bloc.pair .hb-visuel,
+  .histoire-bloc.impair .hb-visuel { order: 1; }
+  .histoire-bloc.pair .hb-texte,
+  .histoire-bloc.impair .hb-texte  { order: 2; }
+  .hb-texte { padding: 2rem 1.75rem; }
+  .hb-visuel { min-height: 260px; padding: 3rem 1.5rem 2rem; }
+  .kpis-row { grid-template-columns: repeat(2,1fr); }
+}
+@media(max-width: 576px) {
+  .cta-bande { padding: 2rem 1.5rem; }
+}

@@ -3893,6 +3893,16 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
   margin-left: 0.5rem;   /* Épaisseur de l'espace entre les deux textes */
 }
 
+.page-hero p { 
+  font-family: var(--font-body), "DM Sans", sans-serif;
+  font-size: clamp(0.95rem, 1.2vw, 1.1rem); /* Taille fluide et moderne */
+  color: rgba(255, 255, 255, 0.75);       /* Blanc adouci pour le confort visuel */
+  max-width: 600px;                        /* Évite que la phrase ne soit trop longue sur grand écran */
+  line-height: 1.6;                        /* Interlignage aéré */
+  margin-top: 1.2rem;                      /* Espace par rapport au titre H1 juste au-dessus */
+  font-weight: 400;
+}
+
 /* ── CALL TO ACTION (CTA) ── */
 .pg-cta { 
   background: linear-gradient(135deg, var(--rose), #9a0062); 

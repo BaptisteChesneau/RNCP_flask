@@ -3123,8 +3123,14 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
   font-size: clamp(1.5rem, 3vw, 2.1rem); 
   font-weight: 700; 
   color: var(--gris-dark); 
-  line-height: 1.15; 
-  margin-bottom: .5rem; 
+  line-height: 1.2; /* Ajusté pour un meilleur rendu visuel sur une seule ligne */
+  margin-bottom: .5rem;
+}
+
+@media (min-width: 992px) {
+  .val-intro-text .pg-title {
+    white-space: nowrap; /* Empêche strictement tout retour à la ligne automatique sur grand écran */
+  }
 }
 .pg-bar { 
   width: 38px; 

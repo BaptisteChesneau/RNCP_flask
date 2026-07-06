@@ -8,146 +8,31 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-  <style>
-    .page-hero { background: linear-gradient(120deg, #1a1a2e 0%, #2d1b4e 50%, #3d1a2e 100%); padding: 72px 0 56px; position: relative; overflow: hidden; }
-    .page-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 75% 40%, rgba(193,0,122,.18) 0%, transparent 55%); }
-    .page-hero::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 60px; background: white; clip-path: ellipse(55% 100% at 50% 100%); }
-    .page-hero-inner { position: relative; z-index: 2; }
-    .page-breadcrumb { display: flex; align-items: center; gap: .4rem; font-size: .78rem; color: rgba(255,255,255,.45); margin-bottom: 1.5rem; }
-    .page-breadcrumb a { color: rgba(255,255,255,.45); } .page-breadcrumb a:hover { color: var(--rose); }
-    .page-hero h1 { font-family: var(--font-head); font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 700; color: white; line-height: 1.1; margin-bottom: 1rem; }
-    .page-hero h1 em { color: #f9a8d4; font-style: italic; }
-    .page-hero p { font-size: 1rem; color: rgba(255,255,255,.68); max-width: 540px; line-height: 1.75; }
-
-    .pg-tag { display: inline-block; font-size: .73rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--rose); margin-bottom: .45rem; }
-    .pg-title { font-family: var(--font-head); font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 700; color: var(--gris-dark); line-height: 1.15; margin-bottom: .5rem; }
-    .pg-bar { width: 38px; height: 3px; background: linear-gradient(90deg, var(--rose), var(--turquoise)); border-radius: 2px; margin: .9rem 0 1.75rem; }
-    .pg-bar.center { margin-left: auto; margin-right: auto; }
-    .pg-lead { font-size: .96rem; color: var(--text-muted); line-height: 1.8; }
-    .pg-sec { padding: 5rem 0; }
-    .pg-sec-bg { background: var(--gris-light); }
-
-    /* ── ENGAGEMENTS PRINCIPAUX ── */
-    .eng-main-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
-    .eng-card {
-      background: white; border-radius: 18px; padding: 2.25rem;
-      box-shadow: var(--shadow-sm); position: relative; overflow: hidden;
-      transition: var(--transition); border-top: 4px solid transparent;
-    }
-    .eng-card:hover { border-top-color: var(--rose); transform: translateY(-4px); box-shadow: var(--shadow-md); }
-    .eng-card.turq:hover { border-top-color: var(--turquoise); }
-    .eng-ghost {
-      position: absolute; top: 1rem; right: 1.5rem;
-      font-family: var(--font-head); font-size: 5rem; font-weight: 700;
-      color: var(--rose); opacity: .05; line-height: 1; pointer-events: none;
-    }
-    .eng-card.turq .eng-ghost { color: var(--turquoise); }
-    .eng-icon-box {
-      width: 56px; height: 56px; border-radius: 14px;
-      background: var(--rose-light); color: var(--rose);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem; margin-bottom: 1.25rem;
-    }
-    .eng-card.turq .eng-icon-box { background: rgba(79,166,149,.12); color: var(--turquoise); }
-    .eng-card h3 { font-family: var(--font-head); font-size: 1.25rem; font-weight: 700; color: var(--gris-dark); margin-bottom: .6rem; }
-    .eng-card p { font-size: .92rem; color: var(--text-muted); line-height: 1.75; margin-bottom: 1rem; }
-    .eng-card .eng-mesure {
-      display: inline-flex; align-items: center; gap: .4rem;
-      background: var(--gris-light); padding: .35rem .85rem; border-radius: 20px;
-      font-size: .78rem; font-weight: 700; color: var(--gris-dark);
-    }
-    .eng-card.turq .eng-mesure { background: rgba(79,166,149,.1); color: var(--turq-dark); }
-    .eng-card .eng-mesure i { color: var(--rose); font-size: .72rem; }
-    .eng-card.turq .eng-mesure i { color: var(--turquoise); }
-
-    /* ── CHARTE QUALITÉ ── */
-    .eng-charte-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-    .eng-charte-text p { font-size: .96rem; color: var(--text-muted); line-height: 1.85; margin-bottom: 1rem; }
-    .eng-charte-list { list-style: none; padding: 0; }
-    .eng-charte-list li { display: flex; align-items: flex-start; gap: .75rem; padding: .65rem 0; border-bottom: 1px solid var(--border); font-size: .93rem; color: var(--text); }
-    .eng-charte-list li:last-child { border-bottom: none; }
-    .eng-charte-list li i { color: var(--turquoise); margin-top: .22rem; flex-shrink: 0; }
-    .eng-charte-visual {
-      border-radius: 20px; min-height: 340px;
-      background: linear-gradient(135deg, #fce4f3, #f3d5e8);
-      display: flex; align-items: center; justify-content: center; position: relative;
-      box-shadow: 0 14px 44px rgba(0,0,0,.09);
-    }
-    .eng-charte-visual > i { font-size: 6rem; color: var(--rose); opacity: .15; }
-    .eng-satisfaction-badge {
-      position: absolute; bottom: 1.5rem; right: 1.5rem;
-      background: white; border-radius: 12px; padding: 1rem 1.25rem;
-      box-shadow: var(--shadow-md); text-align: center;
-    }
-    .eng-satisfaction-badge .big { font-family: var(--font-head); font-size: 2.5rem; font-weight: 700; color: var(--rose); line-height: 1; display: block; }
-    .eng-satisfaction-badge .small { font-size: .76rem; color: var(--text-muted); }
-
-    /* ── TÉMOIGNAGES ── */
-    .eng-temoignages { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-    .eng-temoignage {
-      background: white; border-radius: 16px; padding: 1.75rem;
-      box-shadow: var(--shadow-sm); position: relative; transition: var(--transition);
-    }
-    .eng-temoignage:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
-    .eng-temoignage::before {
-      content: '\201C';
-      font-family: var(--font-head); font-size: 4rem; color: var(--rose-light);
-      position: absolute; top: .5rem; left: 1.25rem; line-height: 1;
-    }
-    .eng-temoignage-text { font-size: .9rem; color: var(--text-muted); line-height: 1.7; font-style: italic; margin-bottom: 1.25rem; padding-top: 1rem; }
-    .eng-temoignage-author { display: flex; align-items: center; gap: .75rem; }
-    .eng-temoignage-avatar {
-      width: 40px; height: 40px; border-radius: 50%; background: var(--rose-light);
-      display: flex; align-items: center; justify-content: center; font-size: .9rem; color: var(--rose); flex-shrink: 0;
-    }
-    .eng-temoignage-name { font-size: .87rem; font-weight: 700; color: var(--gris-dark); display: block; }
-    .eng-temoignage-role { font-size: .77rem; color: var(--text-muted); }
-    .eng-stars { color: #fbbf24; font-size: .75rem; margin-bottom: .25rem; }
-
-    /* ── CTA ── */
-    .pg-cta { background: linear-gradient(135deg, var(--rose), #9a0062); border-radius: 20px; padding: 3rem 2.5rem; display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center; box-shadow: 0 12px 36px rgba(193,0,122,.28); }
-    .pg-cta h2 { font-family: var(--font-head); font-size: 1.8rem; font-weight: 700; color: white; margin-bottom: .3rem; }
-    .pg-cta p { color: rgba(255,255,255,.75); margin: 0; }
-    .pg-cta-btns { display: flex; gap: .75rem; flex-wrap: wrap; }
-    .btn-wh { display: inline-flex; align-items: center; gap: .5rem; padding: .8rem 1.6rem; background: white; color: var(--rose); font-weight: 700; font-size: .9rem; border-radius: 9px; transition: var(--transition); text-decoration: none; white-space: nowrap; }
-    .btn-wh:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.18); color: var(--rose-dark); text-decoration: none; }
-    .btn-owh { display: inline-flex; align-items: center; gap: .5rem; padding: .8rem 1.6rem; background: transparent; border: 2px solid rgba(255,255,255,.45); color: white; font-weight: 600; font-size: .9rem; border-radius: 9px; transition: var(--transition); text-decoration: none; white-space: nowrap; }
-    .btn-owh:hover { border-color: white; background: rgba(255,255,255,.1); color: white; text-decoration: none; }
-
-    @media(max-width: 992px) {
-      .eng-main-grid { grid-template-columns: 1fr; }
-      .eng-charte-grid { grid-template-columns: 1fr; }
-      .eng-temoignages { grid-template-columns: 1fr; }
-      .pg-cta { grid-template-columns: 1fr; }
-    }
-  </style>
 </head>
 <body>
 {% include "header.html" %}
 
-<!-- HERO -->
 <div class="page-hero">
   <div class="container page-hero-inner">
     <div class="page-breadcrumb">
       <a href="{{ url_for('menu') }}">Accueil</a>
-      <i class="fas fa-chevron-right" style="font-size:.55rem"></i>
+      <i class="fas fa-chevron-right"></i>
       <a href="#">À propos</a>
-      <i class="fas fa-chevron-right" style="font-size:.55rem"></i>
+      <i class="fas fa-chevron-right"></i>
       <span>Nos engagements</span>
     </div>
-    <h1>Nos engagements —<br><em>Un accompagnement sur mesure et durable</em></h1>
+    <h1>Nos engagements<br><em>Un accompagnement sur mesure et durable</em></h1>
     <p>Des promesses concrètes, mesurables et tenues chaque jour. Voici ce que vous pouvez attendre de ML2C CONSEIL.</p>
   </div>
 </div>
 
-<!-- ENGAGEMENTS PRINCIPAUX -->
 <section class="pg-sec">
   <div class="container">
     <div class="text-center mb-5">
       <span class="pg-tag">Nos promesses</span>
       <h2 class="pg-title">Ce que nous vous garantissons</h2>
       <div class="pg-bar center"></div>
-      <p class="pg-lead mx-auto" style="max-width:520px">Chaque engagement est une promesse concrète, pas un slogan marketing.</p>
+      <p class="pg-lead mx-auto">Chaque engagement est une promesse concrète, pas un slogan marketing.</p>
     </div>
     <div class="eng-main-grid">
       <div class="eng-card">
@@ -196,7 +81,6 @@
   </div>
 </section>
 
-<!-- CHARTE QUALITÉ -->
 <section class="pg-sec pg-sec-bg">
   <div class="container">
     <div class="eng-charte-grid">
@@ -225,7 +109,6 @@
   </div>
 </section>
 
-<!-- TÉMOIGNAGES -->
 <section class="pg-sec">
   <div class="container">
     <div class="text-center mb-5">
@@ -271,7 +154,6 @@
   </div>
 </section>
 
-<!-- CTA -->
 <section class="pg-sec pg-sec-bg">
   <div class="container">
     <div class="pg-cta">
@@ -288,13 +170,9 @@
 </section>
 
 {% include "footer.html" %}
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  window.addEventListener('scroll', () => document.getElementById('mainHeader').classList.toggle('scrolled', window.scrollY > 60));
-  document.getElementById('burgerBtn').addEventListener('click', function() { document.getElementById('mainNav').classList.toggle('open'); this.classList.toggle('active'); });
-  const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)';}}), {threshold:.08});
-  document.querySelectorAll('.eng-card,.eng-temoignage').forEach(el => { el.style.opacity='0'; el.style.transform='translateY(16px)'; el.style.transition='opacity .45s ease, transform .45s ease'; obs.observe(el); });
-</script>
+<script src="{{ url_for('static', filename='js/nos_engagements.js') }}"></script>
 </body>
 </html>

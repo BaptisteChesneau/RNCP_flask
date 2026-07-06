@@ -805,23 +805,9 @@ def newsletter():
     # Add the processing logic here, for example, save the email to a file or send a confirmation email.
     return "Merci de vous être inscrit(e) à notre newsletter !"
 
-
-@app.route("/atelier")
-def atelier():
-    return render_template("atelier.html")
-
-
-@app.route("/nos-outils")
-def nos_outils():
-    return render_template("nos_outils.html")
-
 @app.route("/nous-contacter")
 def nous_contacter():
     return render_template("contact.html")
-
-@app.route("/aide")
-def aide():
-    return render_template("aide.html")
 
 @app.route('/faq')
 def faq():

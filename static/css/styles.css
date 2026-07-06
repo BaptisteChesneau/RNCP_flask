@@ -2884,24 +2884,6 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
 .hb-visuel.v2 { background: linear-gradient(145deg, #d4f0ec 0%, #4FA695 100%); }
 .hb-visuel.v3 { background: linear-gradient(145deg, #dde0e2 0%, #5C666B 100%); }
 
-.hb-num-bg {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 7rem; 
-  font-weight: 700; 
-  line-height: 1;
-  position: absolute; 
-  bottom: -.5rem; 
-  right: .5rem;
-  opacity: .13; 
-  color: #fff; 
-  user-select: none; 
-  pointer-events: none;
-  overflow: hidden;
-}
-.hb-visuel.v1 .hb-num-bg { 
-  color: #9a0062; 
-}
-
 .hb-icon-wrap {
   width: 80px; 
   height: 80px; 

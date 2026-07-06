@@ -3140,7 +3140,10 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
 .pg-lead { 
   font-size: .96rem; 
   color: var(--text-muted); 
-  line-height: 1.8; 
+  line-height: 1.8;
+  max-width: 800px; /* Permet au texte de s'étaler entièrement sans coupure */
+  margin-left: auto;
+  margin-right: auto;
 }
 .pg-sec { 
   padding: 5rem 0; 

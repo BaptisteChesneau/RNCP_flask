@@ -18,15 +18,24 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Animation des blocs au défilement (Intersection Observer)
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-      }
-    });
-  }, { 
-    threshold: 0.08 
-  });
+  const animElements = document.querySelectorAll('[data-anim]');
 
-  document.querySelectorAll('[data-anim]').forEach(el => obs.observe(el));
+  if ('IntersectionObserver' in window && animElements.length > 0) {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          // Optionnel : on個 arrête d'observer l'élément une fois apparu
+          obs.unobserve(e.target); 
+        }
+      });
+    }, { 
+      threshold: 0.01 // Seuil minimaliste pour éviter les bugs sur mobile
+    });
+
+    animElements.forEach(el => obs.observe(el));
+  } else {
+    // Solution de secours : si l'observer échoue, on affiche tout directement
+    animElements.forEach(el => el.classList.add('visible'));
+  }
 });

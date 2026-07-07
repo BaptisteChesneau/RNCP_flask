@@ -3,175 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tenue comptable & révision — ML2C CONSEIL</title>
+  <title>Tenue comptable & révision ML2C CONSEIL</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-  <style>
-    .page-hero {
-      background: linear-gradient(120deg, #2d3436 0%, #3d4549 100%);
-      padding: 80px 0 72px; position: relative; overflow: hidden;
-    }
-    .page-hero::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(circle at 75% 50%, rgba(193,0,122,.14) 0%, transparent 60%);
-    }
-    .page-hero::after {
-      content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 56px;
-      background: #f5f6f7; clip-path: ellipse(55% 100% at 50% 100%);
-    }
-    .ph-inner { position: relative; z-index: 2; }
-    .breadcrumb-ml2c {
-      display: flex; align-items: center; gap: .4rem;
-      font-size: .75rem; color: rgba(255,255,255,.38);
-      list-style: none; padding: 0; margin-bottom: 1.5rem;
-    }
-    .breadcrumb-ml2c a { color: rgba(255,255,255,.38); transition: color .2s; }
-    .breadcrumb-ml2c a:hover { color: #f9a8d4; }
-    .breadcrumb-ml2c .sep { font-size: .5rem; }
-    .ph-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.2rem, 5vw, 3.4rem);
-      font-weight: 700; color: #fff; line-height: 1.1; margin-bottom: 1rem;
-    }
-    .ph-title em { color: #f9a8d4; font-style: italic; }
-    .ph-sub { font-size: .97rem; color: rgba(255,255,255,.62); max-width: 500px; line-height: 1.8; margin: 0; }
-    .label-tag {
-      display: inline-block; font-size: .7rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: .13em; color: #C1007A; margin-bottom: .5rem;
-    }
-    .titre-sec {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.55rem, 3vw, 2.1rem); font-weight: 700;
-      color: #333; line-height: 1.15; margin-bottom: .45rem;
-    }
-    .barre {
-      width: 36px; height: 3px; border-radius: 2px;
-      background: linear-gradient(90deg, #C1007A, #4FA695);
-      margin: .85rem 0 1.5rem;
-    }
-    .barre.c { margin-left: auto; margin-right: auto; }
-    .sec { padding: 5rem 0; }
-    .sec-grey { background: #f5f6f7; }
-    .sec-white { background: #fff; }
-
-    /* BLOC PRINCIPAL — visuel + texte */
-    .svc-bloc {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 0; align-items: stretch;
-      border-radius: 22px; overflow: hidden;
-      box-shadow: 0 4px 32px rgba(0,0,0,.09);
-    }
-    .svc-visuel {
-      min-height: 400px; position: relative;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 1.25rem;
-      overflow: hidden;
-      background: linear-gradient(145deg, #fce4f3 0%, #C1007A 100%);
-    }
-    .svc-deco-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 14rem; font-weight: 700; line-height: 1;
-      position: absolute; bottom: -2rem; right: -1rem;
-      opacity: .1; color: #fff; user-select: none; pointer-events: none;
-    }
-    .svc-icon-wrap {
-      width: 90px; height: 90px; border-radius: 22px;
-      background: rgba(255,255,255,.25); backdrop-filter: blur(8px);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2.5rem; color: #fff;
-      box-shadow: 0 8px 28px rgba(0,0,0,.15);
-      position: relative; z-index: 1;
-    }
-    .svc-badge {
-      font-size: .73rem; font-weight: 700; letter-spacing: .1em;
-      text-transform: uppercase; color: rgba(255,255,255,.95);
-      background: rgba(0,0,0,.22); border-radius: 20px;
-      padding: .4rem 1.1rem; position: relative; z-index: 1;
-    }
-    .svc-texte {
-      background: #fff; padding: 3.5rem 3rem;
-      display: flex; flex-direction: column; justify-content: center;
-    }
-    .svc-texte h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.7rem; font-weight: 700; color: #333;
-      margin-bottom: .2rem; line-height: 1.2;
-    }
-    .svc-texte .svc-sous {
-      font-size: .82rem; color: #C1007A; font-weight: 600;
-      text-transform: uppercase; letter-spacing: .08em; margin-bottom: .2rem;
-    }
-    .svc-texte .barre { margin-top: .75rem; margin-bottom: 1.1rem; }
-    .svc-texte p { font-size: .93rem; color: #6b7280; line-height: 1.85; margin-bottom: 1rem; }
-    .svc-texte p:last-of-type { margin-bottom: 0; }
-
-    /* LISTE PRESTATIONS */
-    .presta-list { list-style: none; padding: 0; margin: 1.25rem 0 0; }
-    .presta-list li {
-      display: flex; align-items: flex-start; gap: .75rem;
-      padding: .55rem 0; border-bottom: 1px solid #f0f0f0;
-      font-size: .92rem; color: #444;
-    }
-    .presta-list li:last-child { border-bottom: none; }
-    .presta-list li i { color: #4FA695; flex-shrink: 0; margin-top: .2rem; }
-
-    /* CARDS AVANTAGES */
-    .avantages-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; }
-    .av-card {
-      background: #fff; border-radius: 16px; padding: 1.75rem;
-      border: 1.5px solid #e5e7eb; transition: .3s;
-    }
-    .av-card:hover { border-color: #C1007A; transform: translateY(-3px); box-shadow: 0 4px 18px rgba(0,0,0,.09); }
-    .av-card i { font-size: 1.4rem; color: #C1007A; display: block; margin-bottom: .75rem; }
-    .av-card h4 { font-size: .97rem; font-weight: 700; color: #333; margin-bottom: .35rem; }
-    .av-card p  { font-size: .86rem; color: #6b7280; line-height: 1.65; margin: 0; }
-
-    /* CTA */
-    .cta-bande {
-      background: linear-gradient(135deg, #C1007A 0%, #9a0062 100%);
-      border-radius: 20px; padding: 3rem 3rem;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 2rem; flex-wrap: wrap;
-      box-shadow: 0 12px 40px rgba(193,0,122,.28);
-    }
-    .cta-bande h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 700; color: #fff; margin-bottom: .25rem; }
-    .cta-bande p  { color: rgba(255,255,255,.7); margin: 0; font-size: .93rem; }
-    .cta-buttons  { display: flex; gap: .75rem; flex-wrap: wrap; flex-shrink: 0; }
-    .btn-blanc {
-      display: inline-flex; align-items: center; gap: .45rem;
-      padding: .8rem 1.6rem; background: #fff; color: #C1007A;
-      font-weight: 700; font-size: .88rem; border-radius: 9px;
-      text-decoration: none; transition: .25s; white-space: nowrap;
-    }
-    .btn-blanc:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.18); color: #9a0062; text-decoration: none; }
-    .btn-contour {
-      display: inline-flex; align-items: center; gap: .45rem;
-      padding: .8rem 1.6rem; background: transparent;
-      border: 2px solid rgba(255,255,255,.4); color: #fff;
-      font-weight: 600; font-size: .88rem; border-radius: 9px;
-      text-decoration: none; transition: .25s; white-space: nowrap;
-    }
-    .btn-contour:hover { border-color: #fff; background: rgba(255,255,255,.1); color: #fff; text-decoration: none; }
-
-    [data-anim] { opacity: 0; transition: opacity .55s ease, transform .55s ease; }
-    [data-anim="fade"]  { transform: translateY(22px); }
-    [data-anim="left"]  { transform: translateX(-28px); }
-    [data-anim="right"] { transform: translateX(28px); }
-    [data-anim].visible { opacity: 1; transform: translate(0); }
-
-    @media(max-width: 992px) {
-      .svc-bloc { grid-template-columns: 1fr; }
-      .svc-visuel { min-height: 200px; }
-      .svc-texte { padding: 2rem 1.75rem; }
-      .avantages-grid { grid-template-columns: 1fr 1fr; }
-    }
-    @media(max-width: 576px) {
-      .avantages-grid { grid-template-columns: 1fr; }
-      .cta-bande { padding: 2rem 1.5rem; }
-    }
-  </style>
 </head>
 <body>
 {% include "header.html" %}
@@ -185,7 +21,7 @@
       <li><span class="sep"><i class="fas fa-chevron-right"></i></span></li>
       <li>Tenue comptable & révision</li>
     </ol>
-    <h1 class="ph-title">Tenue comptable<br><em>& révision des comptes</em></h1>
+    <h1 class="ph-title">Tenue comptable & révision des comptes</h1>
     <p class="ph-sub">Suivi rigoureux, révision et fiabilisation de vos comptes pour une gestion sereine et conforme.</p>
   </div>
 </section>
@@ -206,7 +42,11 @@
         <p>La tenue comptable est le socle de votre gestion. ML2C CONSEIL prend en charge l'intégralité de vos opérations comptables : saisie, lettrage, rapprochement bancaire et révision périodique. Nous utilisons des outils digitaux et automatisés pour garantir une comptabilité fiable, à jour et conforme aux obligations légales.</p>
         <p>Nos révisions régulières vous permettent d'anticiper les écarts, de détecter les anomalies et d'avoir des comptes prêts pour la clôture annuelle sans mauvaise surprise. Vous bénéficiez d'un accès en ligne à vos documents à tout moment.</p>
         <ul class="presta-list">
-          <li><i class="fas fa-check"></i> Saisie et lettrage des écritures</li><li><i class="fas fa-check"></i> Rapprochements bancaires</li><li><i class="fas fa-check"></i> Révision périodique des comptes</li><li><i class="fas fa-check"></i> Préparation à la clôture annuelle</li><li><i class="fas fa-check"></i> Accès dématérialisé à vos documents</li>
+          <li><i class="fas fa-check"></i> Saisie et lettrage des écritures</li>
+          <li><i class="fas fa-check"></i> Rapprochements bancaires</li>
+          <li><i class="fas fa-check"></i> Révision périodique des comptes</li>
+          <li><i class="fas fa-check"></i> Préparation à la clôture annuelle</li>
+          <li><i class="fas fa-check"></i> Accès dématérialisé à vos documents</li>
         </ul>
       </div>
     </div>
@@ -225,11 +65,13 @@
         <i class="fas fa-clock"></i>
         <h4>Gain de temps</h4>
         <p>Déléguez la saisie et concentrez-vous sur votre cœur de métier. Nous gérons le flux documentaire complet.</p>
-      </div><div class="av-card" data-anim="fade">
+      </div>
+      <div class="av-card" data-anim="fade">
         <i class="fas fa-shield-alt"></i>
         <h4>Fiabilité garantie</h4>
         <p>Des comptes révisés régulièrement, conformes aux normes comptables et fiscales en vigueur.</p>
-      </div><div class="av-card" data-anim="fade">
+      </div>
+      <div class="av-card" data-anim="fade">
         <i class="fas fa-cloud"></i>
         <h4>100% digital</h4>
         <p>Plateforme de partage de documents, accès en ligne et notifications en temps réel.</p>
@@ -257,18 +99,6 @@
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  const hdr = document.getElementById('mainHeader');
-  if (hdr) window.addEventListener('scroll', () => hdr.classList.toggle('scrolled', window.scrollY > 60));
-  const burger = document.getElementById('burgerBtn');
-  const nav = document.getElementById('mainNav');
-  if (burger && nav) burger.addEventListener('click', function() {
-    nav.classList.toggle('open'); this.classList.toggle('active');
-  });
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('[data-anim]').forEach(el => obs.observe(el));
-</script>
+<script src="{{ url_for('static', filename='js/tenue_comptable.js') }}"></script>
 </body>
 </html>

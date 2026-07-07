@@ -5190,10 +5190,16 @@ body {
   color: #fff; 
   line-height: 1.06; 
   margin-bottom: 1.2rem;
+  
+  /* Ajoute ces règles pour forcer l'alignement horizontal */
+  display: block;
+  white-space: nowrap; 
 }
+
 .hero-title em { 
   color: #5eead4; 
-  font-style: italic; 
+  font-style: italic;
+  display: inline; /* Garantit que l'élément reste sur la même ligne */
 }
 .hero-desc { 
   font-size: .96rem; 

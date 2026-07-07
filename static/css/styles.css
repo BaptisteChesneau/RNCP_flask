@@ -5460,8 +5460,16 @@ body {
   color: #1a1a1a; 
   line-height: 1.15; 
   margin-bottom: 1rem;
+  
+  /* Règle à ajouter pour aligner sur une seule ligne */
+  white-space: nowrap; 
 }
-.bloc-text h2 em { color: var(--turq); font-style: italic; }
+
+.bloc-text h2 em {
+  color: var(--turq);
+  font-style: italic;
+  display: inline; /* S'assure que l'élément reste dans le flux de la ligne */
+}
 .bloc-text h2 em.rose { color: var(--rose); }
 .bloc-text p { 
   font-size: .94rem; 

@@ -4111,12 +4111,12 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
   color: #5eead4;
   font-style: italic;
 }
-.ph-sub {
-  font-size: .97rem;
-  color: rgba(255,255,255,.62);
-  max-width: 520px;
-  line-height: 1.8;
-  margin: 0;
+.ph-sub { 
+  font-size: .97rem; 
+  color: rgba(255,255,255,.62); 
+  max-width: none; /* Supprime la limite de 520px */
+  line-height: 1.8; 
+  margin: 0; 
 }
 
 /* --- STRUCTURE ET SECTIONS --- */

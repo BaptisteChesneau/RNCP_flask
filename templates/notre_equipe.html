@@ -3,212 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Notre Équipe — ML2C CONSEIL</title>
+  <title>Notre Équipe ML2C CONSEIL</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-  <style>
-
-    .page-hero {
-      background: linear-gradient(120deg, #2d3436 0%, #3d4549 100%);
-      padding: 80px 0 72px; position: relative; overflow: hidden;
-    }
-    .page-hero::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(circle at 75% 50%, rgba(79,166,149,.14) 0%, transparent 60%);
-    }
-    .page-hero::after {
-      content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 56px;
-      background: #f5f6f7; clip-path: ellipse(55% 100% at 50% 100%);
-    }
-    .ph-inner { position: relative; z-index: 2; }
-    .breadcrumb-ml2c {
-      display: flex; align-items: center; gap: .4rem;
-      font-size: .75rem; color: rgba(255,255,255,.38);
-      list-style: none; padding: 0; margin-bottom: 1.5rem;
-    }
-    .breadcrumb-ml2c a { color: rgba(255,255,255,.38); transition: color .2s; }
-    .breadcrumb-ml2c a:hover { color: #5eead4; }
-    .breadcrumb-ml2c .sep { font-size: .5rem; }
-    .ph-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.2rem, 5vw, 3.4rem);
-      font-weight: 700; color: #fff; line-height: 1.1; margin-bottom: 1rem;
-    }
-    .ph-title em { color: #5eead4; font-style: italic; }
-    .ph-sub { font-size: .97rem; color: rgba(255,255,255,.62); max-width: 520px; line-height: 1.8; margin: 0; }
-
-    .label-tag {
-      display: inline-block; font-size: .7rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: .13em; color: #C1007A; margin-bottom: .5rem;
-    }
-    .titre-sec {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.55rem, 3vw, 2.1rem); font-weight: 700;
-      color: #333; line-height: 1.15; margin-bottom: .45rem;
-    }
-    .barre {
-      width: 36px; height: 3px; border-radius: 2px;
-      background: linear-gradient(90deg, #C1007A, #4FA695);
-      margin: .85rem 0 1.5rem;
-    }
-    .barre.c { margin-left: auto; margin-right: auto; }
-    .sec { padding: 5rem 0; }
-    .sec-grey { background: #f5f6f7; }
-    .sec-white { background: #fff; }
-
-    .intro-equipe {
-      max-width: 780px; margin: 0 auto;
-      font-size: .97rem; color: #6b7280; line-height: 1.85; text-align: center;
-    }
-
-    /* FICHES MEMBRES */
-    .membre-bloc {
-      display: grid; grid-template-columns: 340px 1fr;
-      gap: 0; align-items: stretch;
-      border-radius: 22px; overflow: hidden;
-      box-shadow: 0 4px 32px rgba(0,0,0,.09);
-      margin-bottom: 2.5rem;
-      transition: box-shadow .3s, transform .3s;
-    }
-    .membre-bloc:hover { box-shadow: 0 10px 48px rgba(0,0,0,.13); transform: translateY(-2px); }
-    .membre-bloc:last-child { margin-bottom: 0; }
-
-    /* Fiche Sébastien — avatar plus petit pour équilibrer */
-    .membre-bloc.sebastien { grid-template-columns: 1fr 280px; }
-
-    .membre-bloc.impair .mb-avatar  { order: 1; }
-    .membre-bloc.impair .mb-content { order: 2; }
-    .membre-bloc.pair   .mb-content { order: 1; }
-    .membre-bloc.pair   .mb-avatar  { order: 2; }
-
-    .mb-avatar {
-      position: relative; display: flex;
-      flex-direction: column; align-items: center; justify-content: flex-end;
-      padding: 2.5rem 2rem 0; overflow: hidden; min-height: 380px;
-    }
-    .mb-avatar.rose { background: linear-gradient(160deg, #fce4f3 0%, #f9a8d4 100%); }
-    .mb-avatar.turq { background: linear-gradient(160deg, #d4f0ec 0%, #4FA695 100%); }
-    .mb-avatar.gris { background: linear-gradient(160deg, #dde0e2 0%, #5C666B 100%); }
-
-    .mb-deco-num {
-      position: absolute; top: .5rem; right: 1rem;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 8rem; font-weight: 700; line-height: 1;
-      opacity: .12; user-select: none; color: #fff;
-    }
-    .mb-avatar.rose .mb-deco-num { color: #9a0062; }
-
-    .mb-initiales {
-      width: 110px; height: 110px; border-radius: 50%;
-      background: rgba(255,255,255,.35); backdrop-filter: blur(6px);
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.4rem; font-weight: 700; color: #fff;
-      box-shadow: 0 8px 28px rgba(0,0,0,.15);
-      border: 3px solid rgba(255,255,255,.5);
-      position: relative; z-index: 1; flex-shrink: 0;
-      margin-bottom: 1.25rem;
-    }
-    .mb-avatar.rose .mb-initiales { color: #9a0062; }
-
-    .mb-poste-badge {
-      background: rgba(0,0,0,.2); color: rgba(255,255,255,.95);
-      font-size: .72rem; font-weight: 700; text-transform: uppercase;
-      letter-spacing: .1em; border-radius: 20px; padding: .35rem 1rem;
-      position: relative; z-index: 1; margin-bottom: 2rem;
-    }
-    .mb-avatar.rose .mb-poste-badge { background: rgba(255,255,255,.5); color: #9a0062; }
-
-    .mb-content {
-      background: #fff; padding: 3rem 3rem;
-      display: flex; flex-direction: column; justify-content: center;
-    }
-    .mb-content .label-tag { display: block; }
-    .mb-content h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.65rem; font-weight: 700; color: #333;
-      margin-bottom: .15rem; line-height: 1.15;
-    }
-    .mb-content .mb-role {
-      font-size: .82rem; color: #C1007A; font-weight: 600;
-      text-transform: uppercase; letter-spacing: .08em; margin-bottom: .2rem;
-    }
-    .mb-content .barre { margin-top: .7rem; margin-bottom: 1.1rem; }
-    .mb-content p { font-size: .93rem; color: #6b7280; line-height: 1.85; margin: 0; }
-
-    .mb-tags { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: 1.25rem; }
-    .mb-tag {
-      display: inline-block; padding: .28rem .85rem;
-      background: #f5f6f7; border-radius: 20px;
-      font-size: .75rem; font-weight: 600; color: #5C666B;
-      border: 1px solid #e5e7eb;
-    }
-    .mb-tag.rose { background: #fce4f3; color: #C1007A; border-color: #f9a8d4; }
-    .mb-tag.turq { background: #d4f0ec; color: #3a7d70; border-color: #99d9d0; }
-    .mb-tag.dark { background: #e8eaeb; color: #3d4549; border-color: #c8cbcd; }
-
-    .conclusion-grid {
-      display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem;
-      margin-bottom: 3rem;
-    }
-    .conc-card {
-      background: #fff; border-radius: 16px; padding: 1.75rem;
-      border: 1.5px solid #e5e7eb; transition: .3s;
-    }
-    .conc-card:hover { border-color: #C1007A; transform: translateY(-3px); box-shadow: 0 4px 18px rgba(0,0,0,.09); }
-    .conc-card i { font-size: 1.4rem; color: #C1007A; display: block; margin-bottom: .8rem; }
-    .conc-card h4 { font-size: .97rem; font-weight: 700; color: #333; margin-bottom: .4rem; }
-    .conc-card p  { font-size: .86rem; color: #6b7280; line-height: 1.65; margin: 0; }
-
-    .cta-bande {
-      background: linear-gradient(135deg, #C1007A 0%, #9a0062 100%);
-      border-radius: 20px; padding: 3rem 3rem;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 2rem; flex-wrap: wrap;
-      box-shadow: 0 12px 40px rgba(193,0,122,.28);
-    }
-    .cta-bande h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 700; color: #fff; margin-bottom: .25rem; }
-    .cta-bande p  { color: rgba(255,255,255,.7); margin: 0; font-size: .93rem; }
-    .cta-buttons  { display: flex; gap: .75rem; flex-wrap: wrap; flex-shrink: 0; }
-    .btn-blanc {
-      display: inline-flex; align-items: center; gap: .45rem;
-      padding: .8rem 1.6rem; background: #fff; color: #C1007A;
-      font-weight: 700; font-size: .88rem; border-radius: 9px;
-      text-decoration: none; transition: .25s; white-space: nowrap;
-    }
-    .btn-blanc:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.18); color: #9a0062; text-decoration: none; }
-    .btn-contour {
-      display: inline-flex; align-items: center; gap: .45rem;
-      padding: .8rem 1.6rem; background: transparent;
-      border: 2px solid rgba(255,255,255,.4); color: #fff;
-      font-weight: 600; font-size: .88rem; border-radius: 9px;
-      text-decoration: none; transition: .25s; white-space: nowrap;
-    }
-    .btn-contour:hover { border-color: #fff; background: rgba(255,255,255,.1); color: #fff; text-decoration: none; }
-
-    [data-anim] { opacity: 0; transition: opacity .55s ease, transform .55s ease; }
-    [data-anim="fade"]  { transform: translateY(22px); }
-    [data-anim="left"]  { transform: translateX(-28px); }
-    [data-anim="right"] { transform: translateX(28px); }
-    [data-anim].visible { opacity: 1; transform: translate(0); }
-
-    @media(max-width: 992px) {
-      .membre-bloc,
-      .membre-bloc.sebastien { grid-template-columns: 1fr; }
-      .membre-bloc.pair .mb-avatar,
-      .membre-bloc.impair .mb-avatar  { order: 1; }
-      .membre-bloc.pair .mb-content,
-      .membre-bloc.impair .mb-content { order: 2; }
-      .mb-avatar { min-height: 220px; padding: 2rem 1.5rem 0; }
-      .mb-content { padding: 2rem 1.75rem; }
-      .conclusion-grid { grid-template-columns: 1fr; }
-    }
-    @media(max-width: 576px) {
-      .cta-bande { padding: 2rem 1.5rem; }
-    }
-  </style>
 </head>
 <body>
 {% include "header.html" %}
@@ -222,7 +21,7 @@
       <li><span class="sep"><i class="fas fa-chevron-right"></i></span></li>
       <li>Notre Équipe</li>
     </ol>
-    <h1 class="ph-title">Notre Équipe —<br><em>trois passionnés, un cabinet</em></h1>
+    <h1 class="ph-title">Notre Équipe trois passionnés, un cabinet</h1>
     <p class="ph-sub">Des profils atypiques, des reconversions réussies, une conviction commune : moderniser l'expertise comptable au service des entrepreneurs.</p>
   </div>
 </section>
@@ -243,7 +42,6 @@
 <section class="sec sec-white">
   <div class="container">
 
-    <!-- MARIE-LINE -->
     <div class="membre-bloc impair" data-anim="fade">
       <div class="mb-avatar rose">
         <span class="mb-deco-num">ML</span>
@@ -253,7 +51,7 @@
       <div class="mb-content">
         <span class="label-tag">Fondatrice</span>
         <h2>Marie-Line Chesneau</h2>
-        <div class="mb-role">Expert-comptable diplômée — fondatrice 2019</div>
+        <div class="mb-role">Expert-comptable diplômée fondatrice 2019</div>
         <div class="barre"></div>
         <p>Expert-comptable et dirigeante de ML2C CONSEIL, Marie-Line a fondé le cabinet le 1er juillet 2019, suite au rachat partiel de sa clientèle qu'elle détenait dans son ancien cabinet. Issue d'une reconversion professionnelle, elle a débuté sa carrière dans le secteur bancaire, occupant des postes de chargée de recouvrement contentieux, analyste de crédit, analyste de flux comptable et comptable réglementaire. En 2007, elle démarre sa formation d'expert-comptable en parallèle de son activité bancaire et obtient son diplôme en novembre 2016. Elle a toujours eu le souhait de créer un cabinet à son image, alliant nouvelles technologies et automatisation au service des entreprises, afin de devenir le partenaire privilégié des entrepreneurs. Elle gère l'intégralité de la relation client.</p>
         <div class="mb-tags">
@@ -266,14 +64,13 @@
       </div>
     </div>
 
-    <!-- SÉBASTIEN — colonne avatar réduite via classe sebastien -->
     <div class="membre-bloc pair sebastien" data-anim="fade" style="transition-delay:.08s">
       <div class="mb-content">
         <span class="label-tag">Collaborateur</span>
         <h2>Sébastien Chesneau</h2>
-        <div class="mb-role">Assistant comptable — depuis juillet 2020</div>
+        <div class="mb-role">Assistant comptable depuis juillet 2020</div>
         <div class="barre"></div>
-        <p>Collaborateur depuis le 1er juillet 2020, Sébastien est également issu d'une reconversion professionnelle. Il a débuté sa carrière en tant qu'attaché commercial dans différents secteurs d'activités tels que l'automobile et les produits pétroliers. Il occupe actuellement le poste d'assistant comptable au sein de ML2C CONSEIL. Sa mission consiste à centraliser les flux et les exploiter afin d'effectuer les déclarations de TVA. Sébastien représente également le cabinet dans les réseaux professionnels — un clin d'œil à son ancienne activité commerciale.</p>
+        <p>Collaborateur depuis le 1er juillet 2020, Sébastien est également issu d'une reconversion professionnelle. Il a débuté sa carrière en tant qu'attaché commercial dans différents secteurs d'activités tels que l'automobile et les produits pétroliers. Il occupe actuellement le poste d'assistant comptable au sein de ML2C CONSEIL. Sa mission consiste à centraliser les flux et les exploiter afin d'effectuer les déclarations de TVA. Sébastien représente également le cabinet dans les réseaux professionnels un clin d'œil à son ancienne activité commerciale.</p>
         <div class="mb-tags">
           <span class="mb-tag turq">TVA & Déclarations</span>
           <span class="mb-tag turq">Flux comptables</span>
@@ -288,7 +85,6 @@
       </div>
     </div>
 
-    <!-- BAPTISTE -->
     <div class="membre-bloc impair" data-anim="fade" style="transition-delay:.16s">
       <div class="mb-avatar gris">
         <span class="mb-deco-num">BC</span>
@@ -298,9 +94,9 @@
       <div class="mb-content">
         <span class="label-tag">Équipe tech</span>
         <h2>Baptiste Chesneau</h2>
-        <div class="mb-role">Apprenti développeur web — depuis septembre 2024</div>
+        <div class="mb-role">Apprenti développeur web depuis septembre 2024</div>
         <div class="barre"></div>
-        <p>Baptiste est entré le 5 juillet 2021 en qualité d'apprenti comptable avec pour mission de gérer les flux documentaires, les catégoriser et faciliter le traitement des opérations effectuées par Sébastien et Marie-Line. En 2024, Baptiste souhaitait changer d'orientation professionnelle vers les métiers de bouche, mais le stage n'a pas été concluant. De son côté, Marie-Line avait entamé une formation de développeur web. Lors d'une formation Excel, Baptiste a suscité beaucoup d'intérêt pour l'outil informatique — il est gamer à ses heures de loisirs. Il était fait pour les métiers du numérique. C'est tout naturellement qu'en septembre 2024, Baptiste change de cap et devient apprenti développeur d'application web pour rejoindre l'équipe de développement de ML2C CONSEIL.</p>
+        <p>Baptiste est entré le 5 juillet 2021 en qualité d'apprenti comptable avec pour mission de gérer les flux documentaires, les catégoriser et faciliter le traitement des opérations effectuées par Sébastien et Marie-Line. En 2024, Baptiste souhaitait changer d'orientation professionnelle vers les métiers de bouche, mais le stage n'a pas été concluant. De son côté, Marie-Line avait entamé une formation de développeur web. Lors d'une formation Excel, Baptiste a suscité beaucoup d'intérêt pour l'outil informatique il est gamer à ses heures de loisirs. Il était fait pour les métiers du numérique. C'est tout naturellement qu'en septembre 2024, Baptiste change de cap et devient apprenti développeur d'application web pour rejoindre l'équipe de développement de ML2C CONSEIL.</p>
         <div class="mb-tags">
           <span class="mb-tag dark">Dev Web</span>
           <span class="mb-tag dark">JavaScript</span>
@@ -342,7 +138,7 @@
     <div class="cta-bande" data-anim="fade">
       <div>
         <h2>Rencontrons-nous</h2>
-        <p>Un café, une visio ou un appel — nous sommes disponibles pour vous.</p>
+        <p>Un café, une visio ou un appel nous sommes disponibles pour vous.</p>
       </div>
       <div class="cta-buttons">
         <a href="{{ url_for('nous_contacter') }}" class="btn-blanc"><i class="fas fa-calendar-alt"></i> Prendre RDV</a>
@@ -356,18 +152,6 @@
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  const hdr = document.getElementById('mainHeader');
-  if (hdr) window.addEventListener('scroll', () => hdr.classList.toggle('scrolled', window.scrollY > 60));
-  const burger = document.getElementById('burgerBtn');
-  const nav = document.getElementById('mainNav');
-  if (burger && nav) burger.addEventListener('click', function() {
-    nav.classList.toggle('open'); this.classList.toggle('active');
-  });
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('[data-anim]').forEach(el => obs.observe(el));
-</script>
+<script src="{{ url_for('static', filename='js/notre_equipe.js') }}"></script>
 </body>
 </html>

@@ -6334,7 +6334,22 @@ body {
   font-weight: 700; color: #fff; line-height: 1.1; margin-bottom: 1rem;
 }
 .ph-title em { color: #5eead4; font-style: italic; }
-.ph-sub { font-size: .97rem; color: rgba(255,255,255,.62); max-width: 500px; line-height: 1.8; margin: 0; }
+.ph-sub { 
+  font-size: .97rem; 
+  color: rgba(255,255,255,.62); 
+  max-width: 100%;       /* Supprime la limite des 500px pour laisser le texte s'étaler */
+  white-space: nowrap;    /* Force le texte à rester sur une seule ligne sans sauter */
+  line-height: 1.8; 
+  margin: 0; 
+}
+
+/* Sécurité pour les très petits écrans de smartphones */
+@media(max-width: 576px) {
+  .ph-sub {
+    white-space: normal;  /* Permet au texte de revenir à la ligne uniquement sur mobile pour éviter qu'il sorte de l'écran */
+    font-size: 0.85rem;   /* Réduit légèrement la taille pour aider à tenir au maximum */
+  }
+}
 .label-tag {
   display: inline-block; font-size: .7rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: .13em; color: #C1007A; margin-bottom: .5rem;

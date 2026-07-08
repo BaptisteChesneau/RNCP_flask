@@ -98,7 +98,7 @@
             <li><a href="{{ url_for('tenue_comptable') }}">Tenue comptable</a></li>
             <li><a href="{{ url_for('paie_gestion') }}">Paie & gestion sociale</a></li>
             <li><a href="{{ url_for('juridique_courant') }}">Conseil juridique</a></li>
-            <li><a href="{{ url_for('declarations_fiscales') }}">Optimisation fiscale</a></li>
+            <li><a href="{{ url_for('declarations_fiscales') }}">Déclaration fiscale</a></li>
             <li><a href="{{ url_for('creation_reprise') }}">Création d'entreprise</a></li>
           </ul>
         </div>
@@ -155,7 +155,7 @@
 
     // ── Réponses chatbot ──
     const REPLIES = {
-      services:     { kw:['service','comptab','fiscal','paie','social','juridique','conseil','ia','bilan','tva','liasse','bulletin'], r:`Nous proposons :<br>📊 <b>Comptabilité & Fiscalité</b> — tenue, bilans, TVA<br>👥 <b>Paie & Social</b> — bulletins, DSN, droit du travail<br>⚖️ <b>Juridique & Création</b> — statuts, cessions, AG<br>🤖 <b>Conseil & IA</b> — optimisation fiscale, tableaux de bord<br><br>Quel service vous intéresse ?` },
+      services:     { kw:['service','comptab','fiscal','paie','social','juridique','conseil','ia','bilan','tva','liasse','bulletin'], r:`Nous proposons :<br>📊 <b>Comptabilité & Fiscalité</b> — tenue, bilans, TVA<br>👥 <b>Paie & Social</b> — bulletins, DSN, droit du travail<br>⚖️ <b>Juridique & Création</b> — statuts, cessions, AG<br>🤖 <b>Conseil & IA</b> — Déclaration fiscale, tableaux de bord<br><br>Quel service vous intéresse ?` },
       contact:      { kw:['contact','joindre','appel','téléphone','email','adresse','où','localisation'], r:`📞 <a href="tel:+33672343294" style="color:#C1007A">+33 (0)6 72 34 32 94</a><br>✉️ <a href="mailto:contact@ml2cconseil.com" style="color:#C1007A">contact@ml2cconseil.com</a><br>📍 6 Rue de la Vigne, 28360 Dammarie<br><br>Réponse garantie sous <b>24h</b> !` },
       devis:        { kw:['devis','tarif','prix','coût','gratuit','combien'], r:`Notre devis est <b>100% gratuit</b> 🎉<br>Remplissez le formulaire de contact ou appelez-nous directement.<br>📞 <a href="tel:+33672343294" style="color:#C1007A">+33 (0)6 72 34 32 94</a><br>Nous vous rappelons sous <b>24h</b>.` },
       rdv:          { kw:['rendez','rdv','réunion','rencontre','disponible','agenda','prendre rdv'], r:`Pour prendre RDV :<br>📞 <a href="tel:+33672343294" style="color:#C1007A">+33 (0)6 72 34 32 94</a><br>✉️ <a href="mailto:contact@ml2cconseil.com" style="color:#C1007A">contact@ml2cconseil.com</a><br><br>Nous sommes disponibles du <b>lundi au vendredi</b>.` },

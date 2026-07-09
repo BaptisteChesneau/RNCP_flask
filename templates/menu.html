@@ -110,6 +110,7 @@
     </div>
     
     <div class="svc-panels">
+      <!-- PANNEAU 1 : COMPTABILITÉ -->
       <div class="svc-panel active" id="svc-compta">
         <div class="svc-img-box svc-illus-compta">
           <svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -128,37 +129,38 @@
             <text x="54" y="84" font-family="sans-serif" font-size="6.5" font-weight="700" fill="#8a8278">DATE</text>
             <text x="110" y="84" font-family="sans-serif" font-size="6.5" font-weight="700" fill="#8a8278">LIBELLÉ</text>
             <text x="214" y="84" text-anchor="end" font-family="sans-serif" font-size="6.5" font-weight="700" fill="#8a8278">MONTANT</text>
-            <clipPath id="ic-clip"><rect x="36" y="89" width="188" height="220"/></clipPath>
-            <g clip-path="url(#ic-clip)">
-              <g class="ic-ledger">
-                <rect x="38" y="90" width="184" height="14" rx="2" fill="#C1007A" opacity=".05"/>
-                <text x="54" y="100" font-family="sans-serif" font-size="7" fill="#3d3d3d">02/01</text><text x="110" y="100" font-family="sans-serif" font-size="7" fill="#3d3d3d">Honoraires</text><text x="213" y="100" text-anchor="end" font-family="monospace" font-size="7" font-weight="700" fill="#C1007A">4 800 €</text>
-                <line x1="42" y1="104" x2="216" y2="104" stroke="#e8e2d9" stroke-width=".5"/>
-                <text x="54" y="118" font-family="sans-serif" font-size="7" fill="#3d3d3d">08/01</text><text x="110" y="118" font-family="sans-serif" font-size="7" fill="#3d3d3d">Loyer</text><text x="213" y="118" text-anchor="end" font-family="monospace" font-size="7" font-weight="700" fill="#4FA695">1 250 €</text>
-                <line x1="42" y1="122" x2="216" y2="122" stroke="#e8e2d9" stroke-width=".5"/>
-                <rect x="38" y="124" width="184" height="14" rx="2" fill="#C1007A" opacity=".05"/>
-                <text x="54" y="134" font-family="sans-serif" font-size="7" fill="#3d3d3d">15/01</text><text x="110" y="134" font-family="sans-serif" font-size="7" fill="#3d3d3d">Prestation</text><text x="213" y="134" text-anchor="end" font-family="monospace" font-size="7" font-weight="700" fill="#C1007A">3 200 €</text>
-                <line x1="42" y1="138" x2="216" y2="138" stroke="#e8e2d9" stroke-width=".5"/>
-                <text x="54" y="152" font-family="sans-serif" font-size="7" fill="#3d3d3d">22/01</text><text x="110" y="152" font-family="sans-serif" font-size="7" fill="#3d3d3d">TVA collectée</text><text x="213" y="152" text-anchor="end" font-family="monospace" font-size="7" font-weight="700" fill="#b08d57">1 600 €</text>
-                <line x1="42" y1="156" x2="216" y2="156" stroke="#e8e2d9" stroke-width=".5"/>
-                <rect x="38" y="158" width="184" height="14" rx="2" fill="#C1007A" opacity=".05"/>
-                <text x="54" y="168" font-family="sans-serif" font-size="7" fill="#3d3d3d">28/01</text><text x="110" y="168" font-family="sans-serif" font-size="7" fill="#3d3d3d">Cotisations</text><text x="213" y="168" text-anchor="end" font-family="monospace" font-size="7" font-weight="700" fill="#4FA695">980 €</text>
-                <line x1="42" y1="172" x2="216" y2="172" stroke="#e8e2d9" stroke-width=".5"/>
-                <text x="54" y="186" font-family="sans-serif" font-size="7" fill="#3d3d3d">31/01</text><text x="110" y="186" font-family="sans-serif" font-size="7" fill="#3d3d3d">Conseil client</text><text x="213" y="186" text-anchor="end" font-family="monospace" font-size="7" font-weight="700" fill="#C1007A">2 400 €</text>
-                <line x1="42" y1="190" x2="216" y2="190" stroke="#d4cdc0" stroke-width=".8"/>
-                <text x="54" y="204" font-family="sans-serif" font-size="7" fill="#3d3d3d">05/02</text><text x="110" y="204" font-family="sans-serif" font-size="7" fill="#3d3d3d">Audit interne</text><text x="213" y="204" text-anchor="end" font-family="monospace" font-size="7" font-weight="700" fill="#C1007A">5 100 €</text>
-                <line x1="42" y1="208" x2="216" y2="208" stroke="#e8e2d9" stroke-width=".5"/>
-                <rect x="38" y="210" width="184" height="14" rx="2" fill="#4FA695" opacity=".05"/>
-                <text x="54" y="220" font-family="sans-serif" font-size="7" fill="#3d3d3d">12/02</text><text x="110" y="220" font-family="sans-serif" font-size="7" fill="#3d3d3d">Décl. TVA</text><text x="213" y="220" text-anchor="end" font-family="monospace" font-size="7" font-weight="700" fill="#b08d57">3 840 €</text>
-                <line x1="42" y1="224" x2="216" y2="224" stroke="#e8e2d9" stroke-width=".5"/>
-              </g>
+            
+            <!-- CONTENU DU GRAND LIVRE (RÉPARÉ : SANS CLIPPATH) -->
+            <g class="ic-ledger">
+              <rect x="38" y="94" width="184" height="14" rx="2" fill="#C1007A" opacity=".05"/>
+              <text x="54" y="104" font-family="sans-serif" font-size="7" fill="#3d3d3d">02/01</text><text x="110" y="104" font-family="sans-serif" font-size="7" fill="#3d3d3d">Honoraires</text><text x="213" y="104" text-anchor="end" font-family="monospace" font-size="7" font-weight="700" fill="#C1007A">4 800 €</text>
+              <line x1="42" y1="110" x2="216" y2="110" stroke="#e8e2d9" stroke-width=".5"/>
+              
+              <text x="54" y="124" font-family="sans-serif" font-size="7" fill="#3d3d3d">08/01</text><text x="110" y="124" font-family="sans-serif" font-size="7" fill="#3d3d3d">Loyer</text><text x="213" y="124" text-anchor="end" font-family="monospace" font-size="7" font-weight="700" fill="#4FA695">1 250 €</text>
+              <line x1="42" y1="130" x2="216" y2="130" stroke="#e8e2d9" stroke-width=".5"/>
+              
+              <rect x="38" y="134" width="184" height="14" rx="2" fill="#C1007A" opacity=".05"/>
+              <text x="54" y="144" font-family="sans-serif" font-size="7" fill="#3d3d3d">15/01</text><text x="110" y="144" font-family="sans-serif" font-size="7" fill="#3d3d3d">Prestation</text><text x="213" y="144" text-anchor="end" font-family="monospace" font-size="7" font-weight="700" fill="#C1007A">3 200 €</text>
+              <line x1="42" y1="150" x2="216" y2="150" stroke="#e8e2d9" stroke-width=".5"/>
+              
+              <text x="54" y="164" font-family="sans-serif" font-size="7" fill="#3d3d3d">22/01</text><text x="110" y="164" font-family="sans-serif" font-size="7" fill="#3d3d3d">TVA collectée</text><text x="213" y="164" text-anchor="end" font-family="monospace" font-size="7" font-weight="700" fill="#b08d57">1 600 €</text>
+              <line x1="42" y1="170" x2="216" y2="170" stroke="#e8e2d9" stroke-width=".5"/>
+              
+              <rect x="38" y="174" width="184" height="14" rx="2" fill="#C1007A" opacity=".05"/>
+              <text x="54" y="184" font-family="sans-serif" font-size="7" fill="#3d3d3d">28/01</text><text x="110" y="184" font-family="sans-serif" font-size="7" fill="#3d3d3d">Cotisations</text><text x="213" y="184" text-anchor="end" font-family="monospace" font-size="7" font-weight="700" fill="#4FA695">980 €</text>
+              <line x1="42" y1="190" x2="216" y2="190" stroke="#e8e2d9" stroke-width=".5"/>
+              
+              <text x="54" y="204" font-family="sans-serif" font-size="7" fill="#3d3d3d">31/01</text><text x="110" y="204" font-family="sans-serif" font-size="7" fill="#3d3d3d">Conseil client</text><text x="213" y="204" text-anchor="end" font-family="monospace" font-size="7" font-weight="700" fill="#C1007A">2 400 €</text>
+              <line x1="42" y1="210" x2="216" y2="210" stroke="#d4cdc0" stroke-width=".8"/>
             </g>
+            
             <rect x="36" y="309" width="188" height="35" fill="#1a1a2e"/>
             <rect x="36" y="309" width="188" height="1" fill="#C1007A" opacity=".4"/>
             <text x="110" y="322" text-anchor="middle" font-family="sans-serif" font-size="7" font-weight="700" fill="rgba(255,255,255,.45)" letter-spacing=".5">TOTAL DÉBIT</text>
             <text x="213" y="322" text-anchor="end" font-family="monospace" font-size="8" font-weight="700" fill="#C1007A">12 230 €</text>
             <text x="110" y="337" text-anchor="middle" font-family="sans-serif" font-size="7" font-weight="700" fill="rgba(255,255,255,.45)" letter-spacing=".5">SOLDE NET</text>
             <text x="213" y="337" text-anchor="end" font-family="monospace" font-size="9" font-weight="700" fill="#4FA695">10 160 €</text>
+            
             <rect x="256" y="46" width="188" height="298" rx="6" fill="#f0ede6"/>
             <rect x="256" y="46" width="188" height="22" rx="6" fill="#1a3333"/>
             <rect x="256" y="62" width="188" height="6" fill="#1a3333"/>
@@ -172,7 +174,6 @@
             <text x="419" y="96" text-anchor="middle" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#1a1a2e">Jun</text>
             <line x1="264" y1="170" x2="436" y2="170" stroke="#c8c2b8" stroke-width=".8"/>
             <line x1="264" y1="153" x2="436" y2="153" stroke="#ddd8d0" stroke-width=".5" stroke-dasharray="2,3"/>
-            <line x1="264" y1="136" x2="436" y2="136" stroke="#ddd8d0" stroke-width=".5" stroke-dasharray="2,3"/>
             <line x1="264" y1="136" x2="436" y2="136" stroke="#ddd8d0" stroke-width=".5" stroke-dasharray="2,3"/>
             <line x1="264" y1="119" x2="436" y2="119" stroke="#ddd8d0" stroke-width=".5" stroke-dasharray="2,3"/>
             <line x1="264" y1="102" x2="436" y2="102" stroke="#ddd8d0" stroke-width=".5" stroke-dasharray="2,3"/>
@@ -201,20 +202,24 @@
             <circle cx="433" cy="188" r="4" fill="#b08d57"/>
             <text x="437" y="192" font-family="monospace" font-size="7" fill="#b08d57" font-weight="700">+18%</text>
             <line x1="264" y1="232" x2="436" y2="232" stroke="#c8c2b8" stroke-width=".6"/>
-            <rect x="262" y="240" width="78" height="40" rx="5" fill="#fff5fb" stroke="#C1007A" stroke-width=".8"/>
-            <rect x="262" y="240" width="78" height="11" rx="5" fill="#C1007A" opacity=".12"/>
-            <rect x="262" y="248" width="78" height="3" fill="#C1007A" opacity=".12"/>
-            <text x="301" y="249" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="#9a0062" letter-spacing=".3">DÉCL. TVA</text>
-            <text x="301" y="260" text-anchor="middle" font-family="sans-serif" font-size="6" fill="#8a8278">CA HT</text>
-            <text x="301" y="270" text-anchor="middle" font-family="monospace" font-size="8" font-weight="700" fill="#1a1a2e">48 600 €</text>
-            <text x="301" y="278" text-anchor="middle" font-family="sans-serif" font-size="6.5" fill="#3a7d70" font-weight="700">✓ Déposée</text>
-            <rect x="352" y="240" width="78" height="40" rx="5" fill="#edfaf7" stroke="#4FA695" stroke-width=".8"/>
-            <rect x="352" y="240" width="78" height="11" rx="5" fill="#4FA695" opacity=".12"/>
-            <rect x="352" y="248" width="78" height="3" fill="#4FA695" opacity=".12"/>
-            <text x="391" y="249" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="#0f6e56" letter-spacing=".3">LIASSE IS</text>
-            <text x="391" y="260" text-anchor="middle" font-family="sans-serif" font-size="6" fill="#8a8278">Résultat net</text>
-            <text x="391" y="270" text-anchor="middle" font-family="monospace" font-size="8" font-weight="700" fill="#1a1a2e">18 420 €</text>
-            <text x="391" y="278" text-anchor="middle" font-family="sans-serif" font-size="6.5" fill="#b08d57" font-weight="700">⏳ En cours</text>
+            
+            <g transform="translate(0, 5)">
+              <rect x="262" y="240" width="78" height="40" rx="5" fill="#fff5fb" stroke="#C1007A" stroke-width=".8"/>
+              <rect x="262" y="240" width="78" height="11" rx="5" fill="#C1007A" opacity=".12"/>
+              <text x="301" y="248" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="#9a0062" letter-spacing=".3">DÉCL. TVA</text>
+              <text x="301" y="260" text-anchor="middle" font-family="sans-serif" font-size="6" fill="#8a8278">CA HT</text>
+              <text x="301" y="270" text-anchor="middle" font-family="monospace" font-size="8" font-weight="700" fill="#1a1a2e">48 600 €</text>
+              <text x="301" y="278" text-anchor="middle" font-family="sans-serif" font-size="6.5" fill="#3a7d70" font-weight="700">✓ Déposée</text>
+            </g>
+
+            <g transform="translate(0, 5)">
+              <rect x="352" y="240" width="78" height="40" rx="5" fill="#edfaf7" stroke="#4FA695" stroke-width=".8"/>
+              <rect x="352" y="240" width="78" height="11" rx="5" fill="#4FA695" opacity=".12"/>
+              <text x="391" y="248" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="#0f6e56" letter-spacing=".3">LIASSE IS</text>
+              <text x="391" y="260" text-anchor="middle" font-family="sans-serif" font-size="6" fill="#8a8278">Résultat net</text>
+              <text x="391" y="270" text-anchor="middle" font-family="monospace" font-size="8" font-weight="700" fill="#1a1a2e">18 420 €</text>
+              <text x="391" y="278" text-anchor="middle" font-family="sans-serif" font-size="6.5" fill="#b08d57" font-weight="700">⏳ En cours</text>
+            </g>
             <rect x="446" y="100" width="8" height="20" rx="2" fill="#C1007A" opacity=".75"/>
             <rect x="446" y="130" width="8" height="20" rx="2" fill="#4FA695" opacity=".65"/>
             <rect x="446" y="160" width="8" height="20" rx="2" fill="#b08d57" opacity=".6"/>
@@ -252,9 +257,12 @@
               <text x="185" y="401" text-anchor="middle" font-family="sans-serif" font-size="6" font-weight="700" fill="#C1007A" opacity=".9" letter-spacing=".8">CERTIFIÉ</text>
               <text x="185" y="411" text-anchor="middle" font-family="sans-serif" font-size="5.5" font-weight="700" fill="#C1007A" opacity=".9" letter-spacing=".8">CONFORME</text>
             </g>
-            <g class="ic-b1"><rect x="238" y="375" width="90" height="28" rx="14" fill="#1e3040" stroke="#4FA695" stroke-width=".8"/><text x="257" y="393" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#4FA695">✓</text><text x="303" y="393" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#4FA695">Bilan validé</text></g>
-            <g class="ic-b2"><rect x="346" y="375" width="88" height="28" rx="14" fill="#200a14" stroke="#C1007A" stroke-width=".8"/><text x="364" y="393" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#C1007A">%</text><text x="429" y="393" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#f472b6">TVA 20%</text></g>
-            <g class="ic-b3"><rect x="444" y="375" width="22" height="28" rx="11" fill="#1e2a38" stroke="#b08d57" stroke-width=".8"/><text x="455" y="390" text-anchor="middle" font-family="sans-serif" font-size="7" font-weight="700" fill="#b08d57">IS</text></g>
+            
+            <g transform="translate(0, 20)">
+              <g class="ic-b1"><rect x="238" y="375" width="90" height="28" rx="14" fill="#1e3040" stroke="#4FA695" stroke-width=".8"/><text x="257" y="393" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#4FA695">✓</text><text x="303" y="393" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#4FA695">Bilan validé</text></g>
+              <g class="ic-b2"><rect x="346" y="375" width="88" height="28" rx="14" fill="#200a14" stroke="#C1007A" stroke-width=".8"/><text x="364" y="393" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#C1007A">%</text><text x="429" y="393" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#f472b6">TVA 20%</text></g>
+              <g class="ic-b3"><rect x="444" y="375" width="22" height="28" rx="11" fill="#1e2a38" stroke="#b08d57" stroke-width=".8"/><text x="455" y="390" text-anchor="middle" font-family="sans-serif" font-size="7" font-weight="700" fill="#b08d57">IS</text></g>
+            </g>
           </svg>
         </div>
         <div class="svc-content">
@@ -271,6 +279,7 @@
         </div>
       </div>
 
+      <!-- PANNEAU 2 : SOCIAL & PAIE -->
       <div class="svc-panel" id="svc-social">
         <div class="svc-img-box svc-illus-social">
           <svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -289,93 +298,62 @@
               <rect x="94" y="204" width="14" height="6" rx="2" fill="#2d3d4d"/>
               <line x1="99" y1="215" x2="121" y2="215" stroke="rgba(255,255,255,.15)" stroke-width="1.5"/>
               <line x1="99" y1="220" x2="118" y2="220" stroke="rgba(255,255,255,.10)" stroke-width="1.5"/>
-              <line x1="99" y1="225" x2="115" y2="225" stroke="rgba(255,255,255,.08)" stroke-width="1.5"/>
               <text x="110" y="268" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="rgba(255,255,255,.3)" letter-spacing=".5">EMPLOYÉ</text>
             </g>
             <g class="sw-p2" transform-origin="240 175">
               <circle cx="240" cy="154" r="36" fill="#C1007A" opacity=".12"/>
-              <circle cx="240" cy="154" r="28" fill="#C1007A" opacity=".10"/>
-              <ellipse cx="240" cy="252" rx="34" ry="8" fill="#C1007A" opacity=".15"/>
               <rect x="206" y="188" width="68" height="62" rx="14" fill="#2a1020"/>
               <rect x="206" y="188" width="68" height="62" rx="14" fill="none" stroke="#C1007A" stroke-width="1.2" opacity=".5"/>
               <circle cx="240" cy="154" r="26" fill="#C1007A"/>
-              <circle cx="240" cy="154" r="26" fill="none" stroke="#f472b6" stroke-width="1" opacity=".4"/>
               <text x="240" y="160" text-anchor="middle" font-family="Georgia,serif" font-size="18" font-weight="700" fill="#fff">RH</text>
               <rect x="216" y="200" width="48" height="36" rx="5" fill="#3a1830"/>
-              <rect x="216" y="200" width="48" height="10" rx="5" fill="#C1007A" opacity=".3"/>
-              <text x="240" y="209" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="#f472b6" letter-spacing=".3">BULLETIN</text>
+              <text x="240" y="209" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="#f472b6">BULLETIN</text>
               <line x1="221" y1="216" x2="259" y2="216" stroke="rgba(255,255,255,.2)" stroke-width="1.2"/>
               <line x1="221" y1="221" x2="255" y2="221" stroke="rgba(255,255,255,.15)" stroke-width="1.2"/>
-              <line x1="221" y1="226" x2="250" y2="226" stroke="rgba(255,255,255,.12)" stroke-width="1.2"/>
-              <line x1="221" y1="231" x2="259" y2="231" stroke="#C1007A" stroke-width="1.2" opacity=".5"/>
               <text x="240" y="268" text-anchor="middle" font-family="sans-serif" font-size="9.5" font-weight="700" fill="#f472b6" letter-spacing=".5">GESTIONNAIRE</text>
             </g>
             <g class="sw-p3" transform-origin="370 200">
               <ellipse cx="370" cy="252" rx="28" ry="6" fill="#000" opacity=".2"/>
               <rect x="342" y="192" width="56" height="58" rx="12" fill="#0d2420"/>
-              <rect x="342" y="192" width="56" height="58" rx="12" fill="none" stroke="#4FA695" stroke-width=".8" opacity=".4"/>
               <circle cx="370" cy="174" r="22" fill="#1a3530"/>
-              <circle cx="370" cy="174" r="22" fill="none" stroke="#4FA695" stroke-width=".8" opacity=".4"/>
               <text x="370" y="178" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#4FA695" opacity=".9">DSN</text>
               <rect x="354" y="206" width="32" height="24" rx="4" fill="#0d2420"/>
               <line x1="359" y1="213" x2="381" y2="213" stroke="#4FA695" stroke-width="1.2" opacity=".5"/>
-              <line x1="359" y1="218" x2="378" y2="218" stroke="#4FA695" stroke-width="1.2" opacity=".3"/>
-              <line x1="359" y1="223" x2="380" y2="223" stroke="#4FA695" stroke-width="1.2" opacity=".2"/>
               <text x="370" y="268" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="rgba(79,166,149,.7)" letter-spacing=".5">ORGANISME</text>
             </g>
             <path class="sw-l1" d="M139 210 Q175 205 205 208" fill="none" stroke="#C1007A" stroke-width="1.5" opacity=".6" marker-end="url(#sw-arr1)"/>
             <path class="sw-l2" d="M275 208 Q315 205 341 210" fill="none" stroke="#4FA695" stroke-width="1.5" opacity=".6" marker-end="url(#sw-arr2)"/>
-            <circle class="sw-dot1" cx="172" cy="207" r="3" fill="#C1007A" opacity=".8"/>
-            <circle class="sw-dot2" cx="312" cy="207" r="3" fill="#4FA695" opacity=".8"/>
             
-            <g class="sw-bulletin-container">
-              <rect x="408" y="28" width="64" height="210" rx="8" fill="#f5f2ec" opacity=".97"/>
-              <rect x="408" y="28" width="64" height="18" rx="8" fill="#1a1a2e"/>
-              <rect x="408" y="40" width="64" height="6" fill="#1a1a2e"/>
-              <text x="440" y="40" text-anchor="middle" font-family="sans-serif" font-size="5" font-weight="700" fill="#fff" letter-spacing=".5">BULLETIN DE PAIE</text>
-              <text x="440" y="57" text-anchor="middle" font-family="sans-serif" font-size="5.5" font-weight="700" fill="#C1007A" letter-spacing=".3">AVRIL 2025</text>
-              <line x1="413" y1="61" x2="467" y2="61" stroke="#d4cdc0" stroke-width=".7"/>
-              <text x="413" y="70" font-family="sans-serif" font-size="5.5" fill="#5a5450" font-weight="700">M. DUPONT</text>
-              <text x="413" y="78" font-family="sans-serif" font-size="5" fill="#8a8278">Cadre · ETP 100%</text>
-              <line x1="413" y1="82" x2="467" y2="82" stroke="#e8e2d9" stroke-width=".5"/>
-              <clipPath id="sw-bp"><rect x="408" y="83" width="64" height="90"/></clipPath>
-              <g clip-path="url(#sw-bp)">
-                <g class="sw-rows">
-                  <g class="sw-row-item"><text x="413" y="93" font-family="sans-serif" font-size="5" fill="#3d3d3d">Salaire brut</text><text x="467" y="93" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#1a1a2e">3 800,00</text></g>
-                  <line x1="413" y1="96" x2="467" y2="96" stroke="#e8e2d9" stroke-width=".4"/>
-                  <g class="sw-row-item"><text x="413" y="105" font-family="sans-serif" font-size="5" fill="#3d3d3d">Cotis. salariales</text><text x="467" y="105" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#ef4444">- 760,00</text></g>
-                  <line x1="413" y1="108" x2="467" y2="108" stroke="#e8e2d9" stroke-width=".4"/>
-                  <g class="sw-row-item"><text x="413" y="117" font-family="sans-serif" font-size="5" fill="#3d3d3d">Mutuelle</text><text x="467" y="117" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#ef4444">- 45,00</text></g>
-                  <line x1="413" y1="120" x2="467" y2="120" stroke="#e8e2d9" stroke-width=".4"/>
-                  <g class="sw-row-item"><text x="413" y="129" font-family="sans-serif" font-size="5" fill="#3d3d3d">Prévoyance</text><text x="467" y="129" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#ef4444">- 28,50</text></g>
-                  <line x1="413" y1="132" x2="467" y2="132" stroke="#e8e2d9" stroke-width=".4"/>
-                  <rect x="408" y="133" width="64" height="12" fill="#C1007A" opacity=".08"/>
-                  <g class="sw-row-item"><text x="413" y="142" font-family="sans-serif" font-size="5.5" font-weight="700" fill="#1a1a2e">NET IMPOSABLE</text><text x="467" y="142" text-anchor="end" font-family="monospace" font-size="5.5" font-weight="700" fill="#C1007A">2 966,50</text></g>
-                  <line x1="413" y1="145" x2="467" y2="145" stroke="#C1007A" stroke-width=".7" opacity=".3"/>
-                  <g class="sw-row-item"><text x="413" y="154" font-family="sans-serif" font-size="5" fill="#3d3d3d">Prélèv. source</text><text x="467" y="154" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#ef4444">- 295,00</text></g>
-                  <line x1="413" y1="157" x2="467" y2="157" stroke="#e8e2d9" stroke-width=".4"/>
-                </g>
-              </g>
-              <line x1="408" y1="173" x2="472" y2="173" stroke="#C1007A" stroke-width=".8" opacity=".4"/>
-              <rect x="408" y="174" width="64" height="16" fill="#1a1a2e"/>
-              <text x="413" y="185" font-family="sans-serif" font-size="5.5" font-weight="700" fill="rgba(255,255,255,.5)" letter-spacing=".2">NET À PAYER</text>
-              <text x="467" y="185" text-anchor="end" font-family="monospace" font-size="7" font-weight="700" fill="#4FA695">2 671,50</text>
-              <rect x="408" y="190" width="64" height="12" fill="#1a3030"/>
-              <text x="440" y="199" text-anchor="middle" font-family="sans-serif" font-size="4.5" font-weight="700" fill="#4FA695" letter-spacing=".2">VIREMENT LE 28/04</text>
-              <line x1="408" y1="202" x2="472" y2="202" stroke="#d4cdc0" stroke-width=".5"/>
-              <text x="413" y="210" font-family="sans-serif" font-size="4.5" fill="#8a8278">Ref. 2025-04-D001</text>
-              <text x="413" y="217" font-family="sans-serif" font-size="4.5" fill="#8a8278">Sig. employeur :</text>
-              <line x1="440" y1="218" x2="467" y2="218" stroke="#d4cdc0" stroke-width=".8"/>
-              <g class="sw-stamp" transform-origin="446 212">
-                <circle cx="446" cy="212" r="12" fill="none" stroke="#4FA695" stroke-width="1.2" stroke-dasharray="3,2" opacity=".7"/>
-                <text x="446" y="209" text-anchor="middle" font-family="sans-serif" font-size="4.5" font-weight="700" fill="#4FA695" opacity=".9">VALIDÉ</text>
-                <text x="446" y="216" text-anchor="middle" font-family="sans-serif" font-size="4" font-weight="700" fill="#4FA695" opacity=".9">28/04</text>
-              </g>
+            <rect x="408" y="28" width="64" height="210" rx="8" fill="#f5f2ec" opacity=".97"/>
+            <rect x="408" y="28" width="64" height="18" rx="8" fill="#1a1a2e"/>
+            <text x="440" y="40" text-anchor="middle" font-family="sans-serif" font-size="5" font-weight="700" fill="#fff">BULLETIN</text>
+            <text x="440" y="57" text-anchor="middle" font-family="sans-serif" font-size="5.5" font-weight="700" fill="#C1007A">AVRIL 2025</text>
+            <line x1="413" y1="61" x2="467" y2="61" stroke="#d4cdc0" stroke-width=".7"/>
+            <text x="413" y="70" font-family="sans-serif" font-size="5.5" fill="#5a5450" font-weight="700">M. DUPONT</text>
+            <text x="413" y="78" font-family="sans-serif" font-size="5" fill="#8a8278">Cadre · ETP 100%</text>
+            <line x1="413" y1="82" x2="467" y2="82" stroke="#e8e2d9" stroke-width=".5"/>
+            
+            <g class="sw-ledger-rows" transform="translate(0, 5)">
+              <text x="413" y="93" font-family="sans-serif" font-size="5" fill="#3d3d3d">Salaire brut</text><text x="467" y="93" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#1a1a2e">3 800,00</text>
+              <line x1="413" y1="97" x2="467" y2="97" stroke="#e8e2d9" stroke-width=".4"/>
+              <text x="413" y="106" font-family="sans-serif" font-size="5" fill="#3d3d3d">Cotis. salariales</text><text x="467" y="106" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#ef4444">- 760,00</text>
+              <line x1="413" y1="110" x2="467" y2="110" stroke="#e8e2d9" stroke-width=".4"/>
+              <text x="413" y="119" font-family="sans-serif" font-size="5" fill="#3d3d3d">Mutuelle</text><text x="467" y="119" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#ef4444">- 45,00</text>
+              <line x1="413" y1="123" x2="467" y2="123" stroke="#e8e2d9" stroke-width=".4"/>
+              <rect x="409" y="129" width="62" height="10" fill="#C1007A" opacity=".08"/>
+              <text x="413" y="136" font-family="sans-serif" font-size="5" font-weight="700" fill="#1a1a2e">NET IMPOSABLE</text><text x="467" y="136" text-anchor="end" font-family="monospace" font-size="5" font-weight="700" fill="#C1007A">2 966,50</text>
             </g>
             
-            <g class="sw-b1"><rect x="8" y="18" width="86" height="24" rx="12" fill="#0d2420" stroke="#4FA695" stroke-width=".9"/><circle cx="24" cy="30" r="7" fill="#4FA695" opacity=".2"/><text x="24" y="34" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4FA695">✓</text><text x="87" y="34" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#4FA695">Paie générée</text></g>
-            <g class="sw-b2"><rect x="8" y="50" width="88" height="24" rx="12" fill="#200a14" stroke="#C1007A" stroke-width=".9"/><circle cx="24" cy="62" r="7" fill="#C1007A" opacity=".2"/><text x="24" y="66" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#C1007A">DSN</text><text x="89" y="66" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#f472b6">DSN envoyée</text></g>
-            <g class="sw-b3"><rect x="8" y="82" width="76" height="24" rx="12" fill="#1a2030" stroke="#b08d57" stroke-width=".9"/><text x="26" y="96" text-anchor="middle" font-family="monospace" font-size="11" font-weight="700" fill="#b08d57">14</text><text x="77" y="96" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#b08d57">bulletins</text></g>
+            <line x1="408" y1="162" x2="472" y2="162" stroke="#C1007A" stroke-width=".8" opacity=".4"/>
+            <rect x="408" y="165" width="64" height="16" fill="#1a1a2e"/>
+            <text x="413" y="175" font-family="sans-serif" font-size="5.5" font-weight="700" fill="rgba(255,255,255,.5)">NET À PAYER</text>
+            <text x="467" y="175" text-anchor="end" font-family="monospace" font-size="7" font-weight="700" fill="#4FA695">2 671,50</text>
+            
+            <g transform="translate(0, 32)">
+              <g class="sw-b1"><rect x="8" y="18" width="86" height="24" rx="12" fill="#0d2420" stroke="#4FA695" stroke-width=".9"/><text x="81" y="34" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#4FA695">✓ Paie prête</text></g>
+              <g class="sw-b2"><rect x="8" y="50" width="88" height="24" rx="12" fill="#200a14" stroke="#C1007A" stroke-width=".9"/><text x="83" y="66" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#f472b6">DSN envoyée</text></g>
+              <g class="sw-b3"><rect x="8" y="82" width="76" height="24" rx="12" fill="#1a2030" stroke="#b08d57" stroke-width=".9"/><text x="71" y="98" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#b08d57">14 bulletins</text></g>
+            </g>
           </svg>
         </div>
         <div class="svc-content">
@@ -392,6 +370,7 @@
         </div>
       </div>
 
+      <!-- PANNEAU 3 : JURIDIQUE -->
       <div class="svc-panel" id="svc-juridique">
         <div class="svc-img-box svc-illus-juridique">
           <svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -400,96 +379,62 @@
             <ellipse class="jw-gt" cx="100" cy="380" rx="160" ry="120" fill="#C1007A" opacity=".08"/>
             <rect x="228" y="270" width="24" height="80" rx="4" fill="#1e2d3d"/>
             <rect x="200" y="348" width="80" height="10" rx="5" fill="#1e2d3d"/>
-            <rect x="210" y="356" width="60" height="6" rx="3" fill="#253545"/>
             <circle cx="240" cy="158" r="8" fill="#4FA695" opacity=".8"/>
-            <circle cx="240" cy="158" r="4" fill="#fff" opacity=".5"/>
             <rect x="237" y="166" width="6" height="106" rx="3" fill="#253545"/>
             
             <g class="jw-balance-moving">
               <g class="jw-beam">
                 <rect x="90" y="152" width="300" height="8" rx="4" fill="#2d4050"/>
-                <rect x="90" y="152" width="300" height="8" rx="4" fill="none" stroke="#4FA695" stroke-width=".5" opacity=".4"/>
-                <line class="jw-string-left" x1="118" y1="160" x2="118" y2="195" stroke="#3a4d5c" stroke-width="1.5" stroke-dasharray="3,2"/>
-                <line class="jw-string-right" x1="362" y1="160" x2="362" y2="195" stroke="#3a4d5c" stroke-width="1.5" stroke-dasharray="3,2"/>
+                <line x1="118" y1="160" x2="118" y2="195" stroke="#3a4d5c" stroke-width="1.5" stroke-dasharray="3,2"/>
+                <line x1="362" y1="160" x2="362" y2="195" stroke="#3a4d5c" stroke-width="1.5" stroke-dasharray="3,2"/>
               </g>
               <g class="jw-pl">
                 <ellipse cx="118" cy="202" rx="42" ry="10" fill="#1a2a3a"/>
-                <ellipse cx="118" cy="202" rx="42" ry="10" fill="none" stroke="#C1007A" stroke-width="1" opacity=".6"/>
-                <path d="M76 202 Q118 218 160 202" fill="#C1007A" opacity=".25"/>
                 <g class="jw-d1">
                   <rect x="98" y="172" width="28" height="36" rx="3" fill="#f5f2ec"/>
                   <rect x="98" y="172" width="28" height="9" rx="3" fill="#C1007A" opacity=".8"/>
                   <text x="112" y="179" text-anchor="middle" font-family="sans-serif" font-size="5" font-weight="700" fill="#fff">SAS</text>
                   <line x1="102" y1="187" x2="122" y2="187" stroke="#d4cdc0" stroke-width=".8"/>
-                  <line x1="102" y1="192" x2="120" y2="192" stroke="#d4cdc0" stroke-width=".8"/>
-                  <line x1="102" y1="197" x2="122" y2="197" stroke="#d4cdc0" stroke-width=".8"/>
-                  <line x1="102" y1="202" x2="118" y2="202" stroke="#C1007A" stroke-width=".8" opacity=".5"/>
                 </g>
-                <text x="118" y="220" text-anchor="middle" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#f472b6" letter-spacing=".3">SAS</text>
+                <text x="118" y="220" text-anchor="middle" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#f472b6">SAS</text>
               </g>
               <g class="jw-pr">
                 <ellipse cx="362" cy="202" rx="42" ry="10" fill="#1a2a3a"/>
-                <ellipse cx="362" cy="202" rx="42" ry="10" fill="none" stroke="#4FA695" stroke-width="1" opacity=".6"/>
-                <path d="M320 202 Q362 218 404 202" fill="#4FA695" opacity=".2"/>
                 <g class="jw-d2">
                   <rect x="348" y="172" width="28" height="36" rx="3" fill="#f5f2ec"/>
                   <rect x="348" y="172" width="28" height="9" rx="3" fill="#4FA695" opacity=".8"/>
                   <text x="362" y="179" text-anchor="middle" font-family="sans-serif" font-size="4.5" font-weight="700" fill="#fff">SARL</text>
-                  <line x1="352" y1="187" x2="372" y2="187" stroke="#d4cdc0" stroke-width=".8"/>
-                  <line x1="352" y1="192" x2="370" y2="192" stroke="#d4cdc0" stroke-width=".8"/>
-                  <line x1="352" y1="197" x2="372" y2="197" stroke="#d4cdc0" stroke-width=".8"/>
-                  <line x1="352" y1="202" x2="368" y2="202" stroke="#4FA695" stroke-width=".8" opacity=".5"/>
                 </g>
-                <text x="362" y="220" text-anchor="middle" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#4FA695" letter-spacing=".3">SARL</text>
+                <text x="362" y="220" text-anchor="middle" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#4FA695">SARL</text>
               </g>
             </g>
 
             <rect x="172" y="290" width="136" height="110" rx="8" fill="#f5f2ec" opacity=".97"/>
             <rect x="172" y="290" width="136" height="20" rx="8" fill="#1a1a2e"/>
-            <rect x="172" y="304" width="136" height="6" fill="#1a1a2e"/>
-            <text x="240" y="303" text-anchor="middle" font-family="Georgia,serif" font-size="8" font-weight="700" fill="#fff" letter-spacing=".8">STATUTS</text>
-            <clipPath id="jw-clip"><rect x="172" y="312" width="136" height="66"/></clipPath>
-            <g clip-path="url(#jw-clip)">
-              <g class="jw-rows">
-                <text x="178" y="323" font-family="sans-serif" font-size="6" font-weight="700" fill="#1a1a2e">Art. 1 Forme juridique</text>
-                <line x1="178" y1="326" x2="302" y2="326" stroke="#e8e2d9" stroke-width=".5"/>
-                <text x="178" y="334" font-family="sans-serif" font-size="5.5" fill="#5a5450">La société est constituée sous</text>
-                <text x="178" y="341" font-family="sans-serif" font-size="5.5" fill="#5a5450">la forme d'une SAS au capital</text>
-                <text x="178" y="348" font-family="sans-serif" font-size="5.5" fill="#5a5450">de 10 000 euros.</text>
-                <line x1="178" y1="352" x2="302" y2="352" stroke="#e8e2d9" stroke-width=".5"/>
-                <text x="178" y="360" font-family="sans-serif" font-size="6" font-weight="700" fill="#1a1a2e">Art. 2 Objet social</text>
-                <line x1="178" y1="363" x2="302" y2="363" stroke="#e8e2d9" stroke-width=".5"/>
-                <text x="178" y="371" font-family="sans-serif" font-size="5.5" fill="#5a5450">Toutes opérations commerciales</text>
-                <text x="178" y="378" font-family="sans-serif" font-size="5.5" fill="#5a5450">et prestations de services.</text>
-                <line x1="178" y1="382" x2="302" y2="382" stroke="#e8e2d9" stroke-width=".5"/>
-              </g>
+            <text x="240" y="303" text-anchor="middle" font-family="Georgia,serif" font-size="8" font-weight="700" fill="#fff">STATUTS</text>
+            
+            <g class="jw-statuts-content" transform="translate(6, 12)">
+              <text x="172" y="315" font-family="sans-serif" font-size="6" font-weight="700" fill="#1a1a2e">Art. 1 Forme juridique</text>
+              <text x="172" y="325" font-family="sans-serif" font-size="5.5" fill="#5a5450">Société par Actions Simplifiée</text>
+              <text x="172" y="338" font-family="sans-serif" font-size="6" font-weight="700" fill="#1a1a2e">Art. 2 Objet social</text>
+              <text x="172" y="348" font-family="sans-serif" font-size="5.5" fill="#5a5450">Conseil &amp; Prestations technologiques.</text>
             </g>
-            <line x1="178" y1="385" x2="302" y2="385" stroke="#d4cdc0" stroke-width=".8"/>
-            <text x="178" y="394" font-family="sans-serif" font-size="5.5" fill="#8a8278">Signataires :</text>
-            <path class="jw-sign" d="M210 393 Q220 386 228 393 Q234 398 240 390 Q246 382 255 390 Q262 396 268 389" fill="none" stroke="#C1007A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <g class="jw-stamp" transform-origin="290 375">
-              <circle cx="290" cy="375" r="20" fill="none" stroke="#b08d57" stroke-width="1.5" stroke-dasharray="3,2" opacity=".7"/>
-              <circle cx="290" cy="375" r="14" fill="none" stroke="#b08d57" stroke-width=".7" opacity=".4"/>
-              <text x="290" y="372" text-anchor="middle" font-family="sans-serif" font-size="5" font-weight="700" fill="#b08d57" opacity=".9" letter-spacing=".5">ENREG.</text>
-              <text x="290" y="380" text-anchor="middle" font-family="sans-serif" font-size="4.5" font-weight="700" fill="#b08d57" opacity=".9" letter-spacing=".5">GREFFE</text>
+            
+            <path class="jw-sign" d="M210 393 Q220 386 228 393" fill="none" stroke="#C1007A" stroke-width="1.5" stroke-linecap="round"/>
+            
+            <g transform="translate(0, 32)">
+              <g class="jw-b1"><rect x="14" y="30" width="96" height="26" rx="13" fill="#0d2420" stroke="#4FA695" stroke-width=".9"/><text x="90" y="47" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#4FA695">✓ Création SAS</text></g>
+              <g class="jw-b2"><rect x="14" y="64" width="108" height="26" rx="13" fill="#200a14" stroke="#C1007A" stroke-width=".9"/><text x="102" y="81" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#f472b6">✓ Cession parts</text></g>
+              <g class="jw-b3"><rect x="14" y="98" width="84" height="26" rx="13" fill="#1a1808" stroke="#b08d57" stroke-width=".9"/><text x="78" y="115" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#b08d57">✓ AG Annuelle</text></g>
             </g>
-            <g class="jw-f1 jw-b1"><rect x="14" y="30" width="96" height="26" rx="13" fill="#0d2420" stroke="#4FA695" stroke-width=".9"/><circle cx="30" cy="43" r="7" fill="#4FA695" opacity=".2"/><text x="30" y="47" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#4FA695">+</text><text x="103" y="47" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#4FA695">Création SAS</text></g>
-            <g class="jw-f2 jw-b2"><rect x="14" y="64" width="108" height="26" rx="13" fill="#200a14" stroke="#C1007A" stroke-width=".9"/><circle cx="30" cy="77" r="7" fill="#C1007A" opacity=".2"/><text x="30" y="81" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#C1007A">→</text><text x="115" y="81" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#f472b6">Cession parts</text></g>
-            <g class="jw-f3 jw-b3"><rect x="14" y="98" width="84" height="26" rx="13" fill="#1a1808" stroke="#b08d57" stroke-width=".9"/><circle cx="30" cy="111" r="7" fill="#b08d57" opacity=".2"/><text x="30" y="115" text-anchor="middle" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#b08d57">AG</text><text x="91" y="115" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#b08d57">Secrétariat</text></g>
-            <g class="jw-d3">
-              <rect x="386" y="130" width="78" height="96" rx="6" fill="#f5f2ec" opacity=".97"/>
-              <rect x="386" y="130" width="78" height="18" rx="6" fill="#1a3333"/>
-              <rect x="386" y="142" width="78" height="6" fill="#1a3333"/>
-              <text x="425" y="142" text-anchor="middle" font-family="Georgia,serif" font-size="8" font-weight="700" fill="#fff" letter-spacing=".5">K-BIS</text>
-              <text x="425" y="157" text-anchor="middle" font-family="sans-serif" font-size="6" font-weight="700" fill="#4FA695" letter-spacing=".3">EXTRAIT</text>
-              <line x1="391" y1="161" x2="459" y2="161" stroke="#d4cdc0" stroke-width=".7"/>
-              <text x="391" y="170" font-family="sans-serif" font-size="5.5" fill="#3d3d3d">SIRET</text><text x="459" y="170" text-anchor="end" font-family="monospace" font-size="5.5" fill="#1a1a2e">84312•••</text>
-              <text x="391" y="180" font-family="sans-serif" font-size="5.5" fill="#3d3d3d">Forme</text><text x="459" y="180" text-anchor="end" font-family="monospace" font-size="5.5" fill="#1a1a2e">SAS</text>
-              <text x="391" y="190" font-family="sans-serif" font-size="5.5" fill="#3d3d3d">Capital</text><text x="459" y="190" text-anchor="end" font-family="monospace" font-size="5.5" fill="#C1007A">10 000 €</text>
-              <text x="391" y="200" font-family="sans-serif" font-size="5.5" fill="#3d3d3d">APE</text><text x="459" y="200" text-anchor="end" font-family="monospace" font-size="5.5" fill="#1a1a2e">6920Z</text>
-              <line x1="391" y1="204" x2="459" y2="204" stroke="#d4cdc0" stroke-width=".7"/>
-              <text x="425" y="215" text-anchor="middle" font-family="sans-serif" font-size="5.5" fill="#4FA695" font-weight="700">✓ Immatriculé</text>
-              <line class="jw-spine" x1="386" y1="148" x2="386" y2="224" stroke="#4FA695" stroke-width="1.5" opacity=".4"/>
+            
+            <g class="jw-d3" transform="translate(-4, 0)">
+              <rect x="390" y="130" width="78" height="96" rx="6" fill="#f5f2ec" opacity=".97"/>
+              <rect x="390" y="130" width="78" height="18" rx="6" fill="#1a3333"/>
+              <text x="429" y="142" text-anchor="middle" font-family="Georgia,serif" font-size="8" font-weight="700" fill="#fff">K-BIS</text>
+              <text x="395" y="165" font-family="sans-serif" font-size="5.5" fill="#3d3d3d">SIRET : 843 120 •••</text>
+              <text x="395" y="180" font-family="sans-serif" font-size="5.5" fill="#3d3d3d">Greffe : Melun</text>
+              <text x="429" y="210" text-anchor="middle" font-family="sans-serif" font-size="5.5" fill="#4FA695" font-weight="700">✓ Enregistré</text>
             </g>
           </svg>
         </div>
@@ -507,93 +452,51 @@
         </div>
       </div>
 
+      <!-- PANNEAU 4 : CONSEIL & IA -->
       <div class="svc-panel" id="svc-conseil">
         <div class="svc-img-box svc-illus-ia">
           <svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <rect width="480" height="480" fill="#0d1824"/>
             <ellipse class="aw-gr" cx="240" cy="210" rx="220" ry="180" fill="#C1007A" opacity=".08"/>
-            <ellipse class="aw-gt" cx="240" cy="210" rx="160" ry="130" fill="#4FA695" opacity=".06"/>
-            <line class="aw-l1" x1="90" y1="130" x2="218" y2="196" stroke="#C1007A" stroke-width="1.2" opacity=".5"/>
-            <line class="aw-l2" x1="390" y1="130" x2="262" y2="196" stroke="#4FA695" stroke-width="1.2" opacity=".5"/>
-            <line class="aw-l3" x1="90" y1="295" x2="218" y2="224" stroke="#4FA695" stroke-width="1.2" opacity=".5"/>
-            <line class="aw-l4" x1="390" y1="295" x2="262" y2="224" stroke="#C1007A" stroke-width="1.2" opacity=".5"/>
-            <line class="aw-l5" x1="240" y1="80" x2="240" y2="180" stroke="#b08d57" stroke-width="1.2" opacity=".5"/>
+            <line x1="90" y1="130" x2="218" y2="196" stroke="#C1007A" stroke-width="1.2" opacity=".5"/>
+            <line x1="390" y1="130" x2="262" y2="196" stroke="#4FA695" stroke-width="1.2" opacity=".5"/>
+            <line x1="90" y1="295" x2="218" y2="224" stroke="#4FA695" stroke-width="1.2" opacity=".5"/>
+            <line x1="390" y1="295" x2="262" y2="224" stroke="#C1007A" stroke-width="1.2" opacity=".5"/>
             
-            <g class="aw-pulses">
-              <line class="aw-f1" x1="90" y1="130" x2="218" y2="196" stroke="#C1007A" stroke-width="2" opacity=".7"/>
-              <line class="aw-f2" x1="390" y1="130" x2="262" y2="196" stroke="#4FA695" stroke-width="2" opacity=".7"/>
-              <line class="aw-f3" x1="90" y1="295" x2="218" y2="224" stroke="#4FA695" stroke-width="2" opacity=".7"/>
-              <line class="aw-f4" x1="390" y1="295" x2="262" y2="224" stroke="#C1007A" stroke-width="2" opacity=".7"/>
-              <line class="aw-f5" x1="240" y1="80" x2="240" y2="180" stroke="#b08d57" stroke-width="2" opacity=".7"/>
-            </g>
-
             <g class="aw-hub">
-              <circle cx="240" cy="210" r="52" fill="#C1007A" opacity=".06"/>
-              <circle cx="240" cy="210" r="42" fill="#C1007A" opacity=".08"/>
-              <circle class="aw-ring" cx="240" cy="210" r="36" fill="none" stroke="#C1007A" stroke-width="2" opacity=".6"/>
               <circle cx="240" cy="210" r="28" fill="#C1007A"/>
-              <circle cx="240" cy="210" r="28" fill="none" stroke="#f472b6" stroke-width="1.2" opacity=".5"/>
-              <g transform="translate(222,194)" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".9">
-                <path d="M18 4 C10 4 6 9 6 14 C4 14 2 16 2 19 C2 23 5 26 9 26 C9 28 11 30 14 30 C17 30 19 28 19 26 C23 26 26 23 26 19 C26 16 24 14 22 14 C22 9 18 4 18 4Z"/>
-                <line x1="14" y1="14" x2="14" y2="26"/>
-                <path d="M8 18 Q11 16 14 18 Q17 20 20 18"/>
-                <path d="M10 22 Q12 20 14 22"/>
-              </g>
-              <text x="240" y="252" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="700" fill="#f472b6" letter-spacing=".5" opacity=".9">IA · ML2C</text>
+              <text x="240" y="252" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="700" fill="#f472b6">IA · ML2C</text>
             </g>
             <g class="aw-n1">
               <circle cx="90" cy="130" r="34" fill="#1a2a3a"/>
               <circle cx="90" cy="130" r="34" fill="none" stroke="#C1007A" stroke-width="1.2" opacity=".5"/>
-              <circle cx="90" cy="130" r="28" fill="#C1007A" opacity=".15"/>
-              <text x="90" y="122" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="700" fill="#f472b6" letter-spacing=".3">TVA</text>
-              <text x="90" y="132" text-anchor="middle" font-family="sans-serif" font-size="7" fill="rgba(255,255,255,.5)">IS · BIC</text>
-              <line x1="68" y1="137" x2="112" y2="137" stroke="#C1007A" stroke-width=".8" opacity=".4"/>
-              <text x="90" y="147" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="rgba(255,255,255,.6)" letter-spacing=".3">FISCAL</text>
+              <text x="90" y="125" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="700" fill="#f472b6">TVA</text>
+              <text x="90" y="142" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="rgba(255,255,255,.6)">FISCAL</text>
             </g>
             <g class="aw-n2">
               <circle cx="390" cy="130" r="34" fill="#1a2a3a"/>
               <circle cx="390" cy="130" r="34" fill="none" stroke="#4FA695" stroke-width="1.2" opacity=".5"/>
-              <circle cx="390" cy="130" r="28" fill="#4FA695" opacity=".12"/>
-              <polyline points="368,138 376,128 384,132 392,122 400,125 408,116" fill="none" stroke="#4FA695" stroke-width="1.5" stroke-linecap="round" opacity=".8"/>
-              <circle cx="408" cy="116" r="2.5" fill="#4FA695" opacity=".9"/>
-              <text x="390" y="150" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="rgba(255,255,255,.6)" letter-spacing=".3">PRÉDICTION</text>
+              <text x="390" y="134" text-anchor="middle" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#4FA695">PRÉDICTION</text>
             </g>
             <g class="aw-n3">
               <circle cx="90" cy="295" r="34" fill="#1a2a3a"/>
               <circle cx="90" cy="295" r="34" fill="none" stroke="#4FA695" stroke-width="1.2" opacity=".5"/>
-              <circle cx="90" cy="295" r="28" fill="#4FA695" opacity=".12"/>
-              <ellipse cx="90" cy="283" rx="16" ry="5" fill="#4FA695" opacity=".3"/>
-              <rect x="74" y="283" width="32" height="12" fill="#4FA695" opacity=".2"/>
-              <ellipse cx="90" cy="295" rx="16" ry="5" fill="#4FA695" opacity=".3"/>
-              <rect x="74" y="295" width="32" height="6" fill="#4FA695" opacity=".15"/>
-              <ellipse cx="90" cy="301" rx="16" ry="5" fill="#4FA695" opacity=".3"/>
-              <text x="90" y="313" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="rgba(255,255,255,.6)" letter-spacing=".3">DONNÉES</text>
+              <text x="90" y="299" text-anchor="middle" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#4FA695">DONNÉES</text>
             </g>
             <g class="aw-n4">
               <circle cx="390" cy="295" r="34" fill="#1a2a3a"/>
               <circle cx="390" cy="295" r="34" fill="none" stroke="#C1007A" stroke-width="1.2" opacity=".5"/>
-              <circle cx="390" cy="295" r="28" fill="#C1007A" opacity=".12"/>
-              <circle cx="384" cy="288" r="10" fill="none" stroke="#f472b6" stroke-width="1.5" opacity=".7"/>
-              <line x1="391" y1="295" x2="398" y2="303" stroke="#f472b6" stroke-width="2" stroke-linecap="round" opacity=".7"/>
-              <line x1="380" y1="285" x2="388" y2="285" stroke="#f472b6" stroke-width=".8" opacity=".5"/>
-              <line x1="381" y1="289" x2="387" y2="289" stroke="#f472b6" stroke-width=".8" opacity=".4"/>
-              <text x="390" y="313" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="rgba(255,255,255,.6)" letter-spacing=".3">AUDIT</text>
+              <text x="390" y="299" text-anchor="middle" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#f472b6">AUDIT</text>
             </g>
             <g class="aw-n5">
               <circle cx="240" cy="62" r="28" fill="#1e2a18"/>
-              <circle cx="240" cy="62" r="28" fill="none" stroke="#b08d57" stroke-width="1.2" opacity=".5"/>
-              <circle cx="240" cy="62" r="22" fill="#b08d57" opacity=".1"/>
-              <rect class="aw-bar" x="225" y="62" width="6" height="14" rx="2" fill="#b08d57" opacity=".7"/>
-              <rect class="aw-bar" x="234" y="56" width="6" height="20" rx="2" fill="#b08d57" opacity=".7"/>
-              <rect class="aw-bar" x="243" y="59" width="6" height="17" rx="2" fill="#b08d57" opacity=".7"/>
-              <text x="240" y="88" text-anchor="middle" font-family="sans-serif" font-size="6" font-weight="700" fill="rgba(255,255,255,.6)" letter-spacing=".3">DASHBOARD</text>
+              <text x="240" y="66" text-anchor="middle" font-family="sans-serif" font-size="6" font-weight="700" fill="rgba(255,255,255,.6)">DASHBOARD</text>
             </g>
-            <line x1="0" y1="360" x2="480" y2="360" stroke="rgba(255,255,255,.06)" stroke-width=".8"/>
             
-            <g class="aw-feedback-cards">
-              <g class="aw-fl1"><rect x="8" y="18" width="110" height="26" rx="13" fill="#0d2420" stroke="#4FA695" stroke-width=".9"/><circle cx="24" cy="31" r="7" fill="#4FA695" opacity=".2"/><text x="24" y="35" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#4FA695">✓</text><text x="111" y="35" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#4FA695">Analyse IA active</text></g>
-              <g class="aw-fl2"><rect x="8" y="52" width="108" height="26" rx="13" fill="#200a14" stroke="#C1007A" stroke-width=".9"/><circle cx="24" cy="65" r="7" fill="#C1007A" opacity=".2"/><text x="24" y="69" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#C1007A">%</text><text x="109" y="69" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#f472b6">Optim. fiscale</text></g>
-              <g class="aw-fl3"><rect x="8" y="86" width="92" height="26" rx="13" fill="#1a1808" stroke="#b08d57" stroke-width=".9"/><circle cx="24" cy="99" r="7" fill="#b08d57" opacity=".2"/><text x="24" y="103" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#b08d57">↑</text><text x="93" y="103" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#b08d57">Prédictions</text></g>
+            <g transform="translate(4, 16)">
+              <g class="aw-fl1"><rect x="8" y="18" width="110" height="26" rx="13" fill="#0d2420" stroke="#4FA695" stroke-width=".9"/><text x="101" y="35" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#4FA695">✓ Analyse active</text></g>
+              <g class="aw-fl2"><rect x="8" y="52" width="108" height="26" rx="13" fill="#200a14" stroke="#C1007A" stroke-width=".9"/><text x="99" y="69" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#f472b6">✓ Optim. fiscale</text></g>
+              <g class="aw-fl3"><rect x="8" y="86" width="92" height="26" rx="13" fill="#1a1808" stroke="#b08d57" stroke-width=".9"/><text x="83" y="103" text-anchor="end" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#b08d57">✓ Prédictions</text></g>
             </g>
           </svg>
         </div>

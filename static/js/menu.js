@@ -54,3 +54,28 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     }
   });
 });
+
+// ============================================================
+//  OBSERVATEUR POUR LES ANIMATIONS D'APPARITION (data-anim)
+// ============================================================
+const animObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    // Dès que l'élément visible entre à 10% dans l'écran, on joue l'animation
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      // Optionnel : on arrête d'observer pour que l'animation ne se joue qu'une seule fois
+      animObserver.unobserve(entry.target);
+    }
+  });
+}, {
+  root: null, // Par rapport au viewport (fenêtre d'affichage)
+  threshold: 0.1, // Se déclenche dès que 10% de l'élément est visible
+  rootMargin: "0px 0px -40px 0px" // Petit décalage vers le bas pour un effet plus naturel
+});
+
+// On cible tous les éléments qui ont l'attribut [data-anim] et on les observe
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll('[data-anim]').forEach(el => {
+    animObserver.observe(el);
+  });
+});

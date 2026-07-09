@@ -1578,13 +1578,17 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
     position: relative;
 }
 
-/* Force tous les fonds noirs racine à devenir blancs */
+/* Force TOUS les grands rectangles et chemins de fond sombres (y compris la barre centrale) à passer en blanc */
 .svc-img-box svg > rect:first-child,
 .svc-img-box svg rect[fill="#080f18"],
 .svc-img-box svg rect[fill="#11161c"],
 .svc-img-box svg rect[fill="#000000"],
 .svc-img-box svg rect[fill="#0e1726"],
-.svc-img-box svg rect[fill="#0d1824"] {
+.svc-img-box svg rect[fill="#0d1824"],
+.svc-img-box svg rect[fill="#111827"],
+.svc-img-box svg path[fill="#080f18"],
+.svc-img-box svg path[fill="#11161c"],
+.svc-img-box svg path[fill="#0d1824"] {
     fill: #ffffff !important;
 }
 
@@ -1605,21 +1609,17 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
     fill: #f8fafc !important; 
 }
 
-/* 4. Le menu latéral sombre du deuxième SVG (Correction visibilité)
-      On transforme le rectangle de fond du menu en un gris doux et élégant */
-.svc-img-box svg rect[fill="#111827"],
-.svc-img-box svg rect[fill="#1f2937"],
+/* 4. Le menu latéral ou structures internes sombres */
 .svc-img-box svg rect[fill="#111c24"] {
     fill: #f1f5f9 !important;
 }
 
 /* 5. GESTION DES TEXTES (Haute visibilité) */
 .svc-img-box svg text {
-    fill: #1e293b !important; /* Couleur par défaut pour le blanc et le gris clair */
+    fill: #1e293b !important; 
 }
 
-/* Sécurité absolue : Force le texte à rester BLANC uniquement si le fond dessous 
-   est resté volontairement très coloré ou sombre (Badges de couleur, notifications...) */
+/* Sécurité absolue : Texte blanc uniquement sur badges ou boutons très colorés */
 .svc-img-box svg rect[fill="#C1007A"] + text,
 .svc-img-box svg rect[fill="#4FA695"] + text,
 .svc-img-box svg rect[fill="#1c2d24"] + text,
@@ -1650,5 +1650,5 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
 .svc-img-box svg path[stroke="#374151"] {
     stroke: #e2e8f0 !important; 
 }
-.svc-img-box svg line[stroke="#C1007A"] { stroke: #C1007A !important; }
-.svc-img-box svg line[stroke="#4FA695"] { stroke: #4FA695 !important; }
+.svc-img-box svg line[stroke="#C1007A"], .svc-img-box svg path[stroke="#C1007A"] { stroke: #C1007A !important; }
+.svc-img-box svg line[stroke="#4FA695"], .svc-img-box svg path[stroke="#4FA695"] { stroke: #4FA695 !important; }

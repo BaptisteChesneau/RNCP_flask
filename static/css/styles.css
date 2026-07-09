@@ -7236,3 +7236,227 @@ body {
   .avantages-grid { grid-template-columns: 1fr; }
   .cta-bande { padding: 2rem 1.5rem; }
 }
+
+/* ==========================================================================
+   PAGES DE SERVICES & SECONDAIRES — STRUCTURE COMMUNE FACTORISÉE
+   ========================================================================== */
+
+/* En-tête de page générique (Permet un fond couleur OU une image) */
+.page-hero {
+  background: linear-gradient(120deg, #2d3436 0%, #3d4549 100%);
+  padding: 80px 0 72px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Si vous voulez mettre une image de fond en HTML, ajoutez cette classe à votre image */
+.page-hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  opacity: 0.25; /* Laisse passer le texte en blanc par-dessus */
+}
+
+.page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 75% 50%, rgba(193,0,122,.14) 0%, transparent 60%);
+  z-index: -1;
+}
+
+.page-hero::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: #f5f6f7;
+  clip-path: ellipse(55% 100% at 50% 100%);
+}
+
+.ph-inner {
+  position: relative;
+  z-index: 2;
+}
+
+/* Fil d'Ariane */
+.breadcrumb-ml2c {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .75rem;
+  color: rgba(255,255,255,.38);
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1.5rem;
+}
+
+.breadcrumb-ml2c a {
+  color: rgba(255,255,255,.38);
+  transition: color .2s;
+}
+
+.breadcrumb-ml2c a:hover {
+  color: #f9a8d4;
+}
+
+.breadcrumb-ml2c .sep {
+  font-size: .5rem;
+}
+
+.ph-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.ph-title em {
+  color: #f9a8d4;
+  font-style: italic;
+  margin-left: 0.5rem;
+  display: inline-block;
+}
+
+.ph-sub {
+  font-size: .97rem;
+  color: rgba(255,255,255,.62);
+  max-width: 600px;
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* --- STRUCTURE DES BLOCS SERVICES --- */
+.svc-bloc {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  align-items: stretch;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 4px 32px rgba(0,0,0,.09);
+}
+
+.svc-visuel {
+  min-height: 400px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  overflow: hidden;
+}
+
+/* Variantes de couleurs pour les visuels de services */
+.svc-visuel.v-rose { background: linear-gradient(145deg, #fce4f3 0%, #C1007A 100%); }
+.svc-visuel.v-turq { background: linear-gradient(145deg, #d4f0ec 0%, #4FA695 100%); }
+.svc-visuel.v-gris { background: linear-gradient(145deg, #dde0e2 0%, #5C666B 100%); }
+
+.svc-deco-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14rem;
+  font-weight: 700;
+  line-height: 1;
+  position: absolute;
+  bottom: -2rem;
+  right: -1rem;
+  opacity: .1;
+  color: #fff;
+  user-select: none;
+  pointer-events: none;
+}
+
+.svc-icon-wrap {
+  width: 90px;
+  height: 90px;
+  border-radius: 22px;
+  background: rgba(255,255,255,.25);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: #fff;
+  box-shadow: 0 8px 28px rgba(0,0,0,.15);
+  position: relative;
+  z-index: 1;
+}
+
+.svc-badge {
+  font-size: .73rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.95);
+  background: rgba(0,0,0,.22);
+  border-radius: 20px;
+  padding: .4rem 1.1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.svc-texte {
+  background: #fff;
+  padding: 3.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.svc-texte h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: .2rem;
+  line-height: 1.2;
+}
+
+.svc-texte .svc-sous {
+  font-size: .82rem;
+  color: #C1007A;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: .2rem;
+}
+
+.svc-texte .barre { 
+  margin-top: .75rem; 
+  margin-bottom: 1.1rem; 
+}
+
+.svc-texte p { 
+  font-size: .93rem; 
+  color: #6b7280; 
+  line-height: 1.85; 
+  margin-bottom: 1rem; 
+}
+
+/* --- EFFETS ET ANIMATIONS REPLIÉES --- */
+[data-anim] {
+  opacity: 0;
+  transition: opacity .55s ease, transform .55s ease;
+}
+[data-anim="fade"]  { transform: translateY(22px); }
+[data-anim="left"]  { transform: translateX(-28px); }
+[data-anim="right"] { transform: translateX(28px); }
+[data-anim].visible { opacity: 1 !important; transform: translate(0) !important; }
+
+/* Responsive unique pour toutes les pages */
+@media(max-width: 992px) {
+  .svc-bloc { grid-template-columns: 1fr; }
+  .svc-visuel { min-height: 200px; }
+  .svc-texte { padding: 2rem 1.75rem; }
+  .avantages-grid { grid-template-columns: 1fr 1fr; }
+  .hero-title { white-space: normal; } /* Évite le bug de texte qui dépasse sur mobile */
+}

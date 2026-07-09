@@ -1560,17 +1560,17 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
 }
 
 /* ============================================================
-   DESIGN DES CONTENEURS SVG (FONDS NOIR & BLANC OPTIMISÉ)
+   DESIGN DES CONTENEURS SVG (EFFET VITRINE CLAIR OPTIMISÉ)
    ============================================================ */
 
-/* 1. Le fond global de la boîte de l'image (Noir profond technologique) */
+/* 1. L'arrière-plan global de la boîte (Passage au Blanc / Gris très clair épuré) */
 .svc-img-box {
-    background: #080f18 !important; 
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: #f8fafc !important; /* Fond de boîte clair au lieu de noir */
+    border: 1px solid #e2e8f0;
     border-radius: 16px;
     overflow: hidden;
     padding: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* Ombre beaucoup plus douce */
     min-height: 260px;
     display: flex;
     align-items: center;
@@ -1578,34 +1578,34 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
     position: relative;
 }
 
-/* Force l'arrière-plan du SVG à adopter ce noir jais */
+/* Force l'élément de fond du SVG à suivre ce ton clair */
 .svc-img-box svg > rect:first-child {
-    fill: #080f18 !important;
+    fill: #f8fafc !important;
 }
 
-/* 2. Le fond des feuilles/cartes principales (Blanc pur contrasté) */
+/* 2. Le fond des feuilles/cartes intérieures (Blanc pur pour créer le contraste) */
 .svc-img-box svg rect[fill="#f5f2ec"], 
 .svc-img-box svg rect[fill="#f0ede6"],
-.svc-img-box svg rect[fill="#fff"],
 .svc-img-box svg rect[fill="#fff5fb"],
-.svc-img-box svg rect[fill="#edfaf7"] {
+.svc-img-box svg rect[fill="#edfaf7"],
+.svc-img-box svg rect[fill="#080f18"], /* Si le SVG avait un fond forcé noir internement */
+.svc-img-box svg rect[fill="#fff"] {
     fill: #ffffff !important; 
 }
 
-/* 3. Ajustement des encadrés internes (ex: Santé Financière, Assistant Virtuel) 
-      On les passe dans un gris très clair pour un effet épuré et lisible */
+/* 3. Les encadrés internes (ex: Santé Financière, Assistant Virtuel) */
 .svc-img-box svg rect[fill="#1a2533"],
 .svc-img-box svg rect[fill="#1a1a2e"],
 .svc-img-box svg rect[fill="#13202e"] {
-    fill: #f4f6f9 !important;
+    fill: #edf2f7 !important; /* Gris doux pour détacher les petits blocs */
 }
 
-/* 4. Gestion intelligente de la couleur des textes pour le contraste */
+/* 4. Textes intérieurs (Noir pour une lecture parfaite) */
 .svc-img-box svg text {
-    fill: #11161c !important; /* Par défaut, écriture noire sur les feuilles blanches */
+    fill: #1e293b !important; 
 }
 
-/* Sécurité : Si un texte se trouve sur un bandeau de titre resté sombre (ex: "ANALYSE IA"), il RESTE blanc */
+/* Sécurité pour les textes sur bandeaux de couleur restés sombres (ex: "ANALYSE IA") */
 .svc-img-box svg rect[fill="#1c2d24"] + text,
 .svc-img-box svg rect[fill="#2a1020"] + text,
 .svc-img-box svg rect[fill="#1a3333"] + text,
@@ -1613,23 +1613,23 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
     fill: #ffffff !important; 
 }
 
-/* 5. Coloris de la charte (Rose Fuchsia & Vert Émeraude) pour les chiffres et les icônes clés */
+/* 5. Rappels de la charte (Turquoise & Rose) */
 .svc-img-box svg text[font-weight="700"],
 .svc-img-box svg text[fill="#4FA695"],
 .svc-img-box svg text[fill="#0f6e56"],
 .svc-img-box svg text[fill="#3a7d70"] {
-    fill: #4FA695 !important; /* Vert émeraude pour le score "88", les puces et les indicateurs */
+    fill: #4FA695 !important; 
 }
 
 .svc-img-box svg text[fill="#C1007A"],
 .svc-img-box svg text[fill="#9a0062"] {
-    fill: #C1007A !important; /* Rose fuchsia pour les alertes et les titres roses */
+    fill: #C1007A !important; 
 }
 
-/* 6. Les lignes de séparation intérieures et diagrammes (Gris clair) */
+/* 6. Lignes et séparateurs */
 .svc-img-box svg line,
 .svc-img-box svg polyline {
-    stroke: #eaedf1 !important; 
+    stroke: #e2e8f0 !important; 
 }
 .svc-img-box svg line[stroke="#C1007A"] { stroke: #C1007A !important; }
 .svc-img-box svg line[stroke="#4FA695"] { stroke: #4FA695 !important; }

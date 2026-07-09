@@ -7460,3 +7460,48 @@ body {
   .avantages-grid { grid-template-columns: 1fr 1fr; }
   .hero-title { white-space: normal; } /* Évite le bug de texte qui dépasse sur mobile */
 }
+
+/* ============================================================
+   DESIGN DES CONTENEURS SVG (FONDS NOIR & BLANC + COLORIS COULEURS)
+   ============================================================ */
+
+/* 1. Le fond global de la boîte de l'image (Noir profond) */
+.svc-img-box {
+    background-color: #080f18 !important; /* Fond noir de la boîte */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    overflow: hidden;
+    padding: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* 2. Le fond des "pages" ou "cartes" à l'intérieur du dessin (Blanc pur contrasté) */
+.svc-img-box svg rect[fill="#f5f2ec"], 
+.svc-img-box svg rect[fill="#f0ede6"],
+.svc-img-box svg rect[fill="#fff"] {
+    fill: #ffffff !important; /* Force les feuilles/tableaux en blanc pur */
+}
+
+/* 3. Les textes principaux à l'intérieur des feuilles blanches (Noir pour lisibilité) */
+.svc-img-box svg text[fill="#1a1a2e"],
+.svc-img-box svg text[fill="#3d3d3d"],
+.svc-img-box svg text[fill="#5a5450"] {
+    fill: #11161c !important; /* Force les textes en noir/sombre sur fond blanc */
+}
+
+/* 4. Gestion des touches de couleur de la charte (Vos Coloris) */
+.svc-img-box svg .ic-ledger rect[fill*="C1007A"],
+.svc-img-box svg rect[stroke="#C1007A"] {
+    stroke: #C1007A !important; /* Rappel du Rose Fuchsia */
+}
+
+.svc-img-box svg .ic-ledger text[fill="#4FA695"],
+.svc-img-box svg text[fill="#4FA695"] {
+    fill: #4FA695 !important; /* Rappel du Vert Émeraude */
+}
+
+/* 5. Les lignes de séparation intérieures (Gris très clair) */
+.svc-img-box svg line[stroke="#e8e2d9"],
+.svc-img-box svg line[stroke="#d4cdc0"] {
+    stroke: #eaedf1 !important; 
+}

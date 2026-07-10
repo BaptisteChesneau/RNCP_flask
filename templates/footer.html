@@ -6,12 +6,103 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  
+  <style>
+    .chatbot-widget {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      width: 350px;
+      max-height: 500px;
+      height: 80vh;
+      background: #fff;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+      border-radius: 12px;
+      display: none; /* Caché par défaut */
+      flex-direction: column;
+      z-index: 9999;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+    .chatbot-widget.is-open {
+      display: flex !important;
+    }
+    .chatbot-fab {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #C1007A;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      z-index: 10000;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .chatbot-fab .icon-close { display: none; color: white; font-size: 24px; }
+    .chatbot-fab.is-open .icon-close { display: block; }
+    .chatbot-fab.is-open .fab-avatar { display: none; }
+    
+    .fab-avatar img, .cw-avatar-human img, .cw-msg-av-human img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+    .fab-avatar { width: 45px; height: 45px; }
+    .cw-avatar-human { width: 40px; height: 40px; margin-right: 10px; }
+    .cw-msg-av-human { width: 35px; height: 35px; margin-right: 8px; flex-shrink: 0; }
+    
+    .chatbot-notif {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      background: red;
+      color: white;
+      font-size: 12px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: none; /* Géré par le JS */
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    .cw-header { background: #C1007A; color: white; padding: 12px; display: flex; align-items: center; position: relative; }
+    .cw-status { display: block; font-size: 11px; opacity: 0.9; }
+    .cw-dot { display: inline-block; width: 8px; height: 8px; background: #2ecc71; border-radius: 50%; margin-right: 4px; }
+    .cw-minimize { background: none; border: none; color: white; position: absolute; right: 15px; top: 18px; cursor: pointer; }
+    
+    .cw-body { flex: 1; padding: 15px; overflow-y: auto; background: #f8f9fa; display: flex; flex-direction: column; }
+    .cw-msg { display: flex; margin-bottom: 15px; align-items: flex-start; }
+    .cw-msg.user { flex-direction: row-reverse; }
+    .cw-msg.user .cw-msg-av { display: none; }
+    .cw-bubble { max-width: 75%; padding: 10px 14px; border-radius: 15px; font-size: 14px; line-height: 1.4; }
+    .cw-msg.bot .cw-bubble { background: white; color: #333; border-top-left-radius: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .cw-msg.user .cw-bubble { background: #C1007A; color: white; border-top-right-radius: 0; }
+    
+    .cw-quick { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; padding-left: 43px; }
+    .cw-qbtn { background: white; border: 1px solid #C1007A; color: #C1007A; padding: 6px 12px; border-radius: 20px; font-size: 13px; cursor: pointer; transition: 0.2s; }
+    .cw-qbtn:hover { background: #C1007A; color: white; }
+    
+    .cw-typing { display: none; padding: 10px 15px; background: transparent; }
+    .cw-typing.show { display: flex; gap: 4px; padding-left: 58px; }
+    .cw-typing span { width: 6px; height: 6px; background: #aaa; border-radius: 50%; animation: blink 1.4s infinite both; }
+    .cw-typing span:nth-child(2) { animation-delay: .2s; }
+    .cw-typing span:nth-child(3) { animation-delay: .4s; }
+    @keyframes blink { 0% { opacity: .2; } 20% { opacity: 1; } 100% { opacity: .2; } }
+    
+    .cw-footer { padding: 10px; border-top: 1px solid #eee; display: flex; background: white; }
+    .cw-input { flex: 1; border: 1px solid #ddd; padding: 8px 12px; border-radius: 20px; outline: none; font-size: 14px; }
+    .cw-send { background: none; border: none; color: #C1007A; font-size: 18px; margin-left: 8px; cursor: pointer; }
+  </style>
 </head>
 <body>
 
-  <!-- ══════════════════════════════════════════
-       CHATBOT FAB (flottant, toutes les pages)
-  ══════════════════════════════════════════ -->
   <button class="chatbot-fab" id="chatFab" onclick="toggleChat()" aria-label="Parler à un conseiller">
     <div class="fab-avatar icon-open">
       <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy&eyebrows=default" alt="Chatbot ML2C">
@@ -20,14 +111,13 @@
     <span class="chatbot-notif" id="chatNotif">1</span>
   </button>
 
-  <!-- CHATBOT WIDGET -->
   <div class="chatbot-widget" id="chatWidget">
     <div class="cw-header">
       <div class="cw-avatar-human">
         <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy&eyebrows=default" alt="Chatbot ML2C">
       </div>
       <div>
-        <span class="cw-name">Chatbot ML2C</span>
+        <span class="cw-name" style="font-weight:bold; display:block;">Chatbot ML2C</span>
         <span class="cw-status"><span class="cw-dot"></span> Disponible maintenant</span>
       </div>
       <button class="cw-minimize" onclick="toggleChat()"><i class="fas fa-minus"></i></button>
@@ -54,14 +144,10 @@
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════
-       FOOTER
-  ══════════════════════════════════════════ -->
   <footer class="footer-custom">
     <div class="container">
       <div class="footer-grid">
 
-        <!-- Col 1 : Brand + réseaux sociaux -->
         <div class="footer-col footer-brand">
           <a href="{{ url_for('menu') }}">
             <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="ML2C CONSEIL" class="footer-logo">
@@ -80,7 +166,6 @@
           </div>
         </div>
 
-        <!-- Col 2 : Le Cabinet -->
         <div class="footer-col">
           <h4 class="footer-col-title">Le Cabinet</h4>
           <ul class="footer-links">
@@ -91,7 +176,6 @@
           </ul>
         </div>
 
-        <!-- Col 3 : Nos Services -->
         <div class="footer-col">
           <h4 class="footer-col-title">Nos Services</h4>
           <ul class="footer-links">
@@ -103,7 +187,6 @@
           </ul>
         </div>
 
-        <!-- Col 4 : Coordonnées -->
         <div class="footer-col">
           <h4 class="footer-col-title">Contact</h4>
           <ul class="footer-contact-list">
@@ -127,9 +210,8 @@
 
       </div>
 
-      <!-- Barre basse : copyright + liens légaux -->
       <div class="footer-bottom">
-        <span>© 2025 ML2C CONSEIL — Tous droits réservés</span>
+        <span>© 2026 ML2C CONSEIL — Tous droits réservés</span>
         <div class="footer-bottom-links">
           <a href="{{ url_for('rgpd') }}">RGPD</a>
           <a href="{{ url_for('mentions_legales') }}">Mentions légales</a>
@@ -141,16 +223,23 @@
     </div>
   </footer>
 
-  <!-- Scripts Bootstrap + jQuery -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
     // ── Toggle chatbot ──
     function toggleChat() {
-      document.getElementById('chatWidget').classList.toggle('is-open');
-      document.getElementById('chatFab').classList.toggle('is-open');
-      document.getElementById('chatNotif').classList.add('hide');
+      const widget = document.getElementById('chatWidget');
+      const fab = document.getElementById('chatFab');
+      const notif = document.getElementById('chatNotif');
+      
+      if (widget && fab) {
+        widget.classList.toggle('is-open');
+        fab.classList.toggle('is-open');
+      }
+      if (notif) {
+        notif.style.display = 'none'; 
+      }
     }
 
     // ── Réponses chatbot ──
@@ -181,6 +270,7 @@
 
     function addMsg(html, role) {
       const body = document.getElementById('cwBody');
+      if (!body) return;
       const div = document.createElement('div');
       div.className = `cw-msg ${role}`;
       div.innerHTML = role === 'bot'
@@ -192,18 +282,24 @@
 
     function sendMsg() {
       const inp = document.getElementById('cwInput');
+      if (!inp) return;
       const txt = inp.value.trim();
       if (!txt) return;
+      
       inp.value = '';
       inp.disabled = true;
+      
       const q = document.getElementById('cwQuick');
       if (q) q.style.display = 'none';
+      
       addMsg(txt, 'user');
+      
       const typing = document.getElementById('cwTyping');
-      typing.classList.add('show');
+      if (typing) typing.classList.add('show');
+      
       const delay = 900 + Math.random() * 700;
       setTimeout(() => {
-        typing.classList.remove('show');
+        if (typing) typing.classList.remove('show');
         addMsg(getReply(txt), 'bot');
         inp.disabled = false;
         inp.focus();
@@ -211,25 +307,34 @@
     }
 
     function quickSend(txt) {
-      document.getElementById('cwInput').value = txt;
-      sendMsg();
+      const inp = document.getElementById('cwInput');
+      if (inp) {
+        inp.value = txt;
+        sendMsg();
+      }
     }
 
-    // Badge apparaît après 4s
+    // Gestion propre de l'affichage du badge de notification
     setTimeout(() => {
       const n = document.getElementById('chatNotif');
-      if (n) n.classList.remove('hide');
+      const widget = document.getElementById('chatWidget');
+      // On l'affiche seulement si le widget n'est pas déjà ouvert
+      if (n && widget && !widget.classList.contains('is-open')) {
+        n.style.display = 'flex'; 
+      }
     }, 4000);
 
-    // Message de relance après 12s si pas d'interaction
+    // Relance
     setTimeout(() => {
       const widget = document.getElementById('chatWidget');
-      if (!widget.classList.contains('is-open')) {
+      if (widget && !widget.classList.contains('is-open')) {
         const n = document.getElementById('chatNotif');
-        if (n) { n.textContent = '1'; n.classList.remove('hide'); }
+        if (n) { 
+          n.textContent = '1'; 
+          n.style.display = 'flex'; 
+        }
       }
     }, 12000);
-
   </script>
 
 </body>

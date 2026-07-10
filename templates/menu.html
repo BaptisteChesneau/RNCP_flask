@@ -178,17 +178,19 @@
             <circle cx="425" cy="185" r="3.5" fill="#b08d57"/>
             <text x="432" y="188" font-family="monospace" font-size="7" fill="#b08d57" font-weight="700">+18%</text>
             
-            <rect x="264" y="240" width="80" height="42" rx="5" fill="#fff5fb" stroke="#C1007A" stroke-width=".8"/>
-            <rect x="264" y="240" width="80" height="12" rx="5" fill="#C1007A" opacity=".12"/>
-            <text x="304" y="249" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="#9a0062">DÉCL. TVA</text>
-            <text x="304" y="263" text-anchor="middle" font-family="monospace" font-size="7.5" font-weight="700" fill="#1a1a2e">48 600 €</text>
-            <text x="304" y="275" text-anchor="middle" font-family="sans-serif" font-size="6" fill="#3a7d70" font-weight="700">✓ Déposée</text>
-            
-            <rect x="354" y="240" width="80" height="42" rx="5" fill="#edfaf7" stroke="#4FA695" stroke-width=".8"/>
-            <rect x="354" y="240" width="80" height="12" rx="5" fill="#4FA695" opacity=".12"/>
-            <text x="394" y="249" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="#0f6e56">LIASSE IS</text>
-            <text x="394" y="263" text-anchor="middle" font-family="monospace" font-size="7.5" font-weight="700" fill="#1a1a2e">18 420 €</text>
-            <text x="394" y="275" text-anchor="middle" font-family="sans-serif" font-size="6" fill="#b08d57" font-weight="700">⏳ En cours</text>
+            <!-- CASE 1 : TVA (Fuchsia soutenu pour l'en-tête, texte blanc) -->
+            <rect x="264" y="240" width="80" height="42" rx="5" fill="#fff" stroke="#C1007A" stroke-width="1"/>
+            <rect x="264" y="240" width="80" height="13" rx="5" fill="#C1007A"/> <!-- Fond uni sans opacité -->
+            <text x="304" y="249" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="#ffffff">DÉCL. TVA</text> <!-- Texte en blanc pur -->
+            <text x="304" y="264" text-anchor="middle" font-family="monospace" font-size="8" font-weight="700" fill="#1a1a2e">48 600 €</text>
+            <text x="304" y="276" text-anchor="middle" font-family="sans-serif" font-size="6.5" fill="#0f6e56" font-weight="700">✓ Déposée</text>
+
+            <!-- CASE 2 : IS (Vert/Turquoise soutenu pour l'en-tête, texte blanc) -->
+            <rect x="354" y="240" width="80" height="42" rx="5" fill="#fff" stroke="#4FA695" stroke-width="1"/>
+            <rect x="354" y="240" width="80" height="13" rx="5" fill="#4FA695"/> <!-- Fond uni sans opacité -->
+            <text x="394" y="249" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="#ffffff">LIASSE IS</text> <!-- Texte en blanc pur -->
+            <text x="394" y="264" text-anchor="middle" font-family="monospace" font-size="8" font-weight="700" fill="#1a1a2e">18 420 €</text>
+            <text x="394" y="276" text-anchor="middle" font-family="sans-serif" font-size="6.5" fill="#b08d57" font-weight="700">⏳ En cours</text>
           </svg>
         </div>
         

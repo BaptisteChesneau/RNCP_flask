@@ -1669,3 +1669,24 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
 }
 .svc-img-box svg line[stroke="#C1007A"], .svc-img-box svg path[stroke="#C1007A"] { stroke: #C1007A !important; }
 .svc-img-box svg line[stroke="#4FA695"], .svc-img-box svg path[stroke="#4FA695"] { stroke: #4FA695 !important; }
+
+/* Modification de la carte mise en avant pour appliquer le fuchsia d'origine */
+.why-grid .why-card.featured, 
+.why-grid .why-card-featured { 
+    background: linear-gradient(135deg, #C1007A, #9a0062) !important; 
+    color: #ffffff !important; 
+    border: none !important;
+    box-shadow: 0 10px 30px rgba(193, 0, 122, 0.2) !important;
+}
+
+/* Force les textes intérieurs à repasser en blanc pur pour la lisibilité */
+.why-grid .why-card.featured h3, 
+.why-grid .why-card.featured p { 
+    color: #ffffff !important; 
+}
+
+/* Ajustement de l'icône sur le fond fuchsia */
+.why-grid .why-card.featured .why-icon { 
+    background: rgba(255, 255, 255, 0.2) !important; 
+    color: #ffffff !important; 
+}

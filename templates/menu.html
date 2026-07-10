@@ -489,23 +489,30 @@
 
 {% include "footer.html" %}
 
-<div class="chatbot-fab">
+<button class="chatbot-fab" id="chatFab" onclick="toggleChat()" aria-label="Parler à un conseiller">
   <i class="fas fa-comments"></i>
-  <span class="chatbot-notif">1</span>
-</div>
+  <span class="chatbot-notif" id="chatNotif" style="display:none;">1</span>
+</button>
 
-<div class="chatbot-widget">
+<div class="chatbot-widget" id="chatWidget">
   <div class="cw-header">
     <div class="cw-title"><i class="fas fa-robot"></i> Assistant ML2C</div>
-    <button class="cw-minimize"><i class="fas fa-chevron-down"></i></button>
+    <button class="cw-minimize" onclick="toggleChat()"><i class="fas fa-chevron-down"></i></button>
   </div>
-  <div class="cw-body">
-    <p class="bot-msg">Bonjour ! Je suis l'IA de ML2C. Comment puis-je vous aider aujourd'hui ?</p>
+  
+  <div class="cw-body" id="cwBody">
+    <div class="cw-msg bot">
+      <div class="cw-bubble">
+        Bonjour ! Je suis l'IA de ML2C. Comment puis-je vous aider aujourd'hui ?
+      </div>
+    </div>
   </div>
+  
   <div class="cw-footer">
-    <input type="text" placeholder="Écrivez votre message...">
-    <button class="cw-send"><i class="fas fa-paper-plane"></i></button>
+    <input type="text" id="cwInput" placeholder="Écrivez votre message..." onkeydown="if(event.key==='Enter')sendMsg()">
+    <button class="cw-send" onclick="sendMsg()"><i class="fas fa-paper-plane"></i></button>
   </div>
+</div>>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

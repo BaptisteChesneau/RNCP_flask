@@ -1633,7 +1633,7 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
 
 /* 5. GESTION DES TEXTES (Haute visibilité) */
 .svc-img-box svg text {
-    fill: #1e293b !important; 
+    fill: #1e293b; /* Retrait du !important qui bloquait tout */
 }
 
 /* Sécurité absolue : Texte blanc uniquement sur badges ou boutons très colorés */

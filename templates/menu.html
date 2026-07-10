@@ -112,8 +112,10 @@
     <div class="svc-panels">
 
       <!-- PANNEAU 1 : COMPTABILITÉ -->
+<div class="svc-panels">
+
       <div class="svc-panel active" id="svc-compta">
-        <div class="svc-img-box svc-illus-compta">
+        <div class="svc-img-box svc-illus-compta" style="background-color: #ffffff; padding: 15px; border-radius: 8px;">
           <svg viewBox="0 0 480 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <rect width="480" height="400" fill="#0d1824"/>
             <ellipse cx="360" cy="80" rx="180" ry="140" fill="#C1007A" opacity=".10"/>
@@ -123,7 +125,6 @@
             <rect x="228" y="40" width="24" height="310" fill="#ffffff"/>
             <line x1="240" y1="44" x2="240" y2="346" stroke="#C1007A" stroke-width="1.5" opacity=".4"/>
             
-            <!-- PAGE GAUCHE : VUE SIMPLE COMPTABILITÉ -->
             <rect x="36" y="46" width="188" height="298" rx="6" fill="#f5f2ec"/>
             <rect x="36" y="46" width="188" height="22" rx="6" fill="#1a1a2e"/>
             <text x="130" y="60" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="700" fill="#fff" letter-spacing="1">ACTIVITÉ</text>
@@ -152,7 +153,6 @@
             <rect x="36" y="309" width="188" height="35" fill="#1a1a2e"/>
             <text x="130" y="330" text-anchor="middle" font-family="sans-serif" font-size="7" font-weight="700" fill="rgba(255,255,255,0.4)" letter-spacing="0.5">SYNCHRONISATION TEMPS RÉEL</text>
             
-            <!-- PAGE DROITE : TABLEAU DE BORD -->
             <rect x="256" y="46" width="188" height="298" rx="6" fill="#f0ede6"/>
             <rect x="256" y="46" width="188" height="22" rx="6" fill="#1a3333"/>
             <text x="350" y="60" text-anchor="middle" font-family="Georgia,serif" font-size="9" font-weight="700" fill="#fff" letter-spacing="1">TABLEAU DE BORD</text>
@@ -193,22 +193,21 @@
         </div>
         
         <div class="svc-content">
-          <h3>Tenue comptable &amp; Fiscalité</h3>
+          <h3 style="color: #1a3333;">Tenue comptable &amp; Fiscalité</h3>
           <p>Nous prenons en charge l'intégralité de votre comptabilité au quotidien : saisie des pièces, lettrage, révision des comptes et établissement des bilans annuels. Notre approche proactive vous permet d'anticiper vos échéances fiscales et d'éviter toute pénalité.</p>
           <ul class="svc-list">
-            <li><i class="fas fa-check"></i> Tenue de comptabilité complète &amp; révision</li>
-            <li><i class="fas fa-check"></i> Bilans, comptes de résultat &amp; annexes</li>
-            <li><i class="fas fa-check"></i> Déclarations TVA, IS, BIC/BNC &amp; liasses fiscales</li>
-            <li><i class="fas fa-check"></i> Pilotage par tableaux de bord personnalisés</li>
-            <li><i class="fas fa-check"></i> Alertes anticipées sur vos obligations fiscales</li>
+            <li><i class="fas fa-check" style="color: #1a3333;"></i> Tenue de comptabilité complète &amp; révision</li>
+            <li><i class="fas fa-check" style="color: #1a3333;"></i> Bilans, comptes de résultat &amp; annexes</li>
+            <li><i class="fas fa-check" style="color: #1a3333;"></i> Déclarations TVA, IS, BIC/BNC &amp; liasses fiscales</li>
+            <li><i class="fas fa-check" style="color: #1a3333;"></i> Pilotage par tableaux de bord personnalisés</li>
+            <li><i class="fas fa-check" style="color: #1a3333;"></i> Alertes anticipées sur vos obligations fiscales</li>
           </ul>
           <a href="{{ url_for('devis') }}" class="btn-svc">Demander un devis <i class="fas fa-arrow-right"></i></a>
         </div>
       </div>
 
-      <!-- PANNEAU 2 : SOCIAL & PAIE -->
       <div class="svc-panel" id="svc-social">
-        <div class="svc-img-box svc-illus-social">
+        <div class="svc-img-box svc-illus-social" style="background-color: #ffffff; padding: 15px; border-radius: 8px;">
           <svg viewBox="0 0 480 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <rect width="480" height="400" fill="#0d1824"/>
             <ellipse cx="380" cy="70" rx="200" ry="130" fill="#4FA695" opacity=".08"/>
@@ -218,7 +217,6 @@
             <rect x="228" y="40" width="24" height="310" fill="#ffffff"/>
             <line x1="240" y1="44" x2="240" y2="346" stroke="#4FA695" stroke-width="1.5" opacity=".4"/>
             
-            <!-- PAGE GAUCHE : GESTION SOCIALE SIMPLIFIEE -->
             <rect x="36" y="46" width="188" height="298" rx="6" fill="#f5f2ec"/>
             <rect x="36" y="46" width="188" height="22" rx="6" fill="#1a1a2e"/>
             <text x="130" y="60" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="700" fill="#fff" letter-spacing="1">SUIVI SOCIAL</text>
@@ -250,7 +248,6 @@
             <rect x="36" y="309" width="188" height="35" fill="#1a1a2e"/>
             <text x="130" y="330" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="rgba(255,255,255,0.4)">CONFORMITÉ SOCIALE GARANTIE</text>
 
-            <!-- PAGE DROITE : MODEL BULLETIN -->
             <rect x="256" y="46" width="188" height="298" rx="6" fill="#f0ede6"/>
             <rect x="256" y="46" width="188" height="22" rx="6" fill="#1a2533"/>
             <text x="350" y="60" text-anchor="middle" font-family="Georgia,serif" font-size="9" font-weight="700" fill="#fff" letter-spacing="1">BULLETIN MODÈLE</text>
@@ -283,22 +280,21 @@
         </div>
         
         <div class="svc-content">
-          <h3>Paie &amp; Gestion sociale</h3>
+          <h3 style="color: #C1007A;">Paie &amp; Gestion sociale</h3>
           <p>Externalisez votre paie en toute sérénité. Nous gérons l'ensemble du cycle social de votre entreprise : de l'embauche à la sortie du salarié, en passant par les déclarations obligatoires. Vous restez concentré sur votre cœur de métier.</p>
           <ul class="svc-list">
-            <li><i class="fas fa-check"></i> Établissement des bulletins de paie</li>
-            <li><i class="fas fa-check"></i> DSN mensuelle &amp; déclarations sociales</li>
-            <li><i class="fas fa-check"></i> Gestion des entrées &amp; sorties de personnel</li>
-            <li><i class="fas fa-check"></i> Conseil en droit du travail au quotidien</li>
-            <li><i class="fas fa-check"></i> Optimisation de la rémunération dirigeant</li>
+            <li><i class="fas fa-check" style="color: #C1007A;"></i> Établissement des bulletins de paie</li>
+            <li><i class="fas fa-check" style="color: #C1007A;"></i> DSN mensuelle &amp; déclarations sociales</li>
+            <li><i class="fas fa-check" style="color: #C1007A;"></i> Gestion des entrées &amp; sorties de personnel</li>
+            <li><i class="fas fa-check" style="color: #C1007A;"></i> Conseil en droit du travail au quotidien</li>
+            <li><i class="fas fa-check" style="color: #C1007A;"></i> Optimisation de la rémunération dirigeant</li>
           </ul>
           <a href="{{ url_for('devis') }}" class="btn-svc">Demander un devis <i class="fas fa-arrow-right"></i></a>
         </div>
       </div>
 
-      <!-- PANNEAU 3 : JURIDIQUE -->
       <div class="svc-panel" id="svc-juridique">
-        <div class="svc-img-box svc-illus-juridique">
+        <div class="svc-img-box svc-illus-juridique" style="background-color: #ffffff; padding: 15px; border-radius: 8px;">
           <svg viewBox="0 0 480 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <rect width="480" height="400" fill="#0d1824"/>
             <ellipse cx="360" cy="80" rx="200" ry="140" fill="#b08d57" opacity=".08"/>
@@ -308,7 +304,6 @@
             <rect x="228" y="40" width="24" height="310" fill="#ffffff"/>
             <line x1="240" y1="44" x2="240" y2="346" stroke="#b08d57" stroke-width="1.5" opacity=".4"/>
             
-            <!-- PAGE GAUCHE : ACTE STATUTS SECURISE -->
             <rect x="36" y="46" width="188" height="298" rx="6" fill="#f5f2ec"/>
             <rect x="36" y="46" width="188" height="22" rx="6" fill="#1a1a2e"/>
             <text x="130" y="60" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="700" fill="#fff" letter-spacing="1">DOCUMENT LEGAL</text>
@@ -332,7 +327,6 @@
             <rect x="36" y="309" width="188" height="35" fill="#1a1a2e"/>
             <text x="130" y="330" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="rgba(255,255,255,0.4)">ACTES JURIDIQUES SÉCURISÉS</text>
 
-            <!-- PAGE DROITE : EXTRAIT K-BIS SÉCURISÉ -->
             <rect x="256" y="46" width="188" height="298" rx="6" fill="#f0ede6"/>
             <rect x="256" y="46" width="188" height="22" rx="6" fill="#1c2d24"/>
             <text x="350" y="60" text-anchor="middle" font-family="Georgia,serif" font-size="9" font-weight="700" fill="#fff" letter-spacing="1">GREFFE DU TRIBUNAL</text>
@@ -363,22 +357,21 @@
         </div>
         
         <div class="svc-content">
-          <h3>Conseil juridique &amp; Création</h3>
+          <h3 style="color: #1c2d24;">Conseil juridique &amp; Création</h3>
           <p>De la création à la transmission de votre entreprise, nous vous gérons à chaque étape clé : choix de la forme juridique, rédaction des statuts, accompagnement lors des cessions ou fusions. Un expert à vos côtés pour sécuriser chaque décision.</p>
           <ul class="svc-list">
-            <li><i class="fas fa-check"></i> Création, immatriculation &amp; choix du statut</li>
-            <li><i class="fas fa-check"></i> Rédaction &amp; modification des statuts</li>
-            <li><i class="fas fa-check"></i> Cession, fusion &amp; transmission d'entreprise</li>
-            <li><i class="fas fa-check"></i> Secrétariat juridique annuel (AG, PV)</li>
-            <li><i class="fas fa-check"></i> Accompagnement lors des levées de fonds</li>
+            <li><i class="fas fa-check" style="color: #1c2d24;"></i> Création, immatriculation &amp; choix du statut</li>
+            <li><i class="fas fa-check" style="color: #1c2d24;"></i> Rédaction &amp; modification des statuts</li>
+            <li><i class="fas fa-check" style="color: #1c2d24;"></i> Cession, fusion &amp; transmission d'entreprise</li>
+            <li><i class="fas fa-check" style="color: #1c2d24;"></i> Secrétariat juridique annuel (AG, PV)</li>
+            <li><i class="fas fa-check" style="color: #1c2d24;"></i> Accompagnement lors des levées de fonds</li>
           </ul>
           <a href="{{ url_for('devis') }}" class="btn-svc">Demander un devis <i class="fas fa-arrow-right"></i></a>
         </div>
       </div>
 
-      <!-- PANNEAU 4 : CONSEIL & IA -->
       <div class="svc-panel" id="svc-conseil">
-        <div class="svc-img-box svc-illus-ia">
+        <div class="svc-img-box svc-illus-ia" style="background-color: #ffffff; padding: 15px; border-radius: 8px;">
           <svg viewBox="0 0 480 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <rect width="480" height="400" fill="#0d1824"/>
             <ellipse cx="240" cy="210" rx="220" ry="180" fill="#C1007A" opacity=".08"/>
@@ -387,7 +380,6 @@
             <rect x="228" y="40" width="24" height="310" fill="#ffffff"/>
             <line x1="240" y1="44" x2="240" y2="346" stroke="#C1007A" stroke-width="1.5" opacity=".4"/>
             
-            <!-- PAGE GAUCHE : CORE DATA PERFORMANCE IA -->
             <rect x="36" y="46" width="188" height="298" rx="6" fill="#f5f2ec"/>
             <rect x="36" y="46" width="188" height="22" rx="6" fill="#1a1a2e"/>
             <text x="130" y="60" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="700" fill="#fff" letter-spacing="1">ANALYSE IA</text>
@@ -410,12 +402,11 @@
             
             <rect x="46" y="236" width="168" height="24" rx="4" fill="#fff" stroke="#e8e2d9" stroke-width="1"/>
             <text x="56" y="251" font-family="sans-serif" font-size="7.5" font-weight="700" fill="#1a1a2e">Marge d'exploitation</text>
-            <text x="204" y="251" text-anchor="end" font-family="monospace" font-size="7.5" font-weight="700" fill="#4FA695">+12% 📈</text>
+            <text x="204" y="251" text-anchor="monospace" font-size="7.5" font-weight="700" fill="#4FA695">+12% 📈</text>
 
             <rect x="36" y="309" width="188" height="35" fill="#1a1a2e"/>
             <text x="130" y="330" text-anchor="middle" font-family="sans-serif" font-size="6.5" font-weight="700" fill="rgba(255,255,255,0.4)">PILOTAGE ET DATA ANTICIPATION</text>
 
-            <!-- PAGE DROITE : CARTES DE CONSEILS STRATEGIQUES -->
             <rect x="256" y="46" width="188" height="298" rx="6" fill="#f0ede6"/>
             <rect x="256" y="46" width="188" height="22" rx="6" fill="#2a1020"/>
             <text x="350" y="60" text-anchor="middle" font-family="Georgia,serif" font-size="9" font-weight="700" fill="#fff" letter-spacing="1">CONSEILS STRATÉGIQUES</text>
@@ -442,18 +433,20 @@
         </div>
         
         <div class="svc-content">
-          <h3>Déclaration fiscale &amp; IA</h3>
+          <h3 style="color: #2a1020;">Déclaration fiscale &amp; IA</h3>
           <p>Nous intégrons l'intelligence artificielle dans notre approche conseil pour vous offrir des analyses prédictives et des recommandations ultra-personnalisées. Anticipez les risques, optimisez votre fiscalité et pilotez votre activité avec des indicateurs clés en temps réel.</p>
           <ul class="svc-list">
-            <li><i class="fas fa-check"></i> Optimisation fiscale personnalisée &amp; niches</li>
-            <li><i class="fas fa-check"></i> Tableaux de bord IA &amp; analyses prédictives</li>
-            <li><i class="fas fa-check"></i> Audit interne &amp; restructuration organisationnelle</li>
-            <li><i class="fas fa-check"></i> Accompagnement à la transformation digitale</li>
-            <li><i class="fas fa-check"></i> Détection d'économies &amp; optimisation des charges</li>
+            <li><i class="fas fa-check" style="color: #2a1020;"></i> Optimisation fiscale personnalisée &amp; niches</li>
+            <li><i class="fas fa-check" style="color: #2a1020;"></i> Tableaux de bord IA &amp; analyses prédictives</li>
+            <li><i class="fas fa-check" style="color: #2a1020;"></i> Audit interne &amp; restructuration organisationnelle</li>
+            <li><i class="fas fa-check" style="color: #2a1020;"></i> Accompagnement à la transformation digitale</li>
+            <li><i class="fas fa-check" style="color: #2a1020;"></i> Détection d'économies &amp; optimisation des charges</li>
           </ul>
           <a href="{{ url_for('devis') }}" class="btn-svc">Demander un devis <i class="fas fa-arrow-right"></i></a>
         </div>
       </div>
+
+    </div>
 
     </div>
   </div>

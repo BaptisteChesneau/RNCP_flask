@@ -478,6 +478,11 @@ def admin_stats():
         return redirect(url_for("login_admin"))
     return render_template("admin_stats.html")
 
+@app.route("/admin-notifications")
+def admin_notifications():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    return render_template("admin_notifications.html")
 
 @app.route("/modifier-reponse/<message_id>", methods=["POST"])
 def modifier_reponse(message_id):

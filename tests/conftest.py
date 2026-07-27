@@ -2,14 +2,16 @@ import os
 import sys
 import pytest
 
-# Ajoute la racine du projet (RNCP_flask) au chemin d'importation de Python
+# 1. Ajoute la racine du projet au path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-# Import de ton application Flask et de la BDD
+# 2. Force la variable d'environnement pour que Config charge SQLite en test
+os.environ["DATABASE_URL"] = "sqlite:///:memory:"
+
 from app import app, db
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="module", autouse=True)
 def client():
     app.config["TESTING"] = True
     app.config["WTF_CSRF_ENABLED"] = False

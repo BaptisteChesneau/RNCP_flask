@@ -8,7 +8,8 @@ from werkzeug.security import check_password_hash
 from config import Config
 from extensions import db, mongo, migrate, mail, limiter
 
-# Modèles aux normes
+# ⚠️ OBLIGATOIRE : Charge tous les modèles pour que les relations SQLAlchemy (SupportTicket, etc.) fonctionnent
+import models
 from models.user import Utilisateur, ParametresCompte
 from models.client import Client
 from models.devis import Devis
@@ -276,7 +277,7 @@ def reset_password(token):
     return render_template("reset_password.html", token=token)
 
 
-# ==================== FICHE CLIENT & DEVIS ====================
+# ==================== FICHE CLIENT, PARAMÈTRES & DEVIS ====================
 
 
 @app.route("/formulaire", methods=["GET", "POST"])
@@ -309,11 +310,13 @@ def compte_client():
     )
     return render_template("compte_client.html", clients=clients, devis_list=devis_list)
 
+
 @app.route("/parametres", methods=["GET", "POST"])
 def parametres():
     if "utilisateur_id" not in session:
         return redirect(url_for("login"))
     return render_template("parametres.html")
+
 
 @app.route("/paiement")
 def paiement():
@@ -355,6 +358,17 @@ def devis():
         flash("Veuillez vous connecter pour accéder au formulaire de devis.", "warning")
         return redirect(url_for("login"))
     return render_template("devis.html")
+
+
+# 🟢 ROUTE AJOUTÉE : Nécessaire pour compte_client.html
+@app.route("/gerer-devis")
+def gerer_devis():
+    utilisateur_id = session.get("utilisateur_id")
+    if not utilisateur_id:
+        flash("Veuillez vous connecter pour gérer vos devis.", "warning")
+        return redirect(url_for("login"))
+    devis_list = Devis.query.filter_by(utilisateur_id=utilisateur_id).all()
+    return render_template("gerer_devis.html", devis_list=devis_list)
 
 
 @app.route("/resume-devis", methods=["POST"])
@@ -449,6 +463,15 @@ def admin_chatbot():
     return render_template("admin_chatbot.html", messages=messages)
 
 
+# 🟢 ROUTE AJOUTÉE : Pour éviter les redirections brisées dans l'administration
+@app.route("/admin-dashboard")
+def admin_dashboard():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    users = Utilisateur.query.all()
+    return render_template("admin_dashboard.html", users=users)
+
+
 @app.route("/modifier-reponse/<message_id>", methods=["POST"])
 def modifier_reponse(message_id):
     if not session.get("admin_logged_in"):
@@ -490,17 +513,6 @@ def supprimer_user(user_id):
     supprimer_utilisateur_admin(user_id)
     flash("Utilisateur supprimé avec succès !", "success")
     return redirect(url_for("admin_dashboard"))
-
-
-@app.route("/run-migrations-secret")
-def run_migrations_secret():
-    try:
-        from flask_migrate import upgrade
-
-        upgrade()
-        return "✅ Base de données mise à jour avec succès !", 200
-    except Exception as e:
-        return f"❌ Erreur lors de la migration : {str(e)}", 500
 
 
 # ==================== ROUTES DE TEST D'ERREURS HTTP ====================

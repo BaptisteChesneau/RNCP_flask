@@ -465,6 +465,7 @@ def admin_chatbot():
 
 # 🟢 ROUTE AJOUTÉE : Pour éviter les redirections brisées dans l'administration
 @app.route("/admin-dashboard")
+@app.route("/admin-utilisateurs")
 def admin_dashboard():
     if not session.get("admin_logged_in"):
         return redirect(url_for("login_admin"))

@@ -472,6 +472,12 @@ def admin_dashboard():
     users = Utilisateur.query.all()
     return render_template("admin_dashboard.html", users=users)
 
+@app.route("/admin-stats")
+def admin_stats():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    return render_template("admin_stats.html")
+
 
 @app.route("/modifier-reponse/<message_id>", methods=["POST"])
 def modifier_reponse(message_id):

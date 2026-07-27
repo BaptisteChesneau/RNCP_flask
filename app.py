@@ -309,6 +309,12 @@ def compte_client():
     )
     return render_template("compte_client.html", clients=clients, devis_list=devis_list)
 
+@app.route("/parametres", methods=["GET", "POST"])
+def parametres():
+    if "utilisateur_id" not in session:
+        return redirect(url_for("login"))
+    return render_template("parametres.html")
+
 @app.route("/paiement")
 def paiement():
     if "utilisateur_id" not in session:

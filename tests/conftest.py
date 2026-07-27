@@ -1,5 +1,13 @@
+import os
+import sys
 import pytest
+
+# Ajoute la racine du projet (RNCP_flask) au chemin d'importation de Python
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+# Import de ton application Flask et de la BDD
 from app import app, db
+
 
 @pytest.fixture(scope="module")
 def client():

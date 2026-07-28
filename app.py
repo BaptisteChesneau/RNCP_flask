@@ -324,13 +324,11 @@ def reset_password(token):
 
     return render_template("reset_password.html", token=token)
 
-@app.url_build_error_handler
+@app.url_build_error_handlers.append
 def handle_url_build_error(error, endpoint, values):
-    """Évite les crashs Jinja2 BuildError dans les templates si un endpoint admin secondaire manque."""
     if endpoint.startswith("admin_"):
         return f"#{endpoint}"
     raise error
-
 # ==================== AUTHENTIFICATION ====================
 
 

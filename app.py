@@ -596,6 +596,12 @@ def admin_view_source():
         return redirect(url_for("login_admin"))
     return render_template("admin_view_source.html")
 
+@app.route("/logout-admin")
+def logout_admin():
+    session.pop("admin_logged_in", None)
+    flash("Déconnexion réussie 👋", "info")
+    return redirect(url_for("login_admin"))
+
 
 # --- ACTIONS ET MOTEUR ADMIN ---
 

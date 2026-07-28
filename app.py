@@ -490,6 +490,61 @@ def admin_agenda():
         return redirect(url_for("login_admin"))
     return render_template("admin_agenda.html")
 
+@app.route("/admin-blog")
+def admin_blog():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    return render_template("admin_blog.html")
+
+
+@app.route("/admin-blog-new")
+def admin_blog_new():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    return render_template("admin_blog_new.html")
+
+
+@app.route("/admin-config")
+def admin_config():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    return render_template("admin_config.html")
+
+
+@app.route("/admin-details")
+def admin_details():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    return render_template("admin_details.html")
+
+
+@app.route("/admin-report")
+def admin_report():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    return render_template("admin_report.html")
+
+
+@app.route("/admin-messages")
+def admin_messages():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    return render_template("admin_messages.html")
+
+
+@app.route("/admin-manage")
+def admin_manage():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    return render_template("admin_manage.html")
+
+
+@app.route("/admin-edit")
+def admin_edit():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    return render_template("admin_edit.html")
+
 @app.route("/modifier-reponse/<message_id>", methods=["POST"])
 def modifier_reponse(message_id):
     if not session.get("admin_logged_in"):

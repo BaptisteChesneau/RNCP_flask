@@ -222,11 +222,28 @@ def nous_contacter():
 serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
 
 def envoyer_email_reset(destinataire, reset_url):
-    """Mode Simulation : Ne plante jamais et affiche l'URL dans les logs Scalingo."""
-    print("\n" + "=" * 60)
-    print(f"📧 [EMAIL SIMULÉ] Lien pour {destinataire} :")
-    print(reset_url)
-    print("=" * 60 + "\n")
+    """Envoie un véritable e-mail de réinitialisation via l'API Resend."""
+    resend.api_key = (app.config.get("RESEND_API_KEY") or os.getenv("RESEND_API_KEY", "")).strip()
+
+    resend.Emails.send({
+        "from": "onboarding@resend.dev",  # Adresse d'envoi fournie par défaut par Resend
+        "to": destinataire,
+        "subject": "Réinitialisation de votre mot de passe — ML2C CONSEIL",
+        "html": f"""
+        <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 10px;">
+            <h2 style="color: #b81473; text-align: center;">ML2C CONSEIL</h2>
+            <hr style="border: 0; border-top: 1px solid #eee;">
+            <p>Bonjour,</p>
+            <p>Vous avez demandé la réinitialisation de votre mot de passe pour votre compte ML2C CONSEIL.</p>
+            <p>Veuillez cliquer sur le bouton ci-dessous pour choisir votre nouveau mot de passe (valide 30 minutes) :</p>
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="{reset_url}" style="background-color: #b81473; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">Réinitialiser mon mot de passe</a>
+            </div>
+            <p style="font-size: 0.85em; color: #666;">Si le bouton ne fonctionne pas, copiez et collez ce lien dans votre navigateur :<br><a href="{reset_url}">{reset_url}</a></p>
+            <p style="font-size: 0.85em; color: #999;">Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mail en toute sécurité.</p>
+        </div>
+        """
+    })
 
 @app.route("/reset-password/<token>", methods=["GET", "POST"])
 def reset_password(token):

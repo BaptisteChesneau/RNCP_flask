@@ -463,7 +463,6 @@ def admin_chatbot():
     return render_template("admin_chatbot.html", messages=messages)
 
 
-# 🟢 ROUTE AJOUTÉE : Pour éviter les redirections brisées dans l'administration
 @app.route("/admin-dashboard")
 @app.route("/admin-utilisateurs")
 def admin_dashboard():
@@ -472,11 +471,16 @@ def admin_dashboard():
     users = Utilisateur.query.all()
     return render_template("admin_dashboard.html", users=users)
 
+# Alias de fonction pour url_for('admin_utilisateurs')
+admin_utilisateurs = admin_dashboard
+
+
 @app.route("/admin-stats")
 def admin_stats():
     if not session.get("admin_logged_in"):
         return redirect(url_for("login_admin"))
     return render_template("admin_stats.html")
+
 
 @app.route("/admin-notifications")
 def admin_notifications():
@@ -484,11 +488,13 @@ def admin_notifications():
         return redirect(url_for("login_admin"))
     return render_template("admin_notifications.html")
 
+
 @app.route("/admin-agenda")
 def admin_agenda():
     if not session.get("admin_logged_in"):
         return redirect(url_for("login_admin"))
     return render_template("admin_agenda.html")
+
 
 @app.route("/admin-blog")
 def admin_blog():
@@ -504,6 +510,13 @@ def admin_blog_new():
     return render_template("admin_blog_new.html")
 
 
+@app.route("/admin-blog-categories")
+def admin_blog_categories():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    return render_template("admin_blog.html")
+
+
 @app.route("/admin-config")
 def admin_config():
     if not session.get("admin_logged_in"):
@@ -511,39 +524,39 @@ def admin_config():
     return render_template("admin_config.html")
 
 
-@app.route("/admin-details")
-def admin_details():
+@app.route("/admin-logs")
+def admin_logs():
     if not session.get("admin_logged_in"):
         return redirect(url_for("login_admin"))
-    return render_template("admin_details.html")
+    return render_template("admin_logs.html")
 
 
-@app.route("/admin-report")
-def admin_report():
+@app.route("/admin-audit")
+def admin_audit():
     if not session.get("admin_logged_in"):
         return redirect(url_for("login_admin"))
-    return render_template("admin_report.html")
+    return render_template("admin_audit.html")
 
 
-@app.route("/admin-messages")
-def admin_messages():
+@app.route("/admin-purge")
+def admin_purge():
     if not session.get("admin_logged_in"):
         return redirect(url_for("login_admin"))
-    return render_template("admin_messages.html")
+    return render_template("admin_purge.html")
 
 
-@app.route("/admin-manage")
-def admin_manage():
+@app.route("/admin-emails")
+def admin_emails():
     if not session.get("admin_logged_in"):
         return redirect(url_for("login_admin"))
-    return render_template("admin_manage.html")
+    return render_template("admin_emails.html")
 
 
-@app.route("/admin-edit")
-def admin_edit():
+@app.route("/admin-export")
+def admin_export():
     if not session.get("admin_logged_in"):
         return redirect(url_for("login_admin"))
-    return render_template("admin_edit.html")
+    return render_template("admin_export.html")
 
 @app.route("/modifier-reponse/<message_id>", methods=["POST"])
 def modifier_reponse(message_id):

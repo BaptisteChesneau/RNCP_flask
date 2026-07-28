@@ -16,9 +16,6 @@ from models.devis import Devis
 
 # Mail reinitialisation
 import resend
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 
 # Contrôleurs
@@ -225,62 +222,11 @@ def nous_contacter():
 serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
 
 def envoyer_email_reset(destinataire, reset_url):
-    """Envoie un e-mail de réinitialisation via l'API Resend (HTTPS)."""
-    resend.api_key = (app.config.get("RESEND_API_KEY") or "").strip()
-
-    resend.Emails.send(
-        {
-            "from": "onboarding@resend.dev",  # Domaine de test fourni par Resend
-            "to": destinataire,
-            "subject": "Réinitialisation de votre mot de passe — ML2C CONSEIL",
-            "html": f"""
-            <p>Bonjour,</p>
-            <p>Vous avez demandé la réinitialisation de votre mot de passe.</p>
-            <p>Veuillez cliquer sur le lien ci-dessous pour créer votre nouveau mot de passe (valide 30 minutes) :</p>
-            <p><a href="{reset_url}">Réinitialiser mon mot de passe</a></p>
-            <br>
-            <p>Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :</p>
-            <p>{reset_url}</p>
-            <p>Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mail.</p>
-        """,
-        }
-    )
-
-@app.route("/mot-de-passe-oublie", methods=["GET", "POST"])
-def mot_de_passe_oublie():
-    if request.method == "POST":
-        email = request.form.get("email", "").strip()
-        user = Utilisateur.query.filter_by(email=email).first()
-
-        if user:
-            # Token crypté expirant contenant l'email
-            token = serializer.dumps(email, salt="reset-password-salt")
-            reset_url = url_for("reset_password", token=token, _external=True)
-
-            try:
-                envoyer_email_reset(email, reset_url)
-                flash(
-                    "Un e-mail de réinitialisation vous a été envoyé 📧",
-                    "success",
-                )
-            except Exception as e:
-                # 👈 C'EST ICI QUE TU LE METS
-                import traceback
-
-                traceback.print_exc()  # Affiche l'erreur exacte dans les logs Scalingo
-
-                flash(
-                    "Erreur lors de l'envoi. Vérifiez les accès SMTP.", "danger"
-                )
-        else:
-            flash(
-                "Si un compte existe avec cette adresse, un e-mail a été envoyé.",
-                "info",
-            )
-
-        return redirect(url_for("login"))
-
-    return render_template("mot_de_passe_oublie.html")
+    """Mode Simulation : Ne plante jamais et affiche l'URL dans les logs Scalingo."""
+    print("\n" + "=" * 60)
+    print(f"📧 [EMAIL SIMULÉ] Lien pour {destinataire} :")
+    print(reset_url)
+    print("=" * 60 + "\n")
 
 @app.route("/reset-password/<token>", methods=["GET", "POST"])
 def reset_password(token):
@@ -326,6 +272,41 @@ def reset_password(token):
         return redirect(url_for("login"))
 
     return render_template("reset_password.html", token=token)
+
+@app.route("/mot-de-passe-oublie", methods=["GET", "POST"])
+def mot_de_passe_oublie():
+    if request.method == "POST":
+        email = request.form.get("email", "").strip()
+        user = Utilisateur.query.filter_by(email=email).first()
+
+        if user:
+            token = serializer.dumps(email, salt="reset-password-salt")
+            reset_url = url_for("reset_password", token=token, _external=True)
+
+            try:
+                envoyer_email_reset(email, reset_url)
+                flash(
+                    "Un e-mail de réinitialisation vous a été envoyé 📧",
+                    "success",
+                )
+            except Exception as e:
+                import traceback
+
+                traceback.print_exc()  # Regarde tes logs Scalingo pour voir la cause exacte
+                flash(
+                    "Erreur lors de l'envoi. Vérifiez la clé API Resend.",
+                    "danger",
+                )
+        else:
+            flash(
+                "Si un compte existe avec cette adresse, un e-mail a été envoyé.",
+                "info",
+            )
+
+        return redirect(url_for("login"))
+
+    return render_template("mot_de_passe_oublie.html")
+
 
 @app.url_build_error_handlers.append
 def handle_url_build_error(error, endpoint, values):

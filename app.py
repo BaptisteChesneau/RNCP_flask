@@ -602,7 +602,6 @@ def logout_admin():
     flash("Déconnexion réussie 👋", "info")
     return redirect(url_for("login_admin"))
 
-
 # --- ACTIONS ET MOTEUR ADMIN ---
 
 @app.route("/modifier-reponse/<message_id>", methods=["POST"])
@@ -646,6 +645,21 @@ def supprimer_user(user_id):
     supprimer_utilisateur_admin(user_id)
     flash("Utilisateur supprimé avec succès !", "success")
     return redirect(url_for("admin_dashboard"))
+
+@app.route("/ajouter-message", methods=["GET", "POST"])
+def ajouter_message():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    if request.method == "POST":
+        question = request.form.get("question")
+        reponse = request.form.get("reponse")
+        if question and reponse:
+            mongo.db.chatbot.insert_one({"question": question, "reponse": reponse})
+            flash("Nouvelle entrée ajoutée avec succès !", "success")
+        else:
+            flash("Veuillez remplir tous les champs.", "danger")
+        return redirect(url_for("admin_chatbot"))
+    return render_template("ajouter_message.html")
 
 
 # ==================== ROUTES DE TEST D'ERREURS HTTP ====================

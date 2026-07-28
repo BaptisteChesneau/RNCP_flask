@@ -454,7 +454,7 @@ def login_admin():
     return render_template("login_admin.html")
 
 
-# --- PAGES ADMIN PRINCIPALES (Templates présents) ---
+# --- DÉCLARATION DE TOUS LES TEMPLATES ADMINS ---
 
 
 @app.route("/admin-chatbot")
@@ -475,15 +475,7 @@ def admin_dashboard():
     return render_template("admin_dashboard.html", users=users)
 
 
-# Alias pour url_for('admin_utilisateurs')
 admin_utilisateurs = admin_dashboard
-
-
-@app.route("/admin-stats")
-def admin_stats():
-    if not session.get("admin_logged_in"):
-        return redirect(url_for("login_admin"))
-    return render_template("admin_stats.html")
 
 
 @app.route("/admin-agenda")
@@ -493,11 +485,25 @@ def admin_agenda():
     return render_template("admin_agenda.html")
 
 
+@app.route("/admin-audit")
+def admin_audit():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    return render_template("admin_audit.html")
+
+
 @app.route("/admin-blog")
 def admin_blog():
     if not session.get("admin_logged_in"):
         return redirect(url_for("login_admin"))
     return render_template("admin_blog.html")
+
+
+@app.route("/admin-blog-categories")
+def admin_blog_categories():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    return render_template("admin_blog_categories.html")
 
 
 @app.route("/admin-blog-new")
@@ -514,101 +520,84 @@ def admin_config():
     return render_template("admin_config.html")
 
 
-@app.route("/admin-details")
-def admin_details():
-    if not session.get("admin_logged_in"):
-        return redirect(url_for("login_admin"))
-    return render_template("admin_details.html")
-
-
-@app.route("/admin-report")
-def admin_report():
-    if not session.get("admin_logged_in"):
-        return redirect(url_for("login_admin"))
-    return render_template("admin_report.html")
-
-
-@app.route("/admin-messages")
-def admin_messages():
-    if not session.get("admin_logged_in"):
-        return redirect(url_for("login_admin"))
-    return render_template("admin_messages.html")
-
-
-@app.route("/admin-manage")
-def admin_manage():
-    if not session.get("admin_logged_in"):
-        return redirect(url_for("login_admin"))
-    return render_template("admin_manage.html")
-
-
-@app.route("/admin-edit")
-def admin_edit():
-    if not session.get("admin_logged_in"):
-        return redirect(url_for("login_admin"))
-    return render_template("admin_edit.html")
-
-
-# --- LIENS SECONDAIRES DU MENU SIDEBAR ---
-
-
-@app.route("/admin-formulaires")
-def admin_formulaires():
-    if not session.get("admin_logged_in"):
-        return redirect(url_for("login_admin"))
-    return render_template("admin_messages.html")
-
-
-@app.route("/admin-blog-categories")
-def admin_blog_categories():
-    if not session.get("admin_logged_in"):
-        return redirect(url_for("login_admin"))
-    return render_template("admin_blog.html")
-
-
-@app.route("/admin-notifications")
-def admin_notifications():
-    if not session.get("admin_logged_in"):
-        return redirect(url_for("login_admin"))
-    return render_template("admin_dashboard.html")
-
-
-@app.route("/admin-logs")
-def admin_logs():
-    if not session.get("admin_logged_in"):
-        return redirect(url_for("login_admin"))
-    return render_template("admin_report.html")
-
-
-@app.route("/admin-audit")
-def admin_audit():
-    if not session.get("admin_logged_in"):
-        return redirect(url_for("login_admin"))
-    return render_template("admin_report.html")
-
-
-@app.route("/admin-purge")
-def admin_purge():
-    if not session.get("admin_logged_in"):
-        return redirect(url_for("login_admin"))
-    return redirect(url_for("admin_dashboard"))
-
-
 @app.route("/admin-emails")
 def admin_emails():
     if not session.get("admin_logged_in"):
         return redirect(url_for("login_admin"))
-    return render_template("admin_messages.html")
+    return render_template("admin_emails.html")
 
 
 @app.route("/admin-export")
 def admin_export():
     if not session.get("admin_logged_in"):
         return redirect(url_for("login_admin"))
+    return render_template("admin_export.html")
+
+
+@app.route("/admin-formulaires")
+def admin_formulaires():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    return render_template("admin_formulaires.html")
+
+
+@app.route("/admin-logs")
+def admin_logs():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    return render_template("admin_logs.html")
+
+
+@app.route("/admin-notifications")
+def admin_notifications():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    return render_template("admin_notifications.html")
+
+
+@app.route("/admin-parametres")
+def admin_parametres():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    return render_template("admin_parametres.html")
+
+
+@app.route("/admin-performances")
+def admin_performances():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    return render_template("admin_performances.html")
+
+
+@app.route("/admin-purge")
+def admin_purge():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    return render_template("admin_purge.html")
+
+
+@app.route("/admin-sauvegardes")
+def admin_sauvegardes():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    return render_template("admin_sauvegardes.html")
+
+
+@app.route("/admin-stats")
+def admin_stats():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
     return render_template("admin_stats.html")
 
 
-# --- ACTIONS ET FONCTIONNALITÉS ---
+@app.route("/admin-view-source")
+def admin_view_source():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    return render_template("admin_view_source.html")
+
+
+# --- ACTIONS ET MOTEUR ADMIN ---
 
 @app.route("/modifier-reponse/<message_id>", methods=["POST"])
 def modifier_reponse(message_id):

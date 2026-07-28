@@ -251,31 +251,6 @@ Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mai
         server.login(smtp_user, smtp_password)
         server.send_message(msg)
 
-@app.route("/mot-de-passe-oublie", methods=["GET", "POST"])
-def mot_de_passe_oublie():
-    if request.method == "POST":
-        email = request.form.get("email", "").strip()
-        user = Utilisateur.query.filter_by(email=email).first()
-
-        if user:
-            # Token crypté expirant contenant l'email
-            token = serializer.dumps(email, salt="reset-password-salt")
-            reset_url = url_for("reset_password", token=token, _external=True)
-
-            try:
-                envoyer_email_reset(email, reset_url)
-                flash("Un e-mail de réinitialisation vous a été envoyé 📧", "success")
-            except Exception as e:
-                print(f"Erreur d'envoi SMTP : {e}")
-                flash("Erreur d'envoi. Vérifiez les identifiants SMTP.", "danger")
-        else:
-            # Message générique pour des raisons de sécurité
-            flash("Si un compte existe avec cette adresse, un e-mail a été envoyé.", "info")
-
-        return redirect(url_for("login"))
-
-    return render_template("mot_de_passe_oublie.html")
-
 @app.route("/reset-password/<token>", methods=["GET", "POST"])
 def reset_password(token):
     try:

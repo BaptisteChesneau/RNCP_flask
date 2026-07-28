@@ -251,13 +251,48 @@ Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mai
         server.login(smtp_user, smtp_password)
         server.send_message(msg)
 
+@app.route("/mot-de-passe-oublie", methods=["GET", "POST"])
+def mot_de_passe_oublie():
+    if request.method == "POST":
+        email = request.form.get("email", "").strip()
+        user = Utilisateur.query.filter_by(email=email).first()
+
+        if user:
+            token = serializer.dumps(email, salt="reset-password-salt")
+            reset_url = url_for("reset_password", token=token, _external=True)
+
+            try:
+                envoyer_email_reset(email, reset_url)
+                flash(
+                    "Un e-mail de réinitialisation vous a été envoyé 📧",
+                    "success",
+                )
+            except Exception as e:
+                print(f"Erreur d'envoi SMTP : {e}")
+                flash(
+                    "Erreur lors de l'envoi. Vérifiez les accès SMTP.", "danger"
+                )
+        else:
+            flash(
+                "Si un compte existe avec cette adresse, un e-mail a été envoyé.",
+                "info",
+            )
+
+        return redirect(url_for("login"))
+
+    return render_template("mot_de_passe_oublie.html")
+
 @app.route("/reset-password/<token>", methods=["GET", "POST"])
 def reset_password(token):
     try:
         # Valide le token pendant 1800s (30 min)
-        email = serializer.loads(token, salt="reset-password-salt", max_age=1800)
+        email = serializer.loads(
+            token, salt="reset-password-salt", max_age=1800
+        )
     except (SignatureExpired, BadTimeSignature):
-        flash("Le lien de réinitialisation est invalide ou a expiré ❌", "danger")
+        flash(
+            "Le lien de réinitialisation est invalide ou a expiré ❌", "danger"
+        )
         return redirect(url_for("mot_de_passe_oublie"))
 
     if request.method == "POST":
@@ -272,7 +307,10 @@ def reset_password(token):
         if user:
             user.set_password(password)
             db.session.commit()
-            flash("Votre mot de passe a été réinitialisé avec succès ✅", "success")
+            flash(
+                "Votre mot de passe a été réinitialisé avec succès ✅",
+                "success",
+            )
             return redirect(url_for("login"))
         else:
             flash("Utilisateur introuvable.", "danger")
@@ -314,34 +352,6 @@ def signup():
 def logout():
     session.clear()
     return render_template("logout.html")
-
-
-@app.route("/mot-de-passe-oublie", methods=["GET", "POST"])
-def mot_de_passe_oublie():
-    if request.method == "POST":
-        email = request.form.get("email", "").strip()
-        demarrer_reinitialisation_mdp(email, app.config["MAIL_USERNAME"])
-        flash(
-            "Si un compte existe avec cette adresse, un e-mail de réinitialisation a été envoyé.",
-            "success",
-        )
-        return redirect(url_for("mot_de_passe_oublie"))
-    return render_template("mot_de_passe_oublie.html")
-
-
-@app.route("/reset-password/<token>", methods=["GET", "POST"])
-def reset_password(token):
-    if request.method == "POST":
-        success, message = valider_reset_password(
-            token,
-            request.form.get("password", "").strip(),
-            request.form.get("confirm_password", "").strip(),
-        )
-        flash(message, "success" if success else "danger")
-        if success:
-            return redirect(url_for("login"))
-    return render_template("reset_password.html", token=token)
-
 
 # ==================== FICHE CLIENT, PARAMÈTRES & DEVIS ====================
 

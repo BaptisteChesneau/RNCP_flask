@@ -14,6 +14,12 @@ from models.user import Utilisateur, ParametresCompte
 from models.client import Client
 from models.devis import Devis
 
+# Mail reinitialisation
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
+
 # Contrôleurs
 from controllers.auth_controller import (
     traiter_login,
@@ -212,6 +218,91 @@ def securite():
 def nous_contacter():
     return render_template("contact.html")
 
+
+# --- SÉCURITÉ TOKENS & CONFIGURATION SMTP ---
+
+serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
+
+def envoyer_email_reset(destinataire, reset_url):
+    """Envoie un e-mail avec un lien de réinitialisation sécurisé via SMTP natif."""
+    smtp_server = app.config.get("MAIL_SERVER", "smtp.gmail.com")
+    smtp_port = int(app.config.get("MAIL_PORT", 587))
+    smtp_user = app.config.get("MAIL_USERNAME")
+    smtp_password = app.config.get("MAIL_PASSWORD")
+
+    msg = MIMEMultipart()
+    msg["From"] = smtp_user
+    msg["To"] = destinataire
+    msg["Subject"] = "Réinitialisation de votre mot de passe"
+
+    corps_email = f"""Bonjour,
+
+Vous avez demandé la réinitialisation de votre mot de passe.
+Veuillez cliquer sur le lien ci-dessous pour créer votre nouveau mot de passe (valide 30 minutes) :
+
+{reset_url}
+
+Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mail.
+"""
+    msg.attach(MIMEText(corps_email, "plain", "utf-8"))
+
+    with smtplib.SMTP(smtp_server, smtp_port) as server:
+        server.starttls()
+        server.login(smtp_user, smtp_password)
+        server.send_message(msg)
+
+@app.route("/mot-de-passe-oublie", methods=["GET", "POST"])
+def mot_de_passe_oublie():
+    if request.method == "POST":
+        email = request.form.get("email", "").strip()
+        user = Utilisateur.query.filter_by(email=email).first()
+
+        if user:
+            # Token crypté expirant contenant l'email
+            token = serializer.dumps(email, salt="reset-password-salt")
+            reset_url = url_for("reset_password", token=token, _external=True)
+
+            try:
+                envoyer_email_reset(email, reset_url)
+                flash("Un e-mail de réinitialisation vous a été envoyé 📧", "success")
+            except Exception as e:
+                print(f"Erreur d'envoi SMTP : {e}")
+                flash("Erreur d'envoi. Vérifiez les identifiants SMTP.", "danger")
+        else:
+            # Message générique pour des raisons de sécurité
+            flash("Si un compte existe avec cette adresse, un e-mail a été envoyé.", "info")
+
+        return redirect(url_for("login"))
+
+    return render_template("mot_de_passe_oublie.html")
+
+@app.route("/reset-password/<token>", methods=["GET", "POST"])
+def reset_password(token):
+    try:
+        # Valide le token pendant 1800s (30 min)
+        email = serializer.loads(token, salt="reset-password-salt", max_age=1800)
+    except (SignatureExpired, BadTimeSignature):
+        flash("Le lien de réinitialisation est invalide ou a expiré ❌", "danger")
+        return redirect(url_for("mot_de_passe_oublie"))
+
+    if request.method == "POST":
+        password = request.form.get("password", "").strip()
+        confirm_password = request.form.get("confirm_password", "").strip()
+
+        if password != confirm_password:
+            flash("Les mots de passe ne correspondent pas.", "danger")
+            return render_template("reset_password.html", token=token)
+
+        user = Utilisateur.query.filter_by(email=email).first()
+        if user:
+            user.set_password(password)
+            db.session.commit()
+            flash("Votre mot de passe a été réinitialisé avec succès ✅", "success")
+            return redirect(url_for("login"))
+        else:
+            flash("Utilisateur introuvable.", "danger")
+
+    return render_template("reset_password.html", token=token)
 
 # ==================== AUTHENTIFICATION ====================
 

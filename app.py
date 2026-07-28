@@ -225,10 +225,12 @@ serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
 
 def envoyer_email_reset(destinataire, reset_url):
     """Envoie un e-mail avec un lien de réinitialisation sécurisé via SMTP natif."""
-    smtp_server = app.config.get("MAIL_SERVER", "smtp.gmail.com")
+    smtp_server = app.config.get("MAIL_SERVER", "smtp.gmail.com").strip()
     smtp_port = int(app.config.get("MAIL_PORT", 587))
-    smtp_user = app.config.get("MAIL_USERNAME")
-    smtp_password = app.config.get("MAIL_PASSWORD")
+
+    # Nettoyage automatique des espaces accidentels
+    smtp_user = (app.config.get("MAIL_USERNAME") or "").strip()
+    smtp_password = (app.config.get("MAIL_PASSWORD") or "").replace(" ", "").strip()
 
     msg = MIMEMultipart()
     msg["From"] = smtp_user

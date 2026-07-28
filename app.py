@@ -15,6 +15,7 @@ from models.client import Client
 from models.devis import Devis
 
 # Mail reinitialisation
+import resend
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -224,34 +225,26 @@ def nous_contacter():
 serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
 
 def envoyer_email_reset(destinataire, reset_url):
-    """Envoie un e-mail avec un lien de réinitialisation sécurisé via SMTP natif."""
-    smtp_server = app.config.get("MAIL_SERVER", "smtp.gmail.com").strip()
-    smtp_port = int(app.config.get("MAIL_PORT", 587))
+    """Envoie un e-mail de réinitialisation via l'API Resend (HTTPS)."""
+    resend.api_key = (app.config.get("RESEND_API_KEY") or "").strip()
 
-    # Nettoyage automatique des espaces accidentels
-    smtp_user = (app.config.get("MAIL_USERNAME") or "").strip()
-    smtp_password = (app.config.get("MAIL_PASSWORD") or "").replace(" ", "").strip()
-
-    msg = MIMEMultipart()
-    msg["From"] = smtp_user
-    msg["To"] = destinataire
-    msg["Subject"] = "Réinitialisation de votre mot de passe"
-
-    corps_email = f"""Bonjour,
-
-Vous avez demandé la réinitialisation de votre mot de passe.
-Veuillez cliquer sur le lien ci-dessous pour créer votre nouveau mot de passe (valide 30 minutes) :
-
-{reset_url}
-
-Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mail.
-"""
-    msg.attach(MIMEText(corps_email, "plain", "utf-8"))
-
-    with smtplib.SMTP(smtp_server, smtp_port) as server:
-        server.starttls()
-        server.login(smtp_user, smtp_password)
-        server.send_message(msg)
+    resend.Emails.send(
+        {
+            "from": "onboarding@resend.dev",  # Domaine de test fourni par Resend
+            "to": destinataire,
+            "subject": "Réinitialisation de votre mot de passe — ML2C CONSEIL",
+            "html": f"""
+            <p>Bonjour,</p>
+            <p>Vous avez demandé la réinitialisation de votre mot de passe.</p>
+            <p>Veuillez cliquer sur le lien ci-dessous pour créer votre nouveau mot de passe (valide 30 minutes) :</p>
+            <p><a href="{reset_url}">Réinitialiser mon mot de passe</a></p>
+            <br>
+            <p>Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :</p>
+            <p>{reset_url}</p>
+            <p>Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mail.</p>
+        """,
+        }
+    )
 
 @app.route("/mot-de-passe-oublie", methods=["GET", "POST"])
 def mot_de_passe_oublie():

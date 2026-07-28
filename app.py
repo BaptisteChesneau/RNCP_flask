@@ -484,6 +484,12 @@ def admin_notifications():
         return redirect(url_for("login_admin"))
     return render_template("admin_notifications.html")
 
+@app.route("/admin-agenda")
+def admin_agenda():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("login_admin"))
+    return render_template("admin_agenda.html")
+
 @app.route("/modifier-reponse/<message_id>", methods=["POST"])
 def modifier_reponse(message_id):
     if not session.get("admin_logged_in"):

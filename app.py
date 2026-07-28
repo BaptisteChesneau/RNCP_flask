@@ -292,7 +292,7 @@ def mot_de_passe_oublie():
 @app.route("/reset-password/<token>", methods=["GET", "POST"])
 def reset_password(token):
     try:
-        # Valide le token pendant 1800s (30 min)
+        # Validation du token (expire après 30 min)
         email = serializer.loads(
             token, salt="reset-password-salt", max_age=1800
         )
@@ -303,24 +303,34 @@ def reset_password(token):
         return redirect(url_for("mot_de_passe_oublie"))
 
     if request.method == "POST":
-        password = request.form.get("password", "").strip()
+        old_password = request.form.get("old_password", "").strip()
+        new_password = request.form.get("password", "").strip()
         confirm_password = request.form.get("confirm_password", "").strip()
 
-        if password != confirm_password:
-            flash("Les mots de passe ne correspondent pas.", "danger")
+        user = Utilisateur.query.filter_by(email=email).first()
+
+        if not user:
+            flash("Utilisateur introuvable.", "danger")
+            return redirect(url_for("mot_de_passe_oublie"))
+
+        # 1. Vérification de l'ancien mot de passe
+        if not user.check_password(old_password):
+            flash("L'ancien mot de passe est incorrect ❌", "danger")
             return render_template("reset_password.html", token=token)
 
-        user = Utilisateur.query.filter_by(email=email).first()
-        if user:
-            user.set_password(password)
-            db.session.commit()
+        # 2. Vérification de la correspondance du nouveau mot de passe
+        if new_password != confirm_password:
             flash(
-                "Votre mot de passe a été réinitialisé avec succès ✅",
-                "success",
+                "Le nouveau mot de passe et sa confirmation ne correspondent pas.",
+                "danger",
             )
-            return redirect(url_for("login"))
-        else:
-            flash("Utilisateur introuvable.", "danger")
+            return render_template("reset_password.html", token=token)
+
+        # 3. Mise à jour du mot de passe
+        user.set_password(new_password)
+        db.session.commit()
+        flash("Votre mot de passe a été mis à jour avec succès ✅", "success")
+        return redirect(url_for("login"))
 
     return render_template("reset_password.html", token=token)
 

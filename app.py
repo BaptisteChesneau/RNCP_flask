@@ -258,6 +258,7 @@ def mot_de_passe_oublie():
         user = Utilisateur.query.filter_by(email=email).first()
 
         if user:
+            # Token crypté expirant contenant l'email
             token = serializer.dumps(email, salt="reset-password-salt")
             reset_url = url_for("reset_password", token=token, _external=True)
 
@@ -268,7 +269,11 @@ def mot_de_passe_oublie():
                     "success",
                 )
             except Exception as e:
-                print(f"Erreur d'envoi SMTP : {e}")
+                # 👈 C'EST ICI QUE TU LE METS
+                import traceback
+
+                traceback.print_exc()  # Affiche l'erreur exacte dans les logs Scalingo
+
                 flash(
                     "Erreur lors de l'envoi. Vérifiez les accès SMTP.", "danger"
                 )

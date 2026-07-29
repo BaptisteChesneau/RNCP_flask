@@ -219,35 +219,30 @@ def securite():
 def nous_contacter():
     return render_template("contact.html")
 
-# --- CRÉATION DE COLLABORATEUR ---
+# --- CREATION COLLABORATEUR ---
 @app.route("/creer-collaborateur", methods=["GET", "POST"])
 def creer_collaborateur():
     if request.method == "POST":
-        prenom = request.form.get("prenom", "").strip()
-        nom = request.form.get("nom", "").strip()
         email = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "").strip()
 
-        collab_existant = Collaborateur.query.filter_by(email=email).first()
+        collab = Collaborateur.query.filter_by(email=email).first()
 
-        if collab_existant:
-            collab_existant.prenom = prenom
-            collab_existant.nom = nom
-            collab_existant.set_password(password)
+        if collab:
+            collab.set_password(password)
             db.session.commit()
             flash(
-                f"Le compte de {prenom} {nom} a été mis à jour ! ✅", "success"
+                f"Mot de passe mis à jour pour {email} ! ✅",
+                "success",
             )
         else:
-            nouveau_collab = Collaborateur(
-                prenom=prenom, nom=nom, email=email, role="collaborateur"
-            )
+            nouveau_collab = Collaborateur(email=email, role="collaborateur")
             nouveau_collab.set_password(password)
-
             db.session.add(nouveau_collab)
             db.session.commit()
             flash(
-                f"Collaborateur {prenom} {nom} créé avec succès ! 🎉", "success"
+                f"Compte collaborateur créé pour {email} ! 🎉",
+                "success",
             )
 
         return redirect(url_for("collaborateur_login"))
@@ -267,18 +262,13 @@ def collaborateur_login():
         if collab and collab.check_password(password):
             session["collaborateur_id"] = collab.id
             session["is_collaborateur"] = True
-            session["role"] = collab.role
-            flash(
-                f"Bienvenue dans votre espace, {collab.prenom} ! 👋", "success"
-            )
-            return redirect(url_for("admin_dashboard"))
+            session["email"] = collab.email
+            flash(f"Bienvenue, {collab.email} ! 👋", "success")
+            return redirect(url_for("collaborateur_dashboard"))
         else:
-            flash("Identifiants incorrects ou accès non autorisé.", "danger")
+            flash("E-mail ou mot de passe incorrect.", "danger")
 
     return render_template("collaborateur_login.html")
-
-
-
 
 # --- SÉCURITÉ TOKENS & CONFIGURATION SMTP ---
 

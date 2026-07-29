@@ -296,34 +296,37 @@ def creer_collaborateur():
     if request.method == "POST":
         prenom = request.form.get("prenom", "").strip()
         nom = request.form.get("nom", "").strip()
+        nom_complet = f"{prenom} {nom}".strip()
         email = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "").strip()
 
-        # Vérifier si l'utilisateur existe déjà
         user_existant = Utilisateur.query.filter_by(email=email).first()
 
         if user_existant:
-            # S'il existe, on met à jour son rôle et son mot de passe
-            user_existant.prenom = prenom
-            user_existant.nom = nom
-            user_existant.role = "collaborateur"
+            user_existant.nom = nom_complet
+            if hasattr(user_existant, "role"):
+                user_existant.role = "collaborateur"
             user_existant.set_password(password)
             db.session.commit()
             flash(
-                f"Le compte de {prenom} {nom} a été mis à jour en rôle Collaborateur ! ✅",
+                f"Compte mis à jour pour {nom_complet} ! ✅",
                 "success",
             )
         else:
-            # Sinon, création d'un nouveau membre
+            # 🟢 On utilise uniquement les attributs valides de ton modèle
             nouveau_collab = Utilisateur(
-                email=email, prenom=prenom, nom=nom, role="collaborateur"
+                email=email,
+                nom=nom_complet,  # ou username=email selon ton modèle
             )
+            if hasattr(nouveau_collab, "role"):
+                nouveau_collab.role = "collaborateur"
+
             nouveau_collab.set_password(password)
 
             db.session.add(nouveau_collab)
             db.session.commit()
             flash(
-                f"Le collaborateur {prenom} {nom} a été créé avec succès ! 🎉",
+                f"Le collaborateur {nom_complet} a été créé avec succès ! 🎉",
                 "success",
             )
 

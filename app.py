@@ -366,6 +366,24 @@ def logout():
     session.clear()
     return render_template("logout.html")
 
+@app.route("/update-profile", methods=["POST"])
+def update_profile():
+    utilisateur_id = session.get("utilisateur_id")
+    if not utilisateur_id:
+        flash("Vous devez être connecté.", "warning")
+        return redirect(url_for("login"))
+
+    user = Utilisateur.query.get(utilisateur_id)
+    if user:
+        # Récupération des données du formulaire
+        user.nom = request.form.get("nom", user.nom)
+        user.prenom = request.form.get("prenom", user.prenom)
+        user.email = request.form.get("email", user.email)
+        db.session.commit()
+        flash("Profil mis à jour avec succès !", "success")
+
+    return redirect(url_for("parametres"))
+
 # ==================== FICHE CLIENT, PARAMÈTRES & DEVIS ====================
 
 

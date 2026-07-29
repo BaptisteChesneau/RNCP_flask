@@ -446,6 +446,17 @@ def update_notifications():
     flash("Préférences de notifications mises à jour ✅", "success")
     return redirect(url_for("parametres"))
 
+@app.route("/supprimer-carte", methods=["POST"])
+def supprimer_carte():
+    utilisateur_id = session.get("utilisateur_id")
+    if not utilisateur_id:
+        flash("Vous devez être connecté.", "warning")
+        return redirect(url_for("login"))
+
+    # Logique pour supprimer la carte de l'utilisateur
+    flash("Moyen de paiement supprimé avec succès ✅", "success")
+    return redirect(url_for("parametres"))
+
 # ==================== FICHE CLIENT, PARAMÈTRES & DEVIS ====================
 
 

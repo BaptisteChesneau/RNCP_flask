@@ -16,7 +16,6 @@ from models.devis import Devis
 from models.message import MessageSupport
 from models.collaborateur import Collaborateur
 
-
 # Mail reinitialisation
 import resend
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
@@ -55,6 +54,9 @@ migrate.init_app(app, db)
 mail.init_app(app)
 limiter.init_app(app)
 
+# 🟢 CRÉATION AUTOMATIQUE DES TABLES EN BDD (PostgreSQL Scalingo)
+with app.app_context():
+    db.create_all()
 
 # ==================== MIDDLEWARES & HEADERS ====================
 

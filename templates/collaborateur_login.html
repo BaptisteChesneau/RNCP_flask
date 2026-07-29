@@ -59,6 +59,7 @@
       border-radius: 10px;
       overflow: hidden;
       background-color: #ffffff;
+      transition: all 0.3s ease;
     }
 
     .custom-input-group:focus-within {
@@ -91,6 +92,7 @@
 
     .form-control-custom:focus {
       outline: none;
+      box-shadow: none;
     }
 
     .toggle-password-btn {
@@ -163,6 +165,7 @@
             name="email" 
             required 
             placeholder="collaborateur@ml2c-conseil.com"
+            autocomplete="email"
           >
         </div>
       </div>
@@ -181,8 +184,9 @@
             name="password" 
             required 
             placeholder="••••••••"
+            autocomplete="current-password"
           >
-          <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility('password', this)">
+          <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility('password', this)" title="Afficher/Masquer">
             <i class="fas fa-eye"></i>
           </button>
         </div>
@@ -192,11 +196,15 @@
         Connexion Collaborateur <i class="fas fa-arrow-right ml-2 small"></i>
       </button>
 
-      <div class="text-center">
+      <div class="d-flex justify-content-between align-items-center mt-3">
         <a href="{{ url_for('login') }}" class="small text-muted text-decoration-none">
-          <i class="fas fa-user-circle mr-1"></i> Accès Espace Client
+          <i class="fas fa-user-circle mr-1"></i> Espace Client
+        </a>
+        <a href="{{ url_for('creer_collaborateur') }}" class="small text-primary text-decoration-none font-weight-bold">
+          <i class="fas fa-user-plus mr-1"></i> Créer un accès
         </a>
       </div>
+
     </form>
 
   </div>

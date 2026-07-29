@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Espace Collaborateur — ML2C CONSEIL</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+  <style>
+    body { background-color: #f4f6f9; color: #2d3748; font-family: 'DM Sans', sans-serif; }
+    .collab-navbar { background: #1a202c; border-bottom: 3px solid #b81473; }
+    .card-metric { border: none; border-radius: 12px; background: #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+    .metric-icon { width: 48px; height: 48px; border-radius: 10px; background: rgba(184, 20, 115, 0.1); color: #b81473; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark collab-navbar py-3">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand font-weight-bold" href="#">
+      <i class="fas fa-briefcase text-primary mr-2" style="color: #b81473 !important;"></i> ML2C COLLABORATEURS
+    </a>
+    <div class="d-flex align-items-center text-light">
+      <span class="mr-3 small"><i class="fas fa-user-circle mr-1"></i> {{ user.prenom }} {{ user.nom or '' }}</span>
+      <a href="{{ url_for('logout') }}" class="btn btn-outline-light btn-sm rounded-lg">Déconnexion</a>
+    </div>
+  </div>
+</nav>
+
+<main class="container-fluid px-4 py-4">
+
+  <!-- En-tête -->
+  <div class="mb-4">
+    <h3 class="font-weight-bold" style="color: #1a202c;">Tableau de Bord Collaborateur</h3>
+    <p class="text-muted small">Gestion des dossiers clients et réponses aux messages d'assistance.</p>
+  </div>
+
+  <!-- Métriques rapides -->
+  <div class="row mb-4">
+    <div class="col-md-4 mb-3">
+      <div class="card card-metric p-3 d-flex flex-row align-items-center justify-content-between">
+        <div>
+          <h6 class="text-muted small text-uppercase font-weight-bold mb-1">Clients actifs</h6>
+          <h3 class="font-weight-bold mb-0" style="color: #1a202c;">{{ clients|length }}</h3>
+        </div>
+        <div class="metric-icon"><i class="fas fa-users"></i></div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="card card-metric p-3 d-flex flex-row align-items-center justify-content-between">
+        <div>
+          <h6 class="text-muted small text-uppercase font-weight-bold mb-1">Messages reçus</h6>
+          <h3 class="font-weight-bold mb-0" style="color: #1a202c;">{{ messages|length }}</h3>
+        </div>
+        <div class="metric-icon"><i class="fas fa-comments"></i></div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="card card-metric p-3 d-flex flex-row align-items-center justify-content-between">
+        <div>
+          <h6 class="text-muted small text-uppercase font-weight-bold mb-1">Dossiers en attente</h6>
+          <h3 class="font-weight-bold mb-0 text-warning">3</h3>
+        </div>
+        <div class="metric-icon"><i class="fas fa-folder-open"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Liste des Clients -->
+    <div class="col-lg-7 mb-4">
+      <div class="card border-0 shadow-sm rounded-lg overflow-hidden">
+        <div class="card-header bg-white py-3 border-0">
+          <h5 class="font-weight-bold mb-0" style="color: #1a202c;">Portefeuille Clients</h5>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="bg-light small text-uppercase text-muted">
+              <tr>
+                <th>Client</th>
+                <th>E-mail</th>
+                <th>Rôle</th>
+                <th class="text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for client in clients %}
+              <tr>
+                <td class="font-weight-bold">{{ client.prenom }} {{ client.nom or '' }}</td>
+                <td class="text-muted small">{{ client.email }}</td>
+                <td><span class="badge badge-subtle badge-info px-2 py-1">Client</span></td>
+                <td class="text-right">
+                  <a href="{{ url_for('support') }}" class="btn btn-sm btn-outline-primary rounded-lg">
+                    <i class="fas fa-comment-alt mr-1"></i> Répondre
+                  </a>
+                </td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="4" class="text-center text-muted py-4">Aucun client enregistré pour le moment.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Récents messages support -->
+    <div class="col-lg-5">
+      <div class="card border-0 shadow-sm rounded-lg p-3">
+        <h5 class="font-weight-bold mb-3" style="color: #1a202c;">Derniers messages du Chat</h5>
+        <div class="list-group list-group-flush">
+          {% for msg in messages %}
+          <div class="list-group-item px-0 py-2 border-bottom">
+            <div class="d-flex justify-content-between align-items-center">
+              <strong class="small">{{ msg.expediteur.prenom if msg.expediteur else 'Client' }}</strong>
+              <small class="text-muted" style="font-size: 0.7rem;">{{ msg.date_creation.strftime('%H:%M') if msg.date_creation else '' }}</small>
+            </div>
+            <p class="small text-muted mb-0 text-truncate">{{ msg.contenu }}</p>
+          </div>
+          {% else %}
+          <p class="small text-muted my-3 text-center">Aucun message pour l'instant.</p>
+          {% endfor %}
+        </div>
+        <a href="{{ url_for('support') }}" class="btn btn-block btn-sm btn-light mt-3 font-weight-bold">Ouvrir le Chat Support</a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

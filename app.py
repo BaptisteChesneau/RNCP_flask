@@ -218,6 +218,77 @@ def securite():
 def nous_contacter():
     return render_template("contact.html")
 
+# ==================== COLLABORATEUR ====================
+
+# Decorateur de sécurité réservé aux collaborateurs et admins
+def collaborateur_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        utilisateur_id = session.get("utilisateur_id")
+        if not utilisateur_id:
+            flash("Veuillez vous connecter à l'espace collaborateur.", "warning")
+            return redirect(url_for("collaborateur_login"))
+
+        user = Utilisateur.query.get(utilisateur_id)
+        if not user or user.role not in ["collaborateur", "admin"]:
+            flash("Accès réservé au personnel du cabinet ML2C CONSEIL.", "danger")
+            return redirect(url_for("login"))
+
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+
+# 1. Page de connexion Collaborateur
+@app.route("/collaborateur/login", methods=["GET", "POST"])
+def collaborateur_login():
+    if request.method == "POST":
+        email = request.form.get("email", "").strip().lower()
+        password = request.form.get("password", "").strip()
+
+        user = Utilisateur.query.filter_by(email=email).first()
+
+        if (
+            user
+            and user.check_password(password)
+            and user.role in ["collaborateur", "admin"]
+        ):
+            session["utilisateur_id"] = user.id
+            session["role"] = user.role
+            flash(
+                f"Bienvenue dans votre espace collaborateur, {user.prenom} ! 👋",
+                "success",
+            )
+            return redirect(url_for("collaborateur_dashboard"))
+        else:
+            flash(
+                "Identifiants incorrects ou accès non autorisé au portail collaborateur.",
+                "danger",
+            )
+
+    return render_template("collaborateur_login.html")
+
+
+# 2. Espace / Dashboard Collaborateur
+@app.route("/collaborateur/dashboard")
+@collaborateur_required
+def collaborateur_dashboard():
+    utilisateur_id = session.get("utilisateur_id")
+    user = Utilisateur.query.get(utilisateur_id)
+
+    # Récupérer la liste des clients gérés et les derniers messages
+    clients = Utilisateur.query.filter_by(role="client").all()
+    messages_recus = MessageSupport.query.order_by(
+        MessageSupport.date_creation.desc()
+    ).limit(10).all()
+
+    return render_template(
+        "collaborateur_dashboard.html",
+        user=user,
+        clients=clients,
+        messages=messages_recus,
+    )
+
 
 # --- SÉCURITÉ TOKENS & CONFIGURATION SMTP ---
 

@@ -6,12 +6,15 @@ class MessageSupport(db.Model):
     __tablename__ = "messages_support"
 
     id = db.Column(db.Integer, primary_key=True)
+
+    # ⚠️ Vérifie ici : "utilisateur.id" (au singulier)
     expediteur_id = db.Column(
-        db.Integer, db.ForeignKey("utilisateurs.id"), nullable=False
+        db.Integer, db.ForeignKey("utilisateur.id"), nullable=False
     )
     destinataire_id = db.Column(
-        db.Integer, db.ForeignKey("utilisateurs.id"), nullable=True
-    )  # None = destiné à tout le support/admin
+        db.Integer, db.ForeignKey("utilisateur.id"), nullable=True
+    )
+
     contenu = db.Column(db.Text, nullable=False)
     date_creation = db.Column(db.DateTime, default=datetime.utcnow)
     lu = db.Column(db.Boolean, default=False)

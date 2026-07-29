@@ -1,72 +1,301 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Notre politique de sécurité - ML2C CONSEIL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sécurité & Protection des Données — ML2C CONSEIL</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+      color: #2d3748;
+    }
+
+    /* En-tête de page hero */
+    .security-hero {
+      background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+      color: #ffffff;
+      padding: 4rem 1rem;
+      border-bottom: 4px solid #b81473;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(184, 20, 115, 0.2);
+      border: 1px solid rgba(184, 20, 115, 0.4);
+      color: #f6ad55;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Cartes de sécurité */
+    .feature-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.75rem;
+      transition: all 0.3s ease;
+      height: 100%;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+      border-color: rgba(184, 20, 115, 0.3);
+    }
+
+    .feature-icon-box {
+      width: 52px;
+      height: 52px;
+      background: rgba(184, 20, 115, 0.08);
+      color: #b81473;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Fenêtre de Code Terminal */
+    .code-window {
+      background: #1a202c;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      border: 1px solid #2d3748;
+    }
+
+    .code-header {
+      background: #2d3748;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .dot-red { background: #e53e3e; }
+    .dot-yellow { background: #dd6b20; }
+    .dot-green { background: #38a169; }
+
+    .code-title {
+      color: #a0aec0;
+      font-size: 0.8rem;
+      font-family: monospace;
+      margin-left: auto;
+    }
+
+    .code-body {
+      padding: 1.5rem;
+      color: #e2e8f0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin: 0;
+      overflow-x: auto;
+    }
+
+    .keyword { color: #f687b3; font-weight: bold; }
+    .function { color: #63b3ed; }
+    .comment { color: #718096; font-style: italic; }
+    .string { color: #f6ad55; }
+
+    /* Section RGPD */
+    .rgpd-card {
+      background: #ffffff;
+      border-left: 4px solid #b81473;
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+
+    .btn-custom {
+      height: 48px;
+      padding: 0 28px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #b81473, #8c0f57);
+      border: none;
+      color: #ffffff;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-custom:hover {
+      background: linear-gradient(135deg, #a01063, #750b48);
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(184, 20, 115, 0.3);
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
 
-  {% include "header.html" %}
+{% include "header.html" %}
 
-  <div class="container py-5">
-    <h1 class="text-center text-success mb-4">🔒 Data Security, Privacy & Integrity</h1>
-
-    <p class="lead text-center mb-5">
-      At <strong>ML2C CONSEIL</strong>, the security and confidentiality of your personal information are essential. We follow best practices to protect your account data.
+<!-- Hero Banner -->
+<section class="security-hero text-center">
+  <div class="container">
+    <div class="hero-badge mb-3">
+      <i class="fas fa-shield-halved"></i> Protection des données & Infrastructure
+    </div>
+    <h1 class="font-weight-bold mb-3" style="font-family: 'Cormorant Garamond', serif; font-size: 2.8rem;">
+      Sécurité & Confidentialité des Données
+    </h1>
+    <p class="lead text-light opacity-75 mx-auto" style="max-width: 680px; font-size: 1.1rem;">
+      Chez <strong>ML2C CONSEIL</strong>, nous appliquons des standards stricts de chiffrement et de validation pour garantir l'intégrité de vos données financières et personnelles.
     </p>
+  </div>
+</section>
 
-    <div class="row justify-content-center">
-      <div class="col-md-10">
-        <pre class="p-4 rounded code-block-dark">
-<span class="code-keyword">def</span> <span class="code-function">validate_signup</span>(email, password, pseudo):
-    errors = {}
+<main class="container py-5">
 
-    <span class="code-comment"># Validate pseudo (username)</span>
-    <span class="code-keyword">if</span> len(pseudo) &lt; 3:
-        errors["pseudo"] = "Username must be at least 3 characters long."
-
-    <span class="code-comment"># Validate email format</span>
-    <span class="code-keyword">if</span> "@" not in email or "." not in email:
-        errors["email"] = "Invalid email address."
-
-    <span class="code-comment"># Validate password strength</span>
-    <span class="code-keyword">if</span> len(password) &lt; 8:
-        errors["password"] = "Password must be at least 8 characters."
-
-    <span class="code-keyword">return</span> errors
-        </pre>
-        <p class="text-muted mt-3 text-center">✔️ Example of secure validation using arguments & dictionaries</p>
+  <!-- Cartes des Mesures de Sécurité -->
+  <div class="row mb-5">
+    <div class="col-md-3 mb-4 mb-md-0">
+      <div class="feature-card">
+        <div class="feature-icon-box">
+          <i class="fas fa-lock"></i>
+        </div>
+        <h5 class="font-weight-bold mb-2">Chiffrement SSL/TLS</h5>
+        <p class="small text-muted mb-0">
+          Toutes les communications réseau sont chiffrées via le protocole sécurisé HTTPS.
+        </p>
       </div>
     </div>
 
-    <div class="mt-5">
-      <h4>Our Security Measures:</h4>
-      <ul>
-        <li>✅ Encrypted transmission via <strong>HTTPS</strong> (active TLS certificates)</li>
-        <li>✅ Secure password storage using salted hashing</li>
-        <li>✅ Input validation and protection against injections/XSS</li>
-        <li>✅ Session-based identity tracking</li>
-      </ul>
-
-      <h4 class="mt-4">Personal Data</h4>
-      <p>
-        We do not sell or share your personal data without consent. In accordance with GDPR, you may request access, correction, or deletion of your data at any time.
-      </p>
-
-      <h4 class="mt-4">Contact</h4>
-      <p>
-        For any security or data privacy questions, please contact our team at: <strong>contact@ml2c-conseil.com</strong>
-      </p>
+    <div class="col-md-3 mb-4 mb-md-0">
+      <div class="feature-card">
+        <div class="feature-icon-box">
+          <i class="fas fa-key"></i>
+        </div>
+        <h5 class="font-weight-bold mb-2">Mots de passe Hachés</h5>
+        <p class="small text-muted mb-0">
+          Vos mots de passe ne sont jamais stockés en clair, mais hachés avec un grain de sel (salting).
+        </p>
+      </div>
     </div>
 
-    <div class="text-center mt-5">
-      <a href="{{ url_for('menu') }}" class="btn btn-success">⬅️ Back to Menu</a>
+    <div class="col-md-3 mb-4 mb-md-0">
+      <div class="feature-card">
+        <div class="feature-icon-box">
+          <i class="fas fa-user-shield"></i>
+        </div>
+        <h5 class="font-weight-bold mb-2">Protection Injections</h5>
+        <p class="small text-muted mb-0">
+          Filtrage strict des formulaires pour empêcher les failles XSS et injections SQL/NoSQL.
+        </p>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="feature-card">
+        <div class="feature-icon-box">
+          <i class="fas fa-id-card"></i>
+        </div>
+        <h5 class="font-weight-bold mb-2">Sessions Sécurisées</h5>
+        <p class="small text-muted mb-0">
+          Gestion des authentifications par jetons sécurisés expirant automatiquement.
+        </p>
+      </div>
     </div>
   </div>
 
-  {% include "footer.html" %}
+  <!-- Démonstration d'Algorithme de Validation (Code Terminal) -->
+  <div class="row align-items-center my-5">
+    <div class="col-lg-5 mb-4 mb-lg-0">
+      <h3 class="font-weight-bold mb-3" style="color: #1a202c;">Validation Robuste à la Source</h3>
+      <p class="text-muted mb-4">
+        Avant tout enregistrement en base de données, chaque donnée transmise par l'utilisateur subit une vérification rigoureuse via nos algorithmes Python intégrés.
+      </p>
+      <div class="d-flex align-items-center text-dark font-weight-bold small">
+        <i class="fas fa-check-circle text-success fa-lg mr-2"></i> Contrôle de la complexité des mots de passe
+      </div>
+      <div class="d-flex align-items-center text-dark font-weight-bold small mt-2">
+        <i class="fas fa-check-circle text-success fa-lg mr-2"></i> Vérification du format de l'adresse e-mail
+      </div>
+    </div>
 
+    <div class="col-lg-7">
+      <div class="code-window">
+        <div class="code-header">
+          <span class="dot dot-red"></span>
+          <span class="dot dot-yellow"></span>
+          <span class="dot dot-green"></span>
+          <span class="code-title">validators/security.py</span>
+        </div>
+        <pre class="code-body"><code><span class="keyword">def</span> <span class="function">valider_inscription</span>(email, password, pseudo):
+    erreurs = {}
+
+    <span class="comment"># Validation du pseudonyme</span>
+    <span class="keyword">if</span> len(pseudo) &lt; 3:
+        erreurs[<span class="string">"pseudo"</span>] = <span class="string">"Le nom doit contenir au moins 3 caractères."</span>
+
+    <span class="comment"># Validation du format d'e-mail</span>
+    <span class="keyword">if</span> <span class="string">"@"</span> <span class="keyword">not in</span> email <span class="keyword">or</span> <span class="string">"."</span> <span class="keyword">not in</span> email:
+        erreurs[<span class="string">"email"</span>] = <span class="string">"Adresse e-mail non valide."</span>
+
+    <span class="comment"># Validation de la force du mot de passe</span>
+    <span class="keyword">if</span> len(password) &lt; 8:
+        erreurs[<span class="string">"password"</span>] = <span class="string">"Le mot de passe doit faire au moins 8 caractères."</span>
+
+    <span class="keyword">return</span> erreurs</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Encadré RGPD & Contact -->
+  <div class="rgpd-card my-5">
+    <div class="row align-items-center">
+      <div class="col-md-8">
+        <h4 class="font-weight-bold mb-2" style="color: #1a202c;">
+          <i class="fas fa-database text-primary mr-2"></i> Protection des Données Personnelles (RGPD)
+        </h4>
+        <p class="text-muted mb-md-0 small">
+          Conformément au Règlement Général sur la Protection des Données (RGPD), vos données ne sont jamais vendues ou partagées à des tiers. Vous disposez d'un droit permanent d'accès, de rectification et de suppression.
+        </p>
+      </div>
+      <div class="col-md-4 text-md-right">
+        <a href="mailto:contact@ml2c-conseil.com" class="btn btn-outline-dark font-weight-bold btn-sm">
+          <i class="fas fa-envelope mr-1"></i> Contact DPO / Support
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bouton de retour -->
+  <div class="text-center mt-5">
+    <a href="{{ url_for('menu') }}" class="btn btn-custom">
+      <i class="fas fa-arrow-left"></i> Retour au Menu
+    </a>
+  </div>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

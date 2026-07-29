@@ -375,12 +375,22 @@ def update_profile():
 
     user = Utilisateur.query.get(utilisateur_id)
     if user:
-        # Récupération des données du formulaire
-        user.nom = request.form.get("nom", user.nom)
-        user.prenom = request.form.get("prenom", user.prenom)
-        user.email = request.form.get("email", user.email)
+        # Récupération du nom et prénom soumis
+        nom = request.form.get("nom", "").strip()
+        prenom = request.form.get("prenom", "").strip()
+
+        # Si ton modèle regroupe nom et prénom dans nom_complet :
+        if hasattr(user, "nom_complet"):
+            user.nom_complet = f"{prenom} {nom}".strip()
+        elif hasattr(user, "username"):
+            user.username = request.form.get("username", user.username)
+
+        # Email
+        if hasattr(user, "email"):
+            user.email = request.form.get("email", user.email).strip()
+
         db.session.commit()
-        flash("Profil mis à jour avec succès !", "success")
+        flash("Profil mis à jour avec succès ✅", "success")
 
     return redirect(url_for("parametres"))
 

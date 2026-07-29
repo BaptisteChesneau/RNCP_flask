@@ -384,21 +384,25 @@ def update_profile():
 
     return redirect(url_for("parametres"))
 
-@app.route("/parametres")
+@app.route("/parametres", methods=["GET", "POST"])
 def parametres():
     utilisateur_id = session.get("utilisateur_id")
     if not utilisateur_id:
         flash("Veuillez vous connecter pour accéder aux paramètres.", "warning")
         return redirect(url_for("login"))
 
-    # Récupération de l'utilisateur connecté
     user = Utilisateur.query.get(utilisateur_id)
 
-    if not user:
-        flash("Utilisateur introuvable.", "danger")
-        return redirect(url_for("login"))
+    # TRAITEMENT DU FORMULAIRE (POST)
+    if request.method == "POST":
+        user.nom = request.form.get("nom", user.nom)
+        user.prenom = request.form.get("prenom", user.prenom)
+        user.email = request.form.get("email", user.email)
+        db.session.commit()
+        flash("Profil mis à jour avec succès !", "success")
+        return redirect(url_for("parametres"))
 
-    # Passer 'user' au template
+    # AFFICHAGE DE LA PAGE (GET)
     return render_template("parametres.html", user=user)
 
 # ==================== FICHE CLIENT, PARAMÈTRES & DEVIS ====================
@@ -433,13 +437,6 @@ def compte_client():
         else []
     )
     return render_template("compte_client.html", clients=clients, devis_list=devis_list)
-
-
-@app.route("/parametres", methods=["GET", "POST"])
-def parametres():
-    if "utilisateur_id" not in session:
-        return redirect(url_for("login"))
-    return render_template("parametres.html")
 
 
 @app.route("/paiement")

@@ -405,6 +405,36 @@ def parametres():
     # AFFICHAGE DE LA PAGE (GET)
     return render_template("parametres.html", user=user)
 
+@app.route("/update-password", methods=["POST"])
+def update_password():
+    utilisateur_id = session.get("utilisateur_id")
+    if not utilisateur_id:
+        flash("Vous devez être connecté.", "warning")
+        return redirect(url_for("login"))
+
+    user = Utilisateur.query.get(utilisateur_id)
+
+    old_password = request.form.get("old_password", "").strip()
+    new_password = request.form.get("password", "").strip()
+    confirm_password = request.form.get("confirm_password", "").strip()
+
+    # 1. Vérification de l'ancien mot de passe
+    if not user.check_password(old_password):
+        flash("L'ancien mot de passe est incorrect ❌", "danger")
+        return redirect(url_for("parametres"))
+
+    # 2. Vérification de la correspondance
+    if new_password != confirm_password:
+        flash("Les nouveaux mots de passe ne correspondent pas.", "danger")
+        return redirect(url_for("parametres"))
+
+    # 3. Mise à jour
+    user.set_password(new_password)
+    db.session.commit()
+    flash("Mot de passe mis à jour avec succès ✅", "success")
+
+    return redirect(url_for("parametres"))
+
 # ==================== FICHE CLIENT, PARAMÈTRES & DEVIS ====================
 
 

@@ -289,6 +289,46 @@ def collaborateur_dashboard():
         messages=messages_recus,
     )
 
+@app.route("/creer-collaborateur", methods=["GET", "POST"])
+def creer_collaborateur():
+    if request.method == "POST":
+        prenom = request.form.get("prenom", "").strip()
+        nom = request.form.get("nom", "").strip()
+        email = request.form.get("email", "").strip().lower()
+        password = request.form.get("password", "").strip()
+
+        # Vérifier si l'utilisateur existe déjà
+        user_existant = Utilisateur.query.filter_by(email=email).first()
+
+        if user_existant:
+            # S'il existe, on met à jour son rôle et son mot de passe
+            user_existant.prenom = prenom
+            user_existant.nom = nom
+            user_existant.role = "collaborateur"
+            user_existant.set_password(password)
+            db.session.commit()
+            flash(
+                f"Le compte de {prenom} {nom} a été mis à jour en rôle Collaborateur ! ✅",
+                "success",
+            )
+        else:
+            # Sinon, création d'un nouveau membre
+            nouveau_collab = Utilisateur(
+                email=email, prenom=prenom, nom=nom, role="collaborateur"
+            )
+            nouveau_collab.set_password(password)
+
+            db.session.add(nouveau_collab)
+            db.session.commit()
+            flash(
+                f"Le collaborateur {prenom} {nom} a été créé avec succès ! 🎉",
+                "success",
+            )
+
+        return redirect(url_for("collaborateur_login"))
+
+    return render_template("creer_collaborateur.html")
+
 
 # --- SÉCURITÉ TOKENS & CONFIGURATION SMTP ---
 

@@ -247,22 +247,24 @@ def collaborateur_login():
         password = request.form.get("password", "").strip()
 
         user = Utilisateur.query.filter_by(email=email).first()
+        user_role = getattr(user, "role", "client")
 
         if (
             user
             and user.check_password(password)
-            and user.role in ["collaborateur", "admin"]
+            and user_role in ["collaborateur", "admin"]
         ):
             session["utilisateur_id"] = user.id
-            session["role"] = user.role
+            session["role"] = user_role
             flash(
-                f"Bienvenue dans votre espace collaborateur, {user.prenom} ! 👋",
-                "success",
+                f"Bienvenue dans votre espace, {user.prenom} ! 👋", "success"
             )
-            return redirect(url_for("collaborateur_dashboard"))
+
+            # 🟢 REDIRECTION VERS dashboard_admin AU LIEU DE collaborateur_dashboard
+            return redirect(url_for("dashboard_admin"))
         else:
             flash(
-                "Identifiants incorrects ou accès non autorisé au portail collaborateur.",
+                "Identifiants incorrects ou accès non autorisé.",
                 "danger",
             )
 
@@ -270,7 +272,7 @@ def collaborateur_login():
 
 
 # 2. Espace / Dashboard Collaborateur
-@app.route("/collaborateur/dashboard")
+@app.route("/collaborateur-dashboard")
 @collaborateur_required
 def collaborateur_dashboard():
     utilisateur_id = session.get("utilisateur_id")

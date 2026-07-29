@@ -240,7 +240,7 @@ def collaborateur_required(f):
 
 
 # 1. Page de connexion Collaborateur
-@app.route("/collaborateur/login", methods=["GET", "POST"])
+@app.route("/collaborateur-login", methods=["GET", "POST"])
 def collaborateur_login():
     if request.method == "POST":
         email = request.form.get("email", "").strip().lower()

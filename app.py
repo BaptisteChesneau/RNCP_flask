@@ -457,6 +457,22 @@ def supprimer_carte():
     flash("Moyen de paiement supprimé avec succès ✅", "success")
     return redirect(url_for("parametres"))
 
+@app.route("/supprimer-compte", methods=["POST"])
+def supprimer_compte():
+    utilisateur_id = session.get("utilisateur_id")
+    if not utilisateur_id:
+        flash("Vous devez être connecté.", "warning")
+        return redirect(url_for("login"))
+
+    user = Utilisateur.query.get(utilisateur_id)
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        session.clear()
+        flash("Votre compte a été supprimé avec succès.", "info")
+
+    return redirect(url_for("login"))
+
 # ==================== FICHE CLIENT, PARAMÈTRES & DEVIS ====================
 
 

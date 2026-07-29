@@ -14,6 +14,7 @@ from models.user import Utilisateur, ParametresCompte
 from models.client import Client
 from models.devis import Devis
 from models.message import MessageSupport
+from models.collaborateur import Collaborateur
 
 
 # Mail reinitialisation
@@ -218,121 +219,65 @@ def securite():
 def nous_contacter():
     return render_template("contact.html")
 
-# ==================== COLLABORATEUR ====================
+# --- CRÉATION DE COLLABORATEUR ---
+@app.route("/creer-collaborateur", methods=["GET", "POST"])
+def creer_collaborateur():
+    if request.method == "POST":
+        prenom = request.form.get("prenom", "").strip()
+        nom = request.form.get("nom", "").strip()
+        email = request.form.get("email", "").strip().lower()
+        password = request.form.get("password", "").strip()
 
-# Decorateur de sécurité réservé aux collaborateurs et admins
-def collaborateur_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        utilisateur_id = session.get("utilisateur_id")
-        if not utilisateur_id:
-            flash("Veuillez vous connecter à l'espace collaborateur.", "warning")
-            return redirect(url_for("collaborateur_login"))
+        collab_existant = Collaborateur.query.filter_by(email=email).first()
 
-        user = Utilisateur.query.get(utilisateur_id)
-        if not user or user.role not in ["collaborateur", "admin"]:
-            flash("Accès réservé au personnel du cabinet ML2C CONSEIL.", "danger")
-            return redirect(url_for("login"))
+        if collab_existant:
+            collab_existant.prenom = prenom
+            collab_existant.nom = nom
+            collab_existant.set_password(password)
+            db.session.commit()
+            flash(
+                f"Le compte de {prenom} {nom} a été mis à jour ! ✅", "success"
+            )
+        else:
+            nouveau_collab = Collaborateur(
+                prenom=prenom, nom=nom, email=email, role="collaborateur"
+            )
+            nouveau_collab.set_password(password)
 
-        return f(*args, **kwargs)
+            db.session.add(nouveau_collab)
+            db.session.commit()
+            flash(
+                f"Collaborateur {prenom} {nom} créé avec succès ! 🎉", "success"
+            )
 
-    return decorated_function
+        return redirect(url_for("collaborateur_login"))
+
+    return render_template("creer_collaborateur.html")
 
 
-# 1. Page de connexion Collaborateur
+# --- CONNEXION COLLABORATEUR ---
 @app.route("/collaborateur-login", methods=["GET", "POST"])
 def collaborateur_login():
     if request.method == "POST":
         email = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "").strip()
 
-        user = Utilisateur.query.filter_by(email=email).first()
-        user_role = getattr(user, "role", "client")
+        collab = Collaborateur.query.filter_by(email=email).first()
 
-        if (
-            user
-            and user.check_password(password)
-            and user_role in ["collaborateur", "admin"]
-        ):
-            session["utilisateur_id"] = user.id
-            session["role"] = user_role
+        if collab and collab.check_password(password):
+            session["collaborateur_id"] = collab.id
+            session["is_collaborateur"] = True
+            session["role"] = collab.role
             flash(
-                f"Bienvenue dans votre espace, {user.prenom} ! 👋", "success"
+                f"Bienvenue dans votre espace, {collab.prenom} ! 👋", "success"
             )
-
-            # 🟢 REDIRECTION VERS dashboard_admin AU LIEU DE collaborateur_dashboard
-            return redirect(url_for("dashboard_admin"))
+            return redirect(url_for("admin_dashboard"))
         else:
-            flash(
-                "Identifiants incorrects ou accès non autorisé.",
-                "danger",
-            )
+            flash("Identifiants incorrects ou accès non autorisé.", "danger")
 
     return render_template("collaborateur_login.html")
 
 
-# 2. Espace / Dashboard Collaborateur
-@app.route("/collaborateur-dashboard")
-@collaborateur_required
-def collaborateur_dashboard():
-    utilisateur_id = session.get("utilisateur_id")
-    user = Utilisateur.query.get(utilisateur_id)
-
-    # Récupérer la liste des clients gérés et les derniers messages
-    clients = Utilisateur.query.filter_by(role="client").all()
-    messages_recus = MessageSupport.query.order_by(
-        MessageSupport.date_creation.desc()
-    ).limit(10).all()
-
-    return render_template(
-        "collaborateur_dashboard.html",
-        user=user,
-        clients=clients,
-        messages=messages_recus,
-    )
-
-@app.route("/creer-collaborateur", methods=["GET", "POST"])
-def creer_collaborateur():
-    if request.method == "POST":
-        prenom = request.form.get("prenom", "").strip()
-        nom = request.form.get("nom", "").strip()
-        nom_complet = f"{prenom} {nom}".strip()
-        email = request.form.get("email", "").strip().lower()
-        password = request.form.get("password", "").strip()
-
-        user_existant = Utilisateur.query.filter_by(email=email).first()
-
-        if user_existant:
-            user_existant.nom = nom_complet
-            if hasattr(user_existant, "role"):
-                user_existant.role = "collaborateur"
-            user_existant.set_password(password)
-            db.session.commit()
-            flash(
-                f"Compte mis à jour pour {nom_complet} ! ✅",
-                "success",
-            )
-        else:
-            # 🟢 On utilise uniquement les attributs valides de ton modèle
-            nouveau_collab = Utilisateur(
-                email=email,
-                nom=nom_complet,  # ou username=email selon ton modèle
-            )
-            if hasattr(nouveau_collab, "role"):
-                nouveau_collab.role = "collaborateur"
-
-            nouveau_collab.set_password(password)
-
-            db.session.add(nouveau_collab)
-            db.session.commit()
-            flash(
-                f"Le collaborateur {nom_complet} a été créé avec succès ! 🎉",
-                "success",
-            )
-
-        return redirect(url_for("collaborateur_login"))
-
-    return render_template("creer_collaborateur.html")
 
 
 # --- SÉCURITÉ TOKENS & CONFIGURATION SMTP ---

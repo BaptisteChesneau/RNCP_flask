@@ -384,6 +384,23 @@ def update_profile():
 
     return redirect(url_for("parametres"))
 
+@app.route("/parametres")
+def parametres():
+    utilisateur_id = session.get("utilisateur_id")
+    if not utilisateur_id:
+        flash("Veuillez vous connecter pour accéder aux paramètres.", "warning")
+        return redirect(url_for("login"))
+
+    # Récupération de l'utilisateur connecté
+    user = Utilisateur.query.get(utilisateur_id)
+
+    if not user:
+        flash("Utilisateur introuvable.", "danger")
+        return redirect(url_for("login"))
+
+    # Passer 'user' au template
+    return render_template("parametres.html", user=user)
+
 # ==================== FICHE CLIENT, PARAMÈTRES & DEVIS ====================
 
 

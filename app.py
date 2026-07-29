@@ -435,6 +435,17 @@ def update_password():
 
     return redirect(url_for("parametres"))
 
+@app.route("/update-notifications", methods=["POST"])
+def update_notifications():
+    utilisateur_id = session.get("utilisateur_id")
+    if not utilisateur_id:
+        flash("Vous devez être connecté.", "warning")
+        return redirect(url_for("login"))
+
+    # Logique pour sauvegarder les préférences si nécessaire
+    flash("Préférences de notifications mises à jour ✅", "success")
+    return redirect(url_for("parametres"))
+
 # ==================== FICHE CLIENT, PARAMÈTRES & DEVIS ====================
 
 

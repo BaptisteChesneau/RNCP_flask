@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support & Échanges — ML2C CONSEIL</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+      color: #2d3748;
+    }
+
+    /* En-tête de page */
+    .support-hero {
+      background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+      color: #ffffff;
+      padding: 3.5rem 1rem;
+      border-bottom: 4px solid #b81473;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(184, 20, 115, 0.2);
+      border: 1px solid rgba(184, 20, 115, 0.4);
+      color: #f6ad55;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Cartes Contact Rapide */
+    .contact-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+      transition: all 0.3s ease;
+      height: 100%;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+      border-color: rgba(184, 20, 115, 0.3);
+    }
+
+    .contact-icon {
+      width: 50px;
+      height: 50px;
+      background: rgba(184, 20, 115, 0.08);
+      color: #b81473;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      margin: 0 auto 1rem;
+    }
+
+    /* --- MODULE DE MESSAGERIE EN DIRECT --- */
+    .chat-box {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 520px;
+    }
+
+    .chat-header {
+      background: linear-gradient(135deg, #1a202c, #2d3748);
+      color: #ffffff;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 3px solid #b81473;
+    }
+
+    .status-indicator {
+      width: 10px;
+      height: 10px;
+      background-color: #38a169;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 6px;
+    }
+
+    .chat-body {
+      flex: 1;
+      padding: 1.25rem;
+      overflow-y: auto;
+      background-color: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .message-bubble {
+      max-width: 75%;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-size: 0.92rem;
+      line-height: 1.45;
+      position: relative;
+    }
+
+    /* Message provenant du client */
+    .message-sent {
+      align-self: flex-end;
+      background: linear-gradient(135deg, #b81473, #8c0f57);
+      color: #ffffff;
+      border-bottom-right-radius: 2px;
+    }
+
+    /* Message provenant du collaborateur / admin */
+    .message-received {
+      align-self: flex-start;
+      background: #ffffff;
+      color: #2d3748;
+      border: 1px solid #e2e8f0;
+      border-bottom-left-radius: 2px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .message-author {
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 3px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .message-time {
+      font-size: 0.70rem;
+      opacity: 0.75;
+      font-weight: 400;
+    }
+
+    .chat-footer {
+      padding: 1rem;
+      background: #ffffff;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .custom-input-group {
+      display: flex;
+      align-items: center;
+      border: 1.5px solid #cbd5e0;
+      border-radius: 10px;
+      overflow: hidden;
+      background-color: #ffffff;
+      transition: all 0.3s ease;
+    }
+
+    .custom-input-group:focus-within {
+      border-color: #b81473;
+      box-shadow: 0 0 0 4px rgba(184, 20, 115, 0.15);
+    }
+
+    .form-control-custom {
+      height: 48px;
+      border: none;
+      background: transparent;
+      padding: 0 14px;
+      font-size: 0.95rem;
+      color: #2d3748;
+      width: 100%;
+    }
+
+    .form-control-custom:focus {
+      outline: none;
+      box-shadow: none;
+    }
+
+    .btn-send {
+      height: 48px;
+      padding: 0 20px;
+      background: linear-gradient(135deg, #b81473, #8c0f57);
+      border: none;
+      color: #ffffff;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .btn-send:hover {
+      background: linear-gradient(135deg, #a01063, #750b48);
+      color: #ffffff;
+    }
+
+    /* Style FAQ Accordéon */
+    .accordion .card {
+      border: 1px solid #e2e8f0;
+      border-radius: 10px !important;
+      overflow: hidden;
+      margin-bottom: 0.75rem;
+    }
+
+    .accordion .card-header {
+      background: #ffffff;
+      border-bottom: none;
+      padding: 0;
+    }
+
+    .accordion .btn-link {
+      color: #1a202c;
+      font-weight: 600;
+      text-decoration: none !important;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 1.1rem 1.25rem;
+      text-align: left;
+    }
+
+    .accordion .btn-link:hover {
+      color: #b81473;
+    }
+
+    .btn-custom-secondary {
+      height: 48px;
+      border-radius: 10px;
+      background: #ffffff;
+      border: 1.5px solid #cbd5e0;
+      color: #4a5568;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .btn-custom-secondary:hover {
+      border-color: #b81473;
+      color: #b81473;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+{% include "header.html" %}
+
+<!-- Hero Banner -->
+<section class="support-hero text-center">
+  <div class="container">
+    <div class="hero-badge mb-3">
+      <i class="fas fa-headset"></i> Espace Assistance & Échanges
+    </div>
+    <h1 class="font-weight-bold mb-2" style="font-family: 'Cormorant Garamond', serif; font-size: 2.6rem;">
+      Support & Échange en Direct
+    </h1>
+    <p class="lead text-light opacity-75 mx-auto" style="max-width: 620px; font-size: 1.05rem;">
+      Discutez directement avec un collaborateur dédié ou l'administration du cabinet ML2C CONSEIL pour le suivi de votre dossier.
+    </p>
+  </div>
+</section>
+
+<main class="container py-5">
+
+  <!-- Messages Flash -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show rounded-lg mb-4" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <!-- Coordonnées Directes -->
+  <div class="row mb-5">
+    <div class="col-md-4 mb-3 mb-md-0">
+      <div class="contact-card">
+        <div class="contact-icon">
+          <i class="fas fa-envelope"></i>
+        </div>
+        <h6 class="font-weight-bold mb-1">E-mail du Cabinet</h6>
+        <p class="small text-muted mb-2">Réponse sous 24h ouvrées</p>
+        <a href="mailto:contact@ml2c-conseil.com" class="font-weight-bold text-dark small">contact@ml2c-conseil.com</a>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3 mb-md-0">
+      <div class="contact-card">
+        <div class="contact-icon">
+          <i class="fas fa-phone-alt"></i>
+        </div>
+        <h6 class="font-weight-bold mb-1">Téléphone Direct</h6>
+        <p class="small text-muted mb-2">Du Lundi au Vendredi</p>
+        <a href="tel:+33100000000" class="font-weight-bold text-dark small">+33 1 00 00 00 00</a>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="contact-card">
+        <div class="contact-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <h6 class="font-weight-bold mb-1">Horaires d'Ouverture</h6>
+        <p class="small text-muted mb-0">Accueil téléphonique & RDV</p>
+        <p class="small font-weight-bold text-dark mb-0">09:00 – 12:30 / 14:00 – 18:00</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    
+    <!-- COLONNE 1 : MESSAGERIE D'ÉCHANGE EN DIRECT -->
+    <div class="col-lg-7 mb-5 mb-lg-0">
+      <h4 class="font-weight-bold mb-3" style="color: #1a202c;">
+        <i class="fas fa-comments text-primary mr-2"></i> Échanger avec votre collaborateur
+      </h4>
+      <p class="text-muted small mb-4">
+        Posez vos questions en direct concernant vos déclarations, factures ou bilans.
+      </p>
+
+      <div class="chat-box">
+        <!-- En-tête du Chat -->
+        <div class="chat-header">
+          <div class="d-flex align-items-center">
+            <span class="status-indicator"></span>
+            <div>
+              <h6 class="mb-0 font-weight-bold" style="font-size: 0.95rem;">Équipe ML2C CONSEIL</h6>
+              <small class="text-light opacity-75" style="font-size: 0.75rem;">Administrateurs & Collaborateurs</small>
+            </div>
+          </div>
+          <span class="badge badge-light text-dark font-weight-normal px-2 py-1 small">
+            <i class="fas fa-lock text-success mr-1"></i> Canal sécurisé
+          </span>
+        </div>
+
+        <!-- Corps de la discussion (Fil des messages) -->
+        <div class="chat-body" id="chatBody">
+          
+          {% if messages %}
+            {% for msg in messages %}
+              <!-- Différenciation de l'expéditeur (Client vs Collaborateur/Admin) -->
+              <div class="message-bubble {% if msg.expediteur_id == session.get('utilisateur_id') %}message-sent{% else %}message-received{% endif %}">
+                <div class="message-author">
+                  <span>{{ msg.expediteur.prenom if msg.expediteur else 'Support ML2C' }}</span>
+                  <span class="message-time">{{ msg.date_creation.strftime('%H:%M - %d/%m') if msg.date_creation else '' }}</span>
+                </div>
+                <div>{{ msg.contenu }}</div>
+              </div>
+            {% endfor %}
+          {% else %}
+            <!-- Message par défaut si aucune discussion n'est entamée -->
+            <div class="message-bubble message-received">
+              <div class="message-author">
+                <span>Collaborateur ML2C</span>
+                <span class="message-time">En ligne</span>
+              </div>
+              Bonjour ! Comment pouvons-nous vous aider sur votre dossier aujourd'hui ? Écrivez-nous votre message ci-dessous.
+            </div>
+          {% endif %}
+
+        </div>
+
+        <!-- Formulaire d'envoi du message -->
+        <div class="chat-footer">
+          <form method="POST" action="{{ url_for('support') }}" class="m-0">
+            <div class="custom-input-group">
+              <input 
+                type="text" 
+                class="form-control-custom" 
+                name="message" 
+                placeholder="Saisissez votre message ici..." 
+                required 
+                autocomplete="off"
+              >
+              <button type="submit" class="btn btn-send d-flex align-items-center gap-2">
+                Envoyer <i class="fas fa-paper-plane ml-2 small"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLONNE 2 : FOIRE AUX QUESTIONS (FAQ) -->
+    <div class="col-lg-5">
+      <h4 class="font-weight-bold mb-3" style="color: #1a202c;">
+        <i class="fas fa-question-circle text-primary mr-2"></i> Questions fréquentes
+      </h4>
+      <p class="text-muted small mb-4">
+        Trouvez rapidement une réponse aux questions courantes.
+      </p>
+
+      <div class="accordion" id="faqAccordion">
+        <!-- Question 1 -->
+        <div class="card">
+          <div class="card-header" id="headingOne">
+            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne">
+              Comment réinitialiser mon mot de passe ?
+              <i class="fas fa-chevron-down small"></i>
+            </button>
+          </div>
+          <div id="collapseOne" class="collapse show" data-parent="#faqAccordion">
+            <div class="card-body text-muted small">
+              Rendez-vous sur la page de connexion, cliquez sur "Mot de passe oublié ?" puis saisissez votre e-mail. Un lien sécurisé vous sera instantanément envoyé.
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="card">
+          <div class="card-header" id="headingTwo">
+            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo">
+              Comment déposer mes pièces comptables ?
+              <i class="fas fa-chevron-down small"></i>
+            </button>
+          </div>
+          <div id="collapseTwo" class="collapse" data-parent="#faqAccordion">
+            <div class="card-body text-muted small">
+              Vous pouvez glisser-déposer directement vos factures et relevés PDF depuis votre <strong>Espace Client</strong>, rubrique "Mes Documents".
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="card">
+          <div class="card-header" id="headingThree">
+            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree">
+              Où télécharger mes liasses fiscales ?
+              <i class="fas fa-chevron-down small"></i>
+            </button>
+          </div>
+          <div id="collapseThree" class="collapse" data-parent="#faqAccordion">
+            <div class="card-body text-muted small">
+              Toutes les déclarations validées par le cabinet sont téléchargeables au format PDF dans l'onglet "Documents Officiels".
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Encadré d'information RGPD -->
+      <div class="card mt-4 border-0 bg-white p-3 rounded-lg shadow-sm" style="border-left: 4px solid #b81473 !important;">
+        <h6 class="font-weight-bold mb-1" style="color: #1a202c;">
+          <i class="fas fa-shield-alt text-success mr-1"></i> Confidentialité garantie
+        </h6>
+        <p class="small text-muted mb-0">
+          Les messages échangés via cette interface restent strictement confidentiels entre vous et votre équipe comptable ML2C CONSEIL.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Bouton de Retour au Menu -->
+  <div class="text-center mt-5">
+    <a href="{{ url_for('menu') }}" class="btn btn-custom-secondary px-4">
+      <i class="fas fa-arrow-left mr-2"></i> Retour au Menu principal
+    </a>
+  </div>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Défilement automatique du chat vers le bas -->
+<script>
+  window.onload = function() {
+    const chatBody = document.getElementById('chatBody');
+    if (chatBody) {
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+  };
+</script>
+
+</body>
+</html>

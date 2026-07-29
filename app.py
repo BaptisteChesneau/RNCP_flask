@@ -13,6 +13,8 @@ import models
 from models.user import Utilisateur, ParametresCompte
 from models.client import Client
 from models.devis import Devis
+from models.message import MessageSupport
+
 
 # Mail reinitialisation
 import resend
@@ -651,6 +653,49 @@ def login_admin():
             return redirect(url_for("admin_chatbot"))
         flash("Identifiants invalides ❌", "danger")
     return render_template("login_admin.html")
+
+@app.route("/messagerie", methods=["GET", "POST"])
+def messagerie():
+    utilisateur_id = session.get("utilisateur_id")
+    if not utilisateur_id:
+        flash("Veuillez vous connecter.", "warning")
+        return redirect(url_for("login"))
+
+    user = Utilisateur.query.get(utilisateur_id)
+
+    if request.method == "POST":
+        contenu = request.form.get("contenu", "").strip()
+        destinataire_id = request.form.get("destinataire_id")
+
+        if contenu:
+            nouveau_message = MessageSupport(
+                expediteur_id=user.id,
+                destinataire_id=destinataire_id if destinataire_id else None,
+                contenu=contenu,
+            )
+            db.session.add(nouveau_message)
+            db.session.commit()
+            flash("Message envoyé ✅", "success")
+            return redirect(url_for("messagerie"))
+
+    # Récupérer la liste des messages
+    if user.role in ["admin", "collaborateur"]:
+        # Les admins/collaborateurs voient tous les échanges clients
+        messages = MessageSupport.query.order_by(
+            MessageSupport.date_creation.asc()
+        ).all()
+    else:
+        # Un client ne voit que ses propres échanges
+        messages = (
+            MessageSupport.query.filter(
+                (MessageSupport.expediteur_id == user.id)
+                | (MessageSupport.destinataire_id == user.id)
+            )
+            .order_by(MessageSupport.date_creation.asc())
+            .all()
+        )
+
+    return render_template("messagerie.html", user=user, messages=messages)
 
 
 # --- DÉCLARATION DE TOUS LES TEMPLATES ADMINS ---

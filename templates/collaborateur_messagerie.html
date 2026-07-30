@@ -3,40 +3,108 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Messagerie Collaborateur — ML2C CONSEIL</title>
+  <title>Centre de Contact Client — ML2C CONSEIL</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
   <style>
+    :root {
+      --primary-color: #b81473;
+      --primary-hover: #960f5d;
+      --primary-gradient: linear-gradient(135deg, #b81473 0%, #76094b 100%);
+      --bg-body: #f1f5f9;
+      --bg-card: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+    }
+
     body {
-      background-color: #f4f6f9;
-      font-family: 'DM Sans', sans-serif;
-      color: #2d3748;
+      background-color: var(--bg-body);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: var(--text-main);
     }
 
-    .main-card {
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-      border: 1px solid #e2e8f0;
+    /* Container Principal Chat */
+    .app-chat-container {
+      background: var(--bg-card);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08);
+      border: 1px solid var(--border-color);
       overflow: hidden;
-      min-height: 650px;
+      height: calc(100vh - 120px);
+      min-height: 680px;
     }
 
-    /* Sidebar Clients */
-    .sidebar-clients {
+    /* --- SIDEBAR CLIENTS --- */
+    .sidebar-wrapper {
       background: #f8fafc;
-      border-right: 1px solid #e2e8f0;
+      border-right: 1px solid var(--border-color);
       display: flex;
       flex-direction: column;
-      height: 650px;
+      height: 100%;
     }
 
     .sidebar-header {
-      padding: 1.25rem;
-      border-bottom: 1px solid #edf2f7;
+      padding: 1.25rem 1.5rem;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .search-box {
+      position: relative;
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .search-input-custom {
+      height: 42px;
+      padding-left: 40px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      background: #f1f5f9;
+      font-size: 0.875rem;
+      transition: all 0.2s;
+    }
+
+    .search-input-custom:focus {
+      background: #ffffff;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 4px rgba(184, 20, 115, 0.1);
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 6px;
+      padding: 0.75rem 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+      background: #ffffff;
+    }
+
+    .tab-chip {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: #f1f5f9;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-chip.active, .tab-chip:hover {
+      background: var(--primary-color);
+      color: #ffffff;
     }
 
     .client-list {
@@ -45,205 +113,275 @@
       padding: 0.75rem;
     }
 
-    .client-item {
+    .client-card {
       display: flex;
       align-items: center;
       padding: 12px 14px;
-      border-radius: 12px;
-      color: #2d3748;
+      border-radius: 14px;
+      color: var(--text-main);
       text-decoration: none !important;
       transition: all 0.2s ease;
       margin-bottom: 6px;
+      position: relative;
+      border: 1px solid transparent;
     }
 
-    .client-item:hover {
-      background-color: #edf2f7;
+    .client-card:hover {
+      background: #ffffff;
+      border-color: var(--border-color);
+      transform: translateX(2px);
     }
 
-    .client-item.active {
-      background-color: #ffffff;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-      border-left: 4px solid #b81473;
+    .client-card.active {
+      background: #ffffff;
+      border-color: rgba(184, 20, 115, 0.3);
+      box-shadow: 0 10px 20px -10px rgba(184, 20, 115, 0.2);
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      margin-right: 12px;
+      flex-shrink: 0;
     }
 
     .avatar-circle {
-      width: 42px;
-      height: 42px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
-      background: rgba(184, 20, 115, 0.1);
-      color: #b81473;
+      background: var(--primary-gradient);
+      color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 700;
       font-size: 0.95rem;
-      flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(184, 20, 115, 0.25);
     }
 
-    .client-item.active .avatar-circle {
-      background: #b81473;
-      color: #ffffff;
+    .status-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #22c55e;
+      border: 2px solid #ffffff;
+      position: absolute;
+      bottom: 0;
+      right: 0;
     }
 
-    /* Conversation principale */
-    .chat-main {
+    /* --- ZONE CONVERSATION PRINCIPALE --- */
+    .chat-main-wrapper {
       display: flex;
       flex-direction: column;
-      height: 650px;
+      height: 100%;
       background: #ffffff;
     }
 
     .chat-header {
-      padding: 1.25rem;
-      border-bottom: 1px solid #edf2f7;
+      padding: 1rem 1.75rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       background: #ffffff;
     }
 
-    .chat-messages {
+    .chat-body {
       flex: 1;
       overflow-y: auto;
-      padding: 1.5rem;
-      background-color: #fbfcfd;
+      padding: 1.75rem;
+      background: #fafafa;
     }
 
-    /* Bulles de message */
-    .message-row {
+    /* Bulles de Messages */
+    .message-group {
       display: flex;
-      margin-bottom: 1rem;
+      margin-bottom: 1.25rem;
+      flex-direction: column;
     }
 
-    .message-row.sent {
-      justify-content: flex-end;
+    .message-group.sent {
+      align-items: flex-end;
     }
 
-    .message-row.received {
-      justify-content: flex-start;
+    .message-group.received {
+      align-items: flex-start;
     }
 
-    .message-bubble {
-      max-width: 65%;
-      padding: 12px 18px;
-      border-radius: 16px;
-      font-size: 0.95rem;
+    .bubble {
+      max-width: 62%;
+      padding: 14px 20px;
+      border-radius: 18px;
+      font-size: 0.925rem;
+      line-height: 1.5;
       position: relative;
-      line-height: 1.45;
     }
 
-    .sent .message-bubble {
-      background: linear-gradient(135deg, #b81473, #8c0f57);
+    .sent .bubble {
+      background: var(--primary-gradient);
       color: #ffffff;
       border-bottom-right-radius: 4px;
-      box-shadow: 0 4px 12px rgba(184, 20, 115, 0.2);
+      box-shadow: 0 8px 16px -4px rgba(184, 20, 115, 0.3);
     }
 
-    .received .message-bubble {
-      background-color: #edf2f7;
-      color: #1a202c;
+    .received .bubble {
+      background: #ffffff;
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
       border-bottom-left-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
     }
 
-    .msg-meta {
-      font-size: 0.725rem;
-      margin-top: 4px;
-      opacity: 0.75;
-      text-align: right;
+    .message-meta {
+      font-size: 0.72rem;
+      margin-top: 5px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
 
-    /* Zone de saisie */
+    .sent .message-meta {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .received .message-meta {
+      color: var(--text-muted);
+    }
+
+    /* --- PIED DE PAGE & ZONE DE SAISIE --- */
     .chat-footer {
-      padding: 1rem 1.25rem;
-      border-top: 1px solid #edf2f7;
+      padding: 1.25rem 1.75rem;
+      border-top: 1px solid var(--border-color);
       background: #ffffff;
     }
 
-    .chat-input {
-      height: 48px;
-      border-radius: 10px;
-      border: 1.5px solid #cbd5e0;
-      padding-left: 16px;
-      font-size: 0.95rem;
+    .input-toolbar {
+      display: flex;
+      align-items: center;
+      background: #f8fafc;
+      border: 1.5px solid var(--border-color);
+      border-radius: 16px;
+      padding: 6px 10px 6px 16px;
+      transition: all 0.2s;
     }
 
-    .chat-input:focus {
-      border-color: #b81473;
-      box-shadow: 0 0 0 3px rgba(184, 20, 115, 0.15);
+    .input-toolbar:focus-within {
+      border-color: var(--primary-color);
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(184, 20, 115, 0.1);
     }
 
-    .btn-send {
-      height: 48px;
+    .chat-input-field {
+      border: none;
+      background: transparent;
+      width: 100%;
+      height: 42px;
+      font-size: 0.925rem;
+      color: var(--text-main);
+    }
+
+    .chat-input-field:focus {
+      outline: none;
+    }
+
+    .btn-action-icon {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      width: 36px;
+      height: 36px;
       border-radius: 10px;
-      background: linear-gradient(135deg, #b81473, #8c0f57);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .btn-action-icon:hover {
+      background: #e2e8f0;
+      color: var(--text-main);
+    }
+
+    .btn-send-main {
+      height: 42px;
+      padding: 0 20px;
+      border-radius: 12px;
+      background: var(--primary-gradient);
       border: none;
       color: #ffffff;
       font-weight: 600;
-      padding: 0 24px;
-      transition: all 0.2s ease;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(184, 20, 115, 0.25);
+      transition: all 0.2s;
     }
 
-    .btn-send:hover {
-      background: linear-gradient(135deg, #a01063, #750b48);
+    .btn-send-main:hover {
       transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(184, 20, 115, 0.35);
       color: #ffffff;
-    }
-
-    .search-input {
-      height: 38px;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      background: #edf2f7;
-      border: none;
     }
   </style>
 </head>
 <body>
 
-<div class="container-fluid px-4 py-4">
+<div class="container-fluid px-4 py-3">
 
-  <!-- En-tête de la page -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
+  <!-- En-tête Navigation -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
     <div class="d-flex align-items-center">
-      <div class="avatar-circle mr-3" style="width: 48px; height: 48px; font-size: 1.2rem;">
-        <i class="fas fa-comments"></i>
+      <div class="avatar-circle mr-3" style="width: 44px; height: 44px; font-size: 1.1rem;">
+        <i class="fas fa-paper-plane"></i>
       </div>
       <div>
-        <h4 class="font-weight-bold mb-0" style="color: #1a202c;">Centre de Contact Clients</h4>
-        <p class="text-muted small mb-0">Espace d'échange sécurisé collaborateurs & clients</p>
+        <h5 class="font-weight-bold mb-0" style="color: #0f172a;">Messagerie Client</h5>
+        <span class="text-muted small">Portail sécurisé ML2C CONSEIL</span>
       </div>
     </div>
     <a href="{{ url_for('collaborateur_dashboard') }}" class="btn btn-outline-dark btn-sm font-weight-bold rounded-lg px-3 py-2">
-      <i class="fas fa-arrow-left mr-2"></i> Tableau de bord
+      <i class="fas fa-columns mr-2"></i> Tableau de bord
     </a>
   </div>
 
-  <!-- Structure Principale -->
-  <div class="main-card row no-gutters">
+  <!-- Application Chat Container -->
+  <div class="app-chat-container row no-gutters">
 
-    <!-- Sidebar Clients -->
-    <div class="col-md-4 col-lg-3 sidebar-clients">
+    <!-- 1. SIDEBAR CLIENTS -->
+    <div class="col-md-4 col-lg-3 sidebar-wrapper">
+      
       <div class="sidebar-header">
-        <h6 class="font-weight-bold text-uppercase text-muted small mb-3">Portefeuille Clients</h6>
-        <div class="input-group">
-          <input type="text" id="searchClient" class="form-control search-input" placeholder="Rechercher un client..." onkeyup="filterClients()">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" id="searchClient" class="form-control search-input-custom" placeholder="Rechercher un client..." onkeyup="filterClients()">
         </div>
+      </div>
+
+      <div class="filter-tabs">
+        <button class="tab-chip active">Tous</button>
+        <button class="tab-chip">Récents</button>
+        <button class="tab-chip">En attente</button>
       </div>
 
       <div class="client-list" id="clientList">
         {% if clients %}
           {% for c in clients %}
           <a href="{{ url_for('collaborateur_messagerie', client_id=c.id) }}" 
-             class="client-item {% if client_selectionne and client_selectionne.id == c.id %}active{% endif %}">
-            <div class="avatar-circle mr-3">
-              {% if c.prenom %}
-                {{ c.prenom[0]|upper }}
-              {% elif c.email %}
-                {{ c.email[0]|upper }}
-              {% else %}
-                C
-              {% endif %}
+             class="client-card {% if client_selectionne and client_selectionne.id == c.id %}active{% endif %}">
+            
+            <div class="avatar-wrapper">
+              <div class="avatar-circle">
+                {{ c.prenom[0]|upper if c.prenom else (c.email[0]|upper if c.email else 'C') }}
+              </div>
+              <div class="status-indicator"></div>
             </div>
-            <div class="text-truncate">
-              <div class="font-weight-bold small text-truncate" style="color: #1a202c;">
-                {{ c.prenom or '' }} {{ c.nom or '' }}
+
+            <div class="text-truncate flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="font-weight-bold small text-truncate" style="color: #0f172a;">
+                  {{ c.prenom or '' }} {{ c.nom or '' }}
+                </span>
               </div>
               <small class="text-muted text-truncate d-block" style="font-size: 0.78rem;">
                 {{ c.email }}
@@ -252,92 +390,117 @@
           </a>
           {% endfor %}
         {% else %}
-          <p class="small text-muted p-3 text-center">Aucun client trouvé.</p>
+          <div class="text-center text-muted p-4">
+            <i class="fas fa-users-slash fa-2x mb-2 opacity-50"></i>
+            <p class="small mb-0">Aucun client disponible.</p>
+          </div>
         {% endif %}
       </div>
+
     </div>
 
-    <!-- Zone Chat Principale -->
-    <div class="col-md-8 col-lg-9 chat-main">
+    <!-- 2. ZONE DE DISCUSSION PRINCIPALE -->
+    <div class="col-md-8 col-lg-9 chat-main-wrapper">
       
       {% if client_selectionne %}
-        <!-- En-tête de la discussion active -->
-        <div class="chat-header d-flex align-items-center justify-content-between">
+        
+        <!-- Top bar discussion active -->
+        <div class="chat-header">
           <div class="d-flex align-items-center">
-            <div class="avatar-circle mr-3">
-              {{ client_selectionne.email[0]|upper }}
+            <div class="avatar-wrapper">
+              <div class="avatar-circle" style="width: 48px; height: 48px; font-size: 1.1rem;">
+                {{ client_selectionne.email[0]|upper }}
+              </div>
+              <div class="status-indicator" style="width: 14px; height: 14px;"></div>
             </div>
             <div>
-              <h6 class="font-weight-bold mb-0" style="color: #1a202c;">
+              <h6 class="font-weight-bold mb-0" style="color: #0f172a;">
                 {% if client_selectionne.prenom or client_selectionne.nom %}
                   {{ client_selectionne.prenom or '' }} {{ client_selectionne.nom or '' }}
                 {% else %}
                   {{ client_selectionne.email }}
                 {% endif %}
               </h6>
-              <small class="text-muted">
-                <i class="fas fa-envelope mr-1"></i> {{ client_selectionne.email }}
-              </small>
+              <span class="small text-success font-weight-bold">
+                <i class="fas fa-circle mr-1" style="font-size: 0.5rem;"></i> Disponible
+              </span>
             </div>
           </div>
-          <span class="badge badge-pill badge-light border text-muted px-3 py-2 small">
-            Client ID: #{{ client_selectionne.id }}
-          </span>
+
+          <div class="d-flex align-items-center gap-2">
+            <span class="badge badge-pill badge-light border px-3 py-2 text-muted small font-weight-bold">
+              ID: #{{ client_selectionne.id }}
+            </span>
+          </div>
         </div>
 
-        <!-- Messages -->
-        <div class="chat-messages" id="chatWindow">
+        <!-- Corps de discussion (Messages) -->
+        <div class="chat-body" id="chatWindow">
           {% if messages %}
             {% for m in messages %}
               {% set is_me = (m.expediteur_id == user.id) %}
-              <div class="message-row {% if is_me %}sent{% else %}received{% endif %}">
-                <div class="message-bubble">
-                  <div class="font-weight-bold mb-1" style="font-size: 0.8rem; opacity: 0.85;">
-                    {% if is_me %}Moi{% else %}{{ client_selectionne.prenom or 'Client' }}{% endif %}
-                  </div>
+              <div class="message-group {% if is_me %}sent{% else %}received{% endif %}">
+                <div class="bubble">
                   <div>{{ m.contenu }}</div>
-                  <div class="msg-meta">
-                    {{ m.date_creation.strftime('%H:%M') if m.date_creation else '' }}
+                  <div class="message-meta justify-content-end">
+                    <span>{{ m.date_creation.strftime('%H:%M') if m.date_creation else '' }}</span>
+                    {% if is_me %}
+                      <i class="fas fa-check-double ml-1" style="font-size: 0.7rem;"></i>
+                    {% endif %}
                   </div>
                 </div>
               </div>
             {% endfor %}
           {% else %}
             <div class="text-center text-muted my-auto py-5">
-              <i class="fas fa-paper-plane fa-3x mb-3 text-muted" style="opacity: 0.3;"></i>
-              <h6>Aucun échange pour l'instant</h6>
-              <p class="small">Envoyez le premier message à ce client ci-dessous.</p>
+              <div class="avatar-circle mx-auto mb-3" style="width: 60px; height: 60px; font-size: 1.5rem; background: #e2e8f0; color: #64748b; box-shadow: none;">
+                <i class="fas fa-comments"></i>
+              </div>
+              <h6 class="font-weight-bold text-dark">Fil de conversation vide</h6>
+              <p class="small text-muted mb-0">Initiez un premier échange directement ci-dessous.</p>
             </div>
           {% endif %}
         </div>
 
-        <!-- Zone de saisie -->
+        <!-- Zone de saisie (Footer) -->
         <div class="chat-footer">
-          <form method="POST" action="{{ url_for('collaborateur_messagerie') }}" class="d-flex gap-2">
+          <form method="POST" action="{{ url_for('collaborateur_messagerie') }}">
             <input type="hidden" name="destinataire_id" value="{{ client_selectionne.id }}">
-            <input 
-              type="text" 
-              name="contenu" 
-              class="form-control chat-input mr-2" 
-              placeholder="Saisissez votre message au client..." 
-              required
-              autocomplete="off"
-            >
-            <button type="submit" class="btn btn-send d-flex align-items-center">
-              <span>Envoyer</span>
-              <i class="fas fa-paper-plane ml-2"></i>
-            </button>
+            
+            <div class="input-toolbar">
+              <button type="button" class="btn-action-icon mr-1" title="Joindre un fichier">
+                <i class="fas fa-paperclip"></i>
+              </button>
+              
+              <input 
+                type="text" 
+                name="contenu" 
+                class="chat-input-field" 
+                placeholder="Rédigez votre message au client..." 
+                required
+                autocomplete="off"
+              >
+              
+              <button type="button" class="btn-action-icon mr-2" title="Émojis">
+                <i class="far fa-smile"></i>
+              </button>
+
+              <button type="submit" class="btn-send-main">
+                <span>Envoyer</span>
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
           </form>
         </div>
 
       {% else %}
-        <!-- État neutre si aucun client sélectionné -->
+        <!-- État neutre par défaut -->
         <div class="my-auto text-center p-5">
-          <div class="avatar-circle mx-auto mb-3" style="width: 64px; height: 64px; font-size: 1.8rem;">
+          <div class="avatar-circle mx-auto mb-3" style="width: 72px; height: 72px; font-size: 2rem; background: rgba(184,20,115,0.08); color: var(--primary-color); box-shadow: none;">
             <i class="fas fa-comments"></i>
           </div>
-          <h5 class="font-weight-bold text-dark">Sélectionnez un client</h5>
-          <p class="text-muted small">Choisissez un profil dans la liste de gauche pour consulter l'historique ou ouvrir une conversation.</p>
+          <h5 class="font-weight-bold text-dark mb-1">Aucune conversation sélectionnée</h5>
+          <p class="text-muted small max-w-sm mx-auto">Choisissez un client dans la colonne de gauche pour afficher son dossier et démarrer un échange direct.</p>
         </div>
       {% endif %}
 
@@ -350,16 +513,16 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  // Auto-scroll vers le dernier message
+  // Défilement automatique vers le bas
   const chatWindow = document.getElementById('chatWindow');
   if (chatWindow) {
     chatWindow.scrollTop = chatWindow.scrollHeight;
   }
 
-  // Filtrage dynamique des clients dans la liste
+  // Filtrage des clients dans la barre de recherche
   function filterClients() {
     const filter = document.getElementById('searchClient').value.toLowerCase();
-    const items = document.querySelectorAll('#clientList .client-item');
+    const items = document.querySelectorAll('#clientList .client-card');
     items.forEach(item => {
       const text = item.textContent.toLowerCase();
       item.style.display = text.includes(filter) ? 'flex' : 'none';

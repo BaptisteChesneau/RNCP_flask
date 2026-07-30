@@ -172,7 +172,7 @@
       <a href="{{ url_for('creer_collaborateur') }}" class="btn btn-outline-dark btn-sm font-weight-bold rounded-lg mr-2">
         <i class="fas fa-user-plus mr-1"></i> Nouveau Collaborateur
       </a>
-      <a href="{{ url_for('messagerie') }}" class="btn btn-custom-action btn-sm">
+      <a href="{{ url_for('collaborateur_messagerie') }}" class="btn btn-custom-action btn-sm">
         <i class="fas fa-comments mr-1"></i> Ouvrir la Messagerie
       </a>
     </div>
@@ -274,7 +274,7 @@
                     <span class="badge badge-subtle-success px-2 py-1">Actif</span>
                   </td>
                   <td class="text-right align-middle">
-                    <a href="{{ url_for('messagerie') }}" class="btn btn-sm btn-outline-dark font-weight-bold rounded-lg">
+                    <a href="{{ url_for('collaborateur_messagerie', client_id=client.id) }}" class="btn btn-sm btn-outline-dark font-weight-bold rounded-lg">
                       <i class="fas fa-envelope mr-1"></i> Contacter
                     </a>
                   </td>
@@ -300,7 +300,7 @@
           <h6 class="font-weight-bold mb-0" style="color: #1a202c;">
             <i class="fas fa-comment-dots text-primary mr-2" style="color: #b81473 !important;"></i> Derniers Messages
           </h6>
-          <a href="{{ url_for('messagerie') }}" class="small font-weight-bold text-primary">Voir tout</a>
+          <a href="{{ url_for('collaborateur_messagerie') }}" class="small font-weight-bold text-primary">Voir tout</a>
         </div>
 
         <div class="list-group list-group-flush">
@@ -329,7 +329,7 @@
           {% endif %}
         </div>
 
-        <a href="{{ url_for('messagerie') }}" class="btn btn-block btn-sm btn-outline-primary mt-3 font-weight-bold rounded-lg">
+        <a href="{{ url_for('collaborateur_messagerie') }}" class="btn btn-block btn-sm btn-outline-primary mt-3 font-weight-bold rounded-lg">
           Accéder à la messagerie
         </a>
       </div>

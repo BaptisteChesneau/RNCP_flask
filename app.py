@@ -733,49 +733,107 @@ def login_admin():
         flash("Identifiants invalides ❌", "danger")
     return render_template("login_admin.html")
 
+# --- MESSAGERIE COLLABORATEUR (Strictement isolée) ---
+@app.route("/collaborateur-messagerie", methods=["GET", "POST"])
+def collaborateur_messagerie():
+    collab_id = session.get("collaborateur_id")
+    if not collab_id or not session.get("is_collaborateur"):
+        flash(
+            "Veuillez vous connecter à l'espace collaborateur.", "warning"
+        )
+        return redirect(url_for("collaborateur_login"))
+
+    collab = Collaborateur.query.get(collab_id)
+    clients = Utilisateur.query.all()
+
+    # Client sélectionné depuis le Dashboard ou la sidebar
+    client_id = request.args.get("client_id", type=int)
+    client_selectionne = Utilisateur.query.get(client_id) if client_id else None
+
+    if request.method == "POST":
+        contenu = request.form.get("contenu", "").strip()
+        dest_id = request.form.get("destinataire_id")
+
+        if contenu and dest_id:
+            nouveau_msg = MessageSupport(
+                expediteur_id=collab.id,
+                destinataire_id=dest_id,
+                contenu=contenu,
+            )
+            db.session.add(nouveau_msg)
+            db.session.commit()
+            flash("Message envoyé au client ! ✅", "success")
+            return redirect(
+                url_for("collaborateur_messagerie", client_id=dest_id)
+            )
+
+    # 🔒 ISOLATION : Le collaborateur ne voit QUE les échanges entre LUI et le client sélectionné
+    messages = []
+    if client_selectionne:
+        messages = (
+            MessageSupport.query.filter(
+                (
+                    (MessageSupport.expediteur_id == collab.id)
+                    & (MessageSupport.destinataire_id == client_selectionne.id)
+                )
+                | (
+                    (MessageSupport.expediteur_id == client_selectionne.id)
+                    & (MessageSupport.destinataire_id == collab.id)
+                )
+            )
+            .order_by(MessageSupport.date_creation.asc())
+            .all()
+        )
+
+    return render_template(
+        "collaborateur_messagerie.html",
+        user=collab,
+        clients=clients,
+        client_selectionne=client_selectionne,
+        messages=messages,
+    )
+
+
+# --- MESSAGERIE CLIENT (Strictement isolée) ---
 @app.route("/messagerie", methods=["GET", "POST"])
 def messagerie():
     utilisateur_id = session.get("utilisateur_id")
-    if not utilisateur_id:
-        flash("Veuillez vous connecter.", "warning")
+    if not utilisateur_id or session.get("is_collaborateur"):
+        flash("Veuillez vous connecter à votre espace client.", "warning")
         return redirect(url_for("login"))
 
     user = Utilisateur.query.get(utilisateur_id)
 
     if request.method == "POST":
         contenu = request.form.get("contenu", "").strip()
-        destinataire_id = request.form.get("destinataire_id")
+        destinataire_id = request.form.get("destinataire_id")  # ID du collaborateur ciblé (facultatif)
 
         if contenu:
-            nouveau_message = MessageSupport(
+            nouveau_msg = MessageSupport(
                 expediteur_id=user.id,
                 destinataire_id=destinataire_id if destinataire_id else None,
                 contenu=contenu,
             )
-            db.session.add(nouveau_message)
+            db.session.add(nouveau_msg)
             db.session.commit()
-            flash("Message envoyé ✅", "success")
+            flash("Message envoyé au cabinet ! ✅", "success")
             return redirect(url_for("messagerie"))
 
-    # Récupérer la liste des messages
-    if user.role in ["admin", "collaborateur"]:
-        # Les admins/collaborateurs voient tous les échanges clients
-        messages = MessageSupport.query.order_by(
-            MessageSupport.date_creation.asc()
-        ).all()
-    else:
-        # Un client ne voit que ses propres échanges
-        messages = (
-            MessageSupport.query.filter(
-                (MessageSupport.expediteur_id == user.id)
-                | (MessageSupport.destinataire_id == user.id)
-            )
-            .order_by(MessageSupport.date_creation.asc())
-            .all()
+    # 🔒 ISOLATION : L'utilisateur ne voit QUE les messages où IL est l'expéditeur ou le destinataire
+    messages = (
+        MessageSupport.query.filter(
+            (MessageSupport.expediteur_id == user.id)
+            | (MessageSupport.destinataire_id == user.id)
         )
+        .order_by(MessageSupport.date_creation.asc())
+        .all()
+    )
 
-    return render_template("messagerie.html", user=user, messages=messages)
-
+    return render_template(
+        "messagerie.html",
+        user=user,
+        messages=messages,
+    )
 
 # --- DÉCLARATION DE TOUS LES TEMPLATES ADMINS ---
 

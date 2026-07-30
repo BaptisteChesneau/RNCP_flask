@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Messagerie Collaborateur — ML2C CONSEIL</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { background-color: #f4f6f9; font-family: 'DM Sans', sans-serif; color: #2d3748; }
+    .chat-box { background: #fff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden; min-height: 550px; }
+    .chat-sidebar { background: #f8fafc; border-right: 1px solid #e2e8f0; }
+    .client-link { display: block; padding: 12px; border-radius: 8px; color: #2d3748; text-decoration: none !important; }
+    .client-link:hover, .client-link.active { background: #edf2f7; border-left: 4px solid #b81473; }
+    .chat-window { height: 400px; overflow-y: auto; padding: 20px; }
+    .msg-sent { background: #b81473; color: white; margin-left: auto; max-width: 70%; border-radius: 12px; padding: 10px 15px; }
+    .msg-recv { background: #edf2f7; color: #1a202c; margin-right: auto; max-width: 70%; border-radius: 12px; padding: 10px 15px; }
+  </style>
+</head>
+<body>
+
+<div class="container-fluid px-4 py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="font-weight-bold mb-0"><i class="fas fa-comments text-primary mr-2" style="color:#b81473 !important;"></i> Centre de Contact Clients</h4>
+    <a href="{{ url_for('collaborateur_dashboard') }}" class="btn btn-outline-dark btn-sm font-weight-bold">
+      <i class="fas fa-arrow-left mr-1"></i> Tableau de bord
+    </a>
+  </div>
+
+  <div class="chat-box row no-gutters">
+    <!-- Liste des clients -->
+    <div class="col-md-4 chat-sidebar p-3">
+      <h6 class="font-weight-bold text-uppercase text-muted small mb-3">Portefeuille Clients</h6>
+      {% for c in clients %}
+        <a href="{{ url_for('collaborateur_messagerie', client_id=c.id) }}" class="client-link mb-2 {% if client_selectionne and client_selectionne.id == c.id %}active{% endif %}">
+          <div class="font-weight-bold small">{{ c.prenom or '' }} {{ c.nom or '' }}</div>
+          <small class="text-muted">{{ c.email }}</small>
+        </a>
+      {% endfor %}
+    </div>
+
+    <!-- Fil de discussion -->
+    <div class="col-md-8 d-flex flex-column">
+      <div class="p-3 border-bottom bg-light font-weight-bold">
+        {% if client_selectionne %}
+          Discussion avec {{ client_selectionne.prenom or client_selectionne.email }}
+        {% else %}
+          Sélectionnez un client dans la liste pour démarrer l'échange
+        {% endif %}
+      </div>
+
+      <div class="chat-window d-flex flex-column" id="chatWin">
+        {% if client_selectionne %}
+          {% for m in messages %}
+            <div class="mb-3 {% if m.expediteur_id == user.id %}msg-sent{% else %}msg-recv{% endif %}">
+              <div class="small font-weight-bold opacity-75 mb-1">
+                {% if m.expediteur_id == user.id %}Moi{% else %}{{ client_selectionne.prenom or 'Client' }}{% endif %}
+              </div>
+              <div>{{ m.contenu }}</div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="text-center text-muted my-auto"><i class="fas fa-hand-pointer fa-2x mb-2"></i><p>Cliquez sur un client à gauche pour ouvrir sa fiche de dialogue.</p></div>
+        {% endif %}
+      </div>
+
+      {% if client_selectionne %}
+      <div class="p-3 border-top bg-light">
+        <form method="POST" action="{{ url_for('collaborateur_messagerie') }}" class="d-flex">
+          <input type="hidden" name="destinataire_id" value="{{ client_selectionne.id }}">
+          <input type="text" name="contenu" class="form-control mr-2" placeholder="Saisissez votre message au client..." required>
+          <button type="submit" class="btn text-white font-weight-bold" style="background: #b81473;">Envoyer <i class="fas fa-paper-plane ml-1"></i></button>
+        </form>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+  const win = document.getElementById('chatWin');
+  if(win) win.scrollTop = win.scrollHeight;
+</script>
+</body>
+</html>

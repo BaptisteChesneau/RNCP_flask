@@ -126,17 +126,63 @@
     /* ══ CONTENU ══ */
     .ec-content{margin-top:-2.5rem;position:relative;z-index:2;}
 
+    /* ══ BANNIÈRE SUPPORT MESSAGERIE ══ */
+    .ec-support-banner {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--rose) !important;
+      border-radius: 18px;
+      box-shadow: var(--shadow-md);
+      padding: 1.25rem 1.75rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+      transition: all .25s ease;
+    }
+    .ec-support-banner:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+    .ec-support-ico {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: var(--rose-xl);
+      color: var(--rose);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    .ec-support-title {
+      font-family: var(--ff-head);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+    .ec-support-sub {
+      font-size: .82rem;
+      color: var(--muted);
+      margin-top: .15rem;
+    }
+
     /* ══ NAVIGATION ══ */
     .ec-nav-wrap{
       background:var(--surface);border:1px solid var(--border);
       border-radius:18px;padding:.4rem;box-shadow:var(--shadow-md);
       display:inline-flex;gap:.3rem;margin-bottom:1.75rem;
+      flex-wrap: wrap;
     }
     .ec-nav-btn{
       display:flex;align-items:center;gap:.55rem;
       padding:.62rem 1.25rem;border:none;background:transparent;
       color:var(--muted);font-family:var(--ff-body);font-size:.84rem;font-weight:600;
       border-radius:12px;cursor:pointer;transition:all .22s;white-space:nowrap;
+      text-decoration: none !important;
     }
     .ec-nav-btn:hover:not(.active){background:var(--bg2);color:var(--text2);}
     .ec-nav-btn.active{background:var(--ink);color:#fff;box-shadow:0 4px 16px rgba(26,26,46,.2);}
@@ -211,7 +257,7 @@
     /* Pill RDV */
     .rdv-pill{
       display:inline-flex;align-items:center;gap:.5rem;
-      padding:.5rem 1.1窗口;border-radius:10px;
+      padding:.5rem 1.1rem;border-radius:10px;
       background:var(--turq-xl);border:1px solid rgba(79,166,149,.2);
       color:var(--turq-d);font-size:.83rem;font-weight:600;margin-top:1.1rem;
     }
@@ -268,7 +314,7 @@
     /* Contenu carte */
     .cc-inner{position:relative;z-index:2;height:100%;padding:1.6rem 1.8rem;display:flex;flex-direction:column;justify-content:space-between;}
     .cc-top{display:flex;justify-content:space-between;align-items:center;}
-    .cc-brand{font-family:var(--ff-head);font-size:1.1rem;font-weight:700;color:rgba(255,255,255,.9);letter-spacing Club:.06em;}
+    .cc-brand{font-family:var(--ff-head);font-size:1.1rem;font-weight:700;color:rgba(255,255,255,.9);letter-spacing:.06em;}
     .cc-brand-em{color:#5eead4;}
     .cc-network{display:flex;}
     .cc-c1{width:30px;height:30px;border-radius:50%;background:rgba(235,0,27,.8);margin-right:-10px;}
@@ -333,13 +379,10 @@
     .btn-act-danger{background:rgba(220,38,38,.07);border:1.5px solid rgba(220,38,38,.15);color:#dc2626;}
     .btn-act-danger:hover{background:#dc2626;color:#fff;border-color:#dc2626;}
 
-    /* ══ ORNEMENT DÉCORATIF ══ */
-    .ec-ornement{position:absolute;right:0;top:50%;transform:translateY(-50%);pointer-events:none;opacity:.04;}
-
-    /* ══ TOAST REPOSITIONNÉ EN HAUT ET EN AFFICHAGE PERMANENT ══ */
+    /* ══ TOAST REPOSITIONNÉ EN HAUT ══ */
     .ec-toast{
       position:fixed;
-      top: 6.5rem; /* Fixé en haut sous la barre de navigation */
+      top: 6.5rem;
       right: 2rem;
       z-index: 9999;
       background: var(--surface);
@@ -353,7 +396,7 @@
       font-weight: 500;
       color: var(--text);
       box-shadow: var(--shadow-lg);
-      transform: translateY(-150px); /* Position initiale hors-champ haut */
+      transform: translateY(-150px);
       opacity: 0;
       transition: all .4s cubic-bezier(.34,1.2,.64,1);
       pointer-events: none;
@@ -380,6 +423,7 @@
       .ec-nav-btn .tab-text{display:none;}
       .ec-hero-mono{display:none;}
       .cc-number{font-size:.88rem;letter-spacing:.14em;}
+      .ec-support-banner { flex-direction: column; text-align: center; }
     }
   </style>
 </head>
@@ -441,6 +485,23 @@
   <div class="ec-content">
     <div class="container">
 
+      <!-- 🟢 BANNIÈRE SUPPORT / MESSAGERIE DIRECTE -->
+      <div class="ec-support-banner">
+        <div class="d-flex align-items-center gap-3">
+          <div class="ec-support-ico">
+            <i class="fas fa-comments"></i>
+          </div>
+          <div>
+            <div class="ec-support-title">Besoin d'échange ou d'assistance ?</div>
+            <div class="ec-support-sub">Discutez en direct avec votre collaborateur référent ML2C CONSEIL.</div>
+          </div>
+        </div>
+        <a href="{{ url_for('messagerie') }}" class="btn-act btn-act-rose px-4 py-2" style="white-space: nowrap;">
+          Ouvrir la messagerie <i class="fas fa-paper-plane ml-1"></i>
+        </a>
+      </div>
+
+      <!-- BARRE DE NAVIGATION INTERNE -->
       <div class="ec-nav-wrap">
         <button class="ec-nav-btn active" data-panel="devis">
           <i class="fas fa-file-invoice"></i>
@@ -456,10 +517,16 @@
           <i class="fas fa-credit-card"></i>
           <span class="tab-text">Carte bancaire</span>
         </button>
+        <!-- RACCOURCI COMPLÉMENTAIRE VERS LA MESSAGERIE -->
+        <a href="{{ url_for('messagerie') }}" class="ec-nav-btn" style="color: var(--rose);">
+          <i class="fas fa-paper-plane"></i>
+          <span class="tab-text">Messagerie client</span>
+        </a>
       </div>
 
       <div class="ec-panels">
 
+        <!-- PANNEAU 1 : DEVIS -->
         <div class="ec-panel active" id="panel-devis">
 
           {% if session.devis_data or devis_list %}
@@ -549,6 +616,7 @@
           </a>
         </div>
 
+        <!-- PANNEAU 2 : FICHE CLIENT -->
         <div class="ec-panel" id="panel-fiche">
           {% if clients %}
             {% for client in clients %}
@@ -593,6 +661,7 @@
           </a>
         </div>
 
+        <!-- PANNEAU 3 : CARTE BANCAIRE -->
         <div class="ec-panel" id="panel-carte">
           {% if session.get('carte_bancaire') %}
 
@@ -652,6 +721,7 @@
           {% endif %}
         </div>
 
+        <!-- BARRE D'ACTIONS INFERIEURE -->
         <div class="ec-action-bar">
           <a href="{{ url_for('parametres') }}" class="btn-act btn-act-rose"><i class="fas fa-cog"></i>Paramètres</a>
           <a href="{{ url_for('gerer_devis') }}" class="btn-act btn-act-turq"><i class="fas fa-folder-open"></i>Gérer mes devis</a>
@@ -667,6 +737,7 @@
 <div class="ec-toast" id="ecToast"><i class="fas fa-check-circle"></i><span>Bienvenue dans votre espace client</span></div>
 
 {% include "footer.html" %}
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -689,9 +760,9 @@ function tick(){
 tick();setInterval(tick,1000);
 
 /* Tabs */
-document.querySelectorAll('.ec-nav-btn').forEach(btn=>{
+document.querySelectorAll('.ec-nav-btn[data-panel]').forEach(btn=>{
   btn.addEventListener('click',function(){
-    document.querySelectorAll('.ec-nav-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.ec-nav-btn[data-panel]').forEach(b=>b.classList.remove('active'));
     document.querySelectorAll('.ec-panel').forEach(p=>p.classList.remove('active'));
     this.classList.add('active');
     const t=document.getElementById('panel-'+this.dataset.panel);
@@ -723,7 +794,7 @@ document.querySelectorAll('.ec-hero-stat-val').forEach(el=>{
   if(!isNaN(n)&&n>0){el.textContent='0';setTimeout(()=>animCount(el,n),500);}
 });
 
-/* FIX FOR PERMANENT SCREENSHOT: Force the toast to appear as soon as the DOM loads, without automatically closing it */
+/* Toast de notification */
 document.addEventListener("DOMContentLoaded", function() {
   const t = document.getElementById('ecToast');
   if(t) {

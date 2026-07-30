@@ -272,6 +272,32 @@ def collaborateur_login():
 
     return render_template("collaborateur_login.html")
 
+# --- ROUTE DASHBOARD COLLABORATEUR ---
+@app.route("/collaborateur-dashboard")
+def collaborateur_dashboard():
+    # Vérification que le collaborateur est bien connecté
+    collab_id = session.get("collaborateur_id")
+    if not collab_id:
+        flash("Veuillez vous connecter à l'espace collaborateur.", "warning")
+        return redirect(url_for("collaborateur_login"))
+
+    # Récupération des données nécessaires
+    collab = Collaborateur.query.get(collab_id)
+    clients = Utilisateur.query.all()
+    messages = (
+        MessageSupport.query.order_by(MessageSupport.date_creation.desc())
+        .limit(10)
+        .all()
+    )
+
+    # Rendu vers ton nouveau template
+    return render_template(
+        "collaborateur_dashboard.html",
+        user=collab,
+        clients=clients,
+        messages=messages,
+    )
+
 # --- SÉCURITÉ TOKENS & CONFIGURATION SMTP ---
 
 serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])

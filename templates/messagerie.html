@@ -418,7 +418,7 @@
 
       <!-- Zone de Saisie -->
       <div class="chat-footer">
-        <form method="POST" action="{{ url_for('messagerie') }}">
+        <form id="chatForm" method="POST" action="{{ url_for('messagerie') }}">
           {% if client_selectionne %}
             <input type="hidden" name="destinataire_id" value="{{ client_selectionne.id }}">
           {% endif %}
@@ -431,6 +431,7 @@
             <input 
               type="text" 
               name="contenu" 
+              id="contenuInput"
               class="chat-input-field" 
               placeholder="Rédigez votre message ici..." 
               required
@@ -455,14 +456,103 @@
 
 </div>
 
+<!-- Audio pour la notification sonore -->
+<audio id="notifSound" preload="auto">
+  <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
+</audio>
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
-  // Fait défiler automatiquement vers le dernier message
-  const chatWindow = document.getElementById('chatWindow');
-  if (chatWindow) {
-    chatWindow.scrollTop = chatWindow.scrollHeight;
+  let lastMessageCount = 0;
+  let isFirstLoad = true;
+
+  // 1. Défilement automatique vers le dernier message
+  function scrollToBottom() {
+    const chatWindow = document.getElementById('chatWindow');
+    if (chatWindow) {
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
   }
+
+  // 2. Synchronisation temps réel via polling (/api/messages)
+  function fetchMessagesRealtime() {
+    fetch('/api/messages')
+      .then(response => {
+        if (!response.ok) throw new Error("Accès refusé ou erreur serveur");
+        return response.json();
+      })
+      .then(data => {
+        const chatWindow = document.getElementById('chatWindow');
+        if (!chatWindow) return;
+
+        // Détection de nouveau message entrant
+        if (!isFirstLoad && data.length > lastMessageCount) {
+          const lastMsg = data[data.length - 1];
+          
+          if (!lastMsg.is_me) {
+            // 🔊 Notification Sonore
+            const sound = document.getElementById('notifSound');
+            if (sound) {
+              sound.play().catch(e => console.log('Autoplay bloqué par le navigateur'));
+            }
+            
+            // 🔔 Notification Visuelle dans l'onglet
+            document.title = "🔔 (1) Nouveau message — ML2C CONSEIL";
+            setTimeout(() => { 
+              document.title = "Messagerie & Support — ML2C CONSEIL"; 
+            }, 6000);
+          }
+        }
+
+        // Mise à jour du DOM uniquement si le nombre de messages varie
+        if (data.length !== lastMessageCount) {
+          lastMessageCount = data.length;
+          
+          if (data.length === 0) {
+            chatWindow.innerHTML = `
+              <div class="text-center text-muted my-auto py-5">
+                <div class="avatar-circle mx-auto mb-3" style="width: 64px; height: 64px; font-size: 1.6rem; background: #e2e8f0; color: #64748b; box-shadow: none;">
+                  <i class="fas fa-paper-plane"></i>
+                </div>
+                <h6 class="font-weight-bold text-dark">Aucun message pour le moment</h6>
+                <p class="small text-muted mb-0">Rédigez votre premier message ci-dessous pour lancer l'échange.</p>
+              </div>`;
+          } else {
+            let html = '';
+            data.forEach(msg => {
+              const isMe = msg.is_me;
+              html += `
+                <div class="message-group ${isMe ? 'sent' : 'received'}">
+                  <div class="bubble">
+                    <div class="font-weight-bold mb-1" style="font-size: 0.78rem; opacity: 0.85;">
+                      ${msg.expediteur}
+                    </div>
+                    <div>${msg.contenu}</div>
+                    <div class="message-meta justify-content-end">
+                      <span>${msg.heure}</span>
+                      ${isMe ? '<i class="fas fa-check-double ml-1" style="font-size: 0.65rem;"></i>' : ''}
+                    </div>
+                  </div>
+                </div>`;
+            });
+            chatWindow.innerHTML = html;
+            scrollToBottom();
+          }
+        }
+        isFirstLoad = false;
+      })
+      .catch(err => {
+        // Mode dégradé discret si l'endpoint API n'est pas actif
+        console.debug('Polling API inactif :', err.message);
+      });
+  }
+
+  // Initialisation
+  scrollToBottom();
+  setInterval(fetchMessagesRealtime, 3000);
 </script>
+
 </body>
 </html>

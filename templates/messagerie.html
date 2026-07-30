@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Messagerie & Support — ML2C CONSEIL</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+  <style>
+    body {
+      background-color: #f4f6f9;
+      font-family: 'DM Sans', sans-serif;
+      color: #2d3748;
+    }
+
+    .chat-container {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+      min-height: 600px;
+    }
+
+    /* Sidebar Collaborateur */
+    .chat-sidebar {
+      background-color: #f8fafc;
+      border-right: 1px solid #e2e8f0;
+      min-height: 600px;
+    }
+
+    .client-item {
+      padding: 12px 16px;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      color: #2d3748;
+      text-decoration: none !important;
+      display: flex;
+      align-items: center;
+    }
+
+    .client-item:hover, .client-item.active {
+      background-color: #edf2f7;
+    }
+
+    .client-item.active {
+      border-left: 4px solid #b81473;
+    }
+
+    /* Zone de fil de discussion */
+    .chat-messages {
+      height: 440px;
+      overflow-y: auto;
+      padding: 20px;
+      background-color: #ffffff;
+    }
+
+    /* Bulles de messages */
+    .message-bubble {
+      max-width: 75%;
+      padding: 12px 18px;
+      border-radius: 16px;
+      font-size: 0.95rem;
+      position: relative;
+      margin-bottom: 15px;
+    }
+
+    .message-sent {
+      background: linear-gradient(135deg, #b81473, #8c0f57);
+      color: #ffffff;
+      margin-left: auto;
+      border-bottom-right-radius: 4px;
+    }
+
+    .message-received {
+      background-color: #edf2f7;
+      color: #1a202c;
+      margin-right: auto;
+      border-bottom-left-radius: 4px;
+    }
+
+    .avatar-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(184, 20, 115, 0.1);
+      color: #b81473;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .btn-send {
+      background: linear-gradient(135deg, #b81473, #8c0f57);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      padding: 0 24px;
+      font-weight: 600;
+    }
+
+    .btn-send:hover {
+      background: linear-gradient(135deg, #a01063, #750b48);
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container py-5">
+
+  <!-- En-tête -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h3 class="font-weight-bold mb-1" style="color: #1a202c;">Messagerie & Support</h3>
+      <p class="text-muted small mb-0">Échanges directs sécurisés — ML2C CONSEIL</p>
+    </div>
+    {% if session.get('is_collaborateur') %}
+      <a href="{{ url_for('collaborateur_dashboard') }}" class="btn btn-outline-secondary btn-sm rounded-lg font-weight-bold">
+        <i class="fas fa-arrow-left mr-1"></i> Retour Tableau de Bord
+      </a>
+    {% else %}
+      <a href="{{ url_for('compte_client') }}" class="btn btn-outline-secondary btn-sm rounded-lg font-weight-bold">
+        <i class="fas fa-arrow-left mr-1"></i> Mon Espace Client
+      </a>
+    {% endif %}
+  </div>
+
+  <!-- Messages Flash -->
+  {% with messages_flash = get_flashed_messages(with_categories=true) %}
+    {% if messages_flash %}
+      {% for category, message in messages_flash %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show rounded-lg mb-4" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <!-- 🔔 FENÊTRE/ALERTE CÔTÉ CLIENT SI UN COLLABORATEUR CHERCHE À LE JOINDRE -->
+  {% if not session.get('is_collaborateur') and client_selectionne %}
+    <div class="alert alert-info border-0 shadow-sm rounded-lg p-3 mb-4 d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center">
+        <div class="mr-3 text-primary" style="font-size: 1.8rem; color: #b81473 !important;">
+          <i class="fas fa-user-tie"></i>
+        </div>
+        <div>
+          <h6 class="font-weight-bold mb-0" style="color: #1a202c;">
+            Un collaborateur ML2C CONSEIL a initié un échange avec vous !
+          </h6>
+          <small class="text-muted">
+            Vous pouvez lui répondre directement ci-dessous.
+          </small>
+        </div>
+      </div>
+      <span class="badge badge-pill badge-primary px-3 py-2">Contact Direct</span>
+    </div>
+  {% endif %}
+
+  <!-- Conteneur Principal Chat -->
+  <div class="chat-container">
+    <div class="row no-gutters">
+
+      <!-- Si Collaborateur : Liste des Clients (Sidebar) -->
+      {% if session.get('is_collaborateur') %}
+      <div class="col-md-4 chat-sidebar p-3">
+        <h6 class="font-weight-bold text-uppercase text-muted small mb-3">Clients en portefeuille</h6>
+        <div class="list-group list-group-flush">
+          {% if clients %}
+            {% for client in clients %}
+              <a href="{{ url_for('messagerie', client_id=client.id) }}" 
+                 class="client-item mb-2 {% if client_selectionne and client_selectionne.id == client.id %}active{% endif %}">
+                <div class="avatar-circle mr-3">
+                  {{ client.prenom[0] if client.prenom else (client.username[0]|upper if client.username else 'C') }}
+                </div>
+                <div>
+                  <div class="font-weight-bold small">
+                    {{ client.prenom or '' }} {{ client.nom or '' }}
+                  </div>
+                  <small class="text-muted d-block text-truncate" style="max-width: 180px;">
+                    {{ client.email }}
+                  </small>
+                </div>
+              </a>
+            {% endfor %}
+          {% else %}
+            <p class="small text-muted p-2">Aucun client trouvé.</p>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Fil de discussion principal -->
+      <div class="{% if session.get('is_collaborateur') %}col-md-8{% else %}col-12{% endif %} d-flex flex-column">
+        
+        <!-- En-tête du fil -->
+        <div class="p-3 border-bottom d-flex align-items-center bg-light">
+          <div class="avatar-circle mr-3">
+            <i class="fas fa-comments"></i>
+          </div>
+          <div>
+            <h6 class="font-weight-bold mb-0" style="color: #1a202c;">
+              {% if session.get('is_collaborateur') %}
+                {% if client_selectionne %}
+                  Discussion avec : {{ client_selectionne.prenom or client_selectionne.email }}
+                {% else %}
+                  Fil de discussion général
+                {% endif %}
+              {% else %}
+                Échange avec le cabinet ML2C CONSEIL
+              {% endif %}
+            </h6>
+            <small class="text-success"><i class="fas fa-circle mr-1" style="font-size: 0.6rem;"></i> En ligne</small>
+          </div>
+        </div>
+
+        <!-- Zone des messages -->
+        <div class="chat-messages d-flex flex-column" id="chatWindow">
+          {% if messages %}
+            {% for msg in messages %}
+              {% set is_me = (msg.expediteur_id == session.get('collaborateur_id') or msg.expediteur_id == session.get('utilisateur_id')) %}
+              <div class="message-bubble {% if is_me %}message-sent{% else %}message-received{% endif %}">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <small class="font-weight-bold opacity-75">
+                    {% if is_me %}
+                      Moi
+                    {% else %}
+                      {{ msg.expediteur.prenom or msg.expediteur.email if msg.expediteur else 'Support ML2C' }}
+                    {% endif %}
+                  </small>
+                  <small class="ml-3 opacity-50" style="font-size: 0.7rem;">
+                    {{ msg.date_creation.strftime('%H:%M') if msg.date_creation else '' }}
+                  </small>
+                </div>
+                <div>{{ msg.contenu }}</div>
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="text-center text-muted my-auto py-5">
+              <i class="fas fa-paper-plane fa-2x mb-2 text-muted"></i>
+              <p class="small">Aucun message pour le moment. Envoyez votre premier message ci-dessous !</p>
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Formulaire d'envoi -->
+        <div class="p-3 border-top bg-light">
+          <form method="POST" action="{{ url_for('messagerie') }}" class="d-flex gap-2">
+            
+            {% if client_selectionne %}
+              <input type="hidden" name="destinataire_id" value="{{ client_selectionne.id }}">
+            {% endif %}
+
+            <input 
+              type="text" 
+              name="contenu" 
+              class="form-control mr-2" 
+              placeholder="Rédigez votre message ici..." 
+              required
+              style="height: 48px; border-radius: 10px;"
+            >
+            <button type="submit" class="btn btn-send d-flex align-items-center justify-content-center">
+              Envoyer <i class="fas fa-paper-plane ml-2"></i>
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Fait défiler la fenêtre de chat automatiquement vers le bas à l'ouverture
+  const chatWindow = document.getElementById('chatWindow');
+  if (chatWindow) {
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  }
+</script>
+</body>
+</html>

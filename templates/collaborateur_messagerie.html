@@ -7,80 +7,364 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
   <style>
-    body { background-color: #f4f6f9; font-family: 'DM Sans', sans-serif; color: #2d3748; }
-    .chat-box { background: #fff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden; min-height: 550px; }
-    .chat-sidebar { background: #f8fafc; border-right: 1px solid #e2e8f0; }
-    .client-link { display: block; padding: 12px; border-radius: 8px; color: #2d3748; text-decoration: none !important; }
-    .client-link:hover, .client-link.active { background: #edf2f7; border-left: 4px solid #b81473; }
-    .chat-window { height: 400px; overflow-y: auto; padding: 20px; }
-    .msg-sent { background: #b81473; color: white; margin-left: auto; max-width: 70%; border-radius: 12px; padding: 10px 15px; }
-    .msg-recv { background: #edf2f7; color: #1a202c; margin-right: auto; max-width: 70%; border-radius: 12px; padding: 10px 15px; }
+    body {
+      background-color: #f4f6f9;
+      font-family: 'DM Sans', sans-serif;
+      color: #2d3748;
+    }
+
+    .main-card {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+      min-height: 650px;
+    }
+
+    /* Sidebar Clients */
+    .sidebar-clients {
+      background: #f8fafc;
+      border-right: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      height: 650px;
+    }
+
+    .sidebar-header {
+      padding: 1.25rem;
+      border-bottom: 1px solid #edf2f7;
+    }
+
+    .client-list {
+      overflow-y: auto;
+      flex: 1;
+      padding: 0.75rem;
+    }
+
+    .client-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 14px;
+      border-radius: 12px;
+      color: #2d3748;
+      text-decoration: none !important;
+      transition: all 0.2s ease;
+      margin-bottom: 6px;
+    }
+
+    .client-item:hover {
+      background-color: #edf2f7;
+    }
+
+    .client-item.active {
+      background-color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      border-left: 4px solid #b81473;
+    }
+
+    .avatar-circle {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: rgba(184, 20, 115, 0.1);
+      color: #b81473;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+    }
+
+    .client-item.active .avatar-circle {
+      background: #b81473;
+      color: #ffffff;
+    }
+
+    /* Conversation principale */
+    .chat-main {
+      display: flex;
+      flex-direction: column;
+      height: 650px;
+      background: #ffffff;
+    }
+
+    .chat-header {
+      padding: 1.25rem;
+      border-bottom: 1px solid #edf2f7;
+      background: #ffffff;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem;
+      background-color: #fbfcfd;
+    }
+
+    /* Bulles de message */
+    .message-row {
+      display: flex;
+      margin-bottom: 1rem;
+    }
+
+    .message-row.sent {
+      justify-content: flex-end;
+    }
+
+    .message-row.received {
+      justify-content: flex-start;
+    }
+
+    .message-bubble {
+      max-width: 65%;
+      padding: 12px 18px;
+      border-radius: 16px;
+      font-size: 0.95rem;
+      position: relative;
+      line-height: 1.45;
+    }
+
+    .sent .message-bubble {
+      background: linear-gradient(135deg, #b81473, #8c0f57);
+      color: #ffffff;
+      border-bottom-right-radius: 4px;
+      box-shadow: 0 4px 12px rgba(184, 20, 115, 0.2);
+    }
+
+    .received .message-bubble {
+      background-color: #edf2f7;
+      color: #1a202c;
+      border-bottom-left-radius: 4px;
+    }
+
+    .msg-meta {
+      font-size: 0.725rem;
+      margin-top: 4px;
+      opacity: 0.75;
+      text-align: right;
+    }
+
+    /* Zone de saisie */
+    .chat-footer {
+      padding: 1rem 1.25rem;
+      border-top: 1px solid #edf2f7;
+      background: #ffffff;
+    }
+
+    .chat-input {
+      height: 48px;
+      border-radius: 10px;
+      border: 1.5px solid #cbd5e0;
+      padding-left: 16px;
+      font-size: 0.95rem;
+    }
+
+    .chat-input:focus {
+      border-color: #b81473;
+      box-shadow: 0 0 0 3px rgba(184, 20, 115, 0.15);
+    }
+
+    .btn-send {
+      height: 48px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #b81473, #8c0f57);
+      border: none;
+      color: #ffffff;
+      font-weight: 600;
+      padding: 0 24px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-send:hover {
+      background: linear-gradient(135deg, #a01063, #750b48);
+      transform: translateY(-1px);
+      color: #ffffff;
+    }
+
+    .search-input {
+      height: 38px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      background: #edf2f7;
+      border: none;
+    }
   </style>
 </head>
 <body>
 
 <div class="container-fluid px-4 py-4">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="font-weight-bold mb-0"><i class="fas fa-comments text-primary mr-2" style="color:#b81473 !important;"></i> Centre de Contact Clients</h4>
-    <a href="{{ url_for('collaborateur_dashboard') }}" class="btn btn-outline-dark btn-sm font-weight-bold">
-      <i class="fas fa-arrow-left mr-1"></i> Tableau de bord
+
+  <!-- En-tête de la page -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex align-items-center">
+      <div class="avatar-circle mr-3" style="width: 48px; height: 48px; font-size: 1.2rem;">
+        <i class="fas fa-comments"></i>
+      </div>
+      <div>
+        <h4 class="font-weight-bold mb-0" style="color: #1a202c;">Centre de Contact Clients</h4>
+        <p class="text-muted small mb-0">Espace d'échange sécurisé collaborateurs & clients</p>
+      </div>
+    </div>
+    <a href="{{ url_for('collaborateur_dashboard') }}" class="btn btn-outline-dark btn-sm font-weight-bold rounded-lg px-3 py-2">
+      <i class="fas fa-arrow-left mr-2"></i> Tableau de bord
     </a>
   </div>
 
-  <div class="chat-box row no-gutters">
-    <!-- Liste des clients -->
-    <div class="col-md-4 chat-sidebar p-3">
-      <h6 class="font-weight-bold text-uppercase text-muted small mb-3">Portefeuille Clients</h6>
-      {% for c in clients %}
-        <a href="{{ url_for('collaborateur_messagerie', client_id=c.id) }}" class="client-link mb-2 {% if client_selectionne and client_selectionne.id == c.id %}active{% endif %}">
-          <div class="font-weight-bold small">{{ c.prenom or '' }} {{ c.nom or '' }}</div>
-          <small class="text-muted">{{ c.email }}</small>
-        </a>
-      {% endfor %}
-    </div>
+  <!-- Structure Principale -->
+  <div class="main-card row no-gutters">
 
-    <!-- Fil de discussion -->
-    <div class="col-md-8 d-flex flex-column">
-      <div class="p-3 border-bottom bg-light font-weight-bold">
-        {% if client_selectionne %}
-          Discussion avec {{ client_selectionne.prenom or client_selectionne.email }}
-        {% else %}
-          Sélectionnez un client dans la liste pour démarrer l'échange
-        {% endif %}
+    <!-- Sidebar Clients -->
+    <div class="col-md-4 col-lg-3 sidebar-clients">
+      <div class="sidebar-header">
+        <h6 class="font-weight-bold text-uppercase text-muted small mb-3">Portefeuille Clients</h6>
+        <div class="input-group">
+          <input type="text" id="searchClient" class="form-control search-input" placeholder="Rechercher un client..." onkeyup="filterClients()">
+        </div>
       </div>
 
-      <div class="chat-window d-flex flex-column" id="chatWin">
-        {% if client_selectionne %}
-          {% for m in messages %}
-            <div class="mb-3 {% if m.expediteur_id == user.id %}msg-sent{% else %}msg-recv{% endif %}">
-              <div class="small font-weight-bold opacity-75 mb-1">
-                {% if m.expediteur_id == user.id %}Moi{% else %}{{ client_selectionne.prenom or 'Client' }}{% endif %}
-              </div>
-              <div>{{ m.contenu }}</div>
+      <div class="client-list" id="clientList">
+        {% if clients %}
+          {% for c in clients %}
+          <a href="{{ url_for('collaborateur_messagerie', client_id=c.id) }}" 
+             class="client-item {% if client_selectionne and client_selectionne.id == c.id %}active{% endif %}">
+            <div class="avatar-circle mr-3">
+              {% if c.prenom %}
+                {{ c.prenom[0]|upper }}
+              {% elif c.email %}
+                {{ c.email[0]|upper }}
+              {% else %}
+                C
+              {% endif %}
             </div>
+            <div class="text-truncate">
+              <div class="font-weight-bold small text-truncate" style="color: #1a202c;">
+                {{ c.prenom or '' }} {{ c.nom or '' }}
+              </div>
+              <small class="text-muted text-truncate d-block" style="font-size: 0.78rem;">
+                {{ c.email }}
+              </small>
+            </div>
+          </a>
           {% endfor %}
         {% else %}
-          <div class="text-center text-muted my-auto"><i class="fas fa-hand-pointer fa-2x mb-2"></i><p>Cliquez sur un client à gauche pour ouvrir sa fiche de dialogue.</p></div>
+          <p class="small text-muted p-3 text-center">Aucun client trouvé.</p>
         {% endif %}
       </div>
-
-      {% if client_selectionne %}
-      <div class="p-3 border-top bg-light">
-        <form method="POST" action="{{ url_for('collaborateur_messagerie') }}" class="d-flex">
-          <input type="hidden" name="destinataire_id" value="{{ client_selectionne.id }}">
-          <input type="text" name="contenu" class="form-control mr-2" placeholder="Saisissez votre message au client..." required>
-          <button type="submit" class="btn text-white font-weight-bold" style="background: #b81473;">Envoyer <i class="fas fa-paper-plane ml-1"></i></button>
-        </form>
-      </div>
-      {% endif %}
     </div>
+
+    <!-- Zone Chat Principale -->
+    <div class="col-md-8 col-lg-9 chat-main">
+      
+      {% if client_selectionne %}
+        <!-- En-tête de la discussion active -->
+        <div class="chat-header d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center">
+            <div class="avatar-circle mr-3">
+              {{ client_selectionne.email[0]|upper }}
+            </div>
+            <div>
+              <h6 class="font-weight-bold mb-0" style="color: #1a202c;">
+                {% if client_selectionne.prenom or client_selectionne.nom %}
+                  {{ client_selectionne.prenom or '' }} {{ client_selectionne.nom or '' }}
+                {% else %}
+                  {{ client_selectionne.email }}
+                {% endif %}
+              </h6>
+              <small class="text-muted">
+                <i class="fas fa-envelope mr-1"></i> {{ client_selectionne.email }}
+              </small>
+            </div>
+          </div>
+          <span class="badge badge-pill badge-light border text-muted px-3 py-2 small">
+            Client ID: #{{ client_selectionne.id }}
+          </span>
+        </div>
+
+        <!-- Messages -->
+        <div class="chat-messages" id="chatWindow">
+          {% if messages %}
+            {% for m in messages %}
+              {% set is_me = (m.expediteur_id == user.id) %}
+              <div class="message-row {% if is_me %}sent{% else %}received{% endif %}">
+                <div class="message-bubble">
+                  <div class="font-weight-bold mb-1" style="font-size: 0.8rem; opacity: 0.85;">
+                    {% if is_me %}Moi{% else %}{{ client_selectionne.prenom or 'Client' }}{% endif %}
+                  </div>
+                  <div>{{ m.contenu }}</div>
+                  <div class="msg-meta">
+                    {{ m.date_creation.strftime('%H:%M') if m.date_creation else '' }}
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="text-center text-muted my-auto py-5">
+              <i class="fas fa-paper-plane fa-3x mb-3 text-muted" style="opacity: 0.3;"></i>
+              <h6>Aucun échange pour l'instant</h6>
+              <p class="small">Envoyez le premier message à ce client ci-dessous.</p>
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Zone de saisie -->
+        <div class="chat-footer">
+          <form method="POST" action="{{ url_for('collaborateur_messagerie') }}" class="d-flex gap-2">
+            <input type="hidden" name="destinataire_id" value="{{ client_selectionne.id }}">
+            <input 
+              type="text" 
+              name="contenu" 
+              class="form-control chat-input mr-2" 
+              placeholder="Saisissez votre message au client..." 
+              required
+              autocomplete="off"
+            >
+            <button type="submit" class="btn btn-send d-flex align-items-center">
+              <span>Envoyer</span>
+              <i class="fas fa-paper-plane ml-2"></i>
+            </button>
+          </form>
+        </div>
+
+      {% else %}
+        <!-- État neutre si aucun client sélectionné -->
+        <div class="my-auto text-center p-5">
+          <div class="avatar-circle mx-auto mb-3" style="width: 64px; height: 64px; font-size: 1.8rem;">
+            <i class="fas fa-comments"></i>
+          </div>
+          <h5 class="font-weight-bold text-dark">Sélectionnez un client</h5>
+          <p class="text-muted small">Choisissez un profil dans la liste de gauche pour consulter l'historique ou ouvrir une conversation.</p>
+        </div>
+      {% endif %}
+
+    </div>
+
   </div>
+
 </div>
 
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  const win = document.getElementById('chatWin');
-  if(win) win.scrollTop = win.scrollHeight;
+  // Auto-scroll vers le dernier message
+  const chatWindow = document.getElementById('chatWindow');
+  if (chatWindow) {
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  }
+
+  // Filtrage dynamique des clients dans la liste
+  function filterClients() {
+    const filter = document.getElementById('searchClient').value.toLowerCase();
+    const items = document.querySelectorAll('#clientList .client-item');
+    items.forEach(item => {
+      const text = item.textContent.toLowerCase();
+      item.style.display = text.includes(filter) ? 'flex' : 'none';
+    });
+  }
 </script>
 </body>
 </html>

@@ -20,6 +20,9 @@ from models.collaborateur import Collaborateur
 import resend
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 
+# Messages en temps reel 
+from flask import jsonify
+
 # Contrôleurs
 from controllers.auth_controller import (
     traiter_login,
@@ -834,6 +837,46 @@ def messagerie():
         user=user,
         messages=messages,
     )
+
+from flask import jsonify
+
+
+@app.route("/api/messages")
+def api_messages():
+    utilisateur_id = session.get("utilisateur_id")
+    collab_id = session.get("collaborateur_id")
+
+    # Si c'est un client connecté
+    if utilisateur_id and not session.get("is_collaborateur"):
+        messages = (
+            MessageSupport.query.filter(
+                (MessageSupport.expediteur_id == utilisateur_id)
+                | (MessageSupport.destinataire_id == utilisateur_id)
+            )
+            .order_by(MessageSupport.date_creation.asc())
+            .all()
+        )
+
+        # On retourne les messages au format JSON
+        data = [
+            {
+                "id": m.id,
+                "contenu": m.contenu,
+                "is_me": (m.expediteur_id == utilisateur_id),
+                "expediteur": (
+                    "Moi"
+                    if m.expediteur_id == utilisateur_id
+                    else "Support ML2C"
+                ),
+                "heure": (
+                    m.date_creation.strftime("%H:%M") if m.date_creation else ""
+                ),
+            }
+            for m in messages
+        ]
+        return jsonify(data)
+
+    return jsonify([]), 403
 
 # --- DÉCLARATION DE TOUS LES TEMPLATES ADMINS ---
 

@@ -21,7 +21,8 @@ import resend
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 
 # Messages en temps reel 
-from flask import jsonify
+from api import api_bp
+
 
 # Contrôleurs
 from controllers.auth_controller import (
@@ -60,6 +61,9 @@ limiter.init_app(app)
 # 🟢 CRÉATION AUTOMATIQUE DES TABLES EN BDD (PostgreSQL Scalingo)
 with app.app_context():
     db.create_all()
+
+# Enregistre toutes les routes API avec le préfixe /api
+app.register_blueprint(api_bp, url_prefix="/api")
 
 # ==================== MIDDLEWARES & HEADERS ====================
 
@@ -871,62 +875,6 @@ def messagerie():
         collaborateurs=collaborateurs,
         collab_selectionne=collab_selectionne,
     )
-
-# --- API TEMPS RÉEL (Prend en compte le filtre collaborateur) ---
-@app.route("/api/messages")
-def api_messages():
-    utilisateur_id = session.get("utilisateur_id") or session.get("user_id")
-    collab_id = request.args.get("collab_id", type=int)
-
-    if utilisateur_id and not session.get("is_collaborateur"):
-        query = MessageSupport.query
-
-        if collab_id:
-            messages = (
-                query.filter(
-                    (
-                        (MessageSupport.expediteur_id == utilisateur_id)
-                        & (MessageSupport.destinataire_id == collab_id)
-                    )
-                    | (
-                        (MessageSupport.expediteur_id == collab_id)
-                        & (MessageSupport.destinataire_id == utilisateur_id)
-                    )
-                )
-                .order_by(MessageSupport.date_creation.asc())
-                .all()
-            )
-        else:
-            messages = (
-                query.filter(
-                    (MessageSupport.expediteur_id == utilisateur_id)
-                    | (MessageSupport.destinataire_id == utilisateur_id)
-                )
-                .order_by(MessageSupport.date_creation.asc())
-                .all()
-            )
-
-        data = [
-            {
-                "id": m.id,
-                "contenu": m.contenu,
-                "is_me": (m.expediteur_id == utilisateur_id),
-                "expediteur": (
-                    "Moi"
-                    if m.expediteur_id == utilisateur_id
-                    else "Support ML2C"
-                ),
-                "heure": (
-                    m.date_creation.strftime("%H:%M")
-                    if m.date_creation
-                    else ""
-                ),
-            }
-            for m in messages
-        ]
-        return jsonify(data)
-
-    return jsonify([]), 403
 
 # --- DÉCLARATION DE TOUS LES TEMPLATES ADMINS ---
 

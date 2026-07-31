@@ -1,14 +1,16 @@
 from flask import jsonify, request, session
 from api import api_bp
 from extensions import db
+from models.collaborateur import Collaborateur
 from models.message import MessageSupport
+from models.user import Utilisateur
 
 
 @api_bp.route("/messages", methods=["GET", "POST"])
 def api_messages_passerelle():
     utilisateur_id = session.get("utilisateur_id") or session.get("user_id")
     collab_id = session.get("collaborateur_id")
-    is_collab = session.get("is_collaborateur")
+    is_collab = session.get("is_collaborateur", False)
 
     if not utilisateur_id and not collab_id:
         return jsonify({"error": "Non autorisé"}), 403
@@ -24,7 +26,7 @@ def api_messages_passerelle():
         if not contenu:
             return jsonify({"error": "Contenu vide"}), 400
 
-        # Identification de l'expéditeur selon le rôle
+        # On stocke l'expéditeur
         expediteur_id = (
             collab_id if (is_collab and collab_id) else utilisateur_id
         )
@@ -53,15 +55,14 @@ def api_messages_passerelle():
         )
 
     # ==========================================
-    # 📥 LECTURE HISTORIQUE MUTUEL (GET)
+    # 📥 RECEPTION / HISTORIQUE (GET)
     # ==========================================
     target_client_id = request.args.get("client_id", type=int)
     target_collab_id = request.args.get("collab_id", type=int)
 
-    # 🔹 CAS 1 : VUE COLLABORATEUR
     if is_collab and collab_id:
+        # Côté Collaborateur : Récupère les messages échangés avec ce client
         if target_client_id:
-            # Récupère tous les messages échangés entre le collaborateur connecté et ce client précis
             messages = (
                 MessageSupport.query.filter(
                     (
@@ -70,14 +71,16 @@ def api_messages_passerelle():
                     )
                     | (
                         (MessageSupport.expediteur_id == target_client_id)
-                        & (MessageSupport.destinataire_id == collab_id)
+                        & (
+                            (MessageSupport.destinataire_id == collab_id)
+                            | (MessageSupport.destinataire_id.is_(None))
+                        )
                     )
                 )
                 .order_by(MessageSupport.date_creation.asc())
                 .all()
             )
         else:
-            # Fil général du collaborateur
             messages = (
                 MessageSupport.query.filter(
                     (MessageSupport.expediteur_id == collab_id)
@@ -86,11 +89,9 @@ def api_messages_passerelle():
                 .order_by(MessageSupport.date_creation.asc())
                 .all()
             )
-
-    # 🔹 CAS 2 : VUE CLIENT
     else:
+        # Côté Client : Récupère ses messages
         if target_collab_id:
-            # Récupère tous les messages échangés entre le client et ce collaborateur précis
             messages = (
                 MessageSupport.query.filter(
                     (
@@ -106,7 +107,6 @@ def api_messages_passerelle():
                 .all()
             )
         else:
-            # Tous les messages du client (Support Général + Collaborateurs)
             messages = (
                 MessageSupport.query.filter(
                     (MessageSupport.expediteur_id == utilisateur_id)
@@ -116,28 +116,30 @@ def api_messages_passerelle():
                 .all()
             )
 
-    # Construction de la liste JSON
+    # 🔍 DISTINCTION VISUELLE EXACTE
     payload = []
     for m in messages:
-        is_me = (
-            (m.expediteur_id == collab_id)
-            if is_collab
-            else (m.expediteur_id == utilisateur_id)
-        )
+        # Vérification si l'expéditeur est un Collaborateur
+        collab_exp = Collaborateur.query.get(m.expediteur_id)
+        is_expediteur_collab = collab_exp is not None
+
+        if is_collab:
+            # Pour la fenêtre d'un Collaborateur : "Moi" s'il est l'auteur
+            is_me = m.expediteur_id == collab_id and is_expediteur_collab
+            exp_label = "Moi (Support)" if is_me else "Client"
+        else:
+            # Pour la fenêtre d'un Client : "Moi" s'il est l'auteur (pas un collaborateur)
+            is_me = (
+                m.expediteur_id == utilisateur_id and not is_expediteur_collab
+            )
+            exp_label = "Moi" if is_me else "Support ML2C"
+
         payload.append(
             {
                 "id": m.id,
                 "contenu": m.contenu,
                 "is_me": is_me,
-                "expediteur": (
-                    "Moi"
-                    if is_me
-                    else (
-                        m.expediteur.prenom or m.expediteur.email
-                        if m.expediteur
-                        else "Support ML2C"
-                    )
-                ),
+                "expediteur": exp_label,
                 "heure": (
                     m.date_creation.strftime("%H:%M") if m.date_creation else ""
                 ),

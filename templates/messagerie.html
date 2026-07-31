@@ -316,7 +316,7 @@
   <!-- Conteneur Chat -->
   <div class="app-chat-container row no-gutters">
 
-    <!-- SIDEBAR 1 : Pour les Collaborateurs (Liste des Clients) -->
+    <!-- SIDEBAR : Liste des Collaborateurs ou Clients -->
     {% if session.get('is_collaborateur') %}
     <div class="col-md-4 col-lg-3 sidebar-wrapper">
       <div class="sidebar-header">
@@ -346,13 +346,11 @@
           {% endfor %}
         {% else %}
           <div class="text-center text-muted p-4">
-            <p class="small mb-0">Aucun collaborateur trouvé.</p>
+            <p class="small mb-0">Aucun client trouvé.</p>
           </div>
         {% endif %}
       </div>
     </div>
-
-    <!-- SIDEBAR 2 : Pour les Clients (Liste des Collaborateurs qu'ils peuvent joindre) -->
     {% else %}
     <div class="col-md-4 col-lg-3 sidebar-wrapper">
       <div class="sidebar-header d-flex justify-content-between align-items-center">
@@ -363,7 +361,6 @@
       </div>
 
       <div class="contact-list">
-        <!-- Option par défaut : Support Général -->
         <a href="{{ url_for('messagerie') }}" 
            class="contact-card mb-2 {% if not collab_selectionne %}active{% endif %}">
           <div class="avatar-wrapper">
@@ -378,7 +375,6 @@
           </div>
         </a>
 
-        <!-- Contacts Collaborateurs dynamiques -->
         {% if collaborateurs %}
           {% for collab in collaborateurs %}
           <a href="{{ url_for('messagerie', collab_id=collab.id) }}" 
@@ -405,7 +401,7 @@
     {% endif %}
 
     <!-- Zone Chat Principale -->
-    <div class="{% if session.get('is_collaborateur') %}col-md-8 col-lg-9{% else %}col-md-8 col-lg-9{% endif %} chat-main-wrapper">
+    <div class="col-md-8 col-lg-9 chat-main-wrapper">
       
       <!-- En-tête de la discussion -->
       <div class="chat-header">
@@ -443,14 +439,16 @@
       <div class="chat-body" id="chatWindow">
         {% if messages %}
           {% for msg in messages %}
-            {% set is_me = (msg.expediteur_id == session.get('collaborateur_id') or msg.expediteur_id == session.get('utilisateur_id') or msg.expediteur_id == session.get('user_id')) %}
+            {# Distinction sécurisée de l'expéditeur #}
+            {% set is_me = (msg.expediteur_id == session.get('utilisateur_id') or msg.expediteur_id == session.get('user_id')) and not session.get('is_collaborateur') %}
+            
             <div class="message-group {% if is_me %}sent{% else %}received{% endif %}">
               <div class="bubble">
                 <div class="font-weight-bold mb-1" style="font-size: 0.78rem; opacity: 0.85;">
                   {% if is_me %}
                     Moi
                   {% else %}
-                    {{ msg.expediteur.prenom or msg.expediteur.email if msg.expediteur else 'Support ML2C' }}
+                    Support ML2C CONSEIL
                   {% endif %}
                 </div>
                 <div>{{ msg.contenu }}</div>
@@ -476,11 +474,13 @@
 
       <!-- Zone de Saisie -->
       <div class="chat-footer">
-        <form id="chatForm" method="POST" action="{{ url_for('messagerie') }}">
+        <form id="chatForm">
           {% if client_selectionne %}
-            <input type="hidden" name="destinataire_id" value="{{ client_selectionne.id }}">
+            <input type="hidden" name="destinataire_id" id="destinataireId" value="{{ client_selectionne.id }}">
           {% elif collab_selectionne %}
-            <input type="hidden" name="destinataire_id" value="{{ collab_selectionne.id }}">
+            <input type="hidden" name="destinataire_id" id="destinataireId" value="{{ collab_selectionne.id }}">
+          {% else %}
+            <input type="hidden" name="destinataire_id" id="destinataireId" value="">
           {% endif %}
 
           <div class="input-toolbar">
@@ -528,7 +528,6 @@
   let lastMessageCount = 0;
   let isFirstLoad = true;
 
-  // 1. Défilement automatique vers le dernier message
   function scrollToBottom() {
     const chatWindow = document.getElementById('chatWindow');
     if (chatWindow) {
@@ -536,12 +535,47 @@
     }
   }
 
-  // 2. Synchronisation temps réel via polling (/api/messages)
+  // Envoi asynchrone via l'API REST (/api/messages)
+  const chatForm = document.getElementById('chatForm');
+  if (chatForm) {
+    chatForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      
+      const inputField = document.getElementById('contenuInput');
+      const destInput = document.getElementById('destinataireId');
+      const contenu = inputField.value.trim();
+      if (!contenu) return;
+
+      const destinataireId = destInput && destInput.value ? parseInt(destInput.value) : null;
+
+      fetch('/api/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contenu: contenu,
+          destinataire_id: destinataireId
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          inputField.value = '';
+          fetchMessagesRealtime(); // Synchronisation immédiate
+        }
+      })
+      .catch(err => console.error("Erreur d'envoi :", err));
+    });
+  }
+
+  // Synchronisation temps réel via polling
   function fetchMessagesRealtime() {
-    // Transmet l'ID du collaborateur à l'API si présent dans l'URL
     const urlParams = new URLSearchParams(window.location.search);
     const collabId = urlParams.get('collab_id');
-    const apiUrl = collabId ? `/api/messages?collab_id=${collabId}` : '/api/messages';
+    const clientId = urlParams.get('client_id');
+    
+    let apiUrl = '/api/messages';
+    if (collabId) apiUrl += `?collab_id=${collabId}`;
+    if (clientId) apiUrl += `?client_id=${clientId}`;
 
     fetch(apiUrl)
       .then(response => {
@@ -552,29 +586,19 @@
         const chatWindow = document.getElementById('chatWindow');
         if (!chatWindow) return;
 
-        // Détection de nouveau message entrant
         if (!isFirstLoad && data.length > lastMessageCount) {
           const lastMsg = data[data.length - 1];
-          
           if (!lastMsg.is_me) {
-            // 🔊 Notification Sonore
             const sound = document.getElementById('notifSound');
-            if (sound) {
-              sound.play().catch(e => console.log('Autoplay bloqué par le navigateur'));
-            }
-            
-            // 🔔 Notification Visuelle dans l'onglet
-            document.title = "🔔 (1) Nouveau message — ML2C CONSEIL";
-            setTimeout(() => { 
-              document.title = "Messagerie & Support — ML2C CONSEIL"; 
-            }, 6000);
+            if (sound) sound.play().catch(() => {});
+            document.title = "🔔 Nouveau message — ML2C CONSEIL";
+            setTimeout(() => { document.title = "Messagerie & Support — ML2C CONSEIL"; }, 5000);
           }
         }
 
-        // Mise à jour du DOM uniquement si le nombre de messages varie
         if (data.length !== lastMessageCount) {
           lastMessageCount = data.length;
-          
+
           if (data.length === 0) {
             chatWindow.innerHTML = `
               <div class="text-center text-muted my-auto py-5">
@@ -608,14 +632,11 @@
         }
         isFirstLoad = false;
       })
-      .catch(err => {
-        console.debug('Polling API inactif :', err.message);
-      });
+      .catch(err => console.debug('Polling API inactif :', err.message));
   }
 
-  // Initialisation
   scrollToBottom();
-  setInterval(fetchMessagesRealtime, 3000);
+  setInterval(fetchMessagesRealtime, 2500);
 </script>
 
 </body>

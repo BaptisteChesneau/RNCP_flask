@@ -800,20 +800,28 @@ def collaborateur_messagerie():
 # --- MESSAGERIE CLIENT (Strictement isolée) ---
 @app.route("/messagerie", methods=["GET", "POST"])
 def messagerie():
-    utilisateur_id = session.get("utilisateur_id")
-    if not utilisateur_id or session.get("is_collaborateur"):
+    # On récupère l'ID client peu importe la variable utilisée en session
+    utilisateur_id = session.get("utilisateur_id") or session.get("user_id")
+
+    # Si c'un collaborateur qui essaie d'accéder à la route client
+    if session.get("is_collaborateur"):
+        return redirect(url_for("collaborateur_messagerie"))
+
+    # Si l'utilisateur n'est pas identifié en session -> Redirection Login
+    if not utilisateur_id:
         flash("Veuillez vous connecter à votre espace client.", "warning")
         return redirect(url_for("login"))
 
     user = Utilisateur.query.get(utilisateur_id)
 
+    # Traitement de l'envoi de message (POST)
     if request.method == "POST":
         contenu = request.form.get("contenu", "").strip()
-        destinataire_id = request.form.get("destinataire_id")  # ID du collaborateur ciblé (facultatif)
+        destinataire_id = request.form.get("destinataire_id")
 
         if contenu:
             nouveau_msg = MessageSupport(
-                expediteur_id=user.id,
+                expediteur_id=utilisateur_id,
                 destinataire_id=destinataire_id if destinataire_id else None,
                 contenu=contenu,
             )
@@ -822,31 +830,32 @@ def messagerie():
             flash("Message envoyé au cabinet ! ✅", "success")
             return redirect(url_for("messagerie"))
 
-    # 🔒 ISOLATION : L'utilisateur ne voit QUE les messages où IL est l'expéditeur ou le destinataire
+    # Filtre des messages : L'utilisateur ne voit QUE ses propres échanges
     messages = (
         MessageSupport.query.filter(
-            (MessageSupport.expediteur_id == user.id)
-            | (MessageSupport.destinataire_id == user.id)
+            (MessageSupport.expediteur_id == utilisateur_id)
+            | (MessageSupport.destinataire_id == utilisateur_id)
         )
         .order_by(MessageSupport.date_creation.asc())
         .all()
     )
 
+    # Liste des collaborateurs pour la sidebar
+    collaborateurs = Collaborateur.query.all()
+
     return render_template(
         "messagerie.html",
         user=user,
         messages=messages,
+        collaborateurs=collaborateurs,
     )
 
-from flask import jsonify
 
-
+# --- API JSON POUR LE TEMPS RÉEL (POLLING) ---
 @app.route("/api/messages")
 def api_messages():
-    utilisateur_id = session.get("utilisateur_id")
-    collab_id = session.get("collaborateur_id")
+    utilisateur_id = session.get("utilisateur_id") or session.get("user_id")
 
-    # Si c'est un client connecté
     if utilisateur_id and not session.get("is_collaborateur"):
         messages = (
             MessageSupport.query.filter(
@@ -857,7 +866,6 @@ def api_messages():
             .all()
         )
 
-        # On retourne les messages au format JSON
         data = [
             {
                 "id": m.id,
@@ -869,7 +877,9 @@ def api_messages():
                     else "Support ML2C"
                 ),
                 "heure": (
-                    m.date_creation.strftime("%H:%M") if m.date_creation else ""
+                    m.date_creation.strftime("%H:%M")
+                    if m.date_creation
+                    else ""
                 ),
             }
             for m in messages

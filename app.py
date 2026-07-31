@@ -741,46 +741,27 @@ def login_admin():
     return render_template("login_admin.html")
 
 # --- MESSAGERIE COLLABORATEUR ---
-@app.route("/collaborateur-messagerie", methods=["GET", "POST"])
+@app.route("/collaborateur-messagerie", methods=["GET"])
 def collaborateur_messagerie():
     collab_id = session.get("collaborateur_id")
+
+    # 1. Sécurité d'accès
     if not collab_id or not session.get("is_collaborateur"):
-        flash(
-            "Veuillez vous connecter à l'espace collaborateur.", "warning"
-        )
+        flash("Veuillez vous connecter à l'espace collaborateur.", "warning")
         return redirect(url_for("collaborateur_login"))
 
     collab = Collaborateur.query.get(collab_id)
     clients = Utilisateur.query.all()
 
-    # 1. Client sélectionné depuis le Dashboard ou la sidebar
+    # 2. Récupération du client sélectionné depuis la Query String (?client_id=X)
     client_id = request.args.get("client_id", type=int)
-    client_selectionne = Utilisateur.query.get(client_id) if client_id else None
+    client_selectionne = (
+        Utilisateur.query.get(client_id) if client_id else None
+    )
 
-    # 2. Traitement de l'envoi de message (POST)
-    if request.method == "POST":
-        contenu = request.form.get("contenu", "").strip()
-        dest_id = request.form.get("destinataire_id", type=int)
-
-        if contenu and dest_id:
-            nouveau_msg = MessageSupport(
-                expediteur_id=collab.id,
-                destinataire_id=dest_id,
-                contenu=contenu,
-            )
-            db.session.add(nouveau_msg)
-            db.session.commit()
-            flash("Message envoyé au client ! ✅", "success")
-
-            return redirect(
-                url_for("collaborateur_messagerie", client_id=dest_id)
-            )
-
-    # 3. Récupération des messages
+    # 3. Chargement de l'historique de discussion
     messages = []
     if client_selectionne:
-        # Récupère tous les messages entre CE collaborateur et CE client précis,
-        # ainsi que les messages généraux envoyés par ce client au support.
         messages = (
             MessageSupport.query.filter(
                 (
@@ -799,6 +780,7 @@ def collaborateur_messagerie():
             .all()
         )
 
+    # 4. Rendu de la vue
     return render_template(
         "collaborateur_messagerie.html",
         user=collab,

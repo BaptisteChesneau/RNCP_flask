@@ -13,7 +13,9 @@ def api_messages_passerelle():
     if not utilisateur_id and not collab_id:
         return jsonify({"error": "Non autorisé"}), 403
 
-    # Logique d'envoi POST (inchangée)
+    # ==========================================
+    # 📤 ENVOI DE MESSAGE (POST)
+    # ==========================================
     if request.method == "POST":
         data = request.get_json() or {}
         contenu = data.get("contenu", "").strip()
@@ -22,6 +24,7 @@ def api_messages_passerelle():
         if not contenu:
             return jsonify({"error": "Contenu vide"}), 400
 
+        # Identification de l'expéditeur selon le rôle
         expediteur_id = (
             collab_id if (is_collab and collab_id) else utilisateur_id
         )
@@ -49,12 +52,16 @@ def api_messages_passerelle():
             201,
         )
 
-    # Logique de récupération GET (inchangée)
+    # ==========================================
+    # 📥 LECTURE HISTORIQUE MUTUEL (GET)
+    # ==========================================
     target_client_id = request.args.get("client_id", type=int)
     target_collab_id = request.args.get("collab_id", type=int)
 
+    # 🔹 CAS 1 : VUE COLLABORATEUR
     if is_collab and collab_id:
         if target_client_id:
+            # Récupère tous les messages échangés entre le collaborateur connecté et ce client précis
             messages = (
                 MessageSupport.query.filter(
                     (
@@ -70,6 +77,7 @@ def api_messages_passerelle():
                 .all()
             )
         else:
+            # Fil général du collaborateur
             messages = (
                 MessageSupport.query.filter(
                     (MessageSupport.expediteur_id == collab_id)
@@ -78,8 +86,11 @@ def api_messages_passerelle():
                 .order_by(MessageSupport.date_creation.asc())
                 .all()
             )
+
+    # 🔹 CAS 2 : VUE CLIENT
     else:
         if target_collab_id:
+            # Récupère tous les messages échangés entre le client et ce collaborateur précis
             messages = (
                 MessageSupport.query.filter(
                     (
@@ -95,6 +106,7 @@ def api_messages_passerelle():
                 .all()
             )
         else:
+            # Tous les messages du client (Support Général + Collaborateurs)
             messages = (
                 MessageSupport.query.filter(
                     (MessageSupport.expediteur_id == utilisateur_id)
@@ -104,6 +116,7 @@ def api_messages_passerelle():
                 .all()
             )
 
+    # Construction de la liste JSON
     payload = []
     for m in messages:
         is_me = (

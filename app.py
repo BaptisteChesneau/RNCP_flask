@@ -740,7 +740,7 @@ def login_admin():
         flash("Identifiants invalides ❌", "danger")
     return render_template("login_admin.html")
 
-# --- MESSAGERIE COLLABORATEUR (Strictement isolée) ---
+# --- MESSAGERIE COLLABORATEUR ---
 @app.route("/collaborateur-messagerie", methods=["GET", "POST"])
 def collaborateur_messagerie():
     collab_id = session.get("collaborateur_id")
@@ -753,13 +753,14 @@ def collaborateur_messagerie():
     collab = Collaborateur.query.get(collab_id)
     clients = Utilisateur.query.all()
 
-    # Client sélectionné depuis le Dashboard ou la sidebar
+    # 1. Client sélectionné depuis le Dashboard ou la sidebar
     client_id = request.args.get("client_id", type=int)
     client_selectionne = Utilisateur.query.get(client_id) if client_id else None
 
+    # 2. Traitement de l'envoi de message (POST)
     if request.method == "POST":
         contenu = request.form.get("contenu", "").strip()
-        dest_id = request.form.get("destinataire_id")
+        dest_id = request.form.get("destinataire_id", type=int)
 
         if contenu and dest_id:
             nouveau_msg = MessageSupport(
@@ -770,13 +771,16 @@ def collaborateur_messagerie():
             db.session.add(nouveau_msg)
             db.session.commit()
             flash("Message envoyé au client ! ✅", "success")
+
             return redirect(
                 url_for("collaborateur_messagerie", client_id=dest_id)
             )
 
-    # 🔒 ISOLATION : Le collaborateur ne voit QUE les échanges entre LUI et le client sélectionné
+    # 3. Récupération des messages
     messages = []
     if client_selectionne:
+        # Récupère tous les messages entre CE collaborateur et CE client précis,
+        # ainsi que les messages généraux envoyés par ce client au support.
         messages = (
             MessageSupport.query.filter(
                 (
@@ -785,7 +789,10 @@ def collaborateur_messagerie():
                 )
                 | (
                     (MessageSupport.expediteur_id == client_selectionne.id)
-                    & (MessageSupport.destinataire_id == collab.id)
+                    & (
+                        (MessageSupport.destinataire_id == collab.id)
+                        | (MessageSupport.destinataire_id.is_(None))
+                    )
                 )
             )
             .order_by(MessageSupport.date_creation.asc())

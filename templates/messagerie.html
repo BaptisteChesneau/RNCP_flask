@@ -179,7 +179,7 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.02);
     }
 
-    /* Style alternatif distinct pour le Collaborateur/Support */
+    /* Style distinct pour les messages de l'équipe Support/Collaborateur */
     .collab-bubble {
       background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
       color: #ffffff !important;
@@ -453,7 +453,7 @@
             {% set is_me = (msg.expediteur_id == session.get('utilisateur_id') or msg.expediteur_id == session.get('user_id')) and not session.get('is_collaborateur') %}
             
             <div class="message-group {% if is_me %}sent{% else %}received{% endif %}">
-              <div class="bubble">
+              <div class="bubble {% if not is_me %}collab-bubble{% endif %}">
                 <div class="font-weight-bold mb-1" style="font-size: 0.78rem; opacity: 0.85;">
                   {{ msg.expediteur.prenom if msg.expediteur and msg.expediteur.prenom else ('Support ML2C' if not is_me else 'Client') }}
                 </div>
@@ -533,6 +533,7 @@
 <script>
   let lastMessageCount = 0;
   let isFirstLoad = true;
+  let pollingTimer = null; // Variable globale pour stopper les timers parasites
 
   function scrollToBottom() {
     const chatWindow = document.getElementById('chatWindow');
@@ -620,9 +621,7 @@
               const isMe = msg.is_me;
               const isCollabRole = (msg.role === 'collab');
               
-              // Alignement : à droite si c'est "Moi", à gauche sinon
               const alignClass = isMe ? 'sent' : 'received';
-              // Thème de couleur distinct pour le collaborateur (Bleu nuit)
               const bubbleExtraClass = isCollabRole ? 'collab-bubble' : '';
 
               html += `
@@ -648,8 +647,14 @@
       .catch(err => console.debug('Polling API inactif :', err.message));
   }
 
+  // Démarrage propre du Polling
+  function startPolling() {
+    if (pollingTimer) clearInterval(pollingTimer);
+    pollingTimer = setInterval(fetchMessagesRealtime, 3000);
+  }
+
   scrollToBottom();
-  setInterval(fetchMessagesRealtime, 2500);
+  startPolling();
 </script>
 
 </body>

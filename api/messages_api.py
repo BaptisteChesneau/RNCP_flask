@@ -115,22 +115,52 @@ def api_messages_passerelle():
 
     payload = []
     for m in messages:
-        # Identification claire de l'auteur par sa table d'origine
-        collab_exp = Collaborateur.query.get(m.expediteur_id)
-
-        if collab_exp:
-            exp_nom = f"{collab_exp.prenom or 'Collaborateur'} (ML2C)"
-            role_type = "collab"
-            is_me = is_collab and (m.expediteur_id == collab_id)
-        else:
-            client_exp = Utilisateur.query.get(m.expediteur_id)
-            exp_nom = (
-                client_exp.prenom
-                if (client_exp and client_exp.prenom)
-                else "Client"
+        if is_collab:
+            # Vue Collaborateur
+            client_id_ref = (
+                target_client_id
+                if target_client_id
+                else (
+                    m.destinataire_id
+                    if m.expediteur_id == collab_id
+                    else m.expediteur_id
+                )
             )
-            role_type = "client"
-            is_me = (not is_collab) and (m.expediteur_id == utilisateur_id)
+
+            if m.expediteur_id == client_id_ref:
+                # C'est le client qui a parlé
+                client_exp = Utilisateur.query.get(m.expediteur_id)
+                exp_nom = (
+                    f"{client_exp.prenom} {client_exp.nom}"
+                    if client_exp
+                    else "Client"
+                )
+                role_type = "client"
+                is_me = False
+            else:
+                # C'est un collaborateur qui a parlé
+                collab_exp = Collaborateur.query.get(m.expediteur_id)
+                exp_nom = f"{collab_exp.prenom if collab_exp else 'Support'} (ML2C)"
+                role_type = "collab"
+                is_me = m.expediteur_id == collab_id
+        else:
+            # Vue Client
+            if m.expediteur_id == utilisateur_id:
+                # C'est le client connecté qui a parlé
+                client_exp = Utilisateur.query.get(utilisateur_id)
+                exp_nom = client_exp.prenom if client_exp else "Moi"
+                role_type = "client"
+                is_me = True
+            else:
+                # C'est le support qui a parlé
+                collab_exp = Collaborateur.query.get(m.expediteur_id)
+                exp_nom = (
+                    f"{collab_exp.prenom} (ML2C)"
+                    if collab_exp
+                    else "Support ML2C"
+                )
+                role_type = "collab"
+                is_me = False
 
         payload.append(
             {

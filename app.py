@@ -802,10 +802,10 @@ def collaborateur_messagerie():
 def messagerie():
     utilisateur_id = session.get("utilisateur_id") or session.get("user_id")
 
-    if session.get("is_collaborateur"):
-        return redirect(url_for("collaborateur_messagerie"))
-
+    # Si ce n'est pas un client mais qu'un collaborateur est connecté, on autorise quand même l'accès ou on gère séparément
     if not utilisateur_id:
+        if session.get("is_collaborateur"):
+            return redirect(url_for("collaborateur_messagerie"))
         flash("Veuillez vous connecter à votre espace client.", "warning")
         return redirect(url_for("login"))
 
@@ -820,9 +820,7 @@ def messagerie():
 
     if request.method == "POST":
         contenu = request.form.get("contenu", "").strip()
-        destinataire_id = request.form.get(
-            "destinataire_id"
-        )  # Reçoit l'ID du collaborateur sélectionné
+        destinataire_id = request.form.get("destinataire_id")
 
         if contenu:
             nouveau_msg = MessageSupport(
@@ -834,14 +832,13 @@ def messagerie():
             db.session.commit()
             flash("Message envoyé ! ✅", "success")
 
-            # On conserve le fil du collaborateur après l'envoi
             if destinataire_id:
                 return redirect(
                     url_for("messagerie", collab_id=destinataire_id)
                 )
             return redirect(url_for("messagerie"))
 
-    # Récupération des messages : si un collaborateur est ciblé, on ne charge que cette discussion
+    # Récupération des messages
     if collab_selectionne:
         messages = (
             MessageSupport.query.filter(
@@ -858,7 +855,6 @@ def messagerie():
             .all()
         )
     else:
-        # Vue globale (tous les messages émis ou reçus par le client)
         messages = (
             MessageSupport.query.filter(
                 (MessageSupport.expediteur_id == utilisateur_id)
@@ -875,7 +871,6 @@ def messagerie():
         collaborateurs=collaborateurs,
         collab_selectionne=collab_selectionne,
     )
-
 
 # --- API TEMPS RÉEL (Prend en compte le filtre collaborateur) ---
 @app.route("/api/messages")

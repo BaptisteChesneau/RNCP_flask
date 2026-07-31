@@ -741,7 +741,7 @@ def login_admin():
     return render_template("login_admin.html")
 
 # --- MESSAGERIE COLLABORATEUR ---
-@app.route("/collaborateur-messagerie", methods=["GET"])
+@app.route("/collaborateur-messagerie", methods=["GET", "POST"])
 def collaborateur_messagerie():
     collab_id = session.get("collaborateur_id")
 
@@ -753,13 +753,32 @@ def collaborateur_messagerie():
     collab = Collaborateur.query.get(collab_id)
     clients = Utilisateur.query.all()
 
-    # 2. Récupération du client sélectionné depuis la Query String (?client_id=X)
+    # Client sélectionné
     client_id = request.args.get("client_id", type=int)
     client_selectionne = (
         Utilisateur.query.get(client_id) if client_id else None
     )
 
-    # 3. Chargement de l'historique de discussion
+    # 2. Réception du message soumis par le formulaire (POST)
+    if request.method == "POST":
+        contenu = request.form.get("contenu", "").strip()
+        dest_id = request.form.get("destinataire_id", type=int)
+
+        if contenu and dest_id:
+            nouveau_msg = MessageSupport(
+                expediteur_id=collab.id,
+                destinataire_id=dest_id,
+                contenu=contenu,
+            )
+            db.session.add(nouveau_msg)
+            db.session.commit()
+            flash("Message envoyé au client ! ✅", "success")
+
+            return redirect(
+                url_for("collaborateur_messagerie", client_id=dest_id)
+            )
+
+    # 3. Chargement de l'historique
     messages = []
     if client_selectionne:
         messages = (
@@ -780,7 +799,6 @@ def collaborateur_messagerie():
             .all()
         )
 
-    # 4. Rendu de la vue
     return render_template(
         "collaborateur_messagerie.html",
         user=collab,

@@ -800,24 +800,29 @@ def collaborateur_messagerie():
 # --- MESSAGERIE CLIENT (Strictement isolée) ---
 @app.route("/messagerie", methods=["GET", "POST"])
 def messagerie():
-    # On récupère l'ID client peu importe la variable utilisée en session
     utilisateur_id = session.get("utilisateur_id") or session.get("user_id")
 
-    # Si c'un collaborateur qui essaie d'accéder à la route client
     if session.get("is_collaborateur"):
         return redirect(url_for("collaborateur_messagerie"))
 
-    # Si l'utilisateur n'est pas identifié en session -> Redirection Login
     if not utilisateur_id:
         flash("Veuillez vous connecter à votre espace client.", "warning")
         return redirect(url_for("login"))
 
     user = Utilisateur.query.get(utilisateur_id)
+    collaborateurs = Collaborateur.query.all()
 
-    # Traitement de l'envoi de message (POST)
+    # Collaborateur sélectionné depuis l'URL (sidebar client)
+    collab_id = request.args.get("collab_id", type=int)
+    collab_selectionne = (
+        Collaborateur.query.get(collab_id) if collab_id else None
+    )
+
     if request.method == "POST":
         contenu = request.form.get("contenu", "").strip()
-        destinataire_id = request.form.get("destinataire_id")
+        destinataire_id = request.form.get(
+            "destinataire_id"
+        )  # Reçoit l'ID du collaborateur sélectionné
 
         if contenu:
             nouveau_msg = MessageSupport(
@@ -827,36 +832,33 @@ def messagerie():
             )
             db.session.add(nouveau_msg)
             db.session.commit()
-            flash("Message envoyé au cabinet ! ✅", "success")
+            flash("Message envoyé ! ✅", "success")
+
+            # On conserve le fil du collaborateur après l'envoi
+            if destinataire_id:
+                return redirect(
+                    url_for("messagerie", collab_id=destinataire_id)
+                )
             return redirect(url_for("messagerie"))
 
-    # Filtre des messages : L'utilisateur ne voit QUE ses propres échanges
-    messages = (
-        MessageSupport.query.filter(
-            (MessageSupport.expediteur_id == utilisateur_id)
-            | (MessageSupport.destinataire_id == utilisateur_id)
+    # Récupération des messages : si un collaborateur est ciblé, on ne charge que cette discussion
+    if collab_selectionne:
+        messages = (
+            MessageSupport.query.filter(
+                (
+                    (MessageSupport.expediteur_id == utilisateur_id)
+                    & (MessageSupport.destinataire_id == collab_selectionne.id)
+                )
+                | (
+                    (MessageSupport.expediteur_id == collab_selectionne.id)
+                    & (MessageSupport.destinataire_id == utilisateur_id)
+                )
+            )
+            .order_by(MessageSupport.date_creation.asc())
+            .all()
         )
-        .order_by(MessageSupport.date_creation.asc())
-        .all()
-    )
-
-    # Liste des collaborateurs pour la sidebar
-    collaborateurs = Collaborateur.query.all()
-
-    return render_template(
-        "messagerie.html",
-        user=user,
-        messages=messages,
-        collaborateurs=collaborateurs,
-    )
-
-
-# --- API JSON POUR LE TEMPS RÉEL (POLLING) ---
-@app.route("/api/messages")
-def api_messages():
-    utilisateur_id = session.get("utilisateur_id") or session.get("user_id")
-
-    if utilisateur_id and not session.get("is_collaborateur"):
+    else:
+        # Vue globale (tous les messages émis ou reçus par le client)
         messages = (
             MessageSupport.query.filter(
                 (MessageSupport.expediteur_id == utilisateur_id)
@@ -865,6 +867,49 @@ def api_messages():
             .order_by(MessageSupport.date_creation.asc())
             .all()
         )
+
+    return render_template(
+        "messagerie.html",
+        user=user,
+        messages=messages,
+        collaborateurs=collaborateurs,
+        collab_selectionne=collab_selectionne,
+    )
+
+
+# --- API TEMPS RÉEL (Prend en compte le filtre collaborateur) ---
+@app.route("/api/messages")
+def api_messages():
+    utilisateur_id = session.get("utilisateur_id") or session.get("user_id")
+    collab_id = request.args.get("collab_id", type=int)
+
+    if utilisateur_id and not session.get("is_collaborateur"):
+        query = MessageSupport.query
+
+        if collab_id:
+            messages = (
+                query.filter(
+                    (
+                        (MessageSupport.expediteur_id == utilisateur_id)
+                        & (MessageSupport.destinataire_id == collab_id)
+                    )
+                    | (
+                        (MessageSupport.expediteur_id == collab_id)
+                        & (MessageSupport.destinataire_id == utilisateur_id)
+                    )
+                )
+                .order_by(MessageSupport.date_creation.asc())
+                .all()
+            )
+        else:
+            messages = (
+                query.filter(
+                    (MessageSupport.expediteur_id == utilisateur_id)
+                    | (MessageSupport.destinataire_id == utilisateur_id)
+                )
+                .order_by(MessageSupport.date_creation.asc())
+                .all()
+            )
 
         data = [
             {

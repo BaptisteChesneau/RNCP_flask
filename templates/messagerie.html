@@ -38,7 +38,7 @@
       min-height: 620px;
     }
 
-    /* Sidebar Clients (Vue Collaborateur) */
+    /* Sidebar Clients / Collaborateurs */
     .sidebar-wrapper {
       background: #f8fafc;
       border-right: 1px solid var(--border-color);
@@ -53,13 +53,13 @@
       border-bottom: 1px solid var(--border-color);
     }
 
-    .client-list {
+    .client-list, .contact-list {
       overflow-y: auto;
       flex: 1;
       padding: 0.75rem;
     }
 
-    .client-card {
+    .client-card, .contact-card {
       display: flex;
       align-items: center;
       padding: 12px 14px;
@@ -69,16 +69,19 @@
       transition: all 0.2s ease;
       margin-bottom: 6px;
       border: 1px solid transparent;
-    }
-
-    .client-card:hover {
       background: #ffffff;
-      border-color: var(--border-color);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
     }
 
-    .client-card.active {
+    .client-card:hover, .contact-card:hover {
       background: #ffffff;
       border-color: rgba(184, 20, 115, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .client-card.active, .contact-card.active {
+      background: #ffffff;
+      border-color: rgba(184, 20, 115, 0.5);
       box-shadow: 0 10px 20px -10px rgba(184, 20, 115, 0.2);
     }
 
@@ -313,11 +316,11 @@
   <!-- Conteneur Chat -->
   <div class="app-chat-container row no-gutters">
 
-    <!-- Sidebar Collaborateur -->
+    <!-- SIDEBAR 1 : Pour les Collaborateurs (Liste des Clients) -->
     {% if session.get('is_collaborateur') %}
     <div class="col-md-4 col-lg-3 sidebar-wrapper">
       <div class="sidebar-header">
-        <h6 class="font-weight-bold text-uppercase text-muted small mb-0">Portefeuille Clients</h6>
+        <h6 class="font-weight-bold text-uppercase text-muted small mb-0"><i class="fas fa-address-book mr-2"></i>Portefeuille Clients</h6>
       </div>
 
       <div class="client-list">
@@ -348,10 +351,61 @@
         {% endif %}
       </div>
     </div>
+
+    <!-- SIDEBAR 2 : Pour les Clients (Liste des Collaborateurs qu'ils peuvent joindre) -->
+    {% else %}
+    <div class="col-md-4 col-lg-3 sidebar-wrapper">
+      <div class="sidebar-header d-flex justify-content-between align-items-center">
+        <h6 class="font-weight-bold text-uppercase text-muted small mb-0"><i class="fas fa-user-tie mr-2"></i>Équipe ML2C</h6>
+        {% if collab_selectionne %}
+          <a href="{{ url_for('messagerie') }}" class="badge badge-light border text-muted" title="Voir tout le fil">Tous</a>
+        {% endif %}
+      </div>
+
+      <div class="contact-list">
+        <!-- Option par défaut : Support Général -->
+        <a href="{{ url_for('messagerie') }}" 
+           class="contact-card mb-2 {% if not collab_selectionne %}active{% endif %}">
+          <div class="avatar-wrapper">
+            <div class="avatar-circle">
+              <i class="fas fa-headset"></i>
+            </div>
+            <div class="status-indicator"></div>
+          </div>
+          <div class="text-truncate flex-grow-1">
+            <div class="font-weight-bold small text-truncate" style="color: #0f172a;">Support Général</div>
+            <small class="text-muted d-block" style="font-size: 0.75rem;">Cabinet ML2C CONSEIL</small>
+          </div>
+        </a>
+
+        <!-- Contacts Collaborateurs dynamiques -->
+        {% if collaborateurs %}
+          {% for collab in collaborateurs %}
+          <a href="{{ url_for('messagerie', collab_id=collab.id) }}" 
+             class="contact-card mb-2 {% if collab_selectionne and collab_selectionne.id == collab.id %}active{% endif %}">
+            <div class="avatar-wrapper">
+              <div class="avatar-circle" style="background: linear-gradient(135deg, #1a202c, #2d3748);">
+                {{ collab.prenom[0]|upper if collab.prenom else 'C' }}
+              </div>
+              <div class="status-indicator"></div>
+            </div>
+            <div class="text-truncate flex-grow-1">
+              <div class="font-weight-bold small text-truncate" style="color: #0f172a;">
+                {{ collab.prenom or '' }} {{ collab.nom or 'Collaborateur' }}
+              </div>
+              <small class="text-muted text-truncate d-block" style="font-size: 0.75rem;">
+                {{ collab.email }}
+              </small>
+            </div>
+          </a>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
     {% endif %}
 
     <!-- Zone Chat Principale -->
-    <div class="{% if session.get('is_collaborateur') %}col-md-8 col-lg-9{% else %}col-12{% endif %} chat-main-wrapper">
+    <div class="{% if session.get('is_collaborateur') %}col-md-8 col-lg-9{% else %}col-md-8 col-lg-9{% endif %} chat-main-wrapper">
       
       <!-- En-tête de la discussion -->
       <div class="chat-header">
@@ -371,7 +425,11 @@
                   Fil de discussion général
                 {% endif %}
               {% else %}
-                Échange avec l'équipe ML2C CONSEIL
+                {% if collab_selectionne %}
+                  Échange direct avec : {{ collab_selectionne.prenom or collab_selectionne.email }}
+                {% else %}
+                  Échange avec le cabinet ML2C CONSEIL
+                {% endif %}
               {% endif %}
             </h6>
             <span class="small text-success font-weight-bold">
@@ -385,7 +443,7 @@
       <div class="chat-body" id="chatWindow">
         {% if messages %}
           {% for msg in messages %}
-            {% set is_me = (msg.expediteur_id == session.get('collaborateur_id') or msg.expediteur_id == session.get('utilisateur_id')) %}
+            {% set is_me = (msg.expediteur_id == session.get('collaborateur_id') or msg.expediteur_id == session.get('utilisateur_id') or msg.expediteur_id == session.get('user_id')) %}
             <div class="message-group {% if is_me %}sent{% else %}received{% endif %}">
               <div class="bubble">
                 <div class="font-weight-bold mb-1" style="font-size: 0.78rem; opacity: 0.85;">
@@ -421,6 +479,8 @@
         <form id="chatForm" method="POST" action="{{ url_for('messagerie') }}">
           {% if client_selectionne %}
             <input type="hidden" name="destinataire_id" value="{{ client_selectionne.id }}">
+          {% elif collab_selectionne %}
+            <input type="hidden" name="destinataire_id" value="{{ collab_selectionne.id }}">
           {% endif %}
 
           <div class="input-toolbar">
@@ -478,7 +538,12 @@
 
   // 2. Synchronisation temps réel via polling (/api/messages)
   function fetchMessagesRealtime() {
-    fetch('/api/messages')
+    // Transmet l'ID du collaborateur à l'API si présent dans l'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const collabId = urlParams.get('collab_id');
+    const apiUrl = collabId ? `/api/messages?collab_id=${collabId}` : '/api/messages';
+
+    fetch(apiUrl)
       .then(response => {
         if (!response.ok) throw new Error("Accès refusé ou erreur serveur");
         return response.json();
@@ -544,7 +609,6 @@
         isFirstLoad = false;
       })
       .catch(err => {
-        // Mode dégradé discret si l'endpoint API n'est pas actif
         console.debug('Polling API inactif :', err.message);
       });
   }

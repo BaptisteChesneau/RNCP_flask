@@ -26,7 +26,6 @@ def api_messages_passerelle():
         if not contenu:
             return jsonify({"error": "Contenu vide"}), 400
 
-        # On stocke l'expéditeur
         expediteur_id = (
             collab_id if (is_collab and collab_id) else utilisateur_id
         )
@@ -61,7 +60,6 @@ def api_messages_passerelle():
     target_collab_id = request.args.get("collab_id", type=int)
 
     if is_collab and collab_id:
-        # Côté Collaborateur : Récupère les messages échangés avec ce client
         if target_client_id:
             messages = (
                 MessageSupport.query.filter(
@@ -90,7 +88,6 @@ def api_messages_passerelle():
                 .all()
             )
     else:
-        # Côté Client : Récupère ses messages
         if target_collab_id:
             messages = (
                 MessageSupport.query.filter(
@@ -116,30 +113,32 @@ def api_messages_passerelle():
                 .all()
             )
 
-    # 🔍 DISTINCTION VISUELLE EXACTE
     payload = []
     for m in messages:
-        # Vérification si l'expéditeur est un Collaborateur
+        # Identification claire de l'auteur par sa table d'origine
         collab_exp = Collaborateur.query.get(m.expediteur_id)
-        is_expediteur_collab = collab_exp is not None
 
-        if is_collab:
-            # Pour la fenêtre d'un Collaborateur : "Moi" s'il est l'auteur
-            is_me = m.expediteur_id == collab_id and is_expediteur_collab
-            exp_label = "Moi (Support)" if is_me else "Client"
+        if collab_exp:
+            exp_nom = f"{collab_exp.prenom or 'Collaborateur'} (ML2C)"
+            role_type = "collab"
+            is_me = is_collab and (m.expediteur_id == collab_id)
         else:
-            # Pour la fenêtre d'un Client : "Moi" s'il est l'auteur (pas un collaborateur)
-            is_me = (
-                m.expediteur_id == utilisateur_id and not is_expediteur_collab
+            client_exp = Utilisateur.query.get(m.expediteur_id)
+            exp_nom = (
+                client_exp.prenom
+                if (client_exp and client_exp.prenom)
+                else "Client"
             )
-            exp_label = "Moi" if is_me else "Support ML2C"
+            role_type = "client"
+            is_me = (not is_collab) and (m.expediteur_id == utilisateur_id)
 
         payload.append(
             {
                 "id": m.id,
                 "contenu": m.contenu,
                 "is_me": is_me,
-                "expediteur": exp_label,
+                "role": role_type,
+                "expediteur": exp_nom,
                 "heure": (
                     m.date_creation.strftime("%H:%M") if m.date_creation else ""
                 ),

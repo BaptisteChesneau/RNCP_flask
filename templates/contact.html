@@ -59,13 +59,18 @@
     }
     .contact-hero-title {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-size: clamp(2.2rem, 4.5vw, 3.4rem);
       font-weight: 700;
       color: #fff;
-      line-height: 1.2;
-      margin-bottom: .75rem;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.85rem;
+      max-width: 780px;
     }
-    .contact-hero-title span { color: #f472b6; }
+    .contact-hero-title span { 
+      color: #f472b6; 
+      font-style: italic;
+    }
     .contact-hero-sub {
       font-size: 1rem;
       color: rgba(255,255,255,.72);
@@ -304,9 +309,6 @@
 
     .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
-    /* Select stylé */
-    select.field-input { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem; }
-
     /* Chips service */
     .service-chips { display: flex; flex-wrap: wrap; gap: .6rem; }
     .service-chip {
@@ -339,7 +341,6 @@
     }
     .time-slot:hover { border-color: #C1007A; background: #fce4f3; color: #C1007A; }
     .time-slot.selected { background: #C1007A; border-color: #C1007A; color: #fff; }
-    .time-slot.unavailable { opacity: .4; pointer-events: none; text-decoration: line-through; }
 
     /* Navigation entre étapes */
     .form-nav {
@@ -524,7 +525,7 @@
       100% { transform: translateY(400px) rotate(720deg); opacity: 0; }
     }
 
-    /* Toast notification (alternative légère) */
+    /* Toast notification */
     .toast-notif {
       position: fixed;
       bottom: 2rem;
@@ -586,7 +587,7 @@
   <section class="contact-hero">
     <div class="container" style="position:relative;z-index:1;">
       <div class="contact-hero-tag">Parlons de votre projet</div>
-      <h1 class="contact-hero-title">Prendre <span>rendez-vous</span><br>avec nos experts</h1>
+      <h1 class="contact-hero-title">Prendre <span>rendez-vous</span> avec nos experts</h1>
       <p class="contact-hero-sub">
         Libérez-vous de la compta : un accompagnement sur-mesure disponible 6j/7.
       </p>
@@ -975,7 +976,6 @@
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours…';
 
-      /* Ici vous ferez un fetch() vers votre route Flask */
       setTimeout(() => {
         showSuccess();
         btn.disabled = false;
@@ -985,24 +985,19 @@
 
     /* ── Succès ── */
     function showSuccess() {
-      /* Générer une référence */
       const ref = 'ML2C-' + Math.floor(1000 + Math.random() * 9000);
       document.getElementById('successRef').textContent = 'Réf. — ' + ref;
 
       document.getElementById('successOverlay').classList.add('show');
       document.body.style.overflow = 'hidden';
 
-      /* Confettis */
       launchConfetti();
-
-      /* Toast secondaire (après 3.5s) */
       setTimeout(showToast, 3500);
     }
 
     function closeSuccess() {
       document.getElementById('successOverlay').classList.remove('show');
       document.body.style.overflow = '';
-      /* Redirection accueil */
       window.location.href = '/';
     }
 

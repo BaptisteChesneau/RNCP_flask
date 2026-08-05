@@ -335,48 +335,48 @@ def envoyer_email_reset(destinataire, reset_url):
 
 @app.route("/reset-password/<token>", methods=["GET", "POST"])
 def reset_password(token):
-    try:
-        # Validation du token (expire après 30 min)
-        email = serializer.loads(
-            token, salt="reset-password-salt", max_age=1800
-        )
-    except (SignatureExpired, BadTimeSignature):
-        flash(
-            "Le lien de réinitialisation est invalide ou a expiré ❌", "danger"
-        )
-        return redirect(url_for("mot_de_passe_oublie"))
+  try:
+    # Validation du token (expire après 30 min)
+    email = serializer.loads(
+        token, salt="reset-password-salt", max_age=1800
+    )
+  except (SignatureExpired, BadTimeSignature):
+    flash(
+        "Le lien de réinitialisation est invalide ou a expiré ❌",
+        "danger",
+    )
+    return redirect(url_for("mot_de_passe_oublie"))
 
-    if request.method == "POST":
-        old_password = request.form.get("old_password", "").strip()
-        new_password = request.form.get("password", "").strip()
-        confirm_password = request.form.get("confirm_password", "").strip()
+  if request.method == "POST":
+    new_password = request.form.get("password", "").strip()
+    confirm_password = request.form.get("confirm_password", "").strip()
 
-        user = Utilisateur.query.filter_by(email=email).first()
+    user = Utilisateur.query.filter_by(email=email).first()
 
-        if not user:
-            flash("Utilisateur introuvable.", "danger")
-            return redirect(url_for("mot_de_passe_oublie"))
+    if not user:
+      flash("Utilisateur introuvable.", "danger")
+      return redirect(url_for("mot_de_passe_oublie"))
 
-        # 1. Vérification de l'ancien mot de passe
-        if not user.check_password(old_password):
-            flash("L'ancien mot de passe est incorrect ❌", "danger")
-            return render_template("reset_password.html", token=token)
+    # 1. Vérification de la correspondance du nouveau mot de passe
+    if new_password != confirm_password:
+      flash(
+          "Le nouveau mot de passe et sa confirmation ne correspondent pas.",
+          "danger",
+      )
+      return render_template("reset_password.html", token=token)
 
-        # 2. Vérification de la correspondance du nouveau mot de passe
-        if new_password != confirm_password:
-            flash(
-                "Le nouveau mot de passe et sa confirmation ne correspondent pas.",
-                "danger",
-            )
-            return render_template("reset_password.html", token=token)
+    # 2. Vérification optionnelle de la longueur minimale (recommandée)
+    if len(new_password) < 8:
+      flash("Le mot de passe doit contenir au moins 8 caractères.", "danger")
+      return render_template("reset_password.html", token=token)
 
-        # 3. Mise à jour du mot de passe
-        user.set_password(new_password)
-        db.session.commit()
-        flash("Votre mot de passe a été mis à jour avec succès ✅", "success")
-        return redirect(url_for("login"))
+    # 3. Mise à jour du mot de passe
+    user.set_password(new_password)
+    db.session.commit()
+    flash("Votre mot de passe a été mis à jour avec succès ✅", "success")
+    return redirect(url_for("login"))
 
-    return render_template("reset_password.html", token=token)
+  return render_template("reset_password.html", token=token)
 
 @app.route("/mot-de-passe-oublie", methods=["GET", "POST"])
 def mot_de_passe_oublie():

@@ -37,7 +37,6 @@
       position: fixed; top: 0; left: 0; height: 3px; width: 0%;
       background: linear-gradient(90deg, var(--rose), var(--turq));
       z-index: 9999; transition: width .1s linear;
-      role: progressbar;
     }
 
     /* SKIP LINK RGAA */
@@ -362,7 +361,7 @@
 
 <!-- SKIP LINK RGAA -->
 <a class="skip-link" href="#faq-main">Aller au contenu principal</a>
-<div id="read-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progression de lecture"></div>
+<div id="read-progress" style="width: 0%;" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progression de lecture"></div>
 
 {% include "header.html" %}
 
@@ -389,7 +388,7 @@
         <span class="ph-stat-label">Catégories</span>
       </div>
       <div class="ph-stat">
-        <span class="ph-stat-num" aria-label="Réponse rapide en moins de 24h">24h</span>
+        <span class="ph-stat-num" aria-label="Réponse rapide en moins de 6 jours sur 7">6j/7</span>
         <span class="ph-stat-label">Réponse max.</span>
       </div>
     </div>
@@ -429,10 +428,10 @@
       </p>
     </div>
 
-    <div class="controls-sep" role="separator"></div>
+    <div class="controls-sep" aria-hidden="true"></div>
 
     <!-- FILTRES -->
-    <div class="filters-row" role="group" aria-label="Filtrer par catégorie">
+    <div class="filters-row">
       <span class="filters-label" id="filters-label" aria-hidden="true">
         <i class="fas fa-filter" aria-hidden="true"></i> Filtrer
       </span>
@@ -461,7 +460,7 @@
   </section>
 
   <!-- BOUTONS TOUT OUVRIR/FERMER -->
-  <div class="expand-row" role="group" aria-label="Gestion de l'affichage des réponses">
+  <div class="expand-row" aria-label="Gestion de l'affichage des réponses">
     <button class="btn-expand" id="faq-expand-all" type="button" aria-label="Ouvrir toutes les questions">
       <i class="fas fa-chevron-down" aria-hidden="true"></i> Tout ouvrir
     </button>
@@ -625,7 +624,7 @@
         <div class="faq-answer" id="faq-body-3" role="region" aria-labelledby="faq-btn-3" hidden>
           <div class="faq-answer-inner">
             Un espace sécurisé pour déposer vos pièces, suivre vos dossiers, consulter vos tableaux
-            de bord et échanger directement avec le cabinet. Disponible 24h/24, 7j/7.
+            de bord et échanger directement avec le cabinet. Disponible 24h/24, 6j/7.
             <div class="fq-tags">
               <span class="fq-tag tag-blue">Espace sécurisé</span>
               <span class="fq-tag">Documents</span>
@@ -832,7 +831,6 @@
       const isOpen = item.classList.contains('open');
       isOpen ? closeItem(item) : openItem(item);
     });
-    // Keyboard : Enter & Space déjà gérés par button
   });
 
   // ── FILTRAGE ──

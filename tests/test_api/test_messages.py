@@ -1,47 +1,46 @@
 import pytest
-from app import create_app
+from app import app as flask_app  # Import direct de l'instance Flask
 from extensions import db
 from models.message import MessageSupport
 
 @pytest.fixture
 def client():
-    """Fixture to configure the application in test mode."""
-    app = create_app()
-    app.config["TESTING"] = True
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"  # In-memory database for tests
+    """Fixture pour configurer l'application en mode test."""
+    flask_app.config["TESTING"] = True
+    flask_app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"  # Base en mémoire
     
-    with app.test_client() as client:
-        with app.app_context():
+    with flask_app.test_client() as client:
+        with flask_app.app_context():
             db.create_all()
             yield client
             db.drop_all()
 
 def test_messages_non_autorise(client):
-    """Verifies that an unauthenticated user receives a 403 error."""
-    response = client.get("/api/messages") # Adjust blueprint prefix if needed
+    """Vérifie qu'un utilisateur non authentifié reçoit une erreur 403."""
+    response = client.get("/api/messages")
     assert response.status_code == 403
     data = response.get_json()
     assert data["error"] == "Non autorisé"
 
 def test_envoi_message_contenu_vide(client):
-    """Verifies that an empty message content returns a 400 error."""
+    """Vérifie qu'un message vide renvoie une erreur 400."""
     with client.session_transaction() as sess:
-        sess["utilisateur_id"] = 1  # Simulates a logged-in user
+        sess["utilisateur_id"] = 1  # Simulation utilisateur connecté
 
     response = client.post("/api/messages", json={
-        "contenu": "   "  # Empty content or whitespace
+        "contenu": "   "
     })
     assert response.status_code == 400
     data = response.get_json()
     assert data["error"] == "Contenu vide"
 
 def test_envoi_et_recuperation_message(client):
-    """Verifies successful message sending (POST) followed by its retrieval (GET)."""
-    # 1. Simulate client login
+    """Vérifie l'envoi d'un message (POST) puis sa récupération (GET)."""
+    # 1. Connexion simulée
     with client.session_transaction() as sess:
         sess["utilisateur_id"] = 1
 
-    # 2. Send a message (POST)
+    # 2. Envoi du message (POST)
     response_post = client.post("/api/messages", json={
         "contenu": "Bonjour, j'ai une question sur mon devis.",
         "destinataire_id": 2
@@ -52,7 +51,7 @@ def test_envoi_et_recuperation_message(client):
     assert res_data["status"] == "success"
     assert "message_id" in res_data
 
-    # 3. Retrieve message history (GET)
+    # 3. Récupération de l'historique (GET)
     response_get = client.get("/api/messages")
     assert response_get.status_code == 200
     

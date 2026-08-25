@@ -639,7 +639,7 @@ def supprimer_client(client_id):
     return redirect(url_for("ma_fiche_client"))
 
 
-@app.route("/devis")
+@app.route("/devis", methods=["GET", "POST"])
 def devis():
     if "utilisateur_id" not in session:
         flash("Veuillez vous connecter pour accéder au formulaire de devis.", "warning")

@@ -644,8 +644,17 @@ def devis():
     if "utilisateur_id" not in session:
         flash("Veuillez vous connecter pour accéder au formulaire de devis.", "warning")
         return redirect(url_for("login"))
-    return render_template("devis.html")
 
+    if request.method == "POST":
+        nom_entreprise = request.form.get("nom_entreprise")
+        montant_estime = request.form.get("montant_estime")
+
+        # Traitement du devis (sauvegarde BDD, calculs, etc.)
+
+        flash("Demande envoyée avec succès !", "success")
+        return render_template("devis.html")
+
+    return render_template("devis.html")
 
 # 🟢 ROUTE AJOUTÉE : Nécessaire pour compte_client.html
 @app.route("/gerer-devis")

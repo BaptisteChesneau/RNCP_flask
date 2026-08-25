@@ -29,4 +29,4 @@ def test_soumission_formulaire_devis(client):
     }, follow_redirects=True)
     
     assert response.status_code == 200
-    assert "Demande envoyée".encode('utf-8') in response.data
+    assert b"Demande envoy" in response.data

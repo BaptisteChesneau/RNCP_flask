@@ -147,34 +147,6 @@
     <a href="{{ url_for('admin_chatbot') }}" class="adm-sb-item adm-sb-item--active"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Questions / Réponses<span class="adm-sb-badge">{{ messages|length }}</span></a>
     <a href="{{ url_for('admin_dashboard') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Utilisateurs</a>
     <a href="{{ url_for('admin_stats') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Statistiques</a>
-    <a href="{{ url_for('admin_notifications') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Notifications<span class="adm-sb-badge green">3</span></a>
-    <a href="{{ url_for('admin_agenda') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Agenda / RDV<span class="adm-sb-badge blue">2</span></a>
-
-    <div class="adm-sb-divider"></div>
-    <p class="adm-sb-sec">Contenu</p>
-    <a href="{{ url_for('admin_blog') }}" class="adm-sb-item" onclick="toggleSub(event,this,'subBlog')"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Blog / Articles<span class="adm-sb-toggle"><span class="arr">›</span></span></a>
-    <div class="adm-sb-sub" id="subBlog">
-      <a href="{{ url_for('admin_blog') }}" class="adm-sb-item"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/></svg>Tous les articles</a>
-      <a href="{{ url_for('admin_blog_new') }}" class="adm-sb-item"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Nouvel article</a>
-      <a href="{{ url_for('admin_blog_categories') }}" class="adm-sb-item"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/></svg>Catégories</a>
-    </div>
-    <a href="{{ url_for('admin_formulaires') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>Formulaires / Devis<span class="adm-sb-badge gold">5</span></a>
-    <a href="{{ url_for('admin_emails') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Emails automatiques</a>
-
-    <div class="adm-sb-divider"></div>
-    <p class="adm-sb-sec">Système</p>
-    <a href="{{ url_for('admin_config') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>Configuration</a>
-    <a href="{{ url_for('admin_logs') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Logs de sécurité<span class="adm-sb-pip pip-red"></span></a>
-    <a href="{{ url_for('admin_performances') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Performances<span class="adm-sb-pip pip-green"></span></a>
-    <a href="{{ url_for('admin_sauvegardes') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Sauvegardes<span class="adm-sb-badge green">OK</span></a>
-    <a href="{{ url_for('admin_export') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Export données</a>
-    <a href="{{ url_for('admin_purge') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>Purger les logs</a>
-    <a href="{{ url_for('admin_view_source') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Source Viewer</a>
-
-    <div class="adm-sb-divider"></div>
-    <p class="adm-sb-sec">Compte</p>
-    <a href="{{ url_for('admin_parametres') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Paramètres du compte</a>
-    <a href="{{ url_for('admin_audit') }}" class="adm-sb-item"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>Journal d'audit</a>
 
     <div class="adm-sb-divider"></div>
     <div class="adm-sb-footer">
@@ -184,7 +156,7 @@
         <a href="{{ url_for('logout_admin') }}" class="adm-sb-logout" title="Déconnexion"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></a>
       </div>
     </div>
-    <div class="adm-sb-version">ML2C Admin v2.0 · 2025</div>
+    <div class="adm-sb-version">ML2C Admin v2.0 · 2026</div>
 
     <!-- ══ WIDGETS SIDEBAR ══ -->
     <div class="adm-sb-divider"></div>
@@ -211,27 +183,6 @@
       <div class="sb-sys-row"><span>Uptime</span><div class="sb-sys-bar-wrap"><div class="sb-sys-bar" style="width:99.9%;background:linear-gradient(90deg,#10b981,#34d399);"></div></div><span style="color:#10b981;font-size:.6rem;">99.9%</span></div>
     </div>
     <div class="sb-widget">
-      <div class="sb-widget-head"><i class="fas fa-chart-line"></i>Activité 7j</div>
-      <svg viewBox="0 0 100 30" preserveAspectRatio="none" style="width:100%;height:28px;">
-        <polyline points="0,25 14,18 28,22 42,10 56,14 70,6 84,10 100,4" fill="none" stroke="#C1007A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <polyline points="0,25 14,18 28,22 42,10 56,14 70,6 84,10 100,4 100,30 0,30" fill="rgba(193,0,122,.08)"/>
-      </svg>
-      <div class="sb-spark-meta"><span>+18% vs préc.</span><span style="color:#C1007A;font-weight:700;">4.2k</span></div>
-    </div>
-    <div class="sb-widget">
-      <div class="sb-widget-head"><i class="fas fa-bell"></i>Notifs<span class="sb-notif-badge">3</span></div>
-      <div class="sb-notif-list">
-        <div class="sb-notif-item"><div class="sb-notif-dot" style="background:#C1007A;"></div><div class="sb-notif-text">Nouveau devis — Mme Martin</div></div>
-        <div class="sb-notif-item"><div class="sb-notif-dot" style="background:#f59e0b;"></div><div class="sb-notif-text">RDV demain à 14h00</div></div>
-        <div class="sb-notif-item"><div class="sb-notif-dot" style="background:#4FA695;"></div><div class="sb-notif-text">Backup terminée ✓</div></div>
-      </div>
-    </div>
-    <div class="sb-widget">
-      <div class="sb-widget-head"><i class="fas fa-newspaper"></i>Dernier article</div>
-      <div class="sb-article-title">TVA 2025 : Ce qui change pour les TPE</div>
-      <div class="sb-article-meta"><span><i class="fas fa-eye"></i> 842</span><span><i class="fas fa-heart"></i> 34</span><span style="color:#10b981;">● Live</span></div>
-    </div>
-    <div class="sb-widget">
       <div class="sb-widget-head"><i class="fas fa-list-check"></i>Tâches<span class="sb-notif-badge" style="background:#f59e0b;">2</span></div>
       <div class="sb-todo-list" id="sbTodoList">
         <div class="sb-todo-item" onclick="toggleTodo(this)"><div class="sb-todo-check"></div><span>Répondre devis Dupont</span></div>
@@ -243,14 +194,6 @@
     <div class="sb-widget">
       <div class="sb-widget-head"><i class="fas fa-calendar"></i>Calendrier<span id="sbCalMonth" style="margin-left:auto;font-size:.58rem;color:rgba(255,255,255,.22);"></span></div>
       <div class="sb-cal-grid" id="sbCalGrid"></div>
-    </div>
-    <div class="sb-widget">
-      <div class="sb-widget-head"><i class="fas fa-shield-halved"></i>Sessions</div>
-      <div class="sb-session-list">
-        <div class="sb-session"><div class="sb-session-ico ok"><i class="fas fa-check"></i></div><div class="sb-session-info">Chrome · Windows<div class="sb-session-time">Aujourd'hui 09:14</div></div></div>
-        <div class="sb-session"><div class="sb-session-ico ok"><i class="fas fa-check"></i></div><div class="sb-session-info">Chrome · Windows<div class="sb-session-time">Hier 18:32</div></div></div>
-        <div class="sb-session"><div class="sb-session-ico warn"><i class="fas fa-exclamation"></i></div><div class="sb-session-info">Firefox · Linux<div class="sb-session-time">12 avr. 22:10</div></div></div>
-      </div>
     </div>
     <div class="sb-widget" style="padding-bottom:1.25rem;">
       <div class="sb-widget-head"><i class="fas fa-quote-left"></i>Citation du jour</div>
@@ -366,9 +309,6 @@ function closeDelModal(){document.getElementById('delModal').classList.remove('a
 function filterTable(btn,mode){document.querySelectorAll('.adm-chip').forEach(function(c){c.classList.remove('adm-chip--on');});btn.classList.add('adm-chip--on');document.querySelectorAll('.adm-qa-row').forEach(function(row){var tag=row.getAttribute('data-tag')||'auto';row.style.display=(mode==='all'||tag===mode)?'':'none';});updateCount();}
 function searchTable(){var q=document.getElementById('searchInput').value.toLowerCase();document.querySelectorAll('.adm-qa-row').forEach(function(row){var inQ=(row.getAttribute('data-q')||'').indexOf(q)!==-1,inR=(row.getAttribute('data-r')||'').indexOf(q)!==-1;row.style.display=(inQ||inR)?'':'none';});updateCount();}
 function updateCount(){var rows=document.querySelectorAll('.adm-qa-row'),visible=0;rows.forEach(function(r){if(r.style.display!=='none')visible++;});var el=document.getElementById('paginInfo');if(el)el.textContent=visible+' / '+rows.length+' entrée'+(rows.length>1?'s':'');}
-
-/* Sous-menu Blog */
-function toggleSub(e,btn,subId){e.preventDefault();var sub=document.getElementById(subId);if(!sub)return;var isOpen=sub.classList.toggle('open');btn.classList.toggle('open-group',isOpen);}
 
 /* Auto-dismiss toasts */
 document.querySelectorAll('[data-auto-dismiss]').forEach(function(t){setTimeout(function(){t.style.transition='opacity .4s';t.style.opacity='0';setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},420);},3500);});

@@ -3,6 +3,7 @@ from functools import wraps
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from werkzeug.security import check_password_hash
+from sqlalchemy.exc import OperationalError
 
 # Configurations & Extensions
 from config import Config
@@ -426,7 +427,14 @@ def login():
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
-        if traiter_login(email, password):
+        
+        try:
+            success = traiter_login(email, password)
+        except OperationalError:
+            db.session.rollback() # Réinitialise la session en erreur suite à une coupure SSL
+            success = traiter_login(email, password) # Retente l'opération avec une connexion fraîche
+            
+        if success:
             flash("Connexion réussie !", "success")
             return redirect(url_for("compte_client"))
         else:

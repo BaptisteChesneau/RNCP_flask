@@ -757,6 +757,10 @@ def login_admin():
         flash("Identifiants invalides ❌", "danger")
     return render_template("login_admin.html")
 
+@app.route("/base-test")
+def base_test():
+    return render_template("base_test.html")  # ou la vue associée
+
 # --- MESSAGERIE COLLABORATEUR ---
 @app.route("/collaborateur-messagerie", methods=["GET", "POST"])
 def collaborateur_messagerie():

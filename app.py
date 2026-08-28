@@ -692,6 +692,11 @@ def resume_devis():
         heure_rdv=request.form.get("heure_rdv"),
     )
 
+@app.route("/envoyer-mail")
+def envoyer_mail():
+    flash("Un e-mail de confirmation vous a été envoyé.", "success")
+    return redirect(url_for("menu"))
+
 
 @app.route("/supprimer-devis", methods=["POST"])
 def supprimer_devis():

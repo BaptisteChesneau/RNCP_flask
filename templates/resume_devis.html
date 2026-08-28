@@ -200,6 +200,19 @@
 
 <div class="rv-page">
   <div class="container">
+
+    <!-- Messages de notifications Flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for cat, msg in messages %}
+          <div class="alert alert-{{ cat }} mb-4" role="alert">
+            <i class="fas {% if cat=='success' %}fa-circle-check{% elif cat=='warning' %}fa-triangle-exclamation{% else %}fa-circle-info{% endif %} mr-2"></i>
+            {{ msg }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
     <div class="rv-layout">
 
       <!-- ════ COLONNE GAUCHE ════ -->
@@ -211,12 +224,12 @@
           <div class="ticket-head">
             <div class="ticket-head-top">
               <div class="ticket-logo">ML2C CONSEIL</div>
-              <div class="ticket-ref">#{{ range(10000,99999) | random if false else 'RDV-2026' }}</div>
+              <div class="ticket-ref">#RDV-2026</div>
             </div>
             <div class="ticket-rdv-block">
               <div class="ticket-rdv-label">Rendez-vous confirmé</div>
-              <div class="ticket-rdv-date">{{ date_rdv }}</div>
-              <div class="ticket-rdv-time"><i class="fas fa-clock"></i> {{ heure_rdv }}</div>
+              <div class="ticket-rdv-date">{{ date_rdv if date_rdv else 'Non définie' }}</div>
+              <div class="ticket-rdv-time"><i class="fas fa-clock"></i> {{ heure_rdv if heure_rdv else 'Non définie' }}</div>
             </div>
           </div>
 
@@ -228,20 +241,20 @@
             <div class="ticket-grid">
               <div class="ticket-field">
                 <div class="ticket-field-label"><i class="fas fa-building"></i> Société / Nom</div>
-                <div class="ticket-field-val">{{ nom }}</div>
+                <div class="ticket-field-val">{{ nom if nom else '—' }}</div>
               </div>
               <div class="ticket-field">
                 <div class="ticket-field-label"><i class="fas fa-industry"></i> Secteur</div>
-                <div class="ticket-field-val">{{ secteur }}</div>
+                <div class="ticket-field-val">{{ secteur if secteur else '—' }}</div>
               </div>
               <div class="ticket-field">
                 <div class="ticket-field-label"><i class="fas fa-envelope"></i> Email</div>
-                <div class="ticket-field-val">{{ adresse_email }}</div>
+                <div class="ticket-field-val">{{ adresse_email if adresse_email else user_email if user_email else '—' }}</div>
               </div>
               <div class="ticket-field">
                 <div class="ticket-field-label"><i class="fas fa-briefcase"></i> Service demandé</div>
                 <div class="ticket-field-val">
-                  <span class="service-pill"><i class="fas fa-check-circle"></i> {{ type_service }}</span>
+                  <span class="service-pill"><i class="fas fa-check-circle"></i> {{ type_service if type_service else '—' }}</span>
                 </div>
               </div>
             </div>
@@ -256,27 +269,28 @@
           </div>
           <div class="actions-body">
 
-            <!-- Nos offres -->
-            <a href="{{ url_for('grille_tarifaire') }}" class="action-btn rose">
+            <!-- Accéder aux offres ou au menu -->
+            <a href="{{ url_for('menu') }}" class="action-btn rose">
               <div class="action-btn-ico"><i class="fas fa-tags"></i></div>
               <div class="action-btn-text">
-                <strong>Voir nos offres tarifaires</strong>
-                <span>Découvrez nos formules adaptées à votre besoin</span>
+                <strong>Retourner à l'accueil</strong>
+                <span>Consulter la liste de nos services et offres</span>
               </div>
               <i class="fas fa-arrow-right action-btn-arrow"></i>
             </a>
 
-            <!-- Envoyer par mail -->
-            <a href="{{ url_for('envoyer_mail') }}" class="action-btn turq">
+            <!-- Confirmation par mail -->
+            <a href="{{ url_for('menu') }}" class="action-btn turq">
               <div class="action-btn-ico"><i class="fas fa-paper-plane"></i></div>
               <div class="action-btn-text">
-                <strong>Recevoir par email</strong>
-                <span>Un récapitulatif envoyé à {{ adresse_email }}</span>
+                <strong>Confirmation enregistrée</strong>
+                <span>Un récapitulatif a été généré pour votre rendez-vous</span>
               </div>
               <i class="fas fa-arrow-right action-btn-arrow"></i>
             </a>
 
-            <!-- Envoyer au compte -->
+            <!-- Optionnel : formulaire de sauvegarde si configuré dans Flask -->
+            {% if url_for('sauvegarder_devis', _external=False) %}
             <form action="{{ url_for('sauvegarder_devis') }}" method="post" style="margin:0">
               <input type="hidden" name="secteur" value="{{ secteur }}">
               <input type="hidden" name="nom" value="{{ nom }}">
@@ -293,6 +307,7 @@
                 <i class="fas fa-arrow-right action-btn-arrow"></i>
               </button>
             </form>
+            {% endif %}
 
           </div>
         </div>
@@ -321,7 +336,7 @@
               <div class="tl-item">
                 <div class="tl-dot pending"><i class="fas fa-envelope"></i></div>
                 <div class="tl-label">Email de confirmation</div>
-                <div class="tl-sub">Récapitulatif envoyé à {{ adresse_email }}</div>
+                <div class="tl-sub">Récapitulatif généré pour le rendez-vous</div>
               </div>
               <div class="tl-item">
                 <div class="tl-dot pending"><i class="fas fa-handshake"></i></div>

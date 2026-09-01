@@ -343,23 +343,93 @@
     }
     .btn-del-card:hover{background:#dc2626;color:#fff;border-color:#dc2626;box-shadow:0 8px 20px rgba(220,38,38,.25);}
 
-    /* ══ CTA AJOUTER ══ */
-    .cta-add{
-      display:flex;align-items:center;gap:1.1rem;
-      padding:1.25rem 1.5rem;border-radius:18px;
-      border:1.5px dashed var(--border2);background:var(--surface2);
-      transition:all .25s;text-decoration:none;color:var(--text);
-      margin-top:1rem;
-    }
-    .cta-add:hover{border-color:var(--rose);background:var(--rose-xl);color:var(--rose);text-decoration:none;transform:translateX(4px);}
-    .cta-add:hover .cta-ico{background:var(--rose);color:#fff;}
-    .cta-add:hover .cta-arrow{transform:translateX(5px);}
-    .cta-add.turq:hover{border-color:var(--turq);background:var(--turq-xl);color:var(--turq-d);}
-    .cta-add.turq:hover .cta-ico{background:var(--turq);color:#fff;}
-    .cta-ico{width:46px;height:46px;border-radius:13px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:1.05rem;color:var(--muted);flex-shrink:0;transition:all .25s;}
-    .cta-title{font-size:.93rem;font-weight:700;color:var(--ink);}
-    .cta-sub{font-size:.78rem;color:var(--muted);margin-top:.1rem;}
-    .cta-arrow{margin-left:auto;font-size:.85rem;color:var(--faint);transition:transform .25s;}
+    /* ══ CTA AJOUTER (LISIBILITÉ OPTIMISÉE) ══ */
+    .cta-add {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: 18px;
+    border: 1.5px dashed var(--border2);
+    background: var(--surface2);
+    transition: all .25s ease;
+    text-decoration: none !important;
+    color: var(--ink) !important; /* Force une couleur sombre par défaut */
+    margin-top: 1rem;
+  }
+
+    .cta-title {
+    font-family: var(--ff-body);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink) !important; /* Force le texte sombre */
+    line-height: 1.2;
+  }
+
+    .cta-sub {
+    font-size: .8rem;
+    color: var(--muted) !important; /* Force le sous-texte en gris lisible */
+    margin-top: .2rem;
+  }
+
+.cta-ico {
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  background: var(--rose-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  color: var(--rose);
+  flex-shrink: 0;
+  transition: all .25s ease;
+}
+
+.cta-arrow {
+  margin-left: auto;
+  font-size: .9rem;
+  color: var(--rose);
+  transition: transform .25s ease;
+}
+
+/* --- SURVOL ROSE --- */
+.cta-add:hover {
+  border-color: var(--rose);
+  background: var(--rose-xl);
+  box-shadow: 0 6px 20px rgba(193, 0, 122, 0.08);
+  transform: translateX(4px);
+}
+
+.cta-add:hover .cta-ico {
+  background: var(--rose);
+  color: #ffffff;
+}
+
+.cta-add:hover .cta-arrow {
+  transform: translateX(5px);
+}
+
+/* --- VARIATION TURQUOISE --- */
+.cta-add.turq .cta-ico {
+  background: var(--turq-xl);
+  color: var(--turq-d);
+}
+
+.cta-add.turq .cta-arrow {
+  color: var(--turq-d);
+}
+
+.cta-add.turq:hover {
+  border-color: var(--turq);
+  background: var(--turq-xl);
+  box-shadow: 0 6px 20px rgba(79, 166, 149, 0.08);
+}
+
+.cta-add.turq:hover .cta-ico {
+  background: var(--turq);
+  color: #ffffff;
+}
 
     /* ══ EMPTY STATE ══ */
     .ec-empty{text-align:center;padding:3rem 1.5rem;}

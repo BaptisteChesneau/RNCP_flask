@@ -345,91 +345,91 @@
 
     /* ══ CTA AJOUTER (LISIBILITÉ OPTIMISÉE) ══ */
     .cta-add {
-    display: flex;
-    align-items: center;
-    gap: 1.1rem;
-    padding: 1.25rem 1.5rem;
-    border-radius: 18px;
-    border: 1.5px dashed var(--border2);
-    background: var(--surface2);
-    transition: all .25s ease;
-    text-decoration: none !important;
-    color: var(--ink) !important; /* Force une couleur sombre par défaut */
-    margin-top: 1rem;
-  }
+      display: flex;
+      align-items: center;
+      gap: 1.1rem;
+      padding: 1.25rem 1.5rem;
+      border-radius: 18px;
+      border: 1.5px dashed var(--border2);
+      background: var(--surface2);
+      transition: all .25s ease;
+      text-decoration: none !important;
+      color: var(--ink) !important;
+      margin-top: 1rem;
+    }
 
     .cta-title {
-    font-family: var(--ff-body);
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--ink) !important; /* Force le texte sombre */
-    line-height: 1.2;
-  }
+      font-family: var(--ff-body);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--ink) !important;
+      line-height: 1.2;
+    }
 
     .cta-sub {
-    font-size: .8rem;
-    color: var(--muted) !important; /* Force le sous-texte en gris lisible */
-    margin-top: .2rem;
-  }
+      font-size: .8rem;
+      color: var(--muted) !important;
+      margin-top: .2rem;
+    }
 
-.cta-ico {
-  width: 46px;
-  height: 46px;
-  border-radius: 13px;
-  background: var(--rose-xl);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.05rem;
-  color: var(--rose);
-  flex-shrink: 0;
-  transition: all .25s ease;
-}
+    .cta-ico {
+      width: 46px;
+      height: 46px;
+      border-radius: 13px;
+      background: var(--rose-xl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.05rem;
+      color: var(--rose);
+      flex-shrink: 0;
+      transition: all .25s ease;
+    }
 
-.cta-arrow {
-  margin-left: auto;
-  font-size: .9rem;
-  color: var(--rose);
-  transition: transform .25s ease;
-}
+    .cta-arrow {
+      margin-left: auto;
+      font-size: .9rem;
+      color: var(--rose);
+      transition: transform .25s ease;
+    }
 
-/* --- SURVOL ROSE --- */
-.cta-add:hover {
-  border-color: var(--rose);
-  background: var(--rose-xl);
-  box-shadow: 0 6px 20px rgba(193, 0, 122, 0.08);
-  transform: translateX(4px);
-}
+    /* --- SURVOL ROSE --- */
+    .cta-add:hover {
+      border-color: var(--rose);
+      background: var(--rose-xl);
+      box-shadow: 0 6px 20px rgba(193, 0, 122, 0.08);
+      transform: translateX(4px);
+    }
 
-.cta-add:hover .cta-ico {
-  background: var(--rose);
-  color: #ffffff;
-}
+    .cta-add:hover .cta-ico {
+      background: var(--rose);
+      color: #ffffff;
+    }
 
-.cta-add:hover .cta-arrow {
-  transform: translateX(5px);
-}
+    .cta-add:hover .cta-arrow {
+      transform: translateX(5px);
+    }
 
-/* --- VARIATION TURQUOISE --- */
-.cta-add.turq .cta-ico {
-  background: var(--turq-xl);
-  color: var(--turq-d);
-}
+    /* --- VARIATION TURQUOISE --- */
+    .cta-add.turq .cta-ico {
+      background: var(--turq-xl);
+      color: var(--turq-d);
+    }
 
-.cta-add.turq .cta-arrow {
-  color: var(--turq-d);
-}
+    .cta-add.turq .cta-arrow {
+      color: var(--turq-d);
+    }
 
-.cta-add.turq:hover {
-  border-color: var(--turq);
-  background: var(--turq-xl);
-  box-shadow: 0 6px 20px rgba(79, 166, 149, 0.08);
-}
+    .cta-add.turq:hover {
+      border-color: var(--turq);
+      background: var(--turq-xl);
+      box-shadow: 0 6px 20px rgba(79, 166, 149, 0.08);
+    }
 
-.cta-add.turq:hover .cta-ico {
-  background: var(--turq);
-  color: #ffffff;
-}
+    .cta-add.turq:hover .cta-ico {
+      background: var(--turq);
+      color: #ffffff;
+    }
 
     /* ══ EMPTY STATE ══ */
     .ec-empty{text-align:center;padding:3rem 1.5rem;}
@@ -449,34 +449,51 @@
     .btn-act-danger{background:rgba(220,38,38,.07);border:1.5px solid rgba(220,38,38,.15);color:#dc2626;}
     .btn-act-danger:hover{background:#dc2626;color:#fff;border-color:#dc2626;}
 
-    /* ══ TOAST REPOSITIONNÉ EN HAUT ══ */
-    .ec-toast{
-      position:fixed;
+    /* ══ TOAST DYNAMIQUE ══ */
+    .ec-toast, .gd-toast {
+      position: fixed;
       top: 6.5rem;
       right: 2rem;
       z-index: 9999;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: .9rem 1.35rem;
+      border-left: 4px solid var(--turq);
+      border-radius: 12px;
+      padding: .85rem 1.25rem;
       display: flex;
       align-items: center;
-      gap: .75rem;
-      font-size: .83rem;
+      gap: .8rem;
+      font-size: .85rem;
       font-weight: 500;
       color: var(--text);
       box-shadow: var(--shadow-lg);
-      transform: translateY(-150px);
+      transform: translateY(-120px);
       opacity: 0;
-      transition: all .4s cubic-bezier(.34,1.2,.64,1);
+      transition: transform .35s cubic-bezier(.34, 1.56, .64, 1), opacity .3s ease;
       pointer-events: none;
     }
-    .ec-toast.show{
+
+    .ec-toast.show, .gd-toast.show {
       transform: translateY(0);
       opacity: 1;
       pointer-events: all;
     }
-    .ec-toast i{color:var(--turq);}
+
+    .toast-close-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: .8rem;
+      margin-left: .5rem;
+      padding: 2px 5px;
+      border-radius: 4px;
+      transition: background .2s;
+    }
+    .toast-close-btn:hover {
+      background: var(--bg2);
+      color: var(--text);
+    }
 
     /* ══ SCROLLBAR ══ */
     ::-webkit-scrollbar{width:5px;}
@@ -804,13 +821,31 @@
   </div>
 </div>
 
-<div class="ec-toast" id="ecToast"><i class="fas fa-check-circle"></i><span>Bienvenue dans votre espace client</span></div>
+<!-- TOAST DYNAMIQUE -->
+<div class="ec-toast" id="ecToast">
+  <i class="fas fa-check-circle" id="ecToastIcon"></i>
+  <span id="ecToastMsg">Bienvenue dans votre espace client</span>
+  <button type="button" class="toast-close-btn" onclick="hideToast()"><i class="fas fa-times"></i></button>
+</div>
 
 {% include "footer.html" %}
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Données Flash isolées pour le linter -->
+<script type="application/json" id="flash-message-data">
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {{ messages[0]|tojson }}
+    {% else %}
+      null
+    {% endif %}
+  {% endwith %}
+</script>
+
 <script>
+let toastTimer = null;
 
 /* Prénom */
 (function(){
@@ -864,11 +899,56 @@ document.querySelectorAll('.ec-hero-stat-val').forEach(el=>{
   if(!isNaN(n)&&n>0){el.textContent='0';setTimeout(()=>animCount(el,n),500);}
 });
 
-/* Toast de notification */
+/* Toast de notification dynamique */
+function showToast(msg, type = 'success', duration = 4000) {
+  const toast = document.getElementById('ecToast');
+  const toastMsg = document.getElementById('ecToastMsg');
+  const toastIcon = document.getElementById('ecToastIcon');
+
+  if (!toast || !toastMsg) return;
+
+  if (toastTimer) clearTimeout(toastTimer);
+
+  toastMsg.textContent = msg;
+
+  if (type === 'danger') {
+    toast.style.borderLeftColor = '#dc2626';
+    toastIcon.className = 'fas fa-exclamation-circle';
+    toastIcon.style.color = '#dc2626';
+  } else if (type === 'warning') {
+    toast.style.borderLeftColor = '#b08d57';
+    toastIcon.className = 'fas fa-exclamation-triangle';
+    toastIcon.style.color = '#b08d57';
+  } else if (type === 'info') {
+    toast.style.borderLeftColor = '#3b82f6';
+    toastIcon.className = 'fas fa-info-circle';
+    toastIcon.style.color = '#3b82f6';
+  } else {
+    toast.style.borderLeftColor = 'var(--turq)';
+    toastIcon.className = 'fas fa-check-circle';
+    toastIcon.style.color = 'var(--turq)';
+  }
+
+  toast.classList.add('show');
+
+  toastTimer = setTimeout(() => {
+    hideToast();
+  }, duration);
+}
+
+function hideToast() {
+  const toast = document.getElementById('ecToast');
+  if (toast) {
+    toast.classList.remove('show');
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function() {
-  const t = document.getElementById('ecToast');
-  if(t) {
-    t.classList.add('show');
+  const flashData = JSON.parse(document.getElementById('flash-message-data')?.textContent || 'null');
+  if (flashData) {
+    showToast(flashData, 'success', 5000);
+  } else {
+    showToast("Bienvenue dans votre espace client", 'success', 4000);
   }
 });
 </script>

@@ -121,7 +121,6 @@
       cursor: pointer; transition: .2s; text-align: center;
     }
     .civ-btn.active { border-color: var(--rose); background: var(--rose-light); color: var(--rose); }
-    .civ-hidden { display: none; }
 
     /* ── TYPE ENTREPRISE CARDS ── */
     .type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .65rem; margin-top: .25rem; }
@@ -134,7 +133,6 @@
     .type-card-icon { font-size: 1.2rem; margin-bottom: .3rem; }
     .type-card-label { font-size: .78rem; font-weight: 700; color: var(--text); }
     .type-card.active .type-card-label { color: var(--rose); }
-    .type-hidden { display: none; }
 
     /* ── NAVIGATION ── */
     .fc-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
@@ -142,9 +140,9 @@
       display: inline-flex; align-items: center; gap: .45rem;
       padding: .65rem 1.25rem; border-radius: 9px; background: #f0f2f5;
       color: var(--gris); font-weight: 600; font-size: .88rem; border: none;
-      cursor: pointer; transition: .2s;
+      cursor: pointer; transition: .2s; text-decoration: none;
     }
-    .btn-fc-prev:hover { background: var(--border); color: var(--text); }
+    .btn-fc-prev:hover { background: var(--border); color: var(--text); text-decoration: none; }
     .btn-fc-next {
       display: inline-flex; align-items: center; gap: .45rem;
       padding: .65rem 1.4rem; border-radius: 9px; background: var(--rose);
@@ -161,19 +159,23 @@
     .btn-fc-submit:hover { background: var(--turq-dark); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(79,166,149,.3); }
 
     /* ── RÉCAP ── */
-    .recap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; }
+    .recap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; margin-bottom: 1.5rem; }
     .recap-item { background: #f8f9fb; border-radius: 10px; padding: .75rem 1rem; border-left: 3px solid var(--border); }
     .recap-item.highlight { border-left-color: var(--turq); background: var(--turq-light); }
     .recap-label { font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: .18rem; }
     .recap-val { font-size: .9rem; font-weight: 600; color: var(--text); }
 
-    /* ── SUCCÈS ── */
-    .fc-success { display: none; text-align: center; padding: 3rem 2rem; }
-    .fc-success.show { display: block; animation: successIn .4s ease; }
-    @keyframes successIn { from{opacity:0;transform:scale(.95)} to{opacity:1;transform:scale(1)} }
-    .success-ico { width: 72px; height: 72px; border-radius: 50%; background: var(--turq-light); margin: 0 auto 1.25rem; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: var(--turq); }
-    .success-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 700; color: var(--gris-dark); margin-bottom: .5rem; }
-    .success-sub { font-size: .9rem; color: var(--muted); margin-bottom: 1.75rem; }
+    /* ── GESTION ANCIENNE FICHE (ARCHIVAGE / SUPPRESSION) ── */
+    .archive-choice-box {
+      background: #faf8f4; border: 1.5px solid var(--border); border-radius: 14px;
+      padding: 1.2rem 1.25rem; margin-bottom: 1.5rem;
+    }
+    .archive-choice-title {
+      font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+      color: var(--gris-dark); margin-bottom: .8rem; display: flex; align-items: center; gap: .4rem;
+    }
+    .archive-choice-title i { color: var(--rose); }
+    .custom-control-label { font-size: .85rem; font-weight: 500; color: var(--text); cursor: pointer; }
 
     @media(max-width: 640px) {
       .fc-body { padding: 1.5rem 1rem; }
@@ -347,13 +349,32 @@
             </div>
           </div>
 
-          <!-- ── ÉTAPE 3 : Récap ── -->
+          <!-- ── ÉTAPE 3 : Récap & Gestion ancienne fiche ── -->
           <div class="fc-step-panel" id="panel-3">
             <div class="step-title">Récapitulatif</div>
             <div class="step-desc">Vérifiez vos informations avant d'enregistrer.</div>
 
             <div class="recap-grid" id="recapGrid">
               <!-- rempli par JS -->
+            </div>
+
+            <!-- Option de gestion des fiches précédentes -->
+            <div class="archive-choice-box">
+              <div class="archive-choice-title">
+                <i class="fas fa-history"></i> Gestion de votre fiche précédente
+              </div>
+              <div class="custom-control custom-radio mb-2">
+                <input type="radio" id="actionArchiver" name="action_fiche" value="archiver" class="custom-control-input" checked>
+                <label class="custom-control-label" for="actionArchiver">
+                  <strong>Archiver l'ancienne fiche</strong> — Conserver l'historique pour le suivi des dossiers
+                </label>
+              </div>
+              <div class="custom-control custom-radio">
+                <input type="radio" id="actionSupprimer" name="action_fiche" value="supprimer" class="custom-control-input">
+                <label class="custom-control-label" for="actionSupprimer">
+                  <strong>Supprimer définitivement l'ancienne fiche</strong> — Remplacer et effacer l'historique
+                </label>
+              </div>
             </div>
 
             <div class="fc-nav">

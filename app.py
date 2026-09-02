@@ -590,7 +590,20 @@ def formulaire_client():
         return redirect(url_for("login"))
 
     if request.method == "POST":
+        action_fiche = request.form.get("action_fiche") # Récupère 'archiver' ou 'supprimer'
+
+        if action_fiche == "supprimer":
+            # Supprime définitivement les anciennes fiches de cet utilisateur
+            Client.query.filter_by(utilisateur_id=utilisateur_id).delete()
+        elif action_fiche == "archiver":
+            # Archive les anciennes fiches actives pour garder un historique de suivi
+            anciennes_fiches = Client.query.filter_by(utilisateur_id=utilisateur_id, archive=False).all()
+            for ancienne in anciennes_fiches:
+                ancienne.archive = True
+
+        # Enregistrement de la nouvelle fiche client (avec archive=False par défaut)
         enregistrer_client(utilisateur_id, request.form)
+        
         flash("Fiche client enregistrée avec succès ! ✅", "success")
         return redirect(url_for("compte_client"))
 

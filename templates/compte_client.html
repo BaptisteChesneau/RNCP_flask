@@ -221,6 +221,13 @@
     .prem-card-title{font-family:var(--ff-head);font-size:1.15rem;font-weight:700;color:var(--ink);line-height:1.2;}
     .prem-card-sub{font-size:.73rem;color:var(--muted);margin-top:.1rem;}
 
+    /* Fiche archivée style */
+    .prem-card.archive {
+      opacity: 0.85;
+      background: #faf8f4;
+      border-style: dashed;
+    }
+
     /* ══ STATUT DEVIS ══ */
     .status-ribbon{
       display:inline-flex;align-items:center;gap:.4rem;
@@ -229,6 +236,7 @@
     }
     .sr-en-cours{background:rgba(193,0,122,.08);color:var(--rose);border:1px solid rgba(193,0,122,.15);}
     .sr-valide{background:var(--turq-xl);color:var(--turq-d);border:1px solid rgba(79,166,149,.2);}
+    .sr-archive{background:var(--bg3);color:var(--muted);border:1px solid var(--border2);}
 
     /* Timeline devis */
     .devis-timeline{display:flex;align-items:center;margin:1.5rem 0;}
@@ -703,21 +711,25 @@
           </a>
         </div>
 
-        <!-- PANNEAU 2 : FICHE CLIENT -->
+        <!-- PANNEAU 2 : FICHE CLIENT (Gère fiches actives et archivées) -->
         <div class="ec-panel" id="panel-fiche">
           {% if clients %}
             {% for client in clients %}
-            <div class="prem-card">
+            <div class="prem-card {% if client.archive %}archive{% endif %}">
               <div class="fiche-header">
-                <div class="fiche-avatar">
+                <div class="fiche-avatar" {% if client.archive %}style="background:var(--muted);"{% endif %}>
                   {{ client.prenom[0] if client.prenom else '?' }}
-                  <span class="fiche-online"></span>
+                  {% if not client.archive %}<span class="fiche-online"></span>{% endif %}
                 </div>
                 <div>
                   <div class="fiche-name">{{ client.prenom }} {{ client.nom }}</div>
-                  <div class="fiche-id">Fiche client n°{{ client.id }} · Compte actif</div>
+                  <div class="fiche-id">Fiche client n°{{ client.id }} · {% if client.archive %}Archivée{% else %}Compte actif{% endif %}</div>
                 </div>
-                <span class="status-ribbon sr-valide" style="margin-left:auto;"><i class="fas fa-check" style="font-size:.55rem;"></i>Vérifié</span>
+                {% if client.archive %}
+                  <span class="status-ribbon sr-archive" style="margin-left:auto;"><i class="fas fa-archive" style="font-size:.55rem;"></i>Archivée</span>
+                {% else %}
+                  <span class="status-ribbon sr-valide" style="margin-left:auto;"><i class="fas fa-check" style="font-size:.55rem;"></i>Vérifié</span>
+                {% endif %}
               </div>
               <div class="fiche-grid">
                 <div class="fiche-item"><div class="fi-ico"><i class="fas fa-briefcase"></i></div><div><div class="fi-label">Activité</div><div class="fi-val">{{ client.activite }}</div></div></div>

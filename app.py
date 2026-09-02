@@ -665,12 +665,33 @@ def devis():
     return render_template("devis.html")
 
 # 🟢 ROUTE AJOUTÉE : Nécessaire pour compte_client.html
-@app.route("/gerer-devis")
+@app.route("/gerer-devis", methods=["GET", "POST"])
 def gerer_devis():
     utilisateur_id = session.get("utilisateur_id")
     if not utilisateur_id:
         flash("Veuillez vous connecter pour gérer vos devis.", "warning")
         return redirect(url_for("login"))
+
+    if request.method == "POST":
+        # 1. Gestion de la suppression d'un seul devis via l'input caché
+        single_id = request.form.get("devis_ids_single")
+        if single_id:
+            devis_a_supprimer = Devis.query.filter_by(id=single_id, utilisateur_id=utilisateur_id).first()
+            if devis_a_supprimer:
+                db.session.delete(devis_a_supprimer)
+                db.session.commit()
+                flash("Le devis a bien été supprimé.", "success")
+
+        # 2. Gestion de la suppression multiple via les cases à cocher
+        multi_ids = request.form.getlist("devis_ids")
+        if multi_ids:
+            Devis.query.filter(Devis.id.in_(multi_ids), Devis.utilisateur_id == utilisateur_id).delete(synchronize_session=False)
+            db.session.commit()
+            flash(f"{len(multi_ids)} devis ont bien été supprimés.", "success")
+            
+        return redirect(url_for("gerer_devis"))
+
+    # Affichage classique de la page en GET
     devis_list = Devis.query.filter_by(utilisateur_id=utilisateur_id).all()
     return render_template("gerer_devis.html", devis_list=devis_list)
 

@@ -192,9 +192,9 @@
       <a href="{{ url_for('devis') }}">Devis</a> &rsaquo;
       <span>Confirmation</span>
     </div>
-    <div class="rv-badge-confirm"><span class="rv-badge-dot"></span> Demande enregistrée</div>
+    <div class="rv-badge-confirm"><span class="rv-badge-dot"></span> Demande enregistrée et sauvegardée</div>
     <h1 class="rv-title">Récapitulatif de<br><em>votre rendez-vous</em></h1>
-    <p class="rv-sub">Voici le résumé de votre demande. Choisissez la suite ci-dessous.</p>
+    <p class="rv-sub">Voici le résumé de votre demande. Votre devis a été enregistré avec succès dans votre espace client.</p>
   </div>
 </div>
 
@@ -279,35 +279,15 @@
               <i class="fas fa-arrow-right action-btn-arrow"></i>
             </a>
 
-            <!-- Confirmation par mail -->
-            <a href="{{ url_for('menu') }}" class="action-btn turq">
-              <div class="action-btn-ico"><i class="fas fa-paper-plane"></i></div>
+            <!-- Gérer mes devis dans l'espace client -->
+            <a href="{{ url_for('gerer_devis') }}" class="action-btn turq">
+              <div class="action-btn-ico"><i class="fas fa-folder-open"></i></div>
               <div class="action-btn-text">
-                <strong>Confirmation enregistrée</strong>
-                <span>Un récapitulatif a été généré pour votre rendez-vous</span>
+                <strong>Gérer mes devis</strong>
+                <span>Retrouver et administrer vos devis dans votre espace client</span>
               </div>
               <i class="fas fa-arrow-right action-btn-arrow"></i>
             </a>
-
-            <!-- Optionnel : formulaire de sauvegarde si configuré dans Flask -->
-            {% if url_for('sauvegarder_devis', _external=False) %}
-            <form action="{{ url_for('sauvegarder_devis') }}" method="post" style="margin:0">
-              <input type="hidden" name="secteur" value="{{ secteur }}">
-              <input type="hidden" name="nom" value="{{ nom }}">
-              <input type="hidden" name="type_service" value="{{ type_service }}">
-              <input type="hidden" name="date_rdv" value="{{ date_rdv }}">
-              <input type="hidden" name="heure_rdv" value="{{ heure_rdv }}">
-              <input type="hidden" name="user_email" value="{{ session.get('email') }}">
-              <button type="submit" class="action-btn dark w-100" style="border:2px solid #e2e8f0">
-                <div class="action-btn-ico"><i class="fas fa-user-check"></i></div>
-                <div class="action-btn-text">
-                  <strong>Sauvegarder dans mon compte</strong>
-                  <span>Retrouvez ce devis dans votre espace client</span>
-                </div>
-                <i class="fas fa-arrow-right action-btn-arrow"></i>
-              </button>
-            </form>
-            {% endif %}
 
           </div>
         </div>
@@ -325,8 +305,8 @@
             <div class="timeline">
               <div class="tl-item">
                 <div class="tl-dot done"><i class="fas fa-check"></i></div>
-                <div class="tl-label">Demande reçue</div>
-                <div class="tl-sub">Votre formulaire a bien été enregistré</div>
+                <div class="tl-label">Enregistré & Sauvegardé</div>
+                <div class="tl-sub">Le devis est stocké dans votre base de données</div>
               </div>
               <div class="tl-item">
                 <div class="tl-dot active"><i class="fas fa-hourglass-half"></i></div>

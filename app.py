@@ -703,14 +703,41 @@ def resume_devis():
         flash("Veuillez vous connecter pour consulter le résumé du devis.", "warning")
         return redirect(url_for("login"))
 
+    # Sauvegarde du devis en base de données
     creer_devis(utilisateur_id, request.form)
+    
+    # Stockage temporaire des données du formulaire dans la session 
+    # pour pouvoir les afficher proprement après la redirection en GET
+    session["dernier_devis"] = {
+        "secteur": request.form.get("secteur"),
+        "nom": request.form.get("nom"),
+        "type_service": request.form.get("type_service"),
+        "date_rdv": request.form.get("date_rdv"),
+        "heure_rdv": request.form.get("heure_rdv"),
+    }
+    
+    # Redirection vers une route en GET (bloque la duplication par F5)
+    return redirect(url_for("confirmation_devis"))
+
+
+@app.route("/confirmation-devis", methods=["GET"])
+def confirmation_devis():
+    utilisateur_id = session.get("utilisateur_id")
+    if not utilisateur_id:
+        return redirect(url_for("login"))
+        
+    # Récupération des données stockées dans la session
+    devis_data = session.pop("dernier_devis", None)
+    if not devis_data:
+        return redirect(url_for("devis"))
+
     return render_template(
         "resume_devis.html",
-        secteur=request.form.get("secteur"),
-        nom=request.form.get("nom"),
-        type_service=request.form.get("type_service"),
-        date_rdv=request.form.get("date_rdv"),
-        heure_rdv=request.form.get("heure_rdv"),
+        secteur=devis_data.get("secteur"),
+        nom=devis_data.get("nom"),
+        type_service=devis_data.get("type_service"),
+        date_rdv=devis_data.get("date_rdv"),
+        heure_rdv=devis_data.get("heure_rdv"),
     )
 
 @app.route("/envoyer-mail")

@@ -703,21 +703,20 @@ def resume_devis():
         flash("Veuillez vous connecter pour consulter le résumé du devis.", "warning")
         return redirect(url_for("login"))
 
-    # Sauvegarde du devis en base de données
+    # Optionnel : Tu peux vérifier ici si un devis identique existe déjà pour ce client à la même date/heure 
+    # avant d'appeler creer_devis, ou t'assurer que creer_devis n'est appelé nulle part ailleurs.
+    
+    # Enregistrement en base de données (si ce n'est pas déjà fait en amont)
     creer_devis(utilisateur_id, request.form)
-    
-    # Stockage temporaire des données du formulaire dans la session 
-    # pour pouvoir les afficher proprement après la redirection en GET
-    session["dernier_devis"] = {
-        "secteur": request.form.get("secteur"),
-        "nom": request.form.get("nom"),
-        "type_service": request.form.get("type_service"),
-        "date_rdv": request.form.get("date_rdv"),
-        "heure_rdv": request.form.get("heure_rdv"),
-    }
-    
-    # Redirection vers une route en GET (bloque la duplication par F5)
-    return redirect(url_for("confirmation_devis"))
+
+    return render_template(
+        "resume_devis.html",
+        secteur=request.form.get("secteur"),
+        nom=request.form.get("nom"),
+        type_service=request.form.get("type_service"),
+        date_rdv=request.form.get("date_rdv"),
+        heure_rdv=request.form.get("heure_rdv"),
+    )
 
 
 @app.route("/confirmation-devis", methods=["GET"])

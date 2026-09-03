@@ -1,5 +1,5 @@
-# CI pipeline: quality, security and tests.
-# Triggered on every push and pull request to the main branch.
+# CI workflow: code analysis, security checks and test execution.
+# Automatically triggered on pushes and pull requests targeting the main branch.
 name: CI Pipeline
 
 on:

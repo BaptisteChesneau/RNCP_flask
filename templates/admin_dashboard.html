@@ -138,8 +138,8 @@
 
     .hero-sub {
       font-family: var(--ff-mono);
-      font-size: .72rem; font-weight: 500;
-      color: var(--muted);
+      font-size: .72rem; font-weight: 600;
+      color: var(--text);
       margin-bottom: 1.5rem;
       display: flex; align-items: center; gap: .6rem;
     }
@@ -156,7 +156,7 @@
     .hchip.green { background: var(--turq-xl); border: 1px solid rgba(79,166,149,.3); color: var(--turq-d); }
     .hchip.rose  { background: var(--rose-xl); border: 1px solid rgba(193,0,122,.3); color: var(--rose); }
     .hchip.blue  { background: var(--bg3); border: 1px solid var(--border2); color: var(--text2); }
-    .hchip.mono  { background: var(--surface); border: 1px solid var(--border); color: var(--muted); font-family: var(--ff-mono); }
+    .hchip.mono  { background: var(--surface); border: 1px solid var(--border); color: var(--text); font-family: var(--ff-mono); }
 
     /* Côté droit hero — Profile card */
     .hero-profile {
@@ -206,9 +206,9 @@
     .p-name { font-size: .95rem; font-weight: 700; color: var(--text); margin-bottom: .2rem; }
     .p-role {
       font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
-      color: var(--gold); display: flex; align-items: center; gap: .3rem;
+      color: var(--gold-d); display: flex; align-items: center; gap: .3rem;
     }
-    .p-perms { font-size: .7rem; color: var(--muted); margin-top: .3rem; font-family: var(--ff-mono); }
+    .p-perms { font-size: .7rem; color: var(--text); margin-top: .3rem; font-family: var(--ff-mono); font-weight: 600; }
 
     .session-box {
       background: var(--surface);
@@ -217,13 +217,13 @@
       padding: .6rem 1rem;
       font-family: var(--ff-mono);
       font-size: .68rem;
-      color: var(--muted);
+      color: var(--text);
       display: flex; align-items: center; gap: .75rem;
       min-width: 240px;
       box-shadow: var(--shadow-sm);
       animation: cardSlideIn .6s .35s cubic-bezier(.34,1.2,.64,1) both;
     }
-    .session-val { color: var(--text); font-weight: 600; }
+    .session-val { color: var(--text); font-weight: 700; }
     .session-val.warn { color: var(--danger); }
 
     /* ═══════════════════════════════════════════
@@ -234,7 +234,7 @@
     /* Barre niveau admin */
     .level-strip {
       background: var(--surface);
-      border: 1.5px solid rgba(176,141,87,.3);
+      border: 1.5px solid rgba(193,0,122,.3);
       border-radius: 18px;
       padding: 1.25rem 1.75rem;
       display: flex; align-items: center; gap: 1.5rem;
@@ -244,10 +244,10 @@
     }
     .ls-icon {
       width: 52px; height: 52px; border-radius: 14px;
-      background: linear-gradient(135deg, var(--gold), var(--gold-d));
+      background: linear-gradient(135deg, var(--rose), var(--rose-d));
       display: flex; align-items: center; justify-content: center;
       font-size: 1.3rem; color: #fff; flex-shrink: 0;
-      box-shadow: 0 6px 18px rgba(176,141,87,.3);
+      box-shadow: 0 6px 18px rgba(193,0,122,.3);
       animation: iconFloat 4s ease-in-out infinite;
     }
     @keyframes iconFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
@@ -259,7 +259,7 @@
       display: inline-flex; align-items: center; gap: .3rem;
       padding: .2rem .65rem; border-radius: 20px;
       font-size: .65rem; font-weight: 700;
-      background: var(--gold-l); border: 1px solid rgba(176,141,87,.25); color: var(--gold-d);
+      background: var(--rose-l); border: 1px solid rgba(193,0,122,.25); color: var(--rose);
     }
 
     /* KPI row */
@@ -285,7 +285,6 @@
     .kcard.k-ink::before  { background:linear-gradient(90deg,var(--ink),var(--ink2)); }
     .kcard:hover { transform:translateY(-4px); box-shadow:var(--shadow-md); border-color:var(--border2); }
 
-    /* Halo décoratif derrière les kpi */
     .kcard-glow {
       position:absolute; bottom:-30px; right:-30px;
       width:120px; height:120px; border-radius:50%;
@@ -366,12 +365,12 @@
       background: var(--bg2); border: 1px solid var(--border);
       border-radius: 14px; padding: 1.1rem 1.5rem;
       font-size: .92rem; color: var(--text); line-height: 1.7;
-      border-left: 3px solid var(--turq);
+      border-left: 3px solid var(--rose);
       position: relative;
     }
     .lq-quote {
       font-family:var(--ff-head); font-size:3rem; line-height:1;
-      color:var(--turq); opacity:.25;
+      color:var(--rose); opacity:.25;
       position:absolute; top:.3rem; left:.8rem;
     }
     .lq-text { padding-left:1.5rem; }
@@ -394,8 +393,6 @@
     }
     .acard:hover { transform:translateY(-3px); box-shadow:var(--shadow-md); border-color:var(--rose); text-decoration:none; color:var(--text); }
     .acard:hover::after { opacity:1; }
-    .acard.gold-ac:hover { box-shadow:var(--shadow-md); border-color:var(--gold); }
-    .acard.gold-ac::after { background:linear-gradient(135deg, transparent 55%, rgba(176,141,87,.04)); }
 
     .acard-ico {
       width:50px; height:50px; border-radius:14px;
@@ -404,12 +401,7 @@
     }
     .ai-rose { background:var(--rose-xl); color:var(--rose); }
     .ai-turq { background:var(--turq-xl); color:var(--turq-d); }
-    .ai-gold { background:var(--gold-l); color:var(--gold-d); }
-    .ai-ink  { background:var(--bg2); color:var(--ink); }
     .acard:hover .ai-rose { background:var(--rose); color:#fff; }
-    .acard:hover .ai-turq { background:var(--turq); color:#fff; }
-    .acard:hover .ai-gold { background:var(--gold); color:#fff; }
-    .acard:hover .ai-ink  { background:var(--ink); color:#fff; }
 
     .acard-body { flex:1; min-width:0; }
     .acard-title { font-size:.92rem; font-weight:700; color:var(--text); margin-bottom:.15rem; }
@@ -419,17 +411,17 @@
       padding:.1rem .45rem; border-radius:6px; margin-left:.35rem; vertical-align:middle;
     }
     .ab-rose { background:var(--rose-xl); color:var(--rose); }
-    .ab-gold { background:var(--gold-l); color:var(--gold-d); }
     .acard-arr { color:var(--border2); font-size:.78rem; flex-shrink:0; transition:color .2s, transform .2s; }
     .acard:hover .acard-arr { color:var(--rose); transform:translateX(4px); }
-    .acard.gold-ac:hover .acard-arr { color:var(--gold); }
 
-    /* ── ZONE ADMIN EXCLUSIF HARMONISÉE AVEC LA CHARTE ── */
+    /* ══════════════════════════════════════════════════════════
+        ZONE ADMIN EXCLUSIF EN ROSE MAGENTA (#C1007A / #9a0062)
+    ══════════════════════════════════════════════════════════ */
     .admin-zone {
       position:relative; overflow:hidden;
-      background: var(--ink);
+      background: linear-gradient(135deg, #2b0b20 0%, #150510 100%);
       border-radius:24px;
-      border:1px solid rgba(176,141,87,0.3);
+      border:1px solid rgba(193,0,122,0.4);
       padding:2rem;
       margin-bottom:2rem;
       box-shadow: var(--shadow-lg);
@@ -437,14 +429,14 @@
     .admin-zone::before {
       content:''; position:absolute; inset:0;
       background:
-        radial-gradient(ellipse 50% 80% at 90% 20%, rgba(176,141,87,0.15) 0%, transparent 60%),
-        radial-gradient(ellipse 30% 50% at 10% 80%, rgba(193,0,122,0.12) 0%, transparent 55%),
-        radial-gradient(ellipse 40% 40% at 50% 50%, rgba(79,166,149,0.08) 0%, transparent 60%);
+        radial-gradient(ellipse 50% 80% at 90% 20%, rgba(193,0,122,0.22) 0%, transparent 60%),
+        radial-gradient(ellipse 30% 50% at 10% 80%, rgba(176,141,87,0.1) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 40% at 50% 50%, rgba(79,166,149,0.06) 0%, transparent 60%);
       pointer-events:none;
     }
     .az-scan {
       position:absolute; inset:0; pointer-events:none;
-      background:repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,.04) 3px, rgba(0,0,0,.04) 4px);
+      background:repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,.05) 3px, rgba(0,0,0,.05) 4px);
     }
     .az-content { position:relative; z-index:1; }
     .az-head {
@@ -452,20 +444,20 @@
     }
     .az-ico {
       width:46px; height:46px; border-radius:12px;
-      background: linear-gradient(135deg, var(--gold), var(--gold-d));
+      background: linear-gradient(135deg, var(--rose), var(--rose-d));
       display:flex; align-items:center; justify-content:center;
       font-size:1rem; color:#fff; flex-shrink:0;
-      box-shadow: 0 6px 18px rgba(176,141,87,0.4);
+      box-shadow: 0 6px 18px rgba(193,0,122,0.5);
     }
     .az-title { font-size:.95rem; font-weight:700; color:#fff; margin-bottom:.15rem; }
-    .az-sub { font-size:.72rem; color:rgba(255,255,255,.55); }
+    .az-sub { font-size:.72rem; color:rgba(255,255,255,.6); }
     .az-badge {
       margin-left:auto;
       display:inline-flex; align-items:center; gap:.35rem;
       padding:.28rem .8rem;
-      background: var(--gold-l); border: 1px solid rgba(176,141,87,0.4);
+      background: var(--rose-l); border: 1px solid rgba(193,0,122,0.4);
       border-radius:20px; font-size:.65rem; font-weight:700;
-      color: var(--gold-d); text-transform:uppercase; letter-spacing:.08em;
+      color: var(--rose); text-transform:uppercase; letter-spacing:.08em;
     }
 
     .az-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.85rem; }
@@ -480,25 +472,25 @@
       text-align:center; transition:all .25s;
     }
     .az-btn:hover {
-      background: rgba(176,141,87,0.12);
-      border-color: rgba(176,141,87,0.4);
+      background: rgba(193,0,122,0.15);
+      border-color: rgba(193,0,122,0.5);
       color: #fff;
       text-decoration:none;
       transform:translateY(-2px);
-      box-shadow: 0 6px 20px rgba(176,141,87,0.15);
+      box-shadow: 0 6px 20px rgba(193,0,122,0.25);
     }
-    .az-btn:hover .az-btn-ico { color: var(--gold); transform:scale(1.1); }
+    .az-btn:hover .az-btn-ico { color: var(--rose); transform:scale(1.1); }
     .az-btn-ico { font-size:1.4rem; color: rgba(255,255,255,0.35); transition:all .25s; }
     .az-btn-lbl { line-height:1.3; }
 
     .az-btn.highlight-az {
-      background: rgba(176,141,87,0.07);
-      border: 1px solid rgba(176,141,87,0.25);
+      background: rgba(193,0,122,0.1);
+      border: 1px solid rgba(193,0,122,0.3);
     }
-    .az-btn.highlight-az .az-btn-ico { color: var(--gold); }
+    .az-btn.highlight-az .az-btn-ico { color: var(--rose); }
     .az-btn.highlight-az:hover {
-      background: rgba(176,141,87,0.2);
-      border-color: var(--gold);
+      background: rgba(193,0,122,0.25);
+      border-color: var(--rose);
     }
 
     /* ── LAYOUT 2 COL bas de page ── */
@@ -599,7 +591,7 @@
     .af-name { font-size:.9rem; font-weight:700; color:var(--text); }
     .af-role {
       font-size:.65rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em;
-      color:var(--gold); display:flex; align-items:center; gap:.3rem; margin-top:.1rem;
+      color:var(--rose); display:flex; align-items:center; gap:.3rem; margin-top:.1rem;
     }
     .af-sid { font-size:.62rem; color:var(--faint); font-family:var(--ff-mono); margin-top:.1rem; }
 
@@ -821,7 +813,7 @@
       </a>
     </div>
 
-    <!-- Zone admin exclusif -->
+    <!-- Zone admin exclusif en rose magenta -->
     <div class="s-head">
       <div class="s-label"><i class="fas fa-crown"></i> Zone administrateur exclusif</div>
     </div>
@@ -885,7 +877,7 @@
           <div class="live-chip"><div class="live-dot"></div> Live</div>
         </div>
         <div class="activity-scroll" id="actList">
-          <div class="aitem"><div class="aitem-dot" style="background:var(--gold)"></div><div class="aitem-body"><div class="aitem-text"><strong>Connexion administrateur</strong> — Session ouverte</div><div class="aitem-time" id="loginT">À l'instant</div></div></div>
+          <div class="aitem"><div class="aitem-dot" style="background:var(--rose)"></div><div class="aitem-body"><div class="aitem-text"><strong>Connexion administrateur</strong> — Session ouverte</div><div class="aitem-time" id="loginT">À l'instant</div></div></div>
           <div class="aitem"><div class="aitem-dot" style="background:var(--rose)"></div><div class="aitem-body"><div class="aitem-text">Chatbot — <strong>{{ total_questions }} question(s)</strong> en base</div><div class="aitem-time">Synchronisé</div></div></div>
           <div class="aitem"><div class="aitem-dot" style="background:var(--turq)"></div><div class="aitem-body"><div class="aitem-text"><strong>Base de données</strong> — Connexion active</div><div class="aitem-time">Statut vérifié</div></div></div>
           <div class="aitem"><div class="aitem-dot" style="background:var(--muted)"></div><div class="aitem-body"><div class="aitem-text"><strong>Dashboard admin</strong> — Modules chargés</div><div class="aitem-time">Init. terminée</div></div></div>
@@ -932,7 +924,7 @@
         </div>
         <div>
           <div class="af-name">Administrateur ML2C CONSEIL</div>
-          <div class="af-role"><i class="fas fa-crown" style="color:var(--gold);font-size:.58rem;"></i> Super Admin · Droits complets · Niveau 3</div>
+          <div class="af-role"><i class="fas fa-crown" style="color:var(--rose);font-size:.58rem;"></i> Super Admin · Droits complets · Niveau 3</div>
           <div class="af-sid">SID: <span id="footSid">----</span> · Session <span id="footTimer">29:59</span></div>
         </div>
       </div>
@@ -1000,7 +992,7 @@ function drawNet() {
         nctx.beginPath();
         nctx.moveTo(pts[i].x,pts[i].y);
         nctx.lineTo(pts[j].x,pts[j].y);
-        nctx.strokeStyle=`rgba(176,141,87,${(1-d/110)*.08})`;
+        nctx.strokeStyle=`rgba(193,0,122,${(1-d/110)*.08})`;
         nctx.lineWidth=.6; nctx.stroke();
       }
     }
@@ -1053,7 +1045,7 @@ document.querySelectorAll('.kbar-fill').forEach(b=>{
 const LOGS = [
   {c:'var(--rose)',    txt:'Chatbot — nouvelle <strong>question reçue</strong>'},
   {c:'var(--turq)',    txt:'BDD — synchronisation <strong>réussie</strong>'},
-  {c:'var(--gold)',    txt:'Vérification des <strong>permissions admin</strong>'},
+  {c:'var(--rose)',    txt:'Vérification des <strong>permissions admin</strong>'},
   {c:'var(--muted)',   txt:'Cache applicatif — <strong>rafraîchissement</strong>'},
   {c:'var(--success)', txt:'Surveillance sécurité — <strong>RAS</strong>'},
   {c:'var(--turq)',    txt:'Session admin — <strong>heartbeat OK</strong>'},

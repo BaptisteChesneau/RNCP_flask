@@ -432,12 +432,12 @@
     .acard:hover .acard-arr { color:var(--rose); transform:translateX(4px); }
     .acard.gold-ac:hover .acard-arr { color:var(--gold); }
 
-    /* ── ZONE ADMIN ONLY ── */
+    /* ── ZONE ADMIN EXCLUSIF HARMONISÉE AVEC LA CHARTE ── */
     .admin-zone {
       position:relative; overflow:hidden;
-      background:var(--ink);
+      background: var(--ink);
       border-radius:24px;
-      border:1px solid rgba(176,141,87,.25);
+      border:1px solid rgba(176,141,87,0.3);
       padding:2rem;
       margin-bottom:2rem;
       box-shadow: var(--shadow-lg);
@@ -445,8 +445,9 @@
     .admin-zone::before {
       content:''; position:absolute; inset:0;
       background:
-        radial-gradient(ellipse 50% 80% at 90% 20%, rgba(176,141,87,.12) 0%, transparent 60%),
-        radial-gradient(ellipse 30% 50% at 10% 80%, rgba(193,0,122,.1) 0%, transparent 55%);
+        radial-gradient(ellipse 50% 80% at 90% 20%, rgba(176,141,87,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse 30% 50% at 10% 80%, rgba(193,0,122,0.12) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 40% at 50% 50%, rgba(79,166,149,0.08) 0%, transparent 60%);
       pointer-events:none;
     }
     .az-scan {
@@ -459,37 +460,55 @@
     }
     .az-ico {
       width:46px; height:46px; border-radius:12px;
-      background:linear-gradient(135deg, var(--gold), var(--gold-d));
+      background: linear-gradient(135deg, var(--gold), var(--gold-d));
       display:flex; align-items:center; justify-content:center;
       font-size:1rem; color:#fff; flex-shrink:0;
-      box-shadow:0 6px 16px rgba(176,141,87,.4);
+      box-shadow: 0 6px 18px rgba(176,141,87,0.4);
     }
     .az-title { font-size:.95rem; font-weight:700; color:#fff; margin-bottom:.15rem; }
-    .az-sub { font-size:.72rem; color:rgba(255,255,255,.5); }
+    .az-sub { font-size:.72rem; color:rgba(255,255,255,.55); }
     .az-badge {
       margin-left:auto;
       display:inline-flex; align-items:center; gap:.35rem;
       padding:.28rem .8rem;
-      background:var(--gold-l); border:1px solid rgba(176,141,87,.3);
+      background: var(--gold-l); border: 1px solid rgba(176,141,87,0.4);
       border-radius:20px; font-size:.65rem; font-weight:700;
-      color:var(--gold); text-transform:uppercase; letter-spacing:.08em;
+      color: var(--gold-d); text-transform:uppercase; letter-spacing:.08em;
     }
 
-    .az-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.75rem; }
+    .az-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.85rem; }
     .az-btn {
       display:flex; flex-direction:column; align-items:center; gap:.6rem;
-      padding:1rem .75rem;
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.08);
+      padding:1.1rem .85rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
       border-radius:14px;
       cursor:pointer; text-decoration:none;
-      color:rgba(255,255,255,.6); font-size:.75rem; font-weight:500;
-      text-align:center; transition:all .22s;
+      color: rgba(255,255,255,0.75); font-size:.75rem; font-weight:500;
+      text-align:center; transition:all .25s;
     }
-    .az-btn:hover { background:rgba(176,141,87,.12); border-color:rgba(176,141,87,.35); color:var(--gold); text-decoration:none; transform:translateY(-2px); }
-    .az-btn:hover .az-btn-ico { color:var(--gold); transform:scale(1.1); }
-    .az-btn-ico { font-size:1.4rem; color:rgba(255,255,255,.3); transition:all .22s; }
+    .az-btn:hover {
+      background: rgba(176,141,87,0.12);
+      border-color: rgba(176,141,87,0.4);
+      color: #fff;
+      text-decoration:none;
+      transform:translateY(-2px);
+      box-shadow: 0 6px 20px rgba(176,141,87,0.15);
+    }
+    .az-btn:hover .az-btn-ico { color: var(--gold); transform:scale(1.1); }
+    .az-btn-ico { font-size:1.4rem; color: rgba(255,255,255,0.35); transition:all .25s; }
     .az-btn-lbl { line-height:1.3; }
+
+    /* Bouton spécial log de sécurité aux accents dorés clairs */
+    .az-btn.highlight-az {
+      background: rgba(176,141,87,0.07);
+      border: 1px solid rgba(176,141,87,0.25);
+    }
+    .az-btn.highlight-az .az-btn-ico { color: var(--gold); }
+    .az-btn.highlight-az:hover {
+      background: rgba(176,141,87,0.2);
+      border-color: var(--gold);
+    }
 
     /* ── LAYOUT 2 COL bas de page ── */
     .bottom-grid { display:grid; grid-template-columns:1fr 360px; gap:1.25rem; margin-bottom:2rem; }
@@ -812,7 +831,7 @@
       </a>
     </div>
 
-    <!-- Zone admin only -->
+    <!-- Zone admin only — Harmonisée Charte ML2C -->
     <div class="s-head">
       <div class="s-label"><i class="fas fa-crown"></i> Zone administrateur exclusif</div>
     </div>
@@ -839,7 +858,7 @@
             <div class="az-btn-lbl">Configuration système</div>
           </a>
 
-          <a href="{{ url_for('admin_logs') }}" class="az-btn">
+          <a href="{{ url_for('admin_logs') }}" class="az-btn highlight-az">
             <div class="az-btn-ico"><i class="fas fa-shield-halved"></i></div>
             <div class="az-btn-lbl">Logs de sécurité</div>
           </a>

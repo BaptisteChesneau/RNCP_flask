@@ -6,56 +6,47 @@
   <title>Accès Administrateur — ML2C CONSEIL</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --rose: #C1007A;
-      --rose-dark: #9a0062;
-      --gold: #f59e0b;
-      --gold-dark: #d97706;
-      --turq: #4FA695;
-      --danger: #ef4444;
-      --success: #22c55e;
-      --bg: #080a10;
-      --surface: #0e1018;
-      --surface2: #13161f;
-      --border: rgba(255,255,255,.07);
-      --text: rgba(255,255,255,.85);
-      --muted: rgba(255,255,255,.3);
+    :root{
+      --rose:#C1007A;--rose-d:#9a0062;--rose-l:#fce4f3;--rose-xl:#fff5fb;
+      --turq:#4FA695;--turq-d:#3a7d70;--turq-l:#d4f0ec;--turq-xl:#edfaf7;
+      --gold:#b08d57;--gold-l:#f5eedf;--gold-ll:#fdfaf5;
+      --ink:#1a1a2e;--ink2:#2d2d3d;
+      --bg:#faf8f4;--bg2:#f5f2ec;--bg3:#ede9e0;
+      --surface:#fff;--surface2:#fdfcfa;
+      --border:#e8e2d9;--border2:#d4cdc0;
+      --text:#1a1a1a;--text2:#3d3d3d;--muted:#8a8278;--faint:#b5aea5;
+      --ff-head:'Cormorant Garamond',serif;
+      --ff-body:'DM Sans',sans-serif;
+      --ff-mono:'Share Tech Mono',monospace;
+      --shadow-sm:0 2px 8px rgba(26,20,10,.06);
+      --shadow-md:0 8px 32px rgba(26,20,10,.08);
+      --shadow-lg:0 20px 60px rgba(26,20,10,.1);
     }
 
-    body {
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{
       background: var(--bg);
-      font-family: 'DM Sans', sans-serif;
+      font-family: var(--ff-body);
       min-height: 100vh;
       overflow-x: hidden;
       color: var(--text);
     }
 
-    /* ════ CANVAS ANIMÉ ════ */
-    #bgCanvas {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
+    /* ══ TEXTURE FOND CLIENT ══ */
+    body::before{
+      content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:
+        radial-gradient(ellipse 80% 60% at 95% 10%,rgba(193,0,122,.05) 0%,transparent 55%),
+        radial-gradient(ellipse 60% 50% at 5% 90%,rgba(79,166,149,.06) 0%,transparent 50%),
+        radial-gradient(ellipse 50% 40% at 50% 50%,rgba(176,141,87,.04) 0%,transparent 60%);
     }
-
-    /* ════ SCANLINES EFFET ════ */
-    .scanlines {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0,0,0,.03) 2px,
-        rgba(0,0,0,.03) 4px
-      );
+    body::after{
+      content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231a1a1a' fill-opacity='0.018'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
 
     /* ════ LAYOUT ════ */
@@ -92,29 +83,29 @@
       width: 44px;
       height: 44px;
       border-radius: 12px;
-      background: linear-gradient(135deg, var(--rose), var(--rose-dark));
+      background: linear-gradient(135deg, var(--rose), var(--rose-d));
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.2rem;
       color: #fff;
-      box-shadow: 0 0 20px rgba(193,0,122,.4);
+      box-shadow: 0 0 20px rgba(193,0,122,.25);
     }
     .cabinet-name {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: var(--ff-head);
       font-size: 1.3rem;
       font-weight: 700;
-      color: #fff;
+      color: var(--ink);
       line-height: 1.1;
     }
-    .cabinet-name span { display: block; font-size: .72rem; font-weight: 400; color: var(--muted); font-family: 'DM Sans', sans-serif; margin-top: .2rem; }
+    .cabinet-name span { display: block; font-size: .72rem; font-weight: 400; color: var(--muted); font-family: var(--ff-body); margin-top: .2rem; }
 
     .left-tagline {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem;
+      font-family: var(--ff-head);
+      font-size: 2.2rem;
       font-weight: 700;
-      color: #fff;
-      line-height: 1.25;
+      color: var(--ink);
+      line-height: 1.2;
     }
     .left-tagline em { color: var(--rose); font-style: normal; }
 
@@ -124,17 +115,18 @@
       align-items: center;
       gap: .85rem;
       padding: .75rem 1rem;
-      background: rgba(255,255,255,.03);
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
       font-size: .82rem;
       color: var(--muted);
+      box-shadow: var(--shadow-sm);
     }
     .left-stat-icon {
       width: 32px;
       height: 32px;
       border-radius: 8px;
-      background: rgba(193,0,122,.12);
+      background: var(--rose-xl);
       color: var(--rose);
       display: flex;
       align-items: center;
@@ -142,21 +134,21 @@
       font-size: .8rem;
       flex-shrink: 0;
     }
-    .left-stat strong { color: #fff; font-weight: 600; }
+    .left-stat strong { color: var(--ink); font-weight: 600; }
 
     .left-secure {
       display: flex;
       align-items: center;
       gap: .5rem;
       font-size: .72rem;
-      color: rgba(255,255,255,.2);
-      font-family: 'JetBrains Mono', monospace;
+      color: var(--muted);
+      font-family: var(--ff-mono);
     }
     .left-secure-dot {
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: var(--success);
+      background: #22c55e;
       box-shadow: 0 0 8px rgba(34,197,94,.6);
       animation: secBlink 2s infinite;
     }
@@ -179,29 +171,30 @@
       border: 1px solid var(--border);
       border-radius: 14px;
       overflow: hidden;
+      box-shadow: var(--shadow-md);
     }
     .sys-log-head {
       display: flex;
       align-items: center;
       gap: .5rem;
       padding: .65rem 1rem;
-      background: rgba(255,255,255,.02);
+      background: var(--bg2);
       border-bottom: 1px solid var(--border);
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--ff-mono);
       font-size: .65rem;
       color: var(--muted);
     }
     .sys-dot { width: 8px; height: 8px; border-radius: 50%; }
     .sys-dot.red { background: #ef4444; }
-    .sys-dot.yellow { background: #f59e0b; }
+    .sys-dot.yellow { background: var(--gold); }
     .sys-dot.green { background: #22c55e; }
-    .sys-log-body { padding: .85rem 1rem; font-family: 'JetBrains Mono', monospace; font-size: .65rem; line-height: 2; max-height: 200px; overflow: hidden; }
+    .sys-log-body { padding: .85rem 1rem; font-family: var(--ff-mono); font-size: .65rem; line-height: 2; max-height: 200px; overflow: hidden; color: var(--text2); }
     .log-line { color: var(--muted); }
-    .log-line .log-time { color: rgba(255,255,255,.2); }
-    .log-line .log-ok   { color: var(--success); }
+    .log-line .log-time { color: var(--faint); }
+    .log-line .log-ok   { color: #22c55e; }
     .log-line .log-warn { color: var(--gold); }
-    .log-line .log-err  { color: var(--danger); }
-    .log-line .log-info { color: #60a5fa; }
+    .log-line .log-err  { color: #ef4444; }
+    .log-line .log-info { color: var(--turq-d); }
     .log-cursor {
       display: inline-block;
       width: 7px;
@@ -214,52 +207,48 @@
     @keyframes curBlink { 0%,100%{opacity:1} 50%{opacity:0} }
 
     .admin-badge-box {
-      background: linear-gradient(135deg, rgba(245,158,11,.08), rgba(245,158,11,.03));
-      border: 1px solid rgba(245,158,11,.2);
+      background: var(--gold-ll);
+      border: 1px solid rgba(176,141,87,.25);
       border-radius: 14px;
       padding: 1rem 1.25rem;
       display: flex;
       align-items: center;
       gap: 1rem;
+      box-shadow: var(--shadow-sm);
     }
     .admin-badge-icon {
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      background: rgba(245,158,11,.12);
-      border: 2px solid rgba(245,158,11,.25);
+      background: var(--gold-l);
+      border: 2px solid rgba(176,141,87,.3);
       display: flex;
       align-items: center;
       justify-content: center;
       color: var(--gold);
       font-size: 1.1rem;
       flex-shrink: 0;
-      box-shadow: 0 0 16px rgba(245,158,11,.2);
     }
     .admin-badge-text strong {
       display: block;
       font-size: .85rem;
       font-weight: 700;
-      color: var(--gold);
+      color: var(--ink);
       margin-bottom: .2rem;
     }
     .admin-badge-text span {
       font-size: .72rem;
-      color: rgba(245,158,11,.55);
+      color: var(--muted);
     }
 
     /* ════ CARD LOGIN ════ */
     .login-card {
       width: 100%;
       max-width: 480px;
-      background: linear-gradient(160deg, rgba(20,22,30,.95) 0%, rgba(14,16,24,.98) 100%);
-      border: 1px solid rgba(255,255,255,.09);
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 28px;
-      backdrop-filter: blur(24px);
-      box-shadow:
-        0 0 0 1px rgba(193,0,122,.06),
-        0 32px 80px rgba(0,0,0,.6),
-        inset 0 1px 0 rgba(255,255,255,.07);
+      box-shadow: var(--shadow-lg);
       overflow: hidden;
       animation: cardIn .55s .05s cubic-bezier(.34,1.15,.64,1) both;
     }
@@ -287,7 +276,7 @@
     /* Badge ADMIN flottant */
     .admin-crown {
       position: absolute;
-      top: -1px;
+      top: 0;
       right: 1.5rem;
       display: flex;
       flex-direction: column;
@@ -297,19 +286,14 @@
     .crown-icon {
       width: 36px;
       height: 36px;
-      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      background: linear-gradient(135deg, var(--gold), #8c6d3d);
       border-radius: 0 0 10px 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: .9rem;
       color: #fff;
-      box-shadow: 0 4px 12px rgba(245,158,11,.4);
-      animation: crownGlow 2s ease-in-out infinite;
-    }
-    @keyframes crownGlow {
-      0%,100% { box-shadow: 0 4px 12px rgba(245,158,11,.4); }
-      50%      { box-shadow: 0 4px 20px rgba(245,158,11,.7); }
+      box-shadow: 0 4px 12px rgba(176,141,87,.3);
     }
     .crown-label {
       font-size: .55rem;
@@ -317,8 +301,8 @@
       text-transform: uppercase;
       letter-spacing: .1em;
       color: var(--gold);
-      background: rgba(245,158,11,.08);
-      border: 1px solid rgba(245,158,11,.2);
+      background: var(--gold-l);
+      border: 1px solid rgba(176,141,87,.2);
       border-radius: 4px;
       padding: .15rem .4rem;
     }
@@ -335,10 +319,8 @@
       border-radius: 50%;
       background: conic-gradient(var(--rose), var(--gold), var(--turq), var(--rose));
       padding: 3px;
-      animation: ringRotate 4s linear infinite;
-      box-shadow: 0 0 30px rgba(193,0,122,.3);
+      box-shadow: 0 0 25px rgba(193,0,122,.15);
     }
-    @keyframes ringRotate { to { transform: rotate(360deg); } }
     .av-inner {
       width: 100%;
       height: 100%;
@@ -358,8 +340,8 @@
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      background: var(--surface2);
-      border: 2px solid var(--surface2);
+      background: #fff;
+      border: 2px solid #fff;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -368,21 +350,20 @@
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: var(--success);
+      background: #22c55e;
       box-shadow: 0 0 6px rgba(34,197,94,.8);
-      animation: secBlink 2s infinite;
     }
 
     .card-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.65rem;
+      font-family: var(--ff-head);
+      font-size: 1.8rem;
       font-weight: 700;
-      color: #fff;
+      color: var(--ink);
       display: block;
-      margin-bottom: .25rem;
+      margin-bottom: .2rem;
     }
     .card-sub {
-      font-size: .78rem;
+      font-size: .8rem;
       color: var(--muted);
       display: block;
       margin-bottom: 1rem;
@@ -408,25 +389,25 @@
       text-transform: uppercase;
     }
     .chip-admin {
-      background: rgba(245,158,11,.1);
-      border: 1px solid rgba(245,158,11,.25);
+      background: var(--gold-l);
+      border: 1px solid rgba(176,141,87,.25);
       color: var(--gold);
     }
     .chip-secure {
-      background: rgba(34,197,94,.07);
-      border: 1px solid rgba(34,197,94,.18);
-      color: var(--success);
+      background: var(--turq-xl);
+      border: 1px solid rgba(79,166,149,.2);
+      color: var(--turq-d);
     }
     .chip-level {
-      background: rgba(193,0,122,.1);
-      border: 1px solid rgba(193,0,122,.25);
-      color: #f472b6;
+      background: var(--rose-xl);
+      border: 1px solid rgba(193,0,122,.2);
+      color: var(--rose);
     }
 
     /* Séparateur */
     .card-divider {
       height: 1px;
-      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      background: var(--border);
       margin: 0 2.25rem;
     }
 
@@ -443,12 +424,10 @@
       font-size: .83rem;
       font-weight: 500;
       margin-bottom: 1.25rem;
-      animation: flashShake .4s ease;
     }
-    @keyframes flashShake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
-    .flash-danger  { background: rgba(239,68,68,.08); border: 1px solid rgba(239,68,68,.18); color: #f87171; }
-    .flash-success { background: rgba(34,197,94,.07);  border: 1px solid rgba(34,197,94,.15);  color: #4ade80; }
-    .flash-warning { background: rgba(245,158,11,.07); border: 1px solid rgba(245,158,11,.15); color: #fbbf24; }
+    .flash-danger   { background: rgba(220,38,38,.07); border: 1px solid rgba(220,38,38,.18); color: #dc2626; }
+    .flash-success { background: var(--turq-xl); border: 1px solid rgba(79,166,149,.2); color: var(--turq-d); }
+    .flash-warning { background: var(--gold-l); border: 1px solid rgba(176,141,87,.2); color: var(--gold); }
     .flash-x { margin-left: auto; background: none; border: none; cursor: pointer; color: inherit; opacity: .4; padding: 0; flex-shrink: 0; }
     .flash-x:hover { opacity: 1; }
 
@@ -470,9 +449,9 @@
       font-weight: 600;
       padding: .1rem .45rem;
       border-radius: 6px;
-      background: rgba(245,158,11,.1);
+      background: var(--gold-l);
       color: var(--gold);
-      border: 1px solid rgba(245,158,11,.2);
+      border: 1px solid rgba(176,141,87,.2);
       letter-spacing: .04em;
     }
 
@@ -490,34 +469,33 @@
     }
     .f-input {
       width: 100%;
-      background: rgba(255,255,255,.04);
-      border: 1.5px solid rgba(255,255,255,.07);
+      background: var(--bg2);
+      border: 1.5px solid var(--border);
       border-radius: 12px;
       padding: .8rem 1rem .8rem 2.65rem;
-      color: #fff;
+      color: var(--text);
       font-size: .9rem;
-      font-family: 'DM Sans', sans-serif;
+      font-family: var(--ff-body);
       outline: none;
       transition: all .25s;
     }
-    .f-input::placeholder { color: rgba(255,255,255,.18); }
+    .f-input::placeholder { color: var(--faint); }
     .f-input:focus {
-      border-color: rgba(193,0,122,.45);
-      background: rgba(193,0,122,.04);
-      box-shadow: 0 0 0 4px rgba(193,0,122,.07), 0 0 20px rgba(193,0,122,.06);
+      border-color: var(--rose);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(193,0,122,.08);
     }
-    .f-wrap:focus-within .f-icon { color: #C1007A; }
+    .f-wrap:focus-within .f-icon { color: var(--rose); }
 
     /* Champ password spécial admin */
     .f-input.admin-field {
-      border-color: rgba(245,158,11,.12);
-      background: rgba(245,158,11,.02);
-      letter-spacing: .05em;
+      border-color: rgba(176,141,87,.3);
+      background: var(--gold-ll);
     }
     .f-input.admin-field:focus {
-      border-color: rgba(245,158,11,.4);
-      background: rgba(245,158,11,.04);
-      box-shadow: 0 0 0 4px rgba(245,158,11,.06), 0 0 20px rgba(245,158,11,.05);
+      border-color: var(--gold);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(176,141,87,.12);
     }
     .f-wrap:focus-within .f-icon.admin-icon { color: var(--gold); }
 
@@ -534,15 +512,15 @@
       padding: 0;
       transition: color .2s;
     }
-    .f-eye:hover { color: rgba(255,255,255,.7); }
+    .f-eye:hover { color: var(--text); }
 
     /* Barre force */
     .strength-wrap { margin-top: .5rem; display: flex; align-items: center; gap: .5rem; }
     .strength-bars { display: flex; gap: .3rem; flex: 1; }
-    .s-bar { flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,.06); transition: background .3s; }
-    .s-bar.w { background: var(--danger); }
+    .s-bar { flex: 1; height: 3px; border-radius: 2px; background: var(--border2); transition: background .3s; }
+    .s-bar.w { background: #dc2626; }
     .s-bar.m { background: var(--gold); }
-    .s-bar.s { background: var(--success); }
+    .s-bar.s { background: #22c55e; }
     .strength-text { font-size: .62rem; color: var(--muted); min-width: 40px; }
 
     /* Remember + options */
@@ -564,19 +542,19 @@
     .f-checkbox {
       width: 16px;
       height: 16px;
-      border: 1.5px solid rgba(255,255,255,.12);
+      border: 1.5px solid var(--border2);
       border-radius: 4px;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: all .2s;
       flex-shrink: 0;
-      background: rgba(255,255,255,.03);
+      background: var(--bg2);
     }
     .f-check-label input:checked ~ .f-checkbox {
       background: var(--rose);
       border-color: var(--rose);
-      box-shadow: 0 0 8px rgba(193,0,122,.3);
+      box-shadow: 0 0 8px rgba(193,0,122,.25);
     }
     .f-check-label input:checked ~ .f-checkbox::after {
       content: '';
@@ -588,44 +566,34 @@
       transform: rotate(45deg) translate(-1px,-1px);
       display: block;
     }
-    .f-forgot { font-size: .75rem; color: rgba(193,0,122,.6); text-decoration: none; transition: color .2s; }
-    .f-forgot:hover { color: #f472b6; }
+    .f-forgot { font-size: .75rem; color: var(--rose); text-decoration: none; transition: color .2s; }
+    .f-forgot:hover { color: var(--rose-d); text-decoration: underline; }
 
-    /* BOUTON ADMIN */
+    /* BOUTON ADMIN LUXE */
     .btn-admin {
       width: 100%;
       padding: 1rem;
-      background: linear-gradient(135deg, var(--gold), var(--gold-dark), #b45309);
+      background: var(--ink);
       color: #fff;
       border: none;
       border-radius: 12px;
       font-size: .92rem;
-      font-weight: 700;
+      font-weight: 600;
       cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
+      font-family: var(--ff-body);
       display: flex;
       align-items: center;
       justify-content: center;
       gap: .6rem;
       transition: all .25s;
-      position: relative;
-      overflow: hidden;
-      box-shadow:
-        0 4px 20px rgba(245,158,11,.3),
-        inset 0 1px 0 rgba(255,255,255,.2);
-      letter-spacing: .02em;
+      box-shadow: var(--shadow-md);
     }
-    .btn-admin::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.15), transparent);
-      transition: left .5s;
+    .btn-admin:hover {
+      background: var(--ink2);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+      color: #fff;
     }
-    .btn-admin:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(245,158,11,.45), inset 0 1px 0 rgba(255,255,255,.2); }
-    .btn-admin:hover::before { left: 100%; }
-    .btn-admin:active { transform: translateY(0); }
     .btn-admin.loading { opacity: .75; pointer-events: none; }
 
     .btn-spinner {
@@ -649,8 +617,8 @@
       margin-top: .9rem;
       margin-bottom: 1.5rem;
       padding: .65rem .85rem;
-      background: rgba(255,255,255,.02);
-      border: 1px solid rgba(255,255,255,.05);
+      background: var(--bg2);
+      border: 1px solid var(--border);
       border-radius: 8px;
       font-size: .7rem;
     }
@@ -660,20 +628,22 @@
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background: rgba(255,255,255,.1);
+      background: var(--border2);
       transition: background .3s;
     }
-    .a-dot.used { background: var(--danger); box-shadow: 0 0 4px rgba(239,68,68,.5); }
+    .a-dot.used { background: #dc2626; box-shadow: 0 0 4px rgba(220,38,38,.4); }
     .attempts-right {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--ff-mono);
       font-size: .62rem;
-      color: rgba(255,255,255,.15);
+      color: var(--faint);
     }
 
     /* Footer card */
     .card-foot {
       padding: 1.25rem 2.25rem;
       margin-top: .5rem;
+      background: var(--surface2);
+      border-top: 1px solid var(--border);
     }
 
     .back-link {
@@ -682,26 +652,26 @@
       justify-content: center;
       gap: .5rem;
       padding: .7rem;
-      background: rgba(255,255,255,.03);
-      border: 1px solid rgba(255,255,255,.06);
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 10px;
-      color: var(--muted);
+      color: var(--text2);
       font-size: .8rem;
       text-decoration: none;
       transition: all .2s;
       margin-bottom: 1rem;
     }
-    .back-link:hover { background: rgba(255,255,255,.07); color: rgba(255,255,255,.75); border-color: rgba(255,255,255,.1); }
+    .back-link:hover { background: var(--bg2); color: var(--ink); border-color: var(--border2); text-decoration: none; }
 
     .card-legal {
       text-align: center;
       font-size: .65rem;
-      color: rgba(255,255,255,.15);
-      font-family: 'JetBrains Mono', monospace;
+      color: var(--muted);
+      font-family: var(--ff-mono);
       line-height: 1.8;
     }
-    .card-legal a { color: rgba(193,0,122,.4); text-decoration: none; }
-    .card-legal a:hover { color: rgba(193,0,122,.7); }
+    .card-legal a { color: var(--rose); text-decoration: none; }
+    .card-legal a:hover { text-decoration: underline; }
 
     /* ════ RESPONSIVE ════ */
     @media (max-width: 1100px) {
@@ -717,10 +687,6 @@
   </style>
 </head>
 <body>
-
-<!-- Canvas particules -->
-<canvas id="bgCanvas"></canvas>
-<div class="scanlines"></div>
 
 <div class="page">
 
@@ -768,19 +734,15 @@
   <!-- ════ CENTRE — CARD LOGIN ════ -->
   <div class="login-card">
 
-    <!-- Barre couleur top -->
     <div class="card-progress-bar"></div>
 
-    <!-- Header -->
     <div class="card-head">
 
-      <!-- Couronne admin -->
       <div class="admin-crown">
         <div class="crown-icon"><i class="fas fa-crown"></i></div>
         <div class="crown-label">Admin</div>
       </div>
 
-      <!-- Avatar avec anneau rotatif -->
       <div class="av-ring">
         <div class="av-outer">
           <div class="av-inner">
@@ -802,7 +764,6 @@
 
     <div class="card-divider"></div>
 
-    <!-- Formulaire -->
     <div class="card-form">
 
       {% with messages = get_flashed_messages(with_categories=true) %}
@@ -819,7 +780,6 @@
 
       <form method="POST" id="loginForm" autocomplete="off">
 
-        <!-- Identifiant -->
         <div class="f-group">
           <div class="f-label">
             Identifiant administrateur
@@ -839,11 +799,10 @@
           </div>
         </div>
 
-        <!-- Mot de passe -->
         <div class="f-group">
           <div class="f-label">
             Clé d'accès sécurisée
-            <span class="f-label-badge" style="background:rgba(245,158,11,.1);color:#f59e0b;border-color:rgba(245,158,11,.2);">CONFIDENTIEL</span>
+            <span class="f-label-badge" style="background:var(--gold-l);color:var(--gold);border-color:rgba(176,141,87,.2);">CONFIDENTIEL</span>
           </div>
           <div class="f-wrap">
             <i class="fas fa-key f-icon admin-icon"></i>
@@ -872,7 +831,6 @@
           </div>
         </div>
 
-        <!-- Options -->
         <div class="f-options">
           <label class="f-check-label">
             <input type="checkbox" name="remember" id="remember">
@@ -882,7 +840,6 @@
           <a href="#" class="f-forgot">Clé oubliée ?</a>
         </div>
 
-        <!-- Bouton admin doré -->
         <button type="submit" class="btn-admin" id="submitBtn">
           <div class="btn-spinner"></div>
           <span class="btn-text">
@@ -891,10 +848,9 @@
           </span>
         </button>
 
-        <!-- Tentatives -->
         <div class="attempts-strip">
           <div class="attempts-left">
-            <i class="fas fa-shield-halved" style="color:rgba(239,68,68,.5);"></i>
+            <i class="fas fa-shield-halved" style="color:#dc2626;"></i>
             <span>Tentatives restantes :</span>
             <div class="attempts-dots" id="aDots">
               <div class="a-dot"></div>
@@ -910,7 +866,6 @@
       </form>
     </div>
 
-    <!-- Footer -->
     <div class="card-foot">
       <a href="{{ url_for('chatbot') }}" class="back-link">
         <i class="fas fa-arrow-left"></i> Retour à l'interface chatbot
@@ -918,7 +873,7 @@
       <div class="card-legal">
         Accès strictement réservé aux administrateurs ML2C CONSEIL<br>
         Toute tentative non autorisée est enregistrée et tracée<br>
-        <a href="#">Politique de sécurité</a> · <a href="#">RGPD</a> · © 2025 ML2C CONSEIL
+        <a href="#">Politique de sécurité</a> · <a href="#">RGPD</a> · © 2026 ML2C CONSEIL
       </div>
     </div>
 
@@ -927,7 +882,6 @@
   <!-- ════ DROITE ════ -->
   <div class="right-panel">
 
-    <!-- Badge admin niveau -->
     <div class="admin-badge-box">
       <div class="admin-badge-icon"><i class="fas fa-crown"></i></div>
       <div class="admin-badge-text">
@@ -936,7 +890,6 @@
       </div>
     </div>
 
-    <!-- Terminal log -->
     <div class="sys-log">
       <div class="sys-log-head">
         <div class="sys-dot red"></div>
@@ -961,80 +914,6 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-/* ════════════════════════════════
-   CANVAS PARTICULES
-════════════════════════════════ */
-const canvas = document.getElementById('bgCanvas');
-const ctx = canvas.getContext('2d');
-let W, H, particles = [], lines = [];
-
-function resizeCanvas() {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
-class Particle {
-  constructor() { this.reset(); }
-  reset() {
-    this.x = Math.random() * W;
-    this.y = Math.random() * H;
-    this.r = Math.random() * 1.5 + .3;
-    this.vx = (Math.random() - .5) * .3;
-    this.vy = (Math.random() - .5) * .3;
-    this.alpha = Math.random() * .4 + .1;
-    this.color = Math.random() > .5
-      ? `rgba(193,0,122,${this.alpha})`
-      : Math.random() > .5
-        ? `rgba(79,166,149,${this.alpha})`
-        : `rgba(245,158,11,${this.alpha * .6})`;
-  }
-  update() {
-    this.x += this.vx;
-    this.y += this.vy;
-    if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
-  }
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-    ctx.fillStyle = this.color;
-    ctx.fill();
-  }
-}
-
-for (let i = 0; i < 80; i++) particles.push(new Particle());
-
-function drawConnections() {
-  for (let i = 0; i < particles.length; i++) {
-    for (let j = i + 1; j < particles.length; j++) {
-      const dx = particles[i].x - particles[j].x;
-      const dy = particles[i].y - particles[j].y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 100) {
-        const alpha = (1 - dist / 100) * .08;
-        ctx.beginPath();
-        ctx.moveTo(particles[i].x, particles[i].y);
-        ctx.lineTo(particles[j].x, particles[j].y);
-        ctx.strokeStyle = `rgba(193,0,122,${alpha})`;
-        ctx.lineWidth = .5;
-        ctx.stroke();
-      }
-    }
-  }
-}
-
-function animCanvas() {
-  ctx.clearRect(0, 0, W, H);
-  particles.forEach(p => { p.update(); p.draw(); });
-  drawConnections();
-  requestAnimationFrame(animCanvas);
-}
-animCanvas();
-
-/* ════════════════════════════════
-   SESSION ID DYNAMIQUE
-════════════════════════════════ */
 function genSessionId() {
   const chars = 'ABCDEF0123456789';
   let id = '';
@@ -1043,9 +922,6 @@ function genSessionId() {
 }
 genSessionId();
 
-/* ════════════════════════════════
-   TOGGLE MOT DE PASSE
-════════════════════════════════ */
 function toggleEye() {
   const inp = document.getElementById('password');
   const ico = document.getElementById('eyeIcon');
@@ -1053,9 +929,6 @@ function toggleEye() {
   else { inp.type = 'password'; ico.className = 'fas fa-eye'; }
 }
 
-/* ════════════════════════════════
-   FORCE MOT DE PASSE
-════════════════════════════════ */
 function updateStrength(val) {
   const bars = ['sb1','sb2','sb3','sb4'].map(id => document.getElementById(id));
   const txt = document.getElementById('strengthText');
@@ -1070,21 +943,15 @@ function updateStrength(val) {
   const labels = ['', 'Faible', 'Moyen', 'Fort', 'Très fort'];
   for (let i = 0; i < score; i++) bars[i].classList.add(cls);
   txt.textContent = labels[score] || '';
-  txt.style.color = cls === 'w' ? '#ef4444' : cls === 'm' ? '#f59e0b' : '#22c55e';
+  txt.style.color = cls === 'w' ? '#dc2626' : cls === 'm' ? '#b08d57' : '#22c55e';
 }
 
-/* ════════════════════════════════
-   TENTATIVES
-════════════════════════════════ */
 function updateAttempts(n) {
   document.querySelectorAll('.a-dot').forEach((d, i) => d.classList.toggle('used', i < n));
 }
 const saved = parseInt(localStorage.getItem('ml2cAdminAttempts') || '0');
 if (saved > 0) updateAttempts(saved);
 
-/* ════════════════════════════════
-   SUBMIT
-════════════════════════════════ */
 document.getElementById('loginForm').addEventListener('submit', function() {
   const btn = document.getElementById('submitBtn');
   btn.classList.add('loading');
@@ -1094,13 +961,9 @@ document.getElementById('loginForm').addEventListener('submit', function() {
   addLog('warn', 'Tentative d\'authentification #' + n + '...');
 });
 
-/* Succès → reset */
 const successFlash = document.querySelector('.flash-success');
 if (successFlash) { localStorage.removeItem('ml2cAdminAttempts'); updateAttempts(0); }
 
-/* ════════════════════════════════
-   LOG DYNAMIQUE
-════════════════════════════════ */
 const logTypes = [
   { cls: 'log-ok',   symbol: '✓', msgs: ['Vérification SSL OK', 'Module sécurité actif', 'Heartbeat DB OK'] },
   { cls: 'log-info', symbol: 'i', msgs: ['Surveillance des accès...', 'Audit en cours...', 'Cache actualisé'] },
@@ -1130,17 +993,7 @@ setInterval(() => {
   addLog(type, msg);
 }, 3500);
 
-/* ════════════════════════════════
-   FOCUS AUTO + ANIMATIONS
-════════════════════════════════ */
 document.getElementById('username').focus();
-
-document.querySelectorAll('.f-group').forEach((el, i) => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(10px)';
-  el.style.transition = 'opacity .4s ease ' + (i * 80 + 100) + 'ms, transform .4s ease ' + (i * 80 + 100) + 'ms';
-  setTimeout(() => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }, 10);
-});
 </script>
 
 </body>

@@ -31,7 +31,7 @@
 
     body { background: var(--bg); font-family: var(--ff-body); color: var(--text); overflow-x: hidden; }
 
-    /* ══ TEXTURE FOND CLIENT ══ */
+    /* ══ TEXTURE FOND GLOBAL ══ */
     body::before{
       content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
       background-image:
@@ -41,41 +41,36 @@
     }
 
     /* ═══════════════════════════════════════════
-        HERO — CHARTE GRAPHIQUE CABINET
+        HERO — COULEUR CHAUDE DE LA CHARTE (FOND CLAIR)
     ═══════════════════════════════════════════ */
     .hero {
       position: relative;
       min-height: 340px;
-      background: var(--ink);
+      background: linear-gradient(135deg, var(--bg2) 0%, var(--bg3) 100%);
+      border-bottom: 1px solid var(--border);
       overflow: hidden;
       display: flex; align-items: flex-end;
     }
 
-    /* Canvas réseau neuronal */
-    #netCanvas { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+    /* Canvas réseau neuronal discret sur fond clair */
+    #netCanvas { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.45; }
 
-    /* Couches d'ambiance */
+    /* Couches d'ambiance douces */
     .hero-amb {
       position: absolute; inset: 0; z-index: 1; pointer-events: none;
       background:
-        radial-gradient(ellipse 60% 70% at 85% 20%, rgba(193,0,122,.25) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 50% at 10% 90%, rgba(79,166,149,.15) 0%, transparent 55%),
-        radial-gradient(ellipse 30% 40% at 55% 60%, rgba(176,141,87,.1) 0%, transparent 50%);
+        radial-gradient(ellipse 60% 70% at 85% 20%, rgba(193,0,122,.08) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 50% at 10% 90%, rgba(79,166,149,.08) 0%, transparent 55%),
+        radial-gradient(ellipse 30% 40% at 55% 60%, rgba(176,141,87,.07) 0%, transparent 50%);
     }
 
-    /* Grille de fond */
+    /* Grille de fond subtile */
     .hero-grid {
       position: absolute; inset: 0; z-index: 1; pointer-events: none;
       background-image:
-        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+        linear-gradient(rgba(26,20,10,.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26,20,10,.02) 1px, transparent 1px);
       background-size: 40px 40px;
-    }
-
-    /* Scanlines subtiles */
-    .hero-scan {
-      position: absolute; inset: 0; z-index: 2; pointer-events: none;
-      background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,.04) 3px, rgba(0,0,0,.04) 4px);
     }
 
     /* Barre chromatique top */
@@ -87,7 +82,7 @@
     }
     @keyframes barShift { 0%{background-position:0%} 100%{background-position:400%} }
 
-    /* Vague bas */
+    /* Vague bas pour raccorder au contenu */
     .hero-wave {
       position: absolute; bottom: -1px; left: 0; right: 0; z-index: 5; pointer-events: none;
     }
@@ -120,35 +115,35 @@
       border: 1px solid rgba(176,141,87,.3);
       border-radius: 30px;
       font-size: .65rem; font-weight: 700; letter-spacing: .12em;
-      text-transform: uppercase; color: var(--gold);
-      box-shadow: 0 0 20px rgba(176,141,87,.15), inset 0 1px 0 rgba(255,255,255,.08);
+      text-transform: uppercase; color: var(--gold-d);
+      box-shadow: 0 4px 12px rgba(176,141,87,.12);
     }
     .pre-badge .crown { font-size: .8rem; animation: crownBob 3s ease-in-out infinite; }
     @keyframes crownBob { 0%,100%{transform:translateY(0) rotate(0)} 40%{transform:translateY(-3px) rotate(-8deg)} 60%{transform:translateY(-2px) rotate(4deg)} }
-    .pre-badge .niv { background: rgba(176,141,87,.25); border-radius: 6px; padding: .08rem .4rem; font-size: .55rem; margin-left: .2rem; }
+    .pre-badge .niv { background: rgba(176,141,87,.2); border-radius: 6px; padding: .08rem .4rem; font-size: .55rem; margin-left: .2rem; }
 
-    .pre-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(255,255,255,.12), transparent); }
+    .pre-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(26,20,10,.15), transparent); }
 
     .hero-h1 {
       font-family: var(--ff-head);
       font-size: clamp(2.4rem, 5vw, 4rem);
       font-weight: 700;
       line-height: 1.05;
-      color: #fff;
+      color: var(--text);
       margin-bottom: .75rem;
       letter-spacing: -.01em;
     }
     .hero-h1 .accent-gold { color: var(--gold); font-style: italic; }
-    .hero-h1 .accent-rose { color: var(--rose-l); }
+    .hero-h1 .accent-rose { color: var(--rose); }
 
     .hero-sub {
       font-family: var(--ff-mono);
-      font-size: .72rem; font-weight: 400;
-      color: rgba(255,255,255,.5);
+      font-size: .72rem; font-weight: 500;
+      color: var(--muted);
       margin-bottom: 1.5rem;
       display: flex; align-items: center; gap: .6rem;
     }
-    .online-pip { width: 7px; height: 7px; border-radius: 50%; background: var(--success); box-shadow: 0 0 10px rgba(34,197,94,.7); animation: pipPulse 2s infinite; }
+    .online-pip { width: 7px; height: 7px; border-radius: 50%; background: var(--success); box-shadow: 0 0 10px rgba(34,197,94,.6); animation: pipPulse 2s infinite; }
     @keyframes pipPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.8)} }
 
     .hero-chips { display: flex; gap: .5rem; flex-wrap: wrap; }
@@ -156,13 +151,12 @@
       display: inline-flex; align-items: center; gap: .3rem;
       padding: .25rem .75rem; border-radius: 20px;
       font-size: .65rem; font-weight: 600; letter-spacing: .04em;
-      backdrop-filter: blur(8px);
     }
-    .hchip.gold  { background: rgba(176,141,87,.15); border: 1px solid rgba(176,141,87,.3); color: #f5eedf; }
-    .hchip.green { background: rgba(34,197,94,.12);  border: 1px solid rgba(34,197,94,.25); color: #86efac; }
-    .hchip.rose  { background: rgba(193,0,122,.2);   border: 1px solid rgba(193,0,122,.35); color: #fbcfe8; }
-    .hchip.blue  { background: rgba(79,166,149,.15); border: 1px solid rgba(79,166,149,.3); color: #99f6e4; }
-    .hchip.mono  { background: rgba(255,255,255,.06);border: 1px solid rgba(255,255,255,.09);color: rgba(255,255,255,.6); font-family: var(--ff-mono); }
+    .hchip.gold  { background: var(--gold-l); border: 1px solid rgba(176,141,87,.3); color: var(--gold-d); }
+    .hchip.green { background: var(--turq-xl); border: 1px solid rgba(79,166,149,.3); color: var(--turq-d); }
+    .hchip.rose  { background: var(--rose-xl); border: 1px solid rgba(193,0,122,.3); color: var(--rose); }
+    .hchip.blue  { background: var(--bg3); border: 1px solid var(--border2); color: var(--text2); }
+    .hchip.mono  { background: var(--surface); border: 1px solid var(--border); color: var(--muted); font-family: var(--ff-mono); }
 
     /* Côté droit hero — Profile card */
     .hero-profile {
@@ -171,13 +165,12 @@
     }
 
     .profile-card {
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.12);
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 20px;
       padding: 1.25rem 1.5rem;
       display: flex; align-items: center; gap: 1.25rem;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 8px 32px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.1);
+      box-shadow: var(--shadow-md);
       min-width: 240px;
       animation: cardSlideIn .6s .2s cubic-bezier(.34,1.2,.64,1) both;
     }
@@ -189,12 +182,12 @@
       background: conic-gradient(var(--rose), var(--gold), var(--turq), var(--gold), var(--rose));
       padding: 2.5px;
       animation: ringRot 5s linear infinite;
-      box-shadow: 0 0 20px rgba(193,0,122,.35);
+      box-shadow: 0 0 16px rgba(193,0,122,.2);
     }
     @keyframes ringRot { to{transform:rotate(360deg)} }
     .p-av-inner {
       width: 100%; height: 100%; border-radius: 50%;
-      background: var(--ink3);
+      background: var(--surface2);
       overflow: hidden;
       display: flex; align-items: flex-end; justify-content: center;
     }
@@ -203,35 +196,34 @@
       position: absolute; top: -8px; right: -8px;
       width: 22px; height: 22px; border-radius: 50%;
       background: linear-gradient(135deg, var(--gold), var(--gold-d));
-      border: 2px solid var(--ink);
+      border: 2px solid #fff;
       display: flex; align-items: center; justify-content: center;
       font-size: .6rem; color: #fff;
-      box-shadow: 0 0 10px rgba(176,141,87,.6);
-      animation: crownGlow 2s infinite;
+      box-shadow: 0 0 8px rgba(176,141,87,.5);
     }
-    @keyframes crownGlow { 0%,100%{box-shadow:0 0 10px rgba(176,141,87,.6)} 50%{box-shadow:0 0 18px rgba(176,141,87,.9)} }
 
     .p-info { flex: 1; }
-    .p-name { font-size: .95rem; font-weight: 700; color: #fff; margin-bottom: .2rem; }
+    .p-name { font-size: .95rem; font-weight: 700; color: var(--text); margin-bottom: .2rem; }
     .p-role {
       font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
       color: var(--gold); display: flex; align-items: center; gap: .3rem;
     }
-    .p-perms { font-size: .7rem; color: rgba(255,255,255,.4); margin-top: .3rem; font-family: var(--ff-mono); }
+    .p-perms { font-size: .7rem; color: var(--muted); margin-top: .3rem; font-family: var(--ff-mono); }
 
     .session-box {
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.08);
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 12px;
       padding: .6rem 1rem;
       font-family: var(--ff-mono);
       font-size: .68rem;
-      color: rgba(255,255,255,.4);
+      color: var(--muted);
       display: flex; align-items: center; gap: .75rem;
       min-width: 240px;
+      box-shadow: var(--shadow-sm);
       animation: cardSlideIn .6s .35s cubic-bezier(.34,1.2,.64,1) both;
     }
-    .session-val { color: rgba(255,255,255,.85); font-weight: 500; }
+    .session-val { color: var(--text); font-weight: 600; }
     .session-val.warn { color: var(--danger); }
 
     /* ═══════════════════════════════════════════
@@ -499,7 +491,6 @@
     .az-btn-ico { font-size:1.4rem; color: rgba(255,255,255,0.35); transition:all .25s; }
     .az-btn-lbl { line-height:1.3; }
 
-    /* Bouton spécial log de sécurité aux accents dorés clairs */
     .az-btn.highlight-az {
       background: rgba(176,141,87,0.07);
       border: 1px solid rgba(176,141,87,0.25);
@@ -639,7 +630,6 @@
   <canvas id="netCanvas"></canvas>
   <div class="hero-amb"></div>
   <div class="hero-grid"></div>
-  <div class="hero-scan"></div>
   <div class="hero-bar"></div>
 
   <div class="hero-content container">
@@ -694,7 +684,7 @@
         </div>
 
         <div class="session-box">
-          <i class="fas fa-hourglass-half" style="opacity:.5;"></i>
+          <i class="fas fa-hourglass-half" style="opacity:.6;"></i>
           Session expire&nbsp;:&nbsp;<span class="session-val" id="sesCd">29:59</span>
           &nbsp;·&nbsp;ID:&nbsp;<span class="session-val" id="sesId">----</span>
         </div>
@@ -831,7 +821,7 @@
       </a>
     </div>
 
-    <!-- Zone admin only — Harmonisée Charte ML2C -->
+    <!-- Zone admin exclusif -->
     <div class="s-head">
       <div class="s-label"><i class="fas fa-crown"></i> Zone administrateur exclusif</div>
     </div>
@@ -960,7 +950,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-/* ════════ CANVAS RÉSEAU ════════ */
+/* ════════ CANVAS RÉSEAU ADAPTÉ FOND CLAIR ════════ */
 const nc = document.getElementById('netCanvas');
 const nctx = nc.getContext('2d');
 let NW, NH, pts = [];
@@ -980,11 +970,11 @@ class Pt {
   reset() {
     this.x  = Math.random() * NW;
     this.y  = Math.random() * NH;
-    this.r  = Math.random() * 1.4 + .3;
-    this.vx = (Math.random() - .5) * .28;
-    this.vy = (Math.random() - .5) * .28;
+    this.r  = Math.random() * 1.5 + .4;
+    this.vx = (Math.random() - .5) * .25;
+    this.vy = (Math.random() - .5) * .25;
     const c = COLORS[Math.floor(Math.random() * COLORS.length)];
-    this.a  = Math.random() * .35 + .08;
+    this.a  = Math.random() * .3 + .1;
     this.rgb = c;
   }
   tick() {
@@ -998,7 +988,7 @@ class Pt {
     nctx.fill();
   }
 }
-for (let i=0;i<90;i++) pts.push(new Pt());
+for (let i=0;i<75;i++) pts.push(new Pt());
 
 function drawNet() {
   nctx.clearRect(0,0,NW,NH);
@@ -1006,12 +996,12 @@ function drawNet() {
     for (let j=i+1;j<pts.length;j++) {
       const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y;
       const d=Math.sqrt(dx*dx+dy*dy);
-      if(d<100){
+      if(d<110){
         nctx.beginPath();
         nctx.moveTo(pts[i].x,pts[i].y);
         nctx.lineTo(pts[j].x,pts[j].y);
-        nctx.strokeStyle=`rgba(193,0,122,${(1-d/100)*.06})`;
-        nctx.lineWidth=.5; nctx.stroke();
+        nctx.strokeStyle=`rgba(176,141,87,${(1-d/110)*.08})`;
+        nctx.lineWidth=.6; nctx.stroke();
       }
     }
     pts[i].tick(); pts[i].draw();

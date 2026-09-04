@@ -36,7 +36,7 @@
       color: var(--text);
     }
 
-    /* ══ CANVAS ANIMÉ (VOS ANIMATIONS D'ORIGINE) ══ */
+    /* ══ CANVAS ANIMÉ ══ */
     #bgCanvas {
       position: fixed;
       inset: 0;
@@ -383,11 +383,11 @@
     .f-forgot { font-size: .75rem; color: var(--rose); text-decoration: none; }
     .f-forgot:hover { text-decoration: underline; }
 
-    /* Bouton de validation */
+    /* BOUTON ADMIN AUX COULEURS DE LA CHARTE (ROSE ML2C) */
     .btn-admin {
       width: 100%;
       padding: .95rem;
-      background: var(--ink);
+      background: var(--rose);
       color: #fff;
       border: none;
       border-radius: 12px;
@@ -400,12 +400,12 @@
       justify-content: center;
       gap: .6rem;
       transition: all .25s;
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 4px 14px rgba(193,0,122,.25);
     }
     .btn-admin:hover {
-      background: var(--ink2);
+      background: var(--rose-d);
       transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
+      box-shadow: 0 8px 20px rgba(193,0,122,.35);
       color: #fff;
     }
     .btn-admin.loading { opacity: .75; pointer-events: none; }
@@ -648,7 +648,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-/* ════ CANVAS ANIMÉ (VOS PARTICULES) ════ */
+/* ════ CANVAS ANIMÉ ════ */
 const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
 let W, H, particles = [];

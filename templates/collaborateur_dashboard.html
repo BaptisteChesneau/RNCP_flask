@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,13 +16,13 @@
       font-family: 'DM Sans', sans-serif;
     }
 
-    /* Barre de navigation supérieure */
+    /* Top navigation bar */
     .admin-navbar {
       background: #1a202c;
       border-bottom: 3px solid #b81473;
     }
 
-    /* Cartes d'indicateurs KPIs */
+    /* KPI indicator cards */
     .card-kpi {
       border: none;
       border-radius: 12px;
@@ -48,7 +48,7 @@
       font-size: 1.35rem;
     }
 
-    /* Cartes de sections */
+    /* Section cards */
     .dashboard-card {
       background: #ffffff;
       border-radius: 12px;
@@ -66,7 +66,7 @@
       justify-content: space-between;
     }
 
-    /* Badges de statuts */
+    /* Status badges */
     .badge-subtle-success {
       background-color: #c6f6d5;
       color: #22543d;
@@ -85,7 +85,7 @@
       font-weight: 600;
     }
 
-    /* Actions & Boutons */
+    /* Actions & Buttons */
     .btn-custom-action {
       background: linear-gradient(135deg, #b81473, #8c0f57);
       color: #ffffff;
@@ -118,12 +118,12 @@
 </head>
 <body>
 
-<!-- Navbar Collaborateur -->
+<!-- Collaborator Navbar -->
 <nav class="navbar navbar-dark admin-navbar py-3">
   <div class="container-fluid px-4">
     <a class="navbar-brand font-weight-bold d-flex align-items-center" href="#">
       <i class="fas fa-chart-line text-primary mr-2" style="color: #b81473 !important;"></i>
-      <span>ML2C CONSEIL — Espace Collaborateur</span>
+      <span>ML2C CONSEIL Espace Collaborateur</span>
     </a>
     
     <div class="d-flex align-items-center text-light">
@@ -148,7 +148,7 @@
 
 <main class="container-fluid px-4 py-4">
 
-  <!-- Messages Flash -->
+  <!-- Flash Messages -->
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
       {% for category, message in messages %}
@@ -162,7 +162,7 @@
     {% endif %}
   {% endwith %}
 
-  <!-- En-tête du Dashboard -->
+  <!-- Dashboard Header -->
   <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
     <div>
       <h3 class="font-weight-bold mb-1" style="color: #1a202c;">Espace de Gestion</h3>
@@ -178,7 +178,7 @@
     </div>
   </div>
 
-  <!-- Cartes d'indicateurs KPIs -->
+  <!-- KPI Indicator Cards -->
   <div class="row mb-4">
     <div class="col-xl-3 col-md-6 mb-3">
       <div class="card card-kpi p-3 d-flex flex-row align-items-center justify-content-between">
@@ -222,7 +222,7 @@
   </div>
 
   <div class="row">
-    <!-- Colonne 1 : Liste des Clients & Comptes -->
+    <!-- Column 1: Client & Account List -->
     <div class="col-lg-8 mb-4">
       <div class="dashboard-card">
         <div class="dashboard-card-header">
@@ -293,7 +293,7 @@
       </div>
     </div>
 
-    <!-- Colonne 2 : Derniers Messages du Chat Support -->
+    <!-- Column 2: Latest Support Chat Messages -->
     <div class="col-lg-4">
       <div class="dashboard-card p-3">
         <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">

@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Gestion du Header lors du Scroll
+  // Header scroll handling
   const hdr = document.getElementById('mainHeader');
   if (hdr) {
     window.addEventListener('scroll', () => {
@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Menu Mobile (Burger)
+  // Mobile Menu (Burger)
   const burger = document.getElementById('burgerBtn');
   const nav = document.getElementById('mainNav');
   if (burger && nav) {
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Animation à l'apparition (Intersection Observer)
+  // Entrance animation (Intersection Observer)
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {

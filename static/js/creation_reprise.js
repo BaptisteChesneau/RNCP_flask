@@ -1,4 +1,4 @@
-// Gestion du scroll pour le header
+// Header scroll handling
 const hdr = document.getElementById('mainHeader');
 if (hdr) {
   window.addEventListener('scroll', () => {
@@ -6,7 +6,7 @@ if (hdr) {
   });
 }
 
-// Menu Mobile (Burger)
+// Mobile Menu (Burger)
 const burger = document.getElementById('burgerBtn');
 const nav = document.getElementById('mainNav');
 if (burger && nav) {
@@ -16,7 +16,7 @@ if (burger && nav) {
   });
 }
 
-// Animations au scroll (Intersection Observer)
+// Scroll animations (Intersection Observer)
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {

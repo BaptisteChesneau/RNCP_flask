@@ -113,36 +113,54 @@ def api_messages_passerelle():
                 .all()
             )
 
+    # --------------------------------------------------
+    # ⚡ OPTIMISATION N+1 : Pré-chargement des entités
+    # --------------------------------------------------
+    exp_ids = {m.expediteur_id for m in messages if m.expediteur_id}
+
+    # Récupération en une seule requête SQL par table
+    collabs_map = (
+        {c.id: c for c in Collaborateur.query.filter(Collaborateur.id.in_(exp_ids)).all()}
+        if exp_ids else {}
+    )
+    users_map = (
+        {u.id: u for u in Utilisateur.query.filter(Utilisateur.id.in_(exp_ids)).all()}
+        if exp_ids else {}
+    )
+
     payload = []
     for m in messages:
-        collab_exp = Collaborateur.query.get(m.expediteur_id)
-
         if is_collab:
-            is_me = m.expediteur_id == collab_id
+            is_me = (m.expediteur_id == collab_id)
             if is_me:
-                collab_obj = Collaborateur.query.get(collab_id)
+                collab_obj = collabs_map.get(collab_id)
                 collab_nom = (
                     getattr(collab_obj, "prenom", None)
                     or getattr(collab_obj, "nom", None)
                     or getattr(collab_obj, "email", "Support")
+                    if collab_obj else "Support"
                 )
                 exp_nom = f"{collab_nom} (ML2C)"
                 role_type = "collab"
             else:
-                client_exp = Utilisateur.query.get(m.expediteur_id)
+                client_exp = users_map.get(m.expediteur_id)
                 client_nom = (
                     getattr(client_exp, "prenom", None)
                     or getattr(client_exp, "email", "Client")
+                    if client_exp else "Client"
                 )
                 exp_nom = client_nom
                 role_type = "client"
         else:
-            is_me = (m.expediteur_id == utilisateur_id) and (not collab_exp)
+            collab_exp = collabs_map.get(m.expediteur_id)
+            is_me = (m.expediteur_id == utilisateur_id) and not collab_exp
+            
             if is_me:
-                client_exp = Utilisateur.query.get(utilisateur_id)
+                client_exp = users_map.get(utilisateur_id)
                 exp_nom = (
                     getattr(client_exp, "prenom", None)
                     or getattr(client_exp, "email", "Moi")
+                    if client_exp else "Moi"
                 )
                 role_type = "client"
             else:
@@ -150,6 +168,7 @@ def api_messages_passerelle():
                     getattr(collab_exp, "prenom", None)
                     or getattr(collab_exp, "nom", None)
                     or getattr(collab_exp, "email", None)
+                    if collab_exp else None
                 )
                 exp_nom = (
                     f"{collab_nom} (ML2C)" if collab_nom else "Support ML2C"

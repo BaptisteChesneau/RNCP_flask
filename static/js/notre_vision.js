@@ -1,32 +1,39 @@
-// Gestion du style du header au scroll
-window.addEventListener('scroll', () => {
-  document.getElementById('mainHeader').classList.toggle('scrolled', window.scrollY > 60);
-});
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Header on scroll with safety check and passive listener
+  const hdr = document.getElementById('mainHeader');
+  if (hdr) {
+    window.addEventListener('scroll', () => {
+      hdr.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+  }
 
-// Gestion de l'ouverture du menu burger
-document.getElementById('burgerBtn').addEventListener('click', function() {
-  document.getElementById('mainNav').classList.toggle('open');
-  this.classList.toggle('active');
-});
+  // 2. Burger menu with safety check and accessibility
+  const burger = document.getElementById('burgerBtn');
+  const nav = document.getElementById('mainNav');
+  if (burger && nav) {
+    burger.addEventListener('click', function () {
+      const isOpen = nav.classList.toggle('open');
+      this.classList.toggle('active', isOpen);
+      this.setAttribute('aria-expanded', isOpen);
+    });
+  }
 
-// Animation d'apparition (Intersection Observer) pour les cartes et éléments
-const observerOptions = {
-  threshold: 0.08
-};
+  // 3. Intersection Observer based on .visible CSS class (data-anim)
+  const animElements = document.querySelectorAll('.vis-pilier, .vis-ia-card, .vis-diff, [data-anim]');
 
-const appearanceObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.style.opacity = '1';
-      entry.target.style.transform = 'translateY(0)';
-    }
-  });
-}, observerOptions);
+  if ('IntersectionObserver' in window && animElements.length > 0) {
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target); // Release memory once the element has appeared
+        }
+      });
+    }, { threshold: 0.08 });
 
-// Initialisation des styles de base et observation des éléments de la page
-document.querySelectorAll('.vis-pilier, .vis-ia-card, .vis-diff').forEach(el => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(16px)';
-  el.style.transition = 'opacity .45s ease, transform .45s ease';
-  appearanceObserver.observe(el);
+    animElements.forEach(el => observer.observe(el));
+  } else {
+    // Fallback: if observer is not supported, display directly
+    animElements.forEach(el => el.classList.add('visible'));
+  }
 });

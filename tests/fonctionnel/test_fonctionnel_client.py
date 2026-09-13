@@ -3,26 +3,26 @@ from app import app as flask_app
 
 @pytest.fixture
 def client():
-    """Fixture réutilisable pour le client de test Flask."""
+    """Reusable fixture for the Flask test client."""
     flask_app.config['TESTING'] = True
     flask_app.config['WTF_CSRF_ENABLED'] = False
     with flask_app.test_client() as client:
         yield client
 
 def test_acces_espace_client_non_connecte(client):
-    """Vérifie qu'un utilisateur non connecté est redirigé vers la page de login."""
+    """Verify that an unauthenticated user is redirected to the login page."""
     response = client.get('/compte-client', follow_redirects=True)
     
     assert response.status_code == 200
     assert b"connexion" in response.data.lower() or b"connecter" in response.data.lower()
 
 def test_soumission_formulaire_devis(client):
-    """Vérifie le bon fonctionnement de la soumission du formulaire de devis."""
-    # 1. Simuler un utilisateur connecté en session
+    """Verify that the quote request form submission functions correctly."""
+    # 1. Simulate an authenticated user session
     with client.session_transaction() as sess:
         sess["utilisateur_id"] = 1
 
-    # 2. Envoyer le formulaire en POST sur /resume-devis avec les bons champs
+    # 2. Submit POST form data to /resume-devis with valid fields
     response = client.post('/resume-devis', data={
         'secteur': 'Informatique',
         'nom': 'ML2C_TEST',
@@ -32,5 +32,5 @@ def test_soumission_formulaire_devis(client):
         'heure_rdv': '10:00'
     }, follow_redirects=True)
     
-    # 3. Vérifier que la réponse renvoie un code 200 OK
+    # 3. Assert that the server returns a 200 OK status code
     assert response.status_code == 200

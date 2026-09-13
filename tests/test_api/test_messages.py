@@ -1,13 +1,13 @@
 import pytest
-from app import app as flask_app  # Import direct de l'instance Flask
+from app import app as flask_app  # Direct import of the Flask instance
 from extensions import db
 from models.message import MessageSupport
 
 @pytest.fixture
 def client():
-    """Fixture pour configurer l'application en mode test."""
+    """Fixture to configure the application in testing mode."""
     flask_app.config["TESTING"] = True
-    flask_app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"  # Base en mémoire
+    flask_app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"  # In-memory database
     
     with flask_app.test_client() as client:
         with flask_app.app_context():
@@ -16,16 +16,16 @@ def client():
             db.drop_all()
 
 def test_messages_non_autorise(client):
-    """Vérifie qu'un utilisateur non authentifié reçoit une erreur 403."""
+    """Verify that an unauthenticated user receives a 403 Forbidden error."""
     response = client.get("/api/messages")
     assert response.status_code == 403
     data = response.get_json()
     assert data["error"] == "Non autorisé"
 
 def test_envoi_message_contenu_vide(client):
-    """Vérifie qu'un message vide renvoie une erreur 400."""
+    """Verify that an empty message returns a 400 Bad Request error."""
     with client.session_transaction() as sess:
-        sess["utilisateur_id"] = 1  # Simulation utilisateur connecté
+        sess["utilisateur_id"] = 1  # Simulate authenticated user session
 
     response = client.post("/api/messages", json={
         "contenu": "   "
@@ -35,12 +35,12 @@ def test_envoi_message_contenu_vide(client):
     assert data["error"] == "Contenu vide"
 
 def test_envoi_et_recuperation_message(client):
-    """Vérifie l'envoi d'un message (POST) puis sa récupération (GET)."""
-    # 1. Connexion simulée
+    """Verify sending a message (POST) and retrieving it (GET)."""
+    # 1. Simulated login session
     with client.session_transaction() as sess:
         sess["utilisateur_id"] = 1
 
-    # 2. Envoi du message (POST)
+    # 2. Send message (POST)
     response_post = client.post("/api/messages", json={
         "contenu": "Bonjour, j'ai une question sur mon devis.",
         "destinataire_id": 2
@@ -51,7 +51,7 @@ def test_envoi_et_recuperation_message(client):
     assert res_data["status"] == "success"
     assert "message_id" in res_data
 
-    # 3. Récupération de l'historique (GET)
+    # 3. Retrieve history (GET)
     response_get = client.get("/api/messages")
     assert response_get.status_code == 200
     

@@ -7,7 +7,7 @@ class MessageSupport(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
 
-    # ⚠️ Vérifie ici : "utilisateur.id" (au singulier)
+    # ⚠️ Check here: “user.id” (singular)
     expediteur_id = db.Column(
         db.Integer, db.ForeignKey("utilisateur.id"), nullable=False
     )
@@ -19,7 +19,7 @@ class MessageSupport(db.Model):
     date_creation = db.Column(db.DateTime, default=datetime.utcnow)
     lu = db.Column(db.Boolean, default=False)
 
-    # Relations
+    # Relationships
     expediteur = db.relationship(
         "Utilisateur", foreign_keys=[expediteur_id], backref="messages_envoyes"
     )

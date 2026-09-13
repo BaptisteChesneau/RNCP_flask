@@ -1,30 +1,30 @@
 /* ============================================================
-   ML2C CONSEIL — styles.css — Refonte 2025
-   Charte : Rose #C1007A | Turquoise #4FA695 | Gris-bleu #5C666B
+   ML2C CONSEIL — styles.css — Redesign 2025
+   Palette: Pink #C1007A | Turquoise #4FA695 | Blue-grey #5C666B
    ============================================================ */
 
 /* ── Variables ── */
 :root {
-  --rose:       #C1007A;
-  --rose-dark:  #9a0062;
-  --rose-light: #fce4f3;
-  --turquoise:  #4FA695;
-  --turq-dark:  #3a7d70;
-  --gris:       #5C666B;
-  --gris-light: #f5f6f7;
-  --gris-dark:  #333333;
-  --white:      #ffffff;
-  --text:       #2d2d2d;
-  --text-muted: #6b7280;
-  --border:     #e5e7eb;
-  --shadow-sm:  0 2px 8px rgba(0,0,0,.08);
-  --shadow-md:  0 6px 24px rgba(0,0,0,.12);
-  --shadow-lg:  0 12px 40px rgba(0,0,0,.15);
-  --radius:     10px;
-  --radius-lg:  18px;
-  --font-head:  'Cormorant Garamond', Georgia, serif;
-  --font-body:  'DM Sans', 'Helvetica Neue', Arial, sans-serif;
-  --transition: all .25s ease;
+  --rose:        #C1007A;
+  --rose-dark:   #9a0062;
+  --rose-light:  #fce4f3;
+  --turquoise:   #4FA695;
+  --turq-dark:   #3a7d70;
+  --gris:        #5C666B;
+  --gris-light:  #f5f6f7;
+  --gris-dark:   #333333;
+  --white:       #ffffff;
+  --text:        #2d2d2d;
+  --text-muted:  #6b7280;
+  --border:      #e5e7eb;
+  --shadow-sm:   0 2px 8px rgba(0,0,0,.08);
+  --shadow-md:   0 6px 24px rgba(0,0,0,.12);
+  --shadow-lg:   0 12px 40px rgba(0,0,0,.15);
+  --radius:      10px;
+  --radius-lg:   18px;
+  --font-head:   'Cormorant Garamond', Georgia, serif;
+  --font-body:   'DM Sans', 'Helvetica Neue', Arial, sans-serif;
+  --transition:  all .25s ease;
   --adm-rose:        #C1007A;
   --adm-rose-dark:   #9a0062;
   --adm-rose-light:  #fce4f3;
@@ -58,7 +58,7 @@ a { color: inherit; text-decoration: none; transition: var(--transition); }
 img { max-width: 100%; display: block; }
 
 /* ════════════════════════════════════════════════
-   UTILITAIRES
+   UTILITIES
 ════════════════════════════════════════════════ */
 .container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
 .fade-in { animation: fadeIn .6s ease forwards; }
@@ -114,7 +114,7 @@ img { max-width: 100%; display: block; }
 }
 
 /* ════════════════════════════════════════════════
-   HEADER PRINCIPAL
+   MAIN HEADER
 ════════════════════════════════════════════════ */
 .main-header {
   position: sticky;
@@ -148,7 +148,7 @@ img { max-width: 100%; display: block; }
 .logo-link:hover .logo-img { opacity: .85; }
 .logo-box { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; }
 
-/* Navigation principale */
+/* Main Navigation */
 .main-nav {
   display: flex;
   align-items: center;
@@ -169,7 +169,7 @@ img { max-width: 100%; display: block; }
 }
 .main-nav .nav-item:hover { color: var(--rose); background: var(--rose-light); }
 
-/* Boutons header */
+/* Header Buttons */
 .header-actions { display: flex; align-items: center; gap: .6rem; }
 
 .btn-header-secondary, .btn-compte {
@@ -224,7 +224,7 @@ img { max-width: 100%; display: block; }
 }
 .btn-app:hover { background: var(--turquoise); color: var(--white); }
 
-/* Burger */
+/* Burger Menu Toggle */
 .burger-btn {
   display: none;
   flex-direction: column;
@@ -267,11 +267,11 @@ img { max-width: 100%; display: block; }
   z-index: 9000;
 }
 .chatbot-widget {
-  display: none; /* Caché par défaut */
+  display: none; /* Hidden by default */
 }
 
 .chatbot-widget.is-open {
-  display: flex !important; /* S'affiche quand on clique */
+  display: flex !important; /* Visible when toggled */
 }
 
 .dropdown-panel.dropdown-wide {
@@ -349,7 +349,7 @@ img { max-width: 100%; display: block; }
 .drop-ico { display: none; }
 
 /* ════════════════════════════════════════════════
-   HERO BLANC (INDEX ACCUEIL)
+   WHITE HERO SECTION (HOME PAGE)
 ════════════════════════════════════════════════ */
 .hero-white {
   background-color: #ffffff !important;
@@ -423,7 +423,7 @@ img { max-width: 100%; display: block; }
 .trust-item-white { font-size: 0.85rem; color: #0d1824 !important; font-weight: 600; }
 .trust-item-white i { color: #4FA695; margin-right: 6px; }
 
-/* ── ANIMATIONS DU ROBOT SVG ── */
+/* ── SVG ROBOT ANIMATIONS ── */
 .hero-robot-container { max-width: 100%; position: relative; }
 .robot-calc-svg { width: 100%; max-width: 380px; height: auto; }
 @keyframes robotFloat { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
@@ -437,12 +437,12 @@ img { max-width: 100%; display: block; }
 @keyframes calcFloat { 0%, 100% { transform: translate(140px, 160px) rotate(0deg); } 50% { transform: translate(140px, 155px) rotate(-1deg); } }
 .svg-calc { animation: calcFloat 4s ease-in-out infinite; }
 
-/* ── ANCIEN HERO STANDARD (RÉPLICAS ET SÉCURITÉ) ── */
+/* ── LEGACY STANDARD HERO (FALLBACK & BACKWARD COMPATIBILITY) ── */
 .hero-section, .hero { position: relative; min-height: 80vh; display: flex; align-items: center; overflow: hidden; }
 .hero-carousel, .hero-slide-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .hero-bg-overlay, .hero-overlay { position: absolute; inset: 0; background: linear-gradient(105deg, rgba(44,44,44,.82) 0%, rgba(92,102,107,.6) 50%, rgba(193,0,122,.18) 100%); z-index: 1; }
 
-/* PROTECTION POUR LE HERO BLANC (INDEX) : Neutralise l'overlay sombre de l'image précédente */
+/* PROTECTION FOR WHITE HERO (HOME): Overrides dark background overlays */
 .hero-white .hero-bg-overlay, 
 .hero-white .hero-overlay { 
   background: transparent !important; 
@@ -468,7 +468,7 @@ img { max-width: 100%; display: block; }
 @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
 
 /* ════════════════════════════════════════════════
-   SECTIONS COMMUNES & STRUCTURAL
+   SHARED SECTIONS & STRUCTURE
 ════════════════════════════════════════════════ */
 .section-tag, .sec-tag { display: inline-block; font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--rose); margin-bottom: .6rem; }
 .section-title, .sec-title { font-family: var(--font-head); font-size: clamp(1.75rem, 3.5vw, 2.5rem); font-weight: 700; color: var(--gris-dark); line-height: 1.2; margin-bottom: .75rem; }
@@ -478,7 +478,7 @@ img { max-width: 100%; display: block; }
 .content-section:nth-child(even) { background: var(--gris-light); }
 
 /* ════════════════════════════════════════════════
-   SECTION POURQUOI
+   WHY US SECTION
 ════════════════════════════════════════════════ */
 .section-why { padding: 5rem 0; background: var(--gris-light); }
 .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; }
@@ -492,7 +492,7 @@ img { max-width: 100%; display: block; }
 .why-card p { font-size: .88rem; color: var(--text-muted); line-height: 1.6; margin: 0; }
 
 /* ════════════════════════════════════════════════
-   SECTION SERVICES (ACCUEIL) — ANIMATIONS DES ILLUSTRATIONS
+   SERVICES SECTION (HOME) — SVG ILLUSTRATION ANIMATIONS
 ════════════════════════════════════════════════ */
 .section-services { padding: 5rem 0; background: var(--white); }
 .services-tabs, .svc-tabs { display: flex; gap: .5rem; margin-bottom: 2.5rem; flex-wrap: wrap; justify-content: center; }
@@ -511,7 +511,7 @@ img { max-width: 100%; display: block; }
 .btn-svc { display: inline-flex; align-items: center; gap: .5rem; padding: .75rem 1.5rem; background: var(--rose); color: var(--white); font-weight: 600; border-radius: 8px; transition: var(--transition); text-decoration: none; }
 .btn-svc:hover { background: var(--rose-dark); color: var(--white); transform: translateX(2px); }
 
-/* --- CORE ANIMATIONS DES ILLUSTRATIONS SVGS --- */
+/* --- CORE SVG ANIMATION KEYFRAMES --- */
 @keyframes ic-bar-rise   { from{transform:scaleY(0);} to{transform:scaleY(1);} }
 @keyframes ic-row-scroll { 0%{transform:translateY(0);} 100%{transform:translateY(-50%);} }
 @keyframes ic-draw-line  { from{stroke-dashoffset:400;} to{stroke-dashoffset:0;} }
@@ -590,7 +590,7 @@ img { max-width: 100%; display: block; }
 .aw-sp{animation:ic-shimmer 2.5s ease-in-out infinite;}
 
 /* ════════════════════════════════════════════════
-   SECTION STATS & COMPTEURS
+   STATS & COUNTERS SECTION
 ════════════════════════════════════════════════ */
 .section-stats, .stats-bar { background: linear-gradient(135deg, var(--gris) 0%, #3d4549 100%); padding: 4rem 0; }
 .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; text-align: center; }
@@ -600,7 +600,7 @@ img { max-width: 100%; display: block; }
 .stat-label, .stat-lbl { font-size: .85rem; color: rgba(255,255,255,.65); margin-top: .25rem; display: block; }
 
 /* ════════════════════════════════════════════════
-   SECTION CONTACT & FORMULAIRES
+   CONTACT & FORMS SECTION
 ════════════════════════════════════════════════ */
 .section-contact { padding: 5rem 0; background: var(--gris-light); }
 .contact-wrapper, .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 3.5rem; align-items: start; }
@@ -634,7 +634,7 @@ a.contact-detail-item:hover, a.contact-item:hover { color: var(--rose); }
 .btn-contact-submit:hover { background: var(--rose-dark); transform: translateY(-1px); box-shadow: 0 6px 16px rgba(193,0,122,.35); }
 
 /* ════════════════════════════════════════════════
-   VALEURS COEUR & MÉTHODES
+   CORE VALUES & METHODS
 ════════════════════════════════════════════════ */
 .valeurs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; }
 .valeur-card { background: var(--white); border-radius: var(--radius); padding: 1.5rem; border-left: 3px solid var(--rose); box-shadow: var(--shadow-sm); transition: var(--transition); }
@@ -749,7 +749,7 @@ a.contact-detail-item:hover, a.contact-item:hover { color: var(--rose); }
 .cw-send:hover { background: var(--rose-dark); transform: scale(1.08); }
 
 /* ════════════════════════════════════════════════
-   BOUTONS, COMPORTEMENTS & REASSURANCES
+   BUTTONS, UI COMPONENTS & ASSURANCES
 ════════════════════════════════════════════════ */
 .card { border-radius: var(--radius) !important; border: none !important; box-shadow: var(--shadow-sm); }
 .card-header { background: var(--rose) !important; color: var(--white) !important; font-size: 1.1rem; font-weight: 600; }
@@ -788,7 +788,7 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
 .consent-error-msg.show { display: flex; }
 
 /* ════════════════════════════════════════════════
-   ESPACE ADMIN
+   ADMIN DASHBOARD
 ════════════════════════════════════════════════ */
 .adm-toasts { position: fixed; top: 1.25rem; right: 1.25rem; z-index: 9999; display: flex; flex-direction: column; gap: .4rem; max-width: 360px; }
 .adm-toast { display: flex; align-items: center; gap: 9px; padding: .6rem .9rem; border-radius: 9px; font-size: .82rem; font-weight: 500; animation: admToastIn .22s ease; transition: opacity .35s; }
@@ -917,7 +917,7 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
 .adm-pg:hover, .adm-pg--on { background: var(--adm-rose); border-color: var(--adm-rose); color: #fff; }
 
 /* ════════════════════════════════════════════════
-   PAGES D'ERREURS 404 & 500
+   ERROR PAGES 404 & 500
 ════════════════════════════════════════════════ */
 .error-404-page, .error-500-page { min-height: 80vh; display: flex; align-items: center; justify-content: center; background: var(--gris-light); padding: 3rem 1rem; }
 .err-card, .err500-card { background: var(--white); border-radius: 24px; max-width: 760px; width: 100%; padding: 3rem 2.5rem 2.5rem; box-shadow: var(--shadow-lg); display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; overflow: hidden; }
@@ -974,7 +974,7 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
 .err500-retry i { transition: transform .4s ease; }
 .err500-retry:active i { transform: rotate(360deg); }
 
-/* FAQ SYSTEM */
+/* FAQ ACCORDION SYSTEM */
 #faq-accordion .card { margin-bottom: 1rem; border: none; }
 #faq-accordion .card-header { background-color: var(--gris); border-bottom: 1px solid rgba(0,0,0,.1); padding: .75rem 1rem; }
 #faq-accordion .card-header .btn-link { font-weight: 500; color: var(--white); text-decoration: none; width: 100%; text-align: left; padding: 0; }
@@ -982,7 +982,7 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
 #faq-accordion .card-body { background-color: var(--white); color: var(--gris-dark); }
 
 /* ════════════════════════════════════════════════
-   RUBRIQUE : LE BLOG ML2C
+   BLOG SECTION
 ════════════════════════════════════════════════ */
 .blog-hero { background: linear-gradient(135deg, #1a1a1a 0%, #3d4549 60%, #1a0d14 100%); padding: 5rem 0 4rem; position: relative; overflow: hidden; }
 .blog-hero::before { content: ''; position: absolute; top: -30%; right: -8%; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle at center, rgba(193,0,122,.2) 0%, transparent 70%); pointer-events: none; }
@@ -1084,7 +1084,7 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
 .btn-rdr-container { margin-left: auto; }
 
 /* ════════════════════════════════════════════════
-   RUBRIQUE : NOTRE HISTOIRE
+   OUR STORY SECTION
 ════════════════════════════════════════════════ */
 .breadcrumb-ml2c { display: flex; align-items: center; gap: .4rem; font-size: .75rem; color: rgba(255,255,255,.38); list-style: none; padding: 0; margin-bottom: 1.5rem; }
 .breadcrumb-ml2c a { color: rgba(255,255,255,.38); transition: color .2s; }
@@ -1110,7 +1110,7 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
 
 .histoire-bloc { display: grid; grid-template-columns: 1fr 1fr; gap: 0; align-items: stretch; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 32px rgba(0,0,0,.09); margin-bottom: 2.5rem; }
 .histoire-bloc:last-child { margin-bottom: 0; }
-.histoire-bloc.pair .hb-visuel  { order: 1; }
+.histoire-bloc.pair .hb-visuel   { order: 1; }
 .histoire-bloc.pair .hb-texte    { order: 2; }
 .histoire-bloc.impair .hb-texte  { order: 1; }
 .histoire-bloc.impair .hb-visuel { order: 2; }
@@ -1137,7 +1137,7 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
 .btn-contour:hover { border-color: #fff; background: rgba(255,255,255,.1); color: #fff; text-decoration: none; }
 
 /* ════════════════════════════════════════════════
-   RUBRIQUE : METHODES, VALEURS ET ENGAGEMENTS
+   METHODS, VALUES AND COMMITMENTS
 ════════════════════════════════════════════════ */
 .page-hero { background: linear-gradient(120deg, #2d1b4e 0%, #3d2060 50%, #1a1a2e 100%); padding: 72px 0 56px; position: relative; overflow: hidden; }
 .page-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 20% 50%, rgba(193,0,122,.18) 0%, transparent 55%), radial-gradient(circle at 80% 30%, rgba(79,166,149,.12) 0%, transparent 50%); }
@@ -1261,14 +1261,14 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
 .vision-lead { font-family: "DM Sans", sans-serif; font-size: clamp(1rem, 1.3vw, 1.15rem); color: rgba(255, 255, 255, 0.85); line-height: 1.7; max-width: 620px; margin: 0 auto; font-weight: 400; }
 
 /* ════════════════════════════════════════════════
-   RUBRIQUE : NOTRE EQUIPE
+   OUR TEAM SECTION
 ════════════════════════════════════════════════ */
 .intro-equipe { max-width: 780px; margin: 0 auto; font-size: .97rem; color: #6b7280; line-height: 1.85; text-align: center; }
 .membre-bloc { display: grid; grid-template-columns: 340px 1fr; gap: 0; align-items: stretch; border-radius: 22px; overflow: hidden; box-shadow: 0 4px 32px rgba(0,0,0,.09); margin-bottom: 2.5rem; transition: box-shadow .3s, transform .3s; }
 .membre-bloc:hover { box-shadow: 0 10px 48px rgba(0,0,0,.13); transform: translateY(-2px); }
 .membre-bloc:last-child { margin-bottom: 0; }
 .membre-bloc.sebastien { grid-template-columns: 1fr 280px; }
-.membre-bloc.impair .mb-avatar  { order: 1; }
+.membre-bloc.impair .mb-avatar   { order: 1; }
 .membre-bloc.impair .mb-content { order: 2; }
 .membre-bloc.pair   .mb-content { order: 1; }
 .membre-bloc.pair   .mb-avatar  { order: 2; }
@@ -1300,7 +1300,7 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
 .conc-card p { font-size: .86rem; color: #6b7280; line-height: 1.65; margin: 0; }
 
 /* ════════════════════════════════════════════════
-   RUBRIQUE : SOUS-PAGES DE SERVICES SECONDAIRES
+   SECONDARY SERVICE PAGES
 ════════════════════════════════════════════════ */
 .svc-bloc { display: grid; grid-template-columns: 1fr 1fr; gap: 0; align-items: stretch; border-radius: 22px; overflow: hidden; box-shadow: 0 4px 32px rgba(0,0,0,.09); }
 .svc-visuel { min-height: 400px; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.25rem; overflow: hidden; }
@@ -1326,7 +1326,7 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
 .av-card p  { font-size: .86rem; color: #6b7280; line-height: 1.65; margin: 0; }
 
 /* ════════════════════════════════════════════════
-   RUBRIQUE : TABLEAU DE BORD & PILOTAGE DIRECT
+   DASHBOARD & MANAGEMENT CONTROL
 ════════════════════════════════════════════════ */
 .svc-hero { background: linear-gradient(128deg, #2d3436 0%, #1e3a3a 60%, #163030 100%); padding: 96px 0 86px; position: relative; overflow: hidden; }
 .svc-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 10% 90%, rgba(79,166,149,.18) 0%, transparent 45%), radial-gradient(circle at 88% 15%, rgba(193,0,122,.12) 0%, transparent 38%); }
@@ -1462,14 +1462,14 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
 .btn-cta-outline:hover { border-color: rgba(255,255,255,.6); color: #fff; text-decoration: none; }
 
 /* ════════════════════════════════════════════════
-   RUBRIQUE : CREATION & REPRISE (SUIVI COMPLÉMENTAIRE)
+   BUSINESS CREATION & TAKEOVER (ADDITIONAL MONITORING)
 ════════════════════════════════════════════════ */
 .page-hero h1 span { color: #f9a8d4; font-style: italic; display: inline; margin-left: 0.5rem; }
 .ph-sub { font-size: .97rem; color: rgba(255,255,255,.62); max-width: 100%; white-space: nowrap; line-height: 1.8; margin: 0; }
 @media(max-width: 576px) { .ph-sub { white-space: normal; font-size: 0.85rem; } }
 
 /* ════════════════════════════════════════════════
-   TRANSITIONS & OBSERVERS GLOBALISEES
+   GLOBAL ANIMATIONS & OBSERVERS
 ════════════════════════════════════════════════ */
 [data-anim] { opacity: 0; transition: opacity .55s ease, transform .55s ease; }
 [data-anim="fade"]  { transform: translateY(22px); }
@@ -1478,7 +1478,7 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
 [data-anim].visible { opacity: 1 !important; transform: translate(0) !important; }
 
 /* ════════════════════════════════════════════════
-   RESPONSIVE UNIFIÉ ET ROBUSTE
+   UNIFIED RESPONSIVE BREAKPOINTS
 ════════════════════════════════════════════════ */
 @media (min-width: 1400px) {
   .container { max-width: 1140px; }
@@ -1564,7 +1564,7 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
   .cw-qbtn { font-size: .75rem; padding: .3rem .7rem; }
 }
 
-/* ── TOUCH & MOTEURS ASSOCIES ── */
+/* ── TOUCH & RENDER ENGINE OPTIMIZATIONS ── */
 @media (hover: none) and (pointer: coarse) {
   .why-card:hover, .valeur-card:hover, .btn-svc:hover, .cta-phone:hover, .cta-call:hover, .cta-rdv:hover, .cta-devis:hover { transform: none; }
   .chatbot-fab:hover { transform: none; box-shadow: 0 6px 28px rgba(193,0,122,.5); }
@@ -1577,10 +1577,10 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
 }
 
 /* ============================================================
-   DESIGN DES CONTENEURS SVG (CORRESPONDANCE EN MODE CLAIR)
+   SVG CONTAINER STYLING (LIGHT MODE MATCHING)
    ============================================================ */
 
-/* 1. L'arrière-plan global de toutes vos boîtes d'images/vitrines */
+/* 1. Global background wrapper for SVG showcase boxes */
 .svc-img-box {
     background: #ffffff !important; 
     border: 1px solid #e2e8f0;
@@ -1595,7 +1595,7 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
     position: relative;
 }
 
-/* Force TOUS les grands rectangles et chemins de fond sombres (y compris la barre centrale) à passer en blanc */
+/* Forces all dark background shapes and paths inside SVGs to white */
 .svc-img-box svg > rect:first-child,
 .svc-img-box svg rect[fill="#080f18"],
 .svc-img-box svg rect[fill="#11161c"],
@@ -1609,7 +1609,7 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
     fill: #ffffff !important;
 }
 
-/* 2. Le fond des cartes intérieures et des feuilles */
+/* 2. Background for internal cards and panels */
 .svc-img-box svg rect[fill="#f5f2ec"], 
 .svc-img-box svg rect[fill="#f0ede6"],
 .svc-img-box svg rect[fill="#fff5fb"],
@@ -1618,7 +1618,7 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
     fill: #ffffff !important; 
 }
 
-/* 3. Les encadrés et sous-sections (comme l'assistant virtuel) */
+/* 3. Inset containers and sub-sections (e.g., virtual assistant UI) */
 .svc-img-box svg rect[fill="#1a2533"],
 .svc-img-box svg rect[fill="#1a1a2e"],
 .svc-img-box svg rect[fill="#1f2937"],
@@ -1626,17 +1626,17 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
     fill: #f8fafc !important; 
 }
 
-/* 4. Le menu latéral ou structures internes sombres */
+/* 4. Sidebar navigation or internal dark containers */
 .svc-img-box svg rect[fill="#111c24"] {
     fill: #f1f5f9 !important;
 }
 
-/* 5. GESTION DES TEXTES (Haute visibilité) */
+/* 5. TEXT COLORING (High Contrast & Legibility) */
 .svc-img-box svg text {
-    fill: #1e293b; /* Utilisation d'un gris très sombre à la place du blanc pour que les textes sur fond blanc soient lisibles */
+    fill: #1e293b; /* Dark Slate tint replacing white for readability on light background */
 }
 
-/* Sécurité absolue : Texte blanc uniquement sur badges ou boutons très colorés */
+/* Text visibility overrides for filled badges and buttons */
 .svc-img-box svg rect[fill="#C1007A"] + text,
 .svc-img-box svg rect[fill="#4FA695"] + text,
 .svc-img-box svg rect[fill="#1c2d24"] + text,
@@ -1647,7 +1647,7 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
     fill: #ffffff !important; 
 }
 
-/* 6. Rappels de votre charte graphique (Turquoise & Rose) */
+/* 6. Brand Theme Accents (Turquoise & Pink) */
 .svc-img-box svg text[font-weight="700"],
 .svc-img-box svg text[fill="#4FA695"],
 .svc-img-box svg text[fill="#0f6e56"],
@@ -1660,7 +1660,7 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
     fill: #C1007A !important; 
 }
 
-/* 7. Lignes, grilles et séparateurs */
+/* 7. Structural Lines, Grids & Separators */
 .svc-img-box svg line,
 .svc-img-box svg polyline,
 .svc-img-box svg path[stroke="#1e293b"],
@@ -1670,7 +1670,7 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
 .svc-img-box svg line[stroke="#C1007A"], .svc-img-box svg path[stroke="#C1007A"] { stroke: #C1007A !important; }
 .svc-img-box svg line[stroke="#4FA695"], .svc-img-box svg path[stroke="#4FA695"] { stroke: #4FA695 !important; }
 
-/* Modification de la carte mise en avant pour appliquer le fuchsia d'origine */
+/* Highlighted card modification for original magenta theme */
 .why-grid .why-card.featured, 
 .why-grid .why-card-featured { 
     background: linear-gradient(135deg, #C1007A, #9a0062) !important; 
@@ -1679,13 +1679,13 @@ body.dark input, body.dark select, body.dark textarea { background-color: #2c2c2
     box-shadow: 0 10px 30px rgba(193, 0, 122, 0.2) !important;
 }
 
-/* Force les textes intérieurs à repasser en blanc pur pour la lisibilité */
+/* Enforce pure white text on featured cards for maximum readability */
 .why-grid .why-card.featured h3, 
 .why-grid .why-card.featured p { 
     color: #ffffff !important; 
 }
 
-/* Ajustement de l'icône sur le fond fuchsia */
+/* Icon container adjustment on magenta background */
 .why-grid .why-card.featured .why-icon { 
     background: rgba(255, 255, 255, 0.2) !important; 
     color: #ffffff !important; 

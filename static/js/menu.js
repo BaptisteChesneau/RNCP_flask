@@ -1,5 +1,5 @@
 // ============================================================
-//  1. GESTION DES ONGLETS DE SERVICES
+//  1. SERVICES TABS MANAGEMENT
 // ============================================================
 document.querySelectorAll('.svc-tab').forEach(tab => {
   tab.addEventListener('click', function() {
@@ -13,7 +13,7 @@ document.querySelectorAll('.svc-tab').forEach(tab => {
 });
 
 // ============================================================
-//  2. ANIMATION DES COMPTEURS NUMÉRIQUES
+//  2. NUMERICAL COUNTERS ANIMATION
 // ============================================================
 function animateCounters() {
   document.querySelectorAll('.stat-num[data-target]').forEach(el => {
@@ -33,7 +33,7 @@ function animateCounters() {
   });
 }
 
-// Observateur pour déclencher l'animation au défilement
+// Observer to trigger animation on scroll
 const statsObs = new IntersectionObserver(entries => {
   if (entries[0].isIntersecting) {
     animateCounters();
@@ -46,7 +46,7 @@ if (document.querySelector('.stats-bar')) {
 }
 
 // ============================================================
-//  3. DÉFILEMENT FLUIDE POUR LES ANCRES (#)
+//  3. SMOOTH SCROLL FOR ANCHORS (#)
 // ============================================================
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', function(e) {
@@ -63,7 +63,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 });
 
 // ============================================================
-//  4. OBSERVATEUR POUR LES ANIMATIONS D'APPARITION (data-anim)
+//  4. OBSERVER FOR ENTRANCE ANIMATIONS (data-anim)
 // ============================================================
 const animObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
@@ -79,15 +79,15 @@ const animObserver = new IntersectionObserver((entries) => {
 });
 
 // ============================================================
-//  5. INITIALISATION DES NOUVELLES APPS (Menu & Chatbot)
+//  5. INITIALIZATION FOR NEW APPS (Menu & Chatbot)
 // ============================================================
 document.addEventListener("DOMContentLoaded", () => {
-  // Activation des animations d'apparition au scroll
+  // Activate entrance animations on scroll
   document.querySelectorAll('[data-anim]').forEach(el => {
     animObserver.observe(el);
   });
 
-  // Gestion du Menu Burger Mobile
+  // Mobile Burger Menu Handling
   const burgerBtn = document.querySelector('.burger-btn');
   const mainNav = document.querySelector('.main-nav');
 
@@ -98,25 +98,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Gestion de l'ouverture/fermeture du Chatbot
+  // Chatbot Open/Close Handling
   const chatFab = document.querySelector('.chatbot-fab');
   const chatWidget = document.querySelector('.chatbot-widget');
   const chatMinimize = document.querySelector('.cw-minimize');
   const chatNotif = document.querySelector('.chatbot-notif');
 
   if (chatFab && chatWidget) {
-    // Ouvrir / Fermer au clic sur le bouton flottant
+    // Open / Close on floating button click
     chatFab.addEventListener('click', () => {
       const isOpen = chatWidget.classList.toggle('is-open');
       chatFab.classList.toggle('is-open', isOpen);
       
-      // Masquer la petite pastille de notification dès la première ouverture
+      // Hide notification badge on first open
       if (isOpen && chatNotif) {
         chatNotif.classList.add('hide');
       }
     });
 
-    // Fermer via la flèche de réduction interne
+    // Close via internal minimize arrow
     if (chatMinimize) {
       chatMinimize.addEventListener('click', () => {
         chatWidget.classList.remove('is-open');

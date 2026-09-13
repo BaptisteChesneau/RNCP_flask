@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Gestion de l'effet scrolled sur le Header
+  // Header scrolled effect handling
   const hdr = document.getElementById('mainHeader');
   if (hdr) {
     window.addEventListener('scroll', () => {
@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Gestion du menu Burger mobile
+  // Mobile Burger menu handling
   const burger = document.getElementById('burgerBtn');
   const nav = document.getElementById('mainNav');
   if (burger && nav) {
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Intersection Observer pour déclencher les animations au défilement
+  // Intersection Observer to trigger scroll animations
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
@@ -28,6 +28,6 @@ document.addEventListener("DOMContentLoaded", function () {
     threshold: 0.1 
   });
 
-  // Observation de tous les éléments possédant l'attribut data-anim
+  // Observe all elements with the data-anim attribute
   document.querySelectorAll('[data-anim]').forEach(el => obs.observe(el));
 });

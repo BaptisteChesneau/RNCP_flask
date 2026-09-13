@@ -1,10 +1,10 @@
 /**
- * ML2C CONSEIL — Scripts comportementaux de la page "Nos Valeurs"
+ * ML2C CONSEIL — Behavioral scripts for the "Our Values" page
  */
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. Gestion du Header et de sa classe au scroll
+    // 1. Header scroll effect and class handling
     window.addEventListener('scroll', () => {
         const mainHeader = document.getElementById('mainHeader');
         if (mainHeader) {
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 2. Gestion du Menu Burger Mobile
+    // 2. Mobile Burger Menu handling
     const burgerBtn = document.getElementById('burgerBtn');
     const mainNav = document.getElementById('mainNav');
     
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3. Animation d'apparition des éléments au défilement (Intersection Observer)
+    // 3. Scroll animation appearance effect (Intersection Observer)
     const animOptions = {
         threshold: 0.08
     };
@@ -37,16 +37,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, animOptions);
 
-    // Ciblage des éléments à animer
+    // Targeting elements to animate
     const targetsToAnimate = document.querySelectorAll('.val-detail-card, .meth-card, .val-comp-row');
     
     targetsToAnimate.forEach(el => {
-        // État initial (masqué et décalé vers le bas)
+        // Initial state (hidden and offset downwards)
         el.style.opacity = '0';
         el.style.transform = 'translateY(14px)';
         el.style.transition = 'opacity .4s ease, transform .4s ease';
         
-        // Liaison avec l'observateur
+        // Connect with the observer
         scrollObserver.observe(el);
     });
 });

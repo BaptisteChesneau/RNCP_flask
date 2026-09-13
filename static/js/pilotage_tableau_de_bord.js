@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Gestion du Header lors du défilement
+  // Header scroll handling
   const hdr = document.getElementById('mainHeader');
   if (hdr) {
     window.addEventListener('scroll', () => {
@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Menu Burger Responsif
+  // Responsive burger menu
   const burger = document.getElementById('burgerBtn');
   const nav = document.getElementById('mainNav');
   if (burger && nav) {
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Animation des blocs au défilement (Intersection Observer)
+  // Block animations on scroll (Intersection Observer)
   const animElements = document.querySelectorAll('[data-anim]');
 
   if ('IntersectionObserver' in window && animElements.length > 0) {
@@ -25,17 +25,17 @@ document.addEventListener("DOMContentLoaded", function () {
       entries.forEach(e => {
         if (e.isIntersecting) {
           e.target.classList.add('visible');
-          // Optionnel : on個 arrête d'observer l'élément une fois apparu
+          // Optional: stop observing the element once visible
           obs.unobserve(e.target); 
         }
       });
     }, { 
-      threshold: 0.01 // Seuil minimaliste pour éviter les bugs sur mobile
+      threshold: 0.01 // Minimal threshold to avoid mobile bugs
     });
 
     animElements.forEach(el => obs.observe(el));
   } else {
-    // Solution de secours : si l'observer échoue, on affiche tout directement
+    // Fallback: if the observer fails, display everything directly
     animElements.forEach(el => el.classList.add('visible'));
   }
 });

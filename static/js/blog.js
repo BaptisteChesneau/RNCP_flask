@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  /* ── Variables Globales ── */
+  /* ── Global Variables ── */
   let activeCat = 'all';
   const searchInput = document.getElementById('searchInput');
   const blogCats = document.querySelectorAll('.blog-cat');
@@ -7,14 +7,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const newsletterBtn = document.getElementById('newsletterBtn');
   const pageBtns = document.querySelectorAll('.page-btn');
 
-  /* ── Écouteurs d'événements (Event Listeners) ── */
+  /* ── Event Listeners ── */
   
-  // Recherche textuelle
+  // Text search input
   if (searchInput) {
     searchInput.addEventListener('input', applyFilters);
   }
 
-  // Clic sur les boutons de catégorie (Hero)
+  // Category buttons click (Hero)
   blogCats.forEach(btn => {
     btn.addEventListener('click', function() {
       blogCats.forEach(b => b.classList.remove('active'));
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Clic sur les tags (Sidebar)
+  // Tags click (Sidebar)
   tagItems.forEach(tag => {
     tag.addEventListener('click', function() {
       const cat = this.dataset.tagCat;
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Newsletter
+  // Newsletter subscription
   if (newsletterBtn) {
     newsletterBtn.addEventListener('click', function() {
       const input = this.previousElementSibling;
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return;
       }
-      this.innerHTML = '<i class="fas fa-check"></i> Abonné !';
+      this.innerHTML = '<i class="fas fa-check"></i> Subscribed !';
       this.style.background = 'rgba(255,255,255,.35)';
       this.disabled = true;
       input.value = '';
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* ── Fonction de Filtrage Commune ── */
+  /* ── Shared Filtering Function ── */
   function applyFilters() {
     const query = searchInput ? searchInput.value.toLowerCase() : '';
     const cards = document.querySelectorAll('.article-card');
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const noResult = document.getElementById('noResult');
     let visibleCount = 0;
 
-    /* Filtrage de l'article "À la une" (Featured) */
+    /* Filtering the featured article */
     if (featured) {
       const featCat = featured.dataset.cat;
       const featTitleElement = featured.querySelector('.article-featured-title');
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (featMatch) visibleCount++;
     }
 
-    /* Filtrage de la grille d'articles */
+    /* Filtering the article grid */
     cards.forEach(card => {
       const cat = card.dataset.cat;
       const title = card.dataset.title ? card.dataset.title.toLowerCase() : '';
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (match) visibleCount++;
     });
 
-    /* Gestion du message d'absence de résultat */
+    /* Handling the no-results message display */
     if (noResult) {
       noResult.style.display = visibleCount === 0 ? 'block' : 'none';
     }

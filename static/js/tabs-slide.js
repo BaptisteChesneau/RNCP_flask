@@ -1,12 +1,12 @@
 $(document).ready(function() {
-    // Lors du clic sur un onglet
+    // On tab click
     $('#accountTab a').on('click', function(e) {
       e.preventDefault();
 
       var $this = $(this);
       var targetSelector = $this.attr('href');
 
-      // Si l'onglet cliqué est déjà actif, ne rien faire
+      // If the clicked tab is already active, do nothing
       if ($this.hasClass('active')) {
         return;
       }
@@ -14,19 +14,19 @@ $(document).ready(function() {
       var $currentTab = $('#accountTabContent .tab-pane.active');
       var $targetTab = $(targetSelector);
 
-      // Animation de glissement sortant pour l'onglet actif
+      // Slide-out animation for the active tab
       $currentTab.animate({ left: '-100%', opacity: 0 }, 300, function() {
         $currentTab.removeClass('active').css({ left: '0%', opacity: 1 });
 
-        // Prépare l'onglet cible pour l'animation entrante
+        // Prepare the target tab for the slide-in animation
         $targetTab.css({ left: '100%', opacity: 0 }).addClass('active');
 
-        // Animation de glissement entrant pour l'onglet cible
+        // Slide-in animation for the target tab
         $targetTab.animate({ left: '0%', opacity: 1 }, 300);
       });
 
-      // Mise à jour de la classe active sur les onglets
+      // Update active class on tab links
       $('#accountTab a').removeClass('active');
       $this.addClass('active');
     });
-  });
+});

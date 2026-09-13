@@ -6,19 +6,19 @@ __pycache__/
 dist/
 build/
 
-# Environnement virtuel
+# Virtual environment
 venv/
 env/
 
 # VS Code
 .vscode/
 
-# Fichiers sensibles
+# Sensitive files
 .env
 *.sqlite3
 *.db
 
-# Pre-commit et dev
+# Pre-commit and development tools
 .pre-commit-config.yaml
 requirements-dev.txt
 .coverage
@@ -27,9 +27,9 @@ requirements-dev.txt
 instance/
 *.log
 
-# Migrations (optionnel)
+# Database migrations (optional)
 migrations/
 
-# Autres outils
+# Other system/editor files
 .DS_Store
 *.swp

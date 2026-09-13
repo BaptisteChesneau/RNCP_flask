@@ -56,7 +56,7 @@ class ParametresCompte(db.Model):
     # Photo
     photo_url = db.Column(db.String(255))
 
-    # Facturation
+    # Billing
     nom_facturation = db.Column(db.String(255))
     adresse_facturation = db.Column(db.String(255))
 

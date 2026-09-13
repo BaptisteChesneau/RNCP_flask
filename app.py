@@ -9,7 +9,7 @@ from sqlalchemy.exc import OperationalError
 from config import Config
 from extensions import db, mongo, migrate, mail, limiter
 
-# ⚠️ OBLIGATOIRE : Charge tous les modèles pour que les relations SQLAlchemy (SupportTicket, etc.) fonctionnent
+# ⚠️ MANDATORY: Load all models so SQLAlchemy relationships (SupportTicket, etc.) function properly
 import models
 from models.user import Utilisateur, ParametresCompte
 from models.client import Client
@@ -17,15 +17,15 @@ from models.devis import Devis
 from models.message import MessageSupport
 from models.collaborateur import Collaborateur
 
-# Mail reinitialisation
+# Password reset mail
 import resend
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 
-# Messages en temps reel 
+# Real-time messaging
 from api import api_bp
 
 
-# Contrôleurs
+# Controllers
 from controllers.auth_controller import (
     traiter_login,
     traiter_signup,
@@ -52,18 +52,18 @@ from controllers.chatbot_controller import (
 app = Flask(__name__)
 app.config.from_object(Config)
 
-# Initialisation des extensions
+# Initialize extensions
 db.init_app(app)
 mongo.init_app(app)
 migrate.init_app(app, db)
 mail.init_app(app)
 limiter.init_app(app)
 
-# 🟢 CRÉATION AUTOMATIQUE DES TABLES EN BDD (PostgreSQL Scalingo)
+# 🟢 AUTOMATIC TABLE CREATION IN DATABASE (Scalingo PostgreSQL)
 with app.app_context():
     db.create_all()
 
-# Enregistre toutes les routes API avec le préfixe /api
+# Register all API routes under the /api prefix
 app.register_blueprint(api_bp, url_prefix="/api")
 
 # ==================== MIDDLEWARES & HEADERS ====================
@@ -101,7 +101,7 @@ def login_required(f):
     return decorated_function
 
 
-# ==================== NAVIGATION & PAGES STATIQUES ====================
+# ==================== NAVIGATION & STATIC PAGES ====================
 
 
 @app.route("/")
@@ -229,7 +229,7 @@ def securite():
 def nous_contacter():
     return render_template("contact.html")
 
-# --- CREATION COLLABORATEUR ---
+# --- COLLABORATOR ACCOUNT CREATION ---
 @app.route("/creer-collaborateur", methods=["GET", "POST"])
 def creer_collaborateur():
     if request.method == "POST":
@@ -260,7 +260,7 @@ def creer_collaborateur():
     return render_template("creer_collaborateur.html")
 
 
-# --- CONNEXION COLLABORATEUR ---
+# --- COLLABORATOR LOGIN ---
 @app.route("/collaborateur-login", methods=["GET", "POST"])
 def collaborateur_login():
     if request.method == "POST":
@@ -280,16 +280,16 @@ def collaborateur_login():
 
     return render_template("collaborateur_login.html")
 
-# --- ROUTE DASHBOARD COLLABORATEUR ---
+# --- COLLABORATOR DASHBOARD ROUTE ---
 @app.route("/collaborateur-dashboard")
 def collaborateur_dashboard():
-    # Vérification que le collaborateur est bien connecté
+    # Verify that the collaborator is logged in
     collab_id = session.get("collaborateur_id")
     if not collab_id:
         flash("Veuillez vous connecter à l'espace collaborateur.", "warning")
         return redirect(url_for("collaborateur_login"))
 
-    # Récupération des données nécessaires
+    # Fetch required data
     collab = Collaborateur.query.get(collab_id)
     clients = Utilisateur.query.all()
     messages = (
@@ -298,7 +298,7 @@ def collaborateur_dashboard():
         .all()
     )
 
-    # Rendu vers ton nouveau template
+    # Render template
     return render_template(
         "collaborateur_dashboard.html",
         user=collab,
@@ -306,16 +306,16 @@ def collaborateur_dashboard():
         messages=messages,
     )
 
-# --- SÉCURITÉ TOKENS & CONFIGURATION SMTP ---
+# --- TOKEN SECURITY & SMTP CONFIGURATION ---
 
 serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
 
 def envoyer_email_reset(destinataire, reset_url):
-    """Envoie un véritable e-mail de réinitialisation via l'API Resend."""
+    """Sends a real password reset email via the Resend API."""
     resend.api_key = (app.config.get("RESEND_API_KEY") or os.getenv("RESEND_API_KEY", "")).strip()
 
     resend.Emails.send({
-        "from": "onboarding@resend.dev",  # Adresse d'envoi fournie par défaut par Resend
+        "from": "onboarding@resend.dev",  # Default sender address provided by Resend
         "to": destinataire,
         "subject": "Réinitialisation de votre mot de passe — ML2C CONSEIL",
         "html": f"""
@@ -337,7 +337,7 @@ def envoyer_email_reset(destinataire, reset_url):
 @app.route("/reset-password/<token>", methods=["GET", "POST"])
 def reset_password(token):
   try:
-    # Validation du token (expire après 30 min)
+    # Validate token (expires after 30 minutes)
     email = serializer.loads(
         token, salt="reset-password-salt", max_age=1800
     )
@@ -358,7 +358,7 @@ def reset_password(token):
       flash("Utilisateur introuvable.", "danger")
       return redirect(url_for("mot_de_passe_oublie"))
 
-    # 1. Vérification de la correspondance du nouveau mot de passe
+    # 1. Verify password confirmation match
     if new_password != confirm_password:
       flash(
           "Le nouveau mot de passe et sa confirmation ne correspondent pas.",
@@ -366,12 +366,12 @@ def reset_password(token):
       )
       return render_template("reset_password.html", token=token)
 
-    # 2. Vérification optionnelle de la longueur minimale (recommandée)
+    # 2. Optional length check (recommended minimum)
     if len(new_password) < 8:
       flash("Le mot de passe doit contenir au moins 8 caractères.", "danger")
       return render_template("reset_password.html", token=token)
 
-    # 3. Mise à jour du mot de passe
+    # 3. Update password
     user.set_password(new_password)
     db.session.commit()
     flash("Votre mot de passe a été mis à jour avec succès ✅", "success")
@@ -398,7 +398,7 @@ def mot_de_passe_oublie():
             except Exception as e:
                 import traceback
 
-                traceback.print_exc()  # Regarde tes logs Scalingo pour voir la cause exacte
+                traceback.print_exc()  # Check Scalingo logs for exact failure cause
                 flash(
                     "Erreur lors de l'envoi. Vérifiez la clé API Resend.",
                     "danger",
@@ -419,7 +419,7 @@ def handle_url_build_error(error, endpoint, values):
     if endpoint.startswith("admin_"):
         return f"#{endpoint}"
     raise error
-# ==================== AUTHENTIFICATION ====================
+# ==================== AUTHENTICATION ====================
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -431,8 +431,8 @@ def login():
         try:
             success = traiter_login(email, password)
         except OperationalError:
-            db.session.rollback() # Réinitialise la session en erreur suite à une coupure SSL
-            success = traiter_login(email, password) # Retente l'opération avec une connexion fraîche
+            db.session.rollback()  # Reset session state following an SSL disconnection
+            success = traiter_login(email, password)  # Retry operation with a fresh connection
             
         if success:
             flash("Connexion réussie !", "success")
@@ -471,17 +471,17 @@ def update_profile():
 
     user = Utilisateur.query.get(utilisateur_id)
     if user:
-        # Récupération du nom et prénom soumis
+        # Retrieve submitted first and last name
         nom = request.form.get("nom", "").strip()
         prenom = request.form.get("prenom", "").strip()
 
-        # Si ton modèle regroupe nom et prénom dans nom_complet :
+        # Handle full name vs username field variations
         if hasattr(user, "nom_complet"):
             user.nom_complet = f"{prenom} {nom}".strip()
         elif hasattr(user, "username"):
             user.username = request.form.get("username", user.username)
 
-        # Email
+        # Email update
         if hasattr(user, "email"):
             user.email = request.form.get("email", user.email).strip()
 
@@ -499,7 +499,7 @@ def parametres():
 
     user = Utilisateur.query.get(utilisateur_id)
 
-    # TRAITEMENT DU FORMULAIRE (POST)
+    # FORM PROCESSING (POST)
     if request.method == "POST":
         user.nom = request.form.get("nom", user.nom)
         user.prenom = request.form.get("prenom", user.prenom)
@@ -508,7 +508,7 @@ def parametres():
         flash("Profil mis à jour avec succès !", "success")
         return redirect(url_for("parametres"))
 
-    # AFFICHAGE DE LA PAGE (GET)
+    # PAGE DISPLAY (GET)
     return render_template("parametres.html", user=user)
 
 @app.route("/update-password", methods=["POST"])
@@ -524,17 +524,17 @@ def update_password():
     new_password = request.form.get("password", "").strip()
     confirm_password = request.form.get("confirm_password", "").strip()
 
-    # 1. Vérification de l'ancien mot de passe
+    # 1. Verify current password
     if not user.check_password(old_password):
         flash("L'ancien mot de passe est incorrect ❌", "danger")
         return redirect(url_for("parametres"))
 
-    # 2. Vérification de la correspondance
+    # 2. Check matching passwords
     if new_password != confirm_password:
         flash("Les nouveaux mots de passe ne correspondent pas.", "danger")
         return redirect(url_for("parametres"))
 
-    # 3. Mise à jour
+    # 3. Save new password
     user.set_password(new_password)
     db.session.commit()
     flash("Mot de passe mis à jour avec succès ✅", "success")
@@ -548,7 +548,7 @@ def update_notifications():
         flash("Vous devez être connecté.", "warning")
         return redirect(url_for("login"))
 
-    # Logique pour sauvegarder les préférences si nécessaire
+    # Logic to save preference settings if needed
     flash("Préférences de notifications mises à jour ✅", "success")
     return redirect(url_for("parametres"))
 
@@ -559,7 +559,7 @@ def supprimer_carte():
         flash("Vous devez être connecté.", "warning")
         return redirect(url_for("login"))
 
-    # Logique pour supprimer la carte de l'utilisateur
+    # Logic to remove stored payment method
     flash("Moyen de paiement supprimé avec succès ✅", "success")
     return redirect(url_for("parametres"))
 
@@ -579,7 +579,7 @@ def supprimer_compte():
 
     return redirect(url_for("login"))
 
-# ==================== FICHE CLIENT, PARAMÈTRES & DEVIS ====================
+# ==================== CLIENT PROFILE, SETTINGS & ESTIMATES ====================
 
 
 @app.route("/formulaire", methods=["GET", "POST"])
@@ -590,18 +590,18 @@ def formulaire_client():
         return redirect(url_for("login"))
 
     if request.method == "POST":
-        action_fiche = request.form.get("action_fiche") # Récupère 'archiver' ou 'supprimer'
+        action_fiche = request.form.get("action_fiche")  # Retrieves 'archiver' or 'supprimer'
 
         if action_fiche == "supprimer":
-            # Supprime définitivement les anciennes fiches de cet utilisateur
+            # Permanently delete previous client profiles for this user
             Client.query.filter_by(utilisateur_id=utilisateur_id).delete()
         elif action_fiche == "archiver":
-            # Archive les anciennes fiches actives pour garder un historique de suivi
+            # Archive existing active client profiles to retain history tracking
             anciennes_fiches = Client.query.filter_by(utilisateur_id=utilisateur_id, archive=False).all()
             for ancienne in anciennes_fiches:
                 ancienne.archive = True
 
-        # Enregistrement de la nouvelle fiche client (avec archive=False par défaut)
+        # Save new client profile (defaults to archive=False)
         enregistrer_client(utilisateur_id, request.form)
         
         flash("Fiche client enregistrée avec succès ! ✅", "success")
@@ -670,14 +670,14 @@ def devis():
         nom_entreprise = request.form.get("nom_entreprise")
         montant_estime = request.form.get("montant_estime")
 
-        # Traitement du devis (sauvegarde BDD, calculs, etc.)
+        # Estimate processing (database storage, calculations, etc.)
 
         flash("Demande envoyée avec succès !", "success")
         return render_template("devis.html")
 
     return render_template("devis.html")
 
-# 🟢 ROUTE AJOUTÉE : Nécessaire pour compte_client.html
+# 🟢 ADDED ROUTE: Required for compte_client.html
 @app.route("/gerer-devis", methods=["GET", "POST"])
 def gerer_devis():
     utilisateur_id = session.get("utilisateur_id")
@@ -686,7 +686,7 @@ def gerer_devis():
         return redirect(url_for("login"))
 
     if request.method == "POST":
-        # 1. Gestion de la suppression d'un seul devis via l'input caché
+        # 1. Handle single estimate deletion via hidden input field
         single_id = request.form.get("devis_ids_single")
         if single_id:
             devis_a_supprimer = Devis.query.filter_by(id=single_id, utilisateur_id=utilisateur_id).first()
@@ -695,7 +695,7 @@ def gerer_devis():
                 db.session.commit()
                 flash("Le devis a bien été supprimé.", "success")
 
-        # 2. Gestion de la suppression multiple via les cases à cocher
+        # 2. Handle multiple estimate deletion via checkboxes
         multi_ids = request.form.getlist("devis_ids")
         if multi_ids:
             Devis.query.filter(Devis.id.in_(multi_ids), Devis.utilisateur_id == utilisateur_id).delete(synchronize_session=False)
@@ -704,7 +704,7 @@ def gerer_devis():
             
         return redirect(url_for("gerer_devis"))
 
-    # Affichage classique de la page en GET
+    # Standard GET page display
     devis_list = Devis.query.filter_by(utilisateur_id=utilisateur_id).all()
     return render_template("gerer_devis.html", devis_list=devis_list)
 
@@ -716,10 +716,10 @@ def resume_devis():
         flash("Veuillez vous connecter pour consulter le résumé du devis.", "warning")
         return redirect(url_for("login"))
 
-    # Optionnel : Tu peux vérifier ici si un devis identique existe déjà pour ce client à la même date/heure 
-    # avant d'appeler creer_devis, ou t'assurer que creer_devis n'est appelé nulle part ailleurs.
+    # Optional: Check here if an identical estimate already exists for this client at the same date/time
+    # before calling creer_devis, or ensure creer_devis isn't invoked elsewhere.
     
-    # Enregistrement en base de données (si ce n'est pas déjà fait en amont)
+    # Save to database (if not already handled upstream)
     creer_devis(utilisateur_id, request.form)
 
     return render_template(
@@ -738,7 +738,7 @@ def confirmation_devis():
     if not utilisateur_id:
         return redirect(url_for("login"))
         
-    # Récupération des données stockées dans la session
+    # Retrieve stored session data
     devis_data = session.pop("dernier_devis", None)
     if not devis_data:
         return redirect(url_for("devis"))
@@ -824,14 +824,14 @@ def login_admin():
 
 @app.route("/base-test")
 def base_test():
-    return render_template("base_test.html")  # ou la vue associée
+    return render_template("base_test.html")  # or associated view
 
-# --- MESSAGERIE COLLABORATEUR ---
+# --- COLLABORATOR MESSAGING ---
 @app.route("/collaborateur-messagerie", methods=["GET", "POST"])
 def collaborateur_messagerie():
     collab_id = session.get("collaborateur_id")
 
-    # 1. Sécurité d'accès
+    # 1. Access security check
     if not collab_id or not session.get("is_collaborateur"):
         flash("Veuillez vous connecter à l'espace collaborateur.", "warning")
         return redirect(url_for("collaborateur_login"))
@@ -839,13 +839,13 @@ def collaborateur_messagerie():
     collab = Collaborateur.query.get(collab_id)
     clients = Utilisateur.query.all()
 
-    # Client sélectionné
+    # Currently selected client
     client_id = request.args.get("client_id", type=int)
     client_selectionne = (
         Utilisateur.query.get(client_id) if client_id else None
     )
 
-    # 2. Réception du message soumis par le formulaire (POST)
+    # 2. Process submitted message form (POST)
     if request.method == "POST":
         contenu = request.form.get("contenu", "").strip()
         dest_id = request.form.get("destinataire_id", type=int)
@@ -864,7 +864,7 @@ def collaborateur_messagerie():
                 url_for("collaborateur_messagerie", client_id=dest_id)
             )
 
-    # 3. Chargement de l'historique
+    # 3. Load chat history
     messages = []
     if client_selectionne:
         messages = (
@@ -894,12 +894,12 @@ def collaborateur_messagerie():
     )
 
 
-# --- MESSAGERIE CLIENT (Strictement isolée) ---
+# --- CLIENT MESSAGING (Strictly isolated) ---
 @app.route("/messagerie", methods=["GET", "POST"])
 def messagerie():
     utilisateur_id = session.get("utilisateur_id") or session.get("user_id")
 
-    # Si ce n'est pas un client mais qu'un collaborateur est connecté, on autorise quand même l'accès ou on gère séparément
+    # If user is not a client but a collaborator session exists, redirect or process separately
     if not utilisateur_id:
         if session.get("is_collaborateur"):
             return redirect(url_for("collaborateur_messagerie"))
@@ -909,7 +909,7 @@ def messagerie():
     user = Utilisateur.query.get(utilisateur_id)
     collaborateurs = Collaborateur.query.all()
 
-    # Collaborateur sélectionné depuis l'URL (sidebar client)
+    # Selected collaborator from URL parameters (client sidebar)
     collab_id = request.args.get("collab_id", type=int)
     collab_selectionne = (
         Collaborateur.query.get(collab_id) if collab_id else None
@@ -935,7 +935,7 @@ def messagerie():
                 )
             return redirect(url_for("messagerie"))
 
-    # Récupération des messages
+    # Load message history
     if collab_selectionne:
         messages = (
             MessageSupport.query.filter(
@@ -969,7 +969,7 @@ def messagerie():
         collab_selectionne=collab_selectionne,
     )
 
-# --- DÉCLARATION DE TOUS LES TEMPLATES ADMINS ---
+# --- DECLARATION OF ALL ADMIN TEMPLATES ---
 
 
 @app.route("/admin-chatbot")
@@ -1117,7 +1117,7 @@ def logout_admin():
     flash("Déconnexion réussie 👋", "info")
     return redirect(url_for("login_admin"))
 
-# --- ACTIONS ET MOTEUR ADMIN ---
+# --- ADMIN ACTIONS & ENGINE ---
 
 @app.route("/modifier-reponse/<message_id>", methods=["POST"])
 def modifier_reponse(message_id):
@@ -1177,7 +1177,7 @@ def ajouter_message():
     return render_template("ajouter_message.html")
 
 
-# ==================== ROUTES DE TEST D'ERREURS HTTP ====================
+# ==================== HTTP ERROR TEST ROUTES ====================
 
 
 @app.route("/test-404")
@@ -1210,7 +1210,7 @@ def test_503():
     return render_template("503.html"), 503
 
 
-# ==================== GESTIONNAIRES D'ERREURS HTTP ====================
+# ==================== HTTP ERROR HANDLERS ====================
 
 
 @app.errorhandler(404)

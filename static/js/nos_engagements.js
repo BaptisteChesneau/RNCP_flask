@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // Gestion du style du header au scroll
+    // Header style handling on scroll
     window.addEventListener('scroll', () => {
         const header = document.getElementById('mainHeader');
         if (header) {
@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Gestion du menu Burger mobile
+    // Mobile Burger menu handling
     const burgerBtn = document.getElementById('burgerBtn');
     const mainNav = document.getElementById('mainNav');
     
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Animation d'apparition (Fade-in / Intersection Observer)
+    // Appearance animation (Fade-in / Intersection Observer)
     const observeOptions = {
         threshold: 0.08
     };
@@ -29,13 +29,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (entry.isIntersecting) {
                 entry.target.style.opacity = '1';
                 entry.target.style.transform = 'translateY(0)';
-                // On détache l'élément une fois animé
+                // Unobserve element once animated
                 fadeInObserver.unobserve(entry.target); 
             }
         });
     }, observeOptions);
 
-    // Initialisation des styles de départ et ciblage des éléments à animer
+    // Initial styles setup and targeting elements to animate
     const elementsToAnimate = document.querySelectorAll('.eng-card, .eng-temoignage');
     
     elementsToAnimate.forEach(el => {

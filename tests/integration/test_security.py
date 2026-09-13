@@ -9,11 +9,11 @@ def test_sql_injection_login(client):
     assert b"invalide" in response.data.lower() or b"connexion" in response.data.lower()
 
 def test_admin_route_protection(client):
-    # Doit rediriger vers le login si non connecté
+    # Must redirect to login page if unauthenticated
     response = client.get("/admin-chatbot")
     assert response.status_code == 302
 
-    # Doit fonctionner une fois le flag admin en session
+    # Must grant access once admin session flag is set
     with client.session_transaction() as sess:
         sess["admin_logged_in"] = True
     response = client.get("/admin-chatbot")

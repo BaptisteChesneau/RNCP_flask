@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -364,6 +364,7 @@
       text-decoration: none !important;
       color: var(--ink) !important;
       margin-top: 1rem;
+      margin-bottom: 2.5rem; /* Espace restauré avant la barre d'action */
     }
 
     .cta-title {
@@ -681,144 +682,146 @@
               <div>
                 <div class="prem-card-title">{{ devis.nom }}</div>
                 <div class="prem-card-sub">Demande de devis</div>
-            </div>
-          </div>
-          <div class="devis-grid">
-            <div class="dg-field"><div class="dg-label">Secteur</div><div class="dg-val">{{ devis.secteur }}</div></div>
-            <div class="dg-field"><div class="dg-label">Service</div><div class="dg-val accent">{{ devis.type_service }}</div></div>
-            <div class="dg-field"><div class="dg-label">Date de rendez-vous</div><div class="dg-val">{{ devis.date_rdv | replace('-', '/') if devis.date_rdv else '—' }}</div></div>
-            <div class="dg-field"><div class="dg-label">Heure</div><div class="dg-val">{{ devis.heure_rdv or '—' }}</div></div>
-          </div>
-        </div>
-        {% endfor %}
-
-        {% else %}
-        <div class="prem-card">
-          <div class="ec-empty">
-            <div class="ec-empty-ico"><i class="fas fa-file-invoice"></i></div>
-            <h5>Aucun devis soumis</h5>
-            <p>Vous n'avez pas encore soumis de demande de devis.</p>
-          </div>
-        </div>
-        {% endif %}
-
-        <a href="{{ url_for('devis') }}" class="cta-add">
-          <div class="cta-ico"><i class="fas fa-plus-circle"></i></div>
-          <div>
-            <div class="cta-title">Créer un nouveau devis</div>
-            <div class="cta-sub">Remplir une demande de devis personnalisée</div>
-          </div>
-          <i class="fas fa-arrow-right cta-arrow"></i>
-        </a>
-      </div>
-
-      <!-- PANEL 2: CLIENT PROFILE (Manages active and archived profiles) -->
-      <div class="ec-panel" id="panel-fiche">
-        {% if clients %}
-          {% for client in clients %}
-          <div class="prem-card {% if client.archive %}archive{% endif %}">
-            <div class="fiche-header">
-              <div class="fiche-avatar" {% if client.archive %}style="background:var(--muted);"{% endif %}>
-                {{ client.prenom[0] if client.prenom else '?' }}
-                {% if not client.archive %}<span class="fiche-online"></span>{% endif %}
               </div>
-              <div>
-                <div class="fiche-name">{{ client.prenom }} {{ client.nom }}</div>
-                <div class="fiche-id">Fiche client n°{{ client.id }} · {% if client.archive %}Archivée{% else %}Compte actif{% endif %}</div>
-              </div>
-              {% if client.archive %}
-                <span class="status-ribbon sr-archive" style="margin-left:auto;"><i class="fas fa-archive" style="font-size:.55rem;"></i>Archivé</span>
-              {% else %}
-                <span class="status-ribbon sr-valide" style="margin-left:auto;"><i class="fas fa-check" style="font-size:.55rem;"></i>Vérifié</span>
-              {% endif %}
             </div>
-            <div class="fiche-grid">
-              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-briefcase"></i></div><div><div class="fi-label">Activité</div><div class="fi-val">{{ client.activite }}</div></div></div>
-              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-building"></i></div><div><div class="fi-label">Type d'entreprise</div><div class="fi-val">{{ client.type_entreprise }}</div></div></div>
-              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-landmark"></i></div><div><div class="fi-label">Cabinet</div><div class="fi-val">{{ client.cabinet }}</div></div></div>
-              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-user"></i></div><div><div class="fi-label">Civilité</div><div class="fi-val">{{ client.civilite }}</div></div></div>
-              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-envelope"></i></div><div><div class="fi-label">E-mail</div><div class="fi-val">{{ client.email }}</div></div></div>
-              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-map-marker-alt"></i></div><div><div class="fi-label">Adresse du siège</div><div class="fi-val">{{ client.adresse_siege }}</div></div></div>
+            <div class="devis-grid">
+              <div class="dg-field"><div class="dg-label">Secteur</div><div class="dg-val">{{ devis.secteur }}</div></div>
+              <div class="dg-field"><div class="dg-label">Service</div><div class="dg-val accent">{{ devis.type_service }}</div></div>
+              <div class="dg-field"><div class="dg-label">Date de rendez-vous</div><div class="dg-val">{{ devis.date_rdv | replace('-', '/') if devis.date_rdv else '—' }}</div></div>
+              <div class="dg-field"><div class="dg-label">Heure</div><div class="dg-val">{{ devis.heure_rdv or '—' }}</div></div>
             </div>
           </div>
           {% endfor %}
-        {% else %}
-        <div class="prem-card">
-          <div class="ec-empty">
-            <div class="ec-empty-ico"><i class="fas fa-id-card"></i></div>
-            <h5>Aucun profil client</h5>
-            <p>Votre profil client n'a pas encore été renseigné.</p>
-          </div>
-        </div>
-        {% endif %}
-        <a href="{{ url_for('formulaire_client') }}" class="cta-add turq">
-          <div class="cta-ico"><i class="fas fa-user-edit"></i></div>
-          <div>
-            <div class="cta-title">Renseigner mon profil client</div>
-            <div class="cta-sub">Compléter ou mettre à jour vos informations</div>
-          </div>
-          <i class="fas fa-arrow-right cta-arrow"></i>
-        </a>
-      </div>
 
-      <!-- PANEL 3: CREDIT CARD -->
-      <div class="ec-panel" id="panel-carte">
-        {% if session.get('carte_bancaire') %}
+          {% else %}
+          <div class="prem-card">
+            <div class="ec-empty">
+              <div class="ec-empty-ico"><i class="fas fa-file-invoice"></i></div>
+              <h5>Aucun devis soumis</h5>
+              <p>Vous n'avez pas encore soumis de demande de devis.</p>
+            </div>
+          </div>
+          {% endif %}
 
-        <div class="card-secure-note">
-          <i class="fas fa-lock"></i>
-          <span>Données chiffrées AES-256 · Conforme PCI-DSS</span>
+          <a href="{{ url_for('devis') }}" class="cta-add">
+            <div class="cta-ico"><i class="fas fa-plus-circle"></i></div>
+            <div>
+              <div class="cta-title">Créer un nouveau devis</div>
+              <div class="cta-sub">Remplir une demande de devis personnalisée</div>
+            </div>
+            <i class="fas fa-arrow-right cta-arrow"></i>
+          </a>
         </div>
 
-        <div class="card-scene">
-          <div class="credit-card" id="creditCard">
-            <div class="cc-holo"></div>
-            <div class="cc-shine"></div>
-            <div class="cc-noise"></div>
-            <div class="cc-lines"></div>
-            <div class="cc-inner">
-              <div class="cc-top">
-                <div class="cc-brand">ML2C <span class="cc-brand-em">PAY</span></div>
-                <div class="cc-network"><div class="cc-c1"></div><div class="cc-c2"></div></div>
+        <!-- PANEL 2: CLIENT PROFILE (Manages active and archived profiles) -->
+        <div class="ec-panel" id="panel-fiche">
+          {% if clients %}
+            {% for client in clients %}
+            <div class="prem-card {% if client.archive %}archive{% endif %}">
+              <div class="fiche-header">
+                <div class="fiche-avatar" {% if client.archive %}style="background:var(--muted);"{% endif %}>
+                  {{ client.prenom[0] if client.prenom else '?' }}
+                  {% if not client.archive %}<span class="fiche-online"></span>{% endif %}
+                </div>
+                <div>
+                  <div class="fiche-name">{{ client.prenom }} {{ client.nom }}</div>
+                  <div class="fiche-id">Fiche client n°{{ client.id }} · {% if client.archive %}Archivée{% else %}Compte actif{% endif %}</div>
+                </div>
+                {% if client.archive %}
+                  <span class="status-ribbon sr-archive" style="margin-left:auto;"><i class="fas fa-archive" style="font-size:.55rem;"></i>Archivé</span>
+                {% else %}
+                  <span class="status-ribbon sr-valide" style="margin-left:auto;"><i class="fas fa-check" style="font-size:.55rem;"></i>Vérifié</span>
+                {% endif %}
               </div>
-              <div class="cc-mid">
-                <div class="cc-chip"></div>
-                <div class="cc-nfc"><i class="fas fa-wifi fa-rotate-90"></i></div>
+              <div class="fiche-grid">
+                <div class="fiche-item"><div class="fi-ico"><i class="fas fa-briefcase"></i></div><div><div class="fi-label">Activité</div><div class="fi-val">{{ client.activite }}</div></div></div>
+                <div class="fiche-item"><div class="fi-ico"><i class="fas fa-building"></i></div><div><div class="fi-label">Type d'entreprise</div><div class="fi-val">{{ client.type_entreprise }}</div></div></div>
+                <div class="fiche-item"><div class="fi-ico"><i class="fas fa-landmark"></i></div><div><div class="fi-label">Cabinet</div><div class="fi-val">{{ client.cabinet }}</div></div></div>
+                <div class="fiche-item"><div class="fi-ico"><i class="fas fa-user"></i></div><div><div class="fi-label">Civilité</div><div class="fi-val">{{ client.civilite }}</div></div></div>
+                <div class="fiche-item"><div class="fi-ico"><i class="fas fa-envelope"></i></div><div><div class="fi-label">E-mail</div><div class="fi-val">{{ client.email }}</div></div></div>
+                <div class="fiche-item"><div class="fi-ico"><i class="fas fa-map-marker-alt"></i></div><div><div class="fi-label">Adresse du siège</div><div class="fi-val">{{ client.adresse_siege }}</div></div></div>
               </div>
-              <div class="cc-number">
-                <span class="cens">•••• •••• ••••</span>&nbsp;{{ session.carte_bancaire.numero[-4:] }}
-              </div>
-              <div class="cc-bottom">
-                <div><div class="cc-fl">Titulaire</div><div class="cc-fv">{{ session.carte_bancaire.nom | upper }}</div></div>
-                <div><div class="cc-fl">Expire fin</div><div class="cc-fv">{{ session.carte_bancaire.expiration }}</div></div>
-                <div><div class="cc-fl">CVV</div><div class="cc-fv cens">•••</div></div>
+            </div>
+            {% endfor %}
+          {% else %}
+          <div class="prem-card">
+            <div class="ec-empty">
+              <div class="ec-empty-ico"><i class="fas fa-id-card"></i></div>
+              <h5>Aucun profil client</h5>
+              <p>Votre profil client n'a pas encore été renseigné.</p>
+            </div>
+          </div>
+          {% endif %}
+          <a href="{{ url_for('formulaire_client') }}" class="cta-add turq">
+            <div class="cta-ico"><i class="fas fa-user-edit"></i></div>
+            <div>
+              <div class="cta-title">Renseigner mon profil client</div>
+              <div class="cta-sub">Compléter ou mettre à jour vos informations</div>
+            </div>
+            <i class="fas fa-arrow-right cta-arrow"></i>
+          </a>
+        </div>
+
+        <!-- PANEL 3: CREDIT CARD -->
+        <div class="ec-panel" id="panel-carte">
+          {% if session.get('carte_bancaire') %}
+
+          <div class="card-secure-note">
+            <i class="fas fa-lock"></i>
+            <span>Données chiffrées AES-256 · Conforme PCI-DSS</span>
+          </div>
+
+          <div class="card-scene">
+            <div class="credit-card" id="creditCard">
+              <div class="cc-holo"></div>
+              <div class="cc-shine"></div>
+              <div class="cc-noise"></div>
+              <div class="cc-lines"></div>
+              <div class="cc-inner">
+                <div class="cc-top">
+                  <div class="cc-brand">ML2C <span class="cc-brand-em">PAY</span></div>
+                  <div class="cc-network"><div class="cc-c1"></div><div class="cc-c2"></div></div>
+                </div>
+                <div class="cc-mid">
+                  <div class="cc-chip"></div>
+                  <div class="cc-nfc"><i class="fas fa-wifi fa-rotate-90"></i></div>
+                </div>
+                <div class="cc-number">
+                  <span class="cens">•••• •••• ••••</span>&nbsp;{{ session.carte_bancaire.numero[-4:] }}
+                </div>
+                <div class="cc-bottom">
+                  <div><div class="cc-fl">Titulaire</div><div class="cc-fv">{{ session.carte_bancaire.nom | upper }}</div></div>
+                  <div><div class="cc-fl">Expire fin</div><div class="cc-fv">{{ session.carte_bancaire.expiration }}</div></div>
+                  <div><div class="cc-fl">CVV</div><div class="cc-fv cens">•••</div></div>
+                </div>
               </div>
             </div>
           </div>
+
+          <form method="POST" action="{{ url_for('supprimer_carte') }}" onsubmit="return confirm('Confirmer la suppression ?')">
+            <button type="submit" class="btn-del-card"><i class="fas fa-trash-alt"></i>Supprimer la carte</button>
+          </form>
+          <p style="text-align:center;font-size:.74rem;color:var(--muted);margin-top:.85rem;"><i class="fas fa-info-circle" style="color:var(--turq);"></i> Détails complets dans vos paramètres de facturation.</p>
+
+          {% else %}
+          <div class="prem-card">
+            <div class="ec-empty">
+              <div class="ec-empty-ico"><i class="fas fa-credit-card"></i></div>
+              <h5>Aucune carte enregistrée</h5>
+              <p>Ajoutez une carte de paiement pour simplifier vos transactions.</p>
+            </div>
+          </div>
+          <a href="{{ url_for('paiement') }}" class="cta-add">
+            <div class="cta-ico"><i class="fas fa-plus-circle"></i></div>
+            <div>
+              <div class="cta-title">Ajouter une carte bancaire</div>
+              <div class="cta-sub">Visa, Mastercard ou American Express</div>
+            </div>
+            <i class="fas fa-arrow-right cta-arrow"></i>
+          </a>
+          {% endif %}
         </div>
 
-        <form method="POST" action="{{ url_for('supprimer_carte') }}" onsubmit="return confirm('Confirmer la suppression ?')">
-          <button type="submit" class="btn-del-card"><i class="fas fa-trash-alt"></i>Supprimer la carte</button>
-        </form>
-        <p style="text-align:center;font-size:.74rem;color:var(--muted);margin-top:.85rem;"><i class="fas fa-info-circle" style="color:var(--turq);"></i> Détails complets dans vos paramètres de facturation.</p>
-
-        {% else %}
-        <div class="prem-card">
-          <div class="ec-empty">
-            <div class="ec-empty-ico"><i class="fas fa-credit-card"></i></div>
-            <h5>Aucune carte enregistrée</h5>
-            <p>Ajoutez une carte de paiement pour simplifier vos transactions.</p>
-          </div>
-        </div>
-        <a href="{{ url_for('paiement') }}" class="cta-add">
-          <div class="cta-ico"><i class="fas fa-plus-circle"></i></div>
-          <div>
-            <div class="cta-title">Ajouter une carte bancaire</div>
-            <div class="cta-sub">Visa, Mastercard ou American Express</div>
-          </div>
-          <i class="fas fa-arrow-right cta-arrow"></i>
-        </a>
-        {% endif %}
       </div>
 
       <!-- LOWER ACTION BAR -->

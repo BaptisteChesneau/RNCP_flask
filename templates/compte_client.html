@@ -536,42 +536,42 @@
 
       <div class="ec-session-badge">
         <span class="ec-dot"></span>
-        Active session &nbsp;·&nbsp;
+        Session active &nbsp;·&nbsp;
         <span style="font-family:var(--ff-mono);font-size:.68rem;" id="heroTime">--:--:--</span>
       </div>
 
       <h1 class="ec-welcome">
-        Hello,&nbsp;<em id="welcomeName">User</em>
+        Bonjour,&nbsp;<em id="welcomeName">Utilisateur</em>
       </h1>
-      <p class="ec-sub">Welcome to your client portal. Manage your quotes, profile, and payment details.</p>
+      <p class="ec-sub">Bienvenue dans votre espace client. Gérez vos devis, votre profil et vos informations de paiement.</p>
 
       <div class="ec-hero-stats">
         <div class="ec-hero-stat s1">
           <div class="ec-hero-stat-ico esi-rose"><i class="fas fa-file-invoice"></i></div>
           <div>
             <div class="ec-hero-stat-val" id="statDevis">{% if devis_list %}{{ devis_list|length }}{% else %}0{% endif %}</div>
-            <div class="ec-hero-stat-lbl">Quotes</div>
+            <div class="ec-hero-stat-lbl">Devis</div>
           </div>
         </div>
         <div class="ec-hero-stat s2">
           <div class="ec-hero-stat-ico esi-turq"><i class="fas fa-id-card"></i></div>
           <div>
             <div class="ec-hero-stat-val" id="statFiches">{% if clients %}{{ clients|length }}{% else %}0{% endif %}</div>
-            <div class="ec-hero-stat-lbl">Profiles</div>
+            <div class="ec-hero-stat-lbl">Profils</div>
           </div>
         </div>
         <div class="ec-hero-stat s3">
           <div class="ec-hero-stat-ico esi-gold"><i class="fas fa-shield-alt"></i></div>
           <div>
             <div class="ec-hero-stat-val">100%</div>
-            <div class="ec-hero-stat-lbl">Secure</div>
+            <div class="ec-hero-stat-lbl">Sécurisé</div>
           </div>
         </div>
         <div class="ec-hero-stat s4">
           <div class="ec-hero-stat-ico esi-ink"><i class="fas fa-calendar"></i></div>
           <div>
             <div class="ec-hero-stat-val" id="statDate">--/--</div>
-            <div class="ec-hero-stat-lbl">Today</div>
+            <div class="ec-hero-stat-lbl">Aujourd'hui</div>
           </div>
         </div>
       </div>
@@ -588,12 +588,12 @@
             <i class="fas fa-comments"></i>
           </div>
           <div>
-            <div class="ec-support-title">Need to chat or get assistance?</div>
-            <div class="ec-support-sub">Chat directly with your dedicated ML2C CONSEIL collaborator.</div>
+            <div class="ec-support-title">Besoin d'échanger ou d'assistance ?</div>
+            <div class="ec-support-sub">Discutez en direct avec votre collaborateur dédié ML2C CONSEIL.</div>
           </div>
         </div>
         <a href="{{ url_for('messagerie') }}" class="btn-act btn-act-rose px-4 py-2" style="white-space: nowrap;">
-          Open messaging <i class="fas fa-paper-plane ml-1"></i>
+          Ouvrir la messagerie <i class="fas fa-paper-plane ml-1"></i>
         </a>
       </div>
 
@@ -601,22 +601,22 @@
       <div class="ec-nav-wrap">
         <button class="ec-nav-btn active" data-panel="devis">
           <i class="fas fa-file-invoice"></i>
-          <span class="tab-text">My quotes</span>
+          <span class="tab-text">Mes devis</span>
           {% if devis_list %}<span class="nav-chip">{{ devis_list|length }}</span>{% endif %}
         </button>
         <button class="ec-nav-btn" data-panel="fiche">
           <i class="fas fa-id-card"></i>
-          <span class="tab-text">Client profile</span>
+          <span class="tab-text">Profil client</span>
           {% if clients %}<span class="nav-chip">{{ clients|length }}</span>{% endif %}
         </button>
         <button class="ec-nav-btn" data-panel="carte">
           <i class="fas fa-credit-card"></i>
-          <span class="tab-text">Credit card</span>
+          <span class="tab-text">Carte bancaire</span>
         </button>
         <!-- ADDITIONAL SHORTCUT TO MESSAGING -->
         <a href="{{ url_for('messagerie') }}" class="ec-nav-btn" style="color: var(--rose);">
           <i class="fas fa-paper-plane"></i>
-          <span class="tab-text">Client messaging</span>
+          <span class="tab-text">Messagerie client</span>
         </a>
       </div>
 
@@ -628,26 +628,26 @@
           {% if session.devis_data or devis_list %}
 
           <div class="prem-card">
-            <div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-bottom:1.1rem;">Request status</div>
+            <div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-bottom:1.1rem;">Statut de la demande</div>
             <div class="devis-timeline">
               <div class="dt-step done">
                 <div class="dt-circle"><i class="fas fa-check"></i></div>
-                <div class="dt-label">Submitted</div>
+                <div class="dt-label">Soumis</div>
               </div>
               <div class="dt-bar done"></div>
               <div class="dt-step active">
                 <div class="dt-circle"><i class="fas fa-search"></i></div>
-                <div class="dt-label">Under review</div>
+                <div class="dt-label">En cours d'étude</div>
               </div>
               <div class="dt-bar"></div>
               <div class="dt-step">
                 <div class="dt-circle">3</div>
-                <div class="dt-label">Quote sent</div>
+                <div class="dt-label">Devis envoyé</div>
               </div>
               <div class="dt-bar"></div>
               <div class="dt-step">
                 <div class="dt-circle">4</div>
-                <div class="dt-label">Accepted</div>
+                <div class="dt-label">Accepté</div>
               </div>
             </div>
           </div>
@@ -657,19 +657,19 @@
             <div class="prem-card-head">
               <div class="prem-card-ico pci-rose"><i class="fas fa-file-alt"></i></div>
               <div>
-                <div class="prem-card-title">Pending quote</div>
-                <div class="prem-card-sub">Submitted via the online form</div>
+                <div class="prem-card-title">Devis en attente</div>
+                <div class="prem-card-sub">Soumis via le formulaire en ligne</div>
               </div>
-              <span class="status-ribbon sr-en-cours" style="margin-left:auto;"><i class="fas fa-circle" style="font-size:.45rem;"></i>Processing</span>
+              <span class="status-ribbon sr-en-cours" style="margin-left:auto;"><i class="fas fa-circle" style="font-size:.45rem;"></i>En traitement</span>
             </div>
             <div class="devis-grid">
-              <div class="dg-field"><div class="dg-label">Sector</div><div class="dg-val">{{ session.devis_data.secteur }}</div></div>
-              <div class="dg-field"><div class="dg-label">Name / Company name</div><div class="dg-val">{{ session.devis_data.nom }}</div></div>
-              <div class="dg-field"><div class="dg-label">Requested service</div><div class="dg-val accent">{{ session.devis_data.type_service }}</div></div>
-              <div class="dg-field"><div class="dg-label">Email</div><div class="dg-val">{{ session.devis_data.email }}</div></div>
+              <div class="dg-field"><div class="dg-label">Secteur</div><div class="dg-val">{{ session.devis_data.secteur }}</div></div>
+              <div class="dg-field"><div class="dg-label">Nom / Raison sociale</div><div class="dg-val">{{ session.devis_data.nom }}</div></div>
+              <div class="dg-field"><div class="dg-label">Service demandé</div><div class="dg-val accent">{{ session.devis_data.type_service }}</div></div>
+              <div class="dg-field"><div class="dg-label">E-mail</div><div class="dg-val">{{ session.devis_data.email }}</div></div>
             </div>
             {% if session.devis_data.date_rdv %}
-            <div><span class="rdv-pill"><i class="fas fa-calendar-check"></i>Confirmed appointment · {{ session.devis_data.date_rdv }} at {{ session.devis_data.heure_rdv }}</span></div>
+            <div><span class="rdv-pill"><i class="fas fa-calendar-check"></i>Rendez-vous confirmé · {{ session.devis_data.date_rdv }} à {{ session.devis_data.heure_rdv }}</span></div>
             {% endif %}
           </div>
           {% endif %}
@@ -680,14 +680,14 @@
               <div class="prem-card-ico pci-turq"><i class="fas fa-folder-open"></i></div>
               <div>
                 <div class="prem-card-title">{{ devis.nom }}</div>
-                <div class="prem-card-sub">Quote request</div>
+                <div class="prem-card-sub">Demande de devis</div>
             </div>
           </div>
           <div class="devis-grid">
-            <div class="dg-field"><div class="dg-label">Sector</div><div class="dg-val">{{ devis.secteur }}</div></div>
+            <div class="dg-field"><div class="dg-label">Secteur</div><div class="dg-val">{{ devis.secteur }}</div></div>
             <div class="dg-field"><div class="dg-label">Service</div><div class="dg-val accent">{{ devis.type_service }}</div></div>
-            <div class="dg-field"><div class="dg-label">Appointment date</div><div class="dg-val">{{ devis.date_rdv | replace('-', '/') if devis.date_rdv else '—' }}</div></div>
-            <div class="dg-field"><div class="dg-label">Time</div><div class="dg-val">{{ devis.heure_rdv or '—' }}</div></div>
+            <div class="dg-field"><div class="dg-label">Date de rendez-vous</div><div class="dg-val">{{ devis.date_rdv | replace('-', '/') if devis.date_rdv else '—' }}</div></div>
+            <div class="dg-field"><div class="dg-label">Heure</div><div class="dg-val">{{ devis.heure_rdv or '—' }}</div></div>
           </div>
         </div>
         {% endfor %}
@@ -696,8 +696,8 @@
         <div class="prem-card">
           <div class="ec-empty">
             <div class="ec-empty-ico"><i class="fas fa-file-invoice"></i></div>
-            <h5>No quotes submitted</h5>
-            <p>You haven't submitted any quote requests yet.</p>
+            <h5>Aucun devis soumis</h5>
+            <p>Vous n'avez pas encore soumis de demande de devis.</p>
           </div>
         </div>
         {% endif %}
@@ -705,8 +705,8 @@
         <a href="{{ url_for('devis') }}" class="cta-add">
           <div class="cta-ico"><i class="fas fa-plus-circle"></i></div>
           <div>
-            <div class="cta-title">Create a new quote</div>
-            <div class="cta-sub">Fill out a personalized quote request</div>
+            <div class="cta-title">Créer un nouveau devis</div>
+            <div class="cta-sub">Remplir une demande de devis personnalisée</div>
           </div>
           <i class="fas fa-arrow-right cta-arrow"></i>
         </a>
@@ -724,21 +724,21 @@
               </div>
               <div>
                 <div class="fiche-name">{{ client.prenom }} {{ client.nom }}</div>
-                <div class="fiche-id">Client profile n°{{ client.id }} · {% if client.archive %}Archived{% else %}Active account{% endif %}</div>
+                <div class="fiche-id">Fiche client n°{{ client.id }} · {% if client.archive %}Archivée{% else %}Compte actif{% endif %}</div>
               </div>
               {% if client.archive %}
-                <span class="status-ribbon sr-archive" style="margin-left:auto;"><i class="fas fa-archive" style="font-size:.55rem;"></i>Archived</span>
+                <span class="status-ribbon sr-archive" style="margin-left:auto;"><i class="fas fa-archive" style="font-size:.55rem;"></i>Archivé</span>
               {% else %}
-                <span class="status-ribbon sr-valide" style="margin-left:auto;"><i class="fas fa-check" style="font-size:.55rem;"></i>Verified</span>
+                <span class="status-ribbon sr-valide" style="margin-left:auto;"><i class="fas fa-check" style="font-size:.55rem;"></i>Vérifié</span>
               {% endif %}
             </div>
             <div class="fiche-grid">
-              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-briefcase"></i></div><div><div class="fi-label">Activity</div><div class="fi-val">{{ client.activite }}</div></div></div>
-              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-building"></i></div><div><div class="fi-label">Company type</div><div class="fi-val">{{ client.type_entreprise }}</div></div></div>
-              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-landmark"></i></div><div><div class="fi-label">Firm</div><div class="fi-val">{{ client.cabinet }}</div></div></div>
-              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-user"></i></div><div><div class="fi-label">Title</div><div class="fi-val">{{ client.civilite }}</div></div></div>
-              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-envelope"></i></div><div><div class="fi-label">Email</div><div class="fi-val">{{ client.email }}</div></div></div>
-              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-map-marker-alt"></i></div><div><div class="fi-label">Headquarters</div><div class="fi-val">{{ client.adresse_siege }}</div></div></div>
+              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-briefcase"></i></div><div><div class="fi-label">Activité</div><div class="fi-val">{{ client.activite }}</div></div></div>
+              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-building"></i></div><div><div class="fi-label">Type d'entreprise</div><div class="fi-val">{{ client.type_entreprise }}</div></div></div>
+              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-landmark"></i></div><div><div class="fi-label">Cabinet</div><div class="fi-val">{{ client.cabinet }}</div></div></div>
+              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-user"></i></div><div><div class="fi-label">Civilité</div><div class="fi-val">{{ client.civilite }}</div></div></div>
+              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-envelope"></i></div><div><div class="fi-label">E-mail</div><div class="fi-val">{{ client.email }}</div></div></div>
+              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-map-marker-alt"></i></div><div><div class="fi-label">Adresse du siège</div><div class="fi-val">{{ client.adresse_siege }}</div></div></div>
             </div>
           </div>
           {% endfor %}
@@ -746,16 +746,16 @@
         <div class="prem-card">
           <div class="ec-empty">
             <div class="ec-empty-ico"><i class="fas fa-id-card"></i></div>
-            <h5>No client profile</h5>
-            <p>Your client profile has not been filled out yet.</p>
+            <h5>Aucun profil client</h5>
+            <p>Votre profil client n'a pas encore été renseigné.</p>
           </div>
         </div>
         {% endif %}
         <a href="{{ url_for('formulaire_client') }}" class="cta-add turq">
           <div class="cta-ico"><i class="fas fa-user-edit"></i></div>
           <div>
-            <div class="cta-title">Fill out my client profile</div>
-            <div class="cta-sub">Complete or update your information</div>
+            <div class="cta-title">Renseigner mon profil client</div>
+            <div class="cta-sub">Compléter ou mettre à jour vos informations</div>
           </div>
           <i class="fas fa-arrow-right cta-arrow"></i>
         </a>
@@ -767,7 +767,7 @@
 
         <div class="card-secure-note">
           <i class="fas fa-lock"></i>
-          <span>AES-256 encrypted data · PCI-DSS compliant</span>
+          <span>Données chiffrées AES-256 · Conforme PCI-DSS</span>
         </div>
 
         <div class="card-scene">
@@ -789,32 +789,32 @@
                 <span class="cens">•••• •••• ••••</span>&nbsp;{{ session.carte_bancaire.numero[-4:] }}
               </div>
               <div class="cc-bottom">
-                <div><div class="cc-fl">Cardholder</div><div class="cc-fv">{{ session.carte_bancaire.nom | upper }}</div></div>
-                <div><div class="cc-fl">Expires</div><div class="cc-fv">{{ session.carte_bancaire.expiration }}</div></div>
+                <div><div class="cc-fl">Titulaire</div><div class="cc-fv">{{ session.carte_bancaire.nom | upper }}</div></div>
+                <div><div class="cc-fl">Expire fin</div><div class="cc-fv">{{ session.carte_bancaire.expiration }}</div></div>
                 <div><div class="cc-fl">CVV</div><div class="cc-fv cens">•••</div></div>
               </div>
             </div>
           </div>
         </div>
 
-        <form method="POST" action="{{ url_for('supprimer_carte') }}" onsubmit="return confirm('Confirm deletion?')">
-          <button type="submit" class="btn-del-card"><i class="fas fa-trash-alt"></i>Delete card</button>
+        <form method="POST" action="{{ url_for('supprimer_carte') }}" onsubmit="return confirm('Confirmer la suppression ?')">
+          <button type="submit" class="btn-del-card"><i class="fas fa-trash-alt"></i>Supprimer la carte</button>
         </form>
-        <p style="text-align:center;font-size:.74rem;color:var(--muted);margin-top:.85rem;"><i class="fas fa-info-circle" style="color:var(--turq);"></i> Full details in your billing settings.</p>
+        <p style="text-align:center;font-size:.74rem;color:var(--muted);margin-top:.85rem;"><i class="fas fa-info-circle" style="color:var(--turq);"></i> Détails complets dans vos paramètres de facturation.</p>
 
         {% else %}
         <div class="prem-card">
           <div class="ec-empty">
             <div class="ec-empty-ico"><i class="fas fa-credit-card"></i></div>
-            <h5>No saved card</h5>
-            <p>Add a payment card to simplify your transactions.</p>
+            <h5>Aucune carte enregistrée</h5>
+            <p>Ajoutez une carte de paiement pour simplifier vos transactions.</p>
           </div>
         </div>
         <a href="{{ url_for('paiement') }}" class="cta-add">
           <div class="cta-ico"><i class="fas fa-plus-circle"></i></div>
           <div>
-            <div class="cta-title">Add a credit card</div>
-            <div class="cta-sub">Visa, Mastercard, or American Express</div>
+            <div class="cta-title">Ajouter une carte bancaire</div>
+            <div class="cta-sub">Visa, Mastercard ou American Express</div>
           </div>
           <i class="fas fa-arrow-right cta-arrow"></i>
         </a>
@@ -823,10 +823,10 @@
 
       <!-- LOWER ACTION BAR -->
       <div class="ec-action-bar">
-        <a href="{{ url_for('parametres') }}" class="btn-act btn-act-rose"><i class="fas fa-cog"></i>Settings</a>
-        <a href="{{ url_for('gerer_devis') }}" class="btn-act btn-act-turq"><i class="fas fa-folder-open"></i>Manage my quotes</a>
-        <a href="{{ url_for('menu') }}" class="btn-act btn-act-ghost"><i class="fas fa-arrow-left"></i>Back to menu</a>
-        <a href="{{ url_for('logout') }}" class="btn-act btn-act-danger" onclick="return confirm('Confirm logout?')"><i class="fas fa-sign-out-alt"></i>Logout</a>
+        <a href="{{ url_for('parametres') }}" class="btn-act btn-act-rose"><i class="fas fa-cog"></i>Paramètres</a>
+        <a href="{{ url_for('gerer_devis') }}" class="btn-act btn-act-turq"><i class="fas fa-folder-open"></i>Gérer mes devis</a>
+        <a href="{{ url_for('menu') }}" class="btn-act btn-act-ghost"><i class="fas fa-arrow-left"></i>Retour au menu</a>
+        <a href="{{ url_for('logout') }}" class="btn-act btn-act-danger" onclick="return confirm('Confirmer la déconnexion ?')"><i class="fas fa-sign-out-alt"></i>Déconnexion</a>
       </div>
 
     </div>
@@ -836,7 +836,7 @@
 <!-- DYNAMIC TOAST -->
 <div class="ec-toast" id="ecToast">
   <i class="fas fa-check-circle" id="ecToastIcon"></i>
-  <span id="ecToastMsg">Welcome to your client portal</span>
+  <span id="ecToastMsg">Bienvenue sur votre espace client</span>
   <button type="button" class="toast-close-btn" onclick="hideToast()"><i class="fas fa-times"></i></button>
 </div>
 
@@ -966,7 +966,7 @@ document.addEventListener("DOMContentLoaded", function() {
   if (flashData) {
     showToast(flashData, 'success', 5000);
   } else {
-    showToast("Welcome to your client portal", 'success', 4000);
+    showToast("Bienvenue sur votre espace client", 'success', 4000);
   }
 });
 </script>

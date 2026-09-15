@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Création/reprise d'entreprise</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+<!-- Include the global navigation header -->
+{% include "header.html" %}
+
+<!-- Page Hero Section -->
+<section class="page-hero">
+  <div class="container ph-inner">
+    <ol class="breadcrumb-ml2c">
+      <li><a href="{{ url_for('menu') }}">Accueil</a></li>
+      <li><span class="sep"><i class="fas fa-chevron-right"></i></span></li>
+      <li><a href="#">Nos services</a></li>
+      <li><span class="sep"><i class="fas fa-chevron-right"></i></span></li>
+      <li>Création/reprise d'entreprise</li>
+    </ol>
+    <h1 class="ph-title">Création & reprise<em>d'entreprise</em></h1>
+    <p class="ph-sub">Statuts, outils, prévisionnel : créez votre entreprise avec des experts.</p>
+  </div>
+</section>
+
+<!-- Main Service Details Section -->
+<section class="sec sec-grey">
+  <div class="container">
+    <div class="svc-bloc" data-anim="fade">
+      <div class="svc-visuel">
+        <span class="svc-deco-num">CR</span>
+        <div class="svc-icon-wrap"><i class="fas fa-rocket"></i></div>
+        <span class="svc-badge">Création</span>
+      </div>
+      <div class="svc-texte">
+        <span class="label-tag">Conseil & Accompagnement</span>
+        <h2>Création/reprise d'entreprise</h2>
+        <div class="svc-sous">Statuts, démarrage, mise en place des outils</div>
+        <div class="barre"></div>
+        <p>Créer ou reprendre une entreprise est une aventure passionnante mais semée d'embûches administratives et juridiques. ML2C CONSEIL vous accompagne de A à Z : choix de la forme juridique, rédaction des statuts, immatriculation, ouverture des comptes, mise en place des outils comptables et de facturation.</p>
+        <p>Pour les reprises, nous réalisons un audit complet de la structure cible (comptes, contrats, risques) afin de sécuriser votre acquisition et de vous donner une vision claire de ce que vous achetez. Un accompagnement sur-mesure pour démarrer sur des bases solides.</p>
+        <ul class="presta-list">
+          <li><i class="fas fa-check"></i> Choix de la forme juridique adaptée</li>
+          <li><i class="fas fa-check"></i> Rédaction et dépôt des statuts</li>
+          <li><i class="fas fa-check"></i> Business plan et prévisionnel financier</li>
+          <li><i class="fas fa-check"></i> Audit d'acquisition (reprise)</li>
+          <li><i class="fas fa-check"></i> Mise en place des outils de gestion dès le jour 1</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Advantages / Why Choose Us Section -->
+<section class="sec sec-white">
+  <div class="container">
+    <div class="text-center mb-5" data-anim="fade">
+      <span class="label-tag">Pourquoi nous choisir</span>
+      <h2 class="titre-sec">Nos avantages</h2>
+      <div class="barre c"></div>
+    </div>
+    <div class="avantages-grid">
+      <div class="av-card" data-anim="fade">
+        <i class="fas fa-compass"></i>
+        <h4>Accompagnement 360°</h4>
+        <p>De l'idée à l'immatriculation, nous sommes à vos côtés à chaque étape.</p>
+      </div>
+      <div class="av-card" data-anim="fade">
+        <i class="fas fa-file-contract"></i>
+        <h4>Sécurité juridique</h4>
+        <p>Statuts bien rédigés, choix de structure optimal une base solide pour la suite.</p>
+      </div>
+      <div class="av-card" data-anim="fade">
+        <i class="fas fa-chart-line"></i>
+        <h4>Vision financière</h4>
+        <p>Business plan et prévisionnel pour convaincre les banques et piloter votre lancement.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action Band Section -->
+<section class="sec sec-grey">
+  <div class="container">
+    <div class="cta-bande" data-anim="fade">
+      <div>
+        <h2>Besoin de ce service ?</h2>
+        <p>Contactez-nous pour un premier échange gratuit et sans engagement.</p>
+      </div>
+      <div class="cta-buttons">
+        <a href="{{ url_for('nous_contacter') }}" class="btn-blanc"><i class="fas fa-calendar-alt"></i> Prendre RDV</a>
+        <a href="{{ url_for('menu') }}" class="btn-contour"><i class="fas fa-th-large"></i> Tous nos services</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Include the global footer -->
+{% include "footer.html" %}
+
+<!-- JavaScript libraries and page-specific script -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='js/creation_reprise.js') }}"></script>
+</body>
+</html>

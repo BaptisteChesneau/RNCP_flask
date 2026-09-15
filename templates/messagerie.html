@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Messagerie Client</title>
+  <!-- Bootstrap CSS (CDN) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Custom CSS file -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+  <style>
+    :root {
+      --primary-color: #b81473;
+      --primary-hover: #960f5d;
+      --primary-gradient: linear-gradient(135deg, #b81473 0%, #76094b 100%);
+      --bg-body: #f1f5f9;
+      --bg-card: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+    }
+
+    body {
+      background-color: var(--bg-body);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: var(--text-main);
+    }
+
+    /* Container Chat */
+    .app-chat-container {
+      background: var(--bg-card);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      height: calc(100vh - 140px);
+      min-height: 620px;
+    }
+
+    /* Sidebar Clients / Collaborateurs */
+    .sidebar-wrapper {
+      background: #f8fafc;
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .sidebar-header {
+      padding: 1.25rem 1.5rem;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .client-list, .contact-list {
+      overflow-y: auto;
+      flex: 1;
+      padding: 0.75rem;
+    }
+
+    .client-card, .contact-card {
+      display: flex;
+      align-items: center;
+      padding: 12px 14px;
+      border-radius: 14px;
+      color: var(--text-main);
+      text-decoration: none !important;
+      transition: all 0.2s ease;
+      margin-bottom: 6px;
+      border: 1px solid transparent;
+      background: #ffffff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+
+    .client-card:hover, .contact-card:hover {
+      background: #ffffff;
+      border-color: rgba(184, 20, 115, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .client-card.active, .contact-card.active {
+      background: #ffffff;
+      border-color: rgba(184, 20, 115, 0.5);
+      box-shadow: 0 10px 20px -10px rgba(184, 20, 115, 0.2);
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      margin-right: 12px;
+      flex-shrink: 0;
+    }
+
+    .avatar-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--primary-gradient);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 10px rgba(184, 20, 115, 0.2);
+    }
+
+    .status-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #22c55e;
+      border: 2px solid #ffffff;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+
+    /* Zone Chat Principale */
+    .chat-main-wrapper {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      background: #ffffff;
+    }
+
+    .chat-header {
+      padding: 1rem 1.75rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #ffffff;
+    }
+
+    .chat-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.75rem;
+      background: #fafafa;
+    }
+
+    /* Bulles de Messages */
+    .message-group {
+      display: flex;
+      margin-bottom: 1.25rem;
+      flex-direction: column;
+    }
+
+    .message-group.sent {
+      align-items: flex-end;
+    }
+
+    .message-group.received {
+      align-items: flex-start;
+    }
+
+    .bubble {
+      max-width: 65%;
+      padding: 14px 20px;
+      border-radius: 18px;
+      font-size: 0.925rem;
+      line-height: 1.5;
+      position: relative;
+    }
+
+    .sent .bubble {
+      background: var(--primary-gradient);
+      color: #ffffff;
+      border-bottom-right-radius: 4px;
+      box-shadow: 0 8px 16px -4px rgba(184, 20, 115, 0.3);
+    }
+
+    .received .bubble {
+      background: #ffffff;
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+
+    /* Style distinct pour les messages de l'équipe Support/Collaborateur */
+    .collab-bubble {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+      color: #ffffff !important;
+      border: none !important;
+    }
+
+    .collab-bubble .message-meta {
+      color: rgba(255, 255, 255, 0.75) !important;
+    }
+
+    .message-meta {
+      font-size: 0.72rem;
+      margin-top: 5px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .sent .message-meta {
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .received .message-meta {
+      color: var(--text-muted);
+    }
+
+    /* Zone de Saisie */
+    .chat-footer {
+      padding: 1.25rem 1.75rem;
+      border-top: 1px solid var(--border-color);
+      background: #ffffff;
+    }
+
+    .input-toolbar {
+      display: flex;
+      align-items: center;
+      background: #f8fafc;
+      border: 1.5px solid var(--border-color);
+      border-radius: 16px;
+      padding: 6px 10px 6px 16px;
+      transition: all 0.2s;
+    }
+
+    .input-toolbar:focus-within {
+      border-color: var(--primary-color);
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(184, 20, 115, 0.1);
+    }
+
+    .chat-input-field {
+      border: none;
+      background: transparent;
+      width: 100%;
+      height: 42px;
+      font-size: 0.925rem;
+      color: var(--text-main);
+    }
+
+    .chat-input-field:focus {
+      outline: none;
+    }
+
+    .btn-action-icon {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .btn-action-icon:hover {
+      background: #e2e8f0;
+      color: var(--text-main);
+    }
+
+    .btn-send-main {
+      height: 42px;
+      padding: 0 22px;
+      border-radius: 12px;
+      background: var(--primary-gradient);
+      border: none;
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(184, 20, 115, 0.25);
+      transition: all 0.2s;
+    }
+
+    .btn-send-main:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(184, 20, 115, 0.35);
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container-fluid px-4 py-3">
+
+  <!-- En-tête de page -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex align-items-center">
+      <div class="avatar-circle mr-3" style="width: 44px; height: 44px; font-size: 1.1rem;">
+        <i class="fas fa-comments"></i>
+      </div>
+      <div>
+        <h5 class="font-weight-bold mb-0" style="color: #0f172a;">Messagerie & Support</h5>
+        <span class="text-muted small">Espace d'échange direct sécurisé — ML2C CONSEIL</span>
+      </div>
+    </div>
+
+    {% if session.get('is_collaborateur') %}
+      <a href="{{ url_for('collaborateur_dashboard') }}" class="btn btn-outline-dark btn-sm font-weight-bold rounded-lg px-3 py-2">
+        <i class="fas fa-arrow-left mr-2"></i> Tableau de Bord
+      </a>
+    {% else %}
+      <a href="{{ url_for('compte_client') }}" class="btn btn-outline-dark btn-sm font-weight-bold rounded-lg px-3 py-2">
+        <i class="fas fa-arrow-left mr-2"></i> Mon Espace Client
+      </a>
+    {% endif %}
+  </div>
+
+  <!-- Messages Flash -->
+  {% with messages_flash = get_flashed_messages(with_categories=true) %}
+    {% if messages_flash %}
+      {% for category, message in messages_flash %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show rounded-lg mb-3" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <!-- Conteneur Chat -->
+  <div class="app-chat-container row no-gutters">
+
+    <!-- SIDEBAR -->
+    {% if session.get('is_collaborateur') %}
+    <div class="col-md-4 col-lg-3 sidebar-wrapper">
+      <div class="sidebar-header">
+        <h6 class="font-weight-bold text-uppercase text-muted small mb-0"><i class="fas fa-address-book mr-2"></i>Portefeuille Clients</h6>
+      </div>
+
+      <div class="client-list">
+        {% if clients %}
+          {% for client in clients %}
+          <a href="{{ url_for('messagerie', client_id=client.id) }}" 
+             class="client-card {% if client_selectionne and client_selectionne.id == client.id %}active{% endif %}">
+            <div class="avatar-wrapper">
+              <div class="avatar-circle">
+                {{ client.prenom[0]|upper if client.prenom else (client.username[0]|upper if client.username else 'C') }}
+              </div>
+              <div class="status-indicator"></div>
+            </div>
+            <div class="text-truncate flex-grow-1">
+              <div class="font-weight-bold small text-truncate" style="color: #0f172a;">
+                {{ client.prenom or '' }} {{ client.nom or '' }}
+              </div>
+              <small class="text-muted text-truncate d-block" style="font-size: 0.78rem;">
+                {{ client.email }}
+              </small>
+            </div>
+          </a>
+          {% endfor %}
+        {% else %}
+          <div class="text-center text-muted p-4">
+            <p class="small mb-0">Aucun client trouvé.</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    {% else %}
+    <div class="col-md-4 col-lg-3 sidebar-wrapper">
+      <div class="sidebar-header d-flex justify-content-between align-items-center">
+        <h6 class="font-weight-bold text-uppercase text-muted small mb-0"><i class="fas fa-user-tie mr-2"></i>Équipe ML2C</h6>
+        {% if collab_selectionne %}
+          <a href="{{ url_for('messagerie') }}" class="badge badge-light border text-muted" title="Voir tout le fil">Tous</a>
+        {% endif %}
+      </div>
+
+      <div class="contact-list">
+        <a href="{{ url_for('messagerie') }}" 
+           class="contact-card mb-2 {% if not collab_selectionne %}active{% endif %}">
+          <div class="avatar-wrapper">
+            <div class="avatar-circle">
+              <i class="fas fa-headset"></i>
+            </div>
+            <div class="status-indicator"></div>
+          </div>
+          <div class="text-truncate flex-grow-1">
+            <div class="font-weight-bold small text-truncate" style="color: #0f172a;">Support Général</div>
+            <small class="text-muted d-block" style="font-size: 0.75rem;">Cabinet ML2C CONSEIL</small>
+          </div>
+        </a>
+
+        {% if collaborateurs %}
+          {% for collab in collaborateurs %}
+          <a href="{{ url_for('messagerie', collab_id=collab.id) }}" 
+             class="contact-card mb-2 {% if collab_selectionne and collab_selectionne.id == collab.id %}active{% endif %}">
+            <div class="avatar-wrapper">
+              <div class="avatar-circle" style="background: linear-gradient(135deg, #1a202c, #2d3748);">
+                {{ collab.prenom[0]|upper if collab.prenom else 'C' }}
+              </div>
+              <div class="status-indicator"></div>
+            </div>
+            <div class="text-truncate flex-grow-1">
+              <div class="font-weight-bold small text-truncate" style="color: #0f172a;">
+                {{ collab.prenom or '' }} {{ collab.nom or 'Collaborateur' }}
+              </div>
+              <small class="text-muted text-truncate d-block" style="font-size: 0.75rem;">
+                {{ collab.email }}
+              </small>
+            </div>
+          </a>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Zone Chat Principale -->
+    <div class="col-md-8 col-lg-9 chat-main-wrapper">
+      
+      <!-- En-tête de la discussion -->
+      <div class="chat-header">
+        <div class="d-flex align-items-center">
+          <div class="avatar-wrapper">
+            <div class="avatar-circle" style="width: 46px; height: 46px; font-size: 1.1rem;">
+              <i class="fas fa-building-columns"></i>
+            </div>
+            <div class="status-indicator" style="width: 13px; height: 13px;"></div>
+          </div>
+          <div>
+            <h6 class="font-weight-bold mb-0" style="color: #0f172a;">
+              {% if session.get('is_collaborateur') %}
+                {% if client_selectionne %}
+                  Discussion avec : {{ client_selectionne.prenom or client_selectionne.email }}
+                {% else %}
+                  Fil de discussion général
+                {% endif %}
+              {% else %}
+                {% if collab_selectionne %}
+                  Échange direct avec : {{ collab_selectionne.prenom or collab_selectionne.email }}
+                {% else %}
+                  Échange avec le cabinet ML2C CONSEIL
+                {% endif %}
+              {% endif %}
+            </h6>
+            <span class="small text-success font-weight-bold">
+              <i class="fas fa-circle mr-1" style="font-size: 0.5rem;"></i> En ligne · Support dédié
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Corps du Chat -->
+      <div class="chat-body" id="chatWindow">
+        {% if messages %}
+          {% for msg in messages %}
+            {% set is_me = (msg.expediteur_id == session.get('utilisateur_id') or msg.expediteur_id == session.get('user_id')) and not session.get('is_collaborateur') %}
+            
+            <div class="message-group {% if is_me %}sent{% else %}received{% endif %}">
+              <div class="bubble {% if not is_me %}collab-bubble{% endif %}">
+                <div class="font-weight-bold mb-1" style="font-size: 0.78rem; opacity: 0.85;">
+                  {{ msg.expediteur.prenom if msg.expediteur and msg.expediteur.prenom else ('Support ML2C' if not is_me else 'Client') }}
+                </div>
+                <div>{{ msg.contenu }}</div>
+                <div class="message-meta justify-content-end">
+                  <span>{{ msg.date_creation.strftime('%H:%M') if msg.date_creation else '' }}</span>
+                  {% if is_me %}
+                    <i class="fas fa-check-double ml-1" style="font-size: 0.65rem;"></i>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="text-center text-muted my-auto py-5">
+            <div class="avatar-circle mx-auto mb-3" style="width: 64px; height: 64px; font-size: 1.6rem; background: #e2e8f0; color: #64748b; box-shadow: none;">
+              <i class="fas fa-paper-plane"></i>
+            </div>
+            <h6 class="font-weight-bold text-dark">Aucun message pour le moment</h6>
+            <p class="small text-muted mb-0">Rédigez votre premier message ci-dessous pour lancer l'échange.</p>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Zone de Saisie -->
+      <div class="chat-footer">
+        <form id="chatForm">
+          {% if client_selectionne %}
+            <input type="hidden" name="destinataire_id" id="destinataireId" value="{{ client_selectionne.id }}">
+          {% elif collab_selectionne %}
+            <input type="hidden" name="destinataire_id" id="destinataireId" value="{{ collab_selectionne.id }}">
+          {% else %}
+            <input type="hidden" name="destinataire_id" id="destinataireId" value="">
+          {% endif %}
+
+          <div class="input-toolbar">
+            <button type="button" class="btn-action-icon mr-1" title="Joindre un fichier">
+              <i class="fas fa-paperclip"></i>
+            </button>
+            
+            <input 
+              type="text" 
+              name="contenu" 
+              id="contenuInput"
+              class="chat-input-field" 
+              placeholder="Rédigez votre message ici..." 
+              required
+              autocomplete="off"
+            >
+            
+            <button type="button" class="btn-action-icon mr-2" title="Émojis">
+              <i class="far fa-smile"></i>
+            </button>
+
+            <button type="submit" class="btn-send-main">
+              <span>Envoyer</span>
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Audio notification -->
+<audio id="notifSound" preload="auto">
+  <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Bootstrap & jQuery JS Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JS file -->
+<script src="{{ url_for('static', filename='js/messagerie.js') }}"></script>
+<script>
+  let lastMessageCount = 0;
+  let isFirstLoad = true;
+  let pollingTimer = null; // Variable globale pour stopper les timers parasites
+
+  function scrollToBottom() {
+    const chatWindow = document.getElementById('chatWindow');
+    if (chatWindow) {
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+  }
+
+  // Envoi asynchrone via REST API (/api/messages)
+  const chatForm = document.getElementById('chatForm');
+  if (chatForm) {
+    chatForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      
+      const inputField = document.getElementById('contenuInput');
+      const destInput = document.getElementById('destinataireId');
+      const contenu = inputField.value.trim();
+      if (!contenu) return;
+
+      const destinataireId = destInput && destInput.value ? parseInt(destInput.value) : null;
+
+      fetch('/api/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contenu: contenu,
+          destinataire_id: destinataireId
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          inputField.value = '';
+          fetchMessagesRealtime();
+        }
+      })
+      .catch(err => console.error("Erreur d'envoi :", err));
+    });
+  }
+
+  // Synchronisation temps réel via polling JS
+  function fetchMessagesRealtime() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const collabId = urlParams.get('collab_id');
+    const clientId = urlParams.get('client_id');
+    
+    let apiUrl = '/api/messages';
+    if (collabId) apiUrl += `?collab_id=${collabId}`;
+    if (clientId) apiUrl += `?client_id=${clientId}`;
+
+    fetch(apiUrl)
+      .then(response => {
+        if (!response.ok) throw new Error("Accès refusé ou erreur serveur");
+        return response.json();
+      })
+      .then(data => {
+        const chatWindow = document.getElementById('chatWindow');
+        if (!chatWindow) return;
+
+        if (!isFirstLoad && data.length > lastMessageCount) {
+          const lastMsg = data[data.length - 1];
+          if (!lastMsg.is_me) {
+            const sound = document.getElementById('notifSound');
+            if (sound) sound.play().catch(() => {});
+            document.title = "🔔 Nouveau message — ML2C CONSEIL";
+            setTimeout(() => { document.title = "Messagerie & Support — ML2C CONSEIL"; }, 5000);
+          }
+        }
+
+        if (data.length !== lastMessageCount) {
+          lastMessageCount = data.length;
+
+          if (data.length === 0) {
+            chatWindow.innerHTML = `
+              <div class="text-center text-muted my-auto py-5">
+                <div class="avatar-circle mx-auto mb-3" style="width: 64px; height: 64px; font-size: 1.6rem; background: #e2e8f0; color: #64748b; box-shadow: none;">
+                  <i class="fas fa-paper-plane"></i>
+                </div>
+                <h6 class="font-weight-bold text-dark">Aucun message pour le moment</h6>
+                <p class="small text-muted mb-0">Rédigez votre premier message ci-dessous pour lancer l'échange.</p>
+              </div>`;
+          } else {
+            let html = '';
+            data.forEach(msg => {
+              const isMe = msg.is_me;
+              const isCollabRole = (msg.role === 'collab');
+              
+              const alignClass = isMe ? 'sent' : 'received';
+              const bubbleExtraClass = isCollabRole ? 'collab-bubble' : '';
+
+              html += `
+                <div class="message-group ${alignClass}">
+                  <div class="bubble ${bubbleExtraClass}">
+                    <div class="font-weight-bold mb-1" style="font-size: 0.78rem; opacity: 0.9;">
+                      ${msg.expediteur}
+                    </div>
+                    <div>${msg.contenu}</div>
+                    <div class="message-meta justify-content-end">
+                      <span>${msg.heure}</span>
+                      ${isMe ? '<i class="fas fa-check-double ml-1" style="font-size: 0.65rem;"></i>' : ''}
+                    </div>
+                  </div>
+                </div>`;
+            });
+            chatWindow.innerHTML = html;
+            scrollToBottom();
+          }
+        }
+        isFirstLoad = false;
+      })
+      .catch(err => console.debug('Polling API inactif :', err.message));
+  }
+
+  // Démarrage propre du Polling
+  function startPolling() {
+    if (pollingTimer) clearInterval(pollingTimer);
+    pollingTimer = setInterval(fetchMessagesRealtime, 3000);
+  }
+
+  scrollToBottom();
+  startPolling();
+</script>
+
+</body>
+</html>

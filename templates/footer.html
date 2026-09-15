@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Pied de page</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  
+  <style>
+    .chatbot-widget {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      width: 350px;
+      max-height: 500px;
+      height: 80vh;
+      background: #fff;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+      border-radius: 12px;
+      display: none; /* Hidden by default */
+      flex-direction: column;
+      z-index: 9999;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+    .chatbot-widget.is-open {
+      display: flex !important;
+    }
+    .chatbot-fab {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #C1007A;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      z-index: 10000;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .chatbot-fab .icon-close { display: none; color: white; font-size: 24px; }
+    .chatbot-fab.is-open .icon-close { display: block; }
+    .chatbot-fab.is-open .fab-avatar { display: none; }
+    
+    .fab-avatar img, .cw-avatar-human img, .cw-msg-av-human img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+    .fab-avatar { width: 45px; height: 45px; }
+    .cw-avatar-human { width: 40px; height: 40px; margin-right: 10px; }
+    .cw-msg-av-human { width: 35px; height: 35px; margin-right: 8px; flex-shrink: 0; }
+    
+    .chatbot-notif {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      background: red;
+      color: white;
+      font-size: 12px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    .cw-header { background: #C1007A; color: white; padding: 12px; display: flex; align-items: center; position: relative; }
+    .cw-status { display: block; font-size: 11px; opacity: 0.9; }
+    .cw-dot { display: inline-block; width: 8px; height: 8px; background: #2ecc71; border-radius: 50%; margin-right: 4px; }
+    .cw-minimize { background: none; border: none; color: white; position: absolute; right: 15px; top: 18px; cursor: pointer; }
+    
+    .cw-body { flex: 1; padding: 15px; overflow-y: auto; background: #f8f9fa; display: flex; flex-direction: column; }
+    .cw-msg { display: flex; margin-bottom: 15px; align-items: flex-start; }
+    .cw-msg.user { flex-direction: row-reverse; }
+    .cw-msg.user .cw-msg-av { display: none; }
+    .cw-bubble { max-width: 75%; padding: 10px 14px; border-radius: 15px; font-size: 14px; line-height: 1.4; }
+    .cw-msg.bot .cw-bubble { background: white; color: #333; border-top-left-radius: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .cw-msg.user .cw-bubble { background: #C1007A; color: white; border-top-right-radius: 0; }
+    
+    .cw-quick { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; padding-left: 43px; }
+    .cw-qbtn { background: white; border: 1px solid #C1007A; color: #C1007A; padding: 6px 12px; border-radius: 20px; font-size: 13px; cursor: pointer; transition: 0.2s; }
+    .cw-qbtn:hover { background: #C1007A; color: white; }
+    
+    .cw-typing { display: none; padding: 10px 15px; background: transparent; }
+    .cw-typing.show { display: flex; gap: 4px; padding-left: 58px; }
+    .cw-typing span { width: 6px; height: 6px; background: #aaa; border-radius: 50%; animation: blink 1.4s infinite both; }
+    .cw-typing span:nth-child(2) { animation-delay: .2s; }
+    .cw-typing span:nth-child(3) { animation-delay: .4s; }
+    @keyframes blink { 0% { opacity: .2; } 20% { opacity: 1; } 100% { opacity: .2; } }
+    
+    .cw-footer { padding: 10px; border-top: 1px solid #eee; display: flex; background: white; }
+    .cw-input { flex: 1; border: 1px solid #ddd; padding: 8px 12px; border-radius: 20px; outline: none; font-size: 14px; }
+    .cw-send { background: none; border: none; color: #C1007A; font-size: 18px; margin-left: 8px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <!-- Bouton déclencheur (FAB) du Chatbot -->
+  <button class="chatbot-fab" id="chatFab" onclick="toggleChat()" aria-label="Parler à un conseiller">
+    <div class="fab-avatar icon-open">
+      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy&eyebrows=default" alt="Chatbot ML2C">
+    </div>
+    <i class="fas fa-times icon-close"></i>
+    <span class="chatbot-notif" id="chatNotif">1</span>
+  </button>
+
+  <!-- Fenêtre du Widget Chatbot -->
+  <div class="chatbot-widget" id="chatWidget">
+    <div class="cw-header">
+      <div class="cw-avatar-human">
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy&eyebrows=default" alt="Chatbot ML2C">
+      </div>
+      <div>
+        <span class="cw-name" style="font-weight:bold; display:block;">Chatbot ML2C</span>
+        <span class="cw-status"><span class="cw-dot"></span> Disponible actuellement</span>
+      </div>
+      <button class="cw-minimize" onclick="toggleChat()"><i class="fas fa-minus"></i></button>
+    </div>
+    <div class="cw-body" id="cwBody">
+      <div class="cw-msg bot">
+        <div class="cw-msg-av-human">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy&eyebrows=default" alt="Conseiller">
+        </div>
+        <div class="cw-bubble">Bonjour 👋 Je suis votre assistant virtuel <strong>ML2C CONSEIL</strong>.<br>Comment puis-je vous orienter vers nos services ?</div>
+      </div>
+      <div class="cw-quick" id="cwQuick">
+        <button class="cw-qbtn" onclick="quickSend('Quels sont vos services ?')">📊 Nos services</button>
+        <button class="cw-qbtn" onclick="quickSend('Demander un devis')">💶 Devis gratuit</button>
+        <button class="cw-qbtn" onclick="quickSend('Prendre rendez-vous')">📅 Prendre rendez-vous</button>
+        <button class="cw-qbtn" onclick="quickSend('Comment vous contacter ?')">📞 Contact</button>
+      </div>
+    </div>
+    <div class="cw-typing" id="cwTyping"><span></span><span></span><span></span></div>
+    <div class="cw-footer">
+      <input class="cw-input" id="cwInput" type="text" placeholder="Écrivez votre message..."
+             onkeydown="if(event.key==='Enter')sendMsg()">
+      <button class="cw-send" onclick="sendMsg()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- Pied de page officiel de l'application -->
+  <footer class="footer-custom">
+    <div class="container">
+      <div class="footer-grid">
+
+        <div class="footer-col footer-brand">
+          <a href="{{ url_for('menu') }}">
+            <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="ML2C CONSEIL" class="footer-logo">
+          </a>
+          <p class="footer-tagline">Expertise, proximité et intelligence artificielle au service de votre réussite.</p>
+          <div class="footer-socials">
+            <a href="https://www.facebook.com" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.linkedin.com" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://www.instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Le Cabinet</h4>
+          <ul class="footer-links">
+            <li><a href="{{ url_for('notre_histoire') }}">Notre histoire</a></li>
+            <li><a href="{{ url_for('notre_equipe') }}">Notre équipe</a></li>
+            <li><a href="{{ url_for('nos_engagements') }}">Nos engagements</a></li>
+            <li><a href="{{ url_for('notre_vision') }}">Notre vision</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Nos Services</h4>
+          <ul class="footer-links">
+            <li><a href="{{ url_for('tenue_comptable') }}">Tenue comptable</a></li>
+            <li><a href="{{ url_for('paie_gestion') }}">Paie & gestion sociale</a></li>
+            <li><a href="{{ url_for('juridique_courant') }}">Conseil juridique</a></li>
+            <li><a href="{{ url_for('declarations_fiscales') }}">Déclarations fiscales</a></li>
+            <li><a href="{{ url_for('creation_reprise') }}">Création d'entreprise</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Contact</h4>
+          <ul class="footer-contact-list">
+            <li><i class="fas fa-map-marker-alt"></i><span>6 Rue de la Vigne, 28360 Dammarie</span></li>
+            <li><i class="fas fa-phone-alt"></i><a href="tel:+33672343294">+33 (0)6 72 34 32 94</a></li>
+            <li><i class="fas fa-envelope"></i><a href="mailto:contact@ml2cconseil.com">contact@ml2cconseil.com</a></li>
+          </ul>
+          <a href="{{ url_for('nous_contacter') }}" class="footer-cta-btn">
+            <i class="fas fa-calendar-alt"></i> Prendre rendez-vous
+          </a>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 ML2C CONSEIL — Tous droits réservés</span>
+        <div class="footer-bottom-links">
+          <a href="{{ url_for('rgpd') }}">RGPD</a>
+          <a href="{{ url_for('mentions_legales') }}">Mentions légales</a>
+          <a href="{{ url_for('cookies') }}">Cookies</a>
+          <a href="{{ url_for('faq') }}">FAQ</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // ── Ouverture / Fermeture du widget ──
+    function toggleChat() {
+      const widget = document.getElementById('chatWidget');
+      const fab = document.getElementById('chatFab');
+      const notif = document.getElementById('chatNotif');
+      
+      if (widget && fab) {
+        widget.classList.toggle('is-open');
+        fab.classList.toggle('is-open');
+      }
+      if (notif) {
+        notif.style.display = 'none'; 
+      }
+    }
+
+    // ── Base de connaissances enrichie avec liaisons Flask (url_for simulées en chemins propres) ──
+    const REPLIES = {
+      comptabilite: { 
+        kw: ['comptab', 'bilan', 'tva', 'saisie', 'liasse', 'compte'], 
+        r: `📊 <b>Service Comptabilité & Fiscalité</b><br>Nous gérons votre tenue comptable, vos bilans et vos déclarations de TVA.<br><br>👉 <a href="{{ url_for('tenue_comptable') }}" style="color:#C1007A; font-weight:bold;">Accéder à la page Tenue comptable</a><br>👉 <a href="{{ url_for('declarations_fiscales') }}" style="color:#C1007A; font-weight:bold;">Voir les déclarations fiscales</a>` 
+      },
+      paie: { 
+        kw: ['paie', 'bulletin', 'salaire', 'dsn', 'social', 'salarié', 'embauche'], 
+        r: `👥 <b>Pôle Paie & Gestion Sociale</b><br>Établissement des bulletins, gestion des DSN et accompagnement en droit du travail.<br><br>👉 <a href="{{ url_for('paie_gestion') }}" style="color:#C1007A; font-weight:bold;">Découvrir Paie & Gestion sociale</a>` 
+      },
+      juridique: { 
+        kw: ['juridique', 'statut', 'sas', 'sarl', 'contrat', 'assemblée', 'ag'], 
+        r: `⚖️ <b>Conseil Juridique</b><br>Secrétariat juridique, modifications statutaires et accompagnement sur-mesure.<br><br>👉 <a href="{{ url_for('juridique_courant') }}" style="color:#C1007A; font-weight:bold;">Consulter le Conseil juridique</a>` 
+      },
+      creation: { 
+        kw: ['création', 'reprise', 'lancer', 'entreprise', 'immatriculation'], 
+        r: `🚀 <b>Création & Reprise d'entreprise</b><br>Nous vous accompagnons pas à pas dans le montage de votre projet entrepreneurial.<br><br>👉 <a href="{{ url_for('creation_reprise') }}" style="color:#C1007A; font-weight:bold;">Voir la page Création d'entreprise</a>` 
+      },
+      equipe: { 
+        kw: ['équipe', 'collaborateur', 'fondateur', 'qui', 'cabinet', 'histoire'], 
+        r: `🏛️ <b>À propos du Cabinet</b><br>Apprenez-en plus sur nos valeurs, notre histoire et l'équipe d'experts à vos côtés.<br><br>👉 <a href="{{ url_for('notre_histoire') }}" style="color:#C1007A; font-weight:bold;">Notre histoire</a> | <a href="{{ url_for('notre_equipe') }}" style="color:#C1007A; font-weight:bold;">Notre équipe</a>` 
+      },
+      devis: { 
+        kw: ['devis', 'tarif', 'prix', 'coût', 'gratuit', 'combien'], 
+        r: `💶 <b>Demande de devis personnalisée</b><br>Nos devis sont 100% gratuits et adaptés à la taille de votre structure.<br><br>👉 <a href="{{ url_for('devis') }}" style="color:#C1007A; font-weight:bold;">Faire une demande de devis en ligne</a>` 
+      },
+      rdv: { 
+        kw: ['rendez', 'rdv', 'réunion', 'rencontre', 'prendre'], 
+        r: `📅 <b>Prise de rendez-vous</b><br>Rencontrons-nous à notre cabinet à Dammarie ou planifions un échange téléphonique.<br><br>👉 <a href="{{ url_for('nous_contacter') }}" style="color:#C1007A; font-weight:bold;">Prendre rendez-vous dès maintenant</a>` 
+      },
+      contact: { 
+        kw: ['contact', 'joindre', 'téléphone', 'email', 'adresse', 'horaire', 'où'], 
+        r: `📞 <b>Coordonnées du Cabinet</b><br>📍 6 Rue de la Vigne, 28360 Dammarie<br>📞 <a href="tel:+33672343294" style="color:#C1007A">+33 (0)6 72 34 32 94</a><br>✉️ <a href="mailto:contact@ml2cconseil.com" style="color:#C1007A">contact@ml2cconseil.com</a><br><br>👉 <a href="{{ url_for('nous_contacter') }}" style="color:#C1007A; font-weight:bold;">Accéder à la page de contact</a>` 
+      },
+      faq: { 
+        kw: ['faq', 'aide', 'question', 'comment'], 
+        r: `❓ <b>Foire Aux Questions (FAQ)</b><br>Vous trouverez sûrement les réponses à vos interrogations les plus fréquentes sur notre page dédiée.<br><br>👉 <a href="{{ url_for('faq') }}" style="color:#C1007A; font-weight:bold;">Consulter la FAQ</a>` 
+      },
+      bonjour: { 
+        kw: ['bonjour', 'salut', 'hello', 'bonsoir', 'coucou', 'bjr'], 
+        r: `Bonjour ! 😊 Ravi de vous accueillir. Je peux vous guider vers nos services de comptabilité, de paie, ou vous aider à planifier un rendez-vous. Que recherchez-vous ?` 
+      },
+      merci: { 
+        kw: ['merci', 'parfait', 'super', 'génial', 'top', 'nickel'], 
+        r: `Je vous en prie ! 😊 L'équipe ML2C reste à votre entière disposition.` 
+      },
+      default: { 
+        r: `Je ne suis pas certain d'avoir compris votre demande 🤔<br>Je peux vous rediriger directement vers nos <b>services</b>, notre page de <b>devis</b> ou la prise de <b>rendez-vous</b>.<br><br>📞 Contact direct : <a href="tel:+33672343294" style="color:#C1007A">+33 (0)6 72 34 32 94</a>` 
+      }
+    };
+
+    function getReply(txt) {
+      const t = txt.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+      for (const key of Object.keys(REPLIES)) {
+        if (key === 'default') continue;
+        if (REPLIES[key].kw && REPLIES[key].kw.some(k => t.includes(k))) {
+          return REPLIES[key].r;
+        }
+      }
+      return REPLIES.default.r;
+    }
+
+    function addMsg(html, role) {
+      const body = document.getElementById('cwBody');
+      if (!body) return;
+      const div = document.createElement('div');
+      div.className = `cw-msg ${role}`;
+      div.innerHTML = role === 'bot'
+        ? `<div class="cw-msg-av-human"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy&eyebrows=default" alt="Conseiller"></div><div class="cw-bubble">${html}</div>`
+        : `<div class="cw-msg-av"><i class="fas fa-user"></i></div><div class="cw-bubble">${html}</div>`;
+      body.appendChild(div);
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function sendMsg() {
+      const inp = document.getElementById('cwInput');
+      if (!inp) return;
+      const txt = inp.value.trim();
+      if (!txt) return;
+      
+      inp.value = '';
+      inp.disabled = true;
+      
+      const q = document.getElementById('cwQuick');
+      if (q) q.style.display = 'none';
+      
+      addMsg(txt, 'user');
+      
+      const typing = document.getElementById('cwTyping');
+      if (typing) typing.classList.add('show');
+      
+      const delay = 800 + Math.random() * 600;
+      setTimeout(() => {
+        if (typing) typing.classList.remove('show');
+        addMsg(getReply(txt), 'bot');
+        inp.disabled = false;
+        inp.focus();
+      }, delay);
+    }
+
+    function quickSend(txt) {
+      const inp = document.getElementById('cwInput');
+      if (inp) {
+        inp.value = txt;
+        sendMsg();
+      }
+    }
+
+    // Gestion de la notification du chatbot
+    setTimeout(() => {
+      const n = document.getElementById('chatNotif');
+      const widget = document.getElementById('chatWidget');
+      if (n && widget && !widget.classList.contains('is-open')) {
+        n.style.display = 'flex'; 
+      }
+    }, 4000);
+  </script>
+
+</body>
+</html>

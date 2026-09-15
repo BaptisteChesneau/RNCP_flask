@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paie & Gestion</title>
+  <!-- Bootstrap CSS (CDN) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Custom CSS files -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/paie_gestion.css') }}">
+</head>
+<body>
+{% include "header.html" %}
+
+<!-- HERO SECTION -->
+<section class="page-hero">
+  <div class="container ph-inner">
+    <ol class="breadcrumb-ml2c">
+      <li><a href="{{ url_for('menu') }}">Accueil</a></li>
+      <li><span class="sep"><i class="fas fa-chevron-right"></i></span></li>
+      <li><a href="#">Nos services</a></li>
+      <li><span class="sep"><i class="fas fa-chevron-right"></i></span></li>
+      <li>Paie & Gestion</li>
+    </ol>
+    <h1 class="ph-title">Paie<em>& gestion sociale</em></h1>
+    <p class="ph-sub">Bulletins de paie, DSN, suivi RH votre gestion sociale simplifiée et sans erreur.</p>
+  </div>
+</section>
+
+<!-- MAIN SERVICE SECTION -->
+<section class="sec sec-grey">
+  <div class="container">
+    <div class="svc-bloc" data-anim="fade">
+      <div class="svc-visuel">
+        <span class="svc-deco-num">PG</span>
+        <div class="svc-icon-wrap"><i class="fas fa-users"></i></div>
+        <span class="svc-badge">Social</span>
+      </div>
+      <div class="svc-texte">
+        <span class="label-tag">Gestion Sociale</span>
+        <h2>Paie & Gestion</h2>
+        <div class="svc-sous">Bulletin de paie, DSN, suivi RH</div>
+        <div class="barre"></div>
+        <p>La gestion de la paie est un domaine complexe et en constante évolution réglementaire. ML2C CONSEIL prend en charge l'établissement de vos bulletins de paie, la gestion des entrées/sorties de salariés, les déclarations sociales nominatives (DSN) et le suivi de vos obligations employeur.</p>
+        <p>Nous vous accompagnons également sur les questions RH du quotidien : contrats de travail, arrêts maladie, congés, ruptures de contrat. Notre approche combine rigueur réglementaire et conseil personnalisé pour vous éviter tout risque social.</p>
+        <ul class="presta-list">
+          <li><i class="fas fa-check"></i> Établissement des bulletins de paie</li>
+          <li><i class="fas fa-check"></i> Déclaration Sociale Nominative (DSN)</li>
+          <li><i class="fas fa-check"></i> Gestion des entrées et sorties de salariés</li>
+          <li><i class="fas fa-check"></i> Soldes de tout compte et documents de fin de contrat</li>
+          <li><i class="fas fa-check"></i> Veille sociale et conseil RH</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADVANTAGES SECTION -->
+<section class="sec sec-white">
+  <div class="container">
+    <div class="text-center mb-5" data-anim="fade">
+      <span class="label-tag">Pourquoi nous choisir</span>
+      <h2 class="titre-sec">Nos avantages</h2>
+      <div class="barre c"></div>
+    </div>
+    <div class="avantages-grid">
+      <div class="av-card" data-anim="fade">
+        <i class="fas fa-shield-alt"></i>
+        <h4>Conformité sociale</h4>
+        <p>Chaque bulletin est établi conformément à la convention collective applicable et à la réglementation en vigueur.</p>
+      </div>
+      <div class="av-card" data-anim="fade">
+        <i class="fas fa-clock"></i>
+        <h4>Délais respectés</h4>
+        <p>La DSN est transmise dans les délais légaux. Plus de risques de pénalités.</p>
+      </div>
+      <div class="av-card" data-anim="fade">
+        <i class="fas fa-headset"></i>
+        <h4>Conseil RH inclus</h4>
+        <p>Nous répondons à vos questions RH du quotidien : contrats, absences, ruptures.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA SECTION -->
+<section class="sec sec-grey">
+  <div class="container">
+    <div class="cta-bande" data-anim="fade">
+      <div>
+        <h2>Besoin de ce service ?</h2>
+        <p>Contactez-nous pour un premier échange gratuit et sans engagement.</p>
+      </div>
+      <div class="cta-buttons">
+        <a href="{{ url_for('nous_contacter') }}" class="btn-blanc"><i class="fas fa-calendar-alt"></i> Prendre RDV</a>
+        <a href="{{ url_for('menu') }}" class="btn-contour"><i class="fas fa-th-large"></i> Tous nos services</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include "footer.html" %}
+
+<!-- Bootstrap & jQuery JS Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Custom JS file -->
+<script src="{{ url_for('static', filename='js/paie_gestion.js') }}"></script>
+</body>
+</html>

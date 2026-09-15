@@ -1,0 +1,191 @@
+from flask import jsonify, request, session
+from api import api_bp
+from extensions import db
+from models.collaborateur import Collaborateur
+from models.message import MessageSupport
+from models.user import Utilisateur
+
+
+@api_bp.route("/messages", methods=["GET", "POST"])
+def api_messages_passerelle():
+    utilisateur_id = session.get("utilisateur_id") or session.get("user_id")
+    collab_id = session.get("collaborateur_id")
+    is_collab = session.get("is_collaborateur", False)
+
+    if not utilisateur_id and not collab_id:
+        return jsonify({"error": "Non autorisé"}), 403
+
+    # ==========================================
+    # 📤 ENVOI DE MESSAGE (POST)
+    # ==========================================
+    if request.method == "POST":
+        data = request.get_json() or {}
+        contenu = data.get("contenu", "").strip()
+        destinataire_id = data.get("destinataire_id")
+
+        if not contenu:
+            return jsonify({"error": "Contenu vide"}), 400
+
+        expediteur_id = (
+            collab_id if (is_collab and collab_id) else utilisateur_id
+        )
+
+        nouveau_msg = MessageSupport(
+            expediteur_id=expediteur_id,
+            destinataire_id=destinataire_id if destinataire_id else None,
+            contenu=contenu,
+        )
+        db.session.add(nouveau_msg)
+        db.session.commit()
+
+        return (
+            jsonify(
+                {
+                    "status": "success",
+                    "message_id": nouveau_msg.id,
+                    "heure": (
+                        nouveau_msg.date_creation.strftime("%H:%M")
+                        if nouveau_msg.date_creation
+                        else ""
+                    ),
+                }
+            ),
+            201,
+        )
+
+    # ==========================================
+    # 📥 RECEPTION / HISTORIQUE (GET)
+    # ==========================================
+    target_client_id = request.args.get("client_id", type=int)
+    target_collab_id = request.args.get("collab_id", type=int)
+
+    if is_collab and collab_id:
+        if target_client_id:
+            messages = (
+                MessageSupport.query.filter(
+                    (
+                        (MessageSupport.expediteur_id == collab_id)
+                        & (MessageSupport.destinataire_id == target_client_id)
+                    )
+                    | (
+                        (MessageSupport.expediteur_id == target_client_id)
+                        & (
+                            (MessageSupport.destinataire_id == collab_id)
+                            | (MessageSupport.destinataire_id.is_(None))
+                        )
+                    )
+                )
+                .order_by(MessageSupport.date_creation.asc())
+                .all()
+            )
+        else:
+            messages = (
+                MessageSupport.query.filter(
+                    (MessageSupport.expediteur_id == collab_id)
+                    | (MessageSupport.destinataire_id == collab_id)
+                )
+                .order_by(MessageSupport.date_creation.asc())
+                .all()
+            )
+    else:
+        if target_collab_id:
+            messages = (
+                MessageSupport.query.filter(
+                    (
+                        (MessageSupport.expediteur_id == utilisateur_id)
+                        & (MessageSupport.destinataire_id == target_collab_id)
+                    )
+                    | (
+                        (MessageSupport.expediteur_id == target_collab_id)
+                        & (MessageSupport.destinataire_id == utilisateur_id)
+                    )
+                )
+                .order_by(MessageSupport.date_creation.asc())
+                .all()
+            )
+        else:
+            messages = (
+                MessageSupport.query.filter(
+                    (MessageSupport.expediteur_id == utilisateur_id)
+                    | (MessageSupport.destinataire_id == utilisateur_id)
+                )
+                .order_by(MessageSupport.date_creation.asc())
+                .all()
+            )
+
+    # --------------------------------------------------
+    # ⚡ OPTIMISATION N+1 : Pré-chargement des entités
+    # --------------------------------------------------
+    exp_ids = {m.expediteur_id for m in messages if m.expediteur_id}
+
+    # Récupération en une seule requête SQL par table
+    collabs_map = (
+        {c.id: c for c in Collaborateur.query.filter(Collaborateur.id.in_(exp_ids)).all()}
+        if exp_ids else {}
+    )
+    users_map = (
+        {u.id: u for u in Utilisateur.query.filter(Utilisateur.id.in_(exp_ids)).all()}
+        if exp_ids else {}
+    )
+
+    payload = []
+    for m in messages:
+        if is_collab:
+            is_me = (m.expediteur_id == collab_id)
+            if is_me:
+                collab_obj = collabs_map.get(collab_id)
+                collab_nom = (
+                    getattr(collab_obj, "prenom", None)
+                    or getattr(collab_obj, "nom", None)
+                    or getattr(collab_obj, "email", "Support")
+                    if collab_obj else "Support"
+                )
+                exp_nom = f"{collab_nom} (ML2C)"
+                role_type = "collab"
+            else:
+                client_exp = users_map.get(m.expediteur_id)
+                client_nom = (
+                    getattr(client_exp, "prenom", None)
+                    or getattr(client_exp, "email", "Client")
+                    if client_exp else "Client"
+                )
+                exp_nom = client_nom
+                role_type = "client"
+        else:
+            collab_exp = collabs_map.get(m.expediteur_id)
+            is_me = (m.expediteur_id == utilisateur_id) and not collab_exp
+            
+            if is_me:
+                client_exp = users_map.get(utilisateur_id)
+                exp_nom = (
+                    getattr(client_exp, "prenom", None)
+                    or getattr(client_exp, "email", "Moi")
+                    if client_exp else "Moi"
+                )
+                role_type = "client"
+            else:
+                collab_nom = (
+                    getattr(collab_exp, "prenom", None)
+                    or getattr(collab_exp, "nom", None)
+                    or getattr(collab_exp, "email", None)
+                    if collab_exp else None
+                )
+                exp_nom = (
+                    f"{collab_nom} (ML2C)" if collab_nom else "Support ML2C"
+                )
+                role_type = "collab"
+
+        payload.append(
+            {
+                "id": m.id,
+                "contenu": m.contenu,
+                "is_me": is_me,
+                "role": role_type,
+                "expediteur": exp_nom,
+                "heure": (
+                    m.date_creation.strftime("%H:%M") if m.date_creation else ""
+                ),
+            }
+        )
+
+    return jsonify(payload)

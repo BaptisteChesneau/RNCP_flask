@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,700&family=DM+Sans:wght@200;300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rose: #C1007A; --rose-d: #9a0062; --rose-l: #fce4f3; --rose-xl: #fff5fb;
+      --turq: #4FA695; --turq-d: #3a7d70; --turq-l: #d4f0ec; --turq-xl: #edfaf7;
+      --gold: #b08d57; --gold-d: #8c6d3d; --gold-l: #f5eedf; --gold-ll: #fdfaf5;
+      --ink: #1a1a2e; --ink2: #2d2d3d; --ink3: #151820;
+      --bg: #faf8f4; --bg2: #f5f2ec; --bg3: #ede9e0;
+      --surface: #ffffff; --surface2: #fdfcfa;
+      --border: #e8e2d9; --border2: #d4cdc0;
+      --text: #1a1a1a; --text2: #3d3d3d; --muted: #8a8278; --faint: #b5aea5;
+      --success: #22c55e; --danger: #dc2626; --warn: #b08d57;
+      --ff-head: 'Cormorant Garamond', serif;
+      --ff-body: 'DM Sans', sans-serif;
+      --ff-mono: 'Share Tech Mono', monospace;
+      --shadow-sm: 0 2px 8px rgba(26,20,10,.06);
+      --shadow-md: 0 8px 32px rgba(26,20,10,.08);
+      --shadow-lg: 0 20px 60px rgba(26,20,10,.1);
+    }
+
+    body { background: var(--bg); font-family: var(--ff-body); color: var(--text); overflow-x: hidden; }
+
+    /* Global Background Texture Section */
+    body::before{
+      content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:
+        radial-gradient(ellipse 80% 60% at 95% 10%,rgba(193,0,122,.04) 0%,transparent 55%),
+        radial-gradient(ellipse 60% 50% at 5% 90%,rgba(79,166,149,.05) 0%,transparent 50%),
+        radial-gradient(ellipse 50% 40% at 50% 50%,rgba(176,141,87,.03) 0%,transparent 60%);
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      min-height: 340px;
+      background: linear-gradient(135deg, var(--bg2) 0%, var(--bg3) 100%);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+      display: flex; align-items: flex-end;
+    }
+
+    /* Neural Canvas Section */
+    #netCanvas { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.45; }
+
+    /* Hero Ambient Section */
+    .hero-amb {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 70% at 85% 20%, rgba(193,0,122,.08) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 50% at 10% 90%, rgba(79,166,149,.08) 0%, transparent 55%),
+        radial-gradient(ellipse 30% 40% at 55% 60%, rgba(176,141,87,.07) 0%, transparent 50%);
+    }
+
+    /* Hero Grid Section */
+    .hero-grid {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(26,20,10,.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26,20,10,.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* Hero Bar Section */
+    .hero-bar {
+      position: absolute; top: 0; left: 0; right: 0; height: 3px; z-index: 10;
+      background: linear-gradient(90deg, var(--rose), var(--gold), var(--turq), var(--gold), var(--rose));
+      background-size: 400%;
+      animation: barShift 5s linear infinite;
+    }
+    @keyframes barShift { 0%{background-position:0%} 100%{background-position:400%} }
+
+    /* Hero Wave Section */
+    .hero-wave {
+      position: absolute; bottom: -1px; left: 0; right: 0; z-index: 5; pointer-events: none;
+    }
+
+    /* Hero Content Section */
+    .hero-content {
+      position: relative; z-index: 6;
+      width: 100%;
+      padding: 3rem 0 5.5rem;
+    }
+
+    .hero-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 3rem;
+      align-items: end;
+    }
+
+    /* Hero Left Section */
+    .hero-left { min-width: 0; }
+
+    .pre-title {
+      display: flex; align-items: center; gap: .75rem;
+      margin-bottom: 1rem;
+    }
+    .pre-badge {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .3rem .9rem;
+      background: var(--gold-l);
+      border: 1px solid rgba(176,141,87,.3);
+      border-radius: 30px;
+      font-size: .65rem; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--gold-d);
+      box-shadow: 0 4px 12px rgba(176,141,87,.12);
+    }
+    .pre-badge .crown { font-size: .8rem; animation: crownBob 3s ease-in-out infinite; }
+    @keyframes crownBob { 0%,100%{transform:translateY(0) rotate(0)} 40%{transform:translateY(-3px) rotate(-8deg)} 60%{transform:translateY(-2px) rotate(4deg)} }
+    .pre-badge .niv { background: rgba(176,141,87,.2); border-radius: 6px; padding: .08rem .4rem; font-size: .55rem; margin-left: .2rem; }
+
+    .pre-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(26,20,10,.15), transparent); }
+
+    /* Hero H1 Section */
+    .hero-h1 {
+      font-family: var(--ff-head);
+      font-size: clamp(2rem, 3.8vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: .75rem;
+      letter-spacing: -.01em;
+      white-space: nowrap;
+    }
+    .hero-h1 .accent-gold { color: var(--gold); font-style: italic; }
+    .hero-h1 .accent-rose { color: var(--rose); }
+
+    /* Hero Sub Section */
+    .hero-sub {
+      font-family: var(--ff-mono);
+      font-size: .75rem; font-weight: 700;
+      color: #000000;
+      margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .online-pip { width: 8px; height: 8px; border-radius: 50%; background: var(--success); box-shadow: 0 0 10px rgba(34,197,94,.6); animation: pipPulse 2s infinite; }
+    @keyframes pipPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.8)} }
+
+    .hero-chips { display: flex; gap: .5rem; flex-wrap: wrap; }
+    .hchip {
+      display: inline-flex; align-items: center; gap: .3rem;
+      padding: .25rem .75rem; border-radius: 20px;
+      font-size: .65rem; font-weight: 600; letter-spacing: .04em;
+    }
+    .hchip.gold  { background: var(--gold-l); border: 1px solid rgba(176,141,87,.3); color: var(--gold-d); }
+    .hchip.green { background: var(--turq-xl); border: 1px solid rgba(79,166,149,.3); color: var(--turq-d); }
+    .hchip.rose  { background: var(--rose-xl); border: 1px solid rgba(193,0,122,.3); color: var(--rose); }
+    .hchip.blue  { background: var(--bg3); border: 1px solid var(--border2); color: var(--text2); }
+    .hchip.mono  { background: var(--surface); border: 1px solid var(--border); color: var(--text); font-family: var(--ff-mono); }
+
+    /* Hero Profile Section */
+    .hero-profile {
+      display: flex; flex-direction: column; align-items: flex-end; gap: 1rem;
+      flex-shrink: 0;
+    }
+
+    .profile-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.25rem 1.5rem;
+      display: flex; align-items: center; gap: 1.25rem;
+      box-shadow: var(--shadow-md);
+      min-width: 240px;
+      animation: cardSlideIn .6s .2s cubic-bezier(.34,1.2,.64,1) both;
+    }
+    @keyframes cardSlideIn { from{opacity:0;transform:translateX(30px)} to{opacity:1;transform:translateX(0)} }
+
+    .p-av-wrap { position: relative; flex-shrink: 0; }
+    .p-ring {
+      width: 58px; height: 58px; border-radius: 50%;
+      background: conic-gradient(var(--rose), var(--gold), var(--turq), var(--gold), var(--rose));
+      padding: 2.5px;
+      animation: ringRot 5s linear infinite;
+      box-shadow: 0 0 16px rgba(193,0,122,.2);
+    }
+    @keyframes ringRot { to{transform:rotate(360deg)} }
+    .p-av-inner {
+      width: 100%; height: 100%; border-radius: 50%;
+      background: var(--surface2);
+      overflow: hidden;
+      display: flex; align-items: flex-end; justify-content: center;
+    }
+    .p-av-inner img { width: 52px; height: 52px; object-fit: cover; }
+    .p-crown {
+      position: absolute; top: -8px; right: -8px;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--gold-d));
+      border: 2px solid #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .6rem; color: #fff;
+      box-shadow: 0 0 8px rgba(176,141,87,.5);
+    }
+
+    .p-info { flex: 1; }
+    .p-name { font-size: .95rem; font-weight: 700; color: var(--text); margin-bottom: .2rem; }
+    .p-role {
+      font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
+      color: var(--gold-d); display: flex; align-items: center; gap: .3rem;
+    }
+    .p-perms { font-size: .7rem; color: var(--text); margin-top: .3rem; font-family: var(--ff-mono); font-weight: 600; }
+
+    .session-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: .6rem 1rem;
+      font-family: var(--ff-mono);
+      font-size: .68rem;
+      color: var(--text);
+      display: flex; align-items: center; gap: .75rem;
+      min-width: 240px;
+      box-shadow: var(--shadow-sm);
+      animation: cardSlideIn .6s .35s cubic-bezier(.34,1.2,.64,1) both;
+    }
+    .session-val { color: var(--text); font-weight: 700; }
+    .session-val.warn { color: var(--danger); }
+
+    /* Main Section */
+    .main { padding: 2.5rem 0 6rem; position: relative; z-index: 2; }
+
+    /* Level Strip Section */
+    .level-strip {
+      background: var(--surface);
+      border: 1.5px solid rgba(193,0,122,.3);
+      border-radius: 18px;
+      padding: 1.25rem 1.75rem;
+      display: flex; align-items: center; gap: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-md);
+      flex-wrap: wrap;
+    }
+    .ls-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      background: linear-gradient(135deg, var(--rose), var(--rose-d));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; color: #fff; flex-shrink: 0;
+      box-shadow: 0 6px 18px rgba(193,0,122,.3);
+      animation: iconFloat 4s ease-in-out infinite;
+    }
+    @keyframes iconFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+    .ls-body { flex: 1; min-width: 0; }
+    .ls-title { font-size: .95rem; font-weight: 700; color: var(--text); margin-bottom: .25rem; }
+    .ls-sub { font-size: .75rem; color: var(--muted); }
+    .ls-perms { display: flex; gap: .4rem; flex-wrap: wrap; }
+    .ls-perm {
+      display: inline-flex; align-items: center; gap: .3rem;
+      padding: .2rem .65rem; border-radius: 20px;
+      font-size: .65rem; font-weight: 700;
+      background: var(--rose-l); border: 1px solid rgba(193,0,122,.25); color: var(--rose);
+    }
+
+    /* KPI Row Section */
+    .kpi-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-bottom: 2rem; }
+    .kcard {
+      background: var(--surface); border-radius: 20px;
+      border: 1.5px solid var(--border);
+      padding: 1.5rem 1.5rem 1.25rem;
+      box-shadow: var(--shadow-sm);
+      position: relative; overflow: hidden;
+      transition: transform .25s, box-shadow .25s, border-color .25s;
+      animation: kcardIn .5s both;
+    }
+    .kcard:nth-child(1){animation-delay:.05s}
+    .kcard:nth-child(2){animation-delay:.1s}
+    .kcard:nth-child(3){animation-delay:.15s}
+    .kcard:nth-child(4){animation-delay:.2s}
+    @keyframes kcardIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+    .kcard::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:20px 20px 0 0; }
+    .kcard.k-rose::before { background:linear-gradient(90deg,var(--rose),var(--rose-d)); }
+    .kcard.k-turq::before { background:linear-gradient(90deg,var(--turq),var(--turq-d)); }
+    .kcard.k-gold::before { background:linear-gradient(90deg,var(--gold),var(--gold-d)); }
+    .kcard.k-ink::before  { background:linear-gradient(90deg,var(--ink),var(--ink2)); }
+    .kcard:hover { transform:translateY(-4px); box-shadow:var(--shadow-md); border-color:var(--border2); }
+
+    .kcard-glow {
+      position:absolute; bottom:-30px; right:-30px;
+      width:120px; height:120px; border-radius:50%;
+      opacity:.06; pointer-events:none;
+    }
+    .k-rose .kcard-glow { background:var(--rose); }
+    .k-turq .kcard-glow { background:var(--turq); }
+    .k-gold .kcard-glow { background:var(--gold); }
+
+    .kcard-head { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:1rem; }
+    .kcard-ico {
+      width:44px; height:44px; border-radius:12px;
+      display:flex; align-items:center; justify-content:center; font-size:1rem;
+    }
+    .kico-rose { background:var(--rose-xl); color:var(--rose); }
+    .kico-turq { background:var(--turq-xl); color:var(--turq-d); }
+    .kico-gold { background:var(--gold-l); color:var(--gold-d); }
+    .kico-ink  { background:var(--bg2); color:var(--ink); }
+    .kcard-trend {
+      font-size:.65rem; font-weight:700; padding:.18rem .55rem;
+      border-radius:20px; display:flex; align-items:center; gap:.2rem;
+    }
+    .t-up   { background:var(--turq-xl); color:var(--turq-d); }
+    .t-flat { background:var(--bg2); color:var(--muted); }
+    .t-ok   { background:var(--turq-xl); color:var(--turq-d); }
+
+    .kcard-lbl { font-size:.62rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--faint); margin-bottom:.3rem; }
+    .kcard-val {
+      font-family: var(--ff-head);
+      font-size:2.6rem; font-weight:700; line-height:1; color:var(--text);
+    }
+    .kcard-val.sm { font-size:1.5rem; }
+    .kcard-val.ok { color:var(--success); }
+    .kcard-bar { height:3px; background:var(--bg2); border-radius:2px; overflow:hidden; margin:10px 0 6px; }
+    .kbar-fill { height:100%; border-radius:2px; transition:width 1.4s cubic-bezier(.22,1,.36,1); }
+    .kcard-sub { font-size:.72rem; color:var(--muted); line-height:1.5; }
+
+    /* Section Header */
+    .s-head {
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:1.1rem;
+    }
+    .s-label {
+      font-size:.62rem; font-weight:700; text-transform:uppercase;
+      letter-spacing:.14em; color:var(--faint);
+      display:flex; align-items:center; gap:.5rem;
+    }
+    .s-label i { color:var(--rose); }
+    .s-label::after { content:''; display:inline-block; width:48px; height:1px; background:var(--border); margin-left:.3rem; vertical-align:middle; }
+    .s-link {
+      font-size:.75rem; font-weight:600; color:var(--rose);
+      text-decoration:none; display:flex; align-items:center; gap:.3rem;
+      transition:gap .2s;
+    }
+    .s-link:hover { gap:.55rem; color:var(--rose-d); text-decoration:none; }
+
+    /* Last Question Section */
+    .lq-card {
+      background:var(--surface); border-radius:18px;
+      border:1.5px solid var(--border);
+      box-shadow:var(--shadow-sm);
+      overflow:hidden; margin-bottom:2rem;
+    }
+    .lq-head {
+      display:flex; align-items:center; gap:.75rem;
+      padding:.9rem 1.5rem; background:var(--surface2);
+      border-bottom:1px solid var(--border);
+    }
+    .lq-head-ico {
+      width:34px; height:34px; border-radius:9px;
+      background:var(--turq-xl); color:var(--turq-d);
+      display:flex; align-items:center; justify-content:center; font-size:.85rem;
+    }
+    .lq-head-txt { font-size:.82rem; font-weight:700; color:var(--text); }
+    .lq-head-sub { font-size:.68rem; color:var(--muted); margin-top:.08rem; }
+    .lq-body { padding:1.25rem 1.5rem; }
+    .lq-bubble {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.1rem 1.5rem;
+      font-size: .92rem; color: var(--text); line-height: 1.7;
+      border-left: 3px solid var(--rose);
+      position: relative;
+    }
+    .lq-quote {
+      font-family:var(--ff-head); font-size:3rem; line-height:1;
+      color:var(--rose); opacity:.25;
+      position:absolute; top:.3rem; left:.8rem;
+    }
+    .lq-text { padding-left:1.5rem; }
+
+    /* Actions Grid Section */
+    .actions-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; margin-bottom:2rem; }
+    .acard {
+      background:var(--surface); border-radius:18px;
+      border:1.5px solid var(--border);
+      box-shadow:var(--shadow-sm);
+      padding:1.35rem 1.5rem;
+      display:flex; align-items:center; gap:1.1rem;
+      text-decoration:none; color:var(--text);
+      transition:all .22s; position:relative; overflow:hidden;
+    }
+    .acard::after {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(135deg, transparent 55%, rgba(193,0,122,.04));
+      opacity:0; transition:opacity .2s;
+    }
+    .acard:hover { transform:translateY(-3px); box-shadow:var(--shadow-md); border-color:var(--rose); text-decoration:none; color:var(--text); }
+    .acard:hover::after { opacity:1; }
+
+    .acard-ico {
+      width:50px; height:50px; border-radius:14px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.1rem; flex-shrink:0; transition:all .22s;
+    }
+    .ai-rose { background:var(--rose-xl); color:var(--rose); }
+    .ai-turq { background:var(--turq-xl); color:var(--turq-d); }
+    .acard:hover .ai-rose { background:var(--rose); color:#fff; }
+
+    .acard-body { flex:1; min-width:0; }
+    .acard-title { font-size:.92rem; font-weight:700; color:var(--text); margin-bottom:.15rem; }
+    .acard-desc  { font-size:.74rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .acard-badge {
+      display:inline-block; font-size:.58rem; font-weight:700;
+      padding:.1rem .45rem; border-radius:6px; margin-left:.35rem; vertical-align:middle;
+    }
+    .ab-rose { background:var(--rose-xl); color:var(--rose); }
+    .acard-arr { color:var(--border2); font-size:.78rem; flex-shrink:0; transition:color .2s, transform .2s; }
+    .acard:hover .acard-arr { color:var(--rose); transform:translateX(4px); }
+
+    /* Admin Zone Section */
+    .admin-zone {
+      position:relative; overflow:hidden;
+      background: linear-gradient(135deg, #2b0b20 0%, #150510 100%);
+      border-radius:24px;
+      border:1px solid rgba(193,0,122,0.4);
+      padding:2rem;
+      margin-bottom:2rem;
+      box-shadow: var(--shadow-lg);
+    }
+    .admin-zone::before {
+      content:''; position:absolute; inset:0;
+      background:
+        radial-gradient(ellipse 50% 80% at 90% 20%, rgba(193,0,122,0.22) 0%, transparent 60%),
+        radial-gradient(ellipse 30% 50% at 10% 80%, rgba(176,141,87,0.1) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 40% at 50% 50%, rgba(79,166,149,0.06) 0%, transparent 60%);
+      pointer-events:none;
+    }
+    .az-scan {
+      position:absolute; inset:0; pointer-events:none;
+      background:repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,.05) 3px, rgba(0,0,0,.05) 4px);
+    }
+    .az-content { position:relative; z-index:1; }
+    .az-head {
+      display:flex; align-items:center; gap:1rem; margin-bottom:1.5rem;
+    }
+    .az-ico {
+      width:46px; height:46px; border-radius:12px;
+      background: linear-gradient(135deg, var(--rose), var(--rose-d));
+      display:flex; align-items:center; justify-content:center;
+      font-size:1rem; color:#fff; flex-shrink:0;
+      box-shadow: 0 6px 18px rgba(193,0,122,0.5);
+    }
+    .az-title { font-size:.95rem; font-weight:700; color:#fff; margin-bottom:.15rem; }
+    .az-sub { font-size:.72rem; color:rgba(255,255,255,.6); }
+    .az-badge {
+      margin-left:auto;
+      display:inline-flex; align-items:center; gap:.35rem;
+      padding:.28rem .8rem;
+      background: var(--rose-l); border: 1px solid rgba(193,0,122,0.4);
+      border-radius:20px; font-size:.65rem; font-weight:700;
+      color: var(--rose); text-transform:uppercase; letter-spacing:.08em;
+    }
+
+    .az-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.85rem; }
+    .az-btn {
+      display:flex; flex-direction:column; align-items:center; gap:.6rem;
+      padding:1.1rem .85rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius:14px;
+      cursor:pointer; text-decoration:none;
+      color: rgba(255,255,255,0.75); font-size:.75rem; font-weight:500;
+      text-align:center; transition:all .25s;
+    }
+    .az-btn:hover {
+      background: rgba(193,0,122,0.15);
+      border-color: rgba(193,0,122,0.5);
+      color: #fff;
+      text-decoration:none;
+      transform:translateY(-2px);
+      box-shadow: 0 6px 20px rgba(193,0,122,0.25);
+    }
+    .az-btn:hover .az-btn-ico { color: var(--rose); transform:scale(1.1); }
+    .az-btn-ico { font-size:1.4rem; color: rgba(255,255,255,0.35); transition:all .25s; }
+    .az-btn-lbl { line-height:1.3; }
+
+    .az-btn.highlight-az {
+      background: rgba(193,0,122,0.1);
+      border: 1px solid rgba(193,0,122,0.3);
+    }
+    .az-btn.highlight-az .az-btn-ico { color: var(--rose); }
+    .az-btn.highlight-az:hover {
+      background: rgba(193,0,122,0.25);
+      border-color: var(--rose);
+    }
+
+    /* Bottom Grid Section */
+    .bottom-grid { display:grid; grid-template-columns:1fr 360px; gap:1.25rem; margin-bottom:2rem; }
+
+    /* Activity Card Section */
+    .activity-card {
+      background:var(--surface); border-radius:18px;
+      border:1.5px solid var(--border);
+      box-shadow:var(--shadow-sm);
+      overflow:hidden;
+    }
+    .ac-head {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:.9rem 1.4rem; background:var(--surface2); border-bottom:1px solid var(--border);
+    }
+    .ac-head-l { display:flex; align-items:center; gap:.65rem; }
+    .ac-head-ico { width:30px; height:30px; border-radius:8px; background:var(--bg2); color:var(--muted); display:flex; align-items:center; justify-content:center; font-size:.75rem; }
+    .ac-head-title { font-size:.8rem; font-weight:700; color:var(--text); }
+    .live-chip {
+      display:inline-flex; align-items:center; gap:.35rem;
+      padding:.2rem .6rem; border-radius:20px;
+      background:var(--turq-xl); color:var(--turq-d); font-size:.65rem; font-weight:700;
+    }
+    .live-dot { width:6px; height:6px; border-radius:50%; background:var(--success); box-shadow:0 0 6px rgba(34,197,94,.6); animation:pipPulse 2s infinite; }
+
+    .activity-scroll { max-height:320px; overflow-y:auto; }
+    .activity-scroll::-webkit-scrollbar { width:3px; }
+    .activity-scroll::-webkit-scrollbar-thumb { background:var(--border2); }
+
+    .aitem {
+      display:flex; align-items:flex-start; gap:.85rem;
+      padding:.85rem 1.4rem; border-bottom:1px solid var(--bg2);
+      transition:background .15s;
+    }
+    .aitem:last-child { border-bottom:none; }
+    .aitem:hover { background:var(--surface2); }
+    .aitem-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:.35rem; }
+    .aitem-body { flex:1; }
+    .aitem-text { font-size:.82rem; color:var(--text); line-height:1.45; }
+    .aitem-time { font-size:.65rem; color:var(--faint); font-family:var(--ff-mono); margin-top:.18rem; }
+
+    /* Status Card Section */
+    .status-card {
+      background:var(--surface); border-radius:18px;
+      border:1.5px solid var(--border);
+      box-shadow:var(--shadow-sm);
+      overflow:hidden;
+    }
+    .sc-head {
+      display:flex; align-items:center; gap:.65rem;
+      padding:.9rem 1.4rem; background:var(--surface2); border-bottom:1px solid var(--border);
+    }
+    .sc-head-ico { width:30px; height:30px; border-radius:8px; background:var(--bg2); color:var(--muted); display:flex; align-items:center; justify-content:center; font-size:.75rem; }
+    .sc-head-title { font-size:.8rem; font-weight:700; color:var(--text); }
+
+    .sc-list { padding:.5rem 1rem; }
+    .sc-item {
+      display:flex; align-items:center; gap:.85rem;
+      padding:.7rem .4rem; border-bottom:1px solid var(--bg2);
+    }
+    .sc-item:last-child { border-bottom:none; }
+    .sc-pip-wrap { position:relative; flex-shrink:0; }
+    .sc-pip {
+      width:36px; height:36px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center; font-size:.82rem;
+    }
+    .sc-pip.ok   { background:var(--turq-xl); color:var(--turq-d); }
+    .sc-pip.warn { background:var(--gold-l); color:var(--gold-d); }
+    .sc-pip.err  { background:rgba(220,38,38,.1); color:var(--danger); }
+    .sc-ping {
+      position:absolute; inset:-4px; border-radius:50%;
+      border:2px solid transparent; animation:scPing 2s ease-in-out infinite;
+    }
+    .sc-ping.ok   { border-color:rgba(79,166,149,.3); }
+    .sc-ping.warn { border-color:rgba(176,141,87,.3); }
+    @keyframes scPing { 0%{transform:scale(1);opacity:1} 100%{transform:scale(1.6);opacity:0} }
+
+    .sc-name { font-size:.82rem; font-weight:600; color:var(--text); }
+    .sc-val  { font-size:.67rem; color:var(--muted); font-family:var(--ff-mono); margin-top:.1rem; }
+
+    /* Admin Footer Section */
+    .admin-footer {
+      background:var(--surface); border-radius:20px;
+      border:1.5px solid var(--border);
+      box-shadow:var(--shadow-sm);
+      padding:1.4rem 1.75rem;
+      display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap;
+    }
+    .af-left { display:flex; align-items:center; gap:1rem; flex:1; min-width:0; }
+    .af-av {
+      width:46px; height:46px; border-radius:50%;
+      background:linear-gradient(135deg, var(--rose), var(--rose-d));
+      overflow:hidden; border:2px solid var(--rose-l);
+      display:flex; align-items:flex-end; justify-content:center; flex-shrink:0;
+    }
+    .af-av img { width:44px; height:44px; object-fit:cover; }
+    .af-name { font-size:.9rem; font-weight:700; color:var(--text); }
+    .af-role {
+      font-size:.65rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em;
+      color:var(--rose); display:flex; align-items:center; gap:.3rem; margin-top:.1rem;
+    }
+    .af-sid { font-size:.62rem; color:var(--faint); font-family:var(--ff-mono); margin-top:.1rem; }
+
+    .af-actions { display:flex; gap:.65rem; flex-wrap:wrap; }
+    .af-btn {
+      display:inline-flex; align-items:center; gap:.4rem;
+      padding:.6rem 1.1rem; border-radius:10px; font-size:.8rem; font-weight:600;
+      border:1.5px solid; cursor:pointer; text-decoration:none; transition:all .2s;
+      font-family:var(--ff-body);
+    }
+    .af-outline { background:transparent; border-color:var(--border); color:var(--muted); }
+    .af-outline:hover { background:var(--bg2); color:var(--text); text-decoration:none; }
+    .af-danger  { background:transparent; border-color:rgba(220,38,38,.3); color:var(--danger); }
+    .af-danger:hover  { background:rgba(220,38,38,.08); text-decoration:none; color:var(--danger); }
+
+    /* Responsive Section */
+    @media(max-width:1024px){ .kpi-row{grid-template-columns:repeat(2,1fr)} .az-grid{grid-template-columns:repeat(2,1fr)} .bottom-grid{grid-template-columns:1fr} }
+    @media(max-width:768px){ .hero-row{grid-template-columns:1fr} .hero-profile{align-items:flex-start} .actions-grid{grid-template-columns:1fr} .kpi-row{grid-template-columns:repeat(2,1fr)} }
+    @media(max-width:480px){ .kpi-row{grid-template-columns:1fr} .az-grid{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+
+{% include "header.html" %}
+
+<!-- Hero Section -->
+<div class="hero">
+  <canvas id="netCanvas"></canvas>
+  <div class="hero-amb"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-bar"></div>
+
+  <div class="hero-content container">
+    <div class="hero-row">
+
+      <div class="hero-left">
+        <div class="pre-title">
+          <div class="pre-badge">
+            <span class="crown">👑</span>
+            Super Administrateur
+            <span class="niv">NIV.3</span>
+          </div>
+          <div class="pre-line"></div>
+        </div>
+
+        <h1 class="hero-h1">
+          Dashboard <span class="accent-gold">Admin</span> <span class="accent-rose">ML2C</span>
+        </h1>
+
+        <div class="hero-sub">
+          <span class="online-pip"></span>
+          SESSION·ACTIVE &nbsp;·&nbsp; ML2C-ADMIN &nbsp;·&nbsp;
+          <span id="heroTime">--:--:--</span>
+        </div>
+
+        <div class="hero-chips">
+          <span class="hchip gold"><i class="fas fa-crown"></i> Super Admin</span>
+          <span class="hchip green"><i class="fas fa-shield-halved"></i> Droits complets</span>
+          <span class="hchip rose"><i class="fas fa-robot"></i> Chatbot actif</span>
+          <span class="hchip blue"><i class="fas fa-database"></i> BDD connectée</span>
+          <span class="hchip mono">TLS·1.3 · AES-256</span>
+        </div>
+      </div>
+
+      <div class="hero-profile">
+        <div class="profile-card">
+          <div class="p-av-wrap">
+            <div class="p-ring">
+              <div class="p-av-inner">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy" alt="Admin">
+              </div>
+            </div>
+            <div class="p-crown"><i class="fas fa-crown"></i></div>
+          </div>
+          <div class="p-info">
+            <div class="p-name">Administrateur ML2C</div>
+            <div class="p-role"><i class="fas fa-star" style="font-size:.55rem;"></i> Super Admin · Niveau 3</div>
+            <div class="p-perms">FULL ACCESS · ALL MODULES</div>
+          </div>
+        </div>
+
+        <div class="session-box">
+          <i class="fas fa-hourglass-half" style="opacity:.6;"></i>
+          Session expire&nbsp;:&nbsp;<span class="session-val" id="sesCd">29:59</span>
+          &nbsp;·&nbsp;ID:&nbsp;<span class="session-val" id="sesId">----</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <svg class="hero-wave" viewBox="0 0 1440 70" preserveAspectRatio="none">
+    <path d="M0,0 C480,70 960,70 1440,0 L1440,70 L0,70 Z" fill="#faf8f4"/>
+  </svg>
+</div>
+
+<!-- Main Content Section -->
+<div class="main">
+  <div class="container">
+
+    <div class="level-strip">
+      <div class="ls-icon"><i class="fas fa-crown"></i></div>
+      <div class="ls-body">
+        <div class="ls-title">Accès Super Administrateur — Niveau 3 · Droits globaux</div>
+        <div class="ls-sub">Cet espace est inaccessible aux utilisateurs standard. Toutes les actions sont enregistrées et auditées.</div>
+      </div>
+      <div class="ls-perms">
+        <span class="ls-perm"><i class="fas fa-check"></i> Chatbot</span>
+        <span class="ls-perm"><i class="fas fa-check"></i> Utilisateurs</span>
+        <span class="ls-perm"><i class="fas fa-check"></i> Système</span>
+        <span class="ls-perm"><i class="fas fa-check"></i> Logs</span>
+        <span class="ls-perm"><i class="fas fa-check"></i> Export</span>
+      </div>
+    </div>
+
+    <div class="s-head">
+      <div class="s-label"><i class="fas fa-chart-bar"></i> Indicateurs clés</div>
+    </div>
+    <div class="kpi-row">
+
+      <div class="kcard k-rose">
+        <div class="kcard-glow"></div>
+        <div class="kcard-head">
+          <div class="kcard-ico kico-rose"><i class="fas fa-comments"></i></div>
+          <span class="kcard-trend t-up"><i class="fas fa-arrow-up"></i> +12%</span>
+        </div>
+        <div class="kcard-lbl">Questions chatbot</div>
+        <div class="kcard-val">{{ total_questions }}</div>
+        <div class="kcard-bar"><div class="kbar-fill" style="background:var(--rose);width:0" data-w="72%"></div></div>
+        <div class="kcard-sub">Enregistrées en base de données</div>
+      </div>
+
+      <div class="kcard k-turq">
+        <div class="kcard-glow"></div>
+        <div class="kcard-head">
+          <div class="kcard-ico kico-turq"><i class="fas fa-users"></i></div>
+          <span class="kcard-trend t-flat"><i class="fas fa-minus"></i> Stable</span>
+        </div>
+        <div class="kcard-lbl">Utilisateurs inscrits</div>
+        <div class="kcard-val">—</div>
+        <div class="kcard-bar"><div class="kbar-fill" style="background:var(--turq);width:0" data-w="45%"></div></div>
+        <div class="kcard-sub">Comptes actifs sur la plateforme</div>
+      </div>
+
+      <div class="kcard k-gold">
+        <div class="kcard-glow"></div>
+        <div class="kcard-head">
+          <div class="kcard-ico kico-gold"><i class="fas fa-clock"></i></div>
+          <span class="kcard-trend t-ok"><i class="fas fa-check"></i> Live</span>
+        </div>
+        <div class="kcard-lbl">Heure système</div>
+        <div class="kcard-val sm" id="kpiTime">--:--:--</div>
+        <div class="kcard-bar"><div class="kbar-fill" style="background:var(--gold);width:0" data-w="100%"></div></div>
+        <div class="kcard-sub">Mise à jour en temps réel</div>
+      </div>
+
+      <div class="kcard k-ink">
+        <div class="kcard-head">
+          <div class="kcard-ico kico-ink"><i class="fas fa-server"></i></div>
+          <span class="kcard-trend t-ok"><i class="fas fa-check"></i> OK</span>
+        </div>
+        <div class="kcard-lbl">Statut serveur</div>
+        <div class="kcard-val sm ok">Opérationnel</div>
+        <div class="kcard-bar"><div class="kbar-fill" style="background:var(--success);width:0" data-w="98%"></div></div>
+        <div class="kcard-sub">Uptime 99.8% · BDD active</div>
+      </div>
+
+    </div>
+
+    <div class="s-head">
+      <div class="s-label"><i class="fas fa-comment-alt"></i> Dernière question chatbot</div>
+      <a href="{{ url_for('admin_chatbot') }}" class="s-link">Tout gérer <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="lq-card">
+      <div class="lq-head">
+        <div class="lq-head-ico"><i class="fas fa-quote-left"></i></div>
+        <div>
+          <div class="lq-head-txt">Question la plus récente</div>
+          <div class="lq-head-sub">Dernière entrée enregistrée dans le chatbot ML2C CONSEIL</div>
+        </div>
+      </div>
+      <div class="lq-body">
+        <div class="lq-bubble">
+          <div class="lq-quote">"</div>
+          <div class="lq-text">
+            {% if last_question %}{{ last_question }}
+            {% else %}<span style="color:var(--muted);font-style:italic;">Aucune question enregistrée pour le moment.</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="s-head">
+      <div class="s-label"><i class="fas fa-bolt"></i> Actions rapides</div>
+    </div>
+    <div class="actions-grid">
+      <a href="{{ url_for('admin_chatbot') }}" class="acard">
+        <div class="acard-ico ai-rose"><i class="fas fa-comments"></i></div>
+        <div class="acard-body">
+          <div class="acard-title">Gérer le chatbot <span class="acard-badge ab-rose">{{ total_questions }} Q</span></div>
+          <div class="acard-desc">Questions, réponses, historique, modération des échanges</div>
+        </div>
+        <i class="fas fa-chevron-right acard-arr"></i>
+      </a>
+      <a href="{{ url_for('base_test') }}" class="acard gold-ac">
+        <div class="acard-ico ai-gold"><i class="fas fa-database"></i></div>
+        <div class="acard-body">
+          <div class="acard-title">Base utilisateurs <span class="acard-badge ab-gold">Admin</span></div>
+          <div class="acard-desc">Consulter, gérer et auditer tous les comptes inscrits</div>
+        </div>
+        <i class="fas fa-chevron-right acard-arr"></i>
+      </a>
+    </div>
+
+    <div class="s-head">
+      <div class="s-label"><i class="fas fa-crown"></i> Zone administrateur exclusif</div>
+    </div>
+    <div class="admin-zone">
+      <div class="az-scan"></div>
+      <div class="az-content">
+        <div class="az-head">
+          <div class="az-ico"><i class="fas fa-crown"></i></div>
+          <div>
+            <div class="az-title">Outils Super Admin — Accès Niveau 3</div>
+            <div class="az-sub">Ces modules sont strictement inaccessibles aux utilisateurs et clients</div>
+          </div>
+          <div class="az-badge"><i class="fas fa-lock"></i> Restreint</div>
+        </div>
+
+        <div class="az-grid">
+          <a href="{{ url_for('admin_stats') }}" class="az-btn">
+            <div class="az-btn-ico"><i class="fas fa-chart-line"></i></div>
+            <div class="az-btn-lbl">Statistiques avancées</div>
+          </a>
+
+          <a href="{{ url_for('admin_config') }}" class="az-btn">
+            <div class="az-btn-ico"><i class="fas fa-sliders"></i></div>
+            <div class="az-btn-lbl">Configuration système</div>
+          </a>
+
+          <a href="{{ url_for('admin_logs') }}" class="az-btn highlight-az">
+            <div class="az-btn-ico"><i class="fas fa-shield-halved"></i></div>
+            <div class="az-btn-lbl">Logs de sécurité</div>
+          </a>
+
+          <a href="{{ url_for('admin_emails') }}" class="az-btn">
+            <div class="az-btn-ico"><i class="fas fa-envelope"></i></div>
+            <div class="az-btn-lbl">Emails automatiques</div>
+          </a>
+
+          <a href="{{ url_for('admin_export') }}" class="az-btn">
+            <div class="az-btn-ico"><i class="fas fa-file-export"></i></div>
+            <div class="az-btn-lbl">Export des données</div>
+          </a>
+
+          <a href="{{ url_for('admin_purge') }}" class="az-btn">
+            <div class="az-btn-ico"><i class="fas fa-trash-alt"></i></div>
+            <div class="az-btn-lbl">Purger les logs</div>
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="bottom-grid">
+
+      <div class="activity-card">
+        <div class="ac-head">
+          <div class="ac-head-l">
+            <div class="ac-head-ico"><i class="fas fa-list"></i></div>
+            <div class="ac-head-title">Journal d'activité — Admin</div>
+          </div>
+          <div class="live-chip"><div class="live-dot"></div> Live</div>
+        </div>
+        <div class="activity-scroll" id="actList">
+          <div class="aitem"><div class="aitem-dot" style="background:var(--rose)"></div><div class="aitem-body"><div class="aitem-text"><strong>Connexion administrateur</strong> — Session ouverte</div><div class="aitem-time" id="loginT">À l'instant</div></div></div>
+          <div class="aitem"><div class="aitem-dot" style="background:var(--rose)"></div><div class="aitem-body"><div class="aitem-text">Chatbot — <strong>{{ total_questions }} question(s)</strong> en base</div><div class="aitem-time">Synchronisé</div></div></div>
+          <div class="aitem"><div class="aitem-dot" style="background:var(--turq)"></div><div class="aitem-body"><div class="aitem-text"><strong>Base de données</strong> — Connexion active</div><div class="aitem-time">Statut vérifié</div></div></div>
+          <div class="aitem"><div class="aitem-dot" style="background:var(--muted)"></div><div class="aitem-body"><div class="aitem-text"><strong>Dashboard admin</strong> — Modules chargés</div><div class="aitem-time">Init. terminée</div></div></div>
+        </div>
+      </div>
+
+      <div class="status-card">
+        <div class="sc-head">
+          <div class="sc-head-ico"><i class="fas fa-server"></i></div>
+          <div class="sc-head-title">Statut des services</div>
+        </div>
+        <div class="sc-list">
+          <div class="sc-item">
+            <div class="sc-pip-wrap"><div class="sc-pip ok"><i class="fas fa-database"></i></div><div class="sc-ping ok"></div></div>
+            <div><div class="sc-name">Base de données</div><div class="sc-val">ONLINE · &lt;5ms</div></div>
+          </div>
+          <div class="sc-item">
+            <div class="sc-pip-wrap"><div class="sc-pip ok"><i class="fas fa-robot"></i></div><div class="sc-ping ok"></div></div>
+            <div><div class="sc-name">Chatbot ML2C v2.0</div><div class="sc-val">ACTIF · &lt;2s</div></div>
+          </div>
+          <div class="sc-item">
+            <div class="sc-pip-wrap"><div class="sc-pip ok"><i class="fas fa-shield-halved"></i></div><div class="sc-ping ok"></div></div>
+            <div><div class="sc-name">Sécurité · TLS 1.3</div><div class="sc-val">CHIFFRÉ · AES-256</div></div>
+          </div>
+          <div class="sc-item">
+            <div class="sc-pip-wrap"><div class="sc-pip ok"><i class="fas fa-envelope"></i></div><div class="sc-ping ok"></div></div>
+            <div><div class="sc-name">Service emails</div><div class="sc-val">OPÉRATIONNEL</div></div>
+          </div>
+          <div class="sc-item">
+            <div class="sc-pip-wrap"><div class="sc-pip warn"><i class="fas fa-cloud"></i></div><div class="sc-ping warn"></div></div>
+            <div><div class="sc-name">CDN / Assets</div><div class="sc-val">LATENCE · 120ms</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="admin-footer">
+      <div class="af-left">
+        <div class="af-av">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy" alt="Admin">
+        </div>
+        <div>
+          <div class="af-name">Administrateur ML2C CONSEIL</div>
+          <div class="af-role"><i class="fas fa-crown" style="color:var(--rose);font-size:.58rem;"></i> Super Admin · Droits complets · Niveau 3</div>
+          <div class="af-sid">SID: <span id="footSid">----</span> · Session <span id="footTimer">29:59</span></div>
+        </div>
+      </div>
+      <div class="af-actions">
+        <a href="{{ url_for('menu') }}" class="af-btn af-outline"><i class="fas fa-home"></i> Accueil</a>
+        <a href="{{ url_for('logout_admin') }}" class="af-btn af-danger"><i class="fas fa-sign-out-alt"></i> Déconnecter</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% include "footer.html" %}
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+/* Neural Canvas Script Section */
+const nc = document.getElementById('netCanvas');
+const nctx = nc.getContext('2d');
+let NW, NH, pts = [];
+
+function resizeNet() {
+  NW = nc.width = nc.offsetWidth;
+  NH = nc.height = nc.offsetHeight;
+}
+resizeNet();
+window.addEventListener('resize', () => { resizeNet(); });
+
+const COLORS = [
+  [193,0,122], [79,166,149], [176,141,87]
+];
+class Pt {
+  constructor() { this.reset(); }
+  reset() {
+    this.x  = Math.random() * NW;
+    this.y  = Math.random() * NH;
+    this.r  = Math.random() * 1.5 + .4;
+    this.vx = (Math.random() - .5) * .25;
+    this.vy = (Math.random() - .5) * .25;
+    const c = COLORS[Math.floor(Math.random() * COLORS.length)];
+    this.a  = Math.random() * .3 + .1;
+    this.rgb = c;
+  }
+  tick() {
+    this.x += this.vx; this.y += this.vy;
+    if (this.x < 0 || this.x > NW || this.y < 0 || this.y > NH) this.reset();
+  }
+  draw() {
+    nctx.beginPath();
+    nctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+    nctx.fillStyle = `rgba(${this.rgb},${this.a})`;
+    nctx.fill();
+  }
+}
+for (let i=0;i<75;i++) pts.push(new Pt());
+
+function drawNet() {
+  nctx.clearRect(0,0,NW,NH);
+  for (let i=0;i<pts.length;i++) {
+    for (let j=i+1;j<pts.length;j++) {
+      const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      if(d<110){
+        nctx.beginPath();
+        nctx.moveTo(pts[i].x,pts[i].y);
+        nctx.lineTo(pts[j].x,pts[j].y);
+        nctx.strokeStyle=`rgba(193,0,122,${(1-d/110)*.08})`;
+        nctx.lineWidth=.6; nctx.stroke();
+      }
+    }
+    pts[i].tick(); pts[i].draw();
+  }
+  requestAnimationFrame(drawNet);
+}
+drawNet();
+
+/* Clock Script Section */
+function tick() {
+  const n=new Date();
+  const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');
+  ['heroTime','kpiTime'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=t;});
+}
+tick(); setInterval(tick,1000);
+
+/* Session ID Script Section */
+function mkId() {
+  const chars='ABCDEF0123456789';
+  return Array.from({length:8},()=>chars[Math.floor(Math.random()*chars.length)]).join('');
+}
+const sid = mkId();
+['sesId','footSid'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=sid;});
+
+/* Session Countdown Script Section */
+let secs = 30*60;
+function cdTick() {
+  secs = Math.max(0, secs-1);
+  const m=String(Math.floor(secs/60)).padStart(2,'0');
+  const s=String(secs%60).padStart(2,'0');
+  const v=m+':'+s;
+  ['sesCd','footTimer'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    el.textContent=v;
+    el.classList.toggle('warn', secs<120);
+  });
+}
+setInterval(cdTick,1000);
+
+/* KPI Bar Animation Script Section */
+document.querySelectorAll('.kbar-fill').forEach(b=>{
+  const w=b.dataset.w;
+  b.style.width='0';
+  setTimeout(()=>{ b.style.width=w; },500);
+});
+
+/* Live Activity Script Section */
+const LOGS = [
+  {c:'var(--rose)',    txt:'Chatbot — nouvelle <strong>question reçue</strong>'},
+  {c:'var(--turq)',    txt:'BDD — synchronisation <strong>réussie</strong>'},
+  {c:'var(--rose)',    txt:'Vérification des <strong>permissions admin</strong>'},
+  {c:'var(--muted)',   txt:'Cache applicatif — <strong>rafraîchissement</strong>'},
+  {c:'var(--success)', txt:'Surveillance sécurité — <strong>RAS</strong>'},
+  {c:'var(--turq)',    txt:'Session admin — <strong>heartbeat OK</strong>'},
+  {c:'var(--rose)',    txt:'Audit accès — <strong>journal mis à jour</strong>'},
+];
+let logIdx=0;
+function pushLog() {
+  const list=document.getElementById('actList');
+  if(!list) return;
+  const item=LOGS[logIdx%LOGS.length]; logIdx++;
+  const n=new Date();
+  const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');
+  const div=document.createElement('div');
+  div.className='aitem';
+  div.style.cssText='opacity:0;transition:opacity .4s';
+  div.innerHTML=`<div class="aitem-dot" style="background:${item.c}"></div><div class="aitem-body"><div class="aitem-text">${item.txt}</div><div class="aitem-time">${t}</div></div>`;
+  list.insertBefore(div,list.firstChild);
+  requestAnimationFrame(()=>{ div.style.opacity='1'; });
+  while(list.children.length>8) list.removeChild(list.lastChild);
+}
+setInterval(pushLog, 5500);
+
+/* Init Time Script Section */
+const now=new Date();
+const loginEl=document.getElementById('loginT');
+if(loginEl) loginEl.textContent=[now.getHours(),now.getMinutes(),now.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');
+</script>
+
+</body>
+</html>

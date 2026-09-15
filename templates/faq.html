@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ ML2C CONSEIL</title>
+  <meta name="description" content="Frequently asked questions about ML2C CONSEIL, our client platform, and our AI approach.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    :root {
+      --rose:    #C1007A;
+      --rose-lt: #fce4f3;
+      --turq:    #4FA695;
+      --turq-lt: #d4f0ec;
+      --gris:    #5C666B;
+      --dark:    #2d3436;
+      --dark2:   #3d4549;
+      --bg:      #f4f5f7;
+      --text:    #374151;
+      --focus:   #005fcc; /* RGAA focus color */
+    }
+
+    /* RGAA focus for all interactive elements */
+    *:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); }
+
+    /* READING PROGRESS BAR */
+    #read-progress {
+      position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+      background: linear-gradient(90deg, var(--rose), var(--turq));
+      z-index: 9999; transition: width .1s linear;
+    }
+
+    /* RGAA SKIP LINK */
+    .skip-link {
+      position: absolute; top: -100px; left: 1rem;
+      background: var(--focus); color: #fff; padding: .5rem 1rem;
+      border-radius: 0 0 8px 8px; font-weight: 700; font-size: .9rem;
+      text-decoration: none; z-index: 99999;
+      transition: top .2s;
+    }
+    .skip-link:focus { top: 0; }
+
+    /* HERO */
+    .page-hero {
+      background: linear-gradient(125deg, var(--dark) 0%, var(--dark2) 55%, #1a2526 100%);
+      padding: 90px 0 80px; position: relative; overflow: hidden;
+    }
+    .page-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 20% 70%, rgba(79,166,149,.14) 0%, transparent 45%),
+        radial-gradient(circle at 80% 20%, rgba(193,0,122,.10) 0%, transparent 40%);
+    }
+    .page-hero::after {
+      content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 60px;
+      background: var(--bg); clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    .ph-inner { position: relative; z-index: 2; }
+
+    .breadcrumb-ml2c {
+      display: flex; align-items: center; gap: .45rem;
+      list-style: none; padding: 0; margin-bottom: 1.75rem;
+      font-size: .73rem; color: rgba(255,255,255,.38);
+    }
+    .breadcrumb-ml2c a { color: rgba(255,255,255,.38); transition: color .2s; text-decoration: none; }
+    .breadcrumb-ml2c a:hover, .breadcrumb-ml2c a:focus { color: #5eead4; text-decoration: underline; }
+    .breadcrumb-ml2c .sep { font-size: .45rem; opacity: .5; }
+    .breadcrumb-ml2c li:last-child { color: rgba(255,255,255,.75); }
+
+    .ph-eyebrow {
+      font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+      text-transform: uppercase; color: #5eead4;
+      display: flex; align-items: center; gap: .5rem; margin-bottom: .75rem;
+    }
+    .ph-eyebrow::before { content: ''; display: block; width: 28px; height: 2px; background: #5eead4; }
+
+    .ph-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.1rem, 5vw, 3.4rem);
+      font-weight: 700; color: #fff; line-height: 1.08; margin-bottom: 1.1rem;
+    }
+    .ph-title em { color: #5eead4; font-style: italic; }
+    .ph-sub { font-size: .92rem; color: rgba(255,255,255,.58); max-width: 500px; line-height: 1.85; margin: 0; }
+
+    /* HERO STATS */
+    .ph-stats {
+      display: flex; gap: 2rem; flex-wrap: wrap; margin-top: 2rem;
+    }
+    .ph-stat { text-align: center; }
+    .ph-stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 700; color: #5eead4; display: block; line-height: 1;
+    }
+    .ph-stat-label { font-size: .72rem; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; }
+
+    /* SEARCH + FILTERS ZONE */
+    .faq-controls {
+      background: #fff; border-radius: 20px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.08);
+      padding: 2rem 2.25rem; margin: -2rem 0 2.5rem;
+      position: relative; z-index: 5;
+    }
+
+    /* SEARCH FIELD */
+    .search-wrap {
+      position: relative; margin-bottom: 1.5rem;
+    }
+    .search-wrap label {
+      display: block; font-size: .78rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .1em; color: var(--gris);
+      margin-bottom: .5rem;
+    }
+    .search-input-row { display: flex; gap: .75rem; }
+    .search-icon-wrap { position: relative; flex: 1; }
+    .search-icon-wrap i {
+      position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
+      color: #aaa; font-size: .9rem; pointer-events: none;
+    }
+    #faq-search {
+      width: 100%; padding: .75rem 1rem .75rem 2.75rem;
+      border: 2px solid #e5e7eb; border-radius: 10px;
+      font-size: .92rem; font-family: 'DM Sans', sans-serif;
+      transition: border-color .2s, box-shadow .2s;
+      background: #fafafa;
+    }
+    #faq-search:focus {
+      outline: none;
+      border-color: var(--turq);
+      box-shadow: 0 0 0 3px rgba(79,166,149,.2);
+      background: #fff;
+    }
+    .btn-clear {
+      padding: .75rem 1.1rem; background: #f3f4f6;
+      border: 2px solid #e5e7eb; border-radius: 10px;
+      font-size: .82rem; font-weight: 600; color: var(--gris);
+      cursor: pointer; transition: all .2s; white-space: nowrap;
+      display: flex; align-items: center; gap: .4rem;
+    }
+    .btn-clear:hover { background: var(--rose-lt); border-color: var(--rose); color: var(--rose); }
+
+    /* RESULTS COUNTER */
+    #faq-result-count {
+      font-size: .8rem; color: var(--gris); margin-top: .5rem;
+      display: flex; align-items: center; gap: .35rem;
+    }
+    #faq-result-count i { color: var(--turq); }
+    #count-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--turq); color: #fff;
+      width: 22px; height: 22px; border-radius: 50%;
+      font-size: .72rem; font-weight: 700; line-height: 1;
+    }
+
+    /* SEPARATOR */
+    .controls-sep { height: 1px; background: #f0f2f4; margin: 0 0 1.5rem; }
+
+    /* FILTERS */
+    .filters-row {
+      display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;
+    }
+    .filters-label {
+      font-size: .75rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .1em; color: var(--gris); white-space: nowrap;
+    }
+    .filter-pills { display: flex; gap: .5rem; flex-wrap: wrap; flex: 1; }
+    .filter-pill {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .38rem .9rem; border-radius: 20px;
+      font-size: .8rem; font-weight: 600;
+      border: 2px solid #e5e7eb; background: #f9fafb; color: var(--gris);
+      cursor: pointer; transition: all .2s; text-decoration: none;
+    }
+    .filter-pill i { font-size: .72rem; }
+    .filter-pill:hover { border-color: var(--turq); color: var(--turq); background: var(--turq-lt); }
+    .filter-pill.active { background: var(--turq); border-color: var(--turq); color: #fff; }
+    .filter-pill[aria-pressed="true"] { background: var(--turq); border-color: var(--turq); color: #fff; }
+
+    /* EXPAND/COLLAPSE ALL BUTTONS */
+    .expand-row {
+      display: flex; justify-content: flex-end; align-items: center;
+      gap: .5rem; margin-bottom: 1.25rem;
+    }
+    .btn-expand {
+      display: inline-flex; align-items: center; gap: .35rem;
+      padding: .4rem .85rem; border-radius: 8px;
+      font-size: .78rem; font-weight: 600; cursor: pointer;
+      border: 1.5px solid #e5e7eb; background: #fff; color: var(--gris);
+      transition: all .2s;
+    }
+    .btn-expand:hover { border-color: var(--rose); color: var(--rose); background: var(--rose-lt); }
+    .btn-expand i { font-size: .7rem; }
+
+    /* NO RESULTS MESSAGE */
+    #no-results {
+      display: none; text-align: center; padding: 3rem 2rem;
+      background: #fff; border-radius: 20px;
+      box-shadow: 0 2px 16px rgba(0,0,0,.06);
+    }
+    #no-results i { font-size: 2.5rem; color: #e5e7eb; display: block; margin-bottom: 1rem; }
+    #no-results p { color: var(--gris); margin: 0; }
+    #no-results strong { color: var(--rose); }
+
+    /* FAQ SECTIONS */
+    .faq-section { margin-bottom: 2.5rem; }
+    .faq-section-title {
+      display: flex; align-items: center; gap: .75rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem; font-weight: 700; color: var(--dark2);
+      margin-bottom: 1rem; padding-bottom: .75rem;
+      border-bottom: 2px solid #f0f2f4;
+    }
+    .faq-section-icon {
+      width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .9rem;
+    }
+    .si-turq   { background: var(--turq-lt); color: var(--turq); }
+    .si-rose   { background: var(--rose-lt); color: var(--rose); }
+    .si-blue   { background: #dbeafe; color: #1d4ed8; }
+    .si-green  { background: #dcfce7; color: #15803d; }
+    .si-purple { background: #f3e8ff; color: #6d28d9; }
+
+    /* FAQ ITEMS */
+    .faq-item {
+      background: #fff; border-radius: 16px; margin-bottom: .75rem;
+      box-shadow: 0 1px 8px rgba(0,0,0,.06);
+      border: 1.5px solid transparent;
+      transition: box-shadow .25s, border-color .25s;
+      overflow: hidden;
+    }
+    .faq-item:hover { box-shadow: 0 4px 20px rgba(0,0,0,.10); }
+    .faq-item.open { border-color: rgba(193,0,122,.15); }
+
+    .faq-question {
+      width: 100%; display: flex; align-items: center; gap: 1rem;
+      padding: 1.15rem 1.5rem; cursor: pointer;
+      background: transparent; border: none; text-align: left;
+      transition: background .2s;
+    }
+    .faq-question:hover { background: #fafafa; }
+
+    /* NUMBER */
+    .fq-num {
+      width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem; font-weight: 700;
+      background: var(--rose-lt); color: var(--rose);
+      transition: background .2s, color .2s;
+    }
+    .faq-item.open .fq-num { background: var(--rose); color: #fff; }
+
+    .fq-text { flex: 1; font-size: .95rem; font-weight: 600; color: var(--dark2); line-height: 1.4; }
+
+    /* ANIMATED CHEVRON */
+    .fq-chevron {
+      width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: #f3f4f6; color: #aaa;
+      font-size: .72rem; transition: all .3s;
+    }
+    .faq-item.open .fq-chevron { background: var(--rose-lt); color: var(--rose); transform: rotate(180deg); }
+
+    /* ANSWER */
+    .faq-answer {
+      max-height: 0; overflow: hidden;
+      transition: max-height .4s cubic-bezier(.4,0,.2,1), padding .3s;
+      padding: 0 1.5rem;
+    }
+    .faq-item.open .faq-answer { max-height: 400px; padding: 0 1.5rem 1.5rem; }
+
+    .faq-answer-inner {
+      border-top: 1px solid #f0f2f4; padding-top: 1rem;
+      font-size: .91rem; color: #6b7280; line-height: 1.88;
+    }
+    .faq-answer-inner strong { color: var(--dark2); }
+
+    /* TAGS */
+    .fq-tags { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: .85rem; }
+    .fq-tag {
+      font-size: .68rem; font-weight: 700; letter-spacing: .06em;
+      text-transform: uppercase; padding: .2rem .6rem;
+      border-radius: 6px; background: #f3f4f6; color: var(--gris);
+    }
+    .tag-turq   { background: var(--turq-lt); color: #2d7a70; }
+    .tag-rose   { background: var(--rose-lt); color: var(--rose); }
+    .tag-blue   { background: #dbeafe; color: #1d4ed8; }
+    .tag-green  { background: #dcfce7; color: #15803d; }
+    .tag-purple { background: #f3e8ff; color: #6d28d9; }
+
+    /* FINAL CTA */
+    .faq-cta {
+      background: linear-gradient(135deg, var(--dark2) 0%, var(--dark) 100%);
+      border-radius: 24px; padding: 3rem 2.5rem; text-align: center;
+      box-shadow: 0 12px 40px rgba(0,0,0,.18); margin-top: 3rem;
+      position: relative; overflow: hidden;
+    }
+    .faq-cta::before {
+      content: ''; position: absolute; top: -60px; right: -60px;
+      width: 220px; height: 220px; border-radius: 50%;
+      background: rgba(79,166,149,.12);
+    }
+    .faq-cta::after {
+      content: ''; position: absolute; bottom: -40px; left: -40px;
+      width: 160px; height: 160px; border-radius: 50%;
+      background: rgba(193,0,122,.10);
+    }
+    .faq-cta-inner { position: relative; z-index: 1; }
+    .faq-cta h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 700; color: #fff; margin-bottom: .5rem;
+    }
+    .faq-cta h2 em { color: #5eead4; font-style: italic; }
+    .faq-cta p { color: rgba(255,255,255,.58); font-size: .92rem; margin-bottom: 1.75rem; }
+    .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-cta-rose {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .85rem 1.75rem; background: var(--rose); color: #fff;
+      font-weight: 700; font-size: .9rem; border-radius: 12px;
+      text-decoration: none; transition: all .25s;
+    }
+    .btn-cta-rose:hover { background: #9a0062; color: #fff; text-decoration: none; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(193,0,122,.4); }
+    .btn-cta-outline {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .85rem 1.75rem; background: transparent;
+      border: 2px solid rgba(255,255,255,.3); color: #fff;
+      font-weight: 700; font-size: .9rem; border-radius: 12px;
+      text-decoration: none; transition: all .25s;
+    }
+    .btn-cta-outline:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.6); color: #fff; text-decoration: none; }
+
+    /* ANIMATIONS */
+    [data-anim] { opacity: 0; transition: opacity .5s ease, transform .5s ease; }
+    [data-anim="fade"]  { transform: translateY(18px); }
+    [data-anim="up"]    { transform: translateY(24px); }
+    [data-anim].visible { opacity: 1 !important; transform: translate(0) !important; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .faq-controls { padding: 1.5rem; margin: -1.5rem 0 2rem; }
+      .filters-row { flex-direction: column; align-items: flex-start; }
+      .faq-cta { padding: 2rem 1.5rem; }
+    }
+    @media (max-width: 576px) {
+      .ph-stats { gap: 1.25rem; }
+      .search-input-row { flex-direction: column; }
+      .expand-row { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- RGAA SKIP LINK -->
+<a class="skip-link" href="#faq-main">Skip to main content</a>
+<div id="read-progress" style="width: 0%;" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Reading progress"></div>
+
+{% include "header.html" %}
+
+<!-- ══════════ HERO ══════════ -->
+<section class="page-hero" aria-label="FAQ page header">
+  <div class="container ph-inner">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb-ml2c">
+        <li><a href="{{ url_for('menu') }}">Home</a></li>
+        <li><span class="sep" aria-hidden="true"><i class="fas fa-chevron-right"></i></span></li>
+        <li aria-current="page">FAQ</li>
+      </ol>
+    </nav>
+    <div class="ph-eyebrow" aria-hidden="true">Frequently asked questions</div>
+    <h1 class="ph-title">Frequently asked questions<br><em>answers &amp; clarity</em></h1>
+    <p class="ph-sub">Find answers here to common questions about ML2C CONSEIL, our client platform, and our modern AI-driven approach.</p>
+    <div class="ph-stats" aria-label="FAQ statistics">
+      <div class="ph-stat">
+        <span class="ph-stat-num" aria-label="9 questions">9</span>
+        <span class="ph-stat-label">Questions</span>
+      </div>
+      <div class="ph-stat">
+        <span class="ph-stat-num" aria-label="5 categories">5</span>
+        <span class="ph-stat-label">Categories</span>
+      </div>
+      <div class="ph-stat">
+        <span class="ph-stat-num" aria-label="Quick response available 6 days out of 7">6/7d</span>
+        <span class="ph-stat-label">Max Response</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CONTENT ══════════ -->
+<main id="faq-main" class="container" style="padding-bottom: 5rem;">
+
+  <!-- CONTROLS -->
+  <section class="faq-controls" aria-label="FAQ search and filtering" data-anim="fade">
+
+    <!-- SEARCH -->
+    <div class="search-wrap">
+      <label for="faq-search"><i class="fas fa-search" aria-hidden="true"></i> Search a question</label>
+      <div class="search-input-row">
+        <div class="search-icon-wrap">
+          <i class="fas fa-search" aria-hidden="true"></i>
+          <input
+            type="search"
+            id="faq-search"
+            name="faq-search"
+            autocomplete="off"
+            placeholder="Ex: quote, platform, AI, password…"
+            aria-label="Search in FAQ"
+            aria-controls="faq-accordion"
+            aria-describedby="faq-result-count"
+          >
+        </div>
+        <button class="btn-clear" id="faq-clear" type="button" aria-label="Clear search">
+          <i class="fas fa-times" aria-hidden="true"></i> Clear
+        </button>
+      </div>
+      <p id="faq-result-count" aria-live="polite" aria-atomic="true">
+        <i class="fas fa-circle-check" aria-hidden="true"></i>
+        <span id="count-badge">9</span> questions in total
+      </p>
+    </div>
+
+    <div class="controls-sep" aria-hidden="true"></div>
+
+    <!-- FILTERS -->
+    <div class="filters-row">
+      <span class="filters-label" id="filters-label" aria-hidden="true">
+        <i class="fas fa-filter" aria-hidden="true"></i> Filter
+      </span>
+      <div class="filter-pills" role="group" aria-labelledby="filters-label">
+        <button class="filter-pill active" data-faq-filter="all" type="button" aria-pressed="true">
+          <i class="fas fa-th-large" aria-hidden="true"></i> All
+        </button>
+        <button class="filter-pill" data-faq-filter="general" type="button" aria-pressed="false">
+          <i class="fas fa-building" aria-hidden="true"></i> The Firm
+        </button>
+        <button class="filter-pill" data-faq-filter="plateforme" type="button" aria-pressed="false">
+          <i class="fas fa-desktop" aria-hidden="true"></i> Platform
+        </button>
+        <button class="filter-pill" data-faq-filter="devis" type="button" aria-pressed="false">
+          <i class="fas fa-file-invoice" aria-hidden="true"></i> Quotes
+        </button>
+        <button class="filter-pill" data-faq-filter="ia" type="button" aria-pressed="false">
+          <i class="fas fa-robot" aria-hidden="true"></i> AI
+        </button>
+        <button class="filter-pill" data-faq-filter="securite" type="button" aria-pressed="false">
+          <i class="fas fa-shield-alt" aria-hidden="true"></i> Security
+        </button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- EXPAND/COLLAPSE ALL BUTTONS -->
+  <div class="expand-row" aria-label="Manage answers display">
+    <button class="btn-expand" id="faq-expand-all" type="button" aria-label="Open all questions">
+      <i class="fas fa-chevron-down" aria-hidden="true"></i> Expand all
+    </button>
+    <button class="btn-expand" id="faq-collapse-all" type="button" aria-label="Close all questions">
+      <i class="fas fa-chevron-up" aria-hidden="true"></i> Collapse all
+    </button>
+  </div>
+
+  <!-- NO RESULTS MESSAGE -->
+  <div id="no-results" role="alert" aria-live="polite">
+    <i class="fas fa-search-minus" aria-hidden="true"></i>
+    <p>No questions match your search.<br>
+    <strong>Contact us directly</strong>, we will respond within 24 hours.</p>
+  </div>
+
+  <!-- FAQ ACCORDION -->
+  <div id="faq-accordion" aria-label="Frequently asked questions">
+
+    <!-- ── FIRM SECTION ── -->
+    <section class="faq-section" id="section-general" data-anim="fade" style="transition-delay:.04s">
+      <h2 class="faq-section-title">
+        <span class="faq-section-icon si-turq" aria-hidden="true"><i class="fas fa-building"></i></span>
+        The ML2C Firm
+      </h2>
+
+      <!-- Q2 -->
+      <div class="faq-item" data-category="general" data-keywords="services comptabilité fiscalité social conseil">
+        <button
+          class="faq-question"
+          aria-expanded="false"
+          aria-controls="faq-body-2"
+          id="faq-btn-2"
+          type="button"
+        >
+          <span class="fq-num" aria-hidden="true">2</span>
+          <span class="fq-text">What services does ML2C CONSEIL offer?</span>
+          <span class="fq-chevron" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="faq-answer" id="faq-body-2" role="region" aria-labelledby="faq-btn-2" hidden>
+          <div class="faq-answer-inner">
+            We offer comprehensive support in <strong>accounting</strong>,
+            <strong>taxation</strong>, <strong>management</strong>, <strong>payroll & social</strong>, and
+            <strong>business steering</strong>. Each mission is tailored to your activity and challenges.
+            <div class="fq-tags">
+              <span class="fq-tag tag-turq">Accounting</span>
+              <span class="fq-tag tag-rose">Taxation</span>
+              <span class="fq-tag tag-blue">Management</span>
+              <span class="fq-tag">Social</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q9 -->
+      <div class="faq-item" data-category="general" data-keywords="différence modernité cabinet innovation ia">
+        <button
+          class="faq-question"
+          aria-expanded="false"
+          aria-controls="faq-body-9"
+          id="faq-btn-9"
+          type="button"
+        >
+          <span class="fq-num" aria-hidden="true">9</span>
+          <span class="fq-text">How is ML2C different from a traditional firm?</span>
+          <span class="fq-chevron" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="faq-answer" id="faq-body-9" role="region" aria-labelledby="faq-btn-9" hidden>
+          <div class="faq-answer-inner">
+            We combine <strong>accounting rigor</strong>, a <strong>digital platform</strong>,
+            <strong>AI innovation</strong>, and human-centric support focused on advice and pedagogy.
+            Our "zero friction" approach minimizes your administrative procedures.
+            <div class="fq-tags">
+              <span class="fq-tag tag-turq">Innovation</span>
+              <span class="fq-tag tag-purple">AI</span>
+              <span class="fq-tag">Pedagogy</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── QUOTES SECTION ── -->
+    <section class="faq-section" id="section-devis" data-anim="fade" style="transition-delay:.08s">
+      <h2 class="faq-section-title">
+        <span class="faq-section-icon si-rose" aria-hidden="true"><i class="fas fa-file-invoice"></i></span>
+        Appointments &amp; Quotes
+      </h2>
+
+      <!-- Q1 -->
+      <div class="faq-item" data-category="devis" data-keywords="rendez-vous contact demande devis">
+        <button
+          class="faq-question"
+          aria-expanded="true"
+          aria-controls="faq-body-1"
+          id="faq-btn-1"
+          type="button"
+        >
+          <span class="fq-num" aria-hidden="true">1</span>
+          <span class="fq-text">How to book an appointment with ML2C CONSEIL?</span>
+          <span class="fq-chevron" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="faq-answer" id="faq-body-1" role="region" aria-labelledby="faq-btn-1">
+          <div class="faq-answer-inner">
+            You can book an appointment via the <strong>Quotes</strong> section or the 
+            <strong>Contact</strong> page. Fill out the form and we will call you back within 24h to confirm.
+            <div class="fq-tags">
+              <span class="fq-tag tag-rose">Appointment</span>
+              <span class="fq-tag">Contact</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="faq-item" data-category="devis" data-keywords="devis tarif honoraires prix offre">
+        <button
+          class="faq-question"
+          aria-expanded="false"
+          aria-controls="faq-body-8"
+          id="faq-btn-8"
+          type="button"
+        >
+          <span class="fq-num" aria-hidden="true">8</span>
+          <span class="fq-text">How to get a detailed quote?</span>
+          <span class="fq-chevron" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="faq-answer" id="faq-body-8" role="region" aria-labelledby="faq-btn-8" hidden>
+          <div class="faq-answer-inner">
+            Fill out the Quotes form with your needs and activity. We analyze your
+            situation and send you a personalized estimate within 24–48 business hours.
+            <div class="fq-tags">
+              <span class="fq-tag tag-rose">Quote</span>
+              <span class="fq-tag">Pricing</span>
+              <span class="fq-tag">Personalized</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PLATFORM SECTION ── -->
+    <section class="faq-section" id="section-plateforme" data-anim="fade" style="transition-delay:.12s">
+      <h2 class="faq-section-title">
+        <span class="faq-section-icon si-blue" aria-hidden="true"><i class="fas fa-desktop"></i></span>
+        Client Platform
+      </h2>
+
+      <!-- Q3 -->
+      <div class="faq-item" data-category="plateforme" data-keywords="plateforme client espace sécurisé portail document">
+        <button
+          class="faq-question"
+          aria-expanded="false"
+          aria-controls="faq-body-3"
+          id="faq-btn-3"
+          type="button"
+        >
+          <span class="fq-num" aria-hidden="true">3</span>
+          <span class="fq-text">What is the ML2C Client Platform?</span>
+          <span class="fq-chevron" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="faq-answer" id="faq-body-3" role="region" aria-labelledby="faq-btn-3" hidden>
+          <div class="faq-answer-inner">
+            A secure space to submit your documents, track your files, view your dashboards,
+            and communicate directly with the firm. Available 24/7, 6 days out of 7.
+            <div class="fq-tags">
+              <span class="fq-tag tag-blue">Secure Space</span>
+              <span class="fq-tag">Documents</span>
+              <span class="fq-tag">Dashboard</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="faq-item" data-category="plateforme" data-keywords="identifiants mot de passe oublié connexion">
+        <button
+          class="faq-question"
+          aria-expanded="false"
+          aria-controls="faq-body-7"
+          id="faq-btn-7"
+          type="button"
+        >
+          <span class="fq-num" aria-hidden="true">7</span>
+          <span class="fq-text">What should I do if I lose my credentials?</span>
+          <span class="fq-chevron" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="faq-answer" id="faq-body-7" role="region" aria-labelledby="faq-btn-7" hidden>
+          <div class="faq-answer-inner">
+            Click on <strong>"Forgot password"</strong> on the login page to receive
+            a reset link by email. You can also contact ML2C directly to quickly and safely restore your access.
+            <div class="fq-tags">
+              <span class="fq-tag tag-blue">Login</span>
+              <span class="fq-tag">Password</span>
+              <span class="fq-tag">Security</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── AI SECTION ── -->
+    <section class="faq-section" id="section-ia" data-anim="fade" style="transition-delay:.16s">
+      <h2 class="faq-section-title">
+        <span class="faq-section-icon si-purple" aria-hidden="true"><i class="fas fa-robot"></i></span>
+        Artificial Intelligence
+      </h2>
+
+      <!-- Q4 -->
+      <div class="faq-item" data-category="ia" data-keywords="intelligence artificielle automatisation lecture pièces ia comptable">
+        <button
+          class="faq-question"
+          aria-expanded="false"
+          aria-controls="faq-body-4"
+          id="faq-btn-4"
+          type="button"
+        >
+          <span class="fq-num" aria-hidden="true">4</span>
+          <span class="fq-text">How does ML2C use artificial intelligence?</span>
+          <span class="fq-chevron" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="faq-answer" id="faq-body-4" role="region" aria-labelledby="faq-btn-4" hidden>
+          <div class="faq-answer-inner">
+            AI saves time on technical tasks like document reading, automatic sorting,
+            and consistency checks so our team can focus on what matters most:
+            <strong>advising</strong> and <strong>client relationships</strong>.
+            <div class="fq-tags">
+              <span class="fq-tag tag-purple">AI</span>
+              <span class="fq-tag">Automation</span>
+              <span class="fq-tag">Advice</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="faq-item" data-category="ia" data-keywords="chatbot aide questions support conversation">
+        <button
+          class="faq-question"
+          aria-expanded="false"
+          aria-controls="faq-body-5"
+          id="faq-btn-5"
+          type="button"
+        >
+          <span class="fq-num" aria-hidden="true">5</span>
+          <span class="fq-text">What is the ML2C chatbot used for?</span>
+          <span class="fq-chevron" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="faq-answer" id="faq-body-5" role="region" aria-labelledby="faq-btn-5" hidden>
+          <div class="faq-answer-inner">
+            The chatbot answers simple questions <strong>24/7</strong> regarding our services,
+            client platform, quotes, and administrative procedures. For complex questions,
+            it guides you toward our team.
+            <div class="fq-tags">
+              <span class="fq-tag tag-purple">Chatbot</span>
+              <span class="fq-tag">24/7</span>
+              <span class="fq-tag">Support</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECURITY SECTION ── -->
+    <section class="faq-section" id="section-securite" data-anim="fade" style="transition-delay:.20s">
+      <h2 class="faq-section-title">
+        <span class="faq-section-icon si-green" aria-hidden="true"><i class="fas fa-shield-alt"></i></span>
+        Security &amp; Data
+      </h2>
+
+      <!-- Q6 -->
+      <div class="faq-item" data-category="securite" data-keywords="sécurité données rgpd confidentialité hébergement">
+        <button
+          class="faq-question"
+          aria-expanded="false"
+          aria-controls="faq-body-6"
+          id="faq-btn-6"
+          type="button"
+        >
+          <span class="fq-num" aria-hidden="true">6</span>
+          <span class="fq-text">How do you protect my personal data?</span>
+          <span class="fq-chevron" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="faq-answer" id="faq-body-6" role="region" aria-labelledby="faq-btn-6" hidden>
+          <div class="faq-answer-inner">
+            Secure access, encrypted data (AES-256), daily backups,
+            total <strong>GDPR compliance</strong>, and infrastructure hosted in France via Scalingo PaaS.
+            No data is resold to third parties.
+            <div class="fq-tags">
+              <span class="fq-tag tag-green">GDPR</span>
+              <span class="fq-tag">Encryption</span>
+              <span class="fq-tag">France</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /#faq-accordion -->
+
+  <!-- FINAL CTA -->
+  <div class="faq-cta" data-anim="fade">
+    <div class="faq-cta-inner">
+      <h2>Can't find<br><em>your answer?</em></h2>
+      <p>Our team is available to answer all your questions within a maximum of 24 hours.</p>
+      <div class="cta-btns">
+        <a href="{{ url_for('nous_contacter') }}" class="btn-cta-rose">
+          <i class="fas fa-paper-plane" aria-hidden="true"></i> Contact ML2C
+        </a>
+        <a href="{{ url_for('chatbot') }}" class="btn-cta-outline">
+          <i class="fas fa-robot" aria-hidden="true"></i> Ask the chatbot my question
+        </a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  // ── ELEMENTS ──
+  const searchInput  = document.getElementById('faq-search');
+  const clearBtn     = document.getElementById('faq-clear');
+  const countBadge   = document.getElementById('count-badge');
+  const countLabel   = document.getElementById('faq-result-count');
+  const expandAll    = document.getElementById('faq-expand-all');
+  const collapseAll  = document.getElementById('faq-collapse-all');
+  const filterBtns   = document.querySelectorAll('[data-faq-filter]');
+  const noResults    = document.getElementById('no-results');
+  const items        = Array.from(document.querySelectorAll('.faq-item'));
+  const sections     = Array.from(document.querySelectorAll('.faq-section'));
+
+  // ── NORMALIZATION ──
+  function normalize(str) {
+    return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  // ── STATE ──
+  let currentFilter = 'all';
+
+  // ── OPEN / CLOSE AN ITEM ──
+  function openItem(item) {
+    item.classList.add('open');
+    const btn = item.querySelector('.faq-question');
+    const body = item.querySelector('.faq-answer');
+    btn.setAttribute('aria-expanded', 'true');
+    body.removeAttribute('hidden');
+  }
+
+  function closeItem(item) {
+    item.classList.remove('open');
+    const btn = item.querySelector('.faq-question');
+    const body = item.querySelector('.faq-answer');
+    btn.setAttribute('aria-expanded', 'false');
+    body.setAttribute('hidden', '');
+  }
+
+  // ── QUESTION CLICK ──
+  items.forEach(item => {
+    const btn = item.querySelector('.faq-question');
+    btn.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      isOpen ? closeItem(item) : openItem(item);
+    });
+  });
+
+  // ── FILTERING ──
+  function runFilter() {
+    const query = normalize(searchInput.value.trim());
+    let visible = 0;
+
+    items.forEach(item => {
+      const text = normalize(item.innerText + ' ' + (item.dataset.keywords || ''));
+      const cat  = item.dataset.category;
+
+      const matchQuery = !query || text.includes(query);
+      const matchCat   = currentFilter === 'all' || currentFilter === cat;
+
+      if (matchQuery && matchCat) {
+        item.style.display = '';
+        visible++;
+      } else {
+        item.style.display = 'none';
+      }
+    });
+
+    // Hide empty sections
+    sections.forEach(sec => {
+      const sectionCat = sec.id.replace('section-', '');
+      const hasVisible = Array.from(sec.querySelectorAll('.faq-item')).some(i => i.style.display !== 'none');
+      sec.style.display = hasVisible ? '' : 'none';
+    });
+
+    // Counter
+    const total = items.length;
+    countBadge.textContent = visible;
+    if (visible === total && !query) {
+      countLabel.innerHTML = `<i class="fas fa-circle-check" aria-hidden="true"></i> <span id="count-badge">${total}</span> questions in total`;
+    } else if (visible === 0) {
+      countLabel.innerHTML = `<i class="fas fa-times-circle" aria-hidden="true" style="color:#dc2626"></i> <span id="count-badge" style="background:#dc2626">0</span> result found`;
+    } else {
+      countLabel.innerHTML = `<i class="fas fa-magnifying-glass" aria-hidden="true"></i> <span id="count-badge">${visible}</span> question${visible > 1 ? 's' : ''} found`;
+    }
+
+    // No results message
+    noResults.style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  // ── SEARCH EVENTS ──
+  searchInput.addEventListener('input', runFilter);
+  clearBtn.addEventListener('click', () => { searchInput.value = ''; runFilter(); searchInput.focus(); });
+
+  // ── FILTER EVENTS ──
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+      currentFilter = btn.dataset.faqFilter;
+      runFilter();
+    });
+  });
+
+  // ── EXPAND / COLLAPSE ALL ──
+  expandAll.addEventListener('click', () => {
+    items.forEach(item => { if (item.style.display !== 'none') openItem(item); });
+  });
+  collapseAll.addEventListener('click', () => {
+    items.forEach(closeItem);
+  });
+
+  // ── READING BAR ──
+  const bar = document.getElementById('read-progress');
+  window.addEventListener('scroll', () => {
+    const h   = document.documentElement;
+    const pct = Math.round(window.scrollY / (h.scrollHeight - h.clientHeight) * 100);
+    bar.style.width = pct + '%';
+    bar.setAttribute('aria-valuenow', pct);
+  });
+
+  // ── STICKY HEADER ──
+  const hdr = document.getElementById('mainHeader');
+  if (hdr) window.addEventListener('scroll', () => hdr.classList.toggle('scrolled', window.scrollY > 60));
+
+  // ── BURGER ──
+  const burger = document.getElementById('burgerBtn');
+  const nav    = document.getElementById('mainNav');
+  if (burger && nav) burger.addEventListener('click', function() {
+    const expanded = this.getAttribute('aria-expanded') === 'true';
+    this.setAttribute('aria-expanded', String(!expanded));
+    nav.classList.toggle('open'); this.classList.toggle('active');
+  });
+
+  // ── SCROLL ANIMATIONS ──
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('[data-anim]').forEach(el => obs.observe(el));
+
+  // ── INIT ──
+  // Open Q1 by default
+  const firstItem = document.querySelector('.faq-item[data-category="devis"]');
+  if (firstItem) openItem(firstItem);
+
+  runFilter();
+})();
+</script>
+
+</body>
+</html>

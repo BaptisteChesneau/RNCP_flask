@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notre Vision - ML2C CONSEIL</title>
+  <!-- Bootstrap CSS (CDN) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Custom CSS file -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+{% include "header.html" %}
+
+<!-- HERO SECTION -->
+<div class="page-hero">
+  <div class="container page-hero-inner">
+    <div class="page-breadcrumb">
+      <a href="{{ url_for('menu') }}">Accueil</a>
+      <i class="fas fa-chevron-right" style="font-size:.55rem"></i>
+      <a href="#">À propos</a>
+      <i class="fas fa-chevron-right" style="font-size:.55rem"></i>
+      <span>Notre vision</span>
+    </div>
+    <h1>Notre vision Ce qui nous différencie</h1>
+    <p>L'humain et l'IA réunis pour réinventer votre comptabilité au quotidien.</p>
+  </div>
+</div>
+
+<!-- MAIN POSITIONING SECTION -->
+<section class="pg-sec">
+  <div class="container">
+    <div class="vis-main-grid">
+      
+      <!-- TEXT BLOCK (LEFT) -->
+      <div class="vis-main-text">
+        <span class="pg-tag">Notre positionnement</span>
+        <h2 class="pg-title">Votre partenaire, bien plus que votre comptable</h2>
+        <div class="pg-bar"></div>
+        
+        <p>Chez ML2C CONSEIL, nous ne sommes pas un simple cabinet comptable qui se contente de traiter des chiffres. Notre ambition est d'être un partenaire de confiance pour les dirigeants, les indépendants et les structures en développement, en leur apportant une vision claire, utile et exploitable de leur activité.</p>
+        
+        <!-- Quote block -->
+        <div class="vis-quote">
+          <p>La comptabilité ne devrait pas être une contrainte, elle devrait être le carburant de votre croissance.</p>
+          <cite>Marie-Line Conseil, Fondatrice de ML2C CONSEIL</cite>
+        </div>
+        
+        <p>Nous combinons expertise comptable, fiscale et sociale avec une approche centrée sur l'humain : écoute, pédagogie et disponibilité. Chaque dossier est suivi avec sérieux, et nous prenons le temps d'expliquer les enjeux, les options possibles et leurs impacts concrets sur votre entreprise.</p>
+      </div>
+      
+      <!-- VISUAL BLOCK (RIGHT) -->
+      <div class="vis-main-visual">
+        <i class="fas fa-eye"></i>
+        <div class="vis-main-visual-badge">
+          <i class="fas fa-rocket"></i> ML2C CONSEIL Depuis 2019
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- THREE PILLARS SECTION -->
+<section class="pg-sec pg-sec-bg">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="pg-tag">Notre approche</span>
+      <h2 class="pg-title">Trois piliers, une philosophie</h2>
+      <div class="pg-bar center"></div>
+      <p class="pg-lead mx-auto" style="max-width:520px">Trois convictions au cœur de chacun de nos services.</p>
+    </div>
+    <div class="vis-piliers-grid">
+      <div class="vis-pilier">
+        <div class="vis-pilier-icon"><i class="fas fa-heart"></i></div>
+        <h3>L'humain d'abord</h3>
+        <p>Avant d'être des chiffres, vous êtes des entrepreneurs avec des rêves, des contraintes et des ambitions. Nous vous écoutons vraiment, nous apprenons à vous connaître et nous adaptons chaque conseil à votre réalité.</p>
+      </div>
+      <div class="vis-pilier">
+        <div class="vis-pilier-icon"><i class="fas fa-shield-alt"></i></div>
+        <h3>La rigueur comme socle</h3>
+        <p>Notre réputation repose sur notre fiabilité. Zéro erreur, zéro retard, zéro surprise. Chaque déclaration, chaque bulletin, chaque document est traité avec une rigueur absolue et contrôlé avant transmission.</p>
+      </div>
+      <div class="vis-pilier">
+        <div class="vis-pilier-icon"><i class="fas fa-brain"></i></div>
+        <h3>L'innovation au service du conseil</h3>
+        <p>Nous utilisons les meilleurs outils digitaux et IA non pour faire moderne, mais pour vous apporter plus de valeur : analyses plus fines, anticipation des risques, tableaux de bord prédictifs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI & ADVICE SECTION -->
+<section class="vis-ia-section">
+  <div class="container vis-ia-inner">
+    <div class="vis-ia-grid">
+      <div class="vis-ia-content">
+        <span class="pg-tag">Notre vision du futur</span>
+        <h2 class="pg-title">L'IA au service du conseil humain</h2>
+        <div class="pg-bar"></div>
+        <p>Nous croyons que l'intelligence artificielle ne remplace pas l'expert-comptable, elle le libère des tâches répétitives pour qu'il puisse consacrer plus de temps à ce qui compte vraiment : vous conseiller, vous accompagner, vous aider à décider.</p>
+        <p>Là où beaucoup de cabinets restent sur des méthodes classiques, nous utilisons des solutions innovantes pour transformer la donnée brute en intelligence actionnable.</p>
+        <ul class="vis-ia-list">
+          <li><i class="fas fa-check-circle"></i> Fiabiliser et accélérer le traitement de vos données</li>
+          <li><i class="fas fa-check-circle"></i> Anticiper les risques et opportunités grâce à des analyses plus fines</li>
+          <li><i class="fas fa-check-circle"></i> Vous proposer des tableaux de bord clairs et personnalisés</li>
+          <li><i class="fas fa-check-circle"></i> Faciliter les échanges via une plateforme client moderne</li>
+        </ul>
+      </div>
+      <div class="vis-ia-cards">
+        <div class="vis-ia-card">
+          <div class="vis-ia-card-icon"><i class="fas fa-chart-line"></i></div>
+          <div>
+            <strong>Analyses prédictives</strong>
+            <span>Trésorerie, CA et marges projetés sur 12 mois</span>
+          </div>
+        </div>
+        <div class="vis-ia-card">
+          <div class="vis-ia-card-icon"><i class="fas fa-search-dollar"></i></div>
+          <div>
+            <strong>Détection d'optimisations</strong>
+            <span>Identification automatique des économies fiscales</span>
+          </div>
+        </div>
+        <div class="vis-ia-card">
+          <div class="vis-ia-card-icon"><i class="fas fa-tachometer-alt"></i></div>
+          <div>
+            <strong>Tableaux de bord temps réel</strong>
+            <span>Vos KPIs accessibles 6j/7 depuis votre espace client</span>
+          </div>
+        </div>
+        <div class="vis-ia-card">
+          <div class="vis-ia-card-icon"><i class="fas fa-bell"></i></div>
+          <div>
+            <strong>Alertes proactives</strong>
+            <span>Vous êtes prévenus avant que le problème survienne</span>
+          </div>
+        </div>
+        <div class="vis-ia-card">
+          <div class="vis-ia-card-icon"><i class="fas fa-lock"></i></div>
+          <div>
+            <strong>Plateforme sécurisée</strong>
+            <span>Données hébergées en France, chiffrées et sauvegardées</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIFFERENCES SECTION -->
+<section class="pg-sec">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="pg-tag">Notre différence</span>
+      <h2 class="pg-title">Pourquoi ML2C CONSEIL plutôt qu'un autre ?</h2>
+      <div class="pg-bar center"></div>
+    </div>
+    <div class="vis-diff-grid">
+      <div class="vis-diff">
+        <div class="vis-diff-ico"><i class="fas fa-user-tie"></i></div>
+        <div><h4>Un expert dédié, pas un numéro</h4><p>Toujours le même interlocuteur qui vous connaît, connaît votre dossier et s'implique personnellement dans votre réussite.</p></div>
+      </div>
+      <div class="vis-diff">
+        <div class="vis-diff-ico"><i class="fas fa-comments"></i></div>
+        <div><h4>La pédagogie avant le jargon</h4><p>Nous traduisons la complexité comptable et fiscale en langage clair. Vous comprenez chaque décision et chaque impact réel sur votre entreprise.</p></div>
+      </div>
+      <div class="vis-diff">
+        <div class="vis-diff-ico"><i class="fas fa-bolt"></i></div>
+        <div><h4>Proactivité systématique</h4><p>Nous n'attendons pas que vous appeliez. Nous anticipons, nous alertons, nous proposons, avant que vous ayez à demander.</p></div>
+      </div>
+      <div class="vis-diff">
+        <div class="vis-diff-ico"><i class="fas fa-laptop-code"></i></div>
+        <div><h4>Le meilleur des deux mondes</h4><p>La proximité humaine d'un cabinet local combinée à la puissance des outils digitaux et IA les plus avancés du marché.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA SECTION -->
+<section class="pg-sec pg-sec-bg">
+  <div class="container">
+    <div class="pg-cta">
+      <div>
+        <h2>Partageons notre vision ensemble</h2>
+        <p>Un premier échange gratuit pour réinventer vos chiffres.</p>
+      </div>
+      <div class="pg-cta-btns">
+        <a href="{{ url_for('nous_contacter') }}" class="btn-wh"><i class="fas fa-calendar-alt"></i> Prendre RDV</a>
+        <a href="{{ url_for('notre_histoire') }}" class="btn-owh"><i class="fas fa-landmark"></i> Notre histoire</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include "footer.html" %}
+<!-- Bootstrap & jQuery JS Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Custom JS file -->
+<script src="{{ url_for('static', filename='js/notre_vision.js') }}"></script>
+</body>
+</html>

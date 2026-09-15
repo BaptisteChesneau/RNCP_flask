@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Actualités & Conseils</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+{% include "header.html" %}
+
+<!-- ════ HERO SECTION ════ -->
+<section class="blog-hero">
+  <div class="container blog-hero-inner">
+    <div class="blog-hero-tag"><i class="fas fa-newspaper"></i> Notre actualité</div>
+    <h1 class="blog-hero-title">Conseils & <span>Actualités</span> comptables</h1>
+    <p class="blog-hero-sub">Fiscalité, comptabilité, droit du travail, IA  nos experts partagent leurs analyses pour vous aider à prendre les meilleures décisions.</p>
+
+    <div class="blog-search-bar">
+      <div class="search-input-wrap">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Rechercher un article…">
+      </div>
+    </div>
+
+    <div class="blog-cats">
+      <button class="blog-cat active" data-cat="all">Tous les articles</button>
+      <button class="blog-cat" data-cat="fiscalite">Fiscalité</button>
+      <button class="blog-cat" data-cat="comptabilite">Comptabilité</button>
+      <button class="blog-cat" data-cat="social">Social & Paie</button>
+      <button class="blog-cat" data-cat="juridique">Juridique</button>
+      <button class="blog-cat" data-cat="conseil">Conseil & IA</button>
+    </div>
+  </div>
+</section>
+
+<!-- ════ STATS BAR ════ -->
+<div class="blog-stats-bar">
+  <div class="container">
+    <div class="blog-stats-inner">
+      <div class="blog-stat"><i class="fas fa-file-alt"></i> <strong>24</strong> articles publiés</div>
+      <div class="blog-stat"><i class="fas fa-eye"></i> <strong>12 400</strong> lectures ce mois</div>
+      <div class="blog-stat"><i class="fas fa-calendar-check"></i> Mis à jour le <strong>Avril 2026</strong></div>
+      <div class="blog-stat btn-rdr-container">
+        <a href="{{ url_for('nous_contacter') }}" class="btn-svc">
+          Prendre RDV <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MAIN CONTENT ════ -->
+<section class="blog-main">
+  <div class="container">
+    <div class="blog-layout">
+
+      <!-- ── ARTICLES SECTION ── -->
+      <div id="articlesContainer">
+
+        <!-- Featured article -->
+        <a href="#" class="article-featured fade-up" data-cat="fiscalite">
+          <div class="article-featured-visual">
+            <div class="article-featured-badge">À la une</div>
+            <i class="article-featured-icon fas fa-percentage"></i>
+          </div>
+          <div class="article-featured-body">
+            <div class="article-meta">
+              <span class="article-cat-tag">Fiscalité</span>
+              <span class="article-date"><i class="fas fa-calendar"></i>15 Avril 2026</span>
+              <span class="article-read"><i class="fas fa-clock"></i>5 min</span>
+            </div>
+            <h2 class="article-featured-title">TVA 2026 : ce qui change pour les TPE et PME</h2>
+            <p class="article-featured-excerpt">Les nouvelles règles de déclaration TVA entrent en vigueur au 1er juillet 2026. Seuils modifiés, nouvelles obligations déclaratives, pénalités renforcées — notre guide complet pour ne rien manquer et anticiper sereinement.</p>
+            <span class="article-read-btn">Lire l'article <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </a>
+
+        <!-- Articles grid -->
+        <div class="articles-grid" id="articlesGrid">
+
+          <a href="#" class="article-card fade-up card-delay-1" data-cat="comptabilite" data-title="Clôture comptable 2025 : le calendrier à respecter">
+            <div class="article-card-visual ac-compta">
+              <span>📊</span>
+            </div>
+            <div class="article-card-body">
+              <div class="article-meta main-card-meta">
+                <span class="article-cat-tag">Comptabilité</span>
+                <span class="article-date">28 Mars 2026</span>
+              </div>
+              <h3 class="article-card-title">Clôture comptable 2025 : le calendrier à respecter absolument</h3>
+              <p class="article-card-excerpt">Bilan, liasse fiscale, dépôt des comptes — retrouvez toutes les échéances clés et nos conseils pour une clôture sans stress.</p>
+              <div class="article-card-footer">
+                <span class="article-card-tag">Comptabilité</span>
+                <span class="article-card-date"><i class="fas fa-clock"></i>4 min</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="article-card fade-up card-delay-2" data-cat="social" data-title="Revalorisation du SMIC 2026">
+            <div class="article-card-visual ac-social">
+              <span>👥</span>
+            </div>
+            <div class="article-card-body">
+              <div class="article-meta main-card-meta">
+                <span class="article-cat-tag">Social & Paie</span>
+                <span class="article-date">12 Mars 2026</span>
+              </div>
+              <h3 class="article-card-title">Revalorisation du SMIC 2026 : impact sur vos bulletins de paie</h3>
+              <p class="article-card-excerpt">Le SMIC a été revalorisé de 2,2% au 1er janvier 2026. Voici ce que cela change concrètement pour votre masse salariale et vos cotisations.</p>
+              <div class="article-card-footer">
+                <span class="article-cat-tag">Social & Paie</span>
+                <span class="article-card-date"><i class="fas fa-clock"></i>3 min</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="article-card fade-up card-delay-3" data-cat="conseil" data-title="IA et comptabilité">
+            <div class="article-card-visual ac-conseil">
+              <span>🤖</span>
+            </div>
+            <div class="article-card-body">
+              <div class="article-meta main-card-meta">
+                <span class="article-cat-tag">Conseil & IA</span>
+                <span class="article-date">5 Mars 2026</span>
+              </div>
+              <h3 class="article-card-title">IA et comptabilité : comment ML2C automatise vos analyses</h3>
+              <p class="article-card-excerpt">Découvrez comment l'intelligence artificielle transforme notre façon de traiter vos données et produit des analyses prédictives inédites.</p>
+              <div class="article-card-footer">
+                <span class="article-cat-tag">Conseil & IA</span>
+                <span class="article-card-date"><i class="fas fa-clock"></i>6 min</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="article-card fade-up card-delay-4" data-cat="juridique" data-title="SAS ou SARL en 2026">
+            <div class="article-card-visual ac-juridique">
+              <span>⚖️</span>
+            </div>
+            <div class="article-card-body">
+              <div class="article-meta main-card-meta">
+                <span class="article-cat-tag">Juridique</span>
+                <span class="article-date">20 Fév 2026</span>
+              </div>
+              <h3 class="article-card-title">SAS ou SARL en 2026 : laquelle choisir pour votre projet ?</h3>
+              <p class="article-card-excerpt">Fiscalité, protection sociale, flexibilité — notre comparatif complet pour choisir la structure juridique la plus adaptée à votre situation.</p>
+              <div class="article-card-footer">
+                <span class="article-cat-tag">Juridique</span>
+                <span class="article-card-date"><i class="fas fa-clock"></i>7 min</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="article-card fade-up card-delay-5" data-cat="fiscalite" data-title="Optimisation IS 2026">
+            <div class="article-card-visual ac-fiscal">
+              <span>📋</span>
+            </div>
+            <div class="article-card-body">
+              <div class="article-meta main-card-meta">
+                <span class="article-cat-tag">Fiscalité</span>
+                <span class="article-date">10 Fév 2026</span>
+              </div>
+              <h3 class="article-card-title">5 leviers pour optimiser votre impôt sur les sociétés en 2026</h3>
+              <p class="article-card-excerpt">Provisions, amortissements, crédits d'impôt — les stratégies légales et éprouvées pour réduire votre IS avant la clôture de l'exercice.</p>
+              <div class="article-card-footer">
+                <span class="article-cat-tag">Fiscalité</span>
+                <span class="article-card-date"><i class="fas fa-clock"></i>5 min</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="article-card fade-up card-delay-6" data-cat="conseil" data-title="Tableau de bord dirigeant">
+            <div class="article-card-visual ac-digital">
+              <span>📈</span>
+            </div>
+            <div class="article-card-body">
+              <div class="article-meta main-card-meta">
+                <span class="article-cat-tag">Conseil & IA</span>
+                <span class="article-date">28 Jan 2026</span>
+              </div>
+              <h3 class="article-card-title">Les 7 indicateurs indispensables dans votre tableau de bord dirigeant</h3>
+              <p class="article-card-excerpt">Trésorerie, marge brute, BFR, DSO — les KPIs que tout chef d'entreprise doit surveiller chaque mois pour piloter sereinement.</p>
+              <div class="article-card-footer">
+                <span class="article-cat-tag">Conseil & IA</span>
+                <span class="article-card-date"><i class="fas fa-clock"></i>5 min</span>
+              </div>
+            </div>
+          </a>
+
+        </div>
+
+        <!-- No result message -->
+        <div id="noResult">
+          <i class="fas fa-search no-result-icon"></i>
+          <p>Aucun article trouvé pour cette recherche.</p>
+        </div>
+
+        <!-- Pagination -->
+        <div class="blog-pagination">
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+
+      </div>
+
+      <!-- ── SIDEBAR ── -->
+      <aside class="blog-sidebar">
+
+        <!-- Popular articles widget -->
+        <div class="sidebar-widget">
+          <h4><i class="fas fa-fire sidebar-widget-icon"></i>Les plus lus</h4>
+          <a href="#" class="popular-item">
+            <span class="popular-num">01</span>
+            <div><div class="popular-title">TVA 2026 : ce qui change pour les TPE et PME</div><div class="popular-date">15 Avril 2026</div></div>
+          </a>
+          <a href="#" class="popular-item">
+            <span class="popular-num">02</span>
+            <div><div class="popular-title">SAS ou SARL : laquelle choisir en 2026 ?</div><div class="popular-date">20 Fév 2026</div></div>
+          </a>
+          <a href="#" class="popular-item">
+            <span class="popular-num">03</span>
+            <div><div class="popular-title">5 leviers pour optimiser votre IS</div><div class="popular-date">10 Fév 2026</div></div>
+          </a>
+          <a href="#" class="popular-item">
+            <span class="popular-num">04</span>
+            <div><div class="popular-title">Les 7 KPIs du tableau de bord dirigeant</div><div class="popular-date">28 Jan 2026</div></div>
+          </a>
+        </div>
+
+        <!-- Newsletter widget -->
+        <div class="newsletter-widget">
+          <h4><i class="fas fa-envelope sidebar-widget-icon"></i>Newsletter</h4>
+          <p>Recevez chaque mois nos conseils fiscaux et actualités réglementaires directement dans votre boîte mail.</p>
+          <input type="email" class="newsletter-input" placeholder="votre@email.com">
+          <button class="newsletter-btn" id="newsletterBtn">
+            <i class="fas fa-paper-plane"></i> S'abonner gratuitement
+          </button>
+        </div>
+
+        <!-- Tags widget -->
+        <div class="sidebar-widget">
+          <h4><i class="fas fa-tags sidebar-widget-icon"></i>Thèmes</h4>
+          <div class="tags-cloud">
+            <span class="tag-item" data-tag-cat="fiscalite">TVA</span>
+            <span class="tag-item" data-tag-cat="fiscalite">IS</span>
+            <span class="tag-item" data-tag-cat="social">SMIC</span>
+            <span class="tag-item" data-tag-cat="social">Paie</span>
+            <span class="tag-item" data-tag-cat="juridique">SAS</span>
+            <span class="tag-item" data-tag-cat="juridique">SARL</span>
+            <span class="tag-item" data-tag-cat="conseil">IA</span>
+            <span class="tag-item" data-tag-cat="comptabilite">Bilan</span>
+            <span class="tag-item" data-tag-cat="comptabilite">Clôture</span>
+            <span class="tag-item" data-tag-cat="conseil">Tableau de bord</span>
+            <span class="tag-item" data-tag-cat="fiscalite">Optimisation</span>
+            <span class="tag-item" data-tag-cat="juridique">Création</span>
+          </div>
+        </div>
+
+        <!-- CTA widget -->
+        <div class="sidebar-cta">
+          <i class="fas fa-calendar-alt"></i>
+          <p>Une question suite à la lecture d'un article ? Nos experts sont disponibles pour en discuter.</p>
+          <a href="{{ url_for('nous_contacter') }}">Prendre rendez-vous</a>
+        </div>
+
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+{% include "footer.html" %}
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='js/blog.js') }}"></script>
+
+</body>
+</html>

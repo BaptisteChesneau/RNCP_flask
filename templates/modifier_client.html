@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <h2 class="text-center">Modifier la fiche client</h2>
+  <form method="POST">
+    <div class="form-group">
+      <label for="nom">Nom</label>
+      <input type="text" class="form-control" name="nom" value="{{ client.nom }}" required>
+    </div>
+    <div class="form-group">
+      <label for="prenom">Prénom</label>
+      <input type="text" class="form-control" name="prenom" value="{{ client.prenom }}" required>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" class="form-control" name="email" value="{{ client.email }}" required>
+    </div>
+    <div class="form-group">
+      <label for="activite">Activité</label>
+      <input type="text" class="form-control" name="activite" value="{{ client.activite }}">
+    </div>
+    <div class="form-group">
+      <label for="type_entreprise">Type d'entreprise</label>
+      <input type="text" class="form-control" name="type_entreprise" value="{{ client.type_entreprise }}">
+    </div>
+    <div class="form-group">
+      <label for="cabinet">Cabinet</label>
+      <input type="text" class="form-control" name="cabinet" value="{{ client.cabinet }}">
+    </div>
+    <div class="form-group">
+      <label for="civilite">Civilité</label>
+      <input type="text" class="form-control" name="civilite" value="{{ client.civilite }}">
+    </div>
+    <div class="form-group">
+      <label for="adresse_siege">Adresse siège</label>
+      <input type="text" class="form-control" name="adresse_siege" value="{{ client.adresse_siege }}">
+    </div>
+    <button type="submit" class="btn btn-success">Enregistrer</button>
+    <a href="{{ url_for('ma_fiche_client') }}" class="btn btn-secondary">Annuler</a>
+  </form>
+</div>
+{% endblock %}

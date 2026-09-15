@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestion des utilisateurs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    :root {
+      /* ── Light readable palette ── */
+      --bg:        #f2ede8;        /* warm cream */
+      --bg2:       #ede7e0;        /* slightly darker cream */
+      --surface:   #faf7f4;        /* off-white */
+      --surface2:  #f0ebe4;        /* secondary surface */
+      --border:    #ddd5cb;        /* soft border */
+      --border2:   #c9bfb5;        /* more prominent border */
+
+      /* ── Accents ── */
+      --accent:    #C1007A;        /* ML2C pink */
+      --accent-g:  #9b005f;
+      --accent-lt: #fce8f3;        /* very light pink for backgrounds */
+      --teal:      #2d7a6e;        /* readable dark green */
+      --teal-lt:   #e0f2ef;        /* very light green */
+      --gold:      #9a6200;        /* readable dark gold */
+      --gold-lt:   #fef3e0;
+
+      /* ── Text ── */
+      --text:      #1a1612;        /* warm near-black */
+      --text2:     #4a3f38;        /* secondary */
+      --muted:     #7a6e66;        /* grayed */
+      --muted2:    #a89e96;        /* very grayed */
+
+      /* ── States ── */
+      --danger:    #c0392b;
+      --danger-lt: #fde8e6;
+      --success:   #1e6b47;
+      --success-lt:#e4f5ed;
+
+      --r: 12px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+      --shadow-md: 0 4px 12px rgba(0,0,0,.1), 0 2px 4px rgba(0,0,0,.06);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── Subtle texture ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        radial-gradient(ellipse 800px 500px at 10% 0%, rgba(193,0,122,.06) 0%, transparent 60%),
+        radial-gradient(ellipse 600px 400px at 90% 100%, rgba(45,122,110,.05) 0%, transparent 60%);
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ── LAYOUT ── */
+    .wrapper {
+      position: relative; z-index: 1;
+      max-width: 1280px; margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+
+    /* ── TOP NAV ── */
+    .topnav {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 3rem;
+    }
+    .topnav-brand { display: flex; align-items: center; gap: 1rem; }
+    .brand-logo {
+      width: 40px; height: 40px;
+      background: var(--accent);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .9rem; color: #fff;
+      box-shadow: 0 4px 14px rgba(193,0,122,.35);
+    }
+    .brand-title { font-weight: 700; font-size: 1rem; color: var(--text); letter-spacing: .01em; }
+    .brand-sub   { font-size: .72rem; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-top: .1rem; }
+
+    .topnav-right { display: flex; align-items: center; gap: 1rem; }
+
+    .live-indicator {
+      display: flex; align-items: center; gap: .5rem;
+      font-size: .72rem; font-weight: 600;
+      color: var(--teal); letter-spacing: .05em; text-transform: uppercase;
+      background: var(--teal-lt);
+      padding: .35rem .75rem; border-radius: 20px;
+      border: 1px solid rgba(45,122,110,.2);
+    }
+    .live-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--teal);
+      animation: livepulse 2s ease-in-out infinite;
+    }
+    @keyframes livepulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(45,122,110,.5); }
+      50%      { box-shadow: 0 0 0 4px rgba(45,122,110,0); }
+    }
+
+    .back-link {
+      display: flex; align-items: center; gap: .5rem;
+      font-size: .82rem; font-weight: 500; color: var(--text2);
+      text-decoration: none; padding: .5rem 1rem;
+      border: 1px solid var(--border2); border-radius: 8px;
+      background: var(--surface); transition: all .2s;
+      box-shadow: var(--shadow-sm);
+    }
+    .back-link:hover { background: var(--surface2); border-color: var(--border2); color: var(--text); }
+    .back-link i { color: var(--muted); font-size: .8rem; }
+
+    /* ── HERO ── */
+    .page-hero {
+      display: flex; align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 2.5rem; gap: 1.5rem; flex-wrap: wrap;
+    }
+    .page-hero-left h1 {
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 800; letter-spacing: -.03em;
+      line-height: 1; color: var(--text); margin-bottom: .45rem;
+    }
+    .page-hero-left h1 em {
+      font-style: normal; color: var(--accent);
+    }
+    .page-hero-left p { font-size: .875rem; color: var(--muted); }
+
+    /* ── STAT CARDS ── */
+    .stat-cards { display: flex; gap: .85rem; flex-wrap: wrap; }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 1rem 1.4rem;
+      min-width: 120px; box-shadow: var(--shadow-sm);
+      position: relative; overflow: hidden;
+    }
+    .stat-card::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+      border-radius: 0 0 var(--r) var(--r);
+    }
+    .c-pink::after { background: var(--accent); }
+    .c-teal::after { background: var(--teal); }
+    .c-gold::after { background: var(--gold); }
+
+    .sc-val {
+      font-size: 1.75rem; font-weight: 800; line-height: 1;
+      margin-bottom: .3rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .c-pink .sc-val { color: var(--accent); }
+    .c-teal .sc-val { color: var(--teal); }
+    .c-gold .sc-val { color: var(--gold); }
+    .sc-lbl {
+      font-size: .68rem; font-weight: 600; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .08em;
+    }
+
+    /* ── TOOLBAR ── */
+    .toolbar {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 1rem 1.25rem;
+      display: flex; align-items: center; gap: .75rem;
+      flex-wrap: wrap; margin-bottom: 1rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .search-box { position: relative; flex: 1; min-width: 240px; }
+    .search-box i {
+      position: absolute; left: .9rem; top: 50%;
+      transform: translateY(-50%); color: var(--muted2);
+      font-size: .8rem; pointer-events: none;
+    }
+    .search-box input {
+      width: 100%; background: var(--bg2);
+      border: 1px solid var(--border2); border-radius: 8px;
+      color: var(--text); padding: .65rem .9rem .65rem 2.3rem;
+      font-size: .85rem; font-family: 'Syne', sans-serif;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .search-box input:focus {
+      outline: none; border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(193,0,122,.12);
+    }
+    .search-box input::placeholder { color: var(--muted2); }
+
+    .chip-filters { display: flex; gap: .4rem; flex-wrap: wrap; }
+    .chip {
+      padding: .45rem .9rem; border-radius: 20px;
+      border: 1px solid var(--border2); background: transparent;
+      color: var(--muted); font-size: .75rem;
+      font-family: 'Syne', sans-serif; font-weight: 600;
+      cursor: pointer; letter-spacing: .04em; transition: all .18s;
+    }
+    .chip:hover     { border-color: var(--border2); color: var(--text2); background: var(--surface2); }
+    .chip.active-all  { background: var(--text); border-color: var(--text); color: var(--surface); }
+    .chip.active-admin{ background: var(--accent-lt); border-color: var(--accent); color: var(--accent); }
+    .chip.active-user { background: var(--teal-lt);   border-color: var(--teal);   color: var(--teal); }
+
+    .sort-select {
+      background: var(--bg2); border: 1px solid var(--border2);
+      border-radius: 8px; color: var(--text);
+      padding: .65rem .9rem; font-size: .82rem;
+      font-family: 'Syne', sans-serif; cursor: pointer;
+      transition: border-color .2s;
+    }
+    .sort-select:focus { outline: none; border-color: var(--teal); }
+
+    .toolbar-info { margin-left: auto; font-size: .78rem; color: var(--muted); white-space: nowrap; }
+    .toolbar-info strong { color: var(--text); }
+
+    /* ── TABLE CARD ── */
+    .table-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+
+    thead {
+      background: var(--surface2);
+      border-bottom: 2px solid var(--border);
+    }
+    thead th {
+      padding: 1rem 1.25rem; font-size: .68rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .12em;
+      color: var(--muted); white-space: nowrap;
+      cursor: pointer; user-select: none; transition: color .15s;
+    }
+    thead th:hover { color: var(--text); }
+    thead th.sorted { color: var(--accent); }
+    .sort-icon { margin-left: .3rem; opacity: .3; font-size: .6rem; }
+    thead th.sorted .sort-icon { opacity: 1; }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background .12s; position: relative;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--surface2); }
+
+    /* Colored left bar on hover */
+    tbody tr::before {
+      content: ''; position: absolute;
+      left: 0; top: 0; bottom: 0; width: 3px;
+      background: transparent; transition: background .15s;
+    }
+    tbody tr.row-admin:hover::before { background: var(--accent); }
+    tbody tr.row-user:hover::before  { background: var(--teal); }
+
+    td { padding: .9rem 1.25rem; vertical-align: middle; }
+
+    /* ID */
+    .cell-id {
+      font-family: 'JetBrains Mono', monospace; font-size: .75rem;
+      color: var(--muted); background: var(--bg2);
+      border: 1px solid var(--border); padding: .2rem .5rem; border-radius: 5px;
+    }
+
+    /* User */
+    .user-cell { display: flex; align-items: center; gap: .85rem; }
+    .avatar-wrap { position: relative; flex-shrink: 0; }
+    .avatar {
+      width: 38px; height: 38px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: .9rem;
+    }
+    .av-admin { background: var(--accent-lt); color: var(--accent); border: 1.5px solid rgba(193,0,122,.25); }
+    .av-user  { background: var(--teal-lt);   color: var(--teal);   border: 1.5px solid rgba(45,122,110,.2); }
+
+    .user-name  { font-weight: 600; font-size: .9rem; color: var(--text); }
+    .user-email { font-size: .75rem; color: var(--muted); margin-top: .1rem; font-family: 'JetBrains Mono', monospace; }
+
+    /* Role badge */
+    .role-badge {
+      display: inline-flex; align-items: center; gap: .35rem;
+      padding: .3rem .8rem; border-radius: 20px;
+      font-size: .7rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    }
+    .rb-admin { background: var(--accent-lt); color: var(--accent); border: 1px solid rgba(193,0,122,.2); }
+    .rb-user  { background: var(--teal-lt);   color: var(--teal);   border: 1px solid rgba(45,122,110,.18); }
+    .role-badge i { font-size: .6rem; }
+
+    /* Actions */
+    .actions { display: flex; align-items: center; gap: .5rem; }
+
+    .btn-act {
+      height: 32px;
+      padding: 0 .75rem;
+      border-radius: 8px;
+      display: inline-flex; align-items: center; gap: .4rem;
+      cursor: pointer; font-size: .72rem; font-weight: 600;
+      font-family: 'Syne', sans-serif; letter-spacing: .03em;
+      text-decoration: none; transition: all .15s;
+      border: 1px solid transparent;
+      box-shadow: var(--shadow-sm);
+      white-space: nowrap;
+    }
+    .btn-act:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .btn-act i { font-size: .7rem; }
+
+    /* Edit — teal green */
+    .btn-edit {
+      background: var(--teal-lt);
+      border-color: rgba(45,122,110,.3);
+      color: var(--teal);
+    }
+    .btn-edit:hover {
+      background: #c8ebe6;
+      border-color: var(--teal);
+      color: #1f5c53;
+    }
+
+    /* Copy — gold/amber */
+    .btn-copy {
+      background: var(--gold-lt);
+      border-color: rgba(154,98,0,.25);
+      color: var(--gold);
+    }
+    .btn-copy:hover {
+      background: #fce9c0;
+      border-color: var(--gold);
+      color: #7a4d00;
+    }
+
+    /* Delete — red */
+    .btn-del {
+      background: var(--danger-lt);
+      border-color: rgba(192,57,43,.25);
+      color: var(--danger);
+    }
+    .btn-del:hover {
+      background: #fbd0cc;
+      border-color: var(--danger);
+      color: #96291e;
+    }
+
+    /* Empty */
+    .empty-state { text-align: center; padding: 5rem 2rem; color: var(--muted); }
+    .empty-icon {
+      width: 60px; height: 60px; background: var(--surface2);
+      border: 1px solid var(--border); border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1rem; font-size: 1.3rem; color: var(--muted2);
+    }
+
+    /* ── PAGINATION ── */
+    .pagination-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .9rem 1.5rem; border-top: 1px solid var(--border);
+      background: var(--surface2); flex-wrap: wrap; gap: .75rem;
+    }
+    .pag-info { font-size: .78rem; color: var(--muted); }
+    .pag-info strong { color: var(--text); }
+    .pag-btns { display: flex; gap: .3rem; }
+    .pag-btn {
+      height: 30px; min-width: 30px; padding: 0 .5rem;
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 6px; color: var(--muted);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: .78rem;
+      font-family: 'Syne', sans-serif; font-weight: 500; transition: all .15s;
+      box-shadow: var(--shadow-sm);
+    }
+    .pag-btn:hover:not(.disabled) { border-color: var(--teal); color: var(--teal); background: var(--teal-lt); }
+    .pag-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 2px 8px rgba(193,0,122,.3); }
+    .pag-btn.disabled { opacity: .4; cursor: default; box-shadow: none; }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(26,22,18,.55); backdrop-filter: blur(4px);
+      z-index: 1000; display: none; align-items: center; justify-content: center;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal-box {
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 18px; padding: 2.5rem;
+      max-width: 420px; width: 90%; text-align: center;
+      box-shadow: 0 30px 80px rgba(0,0,0,.2);
+      animation: modalIn .25s cubic-bezier(.34,1.2,.64,1);
+    }
+    @keyframes modalIn {
+      from { transform: scale(.92) translateY(16px); opacity: 0; }
+      to   { transform: scale(1)   translateY(0);    opacity: 1; }
+    }
+    .modal-icon-wrap {
+      width: 58px; height: 58px;
+      background: var(--danger-lt); border: 1px solid rgba(192,57,43,.2);
+      border-radius: 14px; display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.5rem; font-size: 1.3rem; color: var(--danger);
+    }
+    .modal-box h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: .5rem; color: var(--text); }
+    .modal-box p  { font-size: .875rem; color: var(--muted); margin-bottom: 2rem; line-height: 1.6; }
+    .modal-target { color: var(--text); font-weight: 700; }
+    .modal-acts { display: flex; gap: .75rem; justify-content: center; }
+    .btn-cancel {
+      padding: .65rem 1.5rem; border: 1px solid var(--border2);
+      border-radius: 9px; background: var(--surface2); color: var(--text2);
+      font-size: .875rem; font-family: 'Syne', sans-serif;
+      font-weight: 600; cursor: pointer; transition: all .15s;
+    }
+    .btn-cancel:hover { background: var(--bg2); }
+    .btn-confirm {
+      padding: .65rem 1.5rem; border: none; border-radius: 9px;
+      background: var(--danger); color: #fff;
+      font-size: .875rem; font-family: 'Syne', sans-serif; font-weight: 700;
+      cursor: pointer; box-shadow: 0 3px 10px rgba(192,57,43,.3);
+      transition: opacity .15s, transform .15s;
+    }
+    .btn-confirm:hover { opacity: .9; transform: translateY(-1px); }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 2rem; right: 2rem;
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 12px; padding: .9rem 1.25rem;
+      display: flex; align-items: center; gap: .7rem;
+      font-size: .85rem; color: var(--text); z-index: 9999;
+      transform: translateY(120%) scale(.95); opacity: 0;
+      transition: all .35s cubic-bezier(.34,1.2,.64,1);
+      box-shadow: var(--shadow-lg); max-width: 320px;
+    }
+    .toast.show { transform: translateY(0) scale(1); opacity: 1; }
+    .toast-icon {
+      width: 30px; height: 30px; border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .8rem; flex-shrink: 0;
+    }
+    .toast-icon.success { background: var(--success-lt); color: var(--success); }
+    .toast-icon.error   { background: var(--danger-lt);  color: var(--danger); }
+    .toast-msg { font-size: .82rem; line-height: 1.4; color: var(--text2); }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg2); }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    @media (max-width: 640px) {
+      .wrapper { padding: 0 1rem 3rem; }
+      .page-hero { flex-direction: column; align-items: flex-start; }
+      .live-indicator { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+{% include "header.html" %}
+
+<div class="wrapper">
+
+  <!-- ── TOP NAV ── -->
+  <nav class="topnav">
+    <div class="topnav-brand">
+      <div class="brand-logo"><i class="fas fa-shield-alt"></i></div>
+      <div>
+        <div class="brand-title">ML2C CONSEIL</div>
+        <div class="brand-sub">Panneau d'administration</div>
+      </div>
+    </div>
+    <div class="topnav-right">
+      <div class="live-indicator">
+        <div class="live-dot"></div>
+        Session active
+      </div>
+      <a href="{{ url_for('admin_dashboard') }}" class="back-link">
+        <i class="fas fa-arrow-left"></i> Dashboard
+      </a>
+    </div>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <div class="page-hero">
+    <div class="page-hero-left">
+      <h1>Gestion des <em>utilisateurs</em></h1>
+      <p>Visualisez, modifiez et supprimez les comptes de la plateforme.</p>
+    </div>
+    <div class="stat-cards">
+      <div class="stat-card c-pink">
+        <div class="sc-val" id="statTotal">—</div>
+        <div class="sc-lbl">Total</div>
+      </div>
+      <div class="stat-card c-teal">
+        <div class="sc-val" id="statUsers">—</div>
+        <div class="sc-lbl">Utilisateurs</div>
+      </div>
+      <div class="stat-card c-gold">
+        <div class="sc-val" id="statAdmins">—</div>
+        <div class="sc-lbl">Admins</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOOLBAR ── -->
+  <div class="toolbar">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="Rechercher par nom ou email…">
+    </div>
+    <div class="chip-filters">
+      <button class="chip active-all" data-role="">Tous</button>
+      <button class="chip" data-role="admin">Admins</button>
+      <button class="chip" data-role="user">Utilisateurs</button>
+    </div>
+    <select class="sort-select" id="sortSel">
+      <option value="">Trier par…</option>
+      <option value="id-asc">ID ↑</option>
+      <option value="id-desc">ID ↓</option>
+      <option value="name-asc">Nom A → Z</option>
+      <option value="name-desc">Nom Z → A</option>
+    </select>
+    <div class="toolbar-info">
+      <strong id="visCount">—</strong> affiché(s)
+    </div>
+  </div>
+
+  <!-- ── TABLE ── -->
+  <div class="table-card">
+    <div style="overflow-x:auto;">
+      <table>
+        <thead>
+          <tr>
+            <th data-col="id">ID <i class="fas fa-sort sort-icon"></i></th>
+            <th data-col="name">Utilisateur <i class="fas fa-sort sort-icon"></i></th>
+            <th data-col="role">Rôle <i class="fas fa-sort sort-icon"></i></th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          {% for user in utilisateurs %}
+          <tr
+            class="row-{{ user.role | default('user') | lower }}"
+            data-id="{{ user.id }}"
+            data-name="{{ user.nom_utilisateur | lower }}"
+            data-email="{{ user.email | lower }}"
+            data-role="{{ user.role | default('user') | lower }}"
+          >
+            <td><span class="cell-id">#{{ user.id }}</span></td>
+
+            <td>
+              <div class="user-cell">
+                <div class="avatar av-{{ user.role | default('user') | lower }}">
+                  {{ user.nom_utilisateur[0] | upper }}
+                </div>
+                <div>
+                  <div class="user-name">{{ user.nom_utilisateur }}</div>
+                  <div class="user-email">{{ user.email }}</div>
+                </div>
+              </div>
+            </td>
+
+            <td>
+              {% if user.role == 'admin' %}
+                <span class="role-badge rb-admin">
+                  <i class="fas fa-shield-alt"></i> Admin
+                </span>
+              {% else %}
+                <span class="role-badge rb-user">
+                  <i class="fas fa-user"></i> Utilisateur
+                </span>
+              {% endif %}
+            </td>
+
+            <td>
+              <div class="actions">
+                <a href="{{ url_for('edit_user', user_id=user.id) }}"
+                   class="btn-act btn-edit">
+                  <i class="fas fa-pen"></i> Modifier
+                </a>
+                <button class="btn-act btn-copy"
+                        data-uid="{{ user.id }}"
+                        data-uname="{{ user.nom_utilisateur }}"
+                        data-uemail="{{ user.email }}"
+                        onclick="copyUser(this)">
+                  <i class="fas fa-copy"></i> Copier
+                </button>
+                <button class="btn-act btn-del"
+                        data-url="{{ url_for('supprimer_user', user_id=user.id) }}"
+                        data-name="{{ user.nom_utilisateur }}"
+                        onclick="askDelete(this)">
+                  <i class="fas fa-trash-alt"></i> Supprimer
+                </button>
+              </div>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="4">
+              <div class="empty-state">
+                <div class="empty-icon"><i class="fas fa-users-slash"></i></div>
+                <div style="font-weight:700;margin-bottom:.35rem;color:var(--text);">Aucun utilisateur</div>
+                <div style="font-size:.82rem;">La base de données ne contient aucun compte.</div>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination-bar">
+      <div class="pag-info" id="pagInfo"></div>
+      <div class="pag-btns" id="pagBtns"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── MODAL ── -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <div class="modal-icon-wrap"><i class="fas fa-trash-alt"></i></div>
+    <h3>Supprimer le compte</h3>
+    <p>
+      Vous allez supprimer définitivement le compte
+      <span class="modal-target" id="modalName"></span>.<br>
+      Cette action est irréversible.
+    </p>
+    <div class="modal-acts">
+      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+      <form id="modalForm" method="POST" style="margin:0;">
+        <button type="submit" class="btn-confirm">Supprimer</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOAST ── -->
+<div class="toast" id="toast">
+  <div class="toast-icon" id="toastIcon"><i class="fas fa-check"></i></div>
+  <div class="toast-msg" id="toastMsg"></div>
+</div>
+
+{% include "footer.html" %}
+
+<script>
+  /* ═══════════════════════════════════════════════════════════
+     STATE MANAGEMENT AND CONSTANTS
+     ═══════════════════════════════════════════════════════════ */
+  const PER_PAGE = 15;
+  let page = 1, activeRole = '', sortVal = '';
+
+  const searchEl = document.getElementById('searchInput');
+  const sortSel  = document.getElementById('sortSel');
+  const tableBody = document.getElementById('tableBody');
+  const allRows  = Array.from(tableBody.querySelectorAll('tr[data-id]'));
+
+  /* ═══════════════════════════════════════════════════════════
+     STATISTICS INITIALIZATION
+     ═══════════════════════════════════════════════════════════ */
+  const nbAdmins = allRows.filter(r => r.dataset.role === 'admin').length;
+  const nbUsers  = allRows.filter(r => r.dataset.role !== 'admin').length;
+  document.getElementById('statTotal').textContent   = allRows.length;
+  document.getElementById('statAdmins').textContent = nbAdmins;
+  document.getElementById('statUsers').textContent  = nbUsers;
+
+  /* ═══════════════════════════════════════════════════════════
+     FILTER CHIPS EVENT LISTENERS
+     ═══════════════════════════════════════════════════════════ */
+  document.querySelectorAll('.chip').forEach(c => {
+    c.addEventListener('click', () => {
+      activeRole = c.dataset.role;
+      document.querySelectorAll('.chip').forEach(x => x.className = 'chip');
+      if (!activeRole)                     c.classList.add('active-all');
+      else if (activeRole === 'admin') c.classList.add('active-admin');
+      else                                 c.classList.add('active-user');
+      page = 1; render();
+    });
+  });
+
+  searchEl.addEventListener('input',  () => { page = 1; render(); });
+  sortSel.addEventListener('change',   () => { sortVal = sortSel.value; page = 1; render(); });
+
+  /* ═══════════════════════════════════════════════════════════
+     TABLE HEADER SORTING
+     ═══════════════════════════════════════════════════════════ */
+  document.querySelectorAll('thead th[data-col]').forEach(th => {
+    th.addEventListener('click', () => {
+      const col = th.dataset.col;
+      const cur = sortSel.value;
+      if      (col === 'id'   && cur !== 'id-asc')   sortSel.value = 'id-asc';
+      else if (col === 'id')                         sortSel.value = 'id-desc';
+      else if (col === 'name' && cur !== 'name-asc')  sortSel.value = 'name-asc';
+      else if (col === 'name')                        sortSel.value = 'name-desc';
+      document.querySelectorAll('thead th').forEach(h => {
+        h.classList.remove('sorted');
+        const ic = h.querySelector('.sort-icon');
+        if (ic) ic.className = 'fas fa-sort sort-icon';
+      });
+      th.classList.add('sorted');
+      const dir = sortSel.value.endsWith('asc') ? 'up' : 'down';
+      th.querySelector('.sort-icon').className = `fas fa-sort-${dir} sort-icon`;
+      sortVal = sortSel.value; page = 1; render();
+    });
+  });
+
+  /* ═══════════════════════════════════════════════════════════
+     RENDER FUNCTION & PAGINATION
+     ═══════════════════════════════════════════════════════════ */
+  function render() {
+    const q = searchEl.value.trim().toLowerCase();
+    let rows = allRows.filter(r => {
+      const mq = !q || r.dataset.name.includes(q) || r.dataset.email.includes(q);
+      const mr = !activeRole || r.dataset.role === activeRole;
+      return mq && mr;
+    });
+
+    if (sortVal) {
+      rows.sort((a, b) => {
+        if (sortVal === 'id-asc')    return +a.dataset.id - +b.dataset.id;
+        if (sortVal === 'id-desc')   return +b.dataset.id - +a.dataset.id;
+        if (sortVal === 'name-asc')  return a.dataset.name.localeCompare(b.dataset.name);
+        if (sortVal === 'name-desc') return b.dataset.name.localeCompare(a.dataset.name);
+        return 0;
+      });
+    }
+
+    const total = rows.length;
+    const pages = Math.max(1, Math.ceil(total / PER_PAGE));
+    page = Math.min(page, pages);
+    const s = (page - 1) * PER_PAGE;
+
+    allRows.forEach(r => r.style.display = 'none');
+    rows.forEach((r, i) => r.style.display = (i >= s && i < s + PER_PAGE) ? '' : 'none');
+
+    document.getElementById('visCount').textContent = total;
+    document.getElementById('pagInfo').innerHTML = total
+      ? `Affichage <strong>${s + 1}–${Math.min(s + PER_PAGE, total)}</strong> sur <strong>${total}</strong>`
+      : 'Aucun résultat';
+
+    const pb = document.getElementById('pagBtns');
+    pb.innerHTML = '';
+    if (pages > 1) {
+      mkBtn('‹', page > 1,    () => { page--; render(); });
+      for (let p = 1; p <= pages; p++) {
+        const b = mkBtn(p, true, () => { page = p; render(); });
+        if (p === page) b.classList.add('active');
+      }
+      mkBtn('›', page < pages, () => { page++; render(); });
+    }
+  }
+
+  function mkBtn(label, enabled, cb) {
+    const b = document.createElement('div');
+    b.className = 'pag-btn' + (!enabled ? ' disabled' : '');
+    b.textContent = label;
+    if (enabled) b.addEventListener('click', cb);
+    document.getElementById('pagBtns').appendChild(b);
+    return b;
+  }
+
+  render();
+
+  /* ═══════════════════════════════════════════════════════════
+     MODAL CONTROLS (DELETION)
+     ═══════════════════════════════════════════════════════════ */
+  function askDelete(btn) {
+    document.getElementById('modalName').textContent = '"' + btn.dataset.name + '"';
+    document.getElementById('modalForm').action = btn.dataset.url;
+    document.getElementById('modal').classList.add('show');
+  }
+  function closeModal() {
+    document.getElementById('modal').classList.remove('show');
+  }
+  document.getElementById('modal').addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeModal();
+  });
+
+  /* ═══════════════════════════════════════════════════════════
+     CLIPBOARD UTILITY
+     ═══════════════════════════════════════════════════════════ */
+  function copyUser(btn) {
+    navigator.clipboard
+      .writeText(`ID: ${btn.dataset.uid} | ${btn.dataset.uname} | ${btn.dataset.uemail}`)
+      .then(() => showToast('Données copiées dans le presse-papier', 'success'))
+      .catch(() => showToast('Erreur lors de la copie', 'error'));
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     TOAST NOTIFICATION SYSTEM
+     ═══════════════════════════════════════════════════════════ */
+  let toastTimer;
+  function showToast(msg, type = 'success') {
+    const t  = document.getElementById('toast');
+    const ic = document.getElementById('toastIcon');
+    document.getElementById('toastMsg').textContent = msg;
+    ic.className = `toast-icon ${type}`;
+    ic.innerHTML = type === 'success'
+      ? '<i class="fas fa-check"></i>'
+      : '<i class="fas fa-times"></i>';
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+  }
+</script>
+</body>
+</html>

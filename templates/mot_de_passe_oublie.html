@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mot de passe oublié</title>
+  <!-- Bootstrap CSS (CDN) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Custom CSS file -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+  <style>
+    .auth-wrapper {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+
+    .auth-card {
+      background: #ffffff;
+      border: none;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      max-width: 480px;
+      width: 100%;
+      position: relative;
+    }
+
+    .auth-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #b81473, #6a0944);
+    }
+
+    .icon-badge {
+      width: 64px;
+      height: 64px;
+      background: rgba(184, 20, 115, 0.1);
+      color: #b81473;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 1.5rem;
+    }
+
+    /* Style du groupe d'input avec l'icône à gauche */
+    .custom-input-group {
+      display: flex;
+      align-items: center;
+      border: 1.5px solid #cbd5e0;
+      border-radius: 10px;
+      overflow: hidden;
+      background-color: #ffffff;
+      transition: all 0.3s ease;
+    }
+
+    .custom-input-group:focus-within {
+      border-color: #b81473;
+      box-shadow: 0 0 0 4px rgba(184, 20, 115, 0.15);
+    }
+
+    /* Bloc icône à gauche */
+    .input-group-prepend-icon {
+      background-color: rgba(184, 20, 115, 0.08);
+      color: #b81473;
+      padding: 0 16px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      border-right: 1px solid #cbd5e0;
+      min-width: 52px;
+    }
+
+    /* Champ texte */
+    .form-control-custom {
+      height: 50px;
+      border: none;
+      background: transparent;
+      padding: 0 14px;
+      font-size: 0.95rem;
+      color: #2d3748;
+      width: 100%;
+    }
+
+    .form-control-custom:focus {
+      outline: none;
+      box-shadow: none;
+      background: transparent;
+    }
+
+    .btn-custom {
+      height: 50px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #b81473, #8c0f57);
+      border: none;
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 0.3px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(184, 20, 115, 0.25);
+    }
+
+    .btn-custom:hover {
+      background: linear-gradient(135deg, #a01063, #750b48);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(184, 20, 115, 0.35);
+      color: #fff;
+    }
+
+    .btn-back {
+      color: #4a5568;
+      font-weight: 500;
+      text-decoration: none !important;
+      transition: color 0.2s ease;
+    }
+
+    .btn-back:hover {
+      color: #b81473;
+    }
+  </style>
+</head>
+<body>
+
+{% include "header.html" %}
+
+<main class="auth-wrapper py-5">
+  <div class="container d-flex justify-content-center">
+    <div class="auth-card p-4 p-sm-5">
+      
+      <!-- Badge d'icône illustratif -->
+      <div class="icon-badge">
+        <i class="fas fa-key"></i>
+      </div>
+
+      <h3 class="text-center font-weight-bold mb-2" style="color: #1a202c;">Mot de passe oublié</h3>
+      <p class="text-center text-muted small mb-4">
+        Saisissez l'adresse e-mail associée à votre compte ML2C. Vous recevrez un lien pour réinitialiser votre mot de passe.
+      </p>
+
+      <!-- Messages Flash -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show rounded-lg small" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <form method="POST" action="{{ url_for('mot_de_passe_oublie') }}">
+        <div class="form-group mb-4">
+          <label for="email" class="small font-weight-bold text-uppercase text-dark mb-2">Adresse e-mail</label>
+          <div class="custom-input-group">
+            <div class="input-group-prepend-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <input 
+              type="email" 
+              class="form-control-custom" 
+              id="email" 
+              name="email" 
+              required 
+              placeholder="nom@exemple.fr"
+            >
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-custom btn-block mb-4">
+          Envoyer le lien <i class="fas fa-arrow-right ml-2 small"></i>
+        </button>
+
+        <div class="text-center">
+          <a href="{{ url_for('login') }}" class="btn-back small">
+            <i class="fas fa-chevron-left mr-1"></i> Retour à la connexion
+          </a>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</main>
+
+{% include "footer.html" %}
+
+<!-- Bootstrap & jQuery JS Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

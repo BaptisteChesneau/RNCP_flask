@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Erreur 500 Erreur serveur</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+  {% include "header.html" %}
+
+  <div class="error-500-page">
+    <div class="err500-card">
+
+      <div class="err500-badge">
+        <span class="err500-badge-dot"></span>
+        Incident serveur détecté
+      </div>
+
+      <div class="err500-code">500</div>
+
+      <!-- Server Animation Illustration Section -->
+      <div class="err500-illus">
+        <svg viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="sg1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#C1007A" stop-opacity=".9"/>
+              <stop offset="100%" stop-color="#9a0062"/>
+            </linearGradient>
+            <linearGradient id="sg2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4FA695"/>
+              <stop offset="100%" stop-color="#3a7d70"/>
+            </linearGradient>
+            <linearGradient id="sg3" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#5C666B" stop-opacity=".5"/>
+              <stop offset="100%" stop-color="#3d4549" stop-opacity=".3"/>
+            </linearGradient>
+          </defs>
+          <line x1="0" y1="30" x2="500" y2="30" stroke="#e5e7eb" stroke-width=".5"/>
+          <line x1="0" y1="60" x2="500" y2="60" stroke="#e5e7eb" stroke-width=".5"/>
+          <line x1="0" y1="90" x2="500" y2="90" stroke="#e5e7eb" stroke-width=".5"/>
+          <rect x="10" y="30" width="28" height="80" rx="4" fill="url(#sg1)"/>
+          <rect x="50" y="15" width="28" height="95" rx="4" fill="url(#sg2)"/>
+          <rect x="90" y="45" width="28" height="65" rx="4" fill="url(#sg1)" opacity=".7"/>
+          <rect x="130" y="20" width="28" height="90" rx="4" fill="url(#sg2)" opacity=".8"/>
+          <rect x="180" y="10" width="28" height="100" rx="4" fill="url(#sg1)" opacity=".9">
+            <animate attributeName="height" values="100;18;100" dur="2s" repeatCount="indefinite"/>
+            <animate attributeName="y" values="10;92;10" dur="2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values=".9;.25;.9" dur="2s" repeatCount="indefinite"/>
+          </rect>
+          <polyline points="194,10 194,110 232,110" fill="none" stroke="#C1007A" stroke-width="1.5" stroke-dasharray="4 3" opacity=".5" stroke-linecap="round"/>
+          <rect x="232" y="40" width="28" height="70" rx="4" fill="url(#sg3)">
+            <animate attributeName="opacity" values=".4;.12;.4" dur="1.8s" repeatCount="indefinite"/>
+          </rect>
+          <rect x="272" y="25" width="28" height="85" rx="4" fill="url(#sg3)">
+            <animate attributeName="opacity" values=".3;.08;.3" dur="2.2s" repeatCount="indefinite"/>
+          </rect>
+          <rect x="312" y="50" width="28" height="60" rx="4" fill="url(#sg3)">
+            <animate attributeName="opacity" values=".35;.1;.35" dur="1.6s" repeatCount="indefinite"/>
+          </rect>
+          <rect x="352" y="20" width="28" height="90" rx="4" fill="url(#sg3)">
+            <animate attributeName="opacity" values=".25;.06;.25" dur="2s" repeatCount="indefinite"/>
+          </rect>
+          <rect x="392" y="38" width="28" height="72" rx="4" fill="url(#sg3)">
+            <animate attributeName="opacity" values=".3;.08;.3" dur="1.9s" repeatCount="indefinite"/>
+          </rect>
+          <rect x="432" y="55" width="28" height="55" rx="4" fill="url(#sg3)">
+            <animate attributeName="opacity" values=".2;.05;.2" dur="2.3s" repeatCount="indefinite"/>
+          </rect>
+          <circle cx="194" cy="7" r="6" fill="#C1007A" opacity=".15">
+            <animate attributeName="r" values="6;11;6" dur="1.5s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values=".15;.04;.15" dur="1.5s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="194" cy="7" r="4" fill="#C1007A">
+            <animate attributeName="opacity" values="1;.45;1" dur="1s" repeatCount="indefinite"/>
+          </circle>
+          <text x="194" y="10.5" font-size="6" font-weight="700" fill="#fff" text-anchor="middle" font-family="sans-serif">!</text>
+          <line x1="0" y1="110" x2="500" y2="110" stroke="#e5e7eb" stroke-width="1.5" stroke-linecap="round"/>
+          <circle r="3.5" fill="#C1007A" opacity=".8">
+            <animateMotion dur="6s" repeatCount="indefinite" path="M 232,80 L 292,50 L 352,75 L 472,40"/>
+          </circle>
+        </svg>
+      </div>
+
+      <!-- Server Status Indicators Section -->
+      <div class="err500-status-row">
+        <div class="err500-pill pill-ok">
+          <span class="err500-pill-dot pdot-ok"></span>
+          Base de données opérationnelle
+        </div>
+        <div class="err500-pill pill-warn">
+          <span class="err500-pill-dot pdot-warn"></span>
+          Serveur applicatif en erreur
+        </div>
+        <div class="err500-pill pill-off">
+          <span class="err500-pill-dot pdot-off"></span>
+          Maintenance en cours
+        </div>
+      </div>
+
+      <h1 class="err500-title">
+        Une <span class="err500-title-accent">erreur interne</span> interrompt le service
+      </h1>
+      <p class="err500-sub">
+        Notre serveur a rencontré un problème inattendu. Nos équipes techniques ont été automatiquement
+        alertées et travaillent à la résolution. Veuillez réessayer dans quelques instants.
+      </p>
+
+      <button class="err500-retry" onclick="window.location.reload()">
+        <i class="fas fa-sync-alt"></i>
+        Réessayer la connexion
+      </button>
+
+      <!-- Action Buttons Section -->
+      <div class="err500-ctas">
+        <a href="{{ url_for('menu') }}" class="err500-btn-primary">
+          <i class="fas fa-home"></i> Retour à l'accueil
+        </a>
+        <a href="{{ url_for('nous_contacter') }}" class="err500-btn-secondary">
+          <i class="fas fa-phone-alt"></i> Nous contacter
+        </a>
+        <a href="#chatbot" class="err500-btn-turq">
+          <i class="far fa-comment-dots"></i> Chatbot ML2C
+        </a>
+      </div>
+
+      <hr class="err500-divider">
+
+      <!-- Information Grid Section -->
+      <div class="err500-info-grid">
+        <div class="err500-info-card">
+          <div class="err500-info-icon iico-rose">
+            <i class="fas fa-bell"></i>
+          </div>
+          <div class="err500-info-label">Équipe alertée</div>
+          <div class="err500-info-sub">Notification automatique envoyée</div>
+        </div>
+        <div class="err500-info-card">
+          <div class="err500-info-icon iico-turq">
+            <i class="far fa-clock"></i>
+          </div>
+          <div class="err500-info-label">Résolution estimée</div>
+          <div class="err500-info-sub">Retour à la normale sous peu</div>
+        </div>
+        <div class="err500-info-card">
+          <div class="err500-info-icon iico-gris">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div class="err500-info-label">Données sécurisées</div>
+          <div class="err500-info-sub">Aucune perte de données</div>
+        </div>
+      </div>
+
+      <!-- Ticker Footer Section -->
+      <div class="err500-ticker">
+        <span class="err500-ticker-dot"></span>
+        Code d'erreur : 500 — Internal Server Error · Référence : ML2C-SRV
+      </div>
+
+    </div>
+  </div>
+
+  {% include "footer.html" %}
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

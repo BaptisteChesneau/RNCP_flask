@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Optimisation & digitalisation</title>
+  <!-- Bootstrap CSS (CDN) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Custom CSS file -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+{% include "header.html" %}
+
+<!-- HERO SECTION -->
+<section class="page-hero">
+  <div class="container ph-inner">
+    <ol class="breadcrumb-ml2c">
+      <li><a href="{{ url_for('menu') }}">Accueil</a></li>
+      <li><span class="sep"><i class="fas fa-chevron-right"></i></span></li>
+      <li><a href="#">Nos services</a></li>
+      <li><span class="sep"><i class="fas fa-chevron-right"></i></span></li>
+      <li>Optimisation & digitalisation</li>
+    </ol>
+    <h1 class="ph-title">Optimisation<em>& digitalisation</em></h1>
+    <p class="ph-sub">Centralisation, flux automatisés, gain de temps votre cabinet comptable à l'ère du numérique.</p>
+  </div>
+</section>
+
+<!-- MAIN SERVICE SECTION -->
+<section class="sec sec-grey">
+  <div class="container">
+    <div class="svc-bloc" data-anim="fade">
+      <div class="svc-visuel">
+        <span class="svc-deco-num">OD</span>
+        <div class="svc-icon-wrap"><i class="fas fa-microchip"></i></div>
+        <span class="svc-badge">Digital</span>
+      </div>
+      <div class="svc-texte">
+        <span class="label-tag">Conseil & Accompagnement</span>
+        <h2>Optimisation & digitalisation</h2>
+        <div class="svc-sous">Centralisation, flux, gain de temps</div>
+        <div class="barre"></div>
+        <p>La digitalisation n'est plus une option c'est un levier de compétitivité. ML2C CONSEIL vous accompagne dans la transformation numérique de votre gestion : automatisation des flux documentaires, dématérialisation des factures, connexion bancaire, outils collaboratifs et intelligence artificielle appliquée à la comptabilité.</p>
+        <p>Notre équipe, formée au développement web et aux nouvelles technologies, est à la pointe de ces évolutions. Nous identifions les outils adaptés à votre structure et les mettons en place pour vous faire gagner du temps et réduire les erreurs de saisie.</p>
+        <ul class="presta-list">
+          <li><i class="fas fa-check"></i> Audit de vos outils et process actuels</li>
+          <li><i class="fas fa-check"></i> Mise en place de la facturation électronique</li>
+          <li><i class="fas fa-check"></i> Automatisation des flux comptables</li>
+          <li><i class="fas fa-check"></i> Connexion bancaire et rapprochement automatique</li>
+          <li><i class="fas fa-check"></i> Formation aux outils numériques</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADVANTAGES SECTION -->
+<section class="sec sec-white">
+  <div class="container">
+    <div class="text-center mb-5" data-anim="fade">
+      <span class="label-tag">Pourquoi nous choisir</span>
+      <h2 class="titre-sec">Nos avantages</h2>
+      <div class="barre c"></div>
+    </div>
+    <div class="avantages-grid">
+      <div class="av-card" data-anim="fade">
+        <i class="fas fa-bolt"></i>
+        <h4>Gain de temps immédiat</h4>
+        <p>L'automatisation élimine les tâches répétitives et libère du temps pour l'essentiel.</p>
+      </div>
+      <div class="av-card" data-anim="fade">
+        <i class="fas fa-robot"></i>
+        <h4>IA au service de la compta</h4>
+        <p>Nous intégrons des outils d'intelligence artificielle pour accélérer et fiabiliser vos processus.</p>
+      </div>
+      <div class="av-card" data-anim="fade">
+        <i class="fas fa-puzzle-piece"></i>
+        <h4>Écosystème sur-mesure</h4>
+        <p>Chaque outil est choisi et paramétré en fonction de votre activité spécifique.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA SECTION -->
+<section class="sec sec-grey">
+  <div class="container">
+    <div class="cta-bande" data-anim="fade">
+      <div>
+        <h2>Besoin de ce service ?</h2>
+        <p>Contactez-nous pour un premier échange gratuit et sans engagement.</p>
+      </div>
+      <div class="cta-buttons">
+        <a href="{{ url_for('nous_contacter') }}" class="btn-blanc"><i class="fas fa-calendar-alt"></i> Prendre RDV</a>
+        <a href="{{ url_for('menu') }}" class="btn-contour"><i class="fas fa-th-large"></i> Tous nos services</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include "footer.html" %}
+
+<!-- Bootstrap & jQuery JS Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Custom JS file -->
+<script src="{{ url_for('static', filename='js/optimisation_digitalisation.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accès Administrateur</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    :root{
+      --rose:#C1007A;--rose-d:#9a0062;--rose-l:#fce4f3;--rose-xl:#fff5fb;
+      --turq:#4FA695;--turq-d:#3a7d70;--turq-l:#d4f0ec;--turq-xl:#edfaf7;
+      --gold:#b08d57;--gold-l:#f5eedf;--gold-ll:#fdfaf5;
+      --ink:#1a1a2e;--ink2:#2d2d3d;
+      --bg:#faf8f4;--bg2:#f5f2ec;--bg3:#ede9e0;
+      --surface:#fff;--surface2:#fdfcfa;
+      --border:#e8e2d9;--border2:#d4cdc0;
+      --text:#1a1a1a;--text2:#3d3d3d;--muted:#8a8278;--faint:#b5aea5;
+      --ff-head:'Cormorant Garamond',serif;
+      --ff-body:'DM Sans',sans-serif;
+      --ff-mono:'Share Tech Mono',monospace;
+      --shadow-sm:0 2px 8px rgba(26,20,10,.06);
+      --shadow-md:0 8px 32px rgba(26,20,10,.08);
+      --shadow-lg:0 20px 60px rgba(26,20,10,.1);
+    }
+
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{
+      background: var(--bg);
+      font-family: var(--ff-body);
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: var(--text);
+    }
+
+    /* ══ ANIMATED CANVAS ══ */
+    #bgCanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ══ SCANLINES EFFECT ══ */
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(26,20,10,.012) 2px,
+        rgba(26,20,10,.012) 4px
+      );
+    }
+
+    /* ══ CLEAN LAYOUT ══ */
+    .page {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    /* ════ LOGIN CARD ════ */
+    .login-card {
+      width: 100%;
+      max-width: 480px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      animation: cardIn .55s .05s cubic-bezier(.34,1.15,.64,1) both;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(20px) scale(.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Top progress bar */
+    .card-progress-bar {
+      height: 3px;
+      background: linear-gradient(90deg, var(--rose), var(--gold), var(--turq));
+      background-size: 200%;
+      animation: progressShift 3s linear infinite;
+    }
+    @keyframes progressShift { 0%{background-position:0%} 100%{background-position:200%} }
+
+    /* Card header */
+    .card-head {
+      padding: 2.25rem 2.25rem 0;
+      text-align: center;
+      position: relative;
+    }
+
+    /* Floating ADMIN badge */
+    .admin-crown {
+      position: absolute;
+      top: 0;
+      right: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .25rem;
+    }
+    .crown-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--gold), #8c6d3d);
+      border-radius: 0 0 10px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .9rem;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(176,141,87,.3);
+    }
+    .crown-label {
+      font-size: .55rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--gold);
+      background: var(--gold-l);
+      border: 1px solid rgba(176,141,87,.2);
+      border-radius: 4px;
+      padding: .15rem .4rem;
+    }
+
+    /* Main avatar with rotating ring */
+    .av-ring {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+    .av-outer {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      background: conic-gradient(var(--rose), var(--gold), var(--turq), var(--rose));
+      padding: 3px;
+      animation: ringRotate 6s linear infinite;
+      box-shadow: 0 0 20px rgba(193,0,122,.15);
+    }
+    @keyframes ringRotate { to { transform: rotate(360deg); } }
+    .av-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: var(--surface2);
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .av-inner img { width: 76px; height: 76px; object-fit: cover; }
+
+    .av-status {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .av-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 6px rgba(34,197,94,.8);
+    }
+
+    .card-title {
+      font-family: var(--ff-head);
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--ink);
+      display: block;
+      margin-bottom: .2rem;
+    }
+    .card-sub {
+      font-size: .78rem;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Role chips */
+    .role-chips {
+      display: flex;
+      justify-content: center;
+      gap: .5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .role-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+      padding: .25rem .7rem;
+      border-radius: 20px;
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    .chip-admin { background: var(--gold-l); border: 1px solid rgba(176,141,87,.25); color: var(--gold); }
+    .chip-secure { background: var(--turq-xl); border: 1px solid rgba(79,166,149,.2); color: var(--turq-d); }
+    .chip-level  { background: var(--rose-xl); border: 1px solid rgba(193,0,122,.2); color: var(--rose); }
+
+    /* Divider */
+    .card-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0 2.25rem;
+    }
+
+    /* Form */
+    .card-form { padding: 1.5rem 2.25rem 0; }
+
+    /* Flash messages */
+    .flash-msg {
+      display: flex;
+      align-items: flex-start;
+      gap: .65rem;
+      padding: .8rem 1rem;
+      border-radius: 10px;
+      font-size: .83rem;
+      font-weight: 500;
+      margin-bottom: 1.25rem;
+    }
+    .flash-danger   { background: rgba(220,38,38,.07); border: 1px solid rgba(220,38,38,.18); color: #dc2626; }
+    .flash-success { background: var(--turq-xl); border: 1px solid rgba(79,166,149,.2); color: var(--turq-d); }
+    .flash-warning { background: var(--gold-l); border: 1px solid rgba(176,141,87,.2); color: var(--gold); }
+    .flash-x { margin-left: auto; background: none; border: none; cursor: pointer; color: inherit; opacity: .4; padding: 0; }
+    .flash-x:hover { opacity: 1; }
+
+    /* Input fields */
+    .f-group { margin-bottom: 1.1rem; }
+    .f-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: .68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      color: var(--muted);
+      margin-bottom: .45rem;
+    }
+    .f-label-badge {
+      font-size: .6rem;
+      font-weight: 600;
+      padding: .1rem .45rem;
+      border-radius: 6px;
+      background: var(--gold-l);
+      color: var(--gold);
+      border: 1px solid rgba(176,141,87,.2);
+    }
+
+    .f-wrap { position: relative; }
+    .f-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: .82rem;
+      color: var(--muted);
+      transition: color .2s;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .f-input {
+      width: 100%;
+      background: var(--bg2);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: .8rem 1rem .8rem 2.65rem;
+      color: var(--text);
+      font-size: .9rem;
+      font-family: var(--ff-body);
+      outline: none;
+      transition: all .25s;
+    }
+    .f-input::placeholder { color: var(--faint); }
+    .f-input:focus {
+      border-color: var(--rose);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(193,0,122,.08);
+    }
+    .f-wrap:focus-within .f-icon { color: var(--rose); }
+
+    .f-input.admin-field {
+      border-color: rgba(176,141,87,.3);
+      background: var(--gold-ll);
+    }
+    .f-input.admin-field:focus {
+      border-color: var(--gold);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(176,141,87,.12);
+    }
+    .f-wrap:focus-within .f-icon.admin-icon { color: var(--gold); }
+
+    .f-eye {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: .8rem;
+      padding: 0;
+    }
+    .f-eye:hover { color: var(--text); }
+
+    /* Strength indicator */
+    .strength-wrap { margin-top: .5rem; display: flex; align-items: center; gap: .5rem; }
+    .strength-bars { display: flex; gap: .3rem; flex: 1; }
+    .s-bar { flex: 1; height: 3px; border-radius: 2px; background: var(--border2); transition: background .3s; }
+    .s-bar.w { background: #dc2626; }
+    .s-bar.m { background: var(--gold); }
+    .s-bar.s { background: #22c55e; }
+    .strength-text { font-size: .62rem; color: var(--muted); min-width: 40px; }
+
+    /* Form options */
+    .f-options {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+    .f-check-label {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      cursor: pointer;
+      font-size: .78rem;
+      color: var(--muted);
+    }
+    .f-check-label input { display: none; }
+    .f-checkbox {
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid var(--border2);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .2s;
+      background: var(--bg2);
+    }
+    .f-check-label input:checked ~ .f-checkbox {
+      background: var(--rose);
+      border-color: var(--rose);
+    }
+    .f-check-label input:checked ~ .f-checkbox::after {
+      content: '';
+      width: 4px;
+      height: 7px;
+      border: 1.5px solid #fff;
+      border-top: none;
+      border-left: none;
+      transform: rotate(45deg) translate(-1px,-1px);
+      display: block;
+    }
+    .f-forgot { font-size: .75rem; color: var(--rose); text-decoration: none; }
+    .f-forgot:hover { text-decoration: underline; }
+
+    /* ADMIN BUTTON WITH BRAND COLOR (ML2C ROSE) */
+    .btn-admin {
+      width: 100%;
+      padding: .95rem;
+      background: var(--rose);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--ff-body);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .6rem;
+      transition: all .25s;
+      box-shadow: 0 4px 14px rgba(193,0,122,.25);
+    }
+    .btn-admin:hover {
+      background: var(--rose-d);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(193,0,122,.35);
+      color: #fff;
+    }
+    .btn-admin.loading { opacity: .75; pointer-events: none; }
+
+    .btn-spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .65s linear infinite;
+      display: none;
+    }
+    .btn-admin.loading .btn-spinner { display: block; }
+    .btn-admin.loading .btn-text { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Attempts and session bar */
+    .attempts-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: .9rem;
+      margin-bottom: 1.5rem;
+      padding: .65rem .85rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: .7rem;
+    }
+    .attempts-left { color: var(--muted); display: flex; align-items: center; gap: .4rem; }
+    .attempts-dots { display: flex; gap: .2rem; }
+    .a-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--border2);
+      transition: background .3s;
+    }
+    .a-dot.used { background: #dc2626; box-shadow: 0 0 4px rgba(220,38,38,.4); }
+    .attempts-right {
+      font-family: var(--ff-mono);
+      font-size: .62rem;
+      color: var(--faint);
+    }
+
+    /* Card footer */
+    .card-foot {
+      padding: 1.25rem 2.25rem;
+      margin-top: .5rem;
+      background: var(--surface2);
+      border-top: 1px solid var(--border);
+    }
+
+    .back-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      padding: .7rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text2);
+      font-size: .8rem;
+      text-decoration: none;
+      transition: all .2s;
+      margin-bottom: 1rem;
+    }
+    .back-link:hover { background: var(--bg2); color: var(--ink); border-color: var(--border2); text-decoration: none; }
+
+    .card-legal {
+      text-align: center;
+      font-size: .65rem;
+      color: var(--muted);
+      font-family: var(--ff-mono);
+      line-height: 1.8;
+    }
+    .card-legal a { color: var(--rose); text-decoration: none; }
+    .card-legal a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<!-- Animated background canvas -->
+<canvas id="bgCanvas"></canvas>
+<div class="scanlines"></div>
+
+<div class="page">
+
+  <div class="login-card">
+
+    <div class="card-progress-bar"></div>
+
+    <div class="card-head">
+
+      <div class="admin-crown">
+        <div class="crown-icon"><i class="fas fa-crown"></i></div>
+        <div class="crown-label">Admin</div>
+      </div>
+
+      <div class="av-ring">
+        <div class="av-outer">
+          <div class="av-inner">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy" alt="Admin ML2C">
+          </div>
+        </div>
+        <div class="av-status"><div class="av-status-dot"></div></div>
+      </div>
+
+      <span class="card-title">Accès Administrateur</span>
+      <span class="card-sub">ML2C CONSEIL · Espace de gestion sécurisé</span>
+
+      <div class="role-chips">
+        <span class="role-chip chip-admin"><i class="fas fa-crown"></i> Super Admin</span>
+        <span class="role-chip chip-level"><i class="fas fa-layer-group"></i> Niveau 3</span>
+        <span class="role-chip chip-secure"><i class="fas fa-shield-halved"></i> Sécurisé</span>
+      </div>
+    </div>
+
+    <div class="card-divider"></div>
+
+    <div class="card-form">
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for cat, msg in messages %}
+            <div class="flash-msg flash-{{ cat }}">
+              <i class="fas {% if cat=='danger' %}fa-circle-xmark{% elif cat=='success' %}fa-circle-check{% else %}fa-triangle-exclamation{% endif %}"></i>
+              {{ msg }}
+              <button class="flash-x" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <form method="POST" id="loginForm" autocomplete="off">
+
+        <div class="f-group">
+          <div class="f-label">
+            Identifiant administrateur
+            <span class="f-label-badge">REQUIS</span>
+          </div>
+          <div class="f-wrap">
+            <i class="fas fa-user-shield f-icon"></i>
+            <input
+              type="text"
+              class="f-input"
+              id="username"
+              name="username"
+              placeholder="admin@ml2cconseil.com"
+              required
+              autocomplete="off"
+            >
+          </div>
+        </div>
+
+        <div class="f-group">
+          <div class="f-label">
+            Clé d'accès sécurisée
+            <span class="f-label-badge" style="background:var(--gold-l);color:var(--gold);border-color:rgba(176,141,87,.2);">CONFIDENTIEL</span>
+          </div>
+          <div class="f-wrap">
+            <i class="fas fa-key f-icon admin-icon"></i>
+            <input
+              type="password"
+              class="f-input admin-field"
+              id="password"
+              name="password"
+              placeholder="••••••••••••••••"
+              required
+              autocomplete="new-password"
+              oninput="updateStrength(this.value)"
+            >
+            <button type="button" class="f-eye" id="eyeBtn" onclick="toggleEye()">
+              <i class="fas fa-eye" id="eyeIcon"></i>
+            </button>
+          </div>
+          <div class="strength-wrap">
+            <div class="strength-bars">
+              <div class="s-bar" id="sb1"></div>
+              <div class="s-bar" id="sb2"></div>
+              <div class="s-bar" id="sb3"></div>
+              <div class="s-bar" id="sb4"></div>
+            </div>
+            <div class="strength-text" id="strengthText"></div>
+          </div>
+        </div>
+
+        <div class="f-options">
+          <label class="f-check-label">
+            <input type="checkbox" name="remember" id="remember">
+            <div class="f-checkbox"></div>
+            Maintenir la session
+          </label>
+          <a href="#" class="f-forgot">Clé oubliée ?</a>
+        </div>
+
+        <button type="submit" class="btn-admin" id="submitBtn">
+          <div class="btn-spinner"></div>
+          <span class="btn-text">
+            <i class="fas fa-lock-open"></i>
+            Accéder au tableau de bord
+          </span>
+        </button>
+
+        <div class="attempts-strip">
+          <div class="attempts-left">
+            <i class="fas fa-shield-halved" style="color:#dc2626;"></i>
+            <span>Tentatives restantes :</span>
+            <div class="attempts-dots" id="aDots">
+              <div class="a-dot"></div>
+              <div class="a-dot"></div>
+              <div class="a-dot"></div>
+              <div class="a-dot"></div>
+              <div class="a-dot"></div>
+            </div>
+          </div>
+          <div class="attempts-right" id="sessionId">SESSION: ----</div>
+        </div>
+
+      </form>
+    </div>
+
+    <div class="card-foot">
+      <a href="{{ url_for('chatbot') }}" class="back-link">
+        <i class="fas fa-arrow-left"></i> Retour à l'interface chatbot
+      </a>
+      <div class="card-legal">
+        Accès strictly réservé aux administrateurs ML2C CONSEIL<br>
+        Toute tentative non autorisée est enregistrée et tracée<br>
+        <a href="#">Politique de sécurité</a> · <a href="#">RGPD</a> · © 2026 ML2C CONSEIL
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+/* ════ ANIMATED CANVAS ════ */
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resizeCanvas() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.r = Math.random() * 1.5 + .3;
+    this.vx = (Math.random() - .5) * .2;
+    this.vy = (Math.random() - .5) * .2;
+    this.alpha = Math.random() * .3 + .1;
+    this.color = Math.random() > .5
+      ? `rgba(193,0,122,${this.alpha})`
+      : Math.random() > .5
+        ? `rgba(79,166,149,${this.alpha})`
+        : `rgba(176,141,87,${this.alpha * .8})`;
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 50; i++) particles.push(new Particle());
+
+function drawConnections() {
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 110) {
+        const alpha = (1 - dist / 110) * .05;
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(193,0,122,${alpha})`;
+        ctx.lineWidth = .5;
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function animCanvas() {
+  ctx.clearRect(0, 0, W, H);
+  particles.forEach(p => { p.update(); p.draw(); });
+  drawConnections();
+  requestAnimationFrame(animCanvas);
+}
+animCanvas();
+
+/* Dynamic Session ID */
+function genSessionId() {
+  const chars = 'ABCDEF0123456789';
+  let id = '';
+  for (let i = 0; i < 8; i++) id += chars[Math.floor(Math.random() * chars.length)];
+  document.getElementById('sessionId').textContent = 'SESSION: ' + id;
+}
+genSessionId();
+
+/* Password visibility toggle */
+function toggleEye() {
+  const inp = document.getElementById('password');
+  const ico = document.getElementById('eyeIcon');
+  if (inp.type === 'password') { inp.type = 'text'; ico.className = 'fas fa-eye-slash'; }
+  else { inp.type = 'password'; ico.className = 'fas fa-eye'; }
+}
+
+/* Password strength evaluation */
+function updateStrength(val) {
+  const bars = ['sb1','sb2','sb3','sb4'].map(id => document.getElementById(id));
+  const txt = document.getElementById('strengthText');
+  bars.forEach(b => { b.className = 's-bar'; });
+  if (!val) { txt.textContent = ''; return; }
+  let score = 0;
+  if (val.length >= 6)  score++;
+  if (val.length >= 12) score++;
+  if (/[A-Z]/.test(val) && /[0-9]/.test(val)) score++;
+  if (/[^A-Za-z0-9]/.test(val)) score++;
+  const cls = score <= 1 ? 'w' : score <= 2 ? 'm' : 's';
+  const labels = ['', 'Faible', 'Moyen', 'Fort', 'Très fort'];
+  for (let i = 0; i < score; i++) bars[i].classList.add(cls);
+  txt.textContent = labels[score] || '';
+  txt.style.color = cls === 'w' ? '#dc2626' : cls === 'm' ? '#b08d57' : '#22c55e';
+}
+
+/* Login attempts counter */
+function updateAttempts(n) {
+  document.querySelectorAll('.a-dot').forEach((d, i) => d.classList.toggle('used', i < n));
+}
+const saved = parseInt(localStorage.getItem('ml2cAdminAttempts') || '0');
+if (saved > 0) updateAttempts(saved);
+
+document.getElementById('loginForm').addEventListener('submit', function() {
+  const btn = document.getElementById('submitBtn');
+  btn.classList.add('loading');
+  let n = parseInt(localStorage.getItem('ml2cAdminAttempts') || '0') + 1;
+  localStorage.setItem('ml2cAdminAttempts', n);
+  updateAttempts(n);
+});
+
+const successFlash = document.querySelector('.flash-success');
+if (successFlash) { localStorage.removeItem('ml2cAdminAttempts'); updateAttempts(0); }
+
+document.getElementById('username').focus();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pilotage & Tableau de Bord</title>
+  <!-- Bootstrap CSS (CDN) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Custom CSS file -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+{% include "header.html" %}
+
+<!-- HERO SECTION -->
+<section class="svc-hero">
+  <div class="hero-grid-deco"></div>
+  <div class="container hero-inner">
+    <div class="row">
+      <div class="col-lg-7">
+        <ol class="breadcrumb-ml2c">
+          <li><a href="{{ url_for('menu') }}">Accueil</a></li>
+          <li><span class="sep"><i class="fas fa-chevron-right"></i></span></li>
+          <li><a href="{{ url_for('menu') }}#services">Nos services</a></li>
+          <li><span class="sep"><i class="fas fa-chevron-right"></i></span></li>
+          <li>Pilotage & Tableau de bord</li>
+        </ol>
+        <div class="hero-eyebrow">Décision & Performance</div>
+        <h1 class="hero-title">Pilotage &amp; <em>Tableau de bord</em></h1>
+        <p class="hero-desc">Centralisez vos chiffres clés sur un tableau de bord sur mesure pour anticiper vos risques et booster vos performances.</p>
+        <div class="hero-stats">
+          <div class="h-stat">
+            <div class="h-stat-val">100<span>%</span></div>
+            <div class="h-stat-lbl">Sur mesure</div>
+          </div>
+          <div class="h-stat">
+            <div class="h-stat-val">24<span>h</span></div>
+            <div class="h-stat-lbl">Données actualisées</div>
+          </div>
+          <div class="h-stat">
+            <div class="h-stat-val">+150</div>
+            <div class="h-stat-lbl">Clients pilotés</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-deco">
+    <div class="deco-screen">
+      <div class="deco-topbar">
+        <div class="deco-dot r"></div>
+        <div class="deco-dot y"></div>
+        <div class="deco-dot g"></div>
+      </div>
+      <div class="deco-kpis">
+        <div class="deco-kpi"><div class="deco-kpi-val t">+18%</div><div class="deco-kpi-lbl">Chiffre d'affaires</div></div>
+        <div class="deco-kpi"><div class="deco-kpi-val r">142k€</div><div class="deco-kpi-lbl">Trésorerie nette</div></div>
+        <div class="deco-kpi"><div class="deco-kpi-val">82%</div><div class="deco-kpi-lbl">Taux de marge</div></div>
+        <div class="deco-kpi"><div class="deco-kpi-val t">3</div><div class="deco-kpi-lbl">Alertes actives</div></div>
+      </div>
+      <div class="deco-bar-wrap">
+        <div class="deco-bar-title">Performance mensuelle</div>
+        <div class="deco-bars">
+          <div class="deco-bar" style="height:55%"></div>
+          <div class="deco-bar" style="height:70%"></div>
+          <div class="deco-bar" style="height:48%"></div>
+          <div class="deco-bar" style="height:82%"></div>
+          <div class="deco-bar" style="height:63%"></div>
+          <div class="deco-bar" style="height:90%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- BLOCK 1 — REAL-TIME VISION -->
+<section>
+  <div class="svc-bloc">
+    <div class="bloc-visual bv-turq" data-anim="left">
+      <div class="bloc-visual-inner">
+        <div class="db-illustration">
+          <div class="db-header-row">
+            <div class="db-header-dot"></div><div class="db-header-dot"></div>
+            <div class="db-header-title">Vue d'ensemble — Juin 2025</div>
+          </div>
+          <div class="db-metrics">
+            <div class="db-metric"><div class="db-metric-v t">248k€</div><div class="db-metric-l">CA cumulé</div></div>
+            <div class="db-metric"><div class="db-metric-v r">+12%</div><div class="db-metric-l">vs N-1</div></div>
+            <div class="db-metric"><div class="db-metric-v">34j</div><div class="db-metric-l">DSO moyen</div></div>
+          </div>
+          <div>
+            <div class="db-progress-row">
+              <div class="db-progress-lbl">Marge brute</div>
+              <div class="db-progress-bar"><div class="db-progress-fill fill-turq" style="width:78%"></div></div>
+              <div class="db-progress-val">78%</div>
+            </div>
+            <div class="db-progress-row">
+              <div class="db-progress-lbl">EBE</div>
+              <div class="db-progress-bar"><div class="db-progress-fill fill-rose" style="width:42%"></div></div>
+              <div class="db-progress-val">42%</div>
+            </div>
+            <div class="db-progress-row">
+              <div class="db-progress-lbl">Objectif CA</div>
+              <div class="db-progress-bar"><div class="db-progress-fill fill-gris" style="width:65%"></div></div>
+              <div class="db-progress-val">65%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bloc-text" data-anim="right">
+      <div class="bt-tag tag-turq"><i class="fas fa-chart-line"></i> Vision temps réel</div>
+      <h2>Vos chiffres clés, <em>lisibles d'un coup d'œil</em></h2>
+      <p>Centralisez vos indicateurs financiers et opérationnels sur un tableau de bord unique, mis à jour en temps réel.</p>
+      <ul class="svc-points">
+        <li><i class="fas fa-check-circle"></i> Chiffre d'affaires, marge brute et EBE en temps réel</li>
+        <li><i class="fas fa-check-circle"></i> Comparaison N / N-1 avec mise en évidence des écarts</li>
+        <li><i class="fas fa-check-circle"></i> Suivi budgétaire et taux d'atteinte des objectifs</li>
+        <li><i class="fas fa-check-circle"></i> Indicateurs de trésorerie et délais de paiement (DSO)</li>
+        <li><i class="fas fa-check-circle"></i> Accessible sur ordinateur, tablette et mobile</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- BLOCK 2 — ALERTS -->
+<section style="background:var(--bg);">
+  <div class="svc-bloc reverse">
+    <div class="bloc-text" data-anim="left">
+      <div class="bt-tag tag-rose"><i class="fas fa-bell"></i> Alertes intelligentes</div>
+      <h2>Anticipez les risques <em class="rose">avant qu'ils surviennent</em></h2>
+      <p>Anticipez les risques grâce à une analyse continue de vos données et des alertes automatiques en cas de dérive budgétaire ou de trésorerie.</p>
+      <ul class="svc-points">
+        <li><i class="fas fa-check-circle rose"></i> Alertes seuil sur trésorerie et délais fournisseurs</li>
+        <li><i class="fas fa-check-circle rose"></i> Détection précoce des dérives budgétaires</li>
+        <li><i class="fas fa-check-circle rose"></i> Prévisions glissantes sur 3, 6 et 12 mois</li>
+        <li><i class="fas fa-check-circle rose"></i> Scénarios "what-if" pour tester vos hypothèses</li>
+        <li><i class="fas fa-check-circle rose"></i> Rapport mensuel de synthèse automatique</li>
+      </ul>
+    </div>
+    <div class="bloc-visual bv-rose" data-anim="right">
+      <div class="bloc-visual-inner">
+        <div class="db-illustration">
+          <div class="db-header-row">
+            <div class="db-header-dot"></div><div class="db-header-dot"></div>
+            <div class="db-header-title">Alertes & Prévisions</div>
+          </div>
+          <div class="db-metrics" style="grid-template-columns:1fr 1fr;">
+            <div class="db-metric" style="background:rgba(193,0,122,.15);">
+              <div class="db-metric-v r">2</div>
+              <div class="db-metric-l">Alertes tréso</div>
+            </div>
+            <div class="db-metric" style="background:rgba(79,166,149,.12);">
+              <div class="db-metric-v t">OK</div>
+              <div class="db-metric-l">Budget mensuel</div>
+            </div>
+          </div>
+          <div>
+            <div class="db-progress-row">
+              <div class="db-progress-lbl">Jan–Juin</div>
+              <div class="db-progress-bar"><div class="db-progress-fill fill-rose" style="width:88%"></div></div>
+              <div class="db-progress-val">88%</div>
+            </div>
+            <div class="db-progress-row">
+              <div class="db-progress-lbl">Prévi. S2</div>
+              <div class="db-progress-bar"><div class="db-progress-fill fill-turq" style="width:72%"></div></div>
+              <div class="db-progress-val">+12%</div>
+            </div>
+            <div class="db-progress-row">
+              <div class="db-progress-lbl">Tréso 30j</div>
+              <div class="db-progress-bar"><div class="db-progress-fill fill-gris" style="width:55%"></div></div>
+              <div class="db-progress-val">55k€</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- BLOCK 3 — CUSTOM SOLUTIONS -->
+<section>
+  <div class="svc-bloc">
+    <div class="bloc-visual bv-gris" data-anim="left">
+      <div class="bloc-visual-inner">
+        <div class="db-illustration">
+          <div class="db-header-row">
+            <div class="db-header-dot"></div><div class="db-header-dot"></div>
+            <div class="db-header-title">Tableau personnalisé — BTP</div>
+          </div>
+          <div class="db-metrics">
+            <div class="db-metric"><div class="db-metric-v t">12</div><div class="db-metric-l">Chantiers actifs</div></div>
+            <div class="db-metric"><div class="db-metric-v r">94%</div><div class="db-metric-l">Taux facturation</div></div>
+            <div class="db-metric"><div class="db-metric-v">28k€</div><div class="db-metric-l">À encaisser</div></div>
+          </div>
+          <div>
+            <div class="db-progress-row">
+              <div class="db-progress-lbl">Chantier A</div>
+              <div class="db-progress-bar"><div class="db-progress-fill fill-turq" style="width:95%"></div></div>
+              <div class="db-progress-val">95%</div>
+            </div>
+            <div class="db-progress-row">
+              <div class="db-progress-lbl">Chantier B</div>
+              <div class="db-progress-bar"><div class="db-progress-fill fill-rose" style="width:62%"></div></div>
+              <div class="db-progress-val">62%</div>
+            </div>
+            <div class="db-progress-row">
+              <div class="db-progress-lbl">Chantier C</div>
+              <div class="db-progress-bar"><div class="db-progress-fill fill-gris" style="width:38%"></div></div>
+              <div class="db-progress-val">38%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bloc-text" data-anim="right">
+      <div class="bt-tag tag-gris"><i class="fas fa-sliders-h"></i> 100% sur mesure</div>
+      <h2>Un tableau de bord <em>adapté à votre secteur</em></h2>
+      <p>BTP, commerce ou services : nous concevons des indicateurs 100% sur mesure, connectés aux réalités de votre secteur d'activité.</p>
+      <ul class="svc-points">
+        <li><i class="fas fa-check-circle"></i> Indicateurs métier définis lors d'un audit initial</li>
+        <li><i class="fas fa-check-circle"></i> Connexion à vos outils existants (ERP, logiciel de caisse…)</li>
+        <li><i class="fas fa-check-circle"></i> Mise à jour mensuelle ou trimestrielle selon votre rythme</li>
+        <li><i class="fas fa-check-circle"></i> Restitution visuelle exportable en PDF</li>
+        <li><i class="fas fa-check-circle"></i> Formation à la lecture des indicateurs incluse</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- KPI SECTION -->
+<section class="kpi-section">
+  <div class="container">
+    <div class="section-eyebrow ey-turq">ML2C en chiffres</div>
+    <h2 class="section-title">Des résultats <em>mesurables</em></h2>
+    <div class="kpi-grid">
+      <div class="kpi-card" data-anim="fade">
+        <div class="kpi-icon ki-turq"><i class="fas fa-chart-bar"></i></div>
+        <div class="kpi-val">150<sup>+</sup></div>
+        <div class="kpi-label">Tableaux de bord déployés</div>
+        <div class="kpi-sub">dont +40 en 2024</div>
+      </div>
+      <div class="kpi-card" data-anim="fade" style="transition-delay:.08s">
+        <div class="kpi-icon ki-rose"><i class="fas fa-clock"></i></div>
+        <div class="kpi-val">-72<sup>%</sup></div>
+        <div class="kpi-label">Temps de reporting économisé</div>
+        <div class="kpi-sub rose">En moyenne chez nos clients</div>
+      </div>
+      <div class="kpi-card" data-anim="fade" style="transition-delay:.16s">
+        <div class="kpi-icon ki-turq"><i class="fas fa-bullseye"></i></div>
+        <div class="kpi-val">98<sup>%</sup></div>
+        <div class="kpi-label">Taux de satisfaction</div>
+        <div class="kpi-sub">Enquête annuelle 2024</div>
+      </div>
+      <div class="kpi-card" data-anim="fade" style="transition-delay:.24s">
+        <div class="kpi-icon ki-rose"><i class="fas fa-calendar-check"></i></div>
+        <div class="kpi-val">24<sup>h</sup></div>
+        <div class="kpi-label">Délai de réponse garanti</div>
+        <div class="kpi-sub rose">En jours ouvrés</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- TOOLS SECTION -->
+<section class="outils-section">
+  <div class="container">
+    <div class="section-eyebrow ey-rose">Nos outils</div>
+    <h2 class="section-title">Les solutions que nous <em class="rose">maîtrisons</em></h2>
+    <div class="outils-grid">
+      <div class="outil-card" data-anim="fade">
+        <div class="outil-icon ki-turq"><i class="fas fa-file-excel"></i></div>
+        <h3>Excel & Google Sheets</h3>
+        <p>Modèles avancés avec formules dynamiques, graphiques automatiques et tableaux croisés pour un pilotage accessible à tous.</p>
+      </div>
+      <div class="outil-card" data-anim="fade" style="transition-delay:.06s">
+        <div class="outil-icon ki-rose"><i class="fas fa-database"></i></div>
+        <h3>Power BI & Tableau</h3>
+        <p>Dashboards interactifs connectés à vos sources de données pour une visualisation professionnelle et dynamique.</p>
+      </div>
+      <div class="outil-card" data-anim="fade" style="transition-delay:.12s">
+        <div class="outil-icon" style="background:#e8eaeb;color:var(--dark2);"><i class="fas fa-cloud"></i></div>
+        <h3>Outils connectés SaaS</h3>
+        <p>Intégration avec vos logiciels comptables (Sage, Cegid, QuickBooks) et outils métier pour une synchronisation automatique.</p>
+      </div>
+      <div class="outil-card" data-anim="fade" style="transition-delay:.18s">
+        <div class="outil-icon ki-turq"><i class="fas fa-file-pdf"></i></div>
+        <h3>Rapports PDF automatiques</h3>
+        <p>Génération et envoi automatique de vos rapports mensuels par e-mail, au format PDF structuré et commenté.</p>
+      </div>
+      <div class="outil-card" data-anim="fade" style="transition-delay:.24s">
+        <div class="outil-icon ki-rose"><i class="fas fa-shield-alt"></i></div>
+        <h3>Données sécurisées</h3>
+        <p>Accès sécurisé, données chiffrées hébergées en France. Aucune donnée partagée avec des tiers sans votre accord.</p>
+      </div>
+      <div class="outil-card" data-anim="fade" style="transition-delay:.30s">
+        <div class="outil-icon" style="background:#e8eaeb;color:var(--dark2);"><i class="fas fa-graduation-cap"></i></div>
+        <h3>Formation & accompagnement</h3>
+        <p>Nous formons vos équipes à la lecture des indicateurs pour une autonomie rapide et une prise de décision efficace.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- PROCESS SECTION -->
+<section class="processus-section">
+  <div class="container">
+    <div class="section-eyebrow ey-dark">Notre méthode</div>
+    <h2 class="section-title">De l'audit au <em>pilotage autonome</em></h2>
+    <div class="process-steps">
+      <div class="step" data-anim="fade">
+        <div class="step-num">01</div>
+        <h4>Audit & cadrage</h4>
+        <p>Analyse de votre activité, vos enjeux et définition des KPIs les plus pertinents pour votre pilotage.</p>
+      </div>
+      <div class="step" data-anim="fade" style="transition-delay:.1s">
+        <div class="step-num">02</div>
+        <h4>Conception</h4>
+        <p>Création de votre tableau de bord sur mesure, connexion aux sources de données et paramétrage des alertes.</p>
+      </div>
+      <div class="step" data-anim="fade" style="transition-delay:.2s">
+        <div class="step-num">03</div>
+        <h4>Déploiement</h4>
+        <p>Mise en production, tests de cohérence des données et premiers rapports commentés avec vous.</p>
+      </div>
+      <div class="step" data-anim="fade" style="transition-delay:.3s">
+        <div class="step-num">04</div>
+        <h4>Suivi continu</h4>
+        <p>Actualisation mensuelle, analyse des écarts et réunion de pilotage pour ajuster votre stratégie.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FINAL CTA -->
+<section class="cta-section">
+  <div class="container cta-inner" data-anim="fade">
+    <div class="cta-tag"><i class="fas fa-rocket"></i> Passez au pilotage pro</div>
+    <h2 class="cta-title">Prenez le contrôle de <em>vos performances</em></h2>
+    <p class="cta-sub">Échangeons 30 minutes pour cibler vos indicateurs clés et dessiner le tableau de bord adapté à vos besoins.</p>
+    <div class="cta-btns">
+      <a href="{{ url_for('devis') }}" class="btn-cta-primary">
+        <i class="fas fa-calendar-alt"></i> Prendre rendez-vous
+      </a>
+      <a href="{{ url_for('nous_contacter') }}" class="btn-cta-outline">
+        <i class="fas fa-paper-plane"></i> Nous contacter
+      </a>
+    </div>
+  </div>
+</section>
+
+{% include "footer.html" %}
+
+<!-- Bootstrap & jQuery JS Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Custom JS file -->
+<script src="{{ url_for('static', filename='js/pilotage_tableau_de_bord.js') }}"></script>
+</body>
+</html>

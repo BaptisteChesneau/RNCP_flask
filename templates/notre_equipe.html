@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notre Équipe</title>
+  <!-- Bootstrap CSS (CDN) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Custom CSS file -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+{% include "header.html" %}
+
+<!-- HERO SECTION -->
+<section class="page-hero">
+  <div class="container ph-inner">
+    <ol class="breadcrumb-ml2c">
+      <li><a href="{{ url_for('menu') }}">Accueil</a></li>
+      <li><span class="sep"><i class="fas fa-chevron-right"></i></span></li>
+      <li><a href="#">À propos</a></li>
+      <li><span class="sep"><i class="fas fa-chevron-right"></i></span></li>
+      <li>Notre Équipe</li>
+    </ol>
+    <h1 class="ph-title">Notre Équipe trois passionnés, un cabinet</h1>
+    <p class="ph-sub">Des parcours uniques, une ambition : réinventer l'expertise comptable.</p>
+  </div>
+</section>
+
+<!-- SYNERGY INTRO SECTION -->
+<section class="sec sec-grey">
+  <div class="container">
+    <div class="text-center mb-4" data-anim="fade">
+      <span class="label-tag">L'équipe ML2C</span>
+      <h2 class="titre-sec">La synergie avant tout</h2>
+      <div class="barre c"></div>
+      <p class="intro-equipe">
+        Chez ML2C CONSEIL, notre force repose sur la complémentarité d'une équipe à taille humaine. Experts en comptabilité, droit et gestion sociale, nous unissons nos savoir-faire pour vous offrir un accompagnement sur-mesure, réactif et résolument moderne. Cette proximité nous permet de nous adapter précisément aux défis de chaque entrepreneur.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM MEMBERS SECTION -->
+<section class="sec sec-white">
+  <div class="container">
+
+    <!-- Member 1: Marie-Line Chesneau -->
+    <div class="membre-bloc impair" data-anim="fade">
+      <div class="mb-avatar rose">
+        <span class="mb-deco-num">ML</span>
+        <div class="mb-initiales">ML</div>
+        <span class="mb-poste-badge">Expert-comptable & Dirigeante</span>
+      </div>
+      <div class="mb-content">
+        <span class="label-tag">Fondatrice</span>
+        <h2>Marie-Line Chesneau</h2>
+        <div class="mb-role">Expert-comptable diplômée fondatrice 2019</div>
+        <div class="barre"></div>
+        <p>Expert-comptable et dirigeante de ML2C CONSEIL, Marie-Line a fondé le cabinet le 1er juillet 2019, suite au rachat partiel de sa clientèle qu'elle détenait dans son ancien cabinet. Issue d'une reconversion professionnelle, elle a débuté sa carrière dans le secteur bancaire, occupant des postes de chargée de recouvrement contentieux, analyste de crédit, analyste de flux comptable et comptable réglementaire. En 2007, elle démarre sa formation d'expert-comptable en parallèle de son activité bancaire et obtient son diplôme en novembre 2016. Elle a toujours eu le souhait de créer un cabinet à son image, alliant nouvelles technologies et automatisation au service des entreprises, afin de devenir le partenaire privilégié des entrepreneurs. Elle gère l'intégralité de la relation client.</p>
+        <div class="mb-tags">
+          <span class="mb-tag rose"><i class="fas fa-star"></i> Expert-comptable</span>
+          <span class="mb-tag rose">Relation client</span>
+          <span class="mb-tag rose">Fiscal</span>
+          <span class="mb-tag rose">IA & Automatisation</span>
+          <span class="mb-tag rose">Dev Web</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Member 2: Sébastien Chesneau -->
+    <div class="membre-bloc pair sebastien" data-anim="fade" style="transition-delay:.08s">
+      <div class="mb-content">
+        <span class="label-tag">Collaborateur</span>
+        <h2>Sébastien Chesneau</h2>
+        <div class="mb-role">Assistant comptable depuis juillet 2020</div>
+        <div class="barre"></div>
+        <p>Collaborateur depuis le 1er juillet 2020, Sébastien est également issu d'une reconversion professionnelle. Il a débuté sa carrière en tant qu'attaché commercial dans différents secteurs d'activités tels que l'automobile et les produits pétroliers. Il occupe actuellement le poste d'assistant comptable au sein de ML2C CONSEIL. Sa mission consiste à centraliser les flux et les exploiter afin d'effectuer les déclarations de TVA. Sébastien représente également le cabinet dans les réseaux professionnels un clin d'œil à son ancienne activité commerciale.</p>
+        <div class="mb-tags">
+          <span class="mb-tag turq">TVA & Déclarations</span>
+          <span class="mb-tag turq">Flux comptables</span>
+          <span class="mb-tag turq">Réseaux pro</span>
+          <span class="mb-tag turq">Commercial</span>
+        </div>
+      </div>
+      <div class="mb-avatar turq">
+        <span class="mb-deco-num">SC</span>
+        <div class="mb-initiales">SC</div>
+        <span class="mb-poste-badge">Assistant comptable</span>
+      </div>
+    </div>
+
+    <!-- Member 3: Baptiste Chesneau -->
+    <div class="membre-bloc impair" data-anim="fade" style="transition-delay:.16s">
+      <div class="mb-avatar gris">
+        <span class="mb-deco-num">BC</span>
+        <div class="mb-initiales">BC</div>
+        <span class="mb-poste-badge">Apprenti Dev Web</span>
+      </div>
+      <div class="mb-content">
+        <span class="label-tag">Équipe tech</span>
+        <h2>Baptiste Chesneau</h2>
+        <div class="mb-role">Apprenti développeur web depuis septembre 2024</div>
+        <div class="barre"></div>
+        <p>Baptiste est entré le 5 juillet 2021 en qualité d'apprenti comptable avec pour mission de gérer les flux documentaires, les catégoriser et faciliter le traitement des opérations effectuées par Sébastien et Marie-Line. En 2024, Baptiste souhaitait changer d'orientation professionnelle vers les métiers de bouche, mais le stage n'a pas été concluant. De son côté, Marie-Line avait entamé une formation de développeur web. Lors d'une formation Excel, Baptiste a suscité beaucoup d'intérêt pour l'outil informatique il est gamer à ses heures de loisirs. Il était fait pour les métiers du numérique. C'est tout naturellement qu'en septembre 2024, Baptiste change de cap et devient apprenti développeur d'application web pour rejoindre l'équipe de développement de ML2C CONSEIL.</p>
+        <div class="mb-tags">
+          <span class="mb-tag dark">Dev Web</span>
+          <span class="mb-tag dark">JavaScript</span>
+          <span class="mb-tag dark">Numérique</span>
+          <span class="mb-tag dark">Flux documentaires</span>
+          <span class="mb-tag dark">Gaming 🎮</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PHILOSOPHY & CTA SECTION -->
+<section class="sec sec-grey">
+  <div class="container">
+    <div class="text-center mb-5" data-anim="fade">
+      <span class="label-tag">Notre philosophie</span>
+      <h2 class="titre-sec">Ce qui nous unit</h2>
+      <div class="barre c"></div>
+    </div>
+    <div class="conclusion-grid">
+      <div class="conc-card" data-anim="fade" style="transition-delay:.05s">
+        <i class="fas fa-people-arrows"></i>
+        <h4>Harmonie et complémentarité</h4>
+        <p>Notre équipe travaille en parfaite harmonie pour transformer les défis complexes en opportunités concrètes. Grâce à notre expertise collective, nous offrons des conseils précis et un accompagnement sur-mesure.</p>
+      </div>
+      <div class="conc-card" data-anim="fade" style="transition-delay:.12s">
+        <i class="fas fa-graduation-cap"></i>
+        <h4>Formation et innovation</h4>
+        <p>Nous investissons continuellement dans la formation et l'innovation afin de rester à la pointe des évolutions du secteur. La qualité de nos services et notre engagement envers nos clients sont au cœur de notre démarche.</p>
+      </div>
+      <div class="conc-card" data-anim="fade" style="transition-delay:.19s">
+        <i class="fas fa-rocket"></i>
+        <h4>Tournés vers l'avenir</h4>
+        <p>Ensemble, nous formons une équipe solide, dynamique et résolument tournée vers l'avenir, prête à relever tous les défis pour offrir un service d'excellence à chacun de nos clients.</p>
+      </div>
+    </div>
+
+    <div class="cta-bande" data-anim="fade">
+      <div>
+        <h2>Rencontrons-nous</h2>
+        <p>Un café, une visio ou un appel nous sommes disponibles pour vous.</p>
+      </div>
+      <div class="cta-buttons">
+        <a href="{{ url_for('nous_contacter') }}" class="btn-blanc"><i class="fas fa-calendar-alt"></i> Prendre RDV</a>
+        <a href="{{ url_for('notre_histoire') }}" class="btn-contour"><i class="fas fa-clock"></i> Notre histoire</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include "footer.html" %}
+
+<!-- Bootstrap & jQuery JS Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Custom JS file -->
+<script src="{{ url_for('static', filename='js/notre_equipe.js') }}"></script>
+</body>
+</html>

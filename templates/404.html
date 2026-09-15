@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Erreur 404 - Page introuvable | ML2C Conseil</title>
+  <title>Erreur 404 Page introuvable</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@400;500&display=swap">
@@ -23,6 +23,7 @@
 
       <div class="err-code">404</div>
 
+      <!-- Graphic Illustration SVG Section -->
       <div class="err-illus">
         <svg viewBox="0 0 480 110" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -91,6 +92,7 @@
         Notre équipe d'experts est disponible pour vous orienter.
       </p>
 
+      <!-- Call to Action Buttons Section -->
       <div class="err-ctas">
         <a href="{{ url_for('menu') }}" class="err-btn-primary">
           <i class="fas fa-home"></i> Retour au menu principal
@@ -105,6 +107,7 @@
 
       <hr class="err-divider">
 
+      <!-- Suggestions Section -->
       <div class="err-suggestions">
         <a href="{{ url_for('tenue_comptable') }}" class="err-sug-card">
           <div class="err-sug-icon sug-icon-rose">
@@ -129,6 +132,7 @@
         </a>
       </div>
 
+      <!-- Ticker Footer Section -->
       <div class="err-ticker">
         <span class="err-ticker-dot"></span>
         Code d'erreur : 404 — Référence non trouvée dans la base de données

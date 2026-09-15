@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Statistiques Avancées — ML2C Admin</title>
+  <title>Statistiques Avancées</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -13,6 +13,7 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 
+    /* HERO SECTION */
     .page-hero{background:var(--ink);position:relative;overflow:hidden;padding:2.5rem 0 4.5rem;}
     .page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 80% at 80% 30%,rgba(193,0,122,.18) 0%,transparent 55%),radial-gradient(ellipse 35% 50% at 10% 80%,rgba(79,166,149,.1) 0%,transparent 50%);}
     .page-hero-bar{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rose),var(--gold),var(--turq));background-size:300%;animation:barS 4s linear infinite;}
@@ -31,7 +32,7 @@
 
     .main{padding:2.5rem 0 5rem;}
 
-    /* Filtres de période */
+    /* PERIOD FILTER SECTION */
     .period-bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:2rem;}
     .period-tabs{display:flex;gap:.35rem;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:.3rem;}
     .ptab{padding:.45rem .95rem;border-radius:8px;font-size:.8rem;font-weight:600;cursor:pointer;border:none;background:none;color:var(--muted);font-family:var(--ff-body);transition:all .2s;}
@@ -41,7 +42,7 @@
     .export-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border-radius:9px;font-size:.78rem;font-weight:600;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;transition:all .2s;font-family:var(--ff-body);}
     .export-btn:hover{border-color:var(--rose);color:var(--rose);background:var(--rose-l);}
 
-    /* KPI row */
+    /* KPI SECTION */
     .krow{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;}
     .kbox{background:var(--surface);border-radius:18px;border:1.5px solid transparent;padding:1.4rem 1.5rem;box-shadow:0 2px 14px rgba(0,0,0,.055);position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s;animation:fadeUp .4s both;}
     @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
@@ -68,7 +69,7 @@
     .kbox-bar{height:3px;background:#f0f2f5;border-radius:2px;overflow:hidden;margin:8px 0 6px;}
     .kb-fill{height:100%;border-radius:2px;transition:width 1.4s cubic-bezier(.22,1,.36,1);}
 
-    /* Graphique principal */
+    /* MAIN CHART SECTION */
     .chart-panel{background:var(--surface);border-radius:20px;border:1.5px solid var(--border);box-shadow:0 2px 16px rgba(0,0,0,.05);overflow:hidden;margin-bottom:2rem;}
     .cp-head{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 1.5rem;border-bottom:1px solid var(--border);background:#fafbfc;flex-wrap:wrap;gap:.75rem;}
     .cp-title{font-size:.85rem;font-weight:700;color:var(--text);}
@@ -80,9 +81,10 @@
     .chart-wrap{position:relative;height:260px;}
     canvas.chart-canvas{width:100%!important;height:100%!important;}
 
-    /* Tableau + breakdown */
+    /* TABLE AND BREAKDOWN SECTION */
     .two-col{display:grid;grid-template-columns:1fr 340px;gap:1.25rem;margin-bottom:2rem;}
 
+   /* TABLE SECTION */
     .table-panel{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.05);overflow:hidden;}
     .tp-head{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.4rem;background:#fafbfc;border-bottom:1px solid var(--border);}
     .tp-title{font-size:.82rem;font-weight:700;color:var(--text);}
@@ -102,7 +104,7 @@
     .td-mini-fill{height:100%;border-radius:2px;background:var(--rose);}
     .td-pct{font-size:.72rem;color:var(--muted);font-family:var(--ff-mono);min-width:32px;text-align:right;}
 
-    /* Breakdown donut */
+   /* BREAKDOWN DONUT SECTION */
     .breakdown-panel{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.05);overflow:hidden;}
     .bp-head{padding:.9rem 1.4rem;background:#fafbfc;border-bottom:1px solid var(--border);}
     .bp-title{font-size:.82rem;font-weight:700;color:var(--text);}
@@ -146,7 +148,7 @@
 <div class="main">
   <div class="container">
 
-    <!-- Filtres -->
+    <!-- Period Filter Section -->
     <div class="period-bar">
       <div class="period-tabs">
         <button class="ptab" onclick="setPeriod(this,'7j')">7 jours</button>
@@ -160,7 +162,7 @@
       </div>
     </div>
 
-    <!-- KPIs -->
+    <!-- KPI Section -->
     <div class="krow">
       <div class="kbox kb-rose">
         <div class="kbox-head">
@@ -204,7 +206,7 @@
       </div>
     </div>
 
-    <!-- Graphique principal -->
+    <!-- Main Chart Section -->
     <div class="chart-panel">
       <div class="cp-head">
         <div>
@@ -224,7 +226,7 @@
       </div>
     </div>
 
-    <!-- Tableau + donut -->
+    <!-- Table and Breakdown Section -->
     <div class="two-col">
       <div class="table-panel">
         <div class="tp-head">
@@ -254,6 +256,7 @@
         </table>
       </div>
 
+     <!-- Breakdown Donut Section -->
       <div class="breakdown-panel">
         <div class="bp-head"><div class="bp-title">Répartition par catégorie</div></div>
         <div class="bp-body">
@@ -284,20 +287,20 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-/* Horloge */
+/* Clock Section */
 function tick(){const n=new Date();const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('heroTime');if(el)el.textContent=t;}
 tick();setInterval(tick,1000);
 
-/* Animate bars */
+/* Animate Bars Section */
 document.querySelectorAll('.kb-fill,[data-w]').forEach(b=>{const w=b.dataset.w;b.style.width='0';setTimeout(()=>{b.style.width=w;},600);});
 
-/* Période */
+/* Period Section */
 function setPeriod(btn,p){document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');}
 
-/* Search table */
+/* Search Table Section */
 function filterTable(q){document.querySelectorAll('#catTable tbody tr').forEach(tr=>{tr.style.display=tr.textContent.toLowerCase().includes(q.toLowerCase())?'':'none';});}
 
-/* Graphique principal */
+/* Main Chart Section */
 const labels=Array.from({length:30},(_,i)=>{const d=new Date();d.setDate(d.getDate()-29+i);return d.getDate()+'/'+(d.getMonth()+1);});
 const gen=(n,min,max)=>Array.from({length:n},()=>Math.floor(Math.random()*(max-min)+min));
 const mainCtx=document.getElementById('mainChart').getContext('2d');
@@ -314,7 +317,7 @@ new Chart(mainCtx,{
   options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(10,12,20,.9)',titleColor:'#fff',bodyColor:'rgba(255,255,255,.7)',borderColor:'rgba(255,255,255,.1)',borderWidth:1,padding:10,cornerRadius:10}},scales:{x:{grid:{display:false},ticks:{color:'#9ca3af',font:{size:10}}},y:{grid:{color:'rgba(0,0,0,.04)'},ticks:{color:'#9ca3af',font:{size:10}},beginAtZero:true}}}
 });
 
-/* Donut */
+/* Donut Chart Section */
 const dCtx=document.getElementById('donutChart').getContext('2d');
 new Chart(dCtx,{
   type:'doughnut',

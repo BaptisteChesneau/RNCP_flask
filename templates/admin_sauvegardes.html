@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="fr"><head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Sauvegardes — ML2C Admin</title>
+<title>Sauvegardes</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -38,13 +38,13 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .btn-rose{background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff;box-shadow:0 4px 12px rgba(193,0,122,.25);}.btn-rose:hover{transform:translateY(-1px);}
 .btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted);}.btn-ghost:hover{border-color:var(--rose);color:var(--rose);}
 .btn-danger{background:transparent;border:1.5px solid rgba(239,68,68,.3);color:var(--danger);}.btn-danger:hover{background:#fee2e2;}
-/* KPI */
+/* KPI SECTION */
 .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
 .kbox{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:1.1rem;display:flex;align-items:center;gap:.85rem;box-shadow:0 2px 12px rgba(0,0,0,.055);transition:transform .2s;}.kbox:hover{transform:translateY(-2px);}
 .kbox-ico{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
 .ki-rose{background:var(--rose-l);color:var(--rose);}.ki-turq{background:var(--turq-l);color:var(--turq);}.ki-gold{background:var(--gold-l);color:var(--gold-d);}.ki-green{background:#d1fae5;color:var(--success);}
 .kbox-val{font-family:var(--ff-head);font-size:1.7rem;font-weight:700;line-height:1;}.kbox-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-top:.1rem;}
-/* NEXT BACKUP */
+/* NEXT BACKUP SECTION */
 .next-backup{background:linear-gradient(135deg,#0e1018,#1a2035);border-radius:20px;padding:1.5rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;gap:1.5rem;flex-wrap:wrap;box-shadow:0 8px 32px rgba(0,0,0,.2);}
 .nb-left{display:flex;align-items:center;gap:1rem;}
 .nb-ico{width:52px;height:52px;border-radius:14px;background:rgba(16,185,129,.15);border:1.5px solid rgba(16,185,129,.2);display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:#4ade80;}
@@ -54,7 +54,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .nbc-item{text-align:center;background:rgba(255,255,255,.06);border-radius:10px;padding:.65rem .9rem;min-width:58px;}
 .nbc-val{font-family:var(--ff-head);font-size:1.5rem;font-weight:700;color:#fff;line-height:1;}
 .nbc-lbl{font-size:.55rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.08em;}
-/* STORAGE BAR */
+/* STORAGE BAR SECTION */
 .storage-card{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:1.25rem;margin-bottom:1.5rem;box-shadow:0 2px 14px rgba(0,0,0,.055);}
 .storage-title{font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;}
 .storage-bar-wrap{height:24px;background:#f3f4f6;border-radius:12px;overflow:hidden;display:flex;margin-bottom:.75rem;}
@@ -62,7 +62,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .storage-legend{display:flex;gap:1.5rem;flex-wrap:wrap;}
 .sl-item{display:flex;align-items:center;gap:.4rem;font-size:.73rem;color:var(--muted);}
 .sl-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
-/* TABLE SAUVEGARDES */
+/* TABLE SECTION */
 .panel{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;box-shadow:0 2px 14px rgba(0,0,0,.055);overflow:hidden;margin-bottom:1.5rem;}
 .panel-head{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.25rem;background:#fafbfc;border-bottom:1px solid var(--border);gap:.75rem;flex-wrap:wrap;}
 .panel-title{font-size:.85rem;font-weight:700;color:var(--text);display:flex;align-items:center;gap:.5rem;}
@@ -84,7 +84,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .act-btn{width:28px;height:28px;border-radius:7px;border:1.5px solid var(--border);background:transparent;color:var(--faint);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.7rem;transition:all .18s;}
 .act-btn:hover{border-color:var(--rose);color:var(--rose);background:var(--rose-l);}
 .act-btn.del:hover{border-color:var(--danger);color:var(--danger);background:#fee2e2;}
-/* PROGRESS MODAL */
+/* PROGRESS MODAL SECTION */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);z-index:9999;display:none;align-items:center;justify-content:center;padding:1rem;}
 .modal-overlay.show{display:flex;}
 .modal-box{background:var(--surface);border-radius:20px;width:100%;max-width:460px;box-shadow:0 32px 80px rgba(0,0,0,.35);overflow:hidden;animation:mIn .3s ease;}
@@ -99,7 +99,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .prog-step{display:flex;align-items:center;gap:.65rem;font-size:.8rem;color:var(--muted);}
 .prog-step.done{color:var(--success);}.prog-step.active{color:var(--rose);font-weight:600;}
 .modal-foot{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:.65rem;background:#fafbfc;}
-/* TOAST */
+/* TOAST SECTION */
 .toast-box{position:fixed;bottom:1.25rem;right:1.25rem;z-index:9999;display:flex;align-items:center;gap:.65rem;padding:.75rem 1.1rem;border-radius:10px;font-size:.8rem;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.15);transform:translateY(80px);opacity:0;transition:all .3s cubic-bezier(.34,1.2,.64,1);pointer-events:none;}
 .toast-box.show{transform:translateY(0);opacity:1;}.toast-ok{background:#0d2e23;color:#4ade80;border:1px solid rgba(74,222,128,.2);}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -150,7 +150,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
   </div>
   <div class="adm-content">
 
-    <!-- KPI -->
+    <!-- KPI Section -->
     <div class="kpi-row fadeUp">
       <div class="kbox"><div class="kbox-ico ki-green"><i class="fas fa-database"></i></div><div><div class="kbox-lbl">Total sauvegardes</div><div class="kbox-val">47</div></div></div>
       <div class="kbox"><div class="kbox-ico ki-turq"><i class="fas fa-hard-drive"></i></div><div><div class="kbox-lbl">Stockage utilisé</div><div class="kbox-val" style="font-size:1.4rem;">4.1 GB</div></div></div>
@@ -158,7 +158,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
       <div class="kbox"><div class="kbox-ico ki-gold"><i class="fas fa-calendar-check"></i></div><div><div class="kbox-lbl">Prochaine auto.</div><div class="kbox-val" style="font-size:1.3rem;">03:00</div></div></div>
     </div>
 
-    <!-- Prochaine sauvegarde countdown -->
+    <!-- Next Backup Countdown Section -->
     <div class="next-backup fadeUp" style="animation-delay:.08s">
       <div class="nb-left">
         <div class="nb-ico"><i class="fas fa-database"></i></div>
@@ -174,7 +174,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
       </div>
     </div>
 
-    <!-- Stockage -->
+    <!-- Storage Bar Section -->
     <div class="storage-card fadeUp" style="animation-delay:.12s">
       <div class="storage-title"><i class="fas fa-hard-drive" style="color:var(--rose);font-size:.9rem;"></i>Espace de stockage distant — 10 GB total</div>
       <div class="storage-bar-wrap">
@@ -189,7 +189,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
       </div>
     </div>
 
-    <!-- Liste sauvegardes -->
+    <!-- Backup Table Section -->
     <div class="panel fadeUp" style="animation-delay:.16s">
       <div class="panel-head">
         <div class="panel-title"><i class="fas fa-list" style="color:var(--rose);font-size:.85rem;"></i>Historique des sauvegardes</div>
@@ -256,7 +256,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 </div>
 </div>
 
-<!-- Modal progression sauvegarde -->
+<!-- Modal Progress Section -->
 <div class="modal-overlay" id="backupModal">
   <div class="modal-box">
     <div class="modal-head"><div class="nb-ico" style="width:38px;height:38px;border-radius:10px;font-size:1rem;"><i class="fas fa-database"></i></div><div class="modal-title">Sauvegarde en cours…</div></div>
@@ -278,7 +278,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 <div class="toast-box toast-ok" id="toastBox"><i class="fas fa-circle-check"></i><span id="toastMsg">Action effectuée</span></div>
 {% include "footer.html" %}
 <script>
-// Countdown vers 03:00
+/* Countdown Section */
 function bkCountdown(){
   const now=new Date();
   let target=new Date();target.setHours(3,0,0,0);
@@ -292,7 +292,7 @@ function bkCountdown(){
 }
 bkCountdown();setInterval(bkCountdown,1000);
 
-// Progression sauvegarde
+/* Backup Progress Section */
 function startBackup(){
   document.getElementById('backupModal').classList.add('show');
   const steps=['Connexion à la base de données','Export des tables…','Compression des fichiers…','Chiffrement AES-256…','Transfert vers stockage distant…','Vérification d\'intégrité…'];

@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="fr"><head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Source Viewer — ML2C Admin</title>
+<title>Source Viewer</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -388,14 +388,14 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 
 <script>
 /* ════════════════════════════════════════
-   DONNÉES FICHIERS — Code source simulé
+    FILES DATA — Simulated source code
 ════════════════════════════════════════ */
 const FILES = {
   app: {
     name:'app.py', lang:'python', path:'/app/app.py',
     lines:[
       {t:'cm', c:'# ═══════════════════════════════════════════'},
-      {t:'cm', c:'# ML2C CONSEIL — Application Flask'},
+      {t:'cm', c:'# ML2C CONSEIL — Flask Application'},
       {t:'cm', c:'# Version 2.0.4 · Scalingo osc-fr1'},
       {t:'cm', c:'# ═══════════════════════════════════════════'},
       {t:'', c:''},
@@ -406,13 +406,13 @@ const FILES = {
       {t:'kw', c:'from <span class="fn">functools</span> <span class="kw">import</span> wraps'},
       {t:'kw', c:'<span class="kw">import</span> <span class="fn">os</span>, <span class="fn">openai</span>, <span class="fn">hashlib</span>'},
       {t:'', c:''},
-      {t:'cm', c:'# ── Initialisation Flask ──'},
+      {t:'cm', c:'# ── Flask Initialization ──'},
       {t:'', c:'<span class="fn">app</span> <span class="op">=</span> <span class="dec">Flask</span>(<span class="slf">__name__</span>)'},
       {t:'', c:'<span class="fn">app</span>.config[<span class="str">"SECRET_KEY"</span>] <span class="op">=</span> os.<span class="fn">environ</span>.get(<span class="str">"SECRET_KEY"</span>, <span class="str">"dev_key"</span>)'},
       {t:'', c:'<span class="fn">app</span>.config[<span class="str">"MONGO_URI"</span>] <span class="op">=</span> os.<span class="fn">environ</span>.get(<span class="str">"DATABASE_URL"</span>)'},
       {t:'', c:'<span class="fn">mongo</span> <span class="op">=</span> <span class="dec">PyMongo</span>(app)'},
       {t:'', c:''},
-      {t:'cm', c:'# ── Décorateur login requis ──'},
+      {t:'cm', c:'# ── Login Required Decorator ──'},
       {t:'kw', c:'<span class="kw">def</span> <span class="fn">login_required</span>(f)<span class="punc">:</span>'},
       {t:'', c:'    <span class="dec">@wraps</span>(f)'},
       {t:'kw', c:'    <span class="kw">def</span> <span class="fn">decorated_function</span>(<span class="op">*</span>args, <span class="op">**</span>kwargs)<span class="punc">:</span>'},
@@ -422,7 +422,7 @@ const FILES = {
       {t:'kw', c:'    <span class="kw">return</span> decorated_function'},
       {t:'', c:''},
       {t:'cm', c:'# ═══════════════════════════════════════════'},
-      {t:'cm', c:'# ROUTES ADMIN'},
+      {t:'cm', c:'# ADMIN ROUTES'},
       {t:'cm', c:'# ═══════════════════════════════════════════'},
       {t:'', c:''},
       {t:'dec', c:'<span class="dec">@app.route</span>(<span class="str">"/admin-dashboard"</span>)'},
@@ -451,7 +451,7 @@ const FILES = {
       {t:'kw', c:'<span class="kw">def</span> <span class="fn">admin_logs</span>()<span class="punc">:</span>'},
       {t:'kw', c:'    <span class="kw">return</span> <span class="fn">render_template</span>(<span class="str">"admin_logs.html"</span>)'},
       {t:'', c:''},
-      {t:'cm', c:'# ── Nouvelles routes v2.0 ──'},
+      {t:'cm', c:'# ── New v2.0 Routes ──'},
       {t:'', c:''},
       {t:'dec', c:'<span class="dec">@app.route</span>(<span class="str">"/admin/notifications"</span>)'},
       {t:'dec', c:'<span class="dec">@login_required</span>'},
@@ -483,7 +483,7 @@ const FILES = {
       {t:'kw', c:'<span class="kw">def</span> <span class="fn">admin_view_source</span>()<span class="punc">:</span>'},
       {t:'kw', c:'    <span class="kw">return</span> <span class="fn">render_template</span>(<span class="str">"admin_view_source.html"</span>)'},
       {t:'', c:''},
-      {t:'cm', c:'# ── Lancement ──'},
+      {t:'cm', c:'# ── Execution ──'},
       {t:'kw', c:'<span class="kw">if</span> <span class="slf">__name__</span> <span class="op">==</span> <span class="str">"__main__"</span><span class="punc">:</span>'},
       {t:'', c:'    <span class="fn">app</span>.<span class="fn">run</span>(debug<span class="op">=</span><span class="kw">False</span>)'},
     ]
@@ -510,24 +510,24 @@ const FILES = {
   readme: {
     name:'README.md', lang:'md', path:'/app/README.md',
     lines:[
-      {t:'dec',c:'<span class="dec"># ML2C CONSEIL — Application Web Flask</span>'},
+      {t:'dec',c:'<span class="dec"># ML2C CONSEIL — Flask Web Application</span>'},
       {t:'',c:''},
-      {t:'str',c:'Cabinet d\'expertise comptable digitalisé.'},
+      {t:'str',c:'Digitalized accounting consulting firm.'},
       {t:'',c:''},
-      {t:'dec',c:'<span class="dec">## Stack technique</span>'},
+      {t:'dec',c:'<span class="dec">## Technical Stack</span>'},
       {t:'',c:'- Python 3.12 / Flask 3.0'},
       {t:'',c:'- MongoDB (PyMongo)'},
       {t:'',c:'- Scalingo osc-fr1 (Paris)'},
       {t:'',c:'- Bootstrap 4.5.2 + DM Sans + Cormorant Garamond'},
       {t:'',c:''},
-      {t:'dec',c:'<span class="dec">## Déploiement</span>'},
+      {t:'dec',c:'<span class="dec">## Deployment</span>'},
       {t:'fn',c:'git push scalingo main'},
     ]
   },
   styles: {
     name:'styles.css', lang:'css', path:'/app/static/css/styles.css',
     lines:[
-      {t:'cm',c:'<span class="cm">/* ═══ ML2C CONSEIL — Styles globaux ═══ */</span>'},
+      {t:'cm',c:'<span class="cm">/* ═══ ML2C CONSEIL — Global Styles ═══ */</span>'},
       {t:'',c:'<span class="punc">:root</span> <span class="punc">{</span>'},
       {t:'css-p',c:'  <span class="css-p">--rose</span><span class="punc">:</span> <span class="str">#C1007A</span><span class="punc">;</span>'},
       {t:'css-p',c:'  <span class="css-p">--turq</span><span class="punc">:</span> <span class="str">#4FA695</span><span class="punc">;</span>'},
@@ -539,7 +539,7 @@ const FILES = {
   },
 };
 
-/* ── Tabs ouverts ── */
+/* ── Open Tabs ── */
 let openTabs = ['app'];
 let currentFile = 'app';
 let searchMatches = [], searchIdx = 0;
@@ -561,21 +561,21 @@ function toast(type,msg){
   window._tt=setTimeout(()=>box.classList.remove('show'),3000);
 }
 
-/* ── Render code ── */
+/* ── Render Code ── */
 function renderFile(key){
   const f=FILES[key];if(!f)return;
   currentFile=key;
 
-  // Update path
+  /* Update path */
   const parts=f.path.split('/');
   const fname=parts.pop();
   document.getElementById('codePathSpan').innerHTML=parts.join('/')+'/<strong>'+fname+'</strong>';
 
-  // Language badge
+  /* Language badge */
   const langMap={python:'PYTHON',html:'HTML',css:'CSS',js:'JS',txt:'TEXT',md:'MARKDOWN'};
   document.getElementById('sbLang').textContent=langMap[f.lang]||f.lang.toUpperCase();
 
-  // Lines
+  /* Lines */
   const lineNums=document.getElementById('lineNumbers');
   const codeContent=document.getElementById('codeContent');
   lineNums.innerHTML='';
@@ -594,14 +594,14 @@ function renderFile(key){
     codeContent.appendChild(ln);
   });
 
-  // Status bar
+  /* Status bar */
   document.getElementById('sbLines').textContent=f.lines.length;
   document.getElementById('sbChars').textContent=f.lines.reduce((a,l)=>a+(l.c||'').replace(/<[^>]*>/g,'').length,0);
 
-  // Minimap
+  /* Minimap */
   renderMinimap(f);
 
-  // Update file tree active
+  /* Update file tree active */
   document.querySelectorAll('.ft-item').forEach(el=>{
     el.classList.toggle('active', el.getAttribute('onclick')?.includes("'"+key+"'"));
   });
@@ -622,7 +622,7 @@ function renderMinimap(f){
   });
 }
 
-/* ── Select line ── */
+/* ── Select Line ── */
 function selectLine(n){
   document.querySelectorAll('.code-line').forEach(l=>l.classList.remove('highlighted'));
   document.querySelectorAll('.line-num').forEach(l=>l.classList.remove('active'));
@@ -633,15 +633,15 @@ function selectLine(n){
   document.getElementById('sbCursor').textContent=n;
 }
 
-/* ── Open file ── */
+/* ── Open File ── */
 function openFile(key, name, lang){
   if(!FILES[key]){
-    // Fichier non chargé — simuler
+    /* File not loaded – simulate */
     FILES[key]={name,lang,path:'/app/'+name,lines:[
-      {t:'cm',c:'<span class="cm"># '+name+' — Fichier non chargé en démo</span>'},
-      {t:'cm',c:'<span class="cm"># Connectez le backend Flask pour afficher le contenu réel.</span>'},
+      {t:'cm',c:'<span class="cm"># '+name+' — File not loaded in demo</span>'},
+      {t:'cm',c:'<span class="cm"># Connect the Flask backend to display actual content.</span>'},
       {t:'',c:''},
-      {t:'str',c:'<span class="str">"Ce fichier sera chargé dynamiquement via la route /admin/view-source"</span>'},
+      {t:'str',c:'<span class="str">"This file will be loaded dynamically via the /admin/view-source route"</span>'},
     ]};
   }
   if(!openTabs.includes(key)){
@@ -696,7 +696,7 @@ function searchInCode(q){
     }
   });
   cnt.style.display=searchMatches.length?'':'none';
-  if(searchMatches.length){cnt.textContent=searchMatches.length+' résultat'+(searchMatches.length>1?'s':'');highlightCurrent();}
+  if(searchMatches.length){cnt.textContent=searchMatches.length+' match'+(searchMatches.length>1?'es':'');highlightCurrent();}
 }
 function searchNav(e){
   if(e.key==='Enter'){searchIdx=(searchIdx+1)%Math.max(1,searchMatches.length);highlightCurrent();}
@@ -728,7 +728,7 @@ function toggleMinimap(){
 function copyCurrentFile(){
   const f=FILES[currentFile];if(!f)return;
   const txt=f.lines.map(l=>(l.c||'').replace(/<[^>]*>/g,'')).join('\n');
-  navigator.clipboard.writeText(txt).then(()=>toast('ok','Code copié dans le presse-papiers'));
+  navigator.clipboard.writeText(txt).then(()=>toast('ok','Code copied to clipboard'));
 }
 
 /* ── Download ── */
@@ -738,7 +738,7 @@ function downloadFile(){
   const a=document.createElement('a');
   a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(txt);
   a.download=f.name;a.click();
-  toast('ok',f.name+' téléchargé');
+  toast('ok',f.name+' downloaded');
 }
 
 /* ── Collapse all ── */
@@ -767,7 +767,7 @@ function filterFiles(q){
     item.style.display=show?'':'none';
     if(show)visible++;
   });
-  document.getElementById('ftCount').textContent=visible+' fichier'+(visible>1?'s':'');
+  document.getElementById('ftCount').textContent=visible+' file'+(visible>1?'s':'');
 }
 
 /* ── Minimap scroll sync ── */

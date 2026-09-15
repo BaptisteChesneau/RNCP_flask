@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="fr"><head>
+<html lang="en"><head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Emails Automatiques — ML2C Admin</title>
+  <title>Emails Automatiques</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -25,7 +25,7 @@
     @keyframes pp{0%,100%{opacity:1}50%{opacity:.3}}
     .main{padding:2.5rem 0 5rem;}
 
-    /* Stats email */
+    /* Email Stats Section */
     .email-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;}
     .estat{background:var(--surface);border-radius:16px;border:1.5px solid var(--border);padding:1.1rem 1.25rem;box-shadow:0 2px 12px rgba(0,0,0,.05);display:flex;align-items:center;gap:.85rem;animation:fadeUp .4s both;}
     @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
@@ -35,10 +35,10 @@
     .estat-val{font-family:var(--ff-head);font-size:1.6rem;font-weight:700;line-height:1;color:var(--text);}
     .estat-lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--faint);}
 
-    /* Layout */
+    /* Layout Section */
     .email-layout{display:grid;grid-template-columns:1fr 380px;gap:1.25rem;align-items:start;}
 
-    /* Liste templates */
+    /* Template List Section */
     .tpl-panel{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.05);overflow:hidden;}
     .tpl-head{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.4rem;background:#fafbfc;border-bottom:1px solid var(--border);}
     .tpl-head-title{font-size:.82rem;font-weight:700;color:var(--text);}
@@ -63,7 +63,7 @@
     .tpl-toggle input:checked+.tpl-slider::before{transform:translateX(16px);}
     .tpl-sent{font-size:.65rem;color:var(--faint);font-family:var(--ff-mono);}
 
-    /* Preview */
+    /* Preview Section */
     .preview-panel{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.05);overflow:hidden;position:sticky;top:90px;}
     .pp-head{padding:.9rem 1.4rem;background:#fafbfc;border-bottom:1px solid var(--border);}
     .pp-title{font-size:.82rem;font-weight:700;color:var(--text);}
@@ -109,7 +109,7 @@
 
 <div class="main">
   <div class="container">
-    <!-- Stats -->
+    <!-- Stats Section -->
     <div class="email-stats">
       <div class="estat"><div class="estat-ico ei-blue"><i class="fas fa-paper-plane"></i></div><div><div class="estat-lbl">Envoyés ce mois</div><div class="estat-val">247</div></div></div>
       <div class="estat"><div class="estat-ico ei-ok"><i class="fas fa-check-circle"></i></div><div><div class="estat-lbl">Taux de délivrabilité</div><div class="estat-val">99.2%</div></div></div>
@@ -118,7 +118,7 @@
     </div>
 
     <div class="email-layout">
-      <!-- Templates -->
+      <!-- Templates Section -->
       <div class="tpl-panel">
         <div class="tpl-head">
           <div class="tpl-head-title">Templates d'emails</div>
@@ -152,7 +152,7 @@
         </div>
       </div>
 
-      <!-- Preview -->
+      <!-- Preview Section -->
       <div class="preview-panel">
         <div class="pp-head">
           <div class="pp-title">Aperçu — Email de bienvenue</div>
@@ -198,11 +198,18 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+/* Clock Section */
 function tick(){const n=new Date();const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('heroTime');if(el)el.textContent=t;}
 tick();setInterval(tick,1000);
+
+/* Toast Section */
 function toast(msg){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;t.style.transform='translateY(0)';t.style.opacity='1';setTimeout(()=>{t.style.transform='translateY(80px)';t.style.opacity='0';},3000);}
+
+/* Test & Edit Section */
 function sendTest(){toast('Email de test envoyé à contact@ml2cconseil.com');}
 function editTpl(){toast('Ouverture de l\'éditeur de template...');}
+
+/* Template Select Section */
 function selectTpl(item,id){document.querySelectorAll('.tpl-item').forEach(t=>t.classList.remove('selected'));item.classList.add('selected');}
 </script>
 </body>

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Erreur 503 - Service indisponible | ML2C Conseil</title>
+  <title>Erreur 503 Service indisponible</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@400;500&display=swap">
@@ -86,7 +86,7 @@
       max-width: 480px; line-height: 1.65; margin-bottom: 2rem;
     }
 
-    /* Maintenance timeline */
+    /* Maintenance timeline Section */
     .err503-timeline {
       width: 100%; max-width: 520px;
       margin-bottom: 2rem; text-align: left;
@@ -114,7 +114,7 @@
     .timeline-content strong { display: block; font-size: .88rem; color: var(--gris-dark); }
     .timeline-content span { font-size: .78rem; color: var(--text-muted); }
 
-    /* Barre de progression maintenance */
+    /* Maintenance progress bar Section */
     .err503-progress {
       width: 100%; max-width: 520px;
       background: #f0f2f5; border-radius: 12px;
@@ -142,7 +142,7 @@
       font-size: .72rem; color: var(--text-muted);
     }
 
-    /* Status services */
+    /* Services status Section */
     .err503-services {
       width: 100%; max-width: 520px;
       display: grid; grid-template-columns: 1fr 1fr;
@@ -210,14 +210,14 @@
 
       <div class="err503-code">503</div>
 
-      <!-- Illustration engrenages SVG -->
+      <!-- SVG Gears Illustration Section -->
       <div class="err503-illus">
         <svg viewBox="0 0 500 150" xmlns="http://www.w3.org/2000/svg">
-          <!-- Grand engrenage gauche -->
+          <!-- Left Large Gear Section -->
           <g class="gear-spin" style="transform-origin:120px 75px;">
             <circle cx="120" cy="75" r="38" fill="none" stroke="#0ea5e9" stroke-width="8"/>
             <circle cx="120" cy="75" r="15" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="4"/>
-            <!-- Dents -->
+            <!-- Teeth Section -->
             <rect x="115" y="30" width="10" height="15" rx="3" fill="#0ea5e9"/>
             <rect x="115" y="110" width="10" height="15" rx="3" fill="#0ea5e9"/>
             <rect x="75" y="70" width="15" height="10" rx="3" fill="#0ea5e9"/>
@@ -228,7 +228,7 @@
             <rect x="148" y="99" width="15" height="10" rx="3" fill="#0ea5e9" transform="rotate(-45 155 104)"/>
           </g>
 
-          <!-- Petit engrenage haut droite -->
+          <!-- Top Right Small Gear Section -->
           <g class="gear-spin-rev" style="transform-origin:215px 45px;">
             <circle cx="215" cy="45" r="22" fill="none" stroke="#4FA695" stroke-width="6"/>
             <circle cx="215" cy="45" r="8" fill="#e1f5f0" stroke="#4FA695" stroke-width="3"/>
@@ -238,14 +238,14 @@
             <rect x="236" y="41" width="12" height="8" rx="2" fill="#4FA695"/>
           </g>
 
-          <!-- Clé à molette -->
+          <!-- Wrench Section -->
           <g class="wrench-anim" style="transform-origin:290px 120px;">
             <rect x="285" y="55" width="10" height="65" rx="5" fill="#5C666B"/>
             <ellipse cx="290" cy="52" rx="16" ry="12" fill="none" stroke="#5C666B" stroke-width="6"/>
             <rect x="282" y="116" width="16" height="8" rx="4" fill="#5C666B"/>
           </g>
 
-          <!-- Barre de progression -->
+          <!-- Progress Bar Section -->
           <rect x="320" y="60" width="160" height="12" rx="6" fill="#e5e7eb"/>
           <rect x="320" y="60" width="0" height="12" rx="6" fill="url(#pg503)" class="progress-bar-fill"/>
           <defs>
@@ -257,7 +257,7 @@
           <text x="320" y="50" font-size="9" fill="#6b7280" font-family="sans-serif">Maintenance en cours...</text>
           <text x="320" y="86" font-size="8" fill="#9ca3af" font-family="sans-serif">Restauration des services</text>
 
-          <!-- Points clignotants -->
+          <!-- Blinking Dots Section -->
           <circle cx="360" cy="110" r="4" fill="#0ea5e9">
             <animate attributeName="opacity" values="1;.2;1" dur="1s" repeatCount="indefinite"/>
           </circle>
@@ -268,7 +268,7 @@
             <animate attributeName="opacity" values="1;.2;1" dur="1s" begin=".6s" repeatCount="indefinite"/>
           </circle>
 
-          <!-- Texte bas -->
+          <!-- Bottom Text Section -->
           <text x="250" y="140" font-size="9" fill="#9ca3af" font-family="sans-serif" text-anchor="middle">ML2C CONSEIL — Équipe technique au travail</text>
         </svg>
       </div>
@@ -280,7 +280,7 @@
         Nous effectuons une maintenance planifiée pour améliorer nos services. Le cabinet ML2C CONSEIL sera de nouveau accessible très prochainement. Merci pour votre patience.
       </p>
 
-      <!-- Barre de progression -->
+      <!-- Progress Bar Container Section -->
       <div class="err503-progress">
         <h5>
           <span>Progression de la maintenance</span>
@@ -297,7 +297,7 @@
         </div>
       </div>
 
-      <!-- Timeline -->
+      <!-- Timeline Section -->
       <div class="err503-timeline">
         <h5><i class="fas fa-tools" style="margin-right:.4rem;"></i>Étapes de maintenance</h5>
         <div class="timeline-item">
@@ -330,7 +330,7 @@
         </div>
       </div>
 
-      <!-- Statuts services -->
+      <!-- Services Status Section -->
       <div class="err503-services">
         <div class="svc-status">
           <span class="svc-status-label"><i class="fas fa-database"></i> Base de données</span>
@@ -383,7 +383,7 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    /* Auto-refresh toutes les 60s */
+    /* Auto-refresh Timer Script */
     setTimeout(() => window.location.reload(), 60000);
   </script>
 </body>

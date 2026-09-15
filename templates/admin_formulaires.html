@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="fr"><head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Formulaires & Devis — ML2C Admin</title>
+<title>Formulaires & Devis</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -40,7 +40,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .btn-turq{background:linear-gradient(135deg,var(--turq),#3d8578);color:#fff;}
 .btn-success{background:linear-gradient(135deg,var(--success),#059669);color:#fff;}
 .btn-danger{background:linear-gradient(135deg,var(--danger),#dc2626);color:#fff;}
-/* KPI */
+/* KPI Section */
 .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
 .kbox{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:1.1rem;display:flex;align-items:center;gap:.85rem;box-shadow:0 2px 12px rgba(0,0,0,.05);transition:transform .2s;animation:fadeUp .4s both;}
 .kbox:hover{transform:translateY(-2px);}
@@ -49,7 +49,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .kbox-val{font-family:var(--ff-head);font-size:1.7rem;font-weight:700;line-height:1;}.kbox-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-top:.1rem;}
 .kbox-sub{font-size:.65rem;color:var(--turq);font-weight:600;margin-top:.15rem;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-/* PANEL */
+/* Panel Section */
 .panel{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.05);overflow:hidden;margin-bottom:1.25rem;animation:fadeUp .4s both;}
 .panel-head{padding:1rem 1.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(90deg,#fafbfc,#fff);}
 .panel-head-left{display:flex;align-items:center;gap:.65rem;}
@@ -58,14 +58,14 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .panel-title{font-size:.88rem;font-weight:700;color:var(--text);}
 .panel-sub{font-size:.7rem;color:var(--muted);margin-top:.08rem;}
 .panel-body{padding:1.4rem;}
-/* TOOLBAR */
+/* Toolbar Section */
 .toolbar{display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem;flex-wrap:wrap;}
 .search-box{display:flex;align-items:center;gap:.5rem;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.5rem .9rem;flex:1;min-width:220px;transition:border-color .2s;}
 .search-box:focus-within{border-color:var(--rose);}
 .search-box input{background:none;border:none;outline:none;font-size:.85rem;font-family:var(--ff-body);width:100%;color:var(--text);}
 .f-sel{border:1.5px solid var(--border);border-radius:9px;padding:.48rem .8rem;font-size:.8rem;font-family:var(--ff-body);color:var(--muted);background:var(--surface);outline:none;cursor:pointer;}
 .f-sel:focus{border-color:var(--rose);}
-/* TABLE */
+/* Table Section */
 .table-wrap{overflow-x:auto;}
 .devis-table{width:100%;border-collapse:collapse;font-size:.82rem;}
 .devis-table th{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);padding:.65rem 1rem;border-bottom:1.5px solid var(--border);text-align:left;white-space:nowrap;}
@@ -76,28 +76,28 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .devis-table tbody tr{transition:background .15s;cursor:pointer;}
 .devis-table tbody tr:hover td{background:#fafbfc;}
 .devis-table tbody tr.removing{opacity:0;transform:translateX(20px);transition:all .3s;}
-/* STATUS BADGES */
+/* Status Badges Section */
 .badge{display:inline-flex;align-items:center;gap:.3rem;font-size:.65rem;font-weight:700;padding:.22rem .65rem;border-radius:20px;white-space:nowrap;}
 .badge-new{background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1d4ed8;}
 .badge-processing{background:linear-gradient(135deg,var(--gold-l),#fde68a);color:#92400e;}
 .badge-done{background:linear-gradient(135deg,#d1fae5,#a7f3d0);color:#065f46;}
 .badge-rejected{background:linear-gradient(135deg,#fee2e2,#fecaca);color:#b91c1c;}
 .badge-waiting{background:linear-gradient(135deg,#ede9fe,#ddd6fe);color:#5b21b6;}
-/* PRIORITÉ */
+/* Priority Section */
 .prio{display:inline-flex;align-items:center;gap:.25rem;font-size:.65rem;font-weight:700;padding:.15rem .5rem;border-radius:20px;}
 .prio-high{background:#fee2e2;color:#b91c1c;}.prio-med{background:var(--gold-l);color:var(--gold-d);}.prio-low{background:#d1fae5;color:#065f46;}
-/* CLIENT CELL */
+/* Client Cell Section */
 .client-cell{display:flex;align-items:center;gap:.65rem;}
 .client-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:#fff;flex-shrink:0;}
 .client-name{font-weight:600;color:var(--text);font-size:.85rem;}
 .client-email{font-size:.68rem;color:var(--faint);}
-/* ACTIONS */
+/* Actions Section */
 .row-actions{display:flex;gap:.35rem;justify-content:flex-end;}
 .act-btn{width:28px;height:28px;border-radius:7px;border:1.5px solid var(--border);background:#fff;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;font-size:.72rem;}
 .act-btn:hover{border-color:var(--rose);color:var(--rose);}
 .act-btn.danger:hover{border-color:var(--danger);color:var(--danger);}
 .act-btn.success:hover{border-color:var(--success);color:var(--success);}
-/* MODAL */
+/* Modal Section */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
 .modal-overlay.open{display:flex;}
 .modal-box{background:#fff;border-radius:20px;width:100%;max-width:580px;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:fadeUp .3s ease;max-height:90vh;overflow-y:auto;}
@@ -114,19 +114,19 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .response-area{border:1.5px solid var(--border);border-radius:10px;padding:.65rem 1rem;font-size:.85rem;font-family:var(--ff-body);color:var(--text);background:#fafbfc;outline:none;resize:vertical;width:100%;min-height:100px;transition:all .2s;}
 .response-area:focus{border-color:var(--rose);background:#fff;}
 .modal-footer{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:.65rem;flex-wrap:wrap;position:sticky;bottom:0;background:#fff;}
-/* MINI STATS */
+/* Mini Stats Section */
 .mini-stat-row{display:flex;gap:.75rem;margin-bottom:.75rem;}
 .mini-stat{flex:1;background:#f8fafc;border-radius:10px;padding:.75rem;text-align:center;border:1px solid var(--border);}
 .mini-stat-val{font-family:var(--ff-head);font-size:1.4rem;font-weight:700;}
 .mini-stat-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--faint);margin-top:.1rem;}
-/* TIMELINE */
+/* Timeline Section */
 .timeline{display:flex;flex-direction:column;gap:.5rem;}
 .tl-item{display:flex;gap:.75rem;align-items:flex-start;}
 .tl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:.2rem;}
 .tl-body{flex:1;}
 .tl-action{font-size:.8rem;font-weight:600;color:var(--text);}
 .tl-time{font-size:.68rem;color:var(--faint);font-family:var(--ff-mono);}
-/* TOAST */
+/* Toast Section */
 .toast-box{position:fixed;bottom:1.25rem;right:1.25rem;z-index:9999;display:flex;align-items:center;gap:.65rem;padding:.8rem 1.2rem;border-radius:12px;font-size:.82rem;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.18);transform:translateY(80px);opacity:0;transition:all .35s cubic-bezier(.34,1.2,.64,1);pointer-events:none;max-width:320px;}
 .toast-box.show{transform:translateY(0);opacity:1;}
 .toast-ok{background:#0b2a1f;color:#4ade80;border:1px solid rgba(74,222,128,.2);}
@@ -180,7 +180,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 
   <div class="adm-content">
 
-    <!-- KPI -->
+    <!-- KPI Section -->
     <div class="kpi-row">
       <div class="kbox" style="animation-delay:.05s"><div class="kbox-ico ki-rose"><i class="fas fa-inbox"></i></div><div><div class="kbox-val" id="kpiNew">5</div><div class="kbox-lbl">Nouvelles demandes</div><div class="kbox-sub">Non traitées</div></div></div>
       <div class="kbox" style="animation-delay:.1s"><div class="kbox-ico ki-gold"><i class="fas fa-spinner"></i></div><div><div class="kbox-val" id="kpiProc">3</div><div class="kbox-lbl">En traitement</div><div class="kbox-sub">En cours</div></div></div>
@@ -188,7 +188,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
       <div class="kbox" style="animation-delay:.2s"><div class="kbox-ico ki-turq"><i class="fas fa-clock"></i></div><div><div class="kbox-val">3.2h</div><div class="kbox-lbl">Temps moy. réponse</div><div class="kbox-sub">↓ -40min</div></div></div>
     </div>
 
-    <!-- MINI STATS -->
+    <!-- Mini Stats Section -->
     <div class="panel" style="animation-delay:.1s;">
       <div class="panel-head">
         <div class="panel-head-left">
@@ -216,7 +216,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
       </div>
     </div>
 
-    <!-- TABLEAU DEMANDES -->
+    <!-- Table Section -->
     <div class="panel" style="animation-delay:.15s;">
       <div class="panel-head">
         <div class="panel-head-left">
@@ -300,7 +300,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 
             <tr data-status="new" data-service="Audit" onclick="openDetail(this)" data-id="DEV-0039" data-client="Association Horizon Vert" data-email="tresorier@horizonvert.org" data-tel="03 22 11 44 55" data-service-val="Audit" data-date="10 avr. 2025" data-msg="Notre association loi 1901 de protection de l'environnement (budget ~150k€/an) doit faire auditer ses comptes pour notre prochain AG. Délai souhaité : avant le 15 juin 2025.">
               <td style="font-family:var(--ff-mono);color:var(--muted);font-size:.72rem;">DEV-0039</td>
-              <td><div class="client-cell"><div class="client-avatar" style="background:linear-gradient(135deg,#10b981,#059669);">AH</div><div><div class="client-name">Association Horizon Vert</div><div class="client-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c2b6b0a7b1adb0aba7b082aaadb0abb8adacb4a7b0b6ecadb0a5">[email&#160;protected]</a></div></div></div></td>
+              <td><div class="client-cell"><div class="client-avatar" style="background:linear-gradient(135deg,#10b981,#059669);">AH</div><div><div class="client-name">Association Horizon Vert</div><div class="client-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c2b6b0a7b1adb0adb0aba7b082aaadb0abb8adacb4a7b0b6ecadb0a5">[email&#160;protected]</a></div></div></div></td>
               <td><span style="font-size:.78rem;font-weight:600;">Audit</span></td>
               <td><span class="prio prio-med"><i class="fas fa-minus" style="font-size:.5rem;"></i>Moyenne</span></td>
               <td style="font-size:.75rem;color:var(--muted);white-space:nowrap;">10 avr. 2025<br><span style="font-size:.68rem;font-family:var(--ff-mono);">16:48</span></td>
@@ -355,15 +355,15 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
             </tr>
 
           </tbody>
-        </table>
-      </div>
+      </table>
     </div>
+  </div>
 
   </div>
 </div>
 </div>
 
-<!-- MODAL DÉTAIL -->
+<!-- Modal Detail Section -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
   <div class="modal-box">
     <div class="modal-head">
@@ -383,7 +383,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
         <div class="detail-label" style="margin-bottom:.5rem;">Message du client</div>
         <div class="detail-message" id="dMsg">—</div>
       </div>
-      <!-- Timeline -->
+      <!-- Timeline Section -->
       <div style="margin-bottom:1rem;">
         <div class="detail-label" style="margin-bottom:.65rem;">Historique</div>
         <div class="timeline">
@@ -392,7 +392,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
           <div class="tl-item"><div class="tl-dot" style="background:#e5e7eb;"></div><div class="tl-body"><div class="tl-action" style="color:var(--faint);">En attente de traitement admin</div><div class="tl-time">—</div></div></div>
         </div>
       </div>
-      <!-- Réponse -->
+      <!-- Response Section -->
       <div>
         <div class="detail-label" style="margin-bottom:.5rem;">Répondre au client</div>
         <textarea class="response-area" id="responseText" placeholder="Rédigez votre réponse personnalisée… Le nom du client sera ajouté automatiquement."></textarea>
@@ -412,9 +412,11 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 <div class="toast-box" id="toastBox"><i id="toastIco" class="fas fa-circle-check"></i><span id="toastMsg">OK</span></div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* Clock Section */
 function tick(){const n=new Date();const s=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('topClock');if(el)el.textContent=s;}
 tick();setInterval(tick,1000);
 
+/* Toast Section */
 function toast(type,msg){
   const box=document.getElementById('toastBox'),ico=document.getElementById('toastIco'),m=document.getElementById('toastMsg');
   box.className='toast-box';
@@ -425,6 +427,7 @@ function toast(type,msg){
 
 let currentRow=null;
 
+/* Modal Section */
 function openDetail(row){
   currentRow=row;
   document.getElementById('modalId').textContent=row.dataset.id;
@@ -472,6 +475,7 @@ function rejectModal(){
   toast('warn','Demande refusée · Client notifié par email');
 }
 
+/* Status Change Section */
 function changeStatus(btn,status){
   const row=btn.closest('tr');
   if(!row)return;
@@ -496,6 +500,7 @@ function deleteRow(btn){
   toast('warn','Demande supprimée');
 }
 
+/* KPI Update Section */
 function updateKpis(){
   const rows=[...document.querySelectorAll('#devisBody tr')];
   const nw=rows.filter(r=>r.dataset.status==='new').length;
@@ -508,6 +513,7 @@ function updateKpis(){
   document.querySelector('.adm-sb-badge.gold').textContent=nw;
 }
 
+/* Filter Section */
 function filterTable(){
   const q=document.getElementById('devisSearch').value.toLowerCase();
   const st=document.getElementById('filterStatus').value;
@@ -527,3 +533,5 @@ function filterTable(){
 }
 
 function sortTable(col){toast('info','Tri par '+col+'…');}
+</script>
+</body></html>

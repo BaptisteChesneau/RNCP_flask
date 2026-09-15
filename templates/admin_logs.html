@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Logs de Sécurité — ML2C Admin</title>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Logs de Sécurité</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -26,7 +26,7 @@
     @keyframes pp{0%,100%{opacity:1}50%{opacity:.3}}
     .main{padding:2.5rem 0 5rem;}
 
-    /* KPI security */
+    /* KPI Security Section */
     .sec-krow{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;}
     .sec-kbox{background:var(--surface);border-radius:16px;border:1.5px solid transparent;padding:1.25rem;box-shadow:0 2px 12px rgba(0,0,0,.05);transition:transform .2s;animation:fadeUp .4s both;}
     @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
@@ -46,7 +46,7 @@
     .sk-lbl{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-bottom:.2rem;}
     .sk-sub{font-size:.72rem;color:var(--muted);}
 
-    /* Toolbar */
+    /* Toolbar Section */
     .logs-toolbar{display:flex;align-items:center;gap:.65rem;margin-bottom:1.25rem;flex-wrap:wrap;}
     .logs-search{display:flex;align-items:center;gap:.5rem;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.5rem .9rem;flex:1;min-width:200px;transition:border-color .2s;}
     .logs-search:focus-within{border-color:var(--rose);}
@@ -61,7 +61,7 @@
     .export-btn2{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem .9rem;border-radius:9px;font-size:.78rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);transition:all .2s;font-family:var(--ff-body);}
     .export-btn2:hover{border-color:var(--rose);color:var(--rose);}
 
-    /* Terminal logs */
+    /* Terminal Section */
     .terminal-panel{background:var(--ink2);border-radius:20px;border:1px solid rgba(255,255,255,.07);box-shadow:0 4px 24px rgba(0,0,0,.2);overflow:hidden;margin-bottom:2rem;}
     .term-head{display:flex;align-items:center;gap:.5rem;padding:.75rem 1.2rem;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.06);}
     .term-dot{width:12px;height:12px;border-radius:50%;}
@@ -92,7 +92,7 @@
     .log-msg .hl{color:#fff;font-weight:500;}
     .log-ip{color:rgba(255,255,255,.2);font-size:.65rem;margin-left:.5rem;}
 
-    /* Pagination */
+    /* Pagination Section */
     .pagi{display:flex;justify-content:center;align-items:center;gap:.4rem;margin-top:1.25rem;}
     .pagi-btn{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);font-size:.82rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:var(--ff-body);}
     .pagi-btn:hover,.pagi-btn.active{background:var(--rose);border-color:var(--rose);color:#fff;}
@@ -117,7 +117,7 @@
 <div class="main">
   <div class="container">
 
-    <!-- KPI sécurité -->
+    <!-- Security KPI Section -->
     <div class="sec-krow">
       <div class="sec-kbox skb-ok">
         <div class="sk-head"><div class="sk-ico ski-ok"><i class="fas fa-shield-halved"></i></div></div>
@@ -145,7 +145,7 @@
       </div>
     </div>
 
-    <!-- Toolbar -->
+    <!-- Toolbar Section -->
     <div class="logs-toolbar">
       <div class="logs-search"><i class="fas fa-search" style="color:var(--faint);font-size:.8rem;"></i><input type="text" placeholder="Rechercher dans les logs…" id="logSearch" oninput="filterLogs(this.value)"></div>
       <button class="filter-btn on" data-level="ALL" onclick="filterLevel(this)">Tous</button>
@@ -155,7 +155,7 @@
       <button class="export-btn2" onclick="exportLogs()"><i class="fas fa-download"></i> Exporter</button>
     </div>
 
-    <!-- Terminal -->
+    <!-- Terminal Section -->
     <div class="terminal-panel">
       <div class="term-head">
         <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
@@ -165,6 +165,7 @@
       <div class="term-body" id="termBody"></div>
     </div>
 
+    <!-- Pagination Section -->
     <div class="pagi">
       <button class="pagi-btn"><i class="fas fa-chevron-left"></i></button>
       <button class="pagi-btn active">1</button>
@@ -180,10 +181,11 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+/* Clock Section */
 function tick(){const n=new Date();const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('heroTime');if(el)el.textContent=t;}
 tick();setInterval(tick,1000);
 
-/* Log data */
+/* Log Data Section */
 const LOG_DATA=[
   {level:'SUCCESS',src:'auth.admin',msg:'Connexion administrateur réussie — <span class="hl">admin@ml2cconseil.com</span>',ip:'192.168.1.1'},
   {level:'INFO',src:'system',msg:'Démarrage du service chatbot <span class="hl">ML2C v2.0</span>',ip:'—'},
@@ -205,6 +207,7 @@ const LOG_DATA=[
 let activeLevel='ALL';
 let rendered=false;
 
+/* Render Logs Section */
 function renderLogs(data){
   const body=document.getElementById('termBody');
   body.innerHTML='';
@@ -221,13 +224,14 @@ function renderLogs(data){
     body.appendChild(div);
   });
   body.scrollTop=body.scrollHeight;
-  /* KPI */
+  /* KPI Section */
   document.getElementById('kv-refused').textContent=data.filter(l=>l.level==='ERROR'||l.level==='CRITICAL').length;
   document.getElementById('kv-alerts').textContent=data.filter(l=>l.level==='WARNING').length;
   document.getElementById('kv-logins').textContent=data.filter(l=>l.level==='SUCCESS'&&l.src==='auth.admin').length;
 }
 renderLogs(LOG_DATA);
 
+/* Filter Section */
 function filterLogs(q){
   document.querySelectorAll('.log-entry').forEach(el=>{
     const match=activeLevel==='ALL'||el.dataset.level===activeLevel;
@@ -243,6 +247,7 @@ function filterLevel(btn){
   filterLogs(document.getElementById('logSearch').value);
 }
 
+/* Export Section */
 function exportLogs(){
   const rows=Array.from(document.querySelectorAll('.log-entry:not([style*="none"])'));
   const text=rows.map(r=>r.textContent.trim()).join('\n');
@@ -250,7 +255,7 @@ function exportLogs(){
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ml2c-security-logs.txt';a.click();
 }
 
-/* Live logs */
+/* Live Logs Section */
 const liveMsg=[
   {level:'INFO',src:'session',msg:'Heartbeat session admin — OK',ip:'192.168.1.1'},
   {level:'SUCCESS',src:'database',msg:'Requête BDD — <span class="hl">2ms</span>',ip:'—'},

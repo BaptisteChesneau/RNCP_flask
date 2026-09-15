@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Super Admin — ML2C CONSEIL</title>
+  <title>Admin Dashboard</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,700&family=DM+Sans:wght@200;300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -31,7 +31,7 @@
 
     body { background: var(--bg); font-family: var(--ff-body); color: var(--text); overflow-x: hidden; }
 
-    /* ══ TEXTURE FOND GLOBAL ══ */
+    /* Global Background Texture Section */
     body::before{
       content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
       background-image:
@@ -40,9 +40,7 @@
         radial-gradient(ellipse 50% 40% at 50% 50%,rgba(176,141,87,.03) 0%,transparent 60%);
     }
 
-    /* ═══════════════════════════════════════════
-        HERO — COULEUR CHAUDE DE LA CHARTE (FOND CLAIR)
-    ═══════════════════════════════════════════ */
+    /* Hero Section */
     .hero {
       position: relative;
       min-height: 340px;
@@ -52,10 +50,10 @@
       display: flex; align-items: flex-end;
     }
 
-    /* Canvas réseau neuronal discret sur fond clair */
+    /* Neural Canvas Section */
     #netCanvas { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.45; }
 
-    /* Couches d'ambiance douces */
+    /* Hero Ambient Section */
     .hero-amb {
       position: absolute; inset: 0; z-index: 1; pointer-events: none;
       background:
@@ -64,7 +62,7 @@
         radial-gradient(ellipse 30% 40% at 55% 60%, rgba(176,141,87,.07) 0%, transparent 50%);
     }
 
-    /* Grille de fond subtile */
+    /* Hero Grid Section */
     .hero-grid {
       position: absolute; inset: 0; z-index: 1; pointer-events: none;
       background-image:
@@ -73,7 +71,7 @@
       background-size: 40px 40px;
     }
 
-    /* Barre chromatique top */
+    /* Hero Bar Section */
     .hero-bar {
       position: absolute; top: 0; left: 0; right: 0; height: 3px; z-index: 10;
       background: linear-gradient(90deg, var(--rose), var(--gold), var(--turq), var(--gold), var(--rose));
@@ -82,12 +80,12 @@
     }
     @keyframes barShift { 0%{background-position:0%} 100%{background-position:400%} }
 
-    /* Vague bas pour raccorder au contenu */
+    /* Hero Wave Section */
     .hero-wave {
       position: absolute; bottom: -1px; left: 0; right: 0; z-index: 5; pointer-events: none;
     }
 
-    /* Contenu hero */
+    /* Hero Content Section */
     .hero-content {
       position: relative; z-index: 6;
       width: 100%;
@@ -101,7 +99,7 @@
       align-items: end;
     }
 
-    /* Côté gauche hero */
+    /* Hero Left Section */
     .hero-left { min-width: 0; }
 
     .pre-title {
@@ -124,7 +122,7 @@
 
     .pre-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(26,20,10,.15), transparent); }
 
-    /* Titre sur une seule ligne */
+    /* Hero H1 Section */
     .hero-h1 {
       font-family: var(--ff-head);
       font-size: clamp(2rem, 3.8vw, 3.5rem);
@@ -138,7 +136,7 @@
     .hero-h1 .accent-gold { color: var(--gold); font-style: italic; }
     .hero-h1 .accent-rose { color: var(--rose); }
 
-    /* Sous-titre de session en NOIR bien lisible */
+    /* Hero Sub Section */
     .hero-sub {
       font-family: var(--ff-mono);
       font-size: .75rem; font-weight: 700;
@@ -161,7 +159,7 @@
     .hchip.blue  { background: var(--bg3); border: 1px solid var(--border2); color: var(--text2); }
     .hchip.mono  { background: var(--surface); border: 1px solid var(--border); color: var(--text); font-family: var(--ff-mono); }
 
-    /* Côté droit hero — Profile card */
+    /* Hero Profile Section */
     .hero-profile {
       display: flex; flex-direction: column; align-items: flex-end; gap: 1rem;
       flex-shrink: 0;
@@ -229,12 +227,10 @@
     .session-val { color: var(--text); font-weight: 700; }
     .session-val.warn { color: var(--danger); }
 
-    /* ═══════════════════════════════════════════
-        MAIN BODY
-    ═══════════════════════════════════════════ */
+    /* Main Section */
     .main { padding: 2.5rem 0 6rem; position: relative; z-index: 2; }
 
-    /* Barre niveau admin */
+    /* Level Strip Section */
     .level-strip {
       background: var(--surface);
       border: 1.5px solid rgba(193,0,122,.3);
@@ -265,7 +261,7 @@
       background: var(--rose-l); border: 1px solid rgba(193,0,122,.25); color: var(--rose);
     }
 
-    /* KPI row */
+    /* KPI Row Section */
     .kpi-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-bottom: 2rem; }
     .kcard {
       background: var(--surface); border-radius: 20px;
@@ -325,7 +321,7 @@
     .kbar-fill { height:100%; border-radius:2px; transition:width 1.4s cubic-bezier(.22,1,.36,1); }
     .kcard-sub { font-size:.72rem; color:var(--muted); line-height:1.5; }
 
-    /* ── Section header ── */
+    /* Section Header */
     .s-head {
       display:flex; align-items:center; justify-content:space-between;
       margin-bottom:1.1rem;
@@ -344,7 +340,7 @@
     }
     .s-link:hover { gap:.55rem; color:var(--rose-d); text-decoration:none; }
 
-    /* ── Dernière question ── */
+    /* Last Question Section */
     .lq-card {
       background:var(--surface); border-radius:18px;
       border:1.5px solid var(--border);
@@ -378,7 +374,7 @@
     }
     .lq-text { padding-left:1.5rem; }
 
-    /* ── Grille actions ── */
+    /* Actions Grid Section */
     .actions-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; margin-bottom:2rem; }
     .acard {
       background:var(--surface); border-radius:18px;
@@ -417,9 +413,7 @@
     .acard-arr { color:var(--border2); font-size:.78rem; flex-shrink:0; transition:color .2s, transform .2s; }
     .acard:hover .acard-arr { color:var(--rose); transform:translateX(4px); }
 
-    /* ══════════════════════════════════════════════════════════
-        ZONE ADMIN EXCLUSIF EN ROSE MAGENTA (#C1007A / #9a0062)
-    ══════════════════════════════════════════════════════════ */
+    /* Admin Zone Section */
     .admin-zone {
       position:relative; overflow:hidden;
       background: linear-gradient(135deg, #2b0b20 0%, #150510 100%);
@@ -496,10 +490,10 @@
       border-color: var(--rose);
     }
 
-    /* ── LAYOUT 2 COL bas de page ── */
+    /* Bottom Grid Section */
     .bottom-grid { display:grid; grid-template-columns:1fr 360px; gap:1.25rem; margin-bottom:2rem; }
 
-    /* Activité */
+    /* Activity Card Section */
     .activity-card {
       background:var(--surface); border-radius:18px;
       border:1.5px solid var(--border);
@@ -536,7 +530,7 @@
     .aitem-text { font-size:.82rem; color:var(--text); line-height:1.45; }
     .aitem-time { font-size:.65rem; color:var(--faint); font-family:var(--ff-mono); margin-top:.18rem; }
 
-    /* Statut système */
+    /* Status Card Section */
     .status-card {
       background:var(--surface); border-radius:18px;
       border:1.5px solid var(--border);
@@ -575,7 +569,7 @@
     .sc-name { font-size:.82rem; font-weight:600; color:var(--text); }
     .sc-val  { font-size:.67rem; color:var(--muted); font-family:var(--ff-mono); margin-top:.1rem; }
 
-    /* ── FOOTER ADMIN ── */
+    /* Admin Footer Section */
     .admin-footer {
       background:var(--surface); border-radius:20px;
       border:1.5px solid var(--border);
@@ -610,7 +604,7 @@
     .af-danger  { background:transparent; border-color:rgba(220,38,38,.3); color:var(--danger); }
     .af-danger:hover  { background:rgba(220,38,38,.08); text-decoration:none; color:var(--danger); }
 
-    /* RESPONSIVE */
+    /* Responsive Section */
     @media(max-width:1024px){ .kpi-row{grid-template-columns:repeat(2,1fr)} .az-grid{grid-template-columns:repeat(2,1fr)} .bottom-grid{grid-template-columns:1fr} }
     @media(max-width:768px){ .hero-row{grid-template-columns:1fr} .hero-profile{align-items:flex-start} .actions-grid{grid-template-columns:1fr} .kpi-row{grid-template-columns:repeat(2,1fr)} }
     @media(max-width:480px){ .kpi-row{grid-template-columns:1fr} .az-grid{grid-template-columns:1fr} }
@@ -620,7 +614,7 @@
 
 {% include "header.html" %}
 
-<!-- ══════════════════════ HERO ══════════════════════ -->
+<!-- Hero Section -->
 <div class="hero">
   <canvas id="netCanvas"></canvas>
   <div class="hero-amb"></div>
@@ -640,7 +634,6 @@
           <div class="pre-line"></div>
         </div>
 
-        <!-- Titre sur une seule ligne -->
         <h1 class="hero-h1">
           Dashboard <span class="accent-gold">Admin</span> <span class="accent-rose">ML2C</span>
         </h1>
@@ -692,11 +685,10 @@
   </svg>
 </div>
 
-<!-- ══════════════════════ MAIN ══════════════════════ -->
+<!-- Main Content Section -->
 <div class="main">
   <div class="container">
 
-    <!-- Barre niveau -->
     <div class="level-strip">
       <div class="ls-icon"><i class="fas fa-crown"></i></div>
       <div class="ls-body">
@@ -712,7 +704,6 @@
       </div>
     </div>
 
-    <!-- KPIs -->
     <div class="s-head">
       <div class="s-label"><i class="fas fa-chart-bar"></i> Indicateurs clés</div>
     </div>
@@ -767,7 +758,6 @@
 
     </div>
 
-    <!-- Dernière question -->
     <div class="s-head">
       <div class="s-label"><i class="fas fa-comment-alt"></i> Dernière question chatbot</div>
       <a href="{{ url_for('admin_chatbot') }}" class="s-link">Tout gérer <i class="fas fa-arrow-right"></i></a>
@@ -792,7 +782,6 @@
       </div>
     </div>
 
-    <!-- Actions -->
     <div class="s-head">
       <div class="s-label"><i class="fas fa-bolt"></i> Actions rapides</div>
     </div>
@@ -815,7 +804,6 @@
       </a>
     </div>
 
-    <!-- Zone admin exclusif en rose magenta -->
     <div class="s-head">
       <div class="s-label"><i class="fas fa-crown"></i> Zone administrateur exclusif</div>
     </div>
@@ -866,10 +854,8 @@
       </div>
     </div>
 
-    <!-- Bas de page -->
     <div class="bottom-grid">
 
-      <!-- Activité live -->
       <div class="activity-card">
         <div class="ac-head">
           <div class="ac-head-l">
@@ -886,7 +872,6 @@
         </div>
       </div>
 
-      <!-- Statuts système -->
       <div class="status-card">
         <div class="sc-head">
           <div class="sc-head-ico"><i class="fas fa-server"></i></div>
@@ -918,7 +903,6 @@
 
     </div>
 
-    <!-- Footer admin -->
     <div class="admin-footer">
       <div class="af-left">
         <div class="af-av">
@@ -944,7 +928,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-/* ════════ CANVAS RÉSEAU ADAPTÉ FOND CLAIR ════════ */
+/* Neural Canvas Script Section */
 const nc = document.getElementById('netCanvas');
 const nctx = nc.getContext('2d');
 let NW, NH, pts = [];
@@ -1004,7 +988,7 @@ function drawNet() {
 }
 drawNet();
 
-/* ════════ HORLOGE ════════ */
+/* Clock Script Section */
 function tick() {
   const n=new Date();
   const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');
@@ -1012,7 +996,7 @@ function tick() {
 }
 tick(); setInterval(tick,1000);
 
-/* ════════ SESSION ID ════════ */
+/* Session ID Script Section */
 function mkId() {
   const chars='ABCDEF0123456789';
   return Array.from({length:8},()=>chars[Math.floor(Math.random()*chars.length)]).join('');
@@ -1020,7 +1004,7 @@ function mkId() {
 const sid = mkId();
 ['sesId','footSid'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=sid;});
 
-/* ════════ COUNTDOWN SESSION ════════ */
+/* Session Countdown Script Section */
 let secs = 30*60;
 function cdTick() {
   secs = Math.max(0, secs-1);
@@ -1036,14 +1020,14 @@ function cdTick() {
 }
 setInterval(cdTick,1000);
 
-/* ════════ ANIMATE KPI BARS ════════ */
+/* KPI Bar Animation Script Section */
 document.querySelectorAll('.kbar-fill').forEach(b=>{
   const w=b.dataset.w;
   b.style.width='0';
   setTimeout(()=>{ b.style.width=w; },500);
 });
 
-/* ════════ ACTIVITÉ LIVE ════════ */
+/* Live Activity Script Section */
 const LOGS = [
   {c:'var(--rose)',    txt:'Chatbot — nouvelle <strong>question reçue</strong>'},
   {c:'var(--turq)',    txt:'BDD — synchronisation <strong>réussie</strong>'},
@@ -1070,7 +1054,7 @@ function pushLog() {
 }
 setInterval(pushLog, 5500);
 
-/* ════════ INIT TIME ════════ */
+/* Init Time Script Section */
 const now=new Date();
 const loginEl=document.getElementById('loginT');
 if(loginEl) loginEl.textContent=[now.getHours(),now.getMinutes(),now.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');

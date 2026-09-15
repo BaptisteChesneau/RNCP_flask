@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Actualités & Conseils — ML2C CONSEIL</title>
+  <title>Actualités & Conseils</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
 
 {% include "header.html" %}
 
-<!-- ════ HERO ════ -->
+<!-- ════ HERO SECTION ════ -->
 <section class="blog-hero">
   <div class="container blog-hero-inner">
     <div class="blog-hero-tag"><i class="fas fa-newspaper"></i> Notre actualité</div>
@@ -38,7 +38,7 @@
   </div>
 </section>
 
-<!-- ════ BANDE STATS ════ -->
+<!-- ════ STATS BAR ════ -->
 <div class="blog-stats-bar">
   <div class="container">
     <div class="blog-stats-inner">
@@ -54,15 +54,15 @@
   </div>
 </div>
 
-<!-- ════ CONTENU PRINCIPAL ════ -->
+<!-- ════ MAIN CONTENT ════ -->
 <section class="blog-main">
   <div class="container">
     <div class="blog-layout">
 
-      <!-- ── ARTICLES ── -->
+      <!-- ── ARTICLES SECTION ── -->
       <div id="articlesContainer">
 
-        <!-- Article featured -->
+        <!-- Featured article -->
         <a href="#" class="article-featured fade-up" data-cat="fiscalite">
           <div class="article-featured-visual">
             <div class="article-featured-badge">À la une</div>
@@ -80,7 +80,7 @@
           </div>
         </a>
 
-        <!-- Grille articles -->
+        <!-- Articles grid -->
         <div class="articles-grid" id="articlesGrid">
 
           <a href="#" class="article-card fade-up card-delay-1" data-cat="comptabilite" data-title="Clôture comptable 2025 : le calendrier à respecter">
@@ -113,7 +113,7 @@
               <h3 class="article-card-title">Revalorisation du SMIC 2026 : impact sur vos bulletins de paie</h3>
               <p class="article-card-excerpt">Le SMIC a été revalorisé de 2,2% au 1er janvier 2026. Voici ce que cela change concrètement pour votre masse salariale et vos cotisations.</p>
               <div class="article-card-footer">
-                <span class="article-card-tag">Social & Paie</span>
+                <span class="article-cat-tag">Social & Paie</span>
                 <span class="article-card-date"><i class="fas fa-clock"></i>3 min</span>
               </div>
             </div>
@@ -131,7 +131,7 @@
               <h3 class="article-card-title">IA et comptabilité : comment ML2C automatise vos analyses</h3>
               <p class="article-card-excerpt">Découvrez comment l'intelligence artificielle transforme notre façon de traiter vos données et produit des analyses prédictives inédites.</p>
               <div class="article-card-footer">
-                <span class="article-card-tag">Conseil & IA</span>
+                <span class="article-cat-tag">Conseil & IA</span>
                 <span class="article-card-date"><i class="fas fa-clock"></i>6 min</span>
               </div>
             </div>
@@ -149,7 +149,7 @@
               <h3 class="article-card-title">SAS ou SARL en 2026 : laquelle choisir pour votre projet ?</h3>
               <p class="article-card-excerpt">Fiscalité, protection sociale, flexibilité — notre comparatif complet pour choisir la structure juridique la plus adaptée à votre situation.</p>
               <div class="article-card-footer">
-                <span class="article-card-tag">Juridique</span>
+                <span class="article-cat-tag">Juridique</span>
                 <span class="article-card-date"><i class="fas fa-clock"></i>7 min</span>
               </div>
             </div>
@@ -167,7 +167,7 @@
               <h3 class="article-card-title">5 leviers pour optimiser votre impôt sur les sociétés en 2026</h3>
               <p class="article-card-excerpt">Provisions, amortissements, crédits d'impôt — les stratégies légales et éprouvées pour réduire votre IS avant la clôture de l'exercice.</p>
               <div class="article-card-footer">
-                <span class="article-card-tag">Fiscalité</span>
+                <span class="article-cat-tag">Fiscalité</span>
                 <span class="article-card-date"><i class="fas fa-clock"></i>5 min</span>
               </div>
             </div>
@@ -185,7 +185,7 @@
               <h3 class="article-card-title">Les 7 indicateurs indispensables dans votre tableau de bord dirigeant</h3>
               <p class="article-card-excerpt">Trésorerie, marge brute, BFR, DSO — les KPIs que tout chef d'entreprise doit surveiller chaque mois pour piloter sereinement.</p>
               <div class="article-card-footer">
-                <span class="article-card-tag">Conseil & IA</span>
+                <span class="article-cat-tag">Conseil & IA</span>
                 <span class="article-card-date"><i class="fas fa-clock"></i>5 min</span>
               </div>
             </div>
@@ -193,7 +193,7 @@
 
         </div>
 
-        <!-- Message no result -->
+        <!-- No result message -->
         <div id="noResult">
           <i class="fas fa-search no-result-icon"></i>
           <p>Aucun article trouvé pour cette recherche.</p>
@@ -212,7 +212,7 @@
       <!-- ── SIDEBAR ── -->
       <aside class="blog-sidebar">
 
-        <!-- Articles populaires -->
+        <!-- Popular articles widget -->
         <div class="sidebar-widget">
           <h4><i class="fas fa-fire sidebar-widget-icon"></i>Les plus lus</h4>
           <a href="#" class="popular-item">
@@ -233,7 +233,7 @@
           </a>
         </div>
 
-        <!-- Newsletter -->
+        <!-- Newsletter widget -->
         <div class="newsletter-widget">
           <h4><i class="fas fa-envelope sidebar-widget-icon"></i>Newsletter</h4>
           <p>Recevez chaque mois nos conseils fiscaux et actualités réglementaires directement dans votre boîte mail.</p>
@@ -243,7 +243,7 @@
           </button>
         </div>
 
-        <!-- Tags -->
+        <!-- Tags widget -->
         <div class="sidebar-widget">
           <h4><i class="fas fa-tags sidebar-widget-icon"></i>Thèmes</h4>
           <div class="tags-cloud">
@@ -262,7 +262,7 @@
           </div>
         </div>
 
-        <!-- CTA -->
+        <!-- CTA widget -->
         <div class="sidebar-cta">
           <i class="fas fa-calendar-alt"></i>
           <p>Une question suite à la lecture d'un article ? Nos experts sont disponibles pour en discuter.</p>

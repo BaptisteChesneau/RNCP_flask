@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Paramètres du Compte — ML2C Admin</title>
+  <title>Paramètres du Compte</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -24,7 +24,7 @@
     }
     body { background: var(--bg); font-family: var(--ff-body); color: var(--text); }
 
-    /* ── HERO ── */
+    /* HERO SECTION */
     .page-hero {
       background: var(--ink);
       position: relative; overflow: hidden;
@@ -68,7 +68,7 @@
     }
     @keyframes pip { 0%,100%{opacity:1} 50%{opacity:.3} }
 
-    /* ── PROFIL HERO CARD ── */
+    /* PROFILE HERO CARD SECTION */
     .hero-profile {
       position: relative; z-index: 1;
       display: flex; align-items: center; gap: 1.5rem;
@@ -119,7 +119,7 @@
     }
     .hp-edit-av:hover { background: rgba(193,0,122,.2); color: #f472b6; }
 
-    /* ── MAIN ── */
+    /* MAIN SECTION */
     .main { padding: 2.5rem 0 5rem; }
 
     /* Layout */
@@ -130,7 +130,7 @@
       align-items: start;
     }
 
-    /* NAV */
+    /* NAVIGATION SECTION */
     .param-nav {
       background: var(--surface); border-radius: 18px;
       border: 1.5px solid var(--border);
@@ -158,7 +158,7 @@
     .param-section { display: none; }
     .param-section.active { display: block; }
 
-    /* PANEL */
+    /* PANEL SECTION */
     .param-panel {
       background: var(--surface); border-radius: 18px;
       border: 1.5px solid var(--border);
@@ -282,7 +282,7 @@
     .av-opt.on { border-color: var(--rose); box-shadow: 0 0 0 3px rgba(193,0,122,.15); }
     .av-opt img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-    /* Sessions actives */
+    /* Active sessions section */
     .session-item {
       display: flex; align-items: center; gap: 1rem;
       padding: .9rem 0; border-bottom: 1px solid #f5f6f8;
@@ -355,7 +355,7 @@
 <body>
 {% include "header.html" %}
 
-<!-- HERO -->
+<!-- Hero Section -->
 <div class="page-hero">
   <div class="hero-bar"></div>
   <div class="container hero-inner">
@@ -369,7 +369,7 @@
       SUPER ADMIN · ML2C CONSEIL · <span id="heroTime">--:--:--</span>
     </div>
 
-    <!-- Profil card -->
+    <!-- Profile Card Section -->
     <div class="hero-profile">
       <div class="hp-av-wrap">
         <div class="hp-ring">
@@ -398,7 +398,7 @@
   <div class="container">
     <div class="param-layout">
 
-      <!-- NAV -->
+      <!-- Navigation Section -->
       <div class="param-nav">
         <div class="pn-head">Compte</div>
         <button class="pn-item active" data-sec="profil" onclick="showSection('profil',this)">
@@ -424,10 +424,10 @@
         </button>
       </div>
 
-      <!-- CONTENU -->
+      <!-- Content Section -->
       <div>
 
-        <!-- PROFIL -->
+        <!-- Profile Section -->
         <div class="param-section active" id="sec-profil">
           <div class="param-panel">
             <div class="pp-head">
@@ -480,7 +480,7 @@
           </div>
         </div>
 
-        <!-- SÉCURITÉ -->
+        <!-- Security Section -->
         <div class="param-section" id="sec-securite">
           <div class="param-panel">
             <div class="pp-head">
@@ -575,7 +575,7 @@
           </div>
         </div>
 
-        <!-- AVATAR -->
+        <!-- Avatar Section -->
         <div class="param-section" id="sec-avatar">
           <div class="param-panel">
             <div class="pp-head">
@@ -616,7 +616,7 @@
           </div>
         </div>
 
-        <!-- NOTIFICATIONS -->
+        <!-- Notifications Section -->
         <div class="param-section" id="sec-notifications">
           <div class="param-panel">
             <div class="pp-head">
@@ -674,7 +674,7 @@
           </div>
         </div>
 
-        <!-- SESSIONS -->
+        <!-- Active Sessions Section -->
         <div class="param-section" id="sec-sessions">
           <div class="param-panel">
             <div class="pp-head">
@@ -718,7 +718,7 @@
           </div>
         </div>
 
-        <!-- DANGER -->
+        <!-- Danger Zone Section -->
         <div class="param-section" id="sec-danger">
           <div class="danger-zone">
             <div class="dz-head">
@@ -762,11 +762,11 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-/* Horloge */
+/* Clock Section */
 function tick(){const n=new Date();const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('heroTime');if(el)el.textContent=t;}
 tick();setInterval(tick,1000);
 
-/* Nav */
+/* Navigation Section */
 function showSection(id,btn){
   document.querySelectorAll('.param-section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.pn-item').forEach(b=>b.classList.remove('active'));
@@ -774,7 +774,7 @@ function showSection(id,btn){
   if(btn&&btn.classList) btn.classList.add('active');
 }
 
-/* Toast */
+/* Toast Section */
 function toast(msg,type){
   const box=document.getElementById('toastBox');
   const ico=document.getElementById('toastIco');
@@ -785,7 +785,7 @@ function toast(msg,type){
   setTimeout(()=>box.classList.remove('show'),3200);
 }
 
-/* Profil */
+/* Profile Section */
 function saveProfil(){
   const name=document.getElementById('f-prenom').value+' '+document.getElementById('f-nom').value;
   const email=document.getElementById('f-email').value;
@@ -794,7 +794,7 @@ function saveProfil(){
   toast('Profil enregistré avec succès','ok');
 }
 
-/* Password */
+/* Password Section */
 function toggleEye(id,btn){
   const inp=document.getElementById(id);
   const ico=btn.querySelector('i');
@@ -825,7 +825,7 @@ function savePwd(){
   toast('Mot de passe modifié avec succès','ok');
 }
 
-/* Avatar */
+/* Avatar Section */
 let selectedAv=null;
 function pickAv(el){
   document.querySelectorAll('.av-opt').forEach(o=>o.classList.remove('on'));
@@ -840,7 +840,7 @@ function applyAvatar(){
   toast('Avatar mis à jour sur toute la plateforme','ok');
 }
 
-/* Sessions */
+/* Active Sessions Section */
 function revokeSession(btn){
   const item=btn.closest('.session-item');
   item.style.transition='opacity .3s';
@@ -857,7 +857,7 @@ function revokeAll(){
   toast('Toutes les autres sessions révoquées','ok');
 }
 
-/* Restore avatar */
+/* Restore Avatar Section */
 const savedAv=localStorage.getItem('ml2cAdminAv');
 if(savedAv){
   document.getElementById('mainAvatar').src=savedAv;

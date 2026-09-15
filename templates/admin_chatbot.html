@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Administration — Chatbot ML2C CONSEIL</title>
+  <title>Chatbot ML2C CONSEIL</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
   <style>
-    /* ════ SIDEBAR ════ */
+    /* Sidebar Section */
     .adm-sidebar{width:240px;background:#0e1018;border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;height:100%;overflow-y:auto;overflow-x:hidden;flex-shrink:0;}
     .adm-sidebar::-webkit-scrollbar{width:3px;}.adm-sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);}
     .adm-sb-logo{display:flex;align-items:center;gap:.75rem;padding:1.25rem 1.1rem 1rem;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0;}
@@ -44,7 +44,7 @@
     .adm-sb-logout{width:26px;height:26px;border-radius:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);transition:all .2s;}
     .adm-sb-logout:hover{background:rgba(239,68,68,.12);color:#f87171;}
     .adm-sb-version{text-align:center;font-size:.58rem;color:rgba(255,255,255,.15);padding:.4rem 1rem;font-family:'JetBrains Mono',monospace;}
-    /* ════ WIDGETS ════ */
+    /* Widgets Section */
     .sb-widget{padding:.65rem 1rem;border-bottom:1px solid rgba(255,255,255,.05);}
     .sb-widget-head{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.28);margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem;}
     .sb-widget-head i{font-size:.62rem;color:rgba(255,255,255,.18);}
@@ -100,7 +100,7 @@
 
 {% include "header.html" %}
 
-<!-- TOASTS -->
+<!-- Toast Notifications Section -->
 <div class="adm-toasts" id="admToasts">
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
@@ -108,7 +108,7 @@
         <div class="adm-toast adm-toast-{{ category }}" data-auto-dismiss>
           {% if category == 'success' %}<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
           {% elif category == 'danger' %}<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          {% else %}<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>{% endif %}
+          {% else %}<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0 z"/></svg>{% endif %}
           {{ message }}
           <button class="adm-toast-close" onclick="this.parentElement.remove()">✕</button>
         </div>
@@ -117,7 +117,7 @@
   {% endwith %}
 </div>
 
-<!-- MODALE SUPPRESSION -->
+<!-- Deletion Modal Section -->
 <div class="adm-modal-veil" id="delModal">
   <div class="adm-modal-box">
     <h3>Confirmer la suppression</h3>
@@ -132,10 +132,10 @@
   </div>
 </div>
 
-<!-- SHELL -->
+<!-- Main Shell Section -->
 <div class="adm-shell">
 
-  <!-- ════ SIDEBAR ════ -->
+  <!-- Sidebar Section -->
   <aside class="adm-sidebar">
     <div class="adm-sb-logo">
       <div class="adm-sb-dot"><svg width="15" height="15" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
@@ -158,7 +158,7 @@
     </div>
     <div class="adm-sb-version">ML2C Admin v2.0 · 2026</div>
 
-    <!-- ══ WIDGETS SIDEBAR ══ -->
+    <!-- Sidebar Widgets Section -->
     <div class="adm-sb-divider"></div>
     <div class="sb-widget">
       <div class="sb-widget-head"><i class="fas fa-calendar-clock"></i>Prochain RDV</div>
@@ -203,7 +203,7 @@
 
   </aside>
 
-  <!-- ════ ZONE PRINCIPALE ════ -->
+  <!-- Main Content Area Section -->
   <div class="adm-main">
     <div class="adm-topbar">
       <div class="adm-topbar-left">
@@ -295,7 +295,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-/* Édition inline */
+/* Inline Edit Script */
 function startEdit(id){var rs=document.getElementById('rStatic-'+id),ea=document.getElementById('rEdit-'+id),row=ea?ea.closest('.adm-qa-row'):null;if(rs)rs.style.display='none';if(ea)ea.classList.add('adm-edit-area--show');if(row)row.classList.add('adm-qa-row--editing');var ta=document.getElementById('rInput-'+id);if(ta){ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length);}}
 function cancelEdit(id){var rs=document.getElementById('rStatic-'+id),ea=document.getElementById('rEdit-'+id),row=ea?ea.closest('.adm-qa-row'):null;if(rs)rs.style.display='block';if(ea)ea.classList.remove('adm-edit-area--show');if(row)row.classList.remove('adm-qa-row--editing');}
 document.addEventListener('click',function(e){
@@ -305,28 +305,28 @@ document.addEventListener('click',function(e){
 });
 function closeDelModal(){document.getElementById('delModal').classList.remove('adm-modal-veil--show');}
 
-/* Filtres */
+/* Filter Script */
 function filterTable(btn,mode){document.querySelectorAll('.adm-chip').forEach(function(c){c.classList.remove('adm-chip--on');});btn.classList.add('adm-chip--on');document.querySelectorAll('.adm-qa-row').forEach(function(row){var tag=row.getAttribute('data-tag')||'auto';row.style.display=(mode==='all'||tag===mode)?'':'none';});updateCount();}
 function searchTable(){var q=document.getElementById('searchInput').value.toLowerCase();document.querySelectorAll('.adm-qa-row').forEach(function(row){var inQ=(row.getAttribute('data-q')||'').indexOf(q)!==-1,inR=(row.getAttribute('data-r')||'').indexOf(q)!==-1;row.style.display=(inQ||inR)?'':'none';});updateCount();}
 function updateCount(){var rows=document.querySelectorAll('.adm-qa-row'),visible=0;rows.forEach(function(r){if(r.style.display!=='none')visible++;});var el=document.getElementById('paginInfo');if(el)el.textContent=visible+' / '+rows.length+' entrée'+(rows.length>1?'s':'');}
 
-/* Auto-dismiss toasts */
+/* Auto-dismiss Toasts Script */
 document.querySelectorAll('[data-auto-dismiss]').forEach(function(t){setTimeout(function(){t.style.transition='opacity .4s';t.style.opacity='0';setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},420);},3500);});
 
-/* Widgets sidebar */
+/* Sidebar Widgets Script */
 (function(){
-  /* Countdown */
+  /* Countdown Script */
   function sbCountdown(){var now=new Date(),target=new Date(now);target.setHours(14,0,0,0);if(now>target)target.setDate(target.getDate()+1);var diff=Math.max(0,Math.floor((target-now)/1000));var h=Math.floor(diff/3600),m=Math.floor((diff%3600)/60),s=diff%60;var el=function(id){return document.getElementById(id);};if(el('sbCdH'))el('sbCdH').textContent=String(h).padStart(2,'0');if(el('sbCdM'))el('sbCdM').textContent=String(m).padStart(2,'0');if(el('sbCdS'))el('sbCdS').textContent=String(s).padStart(2,'0');}
   sbCountdown();setInterval(sbCountdown,1000);
-  /* CPU/RAM */
+  /* CPU/RAM Script */
   setInterval(function(){var cpu=Math.floor(Math.random()*35)+10,ram=Math.floor(Math.random()*25)+45;var cb=document.getElementById('sbCpu'),rv=document.getElementById('sbCpuVal'),rb=document.getElementById('sbRam'),rmv=document.getElementById('sbRamVal');if(cb)cb.style.width=cpu+'%';if(rv)rv.textContent=cpu+'%';if(rb)rb.style.width=ram+'%';if(rmv)rmv.textContent=ram+'%';},6000);
-  /* Calendrier */
+  /* Calendar Script */
   function sbRenderCal(){var grid=document.getElementById('sbCalGrid'),ml=document.getElementById('sbCalMonth');if(!grid)return;var now=new Date(),y=now.getFullYear(),mo=now.getMonth();var months=['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];if(ml)ml.textContent=months[mo]+' '+y;var days=['L','M','M','J','V','S','D'];grid.innerHTML='';days.forEach(function(d){var el=document.createElement('div');el.className='sb-cal-dh';el.textContent=d;grid.appendChild(el);});var first=new Date(y,mo,1),startDay=(first.getDay()+6)%7,total=new Date(y,mo+1,0).getDate();var rdvDays=[4,8,13,15,17];for(var i=0;i<startDay;i++){var d=document.createElement('div');d.className='sb-cal-d other';grid.appendChild(d);}for(var d=1;d<=total;d++){var el=document.createElement('div');el.className='sb-cal-d';el.textContent=d;if(d===now.getDate())el.classList.add('today');if(rdvDays.indexOf(d)!==-1)el.classList.add('has-rdv');grid.appendChild(el);}}
   sbRenderCal();
-  /* Todo */
+  /* Todo Script */
   window.toggleTodo=function(el){el.classList.toggle('done');var chk=el.querySelector('.sb-todo-check');if(chk)chk.classList.toggle('checked');};
   window.addTodo=function(){var txt=prompt('Nouvelle tâche :');if(!txt)return;var list=document.getElementById('sbTodoList');if(!list)return;var item=document.createElement('div');item.className='sb-todo-item';item.onclick=function(){toggleTodo(this);};item.innerHTML='<div class="sb-todo-check"></div><span>'+txt+'</span>';list.appendChild(item);};
-  /* Citations */
+  /* Quotes Script */
   var quotes=[{q:'"La comptabilité est le langage des affaires."',a:'— Warren Buffett'},{q:'"Un bon expert-comptable est votre meilleur allié."',a:'— Anonyme'},{q:'"Gérer, c\'est prévoir."',a:'— Henri Fayol'},{q:'"Les chiffres ne mentent pas."',a:'— Proverbe'},{q:'"Le succès vient à ceux qui travaillent."',a:'— Proverbe'}];
   var q=quotes[new Date().getDay()%quotes.length];
   var qEl=document.getElementById('sbQuote'),aEl=document.getElementById('sbQuoteAuthor');

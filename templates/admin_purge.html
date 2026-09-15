@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="fr"><head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Purger les Logs — ML2C Admin</title>
+<html lang="en"><head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Purger les Logs</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -32,7 +32,7 @@
     .wb-title{font-size:.88rem;font-weight:700;color:#92400e;margin-bottom:.25rem;}
     .wb-text{font-size:.78rem;color:#78350f;line-height:1.65;}
 
-    /* Espace disque */
+    /* Storage section */
     .storage-panel{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.055);padding:1.5rem;margin-bottom:2rem;}
     .sp-head{display:flex;align-items:center;gap:.65rem;margin-bottom:1.25rem;}
     .sp-ico{width:36px;height:36px;border-radius:9px;background:#fee2e2;color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:.85rem;}
@@ -47,7 +47,7 @@
     .sb-fill.med{background:linear-gradient(90deg,var(--gold),#fcd34d);}
     .sb-fill.low{background:linear-gradient(90deg,var(--success),#34d399);}
 
-    /* Catégories de logs */
+    /* Log categories section */
     .purge-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;margin-bottom:2rem;}
     .purge-card{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.055);padding:1.5rem;transition:all .22s;animation:fadeUp .4s both;}
     .purge-card:nth-child(1){animation-delay:.05s}.purge-card:nth-child(2){animation-delay:.1s}.purge-card:nth-child(3){animation-delay:.15s}.purge-card:nth-child(4){animation-delay:.2s}
@@ -69,7 +69,7 @@
     .pc-check-lbl{font-size:.78rem;color:var(--muted);transition:color .2s;}
     .pc-check-row.checked .pc-check-lbl{color:var(--danger);font-weight:600;}
 
-    /* Action purge */
+    /* Purge action section */
     .purge-action{background:#fff;border-radius:18px;border:1.5px solid rgba(239,68,68,.2);box-shadow:0 2px 14px rgba(239,68,68,.05);padding:1.75rem;text-align:center;}
     .pa-title{font-family:var(--ff-head);font-size:1.4rem;font-weight:700;color:var(--text);margin-bottom:.5rem;}
     .pa-sub{font-size:.82rem;color:var(--muted);margin-bottom:1.5rem;}
@@ -80,7 +80,7 @@
     .btn-purge:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(239,68,68,.4);}
     .btn-purge:disabled{opacity:.5;pointer-events:none;}
 
-    /* Confirm modal */
+    /* Confirmation modal section */
     .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);z-index:9999;display:none;align-items:center;justify-content:center;}
     .modal-overlay.show{display:flex;}
     .modal-box{background:var(--surface);border-radius:24px;padding:2.5rem;width:100%;max-width:420px;box-shadow:0 32px 80px rgba(0,0,0,.3);border:1.5px solid rgba(239,68,68,.2);}
@@ -116,7 +116,7 @@
 <div class="main">
   <div class="container">
 
-    <!-- Warning -->
+    <!-- Warning Section -->
     <div class="warn-banner">
       <div class="wb-ico"><i class="fas fa-triangle-exclamation"></i></div>
       <div>
@@ -125,7 +125,7 @@
       </div>
     </div>
 
-    <!-- Stockage -->
+    <!-- Storage Section -->
     <div class="storage-panel">
       <div class="sp-head"><div class="sp-ico"><i class="fas fa-hard-drive"></i></div><div class="sp-title">Utilisation du stockage</div></div>
       <div class="storage-bars">
@@ -148,7 +148,7 @@
       </div>
     </div>
 
-    <!-- Catégories -->
+    <!-- Log Categories Section -->
     <div class="purge-grid">
       <div class="purge-card" id="pc-security">
         <div class="pc-head"><div class="pc-ico pci-red"><i class="fas fa-shield-halved"></i></div><div><div class="pc-title">Logs de sécurité</div><div class="pc-size">28.4 MB · 14 238 entrées</div></div></div>
@@ -176,7 +176,7 @@
       </div>
     </div>
 
-    <!-- Action -->
+    <!-- Purge Action Section -->
     <div class="purge-action">
       <div class="pa-title">Éléments à purger</div>
       <div class="pa-sub">Sélectionnez les catégories ci-dessus puis confirmez la purge</div>
@@ -189,7 +189,7 @@
   </div>
 </div>
 
-<!-- Confirm modal -->
+<!-- Confirmation Modal Section -->
 <div class="modal-overlay" id="confirmModal">
   <div class="modal-box">
     <div class="modal-ico"><i class="fas fa-trash-alt"></i></div>
@@ -208,10 +208,11 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+/* Clock Section */
 function tick(){const n=new Date();const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('heroTime');if(el)el.textContent=t;}
 tick();setInterval(tick,1000);
 
-/* Animate bars */
+/* Animate Bars Section */
 document.querySelectorAll('.sb-fill').forEach(b=>{const w=b.dataset.w;b.style.width='0';setTimeout(()=>{b.style.width=w;},500);});
 
 const selected=new Set();
@@ -244,7 +245,7 @@ function executePurge(){
   document.querySelectorAll('.pc-check-row').forEach(r=>r.classList.remove('checked'));
   document.querySelectorAll('.purge-card').forEach(c=>c.classList.remove('selected'));
   updateSelected();
-  /* Reset barres */
+  /* Reset Bars Section */
   document.querySelectorAll('.sb-fill').forEach(b=>{b.style.transition='width 1.4s';b.style.width='5%';});
   alert('✓ Purge effectuée avec succès : '+items+'\n\nCette action a été enregistrée dans le journal d\'audit.');
 }

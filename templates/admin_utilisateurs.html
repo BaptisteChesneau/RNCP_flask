@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestion des Utilisateurs — ML2C Admin</title>
+  <title>Gestion des Utilisateurs</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -24,7 +24,7 @@
     }
     body { background: var(--bg); font-family: var(--ff-body); color: var(--text); }
 
-    /* HERO */
+    /* HERO SECTION */
     .page-hero { background: var(--ink); position: relative; overflow: hidden; padding: 2.5rem 0 4.5rem; }
     .page-hero::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse 55% 70% at 85% 25%, rgba(79,166,149,.18) 0%, transparent 55%), radial-gradient(ellipse 30% 45% at 5% 80%, rgba(193,0,122,.1) 0%, transparent 50%); }
     .hero-bar { position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--turq),var(--rose),var(--gold),var(--turq)); background-size:300%; animation:barS 4s linear infinite; }
@@ -39,7 +39,7 @@
     .online-pip { width:6px; height:6px; border-radius:50%; background:var(--success); box-shadow:0 0 8px rgba(16,185,129,.7); animation:pip 2s infinite; }
     @keyframes pip{0%,100%{opacity:1}50%{opacity:.3}}
 
-    /* KPI */
+    /* KPI SECTION */
     .kpi-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:2rem; }
     .kbox { background:var(--surface); border-radius:16px; border:1.5px solid transparent; padding:1.25rem; box-shadow:0 2px 12px rgba(0,0,0,.055); display:flex; align-items:center; gap:.85rem; transition:transform .2s; animation:fadeUp .4s both; }
     @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
@@ -54,7 +54,7 @@
     /* MAIN */
     .main { padding: 2.5rem 0 5rem; }
 
-    /* Toolbar */
+    /* TOOLBAR SECTION */
     .toolbar { display:flex; align-items:center; gap:.75rem; margin-bottom:1.25rem; flex-wrap:wrap; }
     .search-box { display:flex; align-items:center; gap:.5rem; background:var(--surface); border:1.5px solid var(--border); border-radius:10px; padding:.55rem 1rem; flex:1; min-width:220px; transition:border-color .2s; }
     .search-box:focus-within{border-color:var(--rose);}
@@ -65,7 +65,7 @@
     .btn-add { display:inline-flex; align-items:center; gap:.4rem; padding:.55rem 1.1rem; border-radius:10px; background:linear-gradient(135deg,var(--rose),var(--rose-d)); color:#fff; border:none; font-size:.82rem; font-weight:600; cursor:pointer; transition:all .2s; font-family:var(--ff-body); box-shadow:0 4px 12px rgba(193,0,122,.25); }
     .btn-add:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(193,0,122,.35);}
 
-    /* Table */
+    /* TABLE SECTION */
     .users-table-wrap { background:var(--surface); border-radius:20px; border:1.5px solid var(--border); box-shadow:0 2px 16px rgba(0,0,0,.055); overflow:hidden; }
     .ut-head { display:flex; align-items:center; justify-content:space-between; padding:1rem 1.5rem; background:#fafbfc; border-bottom:1px solid var(--border); }
     .ut-title { font-size:.82rem; font-weight:700; color:var(--text); }
@@ -80,7 +80,7 @@
     .users-table tr:hover td { background:#fafbfc; }
     .users-table tr.selected td { background:var(--rose-l); }
 
-    /* User cell */
+    /* USER CELL */
     .user-cell { display:flex; align-items:center; gap:.75rem; }
     .user-av {
       width: 36px; height: 36px; border-radius: 50%;
@@ -95,42 +95,42 @@
     .user-name { font-weight: 600; color: var(--text); font-size: .85rem; }
     .user-email { font-size: .72rem; color: var(--muted); font-family: var(--ff-mono); margin-top: .08rem; }
 
-    /* Role badge */
+    /* ROLE BADGE */
     .role-badge { display:inline-flex; align-items:center; gap:.3rem; padding:.22rem .65rem; border-radius:20px; font-size:.68rem; font-weight:700; }
     .rb-admin { background: linear-gradient(135deg,rgba(245,158,11,.12),rgba(245,158,11,.06)); border:1px solid rgba(245,158,11,.25); color:var(--gold-d); }
     .rb-user  { background: var(--turq-l); border:1px solid rgba(79,166,149,.2); color:var(--turq); }
     .rb-client{ background: var(--rose-l); border:1px solid rgba(193,0,122,.18); color:var(--rose); }
     .rb-inactif { background: #f3f4f6; border:1px solid var(--border); color:var(--muted); }
 
-    /* Status */
+    /* STATUS SECTION */
     .status-pill { display:inline-flex; align-items:center; gap:.3rem; font-size:.72rem; font-weight:600; }
     .sp-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
     .status-active .sp-dot { background:var(--success); box-shadow:0 0 5px rgba(16,185,129,.5); animation:pip 2s infinite; }
     .status-inactive .sp-dot { background:var(--faint); }
     .status-suspended .sp-dot { background:var(--danger); }
-    .status-active   { color:var(--success); }
+    .status-active  { color:var(--success); }
     .status-inactive { color:var(--faint); }
     .status-suspended{ color:var(--danger); }
 
-    /* Actions */
+    /* ACTIONS SECTION */
     .row-actions { display:flex; gap:.4rem; }
     .act-btn { width:30px; height:30px; border-radius:7px; border:1.5px solid var(--border); background:transparent; color:var(--muted); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:.75rem; transition:all .18s; }
     .act-btn:hover { border-color:var(--rose); color:var(--rose); background:var(--rose-l); }
     .act-btn.danger:hover { border-color:var(--danger); color:var(--danger); background:#fee2e2; }
 
-    /* Checkbox */
+    /* CHECKBOX */
     .cb-wrap { width:16px; height:16px; border:1.5px solid var(--border); border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; flex-shrink:0; }
     .cb-wrap.checked { background:var(--rose); border-color:var(--rose); }
     .cb-wrap.checked::after { content:'✓'; font-size:.7rem; color:#fff; font-weight:700; }
 
-    /* Pagination */
+    /* PAGINATION SECTION */
     .pagi-row { display:flex; align-items:center; justify-content:space-between; padding:1rem 1.5rem; border-top:1px solid var(--border); background:#fafbfc; flex-wrap:wrap; gap:.75rem; }
     .pagi-info { font-size:.75rem; color:var(--muted); }
     .pagi { display:flex; gap:.35rem; }
     .pb { width:32px; height:32px; border-radius:7px; border:1.5px solid var(--border); background:var(--surface); color:var(--muted); font-size:.8rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
     .pb:hover,.pb.active { background:var(--rose); border-color:var(--rose); color:#fff; }
 
-    /* Modal utilisateur */
+    /* USER MODAL SECTION */
     .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); backdrop-filter:blur(6px); z-index:9999; display:none; align-items:center; justify-content:center; padding:1rem; }
     .modal-overlay.show { display:flex; }
     .modal-box { background:var(--surface); border-radius:24px; width:100%; max-width:520px; box-shadow:0 32px 80px rgba(0,0,0,.3); overflow:hidden; animation:modalIn .35s cubic-bezier(.34,1.2,.64,1); }
@@ -153,7 +153,7 @@
     .m-btn-save { padding:.6rem 1.25rem; border-radius:9px; border:none; background:linear-gradient(135deg,var(--rose),var(--rose-d)); color:#fff; font-size:.82rem; font-weight:600; cursor:pointer; font-family:var(--ff-body); transition:all .2s; box-shadow:0 4px 12px rgba(193,0,122,.25); display:flex; align-items:center; gap:.4rem; }
     .m-btn-save:hover { transform:translateY(-1px); }
 
-    /* Toast */
+    /* TOAST SECTION */
     .toast-box { position:fixed; bottom:1.5rem; right:1.5rem; z-index:9999; display:flex; align-items:center; gap:.65rem; padding:.8rem 1.25rem; border-radius:12px; font-size:.83rem; font-weight:500; box-shadow:0 8px 24px rgba(0,0,0,.15); transform:translateY(80px); opacity:0; transition:all .3s cubic-bezier(.34,1.2,.64,1); pointer-events:none; }
     .toast-box.show{transform:translateY(0);opacity:1;}
     .toast-ok{background:#0d2e23;color:#4ade80;border:1px solid rgba(74,222,128,.2);}
@@ -188,7 +188,7 @@
 <div class="main">
   <div class="container">
 
-    <!-- KPI -->
+    <!-- KPI SECTION -->
     <div class="kpi-strip">
       <div class="kbox kb-turq">
         <div class="kbox-ico ki-turq"><i class="fas fa-users"></i></div>
@@ -208,7 +208,7 @@
       </div>
     </div>
 
-    <!-- Toolbar -->
+    <!-- Toolbar SECTION -->
     <div class="toolbar">
       <div class="search-box">
         <i class="fas fa-search" style="color:var(--faint);font-size:.82rem;flex-shrink:0;"></i>
@@ -231,7 +231,7 @@
       </button>
     </div>
 
-    <!-- Table -->
+    <!-- Table SECTION -->
     <div class="users-table-wrap">
       <div class="ut-head">
         <div class="ut-title">Liste des utilisateurs</div>
@@ -268,7 +268,7 @@
   </div>
 </div>
 
-<!-- Modal nouvel utilisateur -->
+<!-- Modal nouvel utilisateur SECTION -->
 <div class="modal-overlay" id="userModal">
   <div class="modal-box">
     <div class="modal-head">
@@ -325,7 +325,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-/* ── Données ── */
+/* Data Section */
 const USERS = [
   {id:1, prenom:'Admin', nom:'ML2C', email:'admin@ml2cconseil.com', role:'admin', status:'Actif', date:'01/01/2024', last:'il y a 5 min', questions:0},
   {id:2, prenom:'Sophie', nom:'Martin', email:'sophie.martin@gmail.com', role:'client', status:'Actif', date:'15/03/2025', last:'il y a 2h', questions:8},
@@ -406,7 +406,7 @@ function filterUsers(q){
   renderTable(filtered);
 }
 
-/* Sélection */
+/* Selection Section */
 function toggleRow(cb,e){
   e.stopPropagation();
   cb.classList.toggle('checked');
@@ -420,7 +420,7 @@ function toggleAll(cb){
   });
 }
 
-/* Modal */
+/* Modal Section */
 let editingId=null;
 function openModal(user){
   editingId=null;
@@ -475,7 +475,7 @@ function deleteUser(id,btn){
   },300);
 }
 
-/* Toast */
+/* Toast Section */
 function toast(msg,type){
   const box=document.getElementById('toastBox');
   const ico=document.getElementById('toastIco');
@@ -486,17 +486,17 @@ function toast(msg,type){
   setTimeout(()=>box.classList.remove('show'),3200);
 }
 
-/* Pagination */
+/* Pagination Section */
 document.querySelectorAll('.pb').forEach(b=>{b.addEventListener('click',function(){if(this.querySelector('i'))return;document.querySelectorAll('.pb').forEach(pb=>pb.classList.remove('active'));this.classList.add('active');});});
 
-/* Horloge */
+/* Clock Section */
 function tick(){const n=new Date();const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('heroTime');if(el)el.textContent=t;}
 tick();setInterval(tick,1000);
 
 /* Close modal on outside click */
 document.getElementById('userModal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 
-/* Init */
+/* Init Section */
 renderTable(USERS);
 </script>
 </body>

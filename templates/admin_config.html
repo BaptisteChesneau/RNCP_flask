@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="fr"><head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Configuration Système — ML2C Admin</title>
+<title>Configuration Système</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
 }
 body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 
-/* ══════ SIDEBAR ══════ */
+/* Sidebar Section */
 .adm-shell{display:flex;height:100vh;overflow:hidden;}
 .adm-sidebar{width:220px;background:#0e1018;border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0;}
 .adm-sidebar::-webkit-scrollbar{width:3px;}.adm-sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);}
@@ -48,7 +48,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .adm-sb-logout:hover{background:rgba(239,68,68,.12);color:#f87171;}
 .adm-sb-version{text-align:center;font-size:.58rem;color:rgba(255,255,255,.15);padding:.4rem 1rem;font-family:var(--ff-mono);}
 
-/* ══════ MAIN ══════ */
+/* Main Section */
 .adm-main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
 .adm-topbar{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.5rem;background:#fff;border-bottom:1px solid var(--border);flex-shrink:0;gap:1rem;flex-wrap:wrap;}
 .adm-topbar-left h2{font-size:1rem;font-weight:700;margin:0;}
@@ -56,7 +56,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .adm-topbar-right{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
 .adm-content{flex:1;overflow-y:auto;padding:1.5rem;}
 
-/* ══════ BUTTONS ══════ */
+/* Buttons Section */
 .btn-adm{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border-radius:9px;font-size:.78rem;font-weight:600;cursor:pointer;border:none;font-family:var(--ff-body);transition:all .2s;white-space:nowrap;}
 .btn-rose{background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff;box-shadow:0 4px 12px rgba(193,0,122,.25);}
 .btn-rose:hover{box-shadow:0 6px 18px rgba(193,0,122,.35);transform:translateY(-1px);}
@@ -65,12 +65,12 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .btn-turq{background:linear-gradient(135deg,var(--turq),#3d8578);color:#fff;}
 .btn-danger{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;}
 
-/* ══════ STATUS PILL ══════ */
+/* Status Pill Section */
 .status-pill{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:600;padding:.3rem .75rem;border-radius:20px;}
 .sp-ok{background:#d1fae5;color:#065f46;}
 .sp-warn{background:#fef3c7;color:#b45309;}
 
-/* ══════ KPI ══════ */
+/* KPI Section */
 .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
 .kbox{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:1rem;display:flex;align-items:center;gap:.75rem;box-shadow:0 2px 12px rgba(0,0,0,.05);transition:transform .2s;}
 .kbox:hover{transform:translateY(-2px);}
@@ -83,10 +83,10 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .kbox-lbl{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-top:.1rem;}
 .kbox-sub{font-size:.65rem;color:var(--turq);font-weight:600;margin-top:.15rem;}
 
-/* ══════ CONFIG LAYOUT ══════ */
+/* Config Layout Section */
 .cfg-layout{display:grid;grid-template-columns:210px 1fr;gap:1.5rem;align-items:start;}
 
-/* ══════ NAV CONFIG ══════ */
+/* Sidenav Section */
 .cfg-sidenav{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.05);overflow:hidden;position:sticky;top:0;}
 .cfg-sidenav-head{padding:.85rem 1.1rem;background:linear-gradient(135deg,#0e1018,#161c28);display:flex;align-items:center;gap:.6rem;}
 .cfg-sn-ico{width:28px;height:28px;border-radius:8px;background:rgba(193,0,122,.2);display:flex;align-items:center;justify-content:center;color:#f472b6;font-size:.72rem;}
@@ -101,14 +101,14 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .cnb-ok{background:#d1fae5;color:#065f46;}
 .cnb-warn{background:#fef3c7;color:#b45309;}
 
-/* ══════ SECTIONS ══════ */
+/* Sections Section */
 .cfg-section{display:none;animation:fadeUp .3s ease;}
 .cfg-section.active{display:block;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-/* ══════ PANEL ══════ */
+/* Panel Section */
 .panel{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.05);overflow:hidden;margin-bottom:1.25rem;}
-.panel-head{padding:1rem 1.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(90deg,#fafbfc,#fff);}
+.panel-head{padding:1.0rem 1.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(90deg,#fafbfc,#fff);}
 .panel-head-left{display:flex;align-items:center;gap:.65rem;}
 .panel-ico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0;}
 .pi-turq{background:var(--turq-l);color:var(--turq);}
@@ -120,7 +120,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .panel-sub{font-size:.7rem;color:var(--muted);margin-top:.08rem;}
 .panel-body{padding:1.4rem;}
 
-/* ══════ FORM ══════ */
+/* Form Section */
 .cfg-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem;}
 .cfg-field{display:flex;flex-direction:column;gap:.35rem;}
 .cfg-label{font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);}
@@ -136,7 +136,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .cfg-input-group-btn{padding:.68rem .9rem;font-size:.78rem;font-weight:600;border:1.5px solid var(--border);border-left:none;border-radius:0 10px 10px 0;cursor:pointer;font-family:var(--ff-body);transition:all .2s;color:var(--muted);background:#f5f7f9;white-space:nowrap;}
 .cfg-input-group-btn:hover{background:var(--rose);color:#fff;border-color:var(--rose);}
 
-/* ══════ TOGGLE ══════ */
+/* Toggle Section */
 .toggle-row{display:flex;align-items:flex-start;justify-content:space-between;padding:.88rem 0;border-bottom:1px solid #f3f4f6;}
 .toggle-row:last-child{border-bottom:none;padding-bottom:0;}
 .toggle-row:first-child{padding-top:0;}
@@ -154,19 +154,19 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .toggle-switch input:checked+.toggle-slider::before{transform:translateX(21px);}
 .toggle-switch input:disabled+.toggle-slider{opacity:.45;cursor:not-allowed;}
 
-/* ══════ SAVE BAR ══════ */
+/* Save Bar Section */
 .save-bar{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.4rem;background:linear-gradient(90deg,var(--gold-l),#fffefc);border-top:1.5px solid rgba(245,158,11,.15);gap:1rem;flex-wrap:wrap;}
 .save-info{font-size:.75rem;color:var(--gold-d);display:flex;align-items:center;gap:.5rem;}
 .save-actions{display:flex;gap:.6rem;}
 
-/* ══════ SMTP TEST ══════ */
+/* SMTP Test Section */
 .smtp-test-zone{background:#f8fafc;border:1.5px dashed var(--border);border-radius:12px;padding:1rem;margin-top:1.1rem;}
 .smtp-result{display:none;border-radius:9px;padding:.7rem 1rem;font-size:.8rem;margin-top:.65rem;align-items:center;gap:.5rem;}
 .smtp-result.show{display:flex;}
 .smr-ok{background:#d1fae5;color:#065f46;border:1px solid rgba(16,185,129,.2);}
 .smr-loading{background:#dbeafe;color:#1e40af;border:1px solid rgba(59,130,246,.2);}
 
-/* ══════ IP TABLE ══════ */
+/* IP Table Section */
 .ip-table{width:100%;border-collapse:collapse;font-size:.82rem;}
 .ip-table th{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);padding:.55rem .8rem;border-bottom:1.5px solid var(--border);text-align:left;}
 .ip-table td{padding:.6rem .8rem;border-bottom:1px solid #f3f4f6;vertical-align:middle;}
@@ -176,7 +176,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .ipb-allow{background:#d1fae5;color:#065f46;}
 .ipb-block{background:#fee2e2;color:#b91c1c;}
 
-/* ══════ EMAIL PREVIEW ══════ */
+/* Email Preview Section */
 .email-preview{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.05);}
 .ep-chrome{background:#f3f4f6;padding:.5rem .9rem;display:flex;align-items:center;gap:.45rem;border-bottom:1px solid var(--border);}
 .ep-dot{width:9px;height:9px;border-radius:50%;}
@@ -190,7 +190,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .ep-text{font-size:.82rem;color:var(--muted);line-height:1.65;}
 .ep-cta{display:inline-block;background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff!important;padding:.5rem 1.1rem;border-radius:8px;font-size:.78rem;font-weight:600;margin-top:.85rem;text-decoration:none;}
 
-/* ══════ DANGER CARD ══════ */
+/* Danger Card Section */
 .danger-card{background:linear-gradient(135deg,#fff8f8,#fff);border:1.5px solid rgba(239,68,68,.18);border-radius:14px;padding:1.1rem;display:flex;align-items:flex-start;gap:.85rem;margin-bottom:.85rem;}
 .danger-card:last-child{margin-bottom:0;}
 .dc-ico{width:34px;height:34px;border-radius:9px;background:#fee2e2;color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0;}
@@ -198,7 +198,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .dc-title{font-size:.85rem;font-weight:700;color:#b91c1c;margin-bottom:.2rem;}
 .dc-desc{font-size:.76rem;color:var(--muted);line-height:1.5;}
 
-/* ══════ TOAST ══════ */
+/* Toast Section */
 .toast-box{position:fixed;bottom:1.25rem;right:1.25rem;z-index:9999;display:flex;align-items:center;gap:.65rem;padding:.8rem 1.2rem;border-radius:12px;font-size:.82rem;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.18);transform:translateY(80px);opacity:0;transition:all .35s cubic-bezier(.34,1.2,.64,1);pointer-events:none;max-width:320px;}
 .toast-box.show{transform:translateY(0);opacity:1;}
 .toast-ok{background:#0b2a1f;color:#4ade80;border:1px solid rgba(74,222,128,.2);}
@@ -212,7 +212,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 
 <div class="adm-shell">
 
-<!-- ═══════════ SIDEBAR ═══════════ -->
+<!-- Sidebar Section -->
 <aside class="adm-sidebar">
   <div class="adm-sb-logo">
     <div class="adm-sb-dot">
@@ -254,10 +254,10 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
   <div class="adm-sb-version">ML2C Admin v2.0 · 2025</div>
 </aside>
 
-<!-- ═══════════ MAIN ═══════════ -->
+<!-- Main Content Section -->
 <div class="adm-main">
 
-  <!-- TOPBAR -->
+  <!-- Topbar Section -->
   <div class="adm-topbar">
     <div class="adm-topbar-left">
       <h2><svg width="14" height="14" fill="none" stroke="var(--rose)" stroke-width="2" viewBox="0 0 24 24" style="margin-right:.4rem;vertical-align:-.1rem;"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>Configuration Système</h2>
@@ -270,10 +270,10 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
     </div>
   </div>
 
-  <!-- CONTENT -->
+  <!-- Content Section -->
   <div class="adm-content">
 
-    <!-- KPI -->
+    <!-- KPI Section -->
     <div class="kpi-row">
       <div class="kbox">
         <div class="kbox-ico ki-turq"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
@@ -293,10 +293,10 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
       </div>
     </div>
 
-    <!-- CONFIG LAYOUT -->
+    <!-- Config Layout Section -->
     <div class="cfg-layout">
 
-      <!-- NAV -->
+      <!-- Navigation Section -->
       <div class="cfg-sidenav">
         <div class="cfg-sidenav-head">
           <div class="cfg-sn-ico"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2"/></svg></div>
@@ -309,10 +309,10 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
         <button class="cfg-nav-item" onclick="showSec('maintenance',this)"><i class="fas fa-tools"></i>Maintenance<span class="cnb cnb-ok" style="margin-left:auto;">Off</span></button>
       </div>
 
-      <!-- SECTIONS -->
+      <!-- Sections Container Section -->
       <div>
 
-        <!-- ══ GÉNÉRAL ══ -->
+        <!-- General Section -->
         <div class="cfg-section active" id="sec-general">
           <div class="panel">
             <div class="panel-head">
@@ -375,7 +375,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
           </div>
         </div>
 
-        <!-- ══ CHATBOT ══ -->
+        <!-- Chatbot Section -->
         <div class="cfg-section" id="sec-chatbot">
           <div class="panel">
             <div class="panel-head">
@@ -414,7 +414,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
           </div>
         </div>
 
-        <!-- ══ SÉCURITÉ ══ -->
+        <!-- Security Section -->
         <div class="cfg-section" id="sec-securite">
           <div class="panel">
             <div class="panel-head">
@@ -469,7 +469,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
           </div>
         </div>
 
-        <!-- ══ EMAILS ══ -->
+        <!-- Emails Section -->
         <div class="cfg-section" id="sec-emails">
           <div class="panel">
             <div class="panel-head">
@@ -536,7 +536,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
           </div>
         </div>
 
-        <!-- ══ MAINTENANCE ══ -->
+        <!-- Maintenance Section -->
         <div class="cfg-section" id="sec-maintenance">
           <div class="panel">
             <div class="panel-head">
@@ -595,20 +595,19 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
           </div>
         </div>
 
-      </div><!-- /sections -->
-    </div><!-- /cfg-layout -->
-  </div><!-- /adm-content -->
-</div><!-- /adm-main -->
-</div><!-- /adm-shell -->
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="toast-box" id="toastBox"><i id="toastIco" class="fas fa-circle-check"></i><span id="toastMsg">Enregistré</span></div>
 
 <script>
-/* Clock */
+/* Clock Script */
 function tick(){const n=new Date();const s=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('topClock');if(el)el.textContent=s;}
 tick();setInterval(tick,1000);
 
-/* Toast */
+/* Toast Script */
 function toast(type,msg){
   const box=document.getElementById('toastBox'),ico=document.getElementById('toastIco'),m=document.getElementById('toastMsg');
   box.className='toast-box';
@@ -619,7 +618,7 @@ function toast(type,msg){
   window._tt=setTimeout(()=>box.classList.remove('show'),3500);
 }
 
-/* Nav sections */
+/* Nav Section Script */
 function showSec(id,btn){
   document.querySelectorAll('.cfg-section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.cfg-nav-item').forEach(b=>b.classList.remove('active'));
@@ -627,10 +626,10 @@ function showSec(id,btn){
   btn.classList.add('active');
 }
 
-/* Save all */
+/* Save All Script */
 function saveAll(){toast('ok','Toutes les configurations ont été enregistrées');}
 
-/* Toggle password */
+/* Toggle Password Script */
 function toggleField(inputId,iconId){
   const el=document.getElementById(inputId),ico=document.getElementById(iconId);
   if(!el||!ico)return;
@@ -638,7 +637,7 @@ function toggleField(inputId,iconId){
   ico.className=el.type==='password'?'fas fa-eye':'fas fa-eye-slash';
 }
 
-/* Test SMTP */
+/* Test SMTP Script */
 function testSmtp(){
   const r=document.getElementById('smtpResult'),m=document.getElementById('smtpMsg'),ico=document.getElementById('smtpIco');
   r.className='smtp-result smr-loading show';
@@ -652,13 +651,13 @@ function testSmtp(){
   },2000);
 }
 
-/* 2FA */
+/* 2FA Alert Script */
 function twofaAlert(cb){
   if(cb.checked)toast('info','2FA activé — configurez votre app OTP avant de quitter cette page');
   else toast('warn','2FA désactivé — votre compte est moins protégé');
 }
 
-/* Maintenance */
+/* Maintenance Toggle Script */
 function toggleMaint(cb){
   const pill=document.getElementById('maintPill');
   if(cb.checked){
@@ -672,7 +671,7 @@ function toggleMaint(cb){
   }
 }
 
-/* IP table */
+/* IP Table Script */
 function addIp(){
   const ip=prompt('Adresse IP ou plage CIDR :','0.0.0.0/0');if(!ip)return;
   const lbl=prompt('Label :','Nouveau poste');if(!lbl)return;

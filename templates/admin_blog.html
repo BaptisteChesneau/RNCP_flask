@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="fr"><head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Blog & Articles — ML2C Admin</title>
+<title>Blog & Articles</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -38,7 +38,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .btn-rose{background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff;box-shadow:0 4px 12px rgba(193,0,122,.25);}.btn-rose:hover{transform:translateY(-1px);}
 .btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted);}.btn-ghost:hover{border-color:var(--rose);color:var(--rose);}
 .btn-turq{background:linear-gradient(135deg,var(--turq),#3d8578);color:#fff;}
-/* KPI */
+/* KPI Section */
 .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
 .kbox{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:1.1rem;display:flex;align-items:center;gap:.85rem;box-shadow:0 2px 12px rgba(0,0,0,.05);transition:transform .2s;animation:fadeUp .4s both;}
 .kbox:hover{transform:translateY(-2px);}
@@ -47,7 +47,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .kbox-val{font-family:var(--ff-head);font-size:1.7rem;font-weight:700;line-height:1;}.kbox-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-top:.1rem;}
 .kbox-sub{font-size:.65rem;color:var(--turq);font-weight:600;margin-top:.15rem;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-/* TABS */
+/* Tabs Section */
 .blog-tabs{display:flex;align-items:center;gap:0;background:var(--surface);border-radius:12px;border:1.5px solid var(--border);overflow:hidden;margin-bottom:1.25rem;width:fit-content;}
 .blog-tab{padding:.6rem 1.1rem;font-size:.8rem;font-weight:600;cursor:pointer;color:var(--muted);border:none;background:none;font-family:var(--ff-body);transition:all .2s;border-right:1px solid var(--border);}
 .blog-tab:last-child{border-right:none;}
@@ -55,7 +55,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .blog-tab:hover:not(.active){background:#f3f4f6;color:var(--text);}
 .blog-tab .tab-count{margin-left:.4rem;font-size:.6rem;font-weight:700;padding:.1rem .4rem;border-radius:20px;background:rgba(0,0,0,.08);}
 .blog-tab.active .tab-count{background:rgba(255,255,255,.25);}
-/* TOOLBAR */
+/* Toolbar Section */
 .blog-toolbar{display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem;flex-wrap:wrap;}
 .search-box{display:flex;align-items:center;gap:.5rem;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.5rem .9rem;flex:1;min-width:220px;transition:border-color .2s;}
 .search-box:focus-within{border-color:var(--rose);}
@@ -65,7 +65,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .view-btns{display:flex;gap:0;border:1.5px solid var(--border);border-radius:9px;overflow:hidden;}
 .view-btn{padding:.45rem .65rem;font-size:.8rem;cursor:pointer;border:none;background:var(--surface);color:var(--muted);transition:all .15s;}
 .view-btn.active{background:var(--rose);color:#fff;}
-/* GRILLE ARTICLES */
+/* Articles Grid Section */
 .articles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;}
 .articles-grid.list-view{grid-template-columns:1fr;}
 .article-card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;transition:all .25s;animation:fadeUp .4s both;cursor:pointer;}
@@ -94,12 +94,12 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .art-btn{width:28px;height:28px;border-radius:7px;border:1.5px solid var(--border);background:#fff;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;font-size:.72rem;}
 .art-btn:hover{border-color:var(--rose);color:var(--rose);}
 .art-btn.danger:hover{border-color:var(--danger);color:var(--danger);}
-/* LIST VIEW */
+/* List View Section */
 .articles-grid.list-view .article-card{display:flex;flex-direction:row;}
 .articles-grid.list-view .article-img{width:120px;height:auto;min-height:90px;flex-shrink:0;}
 .articles-grid.list-view .article-body{flex:1;padding:.85rem;}
 .articles-grid.list-view .article-excerpt{display:none;}
-/* PANEL */
+/* Panel Section */
 .panel{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.05);overflow:hidden;margin-bottom:1.25rem;}
 .panel-head{padding:1rem 1.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(90deg,#fafbfc,#fff);}
 .panel-head-left{display:flex;align-items:center;gap:.65rem;}
@@ -108,7 +108,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .panel-title{font-size:.88rem;font-weight:700;color:var(--text);}
 .panel-sub{font-size:.7rem;color:var(--muted);margin-top:.08rem;}
 .panel-body{padding:1.4rem;}
-/* TOAST */
+/* Toast Section */
 .toast-box{position:fixed;bottom:1.25rem;right:1.25rem;z-index:9999;display:flex;align-items:center;gap:.65rem;padding:.8rem 1.2rem;border-radius:12px;font-size:.82rem;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.18);transform:translateY(80px);opacity:0;transition:all .35s cubic-bezier(.34,1.2,.64,1);pointer-events:none;max-width:320px;}
 .toast-box.show{transform:translateY(0);opacity:1;}
 .toast-ok{background:#0b2a1f;color:#4ade80;border:1px solid rgba(74,222,128,.2);}
@@ -163,7 +163,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 
   <div class="adm-content">
 
-    <!-- KPI -->
+    <!-- KPI Section -->
     <div class="kpi-row">
       <div class="kbox" style="animation-delay:.05s"><div class="kbox-ico ki-rose"><i class="fas fa-newspaper"></i></div><div><div class="kbox-val" id="kpiTotal">8</div><div class="kbox-lbl">Total articles</div><div class="kbox-sub">Toutes catégories</div></div></div>
       <div class="kbox" style="animation-delay:.1s"><div class="kbox-ico ki-green"><i class="fas fa-check-circle"></i></div><div><div class="kbox-val" id="kpiPub">5</div><div class="kbox-lbl">Publiés</div><div class="kbox-sub">En ligne</div></div></div>
@@ -171,7 +171,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
       <div class="kbox" style="animation-delay:.2s"><div class="kbox-ico ki-turq"><i class="fas fa-eye"></i></div><div><div class="kbox-val">4.2k</div><div class="kbox-lbl">Vues ce mois</div><div class="kbox-sub">↑ +18%</div></div></div>
     </div>
 
-    <!-- TABS -->
+    <!-- Tabs Section -->
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;margin-bottom:1.25rem;">
       <div class="blog-tabs">
         <button class="blog-tab active" onclick="filterTab('all',this)">Tous<span class="tab-count" id="tc-all">8</span></button>
@@ -187,7 +187,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
       </div>
     </div>
 
-    <!-- TOOLBAR -->
+    <!-- Toolbar Section -->
     <div class="blog-toolbar">
       <div class="search-box"><i class="fas fa-search" style="color:var(--faint);font-size:.78rem;"></i><input type="text" placeholder="Rechercher un article…" id="blogSearch" oninput="filterArticles()"></div>
       <select class="f-sel" id="filterCat" onchange="filterArticles()">
@@ -206,7 +206,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
       <button class="btn-adm btn-ghost" onclick="toast('info','Export CSV des articles…')"><i class="fas fa-file-export"></i>Exporter</button>
     </div>
 
-    <!-- GRILLE -->
+    <!-- Articles Grid Section -->
     <div class="articles-grid" id="articlesGrid">
 
       <div class="article-card" data-status="published" data-cat="Comptabilité" data-title="TVA 2025 : Ce qui change pour les TPE et indépendants">
@@ -437,9 +437,9 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
         </div>
       </div>
 
-    </div><!-- /articles-grid -->
+    </div>
 
-    <!-- EMPTY STATE -->
+    <!-- Empty State Section -->
     <div id="emptyState" style="display:none;text-align:center;padding:3rem;color:var(--faint);">
       <i class="fas fa-search" style="font-size:2rem;margin-bottom:1rem;display:block;"></i>
       <div style="font-size:.9rem;font-weight:600;margin-bottom:.35rem;">Aucun article trouvé</div>
@@ -453,9 +453,11 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 <div class="toast-box" id="toastBox"><i id="toastIco" class="fas fa-circle-check"></i><span id="toastMsg">OK</span></div>
 
 <script>
+/* Clock Script */
 function tick(){const n=new Date();const s=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('topClock');if(el)el.textContent=s;}
 tick();setInterval(tick,1000);
 
+/* Toast Script */
 function toast(type,msg){
   const box=document.getElementById('toastBox'),ico=document.getElementById('toastIco'),m=document.getElementById('toastMsg');
   box.className='toast-box';
@@ -464,6 +466,7 @@ function toast(type,msg){
   box.classList.add('show');clearTimeout(window._tt);window._tt=setTimeout(()=>box.classList.remove('show'),3200);
 }
 
+/* Tab Filtering Script */
 let currentTab='all';
 function filterTab(tab,btn){
   currentTab=tab;
@@ -472,6 +475,7 @@ function filterTab(tab,btn){
   filterArticles();
 }
 
+/* Article Filtering Script */
 function filterArticles(){
   const q=document.getElementById('blogSearch').value.toLowerCase();
   const cat=document.getElementById('filterCat').value;
@@ -491,6 +495,7 @@ function filterArticles(){
   document.getElementById('emptyState').style.display=visible===0?'block':'none';
 }
 
+/* View Mode Toggle Script */
 function setView(v){
   const grid=document.getElementById('articlesGrid');
   document.getElementById('viewGrid').classList.toggle('active',v==='grid');
@@ -498,6 +503,7 @@ function setView(v){
   grid.classList.toggle('list-view',v==='list');
 }
 
+/* Delete Article Script */
 function deleteArticle(btn){
   const card=btn.closest('.article-card');
   card.classList.add('removing');
@@ -505,6 +511,7 @@ function deleteArticle(btn){
   toast('warn','Article supprimé définitivement');
 }
 
+/* Publish Article Script */
 function publishArticle(btn){
   const card=btn.closest('.article-card');
   card.dataset.status='published';
@@ -514,6 +521,7 @@ function publishArticle(btn){
   toast('ok','Article publié et visible en ligne');
 }
 
+/* Restore Article Script */
 function restoreArticle(btn){
   const card=btn.closest('.article-card');
   card.dataset.status='draft';
@@ -523,6 +531,7 @@ function restoreArticle(btn){
   toast('ok','Article restauré en brouillon');
 }
 
+/* Update Counts Script */
 function updateCounts(){
   const cards=[...document.querySelectorAll('.article-card')];
   const total=cards.length;

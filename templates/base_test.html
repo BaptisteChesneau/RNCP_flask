@@ -1,36 +1,36 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestion des utilisateurs — Admin ML2C</title>
+  <title>Gestion des utilisateurs</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <style>
     :root {
-      /* ── Palette claire lisible ── */
-      --bg:        #f2ede8;        /* crème chaud */
-      --bg2:       #ede7e0;        /* crème légèrement plus sombre */
-      --surface:   #faf7f4;        /* blanc cassé */
-      --surface2:  #f0ebe4;        /* surface secondaire */
-      --border:    #ddd5cb;        /* bordure douce */
-      --border2:   #c9bfb5;        /* bordure plus marquée */
+      /* ── Light readable palette ── */
+      --bg:        #f2ede8;        /* warm cream */
+      --bg2:       #ede7e0;        /* slightly darker cream */
+      --surface:   #faf7f4;        /* off-white */
+      --surface2:  #f0ebe4;        /* secondary surface */
+      --border:    #ddd5cb;        /* soft border */
+      --border2:   #c9bfb5;        /* more prominent border */
 
       /* ── Accents ── */
-      --accent:    #C1007A;        /* rose ML2C */
+      --accent:    #C1007A;        /* ML2C pink */
       --accent-g:  #9b005f;
-      --accent-lt: #fce8f3;        /* rose très clair pour backgrounds */
-      --teal:      #2d7a6e;        /* vert foncé lisible */
-      --teal-lt:   #e0f2ef;        /* vert très clair */
-      --gold:      #9a6200;        /* or foncé lisible */
+      --accent-lt: #fce8f3;        /* very light pink for backgrounds */
+      --teal:      #2d7a6e;        /* readable dark green */
+      --teal-lt:   #e0f2ef;        /* very light green */
+      --gold:      #9a6200;        /* readable dark gold */
       --gold-lt:   #fef3e0;
 
-      /* ── Texte ── */
-      --text:      #1a1612;        /* quasi-noir chaud */
-      --text2:     #4a3f38;        /* secondaire */
-      --muted:     #7a6e66;        /* grisé */
-      --muted2:    #a89e96;        /* très grisé */
+      /* ── Text ── */
+      --text:      #1a1612;        /* warm near-black */
+      --text2:     #4a3f38;        /* secondary */
+      --muted:     #7a6e66;        /* grayed */
+      --muted2:    #a89e96;        /* very grayed */
 
       /* ── States ── */
       --danger:    #c0392b;
@@ -53,7 +53,7 @@
       min-height: 100vh;
     }
 
-    /* ── Texture subtile ── */
+    /* ── Subtle texture ── */
     body::before {
       content: '';
       position: fixed; inset: 0;
@@ -202,7 +202,7 @@
       font-family: 'Syne', sans-serif; font-weight: 600;
       cursor: pointer; letter-spacing: .04em; transition: all .18s;
     }
-    .chip:hover       { border-color: var(--border2); color: var(--text2); background: var(--surface2); }
+    .chip:hover     { border-color: var(--border2); color: var(--text2); background: var(--surface2); }
     .chip.active-all  { background: var(--text); border-color: var(--text); color: var(--surface); }
     .chip.active-admin{ background: var(--accent-lt); border-color: var(--accent); color: var(--accent); }
     .chip.active-user { background: var(--teal-lt);   border-color: var(--teal);   color: var(--teal); }
@@ -250,7 +250,7 @@
     tbody tr:last-child { border-bottom: none; }
     tbody tr:hover { background: var(--surface2); }
 
-    /* Barre gauche colorée au survol */
+    /* Colored left bar on hover */
     tbody tr::before {
       content: ''; position: absolute;
       left: 0; top: 0; bottom: 0; width: 3px;
@@ -268,7 +268,7 @@
       border: 1px solid var(--border); padding: .2rem .5rem; border-radius: 5px;
     }
 
-    /* Utilisateur */
+    /* User */
     .user-cell { display: flex; align-items: center; gap: .85rem; }
     .avatar-wrap { position: relative; flex-shrink: 0; }
     .avatar {
@@ -282,7 +282,7 @@
     .user-name  { font-weight: 600; font-size: .9rem; color: var(--text); }
     .user-email { font-size: .75rem; color: var(--muted); margin-top: .1rem; font-family: 'JetBrains Mono', monospace; }
 
-    /* Rôle badge */
+    /* Role badge */
     .role-badge {
       display: inline-flex; align-items: center; gap: .35rem;
       padding: .3rem .8rem; border-radius: 20px;
@@ -310,7 +310,7 @@
     .btn-act:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
     .btn-act i { font-size: .7rem; }
 
-    /* Modifier — vert teal */
+    /* Edit — teal green */
     .btn-edit {
       background: var(--teal-lt);
       border-color: rgba(45,122,110,.3);
@@ -322,7 +322,7 @@
       color: #1f5c53;
     }
 
-    /* Copier — or/ambre */
+    /* Copy — gold/amber */
     .btn-copy {
       background: var(--gold-lt);
       border-color: rgba(154,98,0,.25);
@@ -334,7 +334,7 @@
       color: #7a4d00;
     }
 
-    /* Supprimer — rouge */
+    /* Delete — red */
     .btn-del {
       background: var(--danger-lt);
       border-color: rgba(192,57,43,.25);
@@ -644,58 +644,69 @@
 {% include "footer.html" %}
 
 <script>
+  /* ═══════════════════════════════════════════════════════════
+     STATE MANAGEMENT AND CONSTANTS
+     ═══════════════════════════════════════════════════════════ */
   const PER_PAGE = 15;
   let page = 1, activeRole = '', sortVal = '';
 
   const searchEl = document.getElementById('searchInput');
-  const sortEl   = document.getElementById('sortSel');
-  const tbody    = document.getElementById('tableBody');
-  const allRows  = Array.from(tbody.querySelectorAll('tr[data-id]'));
+  const sortSel  = document.getElementById('sortSel');
+  const tableBody = document.getElementById('tableBody');
+  const allRows  = Array.from(tableBody.querySelectorAll('tr[data-id]'));
 
-  /* Stats */
+  /* ═══════════════════════════════════════════════════════════
+     STATISTICS INITIALIZATION
+     ═══════════════════════════════════════════════════════════ */
   const nbAdmins = allRows.filter(r => r.dataset.role === 'admin').length;
   const nbUsers  = allRows.filter(r => r.dataset.role !== 'admin').length;
-  document.getElementById('statTotal').textContent  = allRows.length;
+  document.getElementById('statTotal').textContent   = allRows.length;
   document.getElementById('statAdmins').textContent = nbAdmins;
   document.getElementById('statUsers').textContent  = nbUsers;
 
-  /* Chips */
+  /* ═══════════════════════════════════════════════════════════
+     FILTER CHIPS EVENT LISTENERS
+     ═══════════════════════════════════════════════════════════ */
   document.querySelectorAll('.chip').forEach(c => {
     c.addEventListener('click', () => {
       activeRole = c.dataset.role;
       document.querySelectorAll('.chip').forEach(x => x.className = 'chip');
-      if (!activeRole)                 c.classList.add('active-all');
+      if (!activeRole)                     c.classList.add('active-all');
       else if (activeRole === 'admin') c.classList.add('active-admin');
-      else                             c.classList.add('active-user');
+      else                                 c.classList.add('active-user');
       page = 1; render();
     });
   });
 
   searchEl.addEventListener('input',  () => { page = 1; render(); });
-  sortEl.addEventListener('change',   () => { sortVal = sortEl.value; page = 1; render(); });
+  sortSel.addEventListener('change',   () => { sortVal = sortSel.value; page = 1; render(); });
 
-  /* Header sort */
+  /* ═══════════════════════════════════════════════════════════
+     TABLE HEADER SORTING
+     ═══════════════════════════════════════════════════════════ */
   document.querySelectorAll('thead th[data-col]').forEach(th => {
     th.addEventListener('click', () => {
       const col = th.dataset.col;
-      const cur = sortEl.value;
-      if      (col === 'id'   && cur !== 'id-asc')   sortEl.value = 'id-asc';
-      else if (col === 'id')                          sortEl.value = 'id-desc';
-      else if (col === 'name' && cur !== 'name-asc')  sortEl.value = 'name-asc';
-      else if (col === 'name')                        sortEl.value = 'name-desc';
+      const cur = sortSel.value;
+      if      (col === 'id'   && cur !== 'id-asc')   sortSel.value = 'id-asc';
+      else if (col === 'id')                         sortSel.value = 'id-desc';
+      else if (col === 'name' && cur !== 'name-asc')  sortSel.value = 'name-asc';
+      else if (col === 'name')                        sortSel.value = 'name-desc';
       document.querySelectorAll('thead th').forEach(h => {
         h.classList.remove('sorted');
         const ic = h.querySelector('.sort-icon');
         if (ic) ic.className = 'fas fa-sort sort-icon';
       });
       th.classList.add('sorted');
-      const dir = sortEl.value.endsWith('asc') ? 'up' : 'down';
+      const dir = sortSel.value.endsWith('asc') ? 'up' : 'down';
       th.querySelector('.sort-icon').className = `fas fa-sort-${dir} sort-icon`;
-      sortVal = sortEl.value; page = 1; render();
+      sortVal = sortSel.value; page = 1; render();
     });
   });
 
-  /* Render */
+  /* ═══════════════════════════════════════════════════════════
+     RENDER FUNCTION & PAGINATION
+     ═══════════════════════════════════════════════════════════ */
   function render() {
     const q = searchEl.value.trim().toLowerCase();
     let rows = allRows.filter(r => {
@@ -750,7 +761,9 @@
 
   render();
 
-  /* Modal suppression */
+  /* ═══════════════════════════════════════════════════════════
+     MODAL CONTROLS (DELETION)
+     ═══════════════════════════════════════════════════════════ */
   function askDelete(btn) {
     document.getElementById('modalName').textContent = '"' + btn.dataset.name + '"';
     document.getElementById('modalForm').action = btn.dataset.url;
@@ -763,7 +776,9 @@
     if (e.target === e.currentTarget) closeModal();
   });
 
-  /* Copier */
+  /* ═══════════════════════════════════════════════════════════
+     CLIPBOARD UTILITY
+     ═══════════════════════════════════════════════════════════ */
   function copyUser(btn) {
     navigator.clipboard
       .writeText(`ID: ${btn.dataset.uid} | ${btn.dataset.uname} | ${btn.dataset.uemail}`)
@@ -771,7 +786,9 @@
       .catch(() => showToast('Erreur lors de la copie', 'error'));
   }
 
-  /* Toast */
+  /* ═══════════════════════════════════════════════════════════
+     TOAST NOTIFICATION SYSTEM
+     ═══════════════════════════════════════════════════════════ */
   let toastTimer;
   function showToast(msg, type = 'success') {
     const t  = document.getElementById('toast');

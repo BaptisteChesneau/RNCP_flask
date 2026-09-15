@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="fr"><head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Nouvel Article — ML2C Admin</title>
+<title>Nouvel Article</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -37,9 +37,9 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .btn-adm{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border-radius:9px;font-size:.78rem;font-weight:600;cursor:pointer;border:none;font-family:var(--ff-body);transition:all .2s;}
 .btn-rose{background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff;box-shadow:0 4px 12px rgba(193,0,122,.25);}.btn-rose:hover{transform:translateY(-1px);}
 .btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted);}.btn-ghost:hover{border-color:var(--rose);color:var(--rose);}
-/* EDITOR LAYOUT */
+/* Editor Layout Section */
 .editor-layout{display:grid;grid-template-columns:1fr 300px;gap:1.5rem;align-items:start;}
-/* MAIN EDITOR */
+/* Main Editor Section */
 .editor-card{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.055);}
 .editor-toolbar{display:flex;align-items:center;gap:.25rem;padding:.65rem 1rem;border-bottom:1px solid var(--border);background:#fafbfc;flex-wrap:wrap;}
 .tb-btn{width:30px;height:30px;border-radius:7px;border:1.5px solid transparent;background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.75rem;transition:all .18s;}
@@ -56,7 +56,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .excerpt-input:focus{border-color:var(--rose);background:#fff;box-shadow:0 0 0 3px rgba(193,0,122,.08);}
 .content-area{width:100%;border:none;outline:none;font-size:.95rem;font-family:var(--ff-body);color:var(--text);padding:1.25rem;resize:none;min-height:380px;line-height:1.7;}
 .editor-footer{padding:.85rem 1.25rem;border-top:1px solid var(--border);background:#fafbfc;display:flex;align-items:center;justify-content:space-between;font-size:.72rem;color:var(--faint);}
-/* SIDEBAR PANEL */
+/* Sidebar Panel Section */
 .side-panels{display:flex;flex-direction:column;gap:1rem;}
 .sp-card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.055);}
 .sp-head{display:flex;align-items:center;gap:.5rem;padding:.8rem 1rem;border-bottom:1px solid var(--border);background:#fafbfc;}
@@ -66,28 +66,28 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .f-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);}
 .f-input{border:1.5px solid var(--border);border-radius:9px;padding:.6rem .85rem;font-size:.84rem;font-family:var(--ff-body);color:var(--text);background:#fafbfc;outline:none;width:100%;transition:all .2s;}
 .f-input:focus{border-color:var(--rose);background:#fff;box-shadow:0 0 0 3px rgba(193,0,122,.08);}
-/* Status toggle */
+/* Status Toggle Section */
 .status-toggle{display:flex;gap:.4rem;}
 .st-opt{flex:1;padding:.5rem;border-radius:8px;border:1.5px solid var(--border);font-size:.75rem;font-weight:600;color:var(--muted);cursor:pointer;text-align:center;transition:all .18s;}
 .st-opt.active{border-color:var(--rose);background:var(--rose-l);color:var(--rose);}
 .st-opt.pub.active{border-color:var(--success);background:#d1fae5;color:#065f46;}
-/* Tags */
+/* Tags Section */
 .tags-wrap{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.5rem;}
 .tag-chip{display:inline-flex;align-items:center;gap:.3rem;background:var(--rose-l);color:var(--rose);font-size:.7rem;font-weight:600;padding:.2rem .55rem;border-radius:20px;}
 .tag-chip button{background:none;border:none;color:var(--rose);cursor:pointer;font-size:.65rem;padding:0;line-height:1;}
-/* Image drop */
+/* Image Drop Section */
 .img-drop{border:2px dashed var(--border);border-radius:12px;padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s;background:#fafbfc;}
 .img-drop:hover{border-color:var(--rose);background:var(--rose-xl);}
 .img-drop-ico{font-size:1.5rem;color:var(--faint);margin-bottom:.5rem;}
 .img-drop-txt{font-size:.78rem;color:var(--muted);}
 .img-drop-sub{font-size:.68rem;color:var(--faint);margin-top:.25rem;}
-/* SEO score */
+/* SEO Score Section */
 .seo-score{display:flex;align-items:center;gap:.75rem;padding:.75rem;background:#f9fafb;border-radius:10px;border:1px solid var(--border);}
 .seo-ring{width:44px;height:44px;border-radius:50%;background:conic-gradient(var(--success) 0deg 252deg,#f3f4f6 252deg 360deg);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.72rem;font-weight:700;color:var(--success);box-shadow:inset 0 0 0 6px #fff;}
 .seo-items{flex:1;display:flex;flex-direction:column;gap:.3rem;}
 .seo-item{display:flex;align-items:center;gap:.4rem;font-size:.72rem;color:var(--muted);}
 .seo-ok{color:var(--success);}.seo-warn{color:var(--gold-d);}
-/* TOAST */
+/* Toast Section */
 .toast-box{position:fixed;bottom:1.25rem;right:1.25rem;z-index:9999;display:flex;align-items:center;gap:.65rem;padding:.75rem 1.1rem;border-radius:10px;font-size:.8rem;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.15);transform:translateY(80px);opacity:0;transition:all .3s cubic-bezier(.34,1.2,.64,1);pointer-events:none;}
 .toast-box.show{transform:translateY(0);opacity:1;}.toast-ok{background:#0d2e23;color:#4ade80;border:1px solid rgba(74,222,128,.2);}
 @media(max-width:1100px){.editor-layout{grid-template-columns:1fr}}
@@ -141,10 +141,10 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
   <div class="adm-content">
     <div class="editor-layout">
 
-      <!-- Zone édition principale -->
+      <!-- Main Editor Content Section -->
       <div>
         <div class="editor-card">
-          <!-- Toolbar formatage -->
+          <!-- Formatting Toolbar Section -->
           <div class="editor-toolbar">
             <button class="tb-btn" title="Gras" onclick="fmt('bold')"><i class="fas fa-bold"></i></button>
             <button class="tb-btn" title="Italique" onclick="fmt('italic')"><i class="fas fa-italic"></i></button>
@@ -170,19 +170,19 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
             <button class="tb-btn" title="Annuler"><i class="fas fa-rotate-left"></i></button>
             <button class="tb-btn" title="Refaire"><i class="fas fa-rotate-right"></i></button>
           </div>
-          <!-- Titre -->
+          <!-- Title Input Section -->
           <textarea class="title-input" id="articleTitle" rows="2" placeholder="Titre de l'article…" oninput="updateSlug()" maxlength="120"></textarea>
-          <!-- Slug -->
+          <!-- Slug Section -->
           <div class="slug-row">
             <span class="slug-lbl">URL</span>
             <span class="slug-val">ml2cco.fr/actualites/<span id="slugVal">titre-de-larticle</span></span>
           </div>
-          <!-- Extrait -->
+          <!-- Excerpt Section -->
           <div class="excerpt-box">
             <div class="excerpt-lbl">Extrait / résumé</div>
             <textarea class="excerpt-input" id="articleExcerpt" placeholder="Rédigez un court résumé de l'article (160 caractères max pour le SEO)…" maxlength="200" oninput="updateSEO()"></textarea>
           </div>
-          <!-- Zone de contenu principal -->
+          <!-- Main Content Area Section -->
           <textarea class="content-area" id="articleContent" placeholder="Rédigez le contenu de l'article ici…&#10;&#10;Utilisez la barre d'outils pour formater votre texte en Markdown ou HTML." oninput="updateWordCount()"></textarea>
           <div class="editor-footer">
             <span id="wordCount">0 mots</span>
@@ -191,10 +191,10 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
         </div>
       </div>
 
-      <!-- Panneau latéral -->
+      <!-- Side Panels Section -->
       <div class="side-panels">
 
-        <!-- Publication -->
+        <!-- Publication Section -->
         <div class="sp-card">
           <div class="sp-head"><i class="fas fa-paper-plane" style="color:var(--rose);font-size:.82rem;"></i><div class="sp-title">Publication</div></div>
           <div class="sp-body">
@@ -214,7 +214,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
           </div>
         </div>
 
-        <!-- Catégorie -->
+        <!-- Category Section -->
         <div class="sp-card">
           <div class="sp-head"><i class="fas fa-folder" style="color:var(--gold-d);font-size:.82rem;"></i><div class="sp-title">Catégorie</div></div>
           <div class="sp-body">
@@ -242,7 +242,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
           </div>
         </div>
 
-        <!-- Image à la une -->
+        <!-- Featured Image Section -->
         <div class="sp-card">
           <div class="sp-head"><i class="fas fa-image" style="color:var(--turq);font-size:.82rem;"></i><div class="sp-title">Image à la une</div></div>
           <div class="sp-body">
@@ -254,7 +254,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
           </div>
         </div>
 
-        <!-- SEO -->
+        <!-- SEO Analysis Section -->
         <div class="sp-card">
           <div class="sp-head"><i class="fas fa-magnifying-glass-chart" style="color:var(--rose);font-size:.82rem;"></i><div class="sp-title">Analyse SEO</div></div>
           <div class="sp-body">
@@ -278,11 +278,14 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 <div class="toast-box toast-ok" id="toastBox"><i class="fas fa-circle-check"></i><span id="toastMsg">Action effectuée</span></div>
 {% include "footer.html" %}
 <script>
+/* Slug Generator Script */
 function updateSlug(){
   const title=document.getElementById('articleTitle').value;
   const slug=title.toLowerCase().replace(/[àáâ]/g,'a').replace(/[éèêë]/g,'e').replace(/[îï]/g,'i').replace(/[ôö]/g,'o').replace(/[ùûü]/g,'u').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
   document.getElementById('slugVal').textContent=slug||'titre-de-larticle';
 }
+
+/* Word Count Script */
 function updateWordCount(){
   const txt=document.getElementById('articleContent').value;
   const count=txt.trim()?txt.trim().split(/\s+/).length:0;
@@ -290,19 +293,32 @@ function updateWordCount(){
   document.getElementById('lastSave').textContent='à l\'instant';
   if(count>300){document.getElementById('seoContent').innerHTML='<i class="fas fa-check-circle"></i> Contenu suffisant';document.getElementById('seoContent').className='seo-item seo-ok';}
 }
+
+/* SEO Excerpt Check Script */
 function updateSEO(){
   const ex=document.getElementById('articleExcerpt').value;
   if(ex.length>50){document.getElementById('seoExcerpt').innerHTML='<i class="fas fa-check-circle"></i> Métadescription OK';document.getElementById('seoExcerpt').className='seo-item seo-ok';}
 }
+
+/* Formatting Helper Script */
 function fmt(t){toast('Formatage: '+t);}
+
+/* Status Toggle Script */
 function setStatus(el,s){document.querySelectorAll('.st-opt').forEach(o=>o.classList.remove('active'));el.classList.add('active');}
+
+/* Tag Management Script */
 function addTag(){const inp=document.getElementById('tagInput');if(!inp.value.trim())return;const wrap=document.getElementById('tagsWrap');const chip=document.createElement('span');chip.className='tag-chip';chip.innerHTML=inp.value+'<button onclick="removeTag(this)">×</button>';wrap.appendChild(chip);inp.value='';}
 function removeTag(btn){btn.closest('.tag-chip').remove();}
+
+/* Draft and Publish Actions Script */
 function saveDraft(){toast('Brouillon enregistré — '+new Date().toLocaleTimeString('fr-FR'));}
 function preview(){toast('Aperçu de l\'article ouvert');}
 function publish(){const t=document.getElementById('articleTitle').value;if(!t){toast('Ajoutez un titre avant de publier');return;}toast('Article publié avec succès !');}
+
+/* Toast Notification Script */
 function toast(msg){const b=document.getElementById('toastBox');document.getElementById('toastMsg').textContent=msg;b.classList.add('show');setTimeout(()=>b.classList.remove('show'),2800);}
-// Autosave
+
+/* Autosave Script */
 setInterval(()=>{const t=document.getElementById('articleContent').value;if(t)document.getElementById('lastSave').textContent='il y a quelques secondes';},30000);
 </script>
 </body></html>

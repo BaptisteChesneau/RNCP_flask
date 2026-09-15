@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="fr"><head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Catégories Blog — ML2C Admin</title>
+<title>Catégories Blog</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -37,9 +37,9 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .btn-adm{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border-radius:9px;font-size:.78rem;font-weight:600;cursor:pointer;border:none;font-family:var(--ff-body);transition:all .2s;}
 .btn-rose{background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff;box-shadow:0 4px 12px rgba(193,0,122,.25);}.btn-rose:hover{transform:translateY(-1px);}
 .btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted);}.btn-ghost:hover{border-color:var(--rose);color:var(--rose);}
-/* LAYOUT */
+/* Layout Section */
 .cat-layout{display:grid;grid-template-columns:1fr 360px;gap:1.5rem;align-items:start;}
-/* GRILLE CATÉGORIES */
+/* Categories Grid Section */
 .cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-bottom:1.5rem;}
 .cat-card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:1.1rem;display:flex;flex-direction:column;gap:.75rem;box-shadow:0 2px 14px rgba(0,0,0,.055);transition:all .25s;animation:fadeUp .35s both;position:relative;overflow:hidden;cursor:pointer;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -58,7 +58,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .cs-art{display:flex;align-items:center;gap:.3rem;font-size:.72rem;color:var(--muted);}
 .cs-views{display:flex;align-items:center;gap:.3rem;font-size:.72rem;color:var(--muted);}
 .cat-desc{font-size:.75rem;color:var(--muted);line-height:1.5;border-top:1px solid #f5f6f8;padding-top:.6rem;}
-/* FORM AJOUT */
+/* Add Form Section */
 .add-card{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.055);}
 .add-head{padding:.9rem 1.25rem;border-bottom:1px solid var(--border);background:#fafbfc;display:flex;align-items:center;gap:.6rem;}
 .add-head-ico{width:30px;height:30px;border-radius:8px;background:var(--rose-l);color:var(--rose);display:flex;align-items:center;justify-content:center;font-size:.8rem;}
@@ -68,16 +68,16 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .f-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);}
 .f-input{border:1.5px solid var(--border);border-radius:9px;padding:.6rem .85rem;font-size:.84rem;font-family:var(--ff-body);color:var(--text);background:#fafbfc;outline:none;width:100%;transition:all .2s;}
 .f-input:focus{border-color:var(--rose);background:#fff;box-shadow:0 0 0 3px rgba(193,0,122,.08);}
-/* Sélecteur couleur */
+/* Color Picker Section */
 .color-picker{display:flex;gap:.5rem;flex-wrap:wrap;}
 .cp-opt{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .18s;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:#fff;}
 .cp-opt.active{border-color:#111;transform:scale(1.15);}
-/* Sélecteur icône */
+/* Icon Picker Section */
 .ico-picker{display:flex;gap:.4rem;flex-wrap:wrap;}
 .ico-opt{width:32px;height:32px;border-radius:8px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.78rem;cursor:pointer;transition:all .18s;color:var(--muted);}
 .ico-opt.active{border-color:var(--rose);color:var(--rose);background:var(--rose-l);}
 .ico-opt:hover{border-color:var(--rose);color:var(--rose);}
-/* TOAST */
+/* Toast Section */
 .toast-box{position:fixed;bottom:1.25rem;right:1.25rem;z-index:9999;display:flex;align-items:center;gap:.65rem;padding:.75rem 1.1rem;border-radius:10px;font-size:.8rem;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.15);transform:translateY(80px);opacity:0;transition:all .3s cubic-bezier(.34,1.2,.64,1);pointer-events:none;}
 .toast-box.show{transform:translateY(0);opacity:1;}.toast-ok{background:#0d2e23;color:#4ade80;border:1px solid rgba(74,222,128,.2);}
 @media(max-width:1100px){.cat-layout{grid-template-columns:1fr}}
@@ -129,7 +129,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
   <div class="adm-content">
     <div class="cat-layout">
 
-      <!-- Grille catégories -->
+      <!-- Categories Grid Section -->
       <div>
         <p style="font-size:.78rem;color:var(--muted);margin-bottom:1rem;"><strong>6 catégories</strong> · Glissez-déposez pour réorganiser</p>
         <div class="cat-grid" id="catGrid">
@@ -221,7 +221,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
         </div>
       </div>
 
-      <!-- Formulaire ajout -->
+      <!-- Add Form Section -->
       <div>
         <div class="add-card">
           <div class="add-head"><div class="add-head-ico"><i class="fas fa-plus"></i></div><div class="add-title">Ajouter une catégorie</div></div>
@@ -277,13 +277,20 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 <div class="toast-box toast-ok" id="toastBox"><i class="fas fa-circle-check"></i><span id="toastMsg">Action effectuée</span></div>
 {% include "footer.html" %}
 <script>
+/* Slug Generator Script */
 function updateCatSlug(){
   const n=document.getElementById('catName').value;
   const s=n.toLowerCase().replace(/[àáâ]/g,'a').replace(/[éèêë]/g,'e').replace(/[îï]/g,'i').replace(/[ôö]/g,'o').replace(/[ùûü]/g,'u').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
   document.getElementById('catSlug').value=s;
 }
+
+/* Color Picker Selection Script */
 function selectColor(el){document.querySelectorAll('.cp-opt').forEach(o=>{o.innerHTML='';o.classList.remove('active');});el.classList.add('active');el.innerHTML='<i class="fas fa-check" style="font-size:.55rem;opacity:.8;"></i>';}
+
+/* Icon Picker Selection Script */
 function selectIco(el){document.querySelectorAll('.ico-opt').forEach(o=>o.classList.remove('active'));el.classList.add('active');}
+
+/* Add Category Script */
 function addCategory(){
   const name=document.getElementById('catName').value.trim();
   if(!name){toast('Remplissez le nom de la catégorie');return;}
@@ -292,7 +299,11 @@ function addCategory(){
   document.getElementById('catSlug').value='';
   document.getElementById('catDesc').value='';
 }
+
+/* Edit Category Script */
 function editCat(btn){toast('Édition catégorie — fonctionnalité en cours');}
+
+/* Delete Category Script */
 function deleteCat(btn){
   const card=btn.closest('.cat-card');
   card.style.transition='opacity .3s,transform .3s';
@@ -300,6 +311,8 @@ function deleteCat(btn){
   setTimeout(()=>card.remove(),300);
   toast('Catégorie supprimée');
 }
+
+/* Toast Notification Script */
 function toast(msg){const b=document.getElementById('toastBox');document.getElementById('toastMsg').textContent=msg;b.classList.add('show');setTimeout(()=>b.classList.remove('show'),2800);}
 </script>
 </body></html>

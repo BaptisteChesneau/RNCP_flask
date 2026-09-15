@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="fr"><head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Agenda & RDV — ML2C Admin</title>
+<title>Agenda & RDV</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -8,7 +8,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{--rose:#C1007A;--rose-d:#9a0062;--rose-l:#fce4f3;--rose-xl:#fff5fb;--turq:#4FA695;--turq-l:#d4f0ec;--gold:#f59e0b;--gold-d:#b45309;--gold-l:#fffbeb;--bg:#f2f4f8;--surface:#fff;--border:#e4e8ef;--text:#111827;--muted:#6b7280;--faint:#9ca3af;--success:#10b981;--danger:#ef4444;--blue:#3b82f6;--ff-head:'Cormorant Garamond',serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'JetBrains Mono',monospace;}
 body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
-/* SIDEBAR */
+/* Sidebar Section */
 .adm-shell{display:flex;height:100vh;overflow:hidden;}
 .adm-sidebar{width:220px;background:#0e1018;border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0;}
 .adm-sidebar::-webkit-scrollbar{width:3px;}.adm-sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);}
@@ -30,7 +30,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .adm-sb-info{font-size:.75rem;font-weight:600;color:rgba(255,255,255,.7);line-height:1.2;flex:1;}.adm-sb-info span{display:block;font-size:.62rem;font-weight:400;color:rgba(255,255,255,.3);}
 .adm-sb-logout{width:26px;height:26px;border-radius:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);transition:all .2s;cursor:pointer;}.adm-sb-logout:hover{background:rgba(239,68,68,.12);color:#f87171;}
 .adm-sb-version{text-align:center;font-size:.58rem;color:rgba(255,255,255,.15);padding:.4rem 1rem;font-family:var(--ff-mono);}
-/* MAIN */
+/* Main Content Section */
 .adm-main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
 .adm-topbar{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.5rem;background:#fff;border-bottom:1px solid var(--border);flex-shrink:0;gap:1rem;flex-wrap:wrap;}
 .adm-topbar-left h2{font-size:1rem;font-weight:700;margin:0;}.adm-topbar-left p{font-size:.72rem;color:var(--muted);margin:.05rem 0 0;}
@@ -40,7 +40,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .btn-rose{background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff;box-shadow:0 4px 12px rgba(193,0,122,.25);}.btn-rose:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(193,0,122,.35);}
 .btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted);}.btn-ghost:hover{border-color:var(--rose);color:var(--rose);}
 .btn-turq{background:linear-gradient(135deg,var(--turq),#3d8578);color:#fff;}
-/* KPI */
+/* KPI Section */
 .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
 .kbox{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:1.1rem;display:flex;align-items:center;gap:.85rem;box-shadow:0 2px 12px rgba(0,0,0,.05);transition:transform .2s;animation:fadeUp .4s both;}
 .kbox:hover{transform:translateY(-2px);}
@@ -49,9 +49,9 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .kbox-val{font-family:var(--ff-head);font-size:1.7rem;font-weight:700;line-height:1;}.kbox-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-top:.1rem;}
 .kbox-sub{font-size:.65rem;color:var(--turq);font-weight:600;margin-top:.15rem;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-/* LAYOUT */
+/* Layout Section */
 .agenda-layout{display:grid;grid-template-columns:1fr 340px;gap:1.5rem;}
-/* COUNTDOWN */
+/* Countdown Banner Section */
 .countdown-banner{background:linear-gradient(135deg,#0e1018,#1a1f2e);border-radius:18px;padding:1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;animation:fadeUp .3s both;}
 .cd-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.3);margin-bottom:.4rem;}
 .cd-name{font-family:var(--ff-head);font-size:1.3rem;color:#fff;font-weight:700;margin-bottom:.3rem;}
@@ -63,7 +63,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .cd-lbl{font-size:.55rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-top:.3rem;display:block;}
 .cd-sep{font-family:var(--ff-mono);font-size:1.5rem;color:rgba(255,255,255,.2);align-self:flex-start;padding-top:.25rem;}
 .cd-badge{background:rgba(193,0,122,.2);border:1px solid rgba(193,0,122,.3);color:#f472b6;font-size:.72rem;font-weight:700;padding:.3rem .75rem;border-radius:20px;display:inline-flex;align-items:center;gap:.35rem;}
-/* CALENDRIER */
+/* Panel Section */
 .panel{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.05);overflow:hidden;margin-bottom:1.25rem;animation:fadeUp .35s both;}
 .panel-head{padding:1rem 1.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(90deg,#fafbfc,#fff);}
 .panel-head-left{display:flex;align-items:center;gap:.65rem;}
@@ -72,7 +72,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .panel-title{font-size:.88rem;font-weight:700;color:var(--text);}
 .panel-sub{font-size:.7rem;color:var(--muted);margin-top:.08rem;}
 .panel-body{padding:1.4rem;}
-/* CALENDRIER GRID */
+/* Calendar Grid Section */
 .cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
 .cal-month{font-family:var(--ff-head);font-size:1.25rem;font-weight:700;color:var(--text);}
 .cal-nav-btn{width:30px;height:30px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-size:.75rem;}
@@ -89,7 +89,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .cal-day.selected{background:var(--rose);color:#fff;border-color:var(--rose);}
 .cal-day.selected::after{background:#fff;}
 .cal-day.multiple-rdv::after{background:var(--gold);}
-/* RDV LIST */
+/* RDV Item Section */
 .rdv-item{display:flex;align-items:flex-start;gap:.9rem;padding:.9rem;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;margin-bottom:.7rem;transition:all .2s;cursor:pointer;position:relative;overflow:hidden;}
 .rdv-item:hover{border-color:var(--rose);box-shadow:0 4px 16px rgba(193,0,122,.1);transform:translateX(3px);}
 .rdv-item.rdv-urgent{border-color:rgba(239,68,68,.3);background:linear-gradient(90deg,#fff8f8,#fff);}
@@ -108,7 +108,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .rdv-actions{display:flex;flex-direction:column;gap:.35rem;flex-shrink:0;}
 .rdv-action-btn{width:28px;height:28px;border-radius:7px;border:1.5px solid var(--border);background:#fff;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;font-size:.72rem;}
 .rdv-action-btn:hover{border-color:var(--rose);color:var(--rose);}
-/* FORMULAIRE */
+/* Form Section */
 .form-field{display:flex;flex-direction:column;gap:.35rem;margin-bottom:1rem;}
 .form-label{font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);}
 .form-input,.form-select,.form-textarea{border:1.5px solid var(--border);border-radius:10px;padding:.65rem 1rem;font-size:.87rem;font-family:var(--ff-body);color:var(--text);background:#fafbfc;outline:none;transition:all .2s;width:100%;}
@@ -116,12 +116,12 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .form-select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .8rem center;}
 .form-textarea{resize:vertical;min-height:80px;}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
-/* MINI AGENDA STATS */
+/* Mini Agenda Stats Section */
 .stat-ring{display:flex;align-items:center;gap:.65rem;padding:.7rem;background:#f8fafc;border-radius:11px;margin-bottom:.65rem;}
 .ring-chart{width:36px;height:36px;flex-shrink:0;}
 .ring-label{font-size:.78rem;font-weight:600;color:var(--text);}
 .ring-sub{font-size:.68rem;color:var(--muted);}
-/* MODAL */
+/* Modal Section */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
 .modal-overlay.open{display:flex;}
 .modal-box{background:#fff;border-radius:20px;width:100%;max-width:500px;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:fadeUp .3s ease;overflow:hidden;}
@@ -131,7 +131,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .modal-close:hover{border-color:var(--danger);color:var(--danger);}
 .modal-body{padding:1.5rem;}
 .modal-footer{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:.65rem;}
-/* TOAST */
+/* Toast Section */
 .toast-box{position:fixed;bottom:1.25rem;right:1.25rem;z-index:9999;display:flex;align-items:center;gap:.65rem;padding:.8rem 1.2rem;border-radius:12px;font-size:.82rem;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.18);transform:translateY(80px);opacity:0;transition:all .35s cubic-bezier(.34,1.2,.64,1);pointer-events:none;max-width:320px;}
 .toast-box.show{transform:translateY(0);opacity:1;}
 .toast-ok{background:#0b2a1f;color:#4ade80;border:1px solid rgba(74,222,128,.2);}
@@ -186,7 +186,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 
   <div class="adm-content">
 
-    <!-- KPI -->
+    <!-- KPI Section -->
     <div class="kpi-row">
       <div class="kbox" style="animation-delay:.05s"><div class="kbox-ico ki-blue"><i class="fas fa-calendar-check"></i></div><div><div class="kbox-val">12</div><div class="kbox-lbl">RDV ce mois</div><div class="kbox-sub">+3 vs mois dernier</div></div></div>
       <div class="kbox" style="animation-delay:.1s"><div class="kbox-ico ki-rose"><i class="fas fa-calendar-day"></i></div><div><div class="kbox-val" id="kpiAujourd">2</div><div class="kbox-lbl">Aujourd'hui</div><div class="kbox-sub">Prochain à 14h00</div></div></div>
@@ -194,7 +194,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
       <div class="kbox" style="animation-delay:.2s"><div class="kbox-ico ki-green"><i class="fas fa-check-circle"></i></div><div><div class="kbox-val">94%</div><div class="kbox-lbl">Taux présence</div><div class="kbox-sub">↑ +2% ce mois</div></div></div>
     </div>
 
-    <!-- COUNTDOWN PROCHAIN RDV -->
+    <!-- Countdown Banner Section -->
     <div class="countdown-banner">
       <div class="cd-left">
         <div class="cd-label">⚡ Prochain rendez-vous</div>
@@ -219,13 +219,13 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
       </div>
     </div>
 
-    <!-- LAYOUT -->
+    <!-- Layout Section -->
     <div class="agenda-layout">
 
-      <!-- COLONNE GAUCHE : Calendrier + RDV du jour -->
+      <!-- Left Column: Calendar & Today's Appointments Section -->
       <div>
 
-        <!-- CALENDRIER -->
+        <!-- Calendar Panel Section -->
         <div class="panel">
           <div class="panel-head">
             <div class="panel-head-left">
@@ -252,7 +252,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
           </div>
         </div>
 
-        <!-- RDV DU JOUR -->
+        <!-- Today's Appointments Panel Section -->
         <div class="panel">
           <div class="panel-head">
             <div class="panel-head-left">
@@ -294,7 +294,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
           </div>
         </div>
 
-        <!-- RDV A VENIR -->
+        <!-- Upcoming Appointments Panel Section -->
         <div class="panel">
           <div class="panel-head">
             <div class="panel-head-left">
@@ -344,10 +344,10 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 
       </div>
 
-      <!-- COLONNE DROITE -->
+      <!-- Right Column Section -->
       <div>
 
-        <!-- STATS RAPIDES -->
+        <!-- Statistics Panel Section -->
         <div class="panel">
           <div class="panel-head">
             <div class="panel-head-left">
@@ -391,7 +391,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
           </div>
         </div>
 
-        <!-- DISPONIBILITÉS -->
+        <!-- Availability Panel Section -->
         <div class="panel">
           <div class="panel-head">
             <div class="panel-head-left">
@@ -446,7 +446,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
           </div>
         </div>
 
-        <!-- FORMULAIRE RAPIDE -->
+        <!-- Quick Form Panel Section -->
         <div class="panel">
           <div class="panel-head">
             <div class="panel-head-left">
@@ -489,7 +489,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 </div>
 </div>
 
-<!-- MODAL NOUVEAU RDV -->
+<!-- Modal Overlay Section -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
   <div class="modal-box">
     <div class="modal-head">
@@ -523,11 +523,11 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 <div class="toast-box" id="toastBox"><i id="toastIco" class="fas fa-circle-check"></i><span id="toastMsg">OK</span></div>
 
 <script>
-/* Clock */
+/* Clock Script */
 function tick(){const n=new Date();const s=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('topClock');if(el)el.textContent=s;}
 tick();setInterval(tick,1000);
 
-/* Toast */
+/* Toast Notification Script */
 function toast(type,msg){
   const box=document.getElementById('toastBox'),ico=document.getElementById('toastIco'),m=document.getElementById('toastMsg');
   box.className='toast-box';
@@ -536,7 +536,7 @@ function toast(type,msg){
   box.classList.add('show');clearTimeout(window._tt);window._tt=setTimeout(()=>box.classList.remove('show'),3200);
 }
 
-/* Countdown vers 14h00 */
+/* Countdown Script */
 function updateCountdown(){
   const now=new Date();
   const target=new Date(now);target.setHours(14,0,0,0);
@@ -549,7 +549,7 @@ function updateCountdown(){
 }
 updateCountdown();setInterval(updateCountdown,1000);
 
-/* Calendrier */
+/* Calendar Script */
 const RDV_DAYS={4:[1],8:[2],13:[2],15:[1],17:[3],22:[1],28:[1]};
 let curDate=new Date();
 function renderCal(){
@@ -561,10 +561,8 @@ function renderCal(){
   const startDay=(first.getDay()+6)%7;
   const daysInMonth=new Date(year,month+1,0).getDate();
   const today=new Date();
-  // Jours mois précédent
   const prevDays=new Date(year,month,0).getDate();
   for(let i=startDay-1;i>=0;i--){const d=document.createElement('div');d.className='cal-day other-month';d.textContent=prevDays-i;grid.appendChild(d);}
-  // Jours du mois
   for(let d=1;d<=daysInMonth;d++){
     const el=document.createElement('div');el.className='cal-day';el.textContent=d;
     const isToday=d===today.getDate()&&month===today.getMonth()&&year===today.getFullYear();
@@ -573,9 +571,8 @@ function renderCal(){
     el.onclick=()=>selectDay(d,el);
     grid.appendChild(el);
   }
-  // Jours mois suivant
   const total=startDay+daysInMonth;const remaining=(7-total%7)%7;
-  for(let d=1;d<=remaining;d++){const el=document.createElement('div');el.className='cal-day other-month';el.textContent=d;grid.appendChild(el);}
+  for(let d=1;d<=remaining;d++){const el=document.createElement('div');el.className='cal-day other-month';d.textContent=d;grid.appendChild(el);}
 }
 function changeMonth(dir){curDate=new Date(curDate.getFullYear(),curDate.getMonth()+dir,1);renderCal();}
 function selectDay(d,el){
@@ -587,7 +584,7 @@ function selectDay(d,el){
 }
 renderCal();
 
-/* Modal */
+/* Modal Actions Script */
 function openModal(){document.getElementById('modalOverlay').classList.add('open');const d=new Date();document.getElementById('mDate').value=d.toISOString().split('T')[0];}
 function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
 function closeModalOutside(e){if(e.target===document.getElementById('modalOverlay'))closeModal();}
@@ -599,7 +596,7 @@ function saveRdv(){
 }
 function addRdvQuick(){toast('ok','Rendez-vous créé et ajouté au calendrier');}
 
-/* RDV actions */
+/* Appointment Action Script */
 function confirmRdv(btn){const item=btn.closest('.rdv-item');item.style.borderColor='var(--success)';item.style.background='#f0fdf4';btn.innerHTML='<i class="fas fa-check" style="color:var(--success);"></i>';toast('ok','Rendez-vous confirmé · Email envoyé au client');}
 function cancelRdv(btn){const item=btn.closest('.rdv-item');item.style.opacity='0';item.style.transform='translateX(20px)';item.style.transition='all .3s';setTimeout(()=>item.remove(),300);toast('warn','Rendez-vous annulé · Client notifié');}
 </script>

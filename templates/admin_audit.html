@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="fr"><head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Journal d'audit — ML2C Admin</title>
+<title>Journal d'audit</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -37,20 +37,20 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .btn-adm{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border-radius:9px;font-size:.78rem;font-weight:600;cursor:pointer;border:none;font-family:var(--ff-body);transition:all .2s;}
 .btn-rose{background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff;box-shadow:0 4px 12px rgba(193,0,122,.25);}
 .btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted);}.btn-ghost:hover{border-color:var(--rose);color:var(--rose);}
-/* KPI */
+/* KPI Section */
 .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
 .kbox{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:1.1rem;display:flex;align-items:center;gap:.85rem;box-shadow:0 2px 12px rgba(0,0,0,.055);transition:transform .2s;}.kbox:hover{transform:translateY(-2px);}
 .kbox-ico{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
 .ki-rose{background:var(--rose-l);color:var(--rose);}.ki-turq{background:var(--turq-l);color:var(--turq);}.ki-gold{background:var(--gold-l);color:var(--gold-d);}.ki-blue{background:#dbeafe;color:#2563eb;}.ki-red{background:#fee2e2;color:var(--danger);}
 .kbox-val{font-family:var(--ff-head);font-size:1.7rem;font-weight:700;line-height:1;}.kbox-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-top:.1rem;}
-/* FILTERS */
+/* Filters Section */
 .audit-toolbar{display:flex;gap:.75rem;margin-bottom:1.25rem;flex-wrap:wrap;align-items:center;}
 .search-box{display:flex;align-items:center;gap:.5rem;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.5rem .9rem;flex:1;min-width:220px;transition:border-color .2s;}
 .search-box:focus-within{border-color:var(--rose);}
 .search-box input{background:none;border:none;outline:none;font-size:.85rem;font-family:var(--ff-body);width:100%;color:var(--text);}
 .f-sel{border:1.5px solid var(--border);border-radius:9px;padding:.48rem .8rem;font-size:.8rem;font-family:var(--ff-body);color:var(--muted);background:var(--surface);outline:none;cursor:pointer;transition:border-color .2s;}
 .f-sel:focus{border-color:var(--rose);}
-/* TIMELINE */
+/* Timeline Section */
 .audit-timeline{display:flex;flex-direction:column;gap:0;}
 .audit-day{margin-bottom:1.75rem;}
 .audit-day-label{display:flex;align-items:center;gap:.75rem;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-bottom:1rem;}
@@ -83,7 +83,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 .tag-content{background:var(--gold-l);color:var(--gold-d);}
 .ae-desc{font-size:.78rem;color:var(--muted);line-height:1.5;}
 .ae-meta{display:flex;gap:1rem;margin-top:.4rem;font-size:.7rem;color:var(--faint);font-family:var(--ff-mono);}
-/* TOAST */
+/* Toast Section */
 .toast-box{position:fixed;bottom:1.25rem;right:1.25rem;z-index:9999;display:flex;align-items:center;gap:.65rem;padding:.75rem 1.1rem;border-radius:10px;font-size:.8rem;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.15);transform:translateY(80px);opacity:0;transition:all .3s cubic-bezier(.34,1.2,.64,1);pointer-events:none;}
 .toast-box.show{transform:translateY(0);opacity:1;}.toast-ok{background:#0d2e23;color:#4ade80;border:1px solid rgba(74,222,128,.2);}
 .fadeUp{animation:fadeUp .4s both;}
@@ -133,7 +133,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
   </div>
   <div class="adm-content">
 
-    <!-- KPI -->
+    <!-- KPI Section -->
     <div class="kpi-row fadeUp">
       <div class="kbox"><div class="kbox-ico ki-blue"><i class="fas fa-list-check"></i></div><div><div class="kbox-lbl">Événements (30j)</div><div class="kbox-val">384</div></div></div>
       <div class="kbox"><div class="kbox-ico ki-rose"><i class="fas fa-user-shield"></i></div><div><div class="kbox-lbl">Connexions admin</div><div class="kbox-val">28</div></div></div>
@@ -141,7 +141,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
       <div class="kbox"><div class="kbox-ico ki-turq"><i class="fas fa-pen-to-square"></i></div><div><div class="kbox-lbl">Modifications</div><div class="kbox-val">156</div></div></div>
     </div>
 
-    <!-- Filtres -->
+    <!-- Filters Section -->
     <div class="audit-toolbar fadeUp" style="animation-delay:.08s">
       <div class="search-box"><i class="fas fa-search" style="color:var(--faint);font-size:.78rem;"></i><input type="text" placeholder="Rechercher dans les logs…" id="auditSearch" oninput="filterAudit()"></div>
       <select class="f-sel" id="auditCat" onchange="filterAudit()">
@@ -161,7 +161,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
       <input type="date" class="f-sel" value="2025-04-10">
     </div>
 
-    <!-- Timeline -->
+    <!-- Timeline Section -->
     <div class="audit-timeline">
       <!-- 10 Avril -->
       <div class="audit-day">
@@ -274,6 +274,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 <div class="toast-box toast-ok" id="toastBox"><i class="fas fa-circle-check"></i><span id="toastMsg">Action effectuée</span></div>
 {% include "footer.html" %}
 <script>
+/* Audit Filtering Script */
 function filterAudit(){
   const q=document.getElementById('auditSearch').value.toLowerCase();
   const cat=document.getElementById('auditCat').value;
@@ -286,6 +287,8 @@ function filterAudit(){
     e.style.display=ok?'':'none';
   });
 }
+
+/* Toast Notification Script */
 function toast(msg){const b=document.getElementById('toastBox');document.getElementById('toastMsg').textContent=msg;b.classList.add('show');setTimeout(()=>b.classList.remove('show'),2800);}
 </script>
 </body></html>

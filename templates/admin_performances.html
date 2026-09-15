@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="fr"><head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Performances — ML2C Admin</title>
+<title>Performances</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -148,7 +148,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
   </div>
   <div class="adm-content">
 
-    <!-- KPI HERO -->
+    <!-- KPI Hero Section -->
     <div class="kpi-hero fadeUp">
       <div class="kh-card kh-rose">
         <div class="kh-top"><div class="kh-label">Temps de réponse moyen</div><div class="kh-ico"><i class="fas fa-bolt"></i></div></div>
@@ -172,7 +172,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
       </div>
     </div>
 
-    <!-- JAUGES RESSOURCES -->
+    <!-- Gauge Resources Section -->
     <div class="gauge-wrap fadeUp" style="animation-delay:.1s">
       <div class="gauge-card">
         <div class="gauge-title">CPU Usage</div>
@@ -212,7 +212,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
       </div>
     </div>
 
-    <!-- CHARTS -->
+    <!-- Chart Grid Section -->
     <div class="chart-grid fadeUp" style="animation-delay:.15s">
       <div class="panel">
         <div class="panel-head">
@@ -239,7 +239,7 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
       </div>
     </div>
 
-    <!-- DERNIÈRES REQUÊTES -->
+    <!-- Recent Requests Section -->
     <div class="panel fadeUp" style="animation-delay:.2s">
       <div class="panel-head">
         <div class="panel-title"><i class="fas fa-terminal" style="color:var(--rose);font-size:.85rem;"></i>Dernières requêtes <span id="liveCount" style="font-size:.7rem;font-weight:400;color:var(--muted);margin-left:.35rem;">· actualisation auto</span></div>
@@ -266,17 +266,17 @@ body{background:var(--bg);font-family:var(--ff-body);color:var(--text);}
 <div class="toast-box toast-ok" id="toastBox"><i class="fas fa-circle-check"></i><span id="toastMsg">Action effectuée</span></div>
 {% include "footer.html" %}
 <script>
-// ── Chart Temps de réponse ──
+/* Response Time Chart Section */
 const labels24=[...Array(24)].map((_,i)=>`${String(i).padStart(2,'0')}:00`);
 const respData=[95,82,78,90,110,185,230,312,289,254,190,165,148,175,202,185,148,132,119,108,97,88,82,87];
 const ctx1=document.getElementById('respChart').getContext('2d');
 const respChart=new Chart(ctx1,{type:'line',data:{labels:labels24,datasets:[{label:'Réponse (ms)',data:respData,borderColor:'#C1007A',backgroundColor:'rgba(193,0,122,.08)',borderWidth:2,tension:.4,fill:true,pointRadius:2,pointHoverRadius:5,pointBackgroundColor:'#C1007A'}]},options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.parsed.y}ms`}}},scales:{x:{grid:{display:false},ticks:{font:{size:10},maxTicksLimit:8}},y:{grid:{color:'#f3f4f6'},ticks:{font:{size:10},callback:v=>v+'ms'}}}}});
 
-// ── Chart HTTP codes ──
+/* HTTP Codes Chart Section */
 const ctx2=document.getElementById('httpChart').getContext('2d');
 new Chart(ctx2,{type:'doughnut',data:{labels:['2xx','3xx','4xx','5xx'],datasets:[{data:[94.3,3.8,1.9,0],backgroundColor:['#10b981','#f59e0b','#ef4444','#7c3aed'],borderWidth:3,borderColor:'#fff',hoverOffset:6}]},options:{responsive:true,cutout:'72%',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.parsed}%`}}}}});
 
-// ── Live KPI update ──
+/* Live KPI Update Section */
 let liveRunning=true;
 setInterval(()=>{
   if(!liveRunning)return;

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Erreur 429 - Trop de requêtes | ML2C Conseil</title>
+  <title>Erreur 429 Trop de requêtes</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@400;500&display=swap">
@@ -55,7 +55,7 @@
     .err429-illus { width: 100%; max-width: 460px; margin-bottom: 1.75rem; }
     .err429-illus svg { width: 100%; height: auto; display: block; }
 
-    /* Countdown */
+    /* Countdown Section */
     .err429-countdown {
       width: 100%; max-width: 400px;
       background: linear-gradient(135deg, #f5f3ff, #ede9fe);
@@ -98,7 +98,7 @@
       max-width: 480px; line-height: 1.65; margin-bottom: 2rem;
     }
 
-    /* Stats requêtes */
+    /* Request Stats Section */
     .err429-stats {
       display: grid; grid-template-columns: repeat(3,1fr);
       gap: .75rem; width: 100%; max-width: 500px; margin-bottom: 2rem;
@@ -164,22 +164,22 @@
 
       <div class="err429-code">429</div>
 
-      <!-- Illustration SVG trop de requêtes -->
+      <!-- Request Illustration SVG Section -->
       <div class="err429-illus">
         <svg viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg">
-          <!-- Lignes de grille -->
+          <!-- Grid Lines Section -->
           <line x1="0" y1="110" x2="460" y2="110" stroke="#e5e7eb" stroke-width="1"/>
           <line x1="0" y1="80" x2="460" y2="80" stroke="#e5e7eb" stroke-width=".5" stroke-dasharray="4 4"/>
           <line x1="0" y1="50" x2="460" y2="50" stroke="#e5e7eb" stroke-width=".5" stroke-dasharray="4 4"/>
 
-          <!-- Barres normales -->
+          <!-- Normal Bars Section -->
           <rect x="10" y="75" width="22" height="35" rx="4" fill="#c4b5fd"/>
           <rect x="40" y="60" width="22" height="50" rx="4" fill="#c4b5fd"/>
           <rect x="70" y="70" width="22" height="40" rx="4" fill="#c4b5fd"/>
           <rect x="100" y="55" width="22" height="55" rx="4" fill="#c4b5fd"/>
           <rect x="130" y="65" width="22" height="45" rx="4" fill="#c4b5fd"/>
 
-          <!-- Barres qui explosent (rouge) -->
+          <!-- Exploding Bars Section -->
           <rect x="160" y="20" width="22" height="90" rx="4" fill="#ef4444" opacity=".9">
             <animate attributeName="height" values="90;100;90" dur="1s" repeatCount="indefinite"/>
             <animate attributeName="y" values="20;10;20" dur="1s" repeatCount="indefinite"/>
@@ -193,11 +193,11 @@
             <animate attributeName="y" values="5;0;5" dur=".6s" repeatCount="indefinite"/>
           </rect>
 
-          <!-- Ligne limite dépassée -->
+          <!-- Limit Exceeded Line Section -->
           <line x1="0" y1="15" x2="460" y2="15" stroke="#ef4444" stroke-width="2" stroke-dasharray="6 3" opacity=".7"/>
           <text x="350" y="12" font-size="9" fill="#ef4444" font-weight="700" font-family="sans-serif">LIMITE</text>
 
-          <!-- Barres grises après le pic -->
+          <!-- Post-Peak Grey Bars Section -->
           <rect x="250" y="40" width="22" height="70" rx="4" fill="#d1d5db" opacity=".5">
             <animate attributeName="opacity" values=".5;.2;.5" dur="1.5s" repeatCount="indefinite"/>
           </rect>
@@ -220,7 +220,7 @@
             <animate attributeName="opacity" values=".1;.03;.1" dur="2.1s" repeatCount="indefinite"/>
           </rect>
 
-          <!-- Explosion particules -->
+          <!-- Explosion Particles Section -->
           <circle cx="231" cy="5" r="3" fill="#ef4444" opacity=".8">
             <animate attributeName="cy" values="5;-8;5" dur=".6s" repeatCount="indefinite"/>
             <animate attributeName="opacity" values=".8;0;.8" dur=".6s" repeatCount="indefinite"/>
@@ -245,7 +245,7 @@
         Vous avez effectué trop de demandes en peu de temps. Notre système de protection a temporairement bloqué votre accès. Veuillez patienter avant de réessayer.
       </p>
 
-      <!-- Countdown -->
+      <!-- Countdown Container Section -->
       <div class="err429-countdown">
         <h5><i class="fas fa-hourglass-half" style="margin-right:.4rem;"></i>Réactivation automatique dans</h5>
         <div class="countdown-timer" id="countdownDisplay">00:60</div>
@@ -255,7 +255,7 @@
         </div>
       </div>
 
-      <!-- Stats -->
+      <!-- Stats Grid Section -->
       <div class="err429-stats">
         <div class="err429-stat">
           <div class="err429-stat-val">60</div>
@@ -296,6 +296,7 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    /* Countdown Timer Logic Script */
     let seconds = 60;
     const display = document.getElementById('countdownDisplay');
     const bar = document.getElementById('countdownBar');

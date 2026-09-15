@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="fr"><head>
+<html lang="en"><head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Export des Données — ML2C Admin</title>
+  <title>Export des Données</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -25,6 +25,7 @@
     @keyframes pp{0%,100%{opacity:1}50%{opacity:.3}}
     .main{padding:2.5rem 0 5rem;}
 
+    /* Export Grid Section */
     .export-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;margin-bottom:2rem;}
     .export-card{background:var(--surface);border-radius:20px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.055);padding:1.75rem;transition:transform .25s,box-shadow .25s,border-color .25s;animation:fadeUp .45s both;position:relative;overflow:hidden;}
     @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
@@ -56,7 +57,7 @@
     .ec-btn:hover{transform:translateY(-1px);filter:brightness(1.08);}
     .ec-btn:active{transform:translateY(0);}
 
-    /* Progress modal */
+    /* Progress Modal Section */
     .progress-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);z-index:9999;display:none;align-items:center;justify-content:center;}
     .progress-overlay.show{display:flex;}
     .progress-modal{background:var(--surface);border-radius:20px;padding:2.5rem;width:100%;max-width:420px;box-shadow:0 24px 64px rgba(0,0,0,.3);text-align:center;}
@@ -68,7 +69,7 @@
     .pm-pct{font-size:.75rem;font-family:var(--ff-mono);color:var(--muted);margin-bottom:1.5rem;}
     .pm-close{padding:.65rem 1.75rem;border-radius:10px;background:var(--success);color:#fff;border:none;font-size:.85rem;font-weight:600;cursor:pointer;font-family:var(--ff-body);display:none;}
 
-    /* Historique exports */
+    /* History Panel Section */
     .history-panel{background:var(--surface);border-radius:18px;border:1.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,.05);overflow:hidden;}
     .hp-head{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.4rem;background:#fafbfc;border-bottom:1px solid var(--border);}
     .hp-title{font-size:.82rem;font-weight:700;color:var(--text);}
@@ -91,7 +92,7 @@
   <div class="container hero-inner">
     <div class="hero-breadcrumb"><a href="{{ url_for('admin_dashboard') }}">Dashboard</a><span>/</span> Export des données</div>
     <h1 class="page-title">Export des <span class="t-green">données</span></h1>
-    <div class="page-sub"><span class="live-pip"></span> ADMIN ONLY · CHIFFREMENT AES-256 · <span id="heroTime">--:--:--</span></div>
+    <div class="page-sub"><span class="live-pip"></span> RÉSERVÉ À L'ADMINISTRATEUR · CHIFFREMENT AES-256 · <span id="heroTime">--:--:--</span></div>
   </div>
   <svg class="page-wave" viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,0 C480,60 960,60 1440,0 L1440,60 L0,60 Z" fill="#f2f4f8"/></svg>
 </div>
@@ -144,7 +145,7 @@
       </div>
     </div>
 
-    <!-- Historique -->
+    <!-- History Section -->
     <div class="history-panel">
       <div class="hp-head"><div class="hp-title">Historique des exports récents</div></div>
       <div class="hp-item"><div class="hp-ico"><i class="fas fa-comments"></i></div><div><div class="hp-name">questions-chatbot-2025-04.csv</div><div class="hp-meta">Hier · 14:32 · 12.4 KB</div></div><button class="hp-dl"><i class="fas fa-download"></i> Re-télécharger</button></div>
@@ -155,7 +156,7 @@
   </div>
 </div>
 
-<!-- Progress modal -->
+<!-- Progress Modal Section -->
 <div class="progress-overlay" id="progressOverlay">
   <div class="progress-modal">
     <div class="pm-ico"><i class="fas fa-download"></i></div>
@@ -171,9 +172,11 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+/* Clock Section */
 function tick(){const n=new Date();const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');const el=document.getElementById('heroTime');if(el)el.textContent=t;}
 tick();setInterval(tick,1000);
 
+/* Export Progress Section */
 const steps=['Connexion à la base de données…','Extraction des données…','Formatage et validation…','Compression du fichier…','Prêt au téléchargement'];
 function startExport(name){
   document.getElementById('progressOverlay').classList.add('show');

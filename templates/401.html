@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Erreur 401 - Accès non autorisé | ML2C Conseil</title>
+  <title>Erreur 401 Accès non autorisé</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@400;500&display=swap">
@@ -76,7 +76,7 @@
       margin-bottom: .75rem;
     }
 
-    /* Illustration verrou animé */
+    /* Animated Lock Illustration Section */
     .err401-illus {
       width: 100%;
       max-width: 420px;
@@ -126,7 +126,7 @@
       margin-bottom: 2rem;
     }
 
-    /* Info box */
+    /* Info Box Section */
     .err401-info-box {
       width: 100%;
       max-width: 500px;
@@ -155,7 +155,7 @@
     }
     .err401-info-row i { color: #f59e0b; width: 16px; flex-shrink: 0; }
 
-    /* Formulaire connexion rapide */
+    /* Quick Login Form Section */
     .err401-login-box {
       width: 100%;
       max-width: 400px;
@@ -281,35 +281,35 @@
 
       <div class="err401-code">401</div>
 
-      <!-- Illustration verrou SVG -->
+      <!-- Lock Illustration SVG Section -->
       <div class="err401-illus">
         <svg viewBox="0 0 420 160" xmlns="http://www.w3.org/2000/svg">
-          <!-- Halo de fond -->
+          <!-- Background Halo Section -->
           <circle cx="210" cy="80" r="65" fill="#f59e0b" class="shield-pulse"/>
           <circle cx="210" cy="80" r="50" fill="#fef3c7" opacity=".3"/>
 
-          <!-- Corps du verrou -->
+          <!-- Lock Body Section -->
           <g class="lock-body" style="transform-origin:210px 80px;">
-            <!-- Arceau -->
+            <!-- Shackle Section -->
             <path d="M178 72 C178 50 242 50 242 72" fill="none" stroke="#f59e0b" stroke-width="10" stroke-linecap="round"/>
-            <!-- Corps principal -->
+            <!-- Main Housing Section -->
             <rect x="168" y="72" width="84" height="64" rx="10" fill="#5C666B"/>
-            <!-- Reflet -->
+            <!-- Highlight Section -->
             <rect x="174" y="78" width="72" height="4" rx="2" fill="rgba(255,255,255,.15)"/>
-            <!-- Trou de serrure -->
+            <!-- Keyhole Section -->
             <g class="lock-keyhole">
               <circle cx="210" cy="100" r="10" fill="#f59e0b"/>
               <rect x="206" y="100" width="8" height="14" rx="4" fill="#f59e0b"/>
             </g>
           </g>
 
-          <!-- Éclairs de sécurité -->
+          <!-- Security Sparkles Section -->
           <text x="130" y="55" font-size="18" opacity=".6" style="animation:err401Blink 1.8s .2s infinite">🔒</text>
           <text x="265" y="55" font-size="18" opacity=".6" style="animation:err401Blink 1.8s .6s infinite">⚠️</text>
           <text x="148" y="140" font-size="14" opacity=".5" style="animation:err401Blink 2s 1s infinite">🛡️</text>
           <text x="248" y="140" font-size="14" opacity=".5" style="animation:err401Blink 2s .4s infinite">🔑</text>
 
-          <!-- Barres de code côté gauche -->
+          <!-- Left Code Bars Section -->
           <rect x="20" y="40" width="90" height="6" rx="3" fill="#e5e7eb"/>
           <rect x="20" y="54" width="70" height="6" rx="3" fill="#e5e7eb"/>
           <rect x="20" y="68" width="80" height="6" rx="3" fill="#fcd34d" opacity=".8"/>
@@ -317,7 +317,7 @@
           <rect x="20" y="96" width="75" height="6" rx="3" fill="#e5e7eb"/>
           <rect x="20" y="110" width="50" height="6" rx="3" fill="#fca5a5" opacity=".8"/>
 
-          <!-- Barres de code côté droit -->
+          <!-- Right Code Bars Section -->
           <rect x="310" y="40" width="90" height="6" rx="3" fill="#e5e7eb"/>
           <rect x="320" y="54" width="70" height="6" rx="3" fill="#e5e7eb"/>
           <rect x="315" y="68" width="80" height="6" rx="3" fill="#e5e7eb"/>
@@ -334,7 +334,7 @@
         Cette page est réservée aux clients ML2C CONSEIL connectés. Veuillez vous identifier pour accéder à votre espace personnel et à vos documents.
       </p>
 
-      <!-- Info box -->
+      <!-- Info Box Section -->
       <div class="err401-info-box">
         <h5><i class="fas fa-info-circle" style="margin-right:.4rem;color:#f59e0b;"></i>Pourquoi ce message ?</h5>
         <div class="err401-info-row"><i class="fas fa-clock"></i> Votre session a peut-être expiré après inactivité</div>
@@ -342,7 +342,7 @@
         <div class="err401-info-row"><i class="fas fa-shield-alt"></i> La page requiert une authentification préalable</div>
       </div>
 
-      <!-- Formulaire connexion rapide -->
+      <!-- Quick Login Form Section -->
       <div class="err401-login-box">
         <h4><i class="fas fa-sign-in-alt" style="color:var(--rose);margin-right:.5rem;"></i>Connexion rapide</h4>
         <div class="err401-field">
@@ -381,6 +381,7 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    /* Login Script Logic */
     function tryLogin() {
       const email = document.getElementById('loginEmail').value.trim();
       const pwd = document.getElementById('loginPwd').value.trim();

@@ -1,17 +1,22 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Notre Histoire — ML2C CONSEIL</title>
+  <title>Notre Histoire</title>
+  <!-- Bootstrap CSS (CDN) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Custom CSS file -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
 {% include "header.html" %}
 
+<!-- HERO SECTION -->
 <section class="page-hero">
   <div class="container ph-inner">
     <ol class="breadcrumb-ml2c">
@@ -26,6 +31,7 @@
   </div>
 </section>
 
+<!-- NUMERICAL FIGURES SECTION -->
 <section class="sec sec-grey">
   <div class="container">
     <div class="text-center mb-5" data-anim="fade">
@@ -50,11 +56,11 @@
         <div class="kpi-val">6<sup>j/7</sup></div>
         <div class="kpi-txt">Délai de réponse</div>
       </div>
-      </div>
     </div>
   </div>
 </section>
 
+<!-- TIMELINE / JOURNEY SECTION -->
 <section class="sec sec-white">
   <div class="container">
     <div class="text-center mb-5" data-anim="fade">
@@ -63,6 +69,7 @@
       <div class="barre c"></div>
     </div>
 
+    <!-- Step 1: Foundation -->
     <div class="histoire-bloc pair" data-anim="fade">
       <div class="hb-visuel v1">
         <div class="hb-icon-wrap"><i class="fas fa-landmark"></i></div>
@@ -76,12 +83,13 @@
       </div>
     </div>
 
+    <!-- Step 2: Consolidation -->
     <div class="histoire-bloc impair" data-anim="fade" style="transition-delay:.08s">
       <div class="hb-texte">
         <span class="label-tag">La croissance</span>
         <h2>Une réputation bâtie sur la rigueur</h2>
         <div class="barre"></div>
-        <p>Au fil des années, le cabinet a consolidé sa réputation sur le marché. Il a su évoluer avec les changements législatifs et économiques. Chaque projet a été abordé avec rigueur et détermination. Les stratégies adoptées se sont révélées efficaces et novatrices. Le savoir-faire de ML2C CONSEIL a été reconnu par de nombreux partenaires. Des solutions sur mesure ont été élaborées pour répondre à chaque besoin. L'expertise combinée en comptabilité, droit et social a permis d'optimiser les résultats. Les retours positifs des clients témoignent de la qualité du service. Le cabinet investit constamment dans la formation de son équipe. Cette approche proactive assure une adaptation continue aux évolutions du secteur.</p>
+        <p>Au fil des années, le cabinet a consolidé sa réputation sur le marché. Il a su évoluer avec les changements législatifs et économiques. Chaque projet a été abordé avec rigueur et détermination. Les stratégies adoptées se sont révélées efficaces et novatrices. Le savoir-faire de ML2C CONSEIL a été reconnu par de nombreux partenaires. Des solutions sur mesure ont été élaborées pour répondre à chaque besoin. L'expertise combinée en comptabilité, droit et social a permis d'optimiser les résultats. Les retours positifs des clients témoignent de la qualité du service. Le cabinet investit constamment dans la formation de son équipe. Cette approche proactive assure une adaptation continuous aux évolutions du secteur.</p>
       </div>
       <div class="hb-visuel v2">
         <div class="hb-icon-wrap"><i class="fas fa-chart-line"></i></div>
@@ -89,6 +97,7 @@
       </div>
     </div>
 
+    <!-- Step 3: Leadership -->
     <div class="histoire-bloc pair" data-anim="fade" style="transition-delay:.16s">
       <div class="hb-visuel v3">
         <div class="hb-icon-wrap"><i class="fas fa-medal"></i></div>
@@ -105,6 +114,7 @@
   </div>
 </section>
 
+<!-- CALL TO ACTION SECTION -->
 <section class="sec sec-grey">
   <div class="container">
     <div class="cta-bande" data-anim="fade">
@@ -122,8 +132,10 @@
 
 {% include "footer.html" %}
 
+<!-- Bootstrap & jQuery JS Scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Custom JS file -->
 <script src="{{ url_for('static', filename='js/notre_histoire.js') }}"></script>
 </body>
 </html>

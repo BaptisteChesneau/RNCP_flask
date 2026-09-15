@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Accès Administrateur — ML2C CONSEIL</title>
+  <title>Accès Administrateur</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -36,7 +36,7 @@
       color: var(--text);
     }
 
-    /* ══ CANVAS ANIMÉ ══ */
+    /* ══ ANIMATED CANVAS ══ */
     #bgCanvas {
       position: fixed;
       inset: 0;
@@ -44,7 +44,7 @@
       pointer-events: none;
     }
 
-    /* ══ SCANLINES EFFET ══ */
+    /* ══ SCANLINES EFFECT ══ */
     .scanlines {
       position: fixed;
       inset: 0;
@@ -59,7 +59,7 @@
       );
     }
 
-    /* ══ MISE EN PAGE ÉPURÉE ══ */
+    /* ══ CLEAN LAYOUT ══ */
     .page {
       position: relative;
       z-index: 2;
@@ -70,7 +70,7 @@
       padding: 2rem;
     }
 
-    /* ════ CARD LOGIN ════ */
+    /* ════ LOGIN CARD ════ */
     .login-card {
       width: 100%;
       max-width: 480px;
@@ -86,7 +86,7 @@
       to   { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* Barre de progression top */
+    /* Top progress bar */
     .card-progress-bar {
       height: 3px;
       background: linear-gradient(90deg, var(--rose), var(--gold), var(--turq));
@@ -95,14 +95,14 @@
     }
     @keyframes progressShift { 0%{background-position:0%} 100%{background-position:200%} }
 
-    /* Header card */
+    /* Card header */
     .card-head {
       padding: 2.25rem 2.25rem 0;
       text-align: center;
       position: relative;
     }
 
-    /* Badge ADMIN flottant */
+    /* Floating ADMIN badge */
     .admin-crown {
       position: absolute;
       top: 0;
@@ -136,7 +136,7 @@
       padding: .15rem .4rem;
     }
 
-    /* Avatar principal avec anneau rotatif */
+    /* Main avatar with rotating ring */
     .av-ring {
       position: relative;
       display: inline-block;
@@ -200,7 +200,7 @@
       margin-bottom: 1.25rem;
     }
 
-    /* Chips de rôle */
+    /* Role chips */
     .role-chips {
       display: flex;
       justify-content: center;
@@ -223,14 +223,14 @@
     .chip-secure { background: var(--turq-xl); border: 1px solid rgba(79,166,149,.2); color: var(--turq-d); }
     .chip-level  { background: var(--rose-xl); border: 1px solid rgba(193,0,122,.2); color: var(--rose); }
 
-    /* Séparateur */
+    /* Divider */
     .card-divider {
       height: 1px;
       background: var(--border);
       margin: 0 2.25rem;
     }
 
-    /* Formulaire */
+    /* Form */
     .card-form { padding: 1.5rem 2.25rem 0; }
 
     /* Flash messages */
@@ -250,7 +250,7 @@
     .flash-x { margin-left: auto; background: none; border: none; cursor: pointer; color: inherit; opacity: .4; padding: 0; }
     .flash-x:hover { opacity: 1; }
 
-    /* Champs de saisie */
+    /* Input fields */
     .f-group { margin-bottom: 1.1rem; }
     .f-label {
       display: flex;
@@ -330,7 +330,7 @@
     }
     .f-eye:hover { color: var(--text); }
 
-    /* Indicateur de force */
+    /* Strength indicator */
     .strength-wrap { margin-top: .5rem; display: flex; align-items: center; gap: .5rem; }
     .strength-bars { display: flex; gap: .3rem; flex: 1; }
     .s-bar { flex: 1; height: 3px; border-radius: 2px; background: var(--border2); transition: background .3s; }
@@ -339,7 +339,7 @@
     .s-bar.s { background: #22c55e; }
     .strength-text { font-size: .62rem; color: var(--muted); min-width: 40px; }
 
-    /* Options formulaire */
+    /* Form options */
     .f-options {
       display: flex;
       align-items: center;
@@ -383,7 +383,7 @@
     .f-forgot { font-size: .75rem; color: var(--rose); text-decoration: none; }
     .f-forgot:hover { text-decoration: underline; }
 
-    /* BOUTON ADMIN AUX COULEURS DE LA CHARTE (ROSE ML2C) */
+    /* ADMIN BUTTON WITH BRAND COLOR (ML2C ROSE) */
     .btn-admin {
       width: 100%;
       padding: .95rem;
@@ -423,7 +423,7 @@
     .btn-admin.loading .btn-text { display: none; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Barre de tentatives et session */
+    /* Attempts and session bar */
     .attempts-strip {
       display: flex;
       align-items: center;
@@ -452,7 +452,7 @@
       color: var(--faint);
     }
 
-    /* Footer de la carte */
+    /* Card footer */
     .card-foot {
       padding: 1.25rem 2.25rem;
       margin-top: .5rem;
@@ -490,7 +490,7 @@
 </head>
 <body>
 
-<!-- Canvas de fond animé -->
+<!-- Animated background canvas -->
 <canvas id="bgCanvas"></canvas>
 <div class="scanlines"></div>
 
@@ -635,7 +635,7 @@
         <i class="fas fa-arrow-left"></i> Retour à l'interface chatbot
       </a>
       <div class="card-legal">
-        Accès strictement réservé aux administrateurs ML2C CONSEIL<br>
+        Accès strictly réservé aux administrateurs ML2C CONSEIL<br>
         Toute tentative non autorisée est enregistrée et tracée<br>
         <a href="#">Politique de sécurité</a> · <a href="#">RGPD</a> · © 2026 ML2C CONSEIL
       </div>
@@ -648,7 +648,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-/* ════ CANVAS ANIMÉ ════ */
+/* ════ ANIMATED CANVAS ════ */
 const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
 let W, H, particles = [];
@@ -717,7 +717,7 @@ function animCanvas() {
 }
 animCanvas();
 
-/* Session ID dynamique */
+/* Dynamic Session ID */
 function genSessionId() {
   const chars = 'ABCDEF0123456789';
   let id = '';
@@ -726,7 +726,7 @@ function genSessionId() {
 }
 genSessionId();
 
-/* Afficher/Masquer Mot de passe */
+/* Password visibility toggle */
 function toggleEye() {
   const inp = document.getElementById('password');
   const ico = document.getElementById('eyeIcon');
@@ -734,7 +734,7 @@ function toggleEye() {
   else { inp.type = 'password'; ico.className = 'fas fa-eye'; }
 }
 
-/* Force du mot de passe */
+/* Password strength evaluation */
 function updateStrength(val) {
   const bars = ['sb1','sb2','sb3','sb4'].map(id => document.getElementById(id));
   const txt = document.getElementById('strengthText');
@@ -752,7 +752,7 @@ function updateStrength(val) {
   txt.style.color = cls === 'w' ? '#dc2626' : cls === 'm' ? '#b08d57' : '#22c55e';
 }
 
-/* Tentatives de connexion */
+/* Login attempts counter */
 function updateAttempts(n) {
   document.querySelectorAll('.a-dot').forEach((d, i) => d.classList.toggle('used', i < n));
 }

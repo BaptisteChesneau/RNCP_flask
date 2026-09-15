@@ -3,10 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Politique de Confidentialité, ML2C CONSEIL</title>
+  <title>Politique de Confidentialité</title>
+  <!-- Bootstrap CSS (CDN) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Custom CSS file -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <style>
 
@@ -40,7 +44,7 @@
     .ph-title em { color: #5eead4; font-style: italic; }
     .ph-sub { font-size: .95rem; color: rgba(255,255,255,.62); max-width: 520px; line-height: 1.8; margin: 0; }
 
-    /* BADGES HERO */
+    /* HERO BADGES */
     .ph-badges { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: 1.5rem; }
     .ph-badge {
       display: inline-flex; align-items: center; gap: .4rem;
@@ -50,14 +54,14 @@
     }
     .ph-badge i { color: #5eead4; }
 
-    /* LAYOUT PRINCIPAL */
+    /* MAIN LAYOUT */
     .rgpd-layout {
       display: grid; grid-template-columns: 280px 1fr;
       gap: 3rem; align-items: start;
       padding: 4rem 0 5rem;
     }
 
-    /* SIDEBAR STICKY */
+    /* STICKY SIDEBAR */
     .rgpd-sidebar {
       position: sticky; top: 90px;
     }
@@ -95,7 +99,7 @@
     .sidebar-nav li a:hover .s-num,
     .sidebar-nav li a.active .s-num { opacity: 1; }
 
-    /* BOX INFO DATE */
+    /* DATE INFO BOX */
     .sidebar-meta {
       margin-top: 1rem; background: #fff; border-radius: 16px;
       box-shadow: 0 2px 16px rgba(0,0,0,.08);
@@ -110,7 +114,7 @@
     .meta-item i { color: #4FA695; width: 16px; text-align: center; flex-shrink: 0; }
     .meta-item strong { color: #333; display: block; font-size: .78rem; }
 
-    /* CONTENU SECTIONS */
+    /* SECTION CONTENT */
     .rgpd-content { min-width: 0; }
 
     .section-rgpd {
@@ -183,7 +187,7 @@
       line-height: 1.85; margin: 0;
     }
 
-    /* Points clés sous forme de liste */
+    /* Key Points List */
     .key-points {
       display: grid; grid-template-columns: 1fr 1fr;
       gap: .6rem; margin-top: 1.25rem;
@@ -195,7 +199,7 @@
     }
     .kp i { color: #4FA695; flex-shrink: 0; margin-top: .1rem; }
 
-    /* DROITS UTILISATEURS grid spéciale */
+    /* USER RIGHTS Special Grid */
     .droits-grid {
       display: grid; grid-template-columns: repeat(3, 1fr);
       gap: .75rem; margin-top: 1.25rem;
@@ -209,7 +213,7 @@
     .droit-card i { font-size: 1.3rem; color: #C1007A; display: block; margin-bottom: .5rem; }
     .droit-card span { font-size: .78rem; font-weight: 600; color: #333; }
 
-    /* BANNIÈRE CONTACT RGPD */
+    /* GDPR CONTACT BANNER */
     .rgpd-contact-banner {
       background: linear-gradient(135deg, #3d4549 0%, #2d3436 100%);
       border-radius: 20px; padding: 2.5rem;
@@ -238,7 +242,7 @@
     }
     .btn-rgpd-contact:hover { background: #9a0062; color: #fff; transform: translateY(-2px); text-decoration: none; }
 
-    /* PROGRESS BAR DE LECTURE */
+    /* READING PROGRESS BAR */
     #read-progress {
       position: fixed; top: 0; left: 0; height: 3px;
       background: linear-gradient(90deg, #C1007A, #4FA695);
@@ -252,7 +256,7 @@
     [data-anim="right"] { transform: translateX(22px); }
     [data-anim].visible { opacity: 1; transform: translate(0); }
 
-    /* RESPONSIVE */
+    /* RESPONSIVE DESIGN */
     @media(max-width: 992px) {
       .rgpd-layout { grid-template-columns: 1fr; }
       .rgpd-sidebar { position: static; }
@@ -290,7 +294,7 @@
   </div>
 </section>
 
-<!-- LAYOUT PRINCIPAL -->
+<!-- MAIN LAYOUT -->
 <div style="background: #f5f6f7;">
 <div class="container">
 <div class="rgpd-layout">
@@ -318,10 +322,10 @@
     </div>
   </aside>
 
-  <!-- CONTENU -->
+  <!-- CONTENT -->
   <main class="rgpd-content">
 
-    <!-- S1 Principes fondamentaux -->
+    <!-- S1 Fundamental Principles -->
     <div class="section-rgpd open" id="s1" data-anim="fade">
       <div class="section-header-rgpd" onclick="toggleSection(this)">
         <div class="section-icon icon-turq"><i class="fas fa-balance-scale"></i></div>
@@ -334,7 +338,7 @@
       </div>
       <div class="section-divider"></div>
       <div class="section-body">
-        <p>ML2C CONSEIL s'engage à protéger vos données personnelles en veillant à ce que chaque information recueillie soit traitée avec la plus grande rigueur et transparence. Notre politique repose sur des principes de respect, de confidentialité et de sécurité. Nous limitons la collecte de données aux seuls éléments strictement nécessaires à l'amélioration de nos services et à la personnalisation de votre expérience.</p>
+        <p>ML2C CONSEIL s'engage à protéger vos données personnelles en veillant à ce que chaque information recueillie soit traitée avec la plus grande rigueur et transparence. Notre politique repose sur des principes de respect, de confidentialité et de sécurité. Nous limitons la collecte de données aux seuls éléments strictly nécessaires à l'amélioration de nos services et à la personnalisation de votre expérience.</p>
         <p style="margin-top:.75rem;">La sécurité de vos informations est assurée par des protocoles de chiffrement et des mesures techniques avancées, garantissant ainsi que seul un personnel autorisé puisse y accéder. Nous réalisons régulièrement des audits de sécurité pour nous assurer que nos pratiques restent conformes aux exigences du RGPD.</p>
         <div class="key-points">
           <div class="kp"><i class="fas fa-check-circle"></i> Minimisation des données collectées</div>
@@ -345,7 +349,7 @@
       </div>
     </div>
 
-    <!-- S2 Collecte -->
+    <!-- S2 Data Collection -->
     <div class="section-rgpd" id="s2" data-anim="fade" style="transition-delay:.05s">
       <div class="section-header-rgpd" onclick="toggleSection(this)">
         <div class="section-icon icon-rose"><i class="fas fa-database"></i></div>
@@ -369,7 +373,7 @@
       </div>
     </div>
 
-    <!-- S3 Utilisation -->
+    <!-- S3 Data Usage -->
     <div class="section-rgpd" id="s3" data-anim="fade" style="transition-delay:.08s">
       <div class="section-header-rgpd" onclick="toggleSection(this)">
         <div class="section-icon icon-blue"><i class="fas fa-cogs"></i></div>
@@ -393,7 +397,7 @@
       </div>
     </div>
 
-    <!-- S4 Conservation -->
+    <!-- S4 Retention -->
     <div class="section-rgpd" id="s4" data-anim="fade" style="transition-delay:.11s">
       <div class="section-header-rgpd" onclick="toggleSection(this)">
         <div class="section-icon icon-orange"><i class="fas fa-archive"></i></div>
@@ -417,7 +421,7 @@
       </div>
     </div>
 
-    <!-- S5 Droits -->
+    <!-- S5 User Rights -->
     <div class="section-rgpd" id="s5" data-anim="fade" style="transition-delay:.14s">
       <div class="section-header-rgpd" onclick="toggleSection(this)">
         <div class="section-icon icon-purple"><i class="fas fa-user-shield"></i></div>
@@ -442,7 +446,7 @@
       </div>
     </div>
 
-    <!-- S6 Sécurité -->
+    <!-- S6 Security -->
     <div class="section-rgpd" id="s6" data-anim="fade" style="transition-delay:.17s">
       <div class="section-header-rgpd" onclick="toggleSection(this)">
         <div class="section-icon icon-green"><i class="fas fa-lock"></i></div>
@@ -455,7 +459,7 @@
       </div>
       <div class="section-divider"></div>
       <div class="section-body">
-        <p>La sécurité de vos données est une priorité pour ML2C CONSEIL. Nous avons mis en place des infrastructures techniques robustes, comprenant des protocoles de chiffrement, des pare-feux, et des systèmes de surveillance continue. Chaque accès aux informations est strictement contrôlé et les données sont sauvegardées régulièrement pour prévenir toute perte.</p>
+        <p>La sécurité de vos données est une priorité pour ML2C CONSEIL. Nous avons mis en place des infrastructures techniques robustes, comprenant des protocoles de chiffrement, des pare-feux, et des systèmes de surveillance continue. Chaque accès aux informations est strictly contrôlé et les données sont sauvegardées régulièrement pour prévenir toute perte.</p>
         <p style="margin-top:.75rem;">Nos mesures de sécurité sont régulièrement mises à jour pour contrer les menaces émergentes, et des audits internes et externes sont effectués afin d'assurer la conformité de nos systèmes aux normes en vigueur.</p>
         <div class="key-points">
           <div class="kp"><i class="fas fa-check-circle"></i> Chiffrement AES-256</div>
@@ -466,7 +470,7 @@
       </div>
     </div>
 
-    <!-- S7 Transfert -->
+    <!-- S7 Transfer -->
     <div class="section-rgpd" id="s7" data-anim="fade" style="transition-delay:.2s">
       <div class="section-header-rgpd" onclick="toggleSection(this)">
         <div class="section-icon icon-gris"><i class="fas fa-exchange-alt"></i></div>
@@ -514,7 +518,7 @@
       </div>
     </div>
 
-    <!-- BANNIÈRE CONTACT -->
+    <!-- CONTACT BANNER -->
     <div class="rgpd-contact-banner" data-anim="fade">
       <div class="rcb-icon"><i class="fas fa-envelope-open-text"></i></div>
       <div class="rcb-text">
@@ -533,10 +537,11 @@
 
 {% include "footer.html" %}
 
+<!-- Bootstrap & jQuery JS Scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  // Sticky header + burger
+  // Sticky header + burger menu toggle
   const hdr = document.getElementById('mainHeader');
   if (hdr) window.addEventListener('scroll', () => hdr.classList.toggle('scrolled', window.scrollY > 60));
   const burger = document.getElementById('burgerBtn');
@@ -545,14 +550,14 @@
     nav.classList.toggle('open'); this.classList.toggle('active');
   });
 
-  // Accordion
+  // Accordion toggle functionality
   function toggleSection(header) {
     const section = header.closest('.section-rgpd');
     const isOpen = section.classList.contains('open');
     section.classList.toggle('open', !isOpen);
   }
 
-  // Sidebar active au scroll
+  // Active sidebar link update on scroll
   const sections = document.querySelectorAll('.section-rgpd[id]');
   const sideLinks = document.querySelectorAll('#sidebar-nav a');
   window.addEventListener('scroll', () => {
@@ -565,20 +570,20 @@
     });
   });
 
-  // Smooth scroll sidebar
+  // Smooth scroll for sidebar links
   sideLinks.forEach(a => {
     a.addEventListener('click', e => {
       e.preventDefault();
       const target = document.getElementById(a.getAttribute('data-target'));
       if (target) {
-        // Ouvrir la section
+        // Expand section before scrolling
         target.classList.add('open');
         window.scrollTo({ top: target.offsetTop - 100, behavior: 'smooth' });
       }
     });
   });
 
-  // Barre de progression de lecture
+  // Reading progress bar calculation
   const bar = document.getElementById('read-progress');
   window.addEventListener('scroll', () => {
     const h = document.documentElement;
@@ -586,7 +591,7 @@
     bar.style.width = pct + '%';
   });
 
-  // Animations scroll
+  // Scroll animation observer
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.08 });

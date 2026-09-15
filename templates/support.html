@@ -1,12 +1,16 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Support & Échanges — ML2C CONSEIL</title>
+  <title>Support & Échanges</title>
+  <!-- Bootstrap CSS (CDN) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Custom CSS file -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
   <style>
@@ -15,7 +19,7 @@
       color: #2d3748;
     }
 
-    /* En-tête de page */
+    /* Page Header */
     .support-hero {
       background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
       color: #ffffff;
@@ -38,7 +42,7 @@
       letter-spacing: 0.5px;
     }
 
-    /* Cartes Contact Rapide */
+    /* Quick Contact Cards */
     .contact-card {
       background: #ffffff;
       border: 1px solid #e2e8f0;
@@ -69,7 +73,7 @@
       margin: 0 auto 1rem;
     }
 
-    /* --- MODULE DE MESSAGERIE EN DIRECT --- */
+    /* --- LIVE MESSAGING MODULE --- */
     .chat-box {
       background: #ffffff;
       border-radius: 16px;
@@ -119,7 +123,7 @@
       position: relative;
     }
 
-    /* Message provenant du client */
+    /* Message sent by client */
     .message-sent {
       align-self: flex-end;
       background: linear-gradient(135deg, #b81473, #8c0f57);
@@ -127,7 +131,7 @@
       border-bottom-right-radius: 2px;
     }
 
-    /* Message provenant du collaborateur / admin */
+    /* Message received from staff / admin */
     .message-received {
       align-self: flex-start;
       background: #ffffff;
@@ -203,7 +207,7 @@
       color: #ffffff;
     }
 
-    /* Style FAQ Accordéon */
+    /* FAQ Accordion Style */
     .accordion .card {
       border: 1px solid #e2e8f0;
       border-radius: 10px !important;
@@ -271,7 +275,7 @@
 
 <main class="container py-5">
 
-  <!-- Messages Flash -->
+  <!-- Flash Messages -->
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
       {% for category, message in messages %}
@@ -285,7 +289,7 @@
     {% endif %}
   {% endwith %}
 
-  <!-- Coordonnées Directes -->
+  <!-- Direct Contact Info -->
   <div class="row mb-5">
     <div class="col-md-4 mb-3 mb-md-0">
       <div class="contact-card">
@@ -323,7 +327,7 @@
 
   <div class="row">
     
-    <!-- COLONNE 1 : MESSAGERIE D'ÉCHANGE EN DIRECT -->
+    <!-- COLUMN 1: LIVE CHAT MESSAGING -->
     <div class="col-lg-7 mb-5 mb-lg-0">
       <h4 class="font-weight-bold mb-3" style="color: #1a202c;">
         <i class="fas fa-comments text-primary mr-2"></i> Échanger avec votre collaborateur
@@ -333,7 +337,7 @@
       </p>
 
       <div class="chat-box">
-        <!-- En-tête du Chat -->
+        <!-- Chat Header -->
         <div class="chat-header">
           <div class="d-flex align-items-center">
             <span class="status-indicator"></span>
@@ -347,12 +351,12 @@
           </span>
         </div>
 
-        <!-- Corps de la discussion (Fil des messages) -->
+        <!-- Chat Body (Message Feed) -->
         <div class="chat-body" id="chatBody">
           
           {% if messages %}
             {% for msg in messages %}
-              <!-- Différenciation de l'expéditeur (Client vs Collaborateur/Admin) -->
+              <!-- Sender Differentiation (Client vs Staff/Admin) -->
               <div class="message-bubble {% if msg.expediteur_id == session.get('utilisateur_id') %}message-sent{% else %}message-received{% endif %}">
                 <div class="message-author">
                   <span>{{ msg.expediteur.prenom if msg.expediteur else 'Support ML2C' }}</span>
@@ -362,7 +366,7 @@
               </div>
             {% endfor %}
           {% else %}
-            <!-- Message par défaut si aucune discussion n'est entamée -->
+            <!-- Default message if no discussion has started -->
             <div class="message-bubble message-received">
               <div class="message-author">
                 <span>Collaborateur ML2C</span>
@@ -374,7 +378,7 @@
 
         </div>
 
-        <!-- Formulaire d'envoi du message -->
+        <!-- Message Send Form -->
         <div class="chat-footer">
           <form method="POST" action="{{ url_for('support') }}" class="m-0">
             <div class="custom-input-group">
@@ -395,7 +399,7 @@
       </div>
     </div>
 
-    <!-- COLONNE 2 : FOIRE AUX QUESTIONS (FAQ) -->
+    <!-- COLUMN 2: FREQUENTLY ASKED QUESTIONS (FAQ) -->
     <div class="col-lg-5">
       <h4 class="font-weight-bold mb-3" style="color: #1a202c;">
         <i class="fas fa-question-circle text-primary mr-2"></i> Questions fréquentes
@@ -451,7 +455,7 @@
         </div>
       </div>
 
-      <!-- Encadré d'information RGPD -->
+      <!-- GDPR / Confidentiality Card -->
       <div class="card mt-4 border-0 bg-white p-3 rounded-lg shadow-sm" style="border-left: 4px solid #b81473 !important;">
         <h6 class="font-weight-bold mb-1" style="color: #1a202c;">
           <i class="fas fa-shield-alt text-success mr-1"></i> Confidentialité garantie
@@ -465,7 +469,7 @@
 
   </div>
 
-  <!-- Bouton de Retour au Menu -->
+  <!-- Back to Menu Button -->
   <div class="text-center mt-5">
     <a href="{{ url_for('menu') }}" class="btn btn-custom-secondary px-4">
       <i class="fas fa-arrow-left mr-2"></i> Retour au Menu principal
@@ -476,10 +480,11 @@
 
 {% include "footer.html" %}
 
+<!-- Bootstrap & jQuery JS Scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Défilement automatique du chat vers le bas -->
+<!-- Automatic chat scroll down -->
 <script>
   window.onload = function() {
     const chatBody = document.getElementById('chatBody');

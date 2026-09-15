@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Grille Tarifaire - ML2C CONSEIL</title>
+  <title>Grille Tarifaire</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -17,6 +17,7 @@
     }
     body { background:#f0f2f5; font-family:'DM Sans',sans-serif; }
 
+    /* Hero section */
     .tar-hero {
       background:linear-gradient(135deg,#1e2729 0%,#2d3436 55%,#1a3333 100%);
       padding:3rem 0 3rem; position:relative; overflow:hidden; margin-bottom:0;
@@ -32,22 +33,27 @@
     .tar-title em { color:#5eead4; font-style:italic; }
     .tar-sub { font-size:.95rem; color:rgba(255,255,255,.5); max-width:520px; margin:0 auto; }
 
+    /* Pricing section layout */
     .tar-page { padding:3rem 0 5rem; }
     .tar-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; align-items:start; }
 
+    /* Pricing card styling */
     .tar-card { background:#fff; border-radius:22px; box-shadow:0 6px 32px rgba(0,0,0,.07); overflow:hidden; position:relative; transition:transform .25s ease, box-shadow .25s ease; }
     .tar-card:hover { transform:translateY(-4px); box-shadow:0 16px 48px rgba(0,0,0,.12); }
     .tar-card.featured { background:linear-gradient(160deg,#1e2729 0%,#2d3436 60%,#1a3333 100%); border:2px solid var(--rose); box-shadow:0 12px 48px rgba(193,0,122,.22); transform:scale(1.03); }
     .tar-card.featured:hover { transform:scale(1.03) translateY(-4px); }
 
+    /* Top accent bars */
     .tar-accentbar { height:4px; }
     .tar-accentbar.ess { background:var(--turq); }
     .tar-accentbar.pro { background:var(--rose); }
     .tar-accentbar.prem { background:linear-gradient(90deg,var(--rose),var(--turq)); }
 
+    /* Popular plan badge */
     .popular-badge { display:inline-block; font-size:.65rem; font-weight:700; padding:.28rem .75rem; border-radius:12px; background:var(--rose-light); color:var(--rose-dark); margin-bottom:.6rem; }
     .tar-card.featured .popular-badge { background:rgba(193,0,122,.25); color:#f9a8d4; }
 
+    /* Card header contents */
     .tar-card-head { padding:1.75rem 1.75rem 1.25rem; }
     .tar-plan-name { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); margin-bottom:.75rem; }
     .tar-card.featured .tar-plan-name { color:rgba(255,255,255,.45); }
@@ -62,9 +68,11 @@
     .tar-plan-desc { font-size:.83rem; color:var(--muted); line-height:1.55; }
     .tar-card.featured .tar-plan-desc { color:rgba(255,255,255,.5); }
 
+    /* Card dividers */
     .tar-divider { height:1px; background:var(--border); margin:0 1.75rem; }
     .tar-card.featured .tar-divider { background:rgba(255,255,255,.1); }
 
+    /* Features list */
     .tar-features { padding:1.25rem 1.75rem 1.75rem; }
     .tar-feat { display:flex; align-items:flex-start; gap:.65rem; padding:.42rem 0; font-size:.86rem; color:var(--text); border-bottom:1px solid var(--border); }
     .tar-card.featured .tar-feat { color:rgba(255,255,255,.82); border-bottom-color:rgba(255,255,255,.08); }
@@ -79,6 +87,7 @@
     .tar-card.featured .tar-feat.off i { color:rgba(255,255,255,.15); }
     .new-tag { display:inline-block; font-size:.6rem; font-weight:700; padding:.1rem .45rem; border-radius:6px; background:var(--rose-light); color:var(--rose-dark); margin-left:.35rem; vertical-align:middle; }
 
+    /* CTA buttons */
     .tar-cta { padding:0 1.75rem 1.75rem; }
     .btn-tar-outline { width:100%; padding:.8rem; border-radius:11px; background:transparent; color:var(--turq); border:2px solid var(--turq); font-weight:700; font-size:.9rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:.5rem; transition:.2s; text-decoration:none; }
     .btn-tar-outline:hover { background:var(--turq-light); color:var(--turq-dark); text-decoration:none; }
@@ -87,12 +96,14 @@
     .btn-tar-solid { width:100%; padding:.8rem; border-radius:11px; background:linear-gradient(135deg,var(--rose),var(--rose-dark)); color:#fff; border:none; font-weight:700; font-size:.9rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:.5rem; transition:.2s; text-decoration:none; }
     .btn-tar-solid:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(193,0,122,.35); color:#fff; text-decoration:none; }
 
+    /* Custom quote banner */
     .tar-devis-banner { background:linear-gradient(135deg,var(--gris-dark),#3d4549); border-radius:20px; padding:2rem 2.5rem; display:flex; align-items:center; justify-content:space-between; gap:1.5rem; margin-top:2.5rem; flex-wrap:wrap; }
     .tar-devis-banner h3 { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:700; color:#fff; margin:0 0 .3rem; }
     .tar-devis-banner p { font-size:.84rem; color:rgba(255,255,255,.45); margin:0; }
     .btn-devis-banner { display:inline-flex; align-items:center; gap:.5rem; padding:.75rem 1.6rem; background:var(--rose); color:#fff; font-weight:700; border-radius:10px; text-decoration:none; transition:.2s; white-space:nowrap; }
     .btn-devis-banner:hover { background:var(--rose-dark); color:#fff; transform:translateY(-1px); box-shadow:0 6px 18px rgba(193,0,122,.35); }
 
+    /* Accordion FAQ */
     .tar-faq { max-width:700px; margin:3rem auto 0; }
     .tar-faq-title { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:700; color:var(--gris-dark); text-align:center; margin-bottom:1.5rem; }
     .tar-faq-item { background:#fff; border-radius:12px; margin-bottom:.65rem; box-shadow:0 2px 10px rgba(0,0,0,.05); overflow:hidden; }
@@ -110,6 +121,7 @@
 <body>
 {% include "header.html" %}
 
+<!-- Hero banner -->
 <div class="tar-hero">
   <div class="container tar-hero-inner">
     <div class="tar-badge"><i class="fas fa-tag"></i> Grille tarifaire</div>
@@ -123,7 +135,7 @@
 
     <div class="tar-grid">
 
-      <!-- ESSENTIEL -->
+      <!-- ESSENTIEL PLAN -->
       <div class="tar-card">
         <div class="tar-accentbar ess"></div>
         <div class="tar-card-head">
@@ -153,7 +165,7 @@
         </div>
       </div>
 
-      <!-- PRO -->
+      <!-- PRO PLAN -->
       <div class="tar-card featured">
         <div class="tar-accentbar pro"></div>
         <div class="tar-card-head">
@@ -184,7 +196,7 @@
         </div>
       </div>
 
-      <!-- PREMIUM -->
+      <!-- PREMIUM PLAN -->
       <div class="tar-card">
         <div class="tar-accentbar prem"></div>
         <div class="tar-card-head">
@@ -216,7 +228,7 @@
 
     </div>
 
-    <!-- BANDEAU DEVIS -->
+    <!-- CUSTOM QUOTE BANNER -->
     <div class="tar-devis-banner">
       <div>
         <h3>Besoin d'une offre sur mesure ?</h3>
@@ -227,7 +239,7 @@
       </a>
     </div>
 
-    <!-- FAQ -->
+    <!-- FAQ SECTION -->
     <div class="tar-faq">
       <div class="tar-faq-title">Questions fréquentes</div>
       <div class="tar-faq-item">
@@ -260,6 +272,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+  /* FAQ toggle functionality */
   function toggleFaq(el) {
     const item = el.closest('.tar-faq-item');
     const isOpen = item.classList.contains('open');

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Conseils & organisations ML2C CONSEIL</title>
+  <title>Conseils & organisations</title>
   
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -12,8 +12,10 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
+<!-- Include the global navigation header -->
 {% include "header.html" %}
 
+<!-- Page Hero Section -->
 <section class="page-hero">
   <div class="container ph-inner">
     <ol class="breadcrumb-ml2c">
@@ -28,6 +30,7 @@
   </div>
 </section>
 
+<!-- Main Service Details Section -->
 <section class="sec sec-grey">
   <div class="container">
     <div class="svc-bloc" data-anim="fade">
@@ -55,6 +58,7 @@
   </div>
 </section>
 
+<!-- Advantages / Why Choose Us Section -->
 <section class="sec sec-white">
   <div class="container">
     <div class="text-center mb-5" data-anim="fade">
@@ -82,6 +86,7 @@
   </div>
 </section>
 
+<!-- Call to Action Band Section -->
 <section class="sec sec-grey">
   <div class="container">
     <div class="cta-bande" data-anim="fade">
@@ -97,8 +102,10 @@
   </div>
 </section>
 
+<!-- Include the global footer -->
 {% include "footer.html" %}
 
+<!-- JavaScript libraries and page-specific script -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{ url_for('static', filename='js/conseils_organisations.js') }}"></script>

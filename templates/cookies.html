@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Politique de Cookies ML2C CONSEIL</title>
+  <title>Politique de Cookies</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -323,6 +323,7 @@
 <div class="reading-bar" id="readingBar"></div>
 <div class="consent-toast" id="consentToast"><i class="fas fa-check-circle"></i> Préférences enregistrées !</div>
 
+<!-- Include the global navigation header -->
 {% include "header.html" %}
 
 <!-- HERO -->
@@ -565,7 +566,7 @@
       </ul>
       <div class="info-block info">
         <i class="fas fa-info-circle info-block-icon"></i>
-        <p>Pour exercer vos droits, contactez-nous à <a href="/cdn-cgi/l/email-protection#94f7fbfae0f5f7e0d4f9f8a6f7f7fbfae7f1fdf8baf7fbf9" style="color:var(--rose)"><span class="__cf_email__" data-cfemail="88ebe7e6fce9ebfcc8e5e4baebebe7e6fbede1e4a6ebe7e5">[email&#160;protected]</span></a>. Vous pouvez également introduire une réclamation auprès de la <strong>CNIL</strong> sur <a href="https://www.cnil.fr" target="_blank" style="color:var(--rose)">cnil.fr</a>.</p>
+        <p>Pour exercer vos droits, contactez-nous à <a href="mailto:contact@ml2c-conseil.com" style="color:var(--rose)">contact@ml2c-conseil.com</a>. Vous pouvez également introduire une réclamation auprès de la <strong>CNIL</strong> sur <a href="https://www.cnil.fr" target="_blank" style="color:var(--rose)">cnil.fr</a>.</p>
       </div>
     </div>
 
@@ -581,7 +582,7 @@
           <h3>Délégué à la Protection des Données</h3>
           <p>ML2C CONSEIL 6 Rue de la Vigne, 28360 Dammarie</p>
         </div>
-        <a href="/cdn-cgi/l/email-protection#bfdcd0d1cbdedccbffd2d38ddcdcd0d1ccdad6d391dcd0d2" class="btn-ecrire">
+        <a href="mailto:contact@ml2c-conseil.com" class="btn-ecrire">
           <i class="fas fa-envelope"></i> Nous écrire
         </a>
       </div>
@@ -590,43 +591,65 @@
   </main>
 </div>
 
+<!-- Include the global footer -->
 {% include "footer.html" %}
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<!-- JavaScript libraries and page-specific scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  // Barre de lecture
+  // Reading progress bar update on scroll
   window.addEventListener('scroll', function() {
-    const doc = document.documentElement;
-    const scrolled = doc.scrollTop || document.body.scrollTop;
-    const total = doc.scrollHeight - doc.clientHeight;
+    var doc = document.documentElement;
+    var scrolled = doc.scrollTop || document.body.scrollTop;
+    var total = doc.scrollHeight - doc.clientHeight;
     document.getElementById('readingBar').style.width = (scrolled / total * 100) + '%';
   });
 
-  // Accordion navigateurs un seul ouvert à la fois
+  // Browser accordion toggle (only one open at a time)
   function toggleBrowser(header) {
-    const item = header.parentElement;
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.browser-item.open').forEach(i => i.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
+    var item = header.parentElement;
+    var isOpen = item.classList.contains('open');
+    document.querySelectorAll('.browser-item.open').forEach(function(i) {
+      i.classList.remove('open');
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+    }
   }
 
-  // Sidebar active
-  const sections = document.querySelectorAll('.cookie-section');
-  const links = document.querySelectorAll('.sidebar-link');
+  // Sidebar active state on scroll
+  var sections = document.querySelectorAll('.cookie-section');
+  var links = document.querySelectorAll('.sidebar-link');
   window.addEventListener('scroll', function() {
-    let current = '';
-    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
-    links.forEach(l => {
+    var current = '';
+    sections.forEach(function(s) {
+      if (window.scrollY >= s.offsetTop - 120) {
+        current = s.id;
+      }
+    });
+    links.forEach(function(l) {
       l.classList.remove('active');
-      if (l.getAttribute('href') === '#' + current) l.classList.add('active');
+      if (l.getAttribute('href') === '#' + current) {
+        l.classList.add('active');
+      }
     });
   });
 
-  // Sauvegarde consentement
-function saveConsent() {
+  // Save consent preferences and show confirmation toast
+  function saveConsent() {
     var analytics = document.getElementById('toggle-analytics').checked;
     var marketing = document.getElementById('toggle-marketing').checked;
     var preferences = document.getElementById('toggle-prefs').checked;
     var consentStr = 'analytics=' + analytics + '&marketing=' + marketing + '&prefs=' + preferences;
-    document.cookie = 'ml2c_consent=' + consentStr + ';max-age=31536000;path=/'; }
+    document.cookie = 'ml2c_consent=' + consentStr + ';max-age=31536000;path=/';
+    
+    var toast = document.getElementById('consentToast');
+    toast.classList.add('show');
+    setTimeout(function() {
+      toast.classList.remove('show');
+    }, 3000);
+  }
+</script>
+</body>
+</html>

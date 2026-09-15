@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Fiche Client - ML2C CONSEIL</title>
+  <title>Fiche Client</title>
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
@@ -29,7 +29,7 @@
             <p><strong>Civilité :</strong> {{ client.civilite }}</p>
             <p><strong>Adresse siège :</strong> {{ client.adresse_siege }}</p>
 
-            <!-- Boutons Modifier / Supprimer -->
+            <!-- Edit / Delete Buttons -->
             <div class="btn-group mt-3" role="group">
               <a href="{{ url_for('modifier_client', client_id=client.id) }}" class="btn btn-warning">Modifier</a>
               <form action="{{ url_for('supprimer_client', client_id=client.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette fiche client ?');">
@@ -43,7 +43,7 @@
       <p class="text-center mt-4">Aucune fiche client enregistrée pour votre compte.</p>
     {% endif %}
 
-    <!-- Bouton Retour au menu -->
+    <!-- Back to Menu Button -->
     <div class="text-center mt-4">
       <a href="{{ url_for('menu') }}" class="btn btn-secondary">Retour au menu</a>
     </div>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gérer mes devis — ML2C CONSEIL</title>
+  <title>Gérer mes devis</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -26,6 +26,7 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     body{background:var(--bg);font-family:var(--ff-body);color:var(--text);min-height:100vh;}
 
+    /* ══ BACKGROUND TEXTURE ══ */
     body::before{
       content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
       background:
@@ -50,10 +51,10 @@
     }
     .gd-sub{font-size:.92rem;color:var(--muted);margin:0;}
 
-    /* ══ CONTENU ══ */
+    /* ══ CONTENT ══ */
     .gd-content{margin-top:-2rem;position:relative;z-index:2;padding-bottom:4rem;}
 
-    /* ══ TABLEAU DEVIS ══ */
+    /* ══ QUOTES TABLE ══ */
     .table-container{
       background:var(--surface);
       border-radius:16px;
@@ -124,7 +125,7 @@
     }
     .custom-check input:checked+.check-box{background:var(--rose);border-color:var(--rose);}
 
-    /* Badges & Textes */
+    /* Badges & Texts */
     .val-bold{font-weight:600;color:var(--ink);}
     .val-service{font-weight:600;color:var(--rose);}
     .date-pill{
@@ -134,7 +135,7 @@
       color:var(--turq-d);font-size:.82rem;font-weight:700;
     }
 
-    /* Bouton action unique */
+    /* Single action button */
     .action-btn{
       width:34px;height:34px;border-radius:8px;border:1px solid rgba(220,38,38,.2);
       background:rgba(220,38,38,.06);color:#dc2626;
@@ -143,7 +144,7 @@
     }
     .action-btn:hover{background:#dc2626;color:#fff;border-color:#dc2626;box-shadow:0 4px 12px rgba(220,38,38,.2);}
 
-    /* ══ BOUTONS D'ACTION BAS ══ */
+    /* ══ BOTTOM ACTION BUTTONS ══ */
     .action-bar{
       display:flex;
       flex-direction:column;
@@ -338,7 +339,7 @@
   </div>
 </div>
 
-<!-- Modales -->
+<!-- Modals -->
 <div class="modal-overlay" id="modalMulti">
   <div class="modal-box">
     <div class="modal-ico"><i class="fas fa-trash-alt"></i></div>

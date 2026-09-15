@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Connexion — ML2C CONSEIL</title>
+  <title>Connexion</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -27,7 +27,7 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     body{background:var(--bg);font-family:var(--ff-body);color:var(--text);min-height:100vh;}
 
-    /* ══ TEXTURE FOND ══ */
+    /* ══ BACKGROUND TEXTURE ══ */
     body::before{
       content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
       background:
@@ -48,7 +48,7 @@
       padding:3rem 1rem;
     }
 
-    /* ══ CARTE ══ */
+    /* ══ CARD ══ */
     .login-card{
       background:var(--surface);
       border:1px solid var(--border);
@@ -63,20 +63,20 @@
       from{opacity:0;transform:translateY(24px) scale(.98);}
       to{opacity:1;transform:translateY(0) scale(1);}
     }
-    /* Ligne dégradée haut */
+    /* Top gradient line */
     .login-card::before{
       content:'';position:absolute;top:0;left:0;right:0;height:2.5px;z-index:10;
       background:linear-gradient(90deg,transparent,var(--rose) 30%,var(--gold) 70%,transparent);
     }
 
-    /* ══ EN-TÊTE ══ */
+    /* ══ HEADER ══ */
     .card-header-luxe{
       padding:2.5rem 2.75rem 2.25rem;
       background:linear-gradient(160deg,var(--bg) 0%,var(--bg2) 60%,var(--bg3) 100%);
       border-bottom:1px solid var(--border);
       position:relative;overflow:hidden;
     }
-    /* Monogramme watermark */
+    /* Monogram watermark */
     .card-header-luxe::after{
       content:'ML2C';
       position:absolute;right:-20px;top:50%;transform:translateY(-50%);
@@ -120,10 +120,10 @@
     .trust-badge.turq i{color:var(--turq);}
     .trust-badge.gold i{color:var(--gold);}
 
-    /* ══ CORPS ══ */
+    /* ══ BODY ══ */
     .card-form-body{padding:2.25rem 2.75rem 2.5rem;}
 
-    /* Flash */
+    /* Flash message */
     .flash-msg{
       padding:.8rem 1rem;border-radius:12px;margin-bottom:1.25rem;
       font-size:.84rem;display:flex;align-items:flex-start;gap:.5rem;
@@ -133,7 +133,7 @@
     .flash-msg.success{background:var(--turq-xl);color:var(--turq-d);border-color:rgba(79,166,149,.25);}
     .flash-msg.warning{background:var(--gold-ll);color:#92400e;border-color:rgba(176,141,87,.25);}
 
-    /* ══ CHAMPS ══ */
+    /* ══ FIELDS ══ */
     .field-group{margin-bottom:1.35rem;}
     .field-label{
       display:block;font-size:.68rem;font-weight:700;
@@ -165,7 +165,7 @@
     }
     .field-error-msg.show{display:flex;}
 
-    /* Œil mdp */
+    /* Password visibility toggle icon */
     .pw-eye{
       position:absolute;right:1rem;top:50%;transform:translateY(-50%);
       background:none;border:none;cursor:pointer;
@@ -174,7 +174,7 @@
     }
     .pw-eye:hover{color:var(--turq);}
 
-    /* Lien mdp oublié */
+    /* Forgot password link wrapper */
     .forgot-wrap{display:flex;justify-content:flex-end;margin-top:.5rem;}
     .forgot-link{
       font-size:.78rem;font-weight:600;color:var(--rose);
@@ -184,7 +184,7 @@
     }
     .forgot-link:hover{color:var(--rose-d);border-bottom-color:var(--rose-d);}
 
-    /* ══ BOUTON ══ */
+    /* ══ BUTTON ══ */
     .btn-login{
       width:100%;padding:.9rem 1rem;
       background:linear-gradient(135deg,var(--rose),var(--rose-d));
@@ -214,7 +214,7 @@
     .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
     .divider span{font-size:.73rem;color:var(--faint);white-space:nowrap;font-style:italic;}
 
-    /* ══ CTA INSCRIPTION ══ */
+    /* ══ REGISTRATION CTA ══ */
     .signup-cta{
       display:flex;align-items:center;justify-content:space-between;gap:.75rem;
       padding:.9rem 1.1rem;border-radius:14px;
@@ -231,7 +231,7 @@
     .signup-cta-link:hover{color:var(--rose-d);}
     .signup-cta-link i{font-size:.78rem;}
 
-    /* Note sécurité */
+    /* Security note */
     .security-note{
       display:flex;align-items:center;justify-content:center;gap:.5rem;
       font-size:.7rem;color:var(--faint);margin-top:1.35rem;
@@ -252,7 +252,7 @@
 <div class="login-wrap">
   <div class="login-card">
 
-    <!-- ══ EN-TÊTE ══ -->
+    <!-- ══ HEADER ══ -->
     <div class="card-header-luxe">
       <div class="ch-label">ML2C CONSEIL</div>
       <h1 class="ch-title">Bon<br><em>retour !</em></h1>
@@ -265,7 +265,7 @@
       </div>
     </div>
 
-    <!-- ══ FORMULAIRE ══ -->
+    <!-- ══ FORM ══ -->
     <div class="card-form-body">
 
       {% with messages = get_flashed_messages(with_categories=true) %}
@@ -294,7 +294,7 @@
           </div>
         </div>
 
-        <!-- Mot de passe -->
+        <!-- Password -->
         <div class="field-group">
           <label class="field-label" for="password">Mot de passe</label>
           <div class="field-input-wrap">
@@ -344,7 +344,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-/* Œil mot de passe */
+/* Password visibility toggle */
 const pwInput=document.getElementById('password');
 document.getElementById('pwEye').addEventListener('click',function(){
   const ico=document.getElementById('pwEyeIco');
@@ -353,7 +353,7 @@ document.getElementById('pwEye').addEventListener('click',function(){
   pwInput.focus();
 });
 
-/* Validation */
+/* Form validation */
 document.getElementById('loginForm').addEventListener('submit',function(e){
   let valid=true;
 
@@ -373,7 +373,7 @@ document.getElementById('loginForm').addEventListener('submit',function(e){
     return;
   }
 
-  /* Loading */
+  /* Loading state */
   const btn=document.getElementById('btnLogin');
   const sp=document.getElementById('btnSpinner');
   const ico=document.getElementById('btnIco');
@@ -381,7 +381,7 @@ document.getElementById('loginForm').addEventListener('submit',function(e){
   btn.disabled=true;sp.style.display='block';ico.style.display='none';txt.textContent='Connexion…';
 });
 
-/* Retirer erreurs */
+/* Clear error indicators on input */
 document.querySelectorAll('.field-input').forEach(input=>{
   input.addEventListener('input',()=>{
     input.classList.remove('error');

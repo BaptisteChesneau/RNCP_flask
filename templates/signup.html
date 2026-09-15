@@ -1,12 +1,16 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Créer un compte — ML2C CONSEIL</title>
+  <title>Créer un compte</title>
+  <!-- Bootstrap CSS (CDN) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Custom CSS file -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <style>
     :root{
@@ -71,14 +75,14 @@
     .pw-eye{position:absolute;right:1rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--faint);font-size:.88rem;padding:0;line-height:1;transition:color .2s;}
     .pw-eye:hover{color:var(--turq);}
 
-    /* ══ BARRE DE FORCE ══ */
+    /* ══ STRENGTH BAR ══ */
     .pw-strength{margin-top:.55rem;display:none;}
     .pw-strength.visible{display:block;}
     .pw-track{height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;margin-bottom:.4rem;}
     .pw-fill{height:100%;border-radius:2px;transition:width .35s,background .35s;width:0;}
     .pw-level{font-size:.7rem;font-weight:600;margin-bottom:.5rem;}
 
-    /* ══ CHECKLIST MDP ══ */
+    /* ══ PASSWORD CHECKLIST ══ */
     .pw-checklist{
       background:var(--bg2);border:1px solid var(--border);
       border-radius:12px;padding:.85rem 1rem;
@@ -100,7 +104,7 @@
     .pw-check-item.ok{color:var(--ink2);}
     .pw-check-item.ok .pw-check-ico{background:rgba(79,166,149,.15);color:var(--turq-d);}
 
-    /* ══ CONSENTEMENT ══ */
+    /* ══ CONSENT ══ */
     .consent-wrap{background:var(--bg2);border:1.5px solid var(--border);border-radius:14px;padding:1.1rem 1.2rem;margin-bottom:.6rem;transition:all .22s;}
     .consent-wrap.checked{background:var(--turq-xl);border-color:rgba(79,166,149,.25);}
     .consent-wrap.error-box{background:#fef2f2;border-color:#fecaca;}
@@ -167,6 +171,7 @@
 
     <div class="card-form-body">
 
+      <!-- Flash messages -->
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
           {% for category, message in messages %}
@@ -180,7 +185,7 @@
 
       <form action="{{ url_for('signup') }}" method="POST" id="signupForm" novalidate>
 
-        <!-- Nom d'utilisateur -->
+        <!-- Username -->
         <div class="field-group">
           <label class="field-label" for="signup-username">Nom d'utilisateur</label>
           <div class="field-input-wrap">
@@ -206,7 +211,7 @@
           </div>
         </div>
 
-        <!-- Mot de passe -->
+        <!-- Password -->
         <div class="field-group">
           <label class="field-label" for="signup-password">Mot de passe</label>
           <div class="field-input-wrap">
@@ -219,13 +224,13 @@
             </button>
           </div>
 
-          <!-- Barre de force -->
+          <!-- Strength bar -->
           <div class="pw-strength" id="pwStrength">
             <div class="pw-track"><div class="pw-fill" id="pwFill"></div></div>
             <div class="pw-level" id="pwLevel" style="color:var(--faint);">Saisissez un mot de passe</div>
           </div>
 
-          <!-- Checklist critères -->
+          <!-- Criteria checklist -->
           <div class="pw-checklist" id="pwChecklist">
             <div class="pw-check-item" id="chk-len">
               <div class="pw-check-ico"><i class="fas fa-times"></i></div>
@@ -254,7 +259,7 @@
           </div>
         </div>
 
-        <!-- Consentement -->
+        <!-- Consent -->
         <div class="consent-wrap" id="consentBox">
           <label class="consent-label" for="consent">
             <input type="checkbox" class="consent-cb" id="consent" name="consent" required>
@@ -298,10 +303,11 @@
 </div>
 
 {% include "footer.html" %}
+<!-- Bootstrap & jQuery JS Scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-/* ── Œil mot de passe ── */
+/* ── Password eye toggle ── */
 const pwInput=document.getElementById('signup-password');
 document.getElementById('pwEye').addEventListener('click',function(){
   const ico=document.getElementById('pwEyeIco');
@@ -310,7 +316,7 @@ document.getElementById('pwEye').addEventListener('click',function(){
   pwInput.focus();
 });
 
-/* ── Force + Checklist mot de passe ── */
+/* ── Password strength + checklist ── */
 const pwFill   = document.getElementById('pwFill');
 const pwLevel  = document.getElementById('pwLevel');
 const pwStr    = document.getElementById('pwStrength');
@@ -351,7 +357,7 @@ pwInput.addEventListener('input', function(){
   pwLevel.style.color  = lvl.bg;
 });
 
-/* ── Consentement ── */
+/* ── Consent checkbox ── */
 const checkbox   = document.getElementById('consent');
 const consentBox = document.getElementById('consentBox');
 checkbox.addEventListener('change', function(){
@@ -360,7 +366,7 @@ checkbox.addEventListener('change', function(){
   if(this.checked) document.getElementById('consentErr').classList.remove('show');
 });
 
-/* ── Validation soumission ── */
+/* ── Form submission validation ── */
 document.getElementById('signupForm').addEventListener('submit', function(e){
   let valid = true;
 
@@ -374,7 +380,7 @@ document.getElementById('signupForm').addEventListener('submit', function(e){
   if(!em.value.trim() || !em.value.includes('@')){ em.classList.add('error'); eem.classList.add('show'); valid=false; }
   else { em.classList.remove('error'); eem.classList.remove('show'); }
 
-  // Vérifier tous les critères MDP
+  // Check all password criteria
   const val = pwInput.value;
   const allOk = Object.values(checks).every(c => c.test(val));
   const ep = document.getElementById('err-password');
@@ -402,7 +408,7 @@ document.getElementById('signupForm').addEventListener('submit', function(e){
   document.getElementById('btnText').textContent='Création en cours…';
 });
 
-/* Retirer erreurs à la saisie */
+/* Clear errors on input */
 document.querySelectorAll('.field-input').forEach(input=>{
   input.addEventListener('input', ()=>{
     input.classList.remove('error');

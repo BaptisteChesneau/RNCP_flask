@@ -1,12 +1,16 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Résumé de votre devis - ML2C CONSEIL</title>
+  <title>Résume de votre devis</title>
+  <!-- Bootstrap CSS (CDN) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Custom CSS file -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <style>
     :root {
@@ -34,7 +38,7 @@
     .rv-breadcrumb a:hover { color:var(--turq); }
     .rv-breadcrumb span { color:var(--turq); }
 
-    /* Badge confirmation animé */
+    /* Animated confirmation badge */
     .rv-badge-confirm {
       display:inline-flex; align-items:center; gap:.5rem;
       padding:.35rem .95rem; background:rgba(79,166,149,.15);
@@ -48,11 +52,11 @@
     .rv-title em { color:#5eead4; font-style:italic; }
     .rv-sub { font-size:.86rem; color:rgba(255,255,255,.45); margin:0; }
 
-    /* ── PAGE ── */
+    /* ── PAGE LAYOUT ── */
     .rv-page { padding:2.5rem 0 4rem; }
     .rv-layout { display:grid; grid-template-columns:1fr 320px; gap:1.75rem; align-items:start; }
 
-    /* ── TICKET RDV ── */
+    /* ── APPOINTMENT TICKET ── */
     .ticket-wrap { position:relative; }
     .ticket {
       background:#fff; border-radius:20px;
@@ -65,7 +69,7 @@
       to   { opacity:1; transform:scale(1) translateY(0); }
     }
 
-    /* Entête ticket */
+    /* Ticket header */
     .ticket-head {
       background:linear-gradient(135deg,var(--gris-dark) 0%,#3d4549 100%);
       padding:1.5rem 1.75rem; position:relative; overflow:hidden;
@@ -83,7 +87,7 @@
     .ticket-rdv-date { font-family:'Cormorant Garamond',serif; font-size:1.7rem; font-weight:700; color:#fff; line-height:1; }
     .ticket-rdv-time { font-size:.95rem; color:#5eead4; font-weight:600; margin-top:.2rem; }
 
-    /* Tirets de découpe */
+    /* Perforated ticket cut line */
     .ticket-cut {
       display:flex; align-items:center; gap:0;
       background:#f0f2f5; padding:0 1.75rem;
@@ -98,7 +102,7 @@
     .ticket-cut::after { right:-11px; }
     .ticket-dashes { flex:1; border-top:2px dashed var(--border); }
 
-    /* Corps du ticket */
+    /* Ticket body */
     .ticket-body { padding:1.5rem 1.75rem; }
     .ticket-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
     .ticket-field-label { font-size:.65rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin-bottom:.25rem; display:flex; align-items:center; gap:.35rem; }
@@ -115,7 +119,7 @@
       font-size:.82rem; font-weight:700; border:1px solid rgba(193,0,122,.2);
     }
 
-    /* ── SECTION ACTIONS ── */
+    /* ── ACTIONS SECTION ── */
     .actions-card { background:#fff; border-radius:20px; box-shadow:0 6px 28px rgba(0,0,0,.07); overflow:hidden; }
     .actions-head { padding:1.25rem 1.6rem; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:.7rem; }
     .actions-head-ico { width:36px; height:36px; border-radius:9px; background:var(--rose-light); color:var(--rose); display:flex; align-items:center; justify-content:center; font-size:.85rem; }
@@ -148,14 +152,14 @@
     .action-btn-arrow { margin-left:auto; font-size:.8rem; opacity:.4; transition:.2s; }
     .action-btn:hover .action-btn-arrow { opacity:1; transform:translateX(3px); }
 
-    /* ── SIDEBAR DROITE ── */
+    /* ── RIGHT SIDEBAR ── */
     .side-card { background:#fff; border-radius:20px; box-shadow:0 6px 28px rgba(0,0,0,.07); overflow:hidden; position:sticky; top:100px; }
     .side-card-head { background:linear-gradient(135deg,var(--gris-dark),#3d4549); padding:1.25rem 1.5rem; color:#fff; }
     .side-card-head h3 { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:700; margin:0 0 .2rem; }
     .side-card-head p { font-size:.74rem; color:rgba(255,255,255,.4); margin:0; }
     .side-body { padding:1rem 1.5rem; }
 
-    /* Timeline étapes */
+    /* Steps timeline */
     .timeline { position:relative; padding-left:1.6rem; }
     .timeline::before { content:''; position:absolute; left:.55rem; top:.5rem; bottom:.5rem; width:2px; background:var(--border); }
     .tl-item { position:relative; padding-bottom:1.1rem; }
@@ -172,7 +176,7 @@
     .tl-label { font-size:.82rem; font-weight:600; color:var(--text); }
     .tl-sub { font-size:.72rem; color:var(--muted); margin-top:.1rem; }
 
-    /* Sécurité badges */
+    /* Security badges */
     .sec-badges { display:flex; flex-wrap:wrap; gap:.4rem; padding:.9rem 1.5rem; border-top:1px solid var(--border); }
     .sec-badge { display:inline-flex; align-items:center; gap:.3rem; font-size:.68rem; color:var(--muted); border-radius:6px; padding:.22rem .55rem; background:#f8f9fb; border:1px solid var(--border); }
     .sec-badge i { color:var(--turq); }
@@ -201,7 +205,7 @@
 <div class="rv-page">
   <div class="container">
 
-    <!-- Messages de notifications Flash -->
+    <!-- Flash Notification Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for cat, msg in messages %}
@@ -215,12 +219,12 @@
 
     <div class="rv-layout">
 
-      <!-- ════ COLONNE GAUCHE ════ -->
+      <!-- ════ LEFT COLUMN ════ -->
       <div>
 
-        <!-- TICKET RDV -->
+        <!-- APPOINTMENT TICKET -->
         <div class="ticket">
-          <!-- En-tête sombre -->
+          <!-- Dark Header -->
           <div class="ticket-head">
             <div class="ticket-head-top">
               <div class="ticket-logo">ML2C CONSEIL</div>
@@ -233,10 +237,10 @@
             </div>
           </div>
 
-          <!-- Séparation découpe -->
+          <!-- Cut Separation -->
           <div class="ticket-cut"><div class="ticket-dashes"></div></div>
 
-          <!-- Corps -->
+          <!-- Body -->
           <div class="ticket-body">
             <div class="ticket-grid">
               <div class="ticket-field">
@@ -269,7 +273,7 @@
           </div>
           <div class="actions-body">
 
-            <!-- Accéder aux offres ou au menu -->
+            <!-- Access offers or main menu -->
             <a href="{{ url_for('menu') }}" class="action-btn rose">
               <div class="action-btn-ico"><i class="fas fa-tags"></i></div>
               <div class="action-btn-text">
@@ -279,7 +283,7 @@
               <i class="fas fa-arrow-right action-btn-arrow"></i>
             </a>
 
-            <!-- Gérer mes devis dans l'espace client -->
+            <!-- Manage quotes in client portal -->
             <a href="{{ url_for('gerer_devis') }}" class="action-btn turq">
               <div class="action-btn-ico"><i class="fas fa-folder-open"></i></div>
               <div class="action-btn-text">
@@ -294,7 +298,7 @@
 
       </div>
 
-      <!-- ════ COLONNE DROITE ════ -->
+      <!-- ════ RIGHT COLUMN ════ -->
       <div>
         <div class="side-card">
           <div class="side-card-head">
@@ -344,6 +348,7 @@
 
 {% include "footer.html" %}
 
+<!-- Bootstrap & jQuery JS Scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

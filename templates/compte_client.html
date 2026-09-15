@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Espace Client — ML2C CONSEIL</title>
+  <title>Espace Client</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -29,7 +29,7 @@
     html{scroll-behavior:smooth;}
     body{background:var(--bg);font-family:var(--ff-body);color:var(--text);min-height:100vh;overflow-x:hidden;}
 
-    /* ══ TEXTURE FOND ══ */
+    /* ══ BACKGROUND TEXTURE ══ */
     body::before{
       content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
       background-image:
@@ -45,7 +45,7 @@
     /* ══ WRAPPER ══ */
     .ec-wrapper{position:relative;z-index:1;min-height:100vh;padding-bottom:5rem;}
 
-    /* ══ HERO LUXE ══ */
+    /* ══ LUXURY HERO ══ */
     .ec-hero{
       padding:4rem 0 6rem;position:relative;overflow:hidden;
       background:linear-gradient(160deg,var(--bg) 0%,var(--bg2) 50%,var(--bg3) 100%);
@@ -58,10 +58,10 @@
         radial-gradient(ellipse 30% 40% at 0% 100%,rgba(176,141,87,.08) 0%,transparent 50%);
     }
 
-    /* Ligne déco hero */
+    /* Hero decorative line */
     .ec-hero-deco{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--rose) 30%,var(--gold) 60%,transparent);}
 
-    /* Monogramme flottant */
+    /* Floating monogram */
     .ec-hero-mono{
       position:absolute;right:-40px;top:50%;transform:translateY(-50%);
       font-family:var(--ff-head);font-size:clamp(120px,18vw,220px);font-weight:700;
@@ -69,7 +69,7 @@
       letter-spacing:-.02em;
     }
 
-    /* Badge session */
+    /* Session badge */
     .ec-session-badge{
       display:inline-flex;align-items:center;gap:.5rem;
       padding:.35rem 1rem;border-radius:30px;
@@ -101,7 +101,7 @@
     @keyframes lineIn{to{transform:scaleX(1);}}
     .ec-sub{font-size:.9rem;color:var(--muted);max-width:440px;line-height:1.7;margin:.2rem 0 0;}
 
-    /* Stats hero */
+    /* Hero stats */
     .ec-hero-stats{display:flex;gap:.85rem;margin-top:2.25rem;flex-wrap:wrap;}
     .ec-hero-stat{
       display:flex;align-items:center;gap:.75rem;
@@ -123,10 +123,10 @@
     .ec-hero-stat-val{font-family:var(--ff-head);font-size:1.4rem;font-weight:700;color:var(--ink);line-height:1;}
     .ec-hero-stat-lbl{font-size:.62rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--faint);margin-top:.1rem;}
 
-    /* ══ CONTENU ══ */
+    /* ══ CONTENT ══ */
     .ec-content{margin-top:-2.5rem;position:relative;z-index:2;}
 
-    /* ══ BANNIÈRE SUPPORT MESSAGERIE ══ */
+    /* ══ SUPPORT / MESSAGING BANNER ══ */
     .ec-support-banner {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -195,12 +195,12 @@
     }
     .ec-nav-btn.active .nav-chip{background:rgba(255,255,255,.25);}
 
-    /* ══ PANNEAUX ══ */
+    /* ══ PANELS ══ */
     .ec-panel{display:none;}
     .ec-panel.active{display:block;animation:panelIn .3s ease;}
     @keyframes panelIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 
-    /* ══ CARD PREMIUM ══ */
+    /* ══ PREMIUM CARD ══ */
     .prem-card{
       background:var(--surface);border:1px solid var(--border);
       border-radius:22px;padding:2rem;margin-bottom:1.25rem;
@@ -221,14 +221,14 @@
     .prem-card-title{font-family:var(--ff-head);font-size:1.15rem;font-weight:700;color:var(--ink);line-height:1.2;}
     .prem-card-sub{font-size:.73rem;color:var(--muted);margin-top:.1rem;}
 
-    /* Fiche archivée style */
+    /* Archived file style */
     .prem-card.archive {
       opacity: 0.85;
       background: #faf8f4;
       border-style: dashed;
     }
 
-    /* ══ STATUT DEVIS ══ */
+    /* ══ QUOTE STATUS ══ */
     .status-ribbon{
       display:inline-flex;align-items:center;gap:.4rem;
       font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
@@ -238,7 +238,7 @@
     .sr-valide{background:var(--turq-xl);color:var(--turq-d);border:1px solid rgba(79,166,149,.2);}
     .sr-archive{background:var(--bg3);color:var(--muted);border:1px solid var(--border2);}
 
-    /* Timeline devis */
+    /* Quote timeline */
     .devis-timeline{display:flex;align-items:center;margin:1.5rem 0;}
     .dt-step{display:flex;flex-direction:column;align-items:center;gap:.4rem;flex:1;}
     .dt-circle{
@@ -254,7 +254,7 @@
     .dt-bar{flex:1;height:2px;background:var(--border);margin:0 -1px;margin-bottom:1.85rem;}
     .dt-bar.done{background:linear-gradient(90deg,var(--turq),rgba(79,166,149,.3));}
 
-    /* Grid devis data */
+    /* Quote data grid */
     .devis-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:1rem;}
     .dg-field{background:var(--bg2);border-radius:12px;padding:.85rem 1.1rem;border:1px solid var(--border);transition:all .2s;}
     .dg-field:hover{background:var(--rose-xl);border-color:rgba(193,0,122,.15);}
@@ -262,7 +262,7 @@
     .dg-val{font-size:.92rem;font-weight:600;color:var(--ink);}
     .dg-val.accent{color:var(--rose);}
 
-    /* Pill RDV */
+    /* Appointment pill */
     .rdv-pill{
       display:inline-flex;align-items:center;gap:.5rem;
       padding:.5rem 1.1rem;border-radius:10px;
@@ -270,7 +270,7 @@
       color:var(--turq-d);font-size:.83rem;font-weight:600;margin-top:1.1rem;
     }
 
-    /* ══ FICHE CLIENT ══ */
+    /* ══ CLIENT PROFILE ══ */
     .fiche-header{display:flex;align-items:center;gap:1.1rem;margin-bottom:1.5rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border);}
     .fiche-avatar{
       width:60px;height:60px;border-radius:50%;
@@ -300,7 +300,7 @@
     .fi-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.22rem;}
     .fi-val{font-size:.88rem;font-weight:500;color:var(--ink);}
 
-    /* ══ CARTE BANCAIRE LUXE ══ */
+    /* ══ LUXURY CREDIT CARD ══ */
     .card-scene{perspective:1400px;max-width:420px;margin:0 auto 1.5rem;}
     .credit-card{
       width:100%;aspect-ratio:1.586;border-radius:22px;
@@ -311,7 +311,7 @@
     }
     .credit-card:hover{transform:rotateY(-10deg) rotateX(5deg) scale(1.02);}
 
-    /* Effets holographiques */
+    /* Holographic effects */
     .cc-holo{position:absolute;inset:0;background:linear-gradient(125deg,rgba(193,0,122,.15) 0%,rgba(79,166,149,.12) 25%,rgba(176,141,87,.1) 50%,rgba(59,130,246,.12) 75%,rgba(193,0,122,.15) 100%);background-size:400% 400%;animation:holoShift 6s ease infinite;}
     @keyframes holoShift{0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
     .cc-shine{position:absolute;top:-60%;left:-60%;width:220%;height:220%;background:conic-gradient(from 0deg,transparent 0%,rgba(255,255,255,.04) 20%,transparent 40%,rgba(255,255,255,.02) 60%,transparent 80%);animation:ccRot 10s linear infinite;}
@@ -319,7 +319,7 @@
     .cc-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");background-size:200px;opacity:.3;}
     .cc-lines{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(255,255,255,.012) 3px,rgba(255,255,255,.012) 4px);}
 
-    /* Contenu carte */
+    /* Card inner content */
     .cc-inner{position:relative;z-index:2;height:100%;padding:1.6rem 1.8rem;display:flex;flex-direction:column;justify-content:space-between;}
     .cc-top{display:flex;justify-content:space-between;align-items:center;}
     .cc-brand{font-family:var(--ff-head);font-size:1.1rem;font-weight:700;color:rgba(255,255,255,.9);letter-spacing:.06em;}
@@ -339,7 +339,7 @@
     .cc-fv{font-family:var(--ff-mono);font-size:.88rem;color:rgba(255,255,255,.88);letter-spacing:.06em;}
     .cc-fv.cens{color:rgba(255,255,255,.3);letter-spacing:.28em;}
 
-    /* Sécurité + bouton suppr */
+    /* Security note + delete button */
     .card-secure-note{display:flex;align-items:center;justify-content:center;gap:.5rem;font-size:.73rem;color:var(--muted);margin-bottom:1rem;}
     .card-secure-note i{color:var(--turq);}
     .btn-del-card{
@@ -351,7 +351,7 @@
     }
     .btn-del-card:hover{background:#dc2626;color:#fff;border-color:#dc2626;box-shadow:0 8px 20px rgba(220,38,38,.25);}
 
-    /* ══ CTA AJOUTER (LISIBILITÉ OPTIMISÉE) ══ */
+    /* ══ ADD CTA (OPTIMIZED READABILITY) ══ */
     .cta-add {
       display: flex;
       align-items: center;
@@ -401,7 +401,7 @@
       transition: transform .25s ease;
     }
 
-    /* --- SURVOL ROSE --- */
+    /* --- ROSE HOVER --- */
     .cta-add:hover {
       border-color: var(--rose);
       background: var(--rose-xl);
@@ -418,7 +418,7 @@
       transform: translateX(5px);
     }
 
-    /* --- VARIATION TURQUOISE --- */
+    /* --- TURQUOISE VARIATION --- */
     .cta-add.turq .cta-ico {
       background: var(--turq-xl);
       color: var(--turq-d);
@@ -445,7 +445,7 @@
     .ec-empty h5{font-family:var(--ff-head);font-size:1.25rem;font-weight:700;color:var(--ink);margin-bottom:.4rem;}
     .ec-empty p{font-size:.84rem;color:var(--muted);}
 
-    /* ══ BARRE D'ACTIONS ══ */
+    /* ══ ACTION BAR ══ */
     .ec-action-bar{display:flex;gap:.65rem;flex-wrap:wrap;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);}
     .btn-act{display:inline-flex;align-items:center;gap:.45rem;padding:.65rem 1.35rem;border-radius:11px;font-family:var(--ff-body);font-weight:600;font-size:.85rem;cursor:pointer;border:none;transition:all .25s;text-decoration:none;}
     .btn-act-rose{background:var(--rose);color:#fff;box-shadow:0 4px 14px rgba(193,0,122,.2);}
@@ -457,7 +457,7 @@
     .btn-act-danger{background:rgba(220,38,38,.07);border:1.5px solid rgba(220,38,38,.15);color:#dc2626;}
     .btn-act-danger:hover{background:#dc2626;color:#fff;border-color:#dc2626;}
 
-    /* ══ TOAST DYNAMIQUE ══ */
+    /* ══ DYNAMIC TOAST ══ */
     .ec-toast, .gd-toast {
       position: fixed;
       top: 6.5rem;
@@ -509,7 +509,7 @@
     ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
     ::-webkit-scrollbar-thumb:hover{background:var(--muted);}
 
-    /* ══ STAGGER ANIMS ══ */
+    /* ══ STAGGER ANIMATIONS ══ */
     .s1{animation-delay:.05s;}.s2{animation-delay:.1s;}.s3{animation-delay:.15s;}.s4{animation-delay:.2s;}
 
     @media(max-width:640px){
@@ -524,6 +524,7 @@
 </head>
 <body>
 
+<!-- Include the global navigation header -->
 {% include "header.html" %}
 
 <div class="ec-wrapper">
@@ -535,42 +536,42 @@
 
       <div class="ec-session-badge">
         <span class="ec-dot"></span>
-        Session active &nbsp;·&nbsp;
+        Active session &nbsp;·&nbsp;
         <span style="font-family:var(--ff-mono);font-size:.68rem;" id="heroTime">--:--:--</span>
       </div>
 
       <h1 class="ec-welcome">
-        Bonjour,&nbsp;<em id="welcomeName">Utilisateur</em>
+        Hello,&nbsp;<em id="welcomeName">User</em>
       </h1>
-      <p class="ec-sub">Bienvenue dans votre espace client. Gérez vos devis, votre fiche et vos informations de paiement.</p>
+      <p class="ec-sub">Welcome to your client portal. Manage your quotes, profile, and payment details.</p>
 
       <div class="ec-hero-stats">
         <div class="ec-hero-stat s1">
           <div class="ec-hero-stat-ico esi-rose"><i class="fas fa-file-invoice"></i></div>
           <div>
             <div class="ec-hero-stat-val" id="statDevis">{% if devis_list %}{{ devis_list|length }}{% else %}0{% endif %}</div>
-            <div class="ec-hero-stat-lbl">Devis</div>
+            <div class="ec-hero-stat-lbl">Quotes</div>
           </div>
         </div>
         <div class="ec-hero-stat s2">
           <div class="ec-hero-stat-ico esi-turq"><i class="fas fa-id-card"></i></div>
           <div>
             <div class="ec-hero-stat-val" id="statFiches">{% if clients %}{{ clients|length }}{% else %}0{% endif %}</div>
-            <div class="ec-hero-stat-lbl">Fiches</div>
+            <div class="ec-hero-stat-lbl">Profiles</div>
           </div>
         </div>
         <div class="ec-hero-stat s3">
           <div class="ec-hero-stat-ico esi-gold"><i class="fas fa-shield-alt"></i></div>
           <div>
             <div class="ec-hero-stat-val">100%</div>
-            <div class="ec-hero-stat-lbl">Sécurisé</div>
+            <div class="ec-hero-stat-lbl">Secure</div>
           </div>
         </div>
         <div class="ec-hero-stat s4">
           <div class="ec-hero-stat-ico esi-ink"><i class="fas fa-calendar"></i></div>
           <div>
             <div class="ec-hero-stat-val" id="statDate">--/--</div>
-            <div class="ec-hero-stat-lbl">Aujourd'hui</div>
+            <div class="ec-hero-stat-lbl">Today</div>
           </div>
         </div>
       </div>
@@ -580,73 +581,73 @@
   <div class="ec-content">
     <div class="container">
 
-      <!-- 🟢 BANNIÈRE SUPPORT / MESSAGERIE DIRECTE -->
+      <!-- 🟢 SUPPORT / DIRECT MESSAGING BANNER -->
       <div class="ec-support-banner">
         <div class="d-flex align-items-center gap-3">
           <div class="ec-support-ico">
             <i class="fas fa-comments"></i>
           </div>
           <div>
-            <div class="ec-support-title">Besoin d'échange ou d'assistance ?</div>
-            <div class="ec-support-sub">Discutez en direct avec votre collaborateur référent ML2C CONSEIL.</div>
+            <div class="ec-support-title">Need to chat or get assistance?</div>
+            <div class="ec-support-sub">Chat directly with your dedicated ML2C CONSEIL collaborator.</div>
           </div>
         </div>
         <a href="{{ url_for('messagerie') }}" class="btn-act btn-act-rose px-4 py-2" style="white-space: nowrap;">
-          Ouvrir la messagerie <i class="fas fa-paper-plane ml-1"></i>
+          Open messaging <i class="fas fa-paper-plane ml-1"></i>
         </a>
       </div>
 
-      <!-- BARRE DE NAVIGATION INTERNE -->
+      <!-- INTERNAL NAVIGATION BAR -->
       <div class="ec-nav-wrap">
         <button class="ec-nav-btn active" data-panel="devis">
           <i class="fas fa-file-invoice"></i>
-          <span class="tab-text">Mes devis</span>
+          <span class="tab-text">My quotes</span>
           {% if devis_list %}<span class="nav-chip">{{ devis_list|length }}</span>{% endif %}
         </button>
         <button class="ec-nav-btn" data-panel="fiche">
           <i class="fas fa-id-card"></i>
-          <span class="tab-text">Fiche client</span>
+          <span class="tab-text">Client profile</span>
           {% if clients %}<span class="nav-chip">{{ clients|length }}</span>{% endif %}
         </button>
         <button class="ec-nav-btn" data-panel="carte">
           <i class="fas fa-credit-card"></i>
-          <span class="tab-text">Carte bancaire</span>
+          <span class="tab-text">Credit card</span>
         </button>
-        <!-- RACCOURCI COMPLÉMENTAIRE VERS LA MESSAGERIE -->
+        <!-- ADDITIONAL SHORTCUT TO MESSAGING -->
         <a href="{{ url_for('messagerie') }}" class="ec-nav-btn" style="color: var(--rose);">
           <i class="fas fa-paper-plane"></i>
-          <span class="tab-text">Messagerie client</span>
+          <span class="tab-text">Client messaging</span>
         </a>
       </div>
 
       <div class="ec-panels">
 
-        <!-- PANNEAU 1 : DEVIS -->
+        <!-- PANEL 1: QUOTES -->
         <div class="ec-panel active" id="panel-devis">
 
           {% if session.devis_data or devis_list %}
 
           <div class="prem-card">
-            <div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-bottom:1.1rem;">Statut de la demande</div>
+            <div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-bottom:1.1rem;">Request status</div>
             <div class="devis-timeline">
               <div class="dt-step done">
                 <div class="dt-circle"><i class="fas fa-check"></i></div>
-                <div class="dt-label">Soumis</div>
+                <div class="dt-label">Submitted</div>
               </div>
               <div class="dt-bar done"></div>
               <div class="dt-step active">
                 <div class="dt-circle"><i class="fas fa-search"></i></div>
-                <div class="dt-label">En analyse</div>
+                <div class="dt-label">Under review</div>
               </div>
               <div class="dt-bar"></div>
               <div class="dt-step">
                 <div class="dt-circle">3</div>
-                <div class="dt-label">Devis envoyé</div>
+                <div class="dt-label">Quote sent</div>
               </div>
               <div class="dt-bar"></div>
               <div class="dt-step">
                 <div class="dt-circle">4</div>
-                <div class="dt-label">Accepté</div>
+                <div class="dt-label">Accepted</div>
               </div>
             </div>
           </div>
@@ -656,19 +657,19 @@
             <div class="prem-card-head">
               <div class="prem-card-ico pci-rose"><i class="fas fa-file-alt"></i></div>
               <div>
-                <div class="prem-card-title">Devis en cours</div>
-                <div class="prem-card-sub">Soumis via le formulaire en ligne</div>
+                <div class="prem-card-title">Pending quote</div>
+                <div class="prem-card-sub">Submitted via the online form</div>
               </div>
-              <span class="status-ribbon sr-en-cours" style="margin-left:auto;"><i class="fas fa-circle" style="font-size:.45rem;"></i>En traitement</span>
+              <span class="status-ribbon sr-en-cours" style="margin-left:auto;"><i class="fas fa-circle" style="font-size:.45rem;"></i>Processing</span>
             </div>
             <div class="devis-grid">
-              <div class="dg-field"><div class="dg-label">Secteur</div><div class="dg-val">{{ session.devis_data.secteur }}</div></div>
-              <div class="dg-field"><div class="dg-label">Nom / Raison sociale</div><div class="dg-val">{{ session.devis_data.nom }}</div></div>
-              <div class="dg-field"><div class="dg-label">Service demandé</div><div class="dg-val accent">{{ session.devis_data.type_service }}</div></div>
+              <div class="dg-field"><div class="dg-label">Sector</div><div class="dg-val">{{ session.devis_data.secteur }}</div></div>
+              <div class="dg-field"><div class="dg-label">Name / Company name</div><div class="dg-val">{{ session.devis_data.nom }}</div></div>
+              <div class="dg-field"><div class="dg-label">Requested service</div><div class="dg-val accent">{{ session.devis_data.type_service }}</div></div>
               <div class="dg-field"><div class="dg-label">Email</div><div class="dg-val">{{ session.devis_data.email }}</div></div>
             </div>
             {% if session.devis_data.date_rdv %}
-            <div><span class="rdv-pill"><i class="fas fa-calendar-check"></i>RDV confirmé · {{ session.devis_data.date_rdv }} à {{ session.devis_data.heure_rdv }}</span></div>
+            <div><span class="rdv-pill"><i class="fas fa-calendar-check"></i>Confirmed appointment · {{ session.devis_data.date_rdv }} at {{ session.devis_data.heure_rdv }}</span></div>
             {% endif %}
           </div>
           {% endif %}
@@ -679,173 +680,174 @@
               <div class="prem-card-ico pci-turq"><i class="fas fa-folder-open"></i></div>
               <div>
                 <div class="prem-card-title">{{ devis.nom }}</div>
-                <div class="prem-card-sub">Demande de devis</div>
-              </div>
+                <div class="prem-card-sub">Quote request</div>
             </div>
-            <div class="devis-grid">
-              <div class="dg-field"><div class="dg-label">Secteur</div><div class="dg-val">{{ devis.secteur }}</div></div>
-              <div class="dg-field"><div class="dg-label">Service</div><div class="dg-val accent">{{ devis.type_service }}</div></div>
-              <div class="dg-field"><div class="dg-label">Date RDV</div><div class="dg-val">{{ devis.date_rdv | replace('-', '/') if devis.date_rdv else '—' }}</div></div>
-              <div class="dg-field"><div class="dg-label">Heure</div><div class="dg-val">{{ devis.heure_rdv or '—' }}</div></div>
+          </div>
+          <div class="devis-grid">
+            <div class="dg-field"><div class="dg-label">Sector</div><div class="dg-val">{{ devis.secteur }}</div></div>
+            <div class="dg-field"><div class="dg-label">Service</div><div class="dg-val accent">{{ devis.type_service }}</div></div>
+            <div class="dg-field"><div class="dg-label">Appointment date</div><div class="dg-val">{{ devis.date_rdv | replace('-', '/') if devis.date_rdv else '—' }}</div></div>
+            <div class="dg-field"><div class="dg-label">Time</div><div class="dg-val">{{ devis.heure_rdv or '—' }}</div></div>
+          </div>
+        </div>
+        {% endfor %}
+
+        {% else %}
+        <div class="prem-card">
+          <div class="ec-empty">
+            <div class="ec-empty-ico"><i class="fas fa-file-invoice"></i></div>
+            <h5>No quotes submitted</h5>
+            <p>You haven't submitted any quote requests yet.</p>
+          </div>
+        </div>
+        {% endif %}
+
+        <a href="{{ url_for('devis') }}" class="cta-add">
+          <div class="cta-ico"><i class="fas fa-plus-circle"></i></div>
+          <div>
+            <div class="cta-title">Create a new quote</div>
+            <div class="cta-sub">Fill out a personalized quote request</div>
+          </div>
+          <i class="fas fa-arrow-right cta-arrow"></i>
+        </a>
+      </div>
+
+      <!-- PANEL 2: CLIENT PROFILE (Manages active and archived profiles) -->
+      <div class="ec-panel" id="panel-fiche">
+        {% if clients %}
+          {% for client in clients %}
+          <div class="prem-card {% if client.archive %}archive{% endif %}">
+            <div class="fiche-header">
+              <div class="fiche-avatar" {% if client.archive %}style="background:var(--muted);"{% endif %}>
+                {{ client.prenom[0] if client.prenom else '?' }}
+                {% if not client.archive %}<span class="fiche-online"></span>{% endif %}
+              </div>
+              <div>
+                <div class="fiche-name">{{ client.prenom }} {{ client.nom }}</div>
+                <div class="fiche-id">Client profile n°{{ client.id }} · {% if client.archive %}Archived{% else %}Active account{% endif %}</div>
+              </div>
+              {% if client.archive %}
+                <span class="status-ribbon sr-archive" style="margin-left:auto;"><i class="fas fa-archive" style="font-size:.55rem;"></i>Archived</span>
+              {% else %}
+                <span class="status-ribbon sr-valide" style="margin-left:auto;"><i class="fas fa-check" style="font-size:.55rem;"></i>Verified</span>
+              {% endif %}
+            </div>
+            <div class="fiche-grid">
+              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-briefcase"></i></div><div><div class="fi-label">Activity</div><div class="fi-val">{{ client.activite }}</div></div></div>
+              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-building"></i></div><div><div class="fi-label">Company type</div><div class="fi-val">{{ client.type_entreprise }}</div></div></div>
+              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-landmark"></i></div><div><div class="fi-label">Firm</div><div class="fi-val">{{ client.cabinet }}</div></div></div>
+              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-user"></i></div><div><div class="fi-label">Title</div><div class="fi-val">{{ client.civilite }}</div></div></div>
+              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-envelope"></i></div><div><div class="fi-label">Email</div><div class="fi-val">{{ client.email }}</div></div></div>
+              <div class="fiche-item"><div class="fi-ico"><i class="fas fa-map-marker-alt"></i></div><div><div class="fi-label">Headquarters</div><div class="fi-val">{{ client.adresse_siege }}</div></div></div>
             </div>
           </div>
           {% endfor %}
-
-          {% else %}
-          <div class="prem-card">
-            <div class="ec-empty">
-              <div class="ec-empty-ico"><i class="fas fa-file-invoice"></i></div>
-              <h5>Aucun devis soumis</h5>
-              <p>Vous n'avez pas encore soumis de demande de devis.</p>
-            </div>
+        {% else %}
+        <div class="prem-card">
+          <div class="ec-empty">
+            <div class="ec-empty-ico"><i class="fas fa-id-card"></i></div>
+            <h5>No client profile</h5>
+            <p>Your client profile has not been filled out yet.</p>
           </div>
-          {% endif %}
-
-          <a href="{{ url_for('devis') }}" class="cta-add">
-            <div class="cta-ico"><i class="fas fa-plus-circle"></i></div>
-            <div>
-              <div class="cta-title">Créer un nouveau devis</div>
-              <div class="cta-sub">Remplir une demande de devis personnalisée</div>
-            </div>
-            <i class="fas fa-arrow-right cta-arrow"></i>
-          </a>
         </div>
-
-        <!-- PANNEAU 2 : FICHE CLIENT (Gère fiches actives et archivées) -->
-        <div class="ec-panel" id="panel-fiche">
-          {% if clients %}
-            {% for client in clients %}
-            <div class="prem-card {% if client.archive %}archive{% endif %}">
-              <div class="fiche-header">
-                <div class="fiche-avatar" {% if client.archive %}style="background:var(--muted);"{% endif %}>
-                  {{ client.prenom[0] if client.prenom else '?' }}
-                  {% if not client.archive %}<span class="fiche-online"></span>{% endif %}
-                </div>
-                <div>
-                  <div class="fiche-name">{{ client.prenom }} {{ client.nom }}</div>
-                  <div class="fiche-id">Fiche client n°{{ client.id }} · {% if client.archive %}Archivée{% else %}Compte actif{% endif %}</div>
-                </div>
-                {% if client.archive %}
-                  <span class="status-ribbon sr-archive" style="margin-left:auto;"><i class="fas fa-archive" style="font-size:.55rem;"></i>Archivée</span>
-                {% else %}
-                  <span class="status-ribbon sr-valide" style="margin-left:auto;"><i class="fas fa-check" style="font-size:.55rem;"></i>Vérifié</span>
-                {% endif %}
-              </div>
-              <div class="fiche-grid">
-                <div class="fiche-item"><div class="fi-ico"><i class="fas fa-briefcase"></i></div><div><div class="fi-label">Activité</div><div class="fi-val">{{ client.activite }}</div></div></div>
-                <div class="fiche-item"><div class="fi-ico"><i class="fas fa-building"></i></div><div><div class="fi-label">Type d'entreprise</div><div class="fi-val">{{ client.type_entreprise }}</div></div></div>
-                <div class="fiche-item"><div class="fi-ico"><i class="fas fa-landmark"></i></div><div><div class="fi-label">Cabinet</div><div class="fi-val">{{ client.cabinet }}</div></div></div>
-                <div class="fiche-item"><div class="fi-ico"><i class="fas fa-user"></i></div><div><div class="fi-label">Civilité</div><div class="fi-val">{{ client.civilite }}</div></div></div>
-                <div class="fiche-item"><div class="fi-ico"><i class="fas fa-envelope"></i></div><div><div class="fi-label">Email</div><div class="fi-val">{{ client.email }}</div></div></div>
-                <div class="fiche-item"><div class="fi-ico"><i class="fas fa-map-marker-alt"></i></div><div><div class="fi-label">Siège social</div><div class="fi-val">{{ client.adresse_siege }}</div></div></div>
-              </div>
-            </div>
-            {% endfor %}
-          {% else %}
-          <div class="prem-card">
-            <div class="ec-empty">
-              <div class="ec-empty-ico"><i class="fas fa-id-card"></i></div>
-              <h5>Aucune fiche client</h5>
-              <p>Votre fiche client n'a pas encore été renseignée.</p>
-            </div>
+        {% endif %}
+        <a href="{{ url_for('formulaire_client') }}" class="cta-add turq">
+          <div class="cta-ico"><i class="fas fa-user-edit"></i></div>
+          <div>
+            <div class="cta-title">Fill out my client profile</div>
+            <div class="cta-sub">Complete or update your information</div>
           </div>
-          {% endif %}
-          <a href="{{ url_for('formulaire_client') }}" class="cta-add turq">
-            <div class="cta-ico"><i class="fas fa-user-edit"></i></div>
-            <div>
-              <div class="cta-title">Remplir ma fiche client</div>
-              <div class="cta-sub">Compléter ou mettre à jour vos informations</div>
-            </div>
-            <i class="fas fa-arrow-right cta-arrow"></i>
-          </a>
-        </div>
-
-        <!-- PANNEAU 3 : CARTE BANCAIRE -->
-        <div class="ec-panel" id="panel-carte">
-          {% if session.get('carte_bancaire') %}
-
-          <div class="card-secure-note">
-            <i class="fas fa-lock"></i>
-            <span>Données chiffrées AES-256 · Conforme PCI-DSS</span>
-          </div>
-
-          <div class="card-scene">
-            <div class="credit-card" id="creditCard">
-              <div class="cc-holo"></div>
-              <div class="cc-shine"></div>
-              <div class="cc-noise"></div>
-              <div class="cc-lines"></div>
-              <div class="cc-inner">
-                <div class="cc-top">
-                  <div class="cc-brand">ML2C <span class="cc-brand-em">PAY</span></div>
-                  <div class="cc-network"><div class="cc-c1"></div><div class="cc-c2"></div></div>
-                </div>
-                <div class="cc-mid">
-                  <div class="cc-chip"></div>
-                  <div class="cc-nfc"><i class="fas fa-wifi fa-rotate-90"></i></div>
-                </div>
-                <div class="cc-number">
-                  <span class="cens">•••• •••• ••••</span>&nbsp;{{ session.carte_bancaire.numero[-4:] }}
-                </div>
-                <div class="cc-bottom">
-                  <div><div class="cc-fl">Titulaire</div><div class="cc-fv">{{ session.carte_bancaire.nom | upper }}</div></div>
-                  <div><div class="cc-fl">Expire</div><div class="cc-fv">{{ session.carte_bancaire.expiration }}</div></div>
-                  <div><div class="cc-fl">CVV</div><div class="cc-fv cens">•••</div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <form method="POST" action="{{ url_for('supprimer_carte') }}" onsubmit="return confirm('Confirmer la suppression ?')">
-            <button type="submit" class="btn-del-card"><i class="fas fa-trash-alt"></i>Supprimer la carte</button>
-          </form>
-          <p style="text-align:center;font-size:.74rem;color:var(--muted);margin-top:.85rem;"><i class="fas fa-info-circle" style="color:var(--turq);"></i> Détails complets dans vos paramètres de facturation.</p>
-
-          {% else %}
-          <div class="prem-card">
-            <div class="ec-empty">
-              <div class="ec-empty-ico"><i class="fas fa-credit-card"></i></div>
-              <h5>Aucune carte enregistrée</h5>
-              <p>Ajoutez une carte de paiement pour simplifier vos règlements.</p>
-            </div>
-          </div>
-          <a href="{{ url_for('paiement') }}" class="cta-add">
-            <div class="cta-ico"><i class="fas fa-plus-circle"></i></div>
-            <div>
-              <div class="cta-title">Ajouter une carte bancaire</div>
-              <div class="cta-sub">Visa, Mastercard ou American Express</div>
-            </div>
-            <i class="fas fa-arrow-right cta-arrow"></i>
-          </a>
-          {% endif %}
-        </div>
-
-        <!-- BARRE D'ACTIONS INFERIEURE -->
-        <div class="ec-action-bar">
-          <a href="{{ url_for('parametres') }}" class="btn-act btn-act-rose"><i class="fas fa-cog"></i>Paramètres</a>
-          <a href="{{ url_for('gerer_devis') }}" class="btn-act btn-act-turq"><i class="fas fa-folder-open"></i>Gérer mes devis</a>
-          <a href="{{ url_for('menu') }}" class="btn-act btn-act-ghost"><i class="fas fa-arrow-left"></i>Retour au menu</a>
-          <a href="{{ url_for('logout') }}" class="btn-act btn-act-danger" onclick="return confirm('Confirmer la déconnexion ?')"><i class="fas fa-sign-out-alt"></i>Déconnexion</a>
-        </div>
-
+          <i class="fas fa-arrow-right cta-arrow"></i>
+        </a>
       </div>
+
+      <!-- PANEL 3: CREDIT CARD -->
+      <div class="ec-panel" id="panel-carte">
+        {% if session.get('carte_bancaire') %}
+
+        <div class="card-secure-note">
+          <i class="fas fa-lock"></i>
+          <span>AES-256 encrypted data · PCI-DSS compliant</span>
+        </div>
+
+        <div class="card-scene">
+          <div class="credit-card" id="creditCard">
+            <div class="cc-holo"></div>
+            <div class="cc-shine"></div>
+            <div class="cc-noise"></div>
+            <div class="cc-lines"></div>
+            <div class="cc-inner">
+              <div class="cc-top">
+                <div class="cc-brand">ML2C <span class="cc-brand-em">PAY</span></div>
+                <div class="cc-network"><div class="cc-c1"></div><div class="cc-c2"></div></div>
+              </div>
+              <div class="cc-mid">
+                <div class="cc-chip"></div>
+                <div class="cc-nfc"><i class="fas fa-wifi fa-rotate-90"></i></div>
+              </div>
+              <div class="cc-number">
+                <span class="cens">•••• •••• ••••</span>&nbsp;{{ session.carte_bancaire.numero[-4:] }}
+              </div>
+              <div class="cc-bottom">
+                <div><div class="cc-fl">Cardholder</div><div class="cc-fv">{{ session.carte_bancaire.nom | upper }}</div></div>
+                <div><div class="cc-fl">Expires</div><div class="cc-fv">{{ session.carte_bancaire.expiration }}</div></div>
+                <div><div class="cc-fl">CVV</div><div class="cc-fv cens">•••</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form method="POST" action="{{ url_for('supprimer_carte') }}" onsubmit="return confirm('Confirm deletion?')">
+          <button type="submit" class="btn-del-card"><i class="fas fa-trash-alt"></i>Delete card</button>
+        </form>
+        <p style="text-align:center;font-size:.74rem;color:var(--muted);margin-top:.85rem;"><i class="fas fa-info-circle" style="color:var(--turq);"></i> Full details in your billing settings.</p>
+
+        {% else %}
+        <div class="prem-card">
+          <div class="ec-empty">
+            <div class="ec-empty-ico"><i class="fas fa-credit-card"></i></div>
+            <h5>No saved card</h5>
+            <p>Add a payment card to simplify your transactions.</p>
+          </div>
+        </div>
+        <a href="{{ url_for('paiement') }}" class="cta-add">
+          <div class="cta-ico"><i class="fas fa-plus-circle"></i></div>
+          <div>
+            <div class="cta-title">Add a credit card</div>
+            <div class="cta-sub">Visa, Mastercard, or American Express</div>
+          </div>
+          <i class="fas fa-arrow-right cta-arrow"></i>
+        </a>
+        {% endif %}
+      </div>
+
+      <!-- LOWER ACTION BAR -->
+      <div class="ec-action-bar">
+        <a href="{{ url_for('parametres') }}" class="btn-act btn-act-rose"><i class="fas fa-cog"></i>Settings</a>
+        <a href="{{ url_for('gerer_devis') }}" class="btn-act btn-act-turq"><i class="fas fa-folder-open"></i>Manage my quotes</a>
+        <a href="{{ url_for('menu') }}" class="btn-act btn-act-ghost"><i class="fas fa-arrow-left"></i>Back to menu</a>
+        <a href="{{ url_for('logout') }}" class="btn-act btn-act-danger" onclick="return confirm('Confirm logout?')"><i class="fas fa-sign-out-alt"></i>Logout</a>
+      </div>
+
     </div>
   </div>
 </div>
 
-<!-- TOAST DYNAMIQUE -->
+<!-- DYNAMIC TOAST -->
 <div class="ec-toast" id="ecToast">
   <i class="fas fa-check-circle" id="ecToastIcon"></i>
-  <span id="ecToastMsg">Bienvenue dans votre espace client</span>
+  <span id="ecToastMsg">Welcome to your client portal</span>
   <button type="button" class="toast-close-btn" onclick="hideToast()"><i class="fas fa-times"></i></button>
 </div>
 
+<!-- Include the global footer -->
 {% include "footer.html" %}
 
+<!-- JavaScript libraries and page-specific scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Données Flash isolées pour le linter -->
+<!-- Isolated Flash message data for linter -->
 <script type="application/json" id="flash-message-data">
   {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -857,65 +859,68 @@
 </script>
 
 <script>
-let toastTimer = null;
+var toastTimer = null;
 
-/* Prénom */
+/* First name */
 (function(){
-  const p="{{ session.get('prenom','Utilisateur') }}";
-  const el=document.getElementById('welcomeName');
+  var p="{{ session.get('prenom','Utilisateur') }}";
+  var el=document.getElementById('welcomeName');
   if(el)el.textContent=p;
 })();
 
-/* Horloge */
+/* Clock */
 function tick(){
-  const n=new Date();
-  const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');
-  const el=document.getElementById('heroTime');if(el)el.textContent=t;
-  const d=document.getElementById('statDate');
-  if(d){const now=new Date();d.textContent=(now.getDate()+'').padStart(2,'0')+'/'+(now.getMonth()+1+'').padStart(2,'0');}
+  var n=new Date();
+  var t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(function(x){return String(x).padStart(2,'0');}).join(':');
+  var el=document.getElementById('heroTime');if(el)el.textContent=t;
+  var d=document.getElementById('statDate');
+  if(d){var now=new Date();d.textContent=(now.getDate()+'').padStart(2,'0')+'/'+(now.getMonth()+1+'').padStart(2,'0');}
 }
 tick();setInterval(tick,1000);
 
 /* Tabs */
-document.querySelectorAll('.ec-nav-btn[data-panel]').forEach(btn=>{
+document.querySelectorAll('.ec-nav-btn[data-panel]').forEach(function(btn){
   btn.addEventListener('click',function(){
-    document.querySelectorAll('.ec-nav-btn[data-panel]').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.ec-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.ec-nav-btn[data-panel]').forEach(function(b){b.classList.remove('active');});
+    document.querySelectorAll('.ec-panel').forEach(function(p){p.classList.remove('active');});
     this.classList.add('active');
-    const t=document.getElementById('panel-'+this.dataset.panel);
+    var t=document.getElementById('panel-'+this.dataset.panel);
     if(t)t.classList.add('active');
   });
 });
 
-/* Carte 3D souris */
-const card=document.getElementById('creditCard');
+/* 3D mouse card effect */
+var card=document.getElementById('creditCard');
 if(card){
   card.addEventListener('mousemove',function(e){
-    const r=this.getBoundingClientRect();
-    const x=(e.clientX-r.left)/r.width-.5;
-    const y=(e.clientY-r.top)/r.height-.5;
-    this.style.transform=`rotateY(${x*20}deg) rotateX(${-y*12}deg) scale(1.03)`;
+    var r=this.getBoundingClientRect();
+    var x=(e.clientX-r.left)/r.width-.5;
+    var y=(e.clientY-r.top)/r.height-.5;
+    this.style.transform='rotateY('+(x*20)+'deg) rotateX('+(-y*12)+'deg) scale(1.03)';
   });
   card.addEventListener('mouseleave',function(){
     this.style.transform='rotateY(0) rotateX(0) scale(1)';
   });
 }
 
-/* Compteurs animés */
+/* Animated counters */
 function animCount(el,target){
-  let v=0;const step=Math.ceil(target/18);
-  const t=setInterval(()=>{v=Math.min(v+step,target);el.textContent=v;if(v>=target)clearInterval(t);},55);
+  var v=0;var step=Math.ceil(target/18);
+  var t=setInterval(function(){v=Math.min(v+step,target);el.textContent=v;if(v>=target)clearInterval(t);},55);
 }
-document.querySelectorAll('.ec-hero-stat-val').forEach(el=>{
-  const n=parseInt(el.textContent);
-  if(!isNaN(n)&&n>0){el.textContent='0';setTimeout(()=>animCount(el,n),500);}
+document.querySelectorAll('.ec-hero-stat-val').forEach(function(el){
+  var n=parseInt(el.textContent);
+  if(!isNaN(n)&&n>0){el.textContent='0';setTimeout(function(){animCount(el,n);},500);}
 });
 
-/* Toast de notification dynamique */
-function showToast(msg, type = 'success', duration = 4000) {
-  const toast = document.getElementById('ecToast');
-  const toastMsg = document.getElementById('ecToastMsg');
-  const toastIcon = document.getElementById('ecToastIcon');
+/* Dynamic notification toast */
+function showToast(msg, type, duration) {
+  if (type === undefined) type = 'success';
+  if (duration === undefined) duration = 4000;
+  
+  var toast = document.getElementById('ecToast');
+  var toastMsg = document.getElementById('ecToastMsg');
+  var toastIcon = document.getElementById('ecToastIcon');
 
   if (!toast || !toastMsg) return;
 
@@ -943,24 +948,25 @@ function showToast(msg, type = 'success', duration = 4000) {
 
   toast.classList.add('show');
 
-  toastTimer = setTimeout(() => {
+  toastTimer = setTimeout(function() {
     hideToast();
   }, duration);
 }
 
 function hideToast() {
-  const toast = document.getElementById('ecToast');
+  var toast = document.getElementById('ecToast');
   if (toast) {
     toast.classList.remove('show');
   }
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-  const flashData = JSON.parse(document.getElementById('flash-message-data')?.textContent || 'null');
+  var flashDataEl = document.getElementById('flash-message-data');
+  var flashData = flashDataEl ? JSON.parse(flashDataEl.textContent || 'null') : null;
   if (flashData) {
     showToast(flashData, 'success', 5000);
   } else {
-    showToast("Bienvenue dans votre espace client", 'success', 4000);
+    showToast("Welcome to your client portal", 'success', 4000);
   }
 });
 </script>

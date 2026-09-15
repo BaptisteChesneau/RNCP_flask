@@ -1,12 +1,16 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Moyen de paiement - ML2C CONSEIL</title>
+  <title>Moyen de paiement</title>
+  <!-- Bootstrap CSS (CDN) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <!-- Custom CSS file -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <style>
     :root {
@@ -17,6 +21,7 @@
     }
     body { background:#f0f2f5; font-family:'DM Sans',sans-serif; }
 
+    /* ── HERO SECTION ── */
     .pay-hero { background:linear-gradient(135deg,#1e2729 0%,#2d3436 55%,#1a3333 100%); padding:2.25rem 0 3.25rem; position:relative; overflow:hidden; margin-bottom:-2rem; }
     .pay-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 85% 40%,rgba(79,166,149,.16) 0%,transparent 55%), radial-gradient(ellipse at 8% 85%,rgba(193,0,122,.12) 0%,transparent 45%); }
     .pay-hero-inner { position:relative; z-index:1; }
@@ -29,6 +34,7 @@
     .pay-title em { color:#5eead4; font-style:italic; }
     .pay-sub { font-size:.86rem; color:rgba(255,255,255,.45); margin:0; }
 
+    /* ── PAGE LAYOUT ── */
     .pay-page { padding:2.5rem 0 4rem; }
     .pay-layout { display:grid; grid-template-columns:1fr 360px; gap:1.75rem; align-items:start; }
 
@@ -48,6 +54,7 @@
     .net-mc-c:last-child { background:#f79e1b; }
     .net-amex { font-size:.72rem; font-weight:800; color:#016fd0; letter-spacing:.02em; background:#e8f2ff; border-radius:5px; padding:3px 8px; border:1px solid #bfdbfe; }
 
+    /* ── CREDIT CARD PREVIEW ── */
     .card-preview { width:100%; aspect-ratio:1.586; border-radius:18px; padding:1.6rem 1.75rem; position:relative; overflow:hidden; background:linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%); box-shadow:0 20px 55px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08); color:#fff; margin-bottom:1.75rem; transition:transform .3s ease; }
     .card-preview:hover { transform:translateY(-3px) rotateX(2deg); }
     .cp-circle-1 { position:absolute; top:-50px; right:-30px; width:200px; height:200px; border-radius:50%; background:rgba(255,255,255,.04); pointer-events:none; }
@@ -72,6 +79,7 @@
     .cp-lbl { font-size:.55rem; text-transform:uppercase; letter-spacing:.12em; color:rgba(255,255,255,.35); margin-bottom:.18rem; }
     .cp-val { font-family:'Share Tech Mono','Courier New',monospace; font-size:.82rem; color:rgba(255,255,255,.85); }
 
+    /* ── FORM INPUTS ── */
     .field-wrap { margin-bottom:1.1rem; }
     .field-label { display:block; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin-bottom:.4rem; }
     .field-input { width:100%; padding:.75rem 1rem; border:1.5px solid var(--border); border-radius:10px; font-size:.92rem; color:var(--text); background:#fafbfc; transition:.2s; outline:none; font-family:'DM Sans',sans-serif; }
@@ -85,6 +93,7 @@
     .btn-pay-submit { width:100%; padding:.9rem; border-radius:12px; background:linear-gradient(135deg,var(--rose),var(--rose-dark)); color:#fff; font-weight:700; font-size:.97rem; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:.55rem; transition:.25s; margin-top:1.35rem; box-shadow:0 4px 18px rgba(193,0,122,.28); }
     .btn-pay-submit:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(193,0,122,.42); }
 
+    /* ── SUMMARY SIDEBAR ── */
     .recap-card { background:#fff; border-radius:20px; box-shadow:0 6px 32px rgba(0,0,0,.07); overflow:hidden; position:sticky; top:100px; }
     .recap-head { background:linear-gradient(135deg,var(--gris-dark),#3d4549); padding:1.25rem 1.5rem; color:#fff; }
     .recap-head h3 { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:700; margin:0 0 .2rem; }
@@ -108,6 +117,7 @@
 <body>
 {% include "header.html" %}
 
+<!-- HERO SECTION -->
 <div class="pay-hero">
   <div class="container pay-hero-inner">
     <div class="pay-breadcrumb">
@@ -123,7 +133,7 @@
   <div class="container">
     <div class="pay-layout">
 
-      <!-- COLONNE GAUCHE -->
+      <!-- ════ LEFT COLUMN ════ -->
       <div>
         <div class="pay-card">
           <div class="pay-card-head">
@@ -142,7 +152,7 @@
               <span class="net-amex">AMERICAN EXPRESS</span>
             </div>
 
-            <!-- Preview carte -->
+            <!-- Card Preview -->
             <div class="card-preview">
               <div class="cp-circle-1"></div>
               <div class="cp-circle-2"></div>
@@ -182,10 +192,10 @@
               </div>
             </div>
 
-            <!-- Formulaire -->
+            <!-- Form -->
             <form action="{{ url_for('ajouter_carte_test') }}" method="POST" id="formCarte" novalidate>
 
-              <!-- Numéro — maxlength 22 : 16 chiffres + 3 doubles espaces -->
+              <!-- Card number — maxlength 22 : 16 digits + 3 double spaces -->
               <div class="field-wrap">
                 <label class="field-label" for="c-numero">Numéro de carte</label>
                 <input type="text" class="field-input mono" id="c-numero" name="numero"
@@ -193,7 +203,7 @@
                   autocomplete="cc-number" required>
               </div>
 
-              <!-- Titulaire -->
+              <!-- Cardholder name -->
               <div class="field-wrap">
                 <label class="field-label" for="c-nom">Nom du titulaire</label>
                 <input type="text" class="field-input" id="c-nom" name="nom"
@@ -201,7 +211,7 @@
                   autocomplete="cc-name" required>
               </div>
 
-              <!-- Expiration + CVV + Réseau -->
+              <!-- Expiration + CVV + Network -->
               <div class="field-row col3">
                 <div class="field-wrap" style="margin:0">
                   <label class="field-label" for="c-exp">Date d'expiration</label>
@@ -236,7 +246,7 @@
         </div>
       </div>
 
-      <!-- COLONNE DROITE -->
+      <!-- ════ RIGHT COLUMN ════ -->
       <div>
         <div class="recap-card">
           <div class="recap-head">
@@ -285,10 +295,13 @@
 
 {% include "footer.html" %}
 
+<!-- Bootstrap & jQuery JS Scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Payment Card Interactivity Script -->
 <script>
-  // ── CVV dynamique selon réseau ──
+  // ── Dynamic CVV adjustment according to network ──
   function updateCvv() {
     const marque = document.getElementById('c-marque').value;
     const numero = document.getElementById('c-numero').value.replace(/\D/g,'');
@@ -306,7 +319,7 @@
     }
   }
 
-  // ── Preview numéro ──
+  // ── Number preview ──
   document.getElementById('c-numero').addEventListener('input', function() {
     let v = this.value.replace(/\D/g,'').slice(0,16);
     this.value = v.replace(/(.{4})/g,'$1  ').trim();
@@ -316,17 +329,17 @@
     });
     ['prev-p1','prev-p2','prev-p3'].forEach(id => document.getElementById(id).className = 'cp-censored');
     document.getElementById('prev-p4').className = '';
-    updateCvv(); // détection auto Amex via préfixe
+    updateCvv(); // Auto-detect Amex via prefix
   });
 
-  // ── Preview nom ──
+  // ── Name preview ──
   document.getElementById('c-nom').addEventListener('input', function() {
     const val = this.value.toUpperCase() || 'VOTRE NOM';
     document.getElementById('prev-nom').textContent = val;
     document.getElementById('recap-nom').textContent = val;
   });
 
-  // ── Preview expiration ──
+  // ── Expiration preview ──
   document.getElementById('c-exp').addEventListener('input', function() {
     let v = this.value.replace(/\D/g,'');
     if (v.length > 2) v = v.slice(0,2) + '/' + v.slice(2,4);
@@ -335,7 +348,7 @@
     document.getElementById('recap-exp').textContent = v || '—';
   });
 
-  // ── Preview réseau ──
+  // ── Network preview ──
   document.getElementById('c-marque').addEventListener('change', function() {
     document.getElementById('prev-marque').textContent = this.value || '—';
     document.getElementById('recap-marque').textContent = this.value || '—';

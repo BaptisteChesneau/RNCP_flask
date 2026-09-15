@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Prendre rendez-vous ML2C CONSEIL</title>
+  <title>Prendre rendez-vous</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
@@ -12,7 +12,7 @@
 
   <style>
     /* ═══════════════════════════════════════
-       PAGE CONTACT — ML2C CONSEIL
+        PAGE CONTACT — ML2C CONSEIL
     ═══════════════════════════════════════ */
 
     /* Hero contact */
@@ -581,6 +581,7 @@
 </head>
 <body>
 
+  <!-- Include the global navigation header -->
   {% include "header.html" %}
 
   <!-- ════ HERO ════ -->
@@ -802,6 +803,7 @@
     </div>
   </section>
 
+  <!-- Include the global footer -->
   {% include "footer.html" %}
 
   <!-- ════ OVERLAY SUCCÈS ════ -->
@@ -851,21 +853,22 @@
     <button class="toast-close" onclick="closeToast()"><i class="fas fa-times"></i></button>
   </div>
 
+  <!-- JavaScript libraries and page-specific scripts -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     /* ══════════════════════════════════════
-       LOGIQUE FORMULAIRE MULTI-ÉTAPES
+        LOGIQUE FORMULAIRE MULTI-ÉTAPES
     ══════════════════════════════════════ */
 
-    let currentStep = 1;
-    let selectedService = '';
-    let selectedSlot = '';
+    var currentStep = 1;
+    var selectedService = '';
+    var selectedSlot = '';
 
-    const progressWidths = { 1: '33%', 2: '66%', 3: '100%' };
+    var progressWidths = { 1: '33%', 2: '66%', 3: '100%' };
 
     function updateSteps(step) {
-      document.querySelectorAll('.form-step').forEach((el, i) => {
+      document.querySelectorAll('.form-step').forEach(function(el, i) {
         el.classList.remove('active', 'done');
         if (i + 1 < step) el.classList.add('done');
         else if (i + 1 === step) el.classList.add('active');
@@ -874,7 +877,7 @@
     }
 
     function showPage(step) {
-      document.querySelectorAll('.form-page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.form-page').forEach(function(p) { p.classList.remove('active'); });
       document.getElementById('page' + step).classList.add('active');
       updateSteps(step);
       currentStep = step;
@@ -883,11 +886,11 @@
 
     /* ── Validation étape 1 ── */
     function validateStep1() {
-      let ok = true;
-      const prenom = document.getElementById('prenom').value.trim();
-      const nom = document.getElementById('nom').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      var ok = true;
+      var prenom = document.getElementById('prenom').value.trim();
+      var nom = document.getElementById('nom').value.trim();
+      var email = document.getElementById('email').value.trim();
+      var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
       setError('prenom', !prenom);
       setError('nom', !nom);
@@ -899,8 +902,8 @@
 
     /* ── Validation étape 2 ── */
     function validateStep2() {
-      let ok = true;
-      const msg = document.getElementById('message').value.trim();
+      var ok = true;
+      var msg = document.getElementById('message').value.trim();
       setError('service', !selectedService);
       setError('message', !msg);
       if (!selectedService || !msg) ok = false;
@@ -908,8 +911,8 @@
     }
 
     function setError(id, hasError) {
-      const input = document.getElementById(id);
-      const err = document.getElementById('err-' + id);
+      var input = document.getElementById(id);
+      var err = document.getElementById('err-' + id);
       if (!input && !err) return;
       if (input) input.classList.toggle('error', hasError);
       if (err) err.classList.toggle('show', hasError);
@@ -926,7 +929,7 @@
 
     /* ── Chips services ── */
     function selectChip(el) {
-      document.querySelectorAll('.service-chip').forEach(c => c.classList.remove('selected'));
+      document.querySelectorAll('.service-chip').forEach(function(c) { c.classList.remove('selected'); });
       el.classList.add('selected');
       selectedService = el.dataset.value;
       setError('service', false);
@@ -934,26 +937,26 @@
 
     /* ── Créneaux ── */
     function selectSlot(el) {
-      document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+      document.querySelectorAll('.time-slot').forEach(function(s) { s.classList.remove('selected'); });
       el.classList.add('selected');
       selectedSlot = el.textContent.trim();
     }
 
     /* ── Récapitulatif ── */
     function buildRecap() {
-      const prenom = document.getElementById('prenom').value.trim();
-      const nom = document.getElementById('nom').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const tel = document.getElementById('tel').value.trim();
-      const entreprise = document.getElementById('entreprise').value.trim();
-      const msg = document.getElementById('message').value.trim();
+      var prenom = document.getElementById('prenom').value.trim();
+      var nom = document.getElementById('nom').value.trim();
+      var email = document.getElementById('email').value.trim();
+      var tel = document.getElementById('tel').value.trim();
+      var entreprise = document.getElementById('entreprise').value.trim();
+      var msg = document.getElementById('message').value.trim();
 
       document.getElementById('recap-nom').textContent = prenom + ' ' + nom;
       document.getElementById('recap-email').textContent = email;
       document.getElementById('recap-tel').textContent = tel || '—';
       document.getElementById('recap-entreprise').textContent = entreprise || '—';
 
-      const serviceLabels = {
+      var serviceLabels = {
         comptabilite: '📊 Comptabilité', fiscalite: '📋 Fiscalité',
         paie: '💼 Paie & Social', juridique: '⚖️ Juridique',
         conseil: '💡 Conseil stratégique', creation: '🚀 Création d\'entreprise', autre: '✦ Autre'
@@ -972,11 +975,11 @@
       }
       document.getElementById('err-consent').classList.remove('show');
 
-      const btn = document.getElementById('submitBtn');
+      var btn = document.getElementById('submitBtn');
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours…';
 
-      setTimeout(() => {
+      setTimeout(function() {
         showSuccess();
         btn.disabled = false;
         btn.innerHTML = '<i class="fas fa-paper-plane"></i> Envoyer ma demande';
@@ -985,7 +988,7 @@
 
     /* ── Succès ── */
     function showSuccess() {
-      const ref = 'ML2C-' + Math.floor(1000 + Math.random() * 9000);
+      var ref = 'ML2C-' + Math.floor(1000 + Math.random() * 9000);
       document.getElementById('successRef').textContent = 'Réf. — ' + ref;
 
       document.getElementById('successOverlay').classList.add('show');
@@ -1003,45 +1006,44 @@
 
     /* ── Confettis ── */
     function launchConfetti() {
-      const container = document.getElementById('confettiContainer');
+      var container = document.getElementById('confettiContainer');
       container.innerHTML = '';
-      const colors = ['#C1007A', '#f472b6', '#4FA695', '#5eead4', '#fce4f3', '#fff'];
-      for (let i = 0; i < 36; i++) {
-        const piece = document.createElement('div');
+      var colors = ['#C1007A', '#f472b6', '#4FA695', '#5eead4', '#fce4f3', '#fff'];
+      for (var i = 0; i < 36; i++) {
+        var piece = document.createElement('div');
         piece.className = 'confetti-piece';
-        piece.style.cssText = `
-          left: ${Math.random() * 100}%;
-          top: ${-10 - Math.random() * 30}px;
-          background: ${colors[Math.floor(Math.random() * colors.length)]};
-          animation-delay: ${Math.random() * 1.2}s;
-          animation-duration: ${2 + Math.random() * 1.5}s;
-          transform: rotate(${Math.random() * 360}deg);
-          width: ${6 + Math.random() * 8}px;
-          height: ${6 + Math.random() * 8}px;
-        `;
+        piece.style.cssText = 
+          'left: ' + (Math.random() * 100) + '%; ' +
+          'top: ' + (-10 - Math.random() * 30) + 'px; ' +
+          'background: ' + colors[Math.floor(Math.random() * colors.length)] + '; ' +
+          'animation-delay: ' + (Math.random() * 1.2) + 's; ' +
+          'animation-duration: ' + (2 + Math.random() * 1.5) + 's; ' +
+          'transform: rotate(' + (Math.random() * 360) + 'deg); ' +
+          'width: ' + (6 + Math.random() * 8) + 'px; ' +
+          'height: ' + (6 + Math.random() * 8) + 'px;';
         container.appendChild(piece);
       }
     }
 
     /* ── Toast ── */
     function showToast() {
-      const t = document.getElementById('toastNotif');
+      var t = document.getElementById('toastNotif');
       t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 4500);
+      setTimeout(function() { t.classList.remove('show'); }, 4500);
     }
     function closeToast() { document.getElementById('toastNotif').classList.remove('show'); }
 
     /* ── Chatbot ── */
     function openChatbot(e) {
       e.preventDefault();
-      const fab = document.querySelector('.chatbot-fab');
+      var fab = document.querySelector('.chatbot-fab');
       if (fab) fab.click();
     }
 
     /* ── Validation temps réel ── */
-    ['prenom', 'nom', 'email'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.addEventListener('input', () => { if (el.value.trim()) setError(id, false); });
+    ['prenom', 'nom', 'email'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.addEventListener('input', function() { if (el.value.trim()) setError(id, false); });
     });
     document.getElementById('message').addEventListener('input', function() {
       if (this.value.trim()) setError('message', false);

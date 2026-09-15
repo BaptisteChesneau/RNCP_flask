@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>ML2C CONSEIL - Footer</title>
+  <title>Footer</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
@@ -18,7 +18,7 @@
       background: #fff;
       box-shadow: 0 5px 25px rgba(0,0,0,0.15);
       border-radius: 12px;
-      display: none; /* Caché par défaut */
+      display: none; /* Hidden by default */
       flex-direction: column;
       z-index: 9999;
       overflow: hidden;
@@ -67,7 +67,7 @@
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      display: none; /* Géré par le JS */
+      display: none; /* Managed by JS */
       align-items: center;
       justify-content: center;
       font-weight: bold;
@@ -103,7 +103,7 @@
 </head>
 <body>
 
-  <button class="chatbot-fab" id="chatFab" onclick="toggleChat()" aria-label="Parler à un conseiller">
+  <button class="chatbot-fab" id="chatFab" onclick="toggleChat()" aria-label="Talk to an advisor">
     <div class="fab-avatar icon-open">
       <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy&eyebrows=default" alt="Chatbot ML2C">
     </div>
@@ -118,27 +118,27 @@
       </div>
       <div>
         <span class="cw-name" style="font-weight:bold; display:block;">Chatbot ML2C</span>
-        <span class="cw-status"><span class="cw-dot"></span> Disponible maintenant</span>
+        <span class="cw-status"><span class="cw-dot"></span> Available now</span>
       </div>
       <button class="cw-minimize" onclick="toggleChat()"><i class="fas fa-minus"></i></button>
     </div>
     <div class="cw-body" id="cwBody">
       <div class="cw-msg bot">
         <div class="cw-msg-av-human">
-          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy&eyebrows=default" alt="Conseiller">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy&eyebrows=default" alt="Advisor">
         </div>
-        <div class="cw-bubble">Bonjour 👋 Je suis votre Chatbot <strong>ML2C CONSEIL</strong>.<br>Comment puis-je vous aider ?</div>
+        <div class="cw-bubble">Hello 👋 I am your <strong>ML2C CONSEIL</strong> Chatbot.<br>How can I help you?</div>
       </div>
       <div class="cw-quick" id="cwQuick">
-        <button class="cw-qbtn" onclick="quickSend('Quels sont vos services ?')">📊 Vos services</button>
+        <button class="cw-qbtn" onclick="quickSend('Quels sont vos services ?')">📊 Our services</button>
         <button class="cw-qbtn" onclick="quickSend('Comment vous contacter ?')">📞 Contact</button>
-        <button class="cw-qbtn" onclick="quickSend('Demander un devis')">💶 Devis gratuit</button>
-        <button class="cw-qbtn" onclick="quickSend('Prendre rendez-vous')">📅 Prendre RDV</button>
+        <button class="cw-qbtn" onclick="quickSend('Demander un devis')">💶 Free quote</button>
+        <button class="cw-qbtn" onclick="quickSend('Prendre rendez-vous')">📅 Book an appointment</button>
       </div>
     </div>
     <div class="cw-typing" id="cwTyping"><span></span><span></span><span></span></div>
     <div class="cw-footer">
-      <input class="cw-input" id="cwInput" type="text" placeholder="Écrivez votre message..."
+      <input class="cw-input" id="cwInput" type="text" placeholder="Type your message..."
              onkeydown="if(event.key==='Enter')sendMsg()">
       <button class="cw-send" onclick="sendMsg()"><i class="fas fa-paper-plane"></i></button>
     </div>
@@ -152,7 +152,7 @@
           <a href="{{ url_for('menu') }}">
             <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="ML2C CONSEIL" class="footer-logo">
           </a>
-          <p class="footer-tagline">Expertise, proximité et intelligence artificielle au service de votre réussite.</p>
+          <p class="footer-tagline">Expertise, proximity, and artificial intelligence at the service of your success.</p>
           <div class="footer-socials">
             <a href="https://www.facebook.com" target="_blank" title="Facebook">
               <i class="fab fa-facebook-f"></i>
@@ -167,23 +167,23 @@
         </div>
 
         <div class="footer-col">
-          <h4 class="footer-col-title">Le Cabinet</h4>
+          <h4 class="footer-col-title">The Firm</h4>
           <ul class="footer-links">
-            <li><a href="{{ url_for('notre_histoire') }}">Notre histoire</a></li>
-            <li><a href="{{ url_for('notre_equipe') }}">Notre équipe</a></li>
-            <li><a href="{{ url_for('nos_engagements') }}">Nos engagements</a></li>
-            <li><a href="{{ url_for('notre_vision') }}">Notre vision</a></li>
+            <li><a href="{{ url_for('notre_histoire') }}">Our history</a></li>
+            <li><a href="{{ url_for('notre_equipe') }}">Our team</a></li>
+            <li><a href="{{ url_for('nos_engagements') }}">Our commitments</a></li>
+            <li><a href="{{ url_for('notre_vision') }}">Our vision</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h4 class="footer-col-title">Nos Services</h4>
+          <h4 class="footer-col-title">Our Services</h4>
           <ul class="footer-links">
-            <li><a href="{{ url_for('tenue_comptable') }}">Tenue comptable</a></li>
-            <li><a href="{{ url_for('paie_gestion') }}">Paie & gestion sociale</a></li>
-            <li><a href="{{ url_for('juridique_courant') }}">Conseil juridique</a></li>
-            <li><a href="{{ url_for('declarations_fiscales') }}">Déclaration fiscale</a></li>
-            <li><a href="{{ url_for('creation_reprise') }}">Création d'entreprise</a></li>
+            <li><a href="{{ url_for('tenue_comptable') }}">Bookkeeping</a></li>
+            <li><a href="{{ url_for('paie_gestion') }}">Payroll & social management</a></li>
+            <li><a href="{{ url_for('juridique_courant') }}">Legal advice</a></li>
+            <li><a href="{{ url_for('declarations_fiscales') }}">Tax return</a></li>
+            <li><a href="{{ url_for('creation_reprise') }}">Business creation</a></li>
           </ul>
         </div>
 
@@ -204,17 +204,17 @@
             </li>
           </ul>
           <a href="{{ url_for('nous_contacter') }}" class="footer-cta-btn">
-            <i class="fas fa-calendar-alt"></i> Prendre RDV
+            <i class="fas fa-calendar-alt"></i> Book an appointment
           </a>
         </div>
 
       </div>
 
       <div class="footer-bottom">
-        <span>© 2026 ML2C CONSEIL — Tous droits réservés</span>
+        <span>© 2026 ML2C CONSEIL — All rights reserved</span>
         <div class="footer-bottom-links">
-          <a href="{{ url_for('rgpd') }}">RGPD</a>
-          <a href="{{ url_for('mentions_legales') }}">Mentions légales</a>
+          <a href="{{ url_for('rgpd') }}">GDPR</a>
+          <a href="{{ url_for('mentions_legales') }}">Legal notices</a>
           <a href="{{ url_for('cookies') }}">Cookies</a>
           <a href="{{ url_for('faq') }}">FAQ</a>
         </div>
@@ -242,21 +242,21 @@
       }
     }
 
-    // ── Réponses chatbot ──
+    // ── Chatbot replies ──
     const REPLIES = {
-      services:     { kw:['service','comptab','fiscal','paie','social','juridique','conseil','ia','bilan','tva','liasse','bulletin'], r:`Nous proposons :<br>📊 <b>Comptabilité & Fiscalité</b> — tenue, bilans, TVA<br>👥 <b>Paie & Social</b> — bulletins, DSN, droit du travail<br>⚖️ <b>Juridique & Création</b> — statuts, cessions, AG<br>🤖 <b>Conseil & IA</b> — Déclaration fiscale, tableaux de bord<br><br>Quel service vous intéresse ?` },
-      contact:      { kw:['contact','joindre','appel','téléphone','email','adresse','où','localisation'], r:`📞 <a href="tel:+33672343294" style="color:#C1007A">+33 (0)6 72 34 32 94</a><br>✉️ <a href="mailto:contact@ml2cconseil.com" style="color:#C1007A">contact@ml2cconseil.com</a><br>📍 6 Rue de la Vigne, 28360 Dammarie<br><br>Réponse garantie sous <b>24h</b> !` },
-      devis:        { kw:['devis','tarif','prix','coût','gratuit','combien'], r:`Notre devis est <b>100% gratuit</b> 🎉<br>Remplissez le formulaire de contact ou appelez-nous directement.<br>📞 <a href="tel:+33672343294" style="color:#C1007A">+33 (0)6 72 34 32 94</a><br>Nous vous rappelons sous <b>24h</b>.` },
-      rdv:          { kw:['rendez','rdv','réunion','rencontre','disponible','agenda','prendre rdv'], r:`Pour prendre RDV :<br>📞 <a href="tel:+33672343294" style="color:#C1007A">+33 (0)6 72 34 32 94</a><br>✉️ <a href="mailto:contact@ml2cconseil.com" style="color:#C1007A">contact@ml2cconseil.com</a><br><br>Nous sommes disponibles du <b>lundi au vendredi</b>.` },
-      bonjour:      { kw:['bonjour','salut','hello','bonsoir','coucou','bjr'], r:`Bonjour ! 😊 Ravi de vous accueillir chez <b>ML2C CONSEIL</b>.<br>Je peux vous renseigner sur nos services, tarifs ou prendre un RDV. Comment puis-je vous aider ?` },
-      merci:        { kw:['merci','parfait','super','génial','top','nickel','excellent'], r:`Avec plaisir ! 😊 L'équipe ML2C est toujours disponible pour vous accompagner. N'hésitez pas à revenir !` },
-      histoire:     { kw:['histoire','cabinet','qui','depuis','expérience','fondé','equipe'], r:`<b>ML2C CONSEIL</b> accompagne les TPE et PME depuis <b>+15 ans</b>.<br>+150 clients nous font confiance pour leur comptabilité, fiscalité et conseils stratégiques.<br><br>👉 <a href="/notre-histoire" style="color:#C1007A">En savoir plus</a>` },
-      comptabilite: { kw:['comptabilite','saisie','lettrage','révision','bilan annuel','liasse'], r:`Notre service comptabilité comprend :<br>✅ Tenue complète & révision<br>✅ Bilans & comptes de résultat<br>✅ Déclarations TVA, IS, BIC/BNC<br>✅ Tableaux de bord personnalisés<br><br>📞 <a href="tel:+33672343294" style="color:#C1007A">Nous appeler</a>` },
-      paie:         { kw:['paie','bulletin','salaire','dsn','rh','embauche','salarié'], r:`Notre service paie & social :<br>✅ Bulletins de salaire<br>✅ DSN & déclarations sociales<br>✅ Gestion entrées/sorties du personnel<br>✅ Conseil en droit du travail<br><br>📞 <a href="tel:+33672343294" style="color:#C1007A">Nous appeler</a>` },
-      juridique:    { kw:['juridique','statut','création','sas','sarl','immatriculation','cession','fusion'], r:`Notre service juridique :<br>✅ Création & immatriculation<br>✅ Rédaction de statuts<br>✅ Cession, fusion, transmission<br>✅ Secrétariat juridique annuel<br><br>📞 <a href="tel:+33672343294" style="color:#C1007A">Nous appeler</a>` },
-      horaires:     { kw:['horaire','ouvert','ferme','heure','disponible','quand'], r:`Nous sommes disponibles :<br>🕗 <b>Lundi — Vendredi</b> : 9h00 — 18h00<br>📞 <a href="tel:+33672343294" style="color:#C1007A">+33 (0)6 72 34 32 94</a><br>✉️ <a href="mailto:contact@ml2cconseil.com" style="color:#C1007A">contact@ml2cconseil.com</a>` },
-      localisation: { kw:['dammarie','eure','loir','région','secteur','zone','deplacement'], r:`Notre cabinet est situé au :<br>📍 <b>6 Rue de la Vigne, 28360 Dammarie</b><br><br>Nous intervenons en Eure-et-Loir et en région Centre-Val de Loire.` },
-      default:      { r:`Je ne suis pas sûr de comprendre 🤔<br>Je peux vous aider sur nos <b>services</b>, <b>tarifs</b>, <b>horaires</b> ou pour prendre <b>RDV</b>.<br><br>📞 <a href="tel:+33672343294" style="color:#C1007A">+33 (0)6 72 34 32 94</a>` }
+      services:     { kw:['service','comptab','fiscal','paie','social','juridique','conseil','ia','bilan','tva','liasse','bulletin'], r:`We offer:<br>📊 <b>Accounting & Tax</b> — bookkeeping, balance sheets, VAT<br>👥 <b>Payroll & Social</b> — payslips, DSN, labor law<br>⚖️ <b>Legal & Creation</b> — bylaws, transfers, AG<br>🤖 <b>Advice & AI</b> — Tax returns, dashboards<br><br>Which service are you interested in?` },
+      contact:      { kw:['contact','joindre','appel','téléphone','email','adresse','où','localisation'], r:`📞 <a href="tel:+33672343294" style="color:#C1007A">+33 (0)6 72 34 32 94</a><br>✉️ <a href="mailto:contact@ml2cconseil.com" style="color:#C1007A">contact@ml2cconseil.com</a><br>📍 6 Rue de la Vigne, 28360 Dammarie<br><br>Response guaranteed within <b>24h</b>!` },
+      devis:        { kw:['devis','tarif','prix','coût','gratuit','combien'], r:`Our quote is <b>100% free</b> 🎉<br>Fill out our contact form or call us directly.<br>📞 <a href="tel:+33672343294" style="color:#C1007A">+33 (0)6 72 34 32 94</a><br>We will call you back within <b>24h</b>.` },
+      rdv:          { kw:['rendez','rdv','réunion','rencontre','disponible','agenda','prendre rdv'], r:`To book an appointment:<br>📞 <a href="tel:+33672343294" style="color:#C1007A">+33 (0)6 72 34 32 94</a><br>✉️ <a href="mailto:contact@ml2cconseil.com" style="color:#C1007A">contact@ml2cconseil.com</a><br><br>We are available from <b>Monday to Friday</b>.` },
+      bonjour:      { kw:['bonjour','salut','hello','bonsoir','coucou','bjr'], r:`Hello! 😊 Glad to welcome you to <b>ML2C CONSEIL</b>.<br>I can inform you about our services, pricing, or book an appointment. How can I help you?` },
+      merci:        { kw:['merci','parfait','super','génial','top','nickel','excellent'], r:`You're welcome! 😊 The ML2C team is always available to support you. Feel free to reach out again!` },
+      histoire:     { kw:['histoire','cabinet','qui','depuis','expérience','fondé','equipe'], r:`<b>ML2C CONSEIL</b> has been supporting very small and small-to-medium enterprises for <b>+15 years</b>.<br>+150 clients trust us for their accounting, taxation, and strategic advice.<br><br>👉 <a href="/notre-histoire" style="color:#C1007A">Learn more</a>` },
+      comptabilite: { kw:['comptabilite','saisie','lettrage','révision','bilan annuel','liasse'], r:`Our accounting service includes:<br>✅ Complete bookkeeping & review<br>✅ Balance sheets & income statements<br>✅ VAT, corporate tax, BIC/BNC returns<br>✅ Customized dashboards<br><br>📞 <a href="tel:+33672343294" style="color:#C1007A">Call us</a>` },
+      paie:         { kw:['paie','bulletin','salaire','dsn','rh','embauche','salarié'], r:`Our payroll & social service:<br>✅ Payslips<br>✅ DSN & social declarations<br>✅ Personnel onboarding/offboarding management<br>✅ Labor law advice<br><br>📞 <a href="tel:+33672343294" style="color:#C1007A">Call us</a>` },
+      juridique:    { kw:['juridique','statut','création','sas','sarl','immatriculation','cession','fusion'], r:`Our legal service:<br>✅ Creation & registration<br>✅ Drafting of bylaws<br>✅ Transfer, merger, transmission<br>✅ Annual legal secretarial work<br><br>📞 <a href="tel:+33672343294" style="color:#C1007A">Call us</a>` },
+      horaires:     { kw:['horaire','ouvert','ferme','heure','disponible','quand'], r:`We are available:<br>🕗 <b>Monday — Friday</b>: 9:00 AM — 6:00 PM<br>📞 <a href="tel:+33672343294" style="color:#C1007A">+33 (0)6 72 34 32 94</a><br>✉️ <a href="mailto:contact@ml2cconseil.com" style="color:#C1007A">contact@ml2cconseil.com</a>` },
+      localisation: { kw:['dammarie','eure','loir','région','secteur','zone','deplacement'], r:`Our firm is located at:<br>📍 <b>6 Rue de la Vigne, 28360 Dammarie</b><br><br>We operate in Eure-et-Loir and the Centre-Val de Loire region.` },
+      default:      { r:`I am not sure I understand 🤔<br>I can help you with our <b>services</b>, <b>pricing</b>, <b>hours</b>, or help you book an <b>appointment</b>.<br><br>📞 <a href="tel:+33672343294" style="color:#C1007A">+33 (0)6 72 34 32 94</a>` }
     };
 
     function getReply(txt) {
@@ -274,7 +274,7 @@
       const div = document.createElement('div');
       div.className = `cw-msg ${role}`;
       div.innerHTML = role === 'bot'
-        ? `<div class="cw-msg-av-human"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy&eyebrows=default" alt="Conseiller"></div><div class="cw-bubble">${html}</div>`
+        ? `<div class="cw-msg-av-human"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ml2c&backgroundColor=transparent&clothingColor=C1007A&hairColor=4A4A4A&skinColor=F8D5C2&mouth=smile&eyes=happy&eyebrows=default" alt="Advisor"></div><div class="cw-bubble">${html}</div>`
         : `<div class="cw-msg-av"><i class="fas fa-user"></i></div><div class="cw-bubble">${html}</div>`;
       body.appendChild(div);
       body.scrollTop = body.scrollHeight;
@@ -314,17 +314,17 @@
       }
     }
 
-    // Gestion propre de l'affichage du badge de notification
+    // Proper management of notification badge display
     setTimeout(() => {
       const n = document.getElementById('chatNotif');
       const widget = document.getElementById('chatWidget');
-      // On l'affiche seulement si le widget n'est pas déjà ouvert
+      // Display only if the widget is not already open
       if (n && widget && !widget.classList.contains('is-open')) {
         n.style.display = 'flex'; 
       }
     }, 4000);
 
-    // Relance
+    // Follow-up
     setTimeout(() => {
       const widget = document.getElementById('chatWidget');
       if (widget && !widget.classList.contains('is-open')) {

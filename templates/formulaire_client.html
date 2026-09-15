@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fiche Client - ML2C CONSEIL</title>
+  <title>Fiche Client</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -40,7 +40,7 @@
     /* ── PAGE ── */
     .fc-page { padding: 2.5rem 0 4rem; }
 
-    /* ── CARD PRINCIPALE ── */
+    /* ── MAIN CARD ── */
     .fc-card {
       background: #fff; border-radius: 20px;
       box-shadow: 0 8px 40px rgba(0,0,0,.08);
@@ -75,10 +75,10 @@
     .fc-step.active .step-label { color: var(--rose); }
     .fc-step.done .step-label { color: var(--turq); }
 
-    /* ── BODY FORMULAIRE ── */
+    /* ── FORM BODY ── */
     .fc-body { padding: 2rem 2.5rem 2.5rem; }
 
-    /* ── ÉTAPES ── */
+    /* ── STEPS ── */
     .fc-step-panel { display: none; animation: stepIn .3s ease; }
     .fc-step-panel.active { display: block; }
     @keyframes stepIn { from{opacity:0;transform:translateX(14px)} to{opacity:1;transform:translateX(0)} }
@@ -89,7 +89,7 @@
     }
     .step-desc { font-size: .84rem; color: var(--muted); margin-bottom: 1.75rem; }
 
-    /* ── CHAMPS ── */
+    /* ── FIELDS ── */
     .fc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 1.25rem; }
     .fc-grid.full { grid-template-columns: 1fr; }
     .fc-field { display: flex; flex-direction: column; gap: .35rem; }
@@ -113,7 +113,7 @@
     .fc-input.valid { border-color: var(--turq); }
     .fc-textarea { resize: vertical; min-height: 90px; }
 
-    /* ── CIVILITÉ TOGGLE ── */
+    /* ── CIVILITY TOGGLE ── */
     .civ-toggle { display: flex; gap: .5rem; }
     .civ-btn {
       flex: 1; padding: .65rem; border-radius: 10px; border: 1.5px solid var(--border);
@@ -122,7 +122,7 @@
     }
     .civ-btn.active { border-color: var(--rose); background: var(--rose-light); color: var(--rose); }
 
-    /* ── TYPE ENTREPRISE CARDS ── */
+    /* ── COMPANY TYPE CARDS ── */
     .type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .65rem; margin-top: .25rem; }
     .type-card {
       padding: .75rem; border-radius: 10px; border: 1.5px solid var(--border);
@@ -158,14 +158,14 @@
     }
     .btn-fc-submit:hover { background: var(--turq-dark); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(79,166,149,.3); }
 
-    /* ── RÉCAP ── */
+    /* ── RECAP ── */
     .recap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; margin-bottom: 1.5rem; }
     .recap-item { background: #f8f9fb; border-radius: 10px; padding: .75rem 1rem; border-left: 3px solid var(--border); }
     .recap-item.highlight { border-left-color: var(--turq); background: var(--turq-light); }
     .recap-label { font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: .18rem; }
     .recap-val { font-size: .9rem; font-weight: 600; color: var(--text); }
 
-    /* ── GESTION ANCIENNE FICHE (ARCHIVAGE / SUPPRESSION) ── */
+    /* ── OLD FILE MANAGEMENT (ARCHIVE / DELETE) ── */
     .archive-choice-box {
       background: #faf8f4; border: 1.5px solid var(--border); border-radius: 14px;
       padding: 1.2rem 1.25rem; margin-bottom: 1.5rem;
@@ -236,12 +236,12 @@
         </div>
       </div>
 
-      <!-- FORMULAIRE -->
+      <!-- FORM -->
       <form action="{{ url_for('formulaire_client') }}" method="POST" id="ficheForm">
 
         <div class="fc-body">
 
-          <!-- ── ÉTAPE 1 : Entreprise ── -->
+          <!-- ── STEP 1: Company ── -->
           <div class="fc-step-panel active" id="panel-1">
             <div class="step-title">Votre entreprise</div>
             <div class="step-desc">Renseignez les informations sur votre structure.</div>
@@ -306,7 +306,7 @@
             </div>
           </div>
 
-          <!-- ── ÉTAPE 2 : Contact ── -->
+          <!-- ── STEP 2: Contact ── -->
           <div class="fc-step-panel" id="panel-2">
             <div class="step-title">Vos coordonnées</div>
             <div class="step-desc">Informations personnelles du responsable du dossier.</div>
@@ -349,16 +349,16 @@
             </div>
           </div>
 
-          <!-- ── ÉTAPE 3 : Récap & Gestion ancienne fiche ── -->
+          <!-- ── STEP 3: Summary & Old File Management ── -->
           <div class="fc-step-panel" id="panel-3">
             <div class="step-title">Récapitulatif</div>
             <div class="step-desc">Vérifiez vos informations avant d'enregistrer.</div>
 
             <div class="recap-grid" id="recapGrid">
-              <!-- rempli par JS -->
+              <!-- filled by JS -->
             </div>
 
-            <!-- Option de gestion des fiches précédentes -->
+            <!-- Option for managing previous files -->
             <div class="archive-choice-box">
               <div class="archive-choice-title">
                 <i class="fas fa-history"></i> Gestion de votre fiche précédente
@@ -402,14 +402,14 @@
 <script>
   let currentStep = 1;
 
-  // ── Type entreprise ──
+  // ── Company type ──
   function selectType(card) {
     document.querySelectorAll('.type-card').forEach(c => c.classList.remove('active'));
     card.classList.add('active');
     document.getElementById('type_entreprise').value = card.dataset.val;
   }
 
-  // ── Civilité ──
+  // ── Civility ──
   function selectCiv(btn) {
     document.querySelectorAll('.civ-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
@@ -418,7 +418,7 @@
 
   // ── Navigation ──
   function goStep(n) {
-    // Validation basique avant d'avancer
+    // Basic validation before advancing
     if (n > currentStep) {
       const panel = document.getElementById('panel-' + currentStep);
       const required = panel.querySelectorAll('[required]');
@@ -434,7 +434,7 @@
       if (!valid) return;
     }
 
-    // Mise à jour affichage
+    // Update display
     document.querySelectorAll('.fc-step-panel').forEach(p => p.classList.remove('active'));
     document.getElementById('panel-' + n).classList.add('active');
 
@@ -444,7 +444,7 @@
       ind.classList.remove('active', 'done');
       if (i < n) ind.classList.add('done');
       if (i === n) ind.classList.add('active');
-      // Icône check pour done
+      // Check icon for done
       const num = ind.querySelector('.step-num');
       if (i < n) num.innerHTML = '<i class="fas fa-check" style="font-size:.7rem"></i>';
       else num.textContent = i;
@@ -455,7 +455,7 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // ── Récap ──
+  // ── Summary ──
   function buildRecap() {
     const fields = [
       { label: 'Type d\'entreprise', val: document.getElementById('type_entreprise').value, hl: true },
@@ -475,7 +475,7 @@
     `).join('');
   }
 
-  // ── Validation input temps réel ──
+  // ── Real-time input validation ──
   document.querySelectorAll('.fc-input, .fc-select').forEach(input => {
     input.addEventListener('blur', function() {
       if (this.value.trim()) this.classList.add('valid');

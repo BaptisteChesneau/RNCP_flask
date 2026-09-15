@@ -1,12 +1,16 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sécurité & Protection des Données — ML2C CONSEIL</title>
+  <title>Sécurité & Protection des Données</title>
+  <!-- Bootstrap CSS (CDN) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Custom CSS file -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
   <style>
@@ -15,7 +19,7 @@
       color: #2d3748;
     }
 
-    /* En-tête de page hero */
+    /* Page Hero Header */
     .security-hero {
       background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
       color: #ffffff;
@@ -38,7 +42,7 @@
       letter-spacing: 0.5px;
     }
 
-    /* Cartes de sécurité */
+    /* Security Feature Cards */
     .feature-card {
       background: #ffffff;
       border: 1px solid #e2e8f0;
@@ -68,7 +72,7 @@
       margin-bottom: 1.25rem;
     }
 
-    /* Fenêtre de Code Terminal */
+    /* Code Terminal Window */
     .code-window {
       background: #1a202c;
       border-radius: 12px;
@@ -118,7 +122,7 @@
     .comment { color: #718096; font-style: italic; }
     .string { color: #f6ad55; }
 
-    /* Section RGPD */
+    /* GDPR Section */
     .rgpd-card {
       background: #ffffff;
       border-left: 4px solid #b81473;
@@ -171,7 +175,7 @@
 
 <main class="container py-5">
 
-  <!-- Cartes des Mesures de Sécurité -->
+  <!-- Security Measures Cards -->
   <div class="row mb-5">
     <div class="col-md-3 mb-4 mb-md-0">
       <div class="feature-card">
@@ -222,7 +226,7 @@
     </div>
   </div>
 
-  <!-- Démonstration d'Algorithme de Validation (Code Terminal) -->
+  <!-- Validation Algorithm Demonstration (Code Terminal) -->
   <div class="row align-items-center my-5">
     <div class="col-lg-5 mb-4 mb-lg-0">
       <h3 class="font-weight-bold mb-3" style="color: #1a202c;">Validation Robuste à la Source</h3>
@@ -248,15 +252,15 @@
         <pre class="code-body"><code><span class="keyword">def</span> <span class="function">valider_inscription</span>(email, password, pseudo):
     erreurs = {}
 
-    <span class="comment"># Validation du pseudonyme</span>
+    <span class="comment"># Username validation</span>
     <span class="keyword">if</span> len(pseudo) &lt; 3:
         erreurs[<span class="string">"pseudo"</span>] = <span class="string">"Le nom doit contenir au moins 3 caractères."</span>
 
-    <span class="comment"># Validation du format d'e-mail</span>
+    <span class="comment"># Email format validation</span>
     <span class="keyword">if</span> <span class="string">"@"</span> <span class="keyword">not in</span> email <span class="keyword">or</span> <span class="string">"."</span> <span class="keyword">not in</span> email:
         erreurs[<span class="string">"email"</span>] = <span class="string">"Adresse e-mail non valide."</span>
 
-    <span class="comment"># Validation de la force du mot de passe</span>
+    <span class="comment"># Password strength validation</span>
     <span class="keyword">if</span> len(password) &lt; 8:
         erreurs[<span class="string">"password"</span>] = <span class="string">"Le mot de passe doit faire au moins 8 caractères."</span>
 
@@ -265,7 +269,7 @@
     </div>
   </div>
 
-  <!-- Encadré RGPD & Contact -->
+  <!-- GDPR Banner & Contact -->
   <div class="rgpd-card my-5">
     <div class="row align-items-center">
       <div class="col-md-8">
@@ -284,7 +288,7 @@
     </div>
   </div>
 
-  <!-- Bouton de retour -->
+  <!-- Back Button -->
   <div class="text-center mt-5">
     <a href="{{ url_for('menu') }}" class="btn btn-custom">
       <i class="fas fa-arrow-left"></i> Retour au Menu
@@ -295,6 +299,7 @@
 
 {% include "footer.html" %}
 
+<!-- Bootstrap & jQuery JS Scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

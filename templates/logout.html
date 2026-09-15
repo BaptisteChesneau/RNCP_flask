@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Déconnexion — ML2C CONSEIL</title>
+  <title>Déconnexion</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -24,7 +24,7 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     body{background:var(--bg);font-family:var(--ff-body);color:var(--ink);min-height:100vh;}
 
-    /* ══ TEXTURE FOND ══ */
+    /* ══ BACKGROUND TEXTURE ══ */
     body::before{
       content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
       background:
@@ -45,7 +45,7 @@
       padding:3rem 1rem;
     }
 
-    /* ══ CARTE ══ */
+    /* ══ CARD ══ */
     .logout-card{
       background:var(--surface);border:1px solid var(--border);
       border-radius:28px;box-shadow:var(--shadow-lg);
@@ -62,7 +62,7 @@
       background:linear-gradient(90deg,transparent,var(--rose) 30%,var(--gold) 70%,transparent);
     }
 
-    /* ══ HEADER CARD ══ */
+    /* ══ CARD HEADER ══ */
     .logout-head{
       padding:2.75rem 2.5rem 2.25rem;
       background:linear-gradient(160deg,var(--bg) 0%,var(--bg2) 60%,var(--bg3) 100%);
@@ -76,7 +76,7 @@
       color:rgba(193,0,122,.04);line-height:1;pointer-events:none;
     }
 
-    /* Icône centrale animée */
+    /* Animated center icon */
     .logout-ico-wrap{
       width:76px;height:76px;border-radius:50%;
       background:var(--surface);border:1.5px solid var(--border);
@@ -109,10 +109,10 @@
     .logout-title em{color:var(--rose);font-style:italic;font-weight:600;}
     .logout-sub{font-size:.87rem;color:var(--muted);line-height:1.6;}
 
-    /* ══ CORPS ══ */
+    /* ══ BODY ══ */
     .logout-body{padding:2rem 2.5rem 2.5rem;}
 
-    /* Barre de progression */
+    /* Progress bar */
     .progress-wrap{margin-bottom:1.75rem;}
     .progress-label{
       display:flex;justify-content:space-between;align-items:center;
@@ -131,7 +131,7 @@
       color:var(--rose);font-weight:700;
     }
 
-    /* Boutons */
+    /* Buttons */
     .logout-actions{display:flex;flex-direction:column;gap:.65rem;}
     .btn-act{
       display:flex;align-items:center;justify-content:center;gap:.5rem;
@@ -149,7 +149,7 @@
     }
     .btn-ghost:hover{background:var(--bg2);border-color:var(--border2);color:var(--ink);text-decoration:none;}
 
-    /* Note sécurité */
+    /* Security note */
     .security-note{
       display:flex;align-items:center;justify-content:center;gap:.5rem;
       font-size:.7rem;color:var(--faint);margin-top:1.25rem;
@@ -179,10 +179,10 @@
       <p class="logout-sub">Vous avez été déconnecté de votre espace client. Vos données sont en sécurité.</p>
     </div>
 
-    <!-- ══ CORPS ══ -->
+    <!-- ══ BODY ══ -->
     <div class="logout-body">
 
-      <!-- Barre de redirection auto -->
+      <!-- Auto-redirection progress bar -->
       <div class="progress-wrap">
         <div class="progress-label">
           <span>Redirection automatique…</span>
@@ -215,7 +215,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-/* Countdown + barre de progression → redirige vers accueil */
+/* Countdown + progress bar -> redirects to home page */
 (function(){
   const total = 5000;
   const fill  = document.getElementById('progressFill');
@@ -235,7 +235,7 @@
     }
   }, step);
 
-  /* Annuler le compte à rebours si l'utilisateur clique */
+  /* Cancel countdown if the user clicks any action button */
   document.querySelectorAll('.btn-act').forEach(function(btn){
     btn.addEventListener('click', function(){ clearInterval(timer); });
   });
